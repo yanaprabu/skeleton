@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Skeleton Manual - Getting Started</title>
+</head>
+<body>
+
+<h1>Skeleton Manual</h1>
+<hr/>
+<h2>Getting Started</h2>
+<h3>Directory Structure</h3>
+<p>Class files are located in the "A" directory and follow the PEAR naming convention where underscores in the class name correspond to directory separators in the file path. For example, the Front Controller class is named A_Controller_Front and is in the file A/Controller/Front.php</p>
+<p>The classes internally assume that the directory containing the "A" directory is in the include_path. In addition, the application will typicall need to include files from directories that contain "controllers", "models", and "views" classes. No specific directory layout is required. An example layout is provided.</p>
+<h3>Bootstrap File (index.php)</h3>
+<p>A minimum index.php file is a follows. This file creates the following filesRequest and response </p>
+<pre>
+&lt;?php
+require_once 'A/DL.php';
+require_once 'A/Locator.php';
+require_once 'A/Http/Request.php';
+require_once 'A/Http/Response.php';
+require_once 'A/Controller/Front.php';
+require_once 'A/Controller/Mapper.php';
+
+$Locator = new A_Locator();
+$Request = new A_Http_Request();
+$Response = new A_Http_Response();
+
+$Locator->set('Request', $Request);
+$Locator->set('Response', $Response);
+
+$Mapper = new A_Controller_Mapper('/path/to/app/', new A_DL('', 'home'));
+
+$Controller = new A_Controller_Front($Mapper, new A_DL('', 'error'));
+$Controller->run($Locator);
+
+$Response->run($Locator);
+echo $Response->render();
+</pre>
+<p>This file creates the following files</p>
+<ul>
+<li>Request object used to access GET or POST vars, and PATH_INFO.</li>
+<li>Response object used assemble the HTML output and headers to send to the browser.</li>
+</ul>
+<p></p>
+</body>
+</html>
