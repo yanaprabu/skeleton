@@ -1,6 +1,6 @@
 <?php
 
-class A_DataContainer {
+class A_DataContainer implements Iterator {
 	protected $_data = array();
 
     public function __construct($source=null) {
@@ -58,5 +58,28 @@ class A_DataContainer {
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
     }
 
+    public function toArray() {
+        return $this->_data;
+    }
+
+    public function rewind() {
+        reset($this->_data);
+    }
+
+    public function current() {
+        return current($this->_data);
+    }
+
+    public function key() {
+        return key($this->_data);
+    }
+
+    public function next() {
+        return next($this->_data);
+    }
+
+    public function valid() {
+        return current($this->_data) !== false;
+    }
 }
 
