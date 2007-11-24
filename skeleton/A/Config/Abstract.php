@@ -1,15 +1,15 @@
 <?php
 
 abstract class A_Config_Abstract {
-   protected $filename;
-   protected $section;
-   protected $exception;
-   protected $error = 0;
+   protected $_filename;
+   protected $_section;
+   protected $_exception;
+   protected $_error = 0;
    
    public function __construct($filename, $section='', $exception=null) {
-      $this->filename = $filename;
-      $this->section = $section;
-      $this->exception = $exception;
+      $this->_filename = $filename;
+      $this->_section = $section;
+      $this->_exception = $exception;
    }
    
    public function loadFile() {
@@ -18,13 +18,13 @@ abstract class A_Config_Abstract {
       restore_error_handler();
      
       //if there was a problem loading the file
-      if (($this->error || !count($data))
+      if (($this->_error || !count($data))
       //if the requested section does not exist
-      || ($this->section && !isset($data[$this->section]))) {
+      || ($this->_section && !isset($data[$this->_section]))) {
          return false;
       }
    
-      return new A_DataContainer($this->_section ? $data[$this->section] : $data);
+      return new A_DataContainer($this->_section ? $data[$this->_section] : $data);
    }
    
    public function errorHandler($errno, $errstr, $errfile, $errline) {
@@ -32,9 +32,9 @@ abstract class A_Config_Abstract {
          if (!class_exists('A_Exception')) {
             include 'A/Exception.php';
          } 
-         throw A_Exception::getInstance($this->exception, $errstr);
+         throw A_Exception::getInstance($this->_exception, $errstr);
       } else {
-         $this->error = $errno;
+         $this->_error = $errno;
       }
    }   
 }

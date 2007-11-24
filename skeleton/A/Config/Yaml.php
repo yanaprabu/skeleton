@@ -1,4 +1,5 @@
 <?php
+if (! class_exists('A_Config_Abstract')) include 'A/Config/Abstract.php';
 
 class A_Config_Yaml extends A_Config_Abstract {
 
