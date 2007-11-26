@@ -18,7 +18,7 @@ class A_Controller_App extends A_Controller_Input {
 	}
 
 	public function addState($state) {
-		if (is_a($state, 'A_Controller_App_State') && $state->name) {
+		if (($state instanceof A_Controller_App_State) && $state->name) {
 			$this->states[$state->name] = $state;
 		}
 	}
