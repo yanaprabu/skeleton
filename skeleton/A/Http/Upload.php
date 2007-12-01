@@ -4,6 +4,7 @@ define('A_HTTP_UPLOAD_ERR_MAX_SIZE', 1002);
 define('A_HTTP_UPLOAD_ERR_FILE_EXISTS', 1003);
 define('A_HTTP_UPLOAD_ERR_FILE_UNLINK', 1004);
 define('A_HTTP_UPLOAD_ERR_FILE_MOVE', 1005);
+define('A_HTTP_UPLOAD_ERR_FILE_TYPE', 1006);
 
 class A_Http_Upload {public $file_param = 'file';		// form/http parameter name for file(s)public $submit_param = 'upload';	// form/http parameter name for the submit buttonpublic $path_param = 'path';		// form/http parameter name for path relative to dirprotected $base_path = '/tmp';				// destination directory for uploaded file, or array of dirs will shows a select box, see formSelectPath()protected $file_mode = 0777;			// mode to create new directories and filesprotected $filename_regexp_pattern = array('/[^a-zA-Z0-9_\-\.]/');protected $filename_regexp_replace = array('_');
 protected $replace = true;			// if destination file exists, delete and the uploadprotected $min_size = 1;			// set minimum size of files, 0 to allow zero size filesprotected $max_size = 0;			// cap size of file with this valueprotected $allowed_types = array();
@@ -169,6 +170,7 @@ public function getFileErrorMsg($n=0, $param='') {
 		A_HTTP_UPLOAD_ERR_FILE_EXISTS => 'A file by that name already exists. ', 
 		A_HTTP_UPLOAD_ERR_FILE_UNLINK => 'Cannot replace existing file. ',
 		A_HTTP_UPLOAD_ERR_FILE_MOVE => 'Permission denied. ',
+		A_HTTP_UPLOAD_ERR_FILE_TYPE => 'File type not allowed. ',
 		);
 	return isset($errmsg[$error]) ? $errmsg[$error] : '';
 }
@@ -202,7 +204,12 @@ public function isAllowedFilesize($n=0, $param='') {
 
 public function isAllowedType($n=0, $param='') {
 	if ($this->allowed_types) {
-		return in_array($this->getFileOption('type', $n, $param), $this->allowed_types);
+		if (in_array($this->getFileOption('type', $n, $param), $this->allowed_types)) {
+			return true;
+		} else {
+			$this->setFileOption(A_HTTP_UPLOAD_ERR_FILE_TYPE, 'error', $n, $param);
+			return false;
+		}
 	}
 	return true;
 }
