@@ -4,14 +4,14 @@ require_once('config.php');
 require_once('A/Template.php');
 
 echo '<h3>Template is PHP file</h3>';
-$template = new A_Template_Include('template/example1.php');
+$template = new A_Template_Include('templates/example1.php');
 $template->set('one', 'Hello 1');
 $template->set('two', 'Happy 2');
 $template->set('three', 'Lucky 3');
 echo $template->render();
 
 echo '<h3>Template is HTML file</h3>';
-$template = new A_Template_Strreplace('template/example1.html');
+$template = new A_Template_Strreplace('templates/example1.html');
 $template->set('{one}', 'Hello 1');
 $template->set('{two}', 'Happy 2');
 $template->set('{three}', 'Lucky 3');
