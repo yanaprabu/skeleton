@@ -19,7 +19,7 @@ function Form1View () {
 		$param2->value = 'init';
 		$param3->value = 'init';
 		$param4->value = 'init';
-		include 'template/example_form.php';
+		include 'templates/example_form.php';
 	}
 	
 	function submit($locator) {
@@ -30,7 +30,7 @@ function Form1View () {
 		$param2 = $controller->getParameter('field2');
 		$param3 = $controller->getParameter('field3');
 		$param4 = $controller->getParameter('field4');
-		include 'template/example_form.php';
+		include 'templates/example_form.php';
 	}
 	
 	function done($locator) {

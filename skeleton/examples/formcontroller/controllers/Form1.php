@@ -12,9 +12,9 @@ class Form1 extends A_Controller_Form {
 	function __construct() {
 /*
 		$handlers = array(
-			'init' => new Handle('view/Form1View.php', 'Form1View', 'init'), 
-			'submit' => new Handle('view/Form1View.php', 'Form1View', 'submit'), 
-			'done' => new Handle('view/Form1View.php', 'Form1View', 'done')
+			'init' => new Handle('views/Form1View.php', 'Form1View', 'init'), 
+			'submit' => new Handle('views/Form1View.php', 'Form1View', 'submit'), 
+			'done' => new Handle('views/Form1View.php', 'Form1View', 'done')
 			);
 */
 	$handlers = array(
@@ -65,14 +65,14 @@ class Form1 extends A_Controller_Form {
 		$this->setParameterValue('field3', 'init');
 		$this->setParameterValue('field4', 'init');
 
-		include 'template/example_form.php';
+		include 'templates/example_form.php';
 	}
 	
 	function _submit($locator) {
 		echo 'SubmitHandler: STATE SUBMITTED<br/>';
 		$controller = $locator->get('Controller');
 	
-		include 'template/example_form.php';
+		include 'templates/example_form.php';
 	}
 	
 	function _done($locator) {
