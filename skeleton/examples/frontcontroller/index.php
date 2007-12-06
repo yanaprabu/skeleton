@@ -16,7 +16,7 @@ $Locator->set('Response', $Response);
 $DefaultAction = new A_DL('', 'home', 'run');
 $ErrorAction = new A_DL('', 'error', 'run');
 
-$Mapper = new A_Controller_Mapper('.', $DefaultAction);
+$Mapper = new A_Controller_Mapper('', $DefaultAction);
 #$Mapper->setParams('action', '');		// add this line to run 0.3.x code 
 #$Mapper->setDefaultMethod('execute');	// add this line to run 0.4.x and 0.3.x code
 #$Mapper->setDefaultDir('default');		// add this for a default module directory
