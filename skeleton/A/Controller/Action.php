@@ -1,39 +1,47 @@
 <?php
 
 class A_Controller_Action {
-	protected $_path = '';
-	protected $_dir = array('model'=>'models', 'view'=>'views', );
-	protected $_action = null;
-	protected $_locator;
-	 
+	protected $paths = array();
+	protected $dirs = array('model'=>'models', 'view'=>'views', );
+	protected $action = null;
+	protected $locator;
+	protected $loader = null;
+	
 	public function __construct($locator){
-	    $this->_locator = $locator;
+	    $this->locator = $locator;
 	}
 	 
-	// 						$global_path . $module_dir . $mapper->class_dir
-	public function initialize($global_path, $module_dir, $local_dir, $class){
-		$this->_path['local'] = $global_path . $module_dir . $local_dir;
-		$this->_path['module'] = $global_path . $module_dir;
-		$this->_path['global'] = $global_path;
-		$this->_action = $class;
+	// 						$globalpaths . $moduledirs . $mapper->classdirs
+	public function initialize($globalpaths, $moduledirs, $localdirs, $class){
+		$this->paths['local'] = $globalpaths . $moduledirs . $localdirs;
+		$this->paths['module'] = $globalpaths . $moduledirs;
+		$this->paths['global'] = $globalpaths;
+		$this->action = $class;
 	}
 		
 	protected function addPath($name, $path, $relative_name=''){
 	    if ($relative_name) {
-	    	$this->_path[$name] = $this->_path[$relative_name] . $path;
+	    	$this->paths[$name] = $this->paths[$relative_name] . $path;
 	    } else {
-	    	$this->_path[$name] = $path;
+	    	$this->paths[$name] = $path;
 	    }
 	}
 	
 	protected function _load($name, $path='module') {
-	    $this->_locator->loadClass($name, $this->dir[$path]);
+	    $this->locator->loadClass($name, $this->dir[$path]);
 	}
 	
+	protected function load($module=null) {
+		if (! $this->loader) {
+		    if (! class_exists('A_Controller_Action_Loader')) include 'A/Controller/Action/Loader.php';
+			$this->loader = new A_Controller_Action_Loader($this->locator, $this->paths, $this->dirs, $this->action);
+		}
+		return $this->loader->setScope($module);
+	}
+
 	protected function getPhpRenderer($path='module') {
-	    if (! class_exist('A_Template_Include')) include 'A/Template/Include.php';
-	    
-	    $filename = $this->_path[$path] . $this->_dir['view'] . $this->_action . '.php';
+	    if (! class_exists('A_Template_Include')) include 'A/Template/Include.php';
+	    $filename = $this->paths[$path] . $this->dirs['view'] . $this->action . '.php';
 	    $renderer = new A_Template_Include($filename);
 	    return $renderer;
 	}
