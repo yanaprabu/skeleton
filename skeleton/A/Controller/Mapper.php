@@ -120,6 +120,7 @@ class A_Controller_Mapper
 		} else {
 			$action = $this->default_action;
 			$action->dir = $path;
+			$this->class = $action->class;
 		}
 		if ($action->method == '') {
 			$action->method = $this->default_method;
