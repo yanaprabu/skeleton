@@ -4,7 +4,7 @@ require_once('config.php');
 require_once('A/Locator.php');
 require_once('A/Http/Request.php');
 require_once('A/Http/Response.php');
-require_once('controller/upload_files.php');
+require_once('controllers/upload_files.php');
 
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();

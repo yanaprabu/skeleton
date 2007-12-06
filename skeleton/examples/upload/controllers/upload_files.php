@@ -14,7 +14,7 @@ class upload_files {
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		
-		$page_template = new A_Template_Strreplace('template/upload_files.html');
+		$page_template = new A_Template_Strreplace('templates/upload_files.html');
 		
 		$content = '';
 				
