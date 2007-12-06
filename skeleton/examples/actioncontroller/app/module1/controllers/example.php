@@ -4,6 +4,7 @@ class example extends A_Controller_Action {
 	var $response;
 
 	function __construct($locator) {
+		parent::__construct($locator);
 		$this->response = $locator->get('Response');
 	}
 	
@@ -21,6 +22,15 @@ class example extends A_Controller_Action {
 	<br/>
 	<p><a href="../">Return to Examples</a></p>
 ';
+		$model = $this->load()->model();
+		$content .= '<br/>Model Object:<pre>' . print_r($model, 1) . '</pre>';
+
+		$days = $this->load()->model('Days');
+		$content .= '<br/>Model Days Object:<pre>' . print_r($days, 1) . '</pre>';
+
+		$months = $this->load('global')->model('MonthsModel');
+		$content .= '<br/>Global Model Months Object:<pre>' . print_r($months, 1) . '</pre>';
+
 		$content .= 'Action Object:<pre>' . print_r($this, 1) . '</pre>';
 		$content .= '
 </body>
