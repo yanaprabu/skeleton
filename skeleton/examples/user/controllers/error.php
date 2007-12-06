@@ -12,7 +12,7 @@ class error {
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		
-		$page_template = new A_Template_Strreplace('template/error.html');
+		$page_template = new A_Template_Strreplace('templates/error.html');
 		
 		$response->setContent($page_template->render());
 	}

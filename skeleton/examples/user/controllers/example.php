@@ -12,7 +12,7 @@ class example {
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		
-		$page_template = new A_Template_Strreplace('template/example.html');
+		$page_template = new A_Template_Strreplace('templates/example.html');
 		
 		$response->setContent($page_template->render());
 	}

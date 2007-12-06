@@ -47,9 +47,9 @@ class signin extends A_Controller_Input {
 			}
 		}
 		if ($usersession->isSignedIn()) {
-			$page_template = new Template_Strreplace('template/signout.html');
+			$page_template = new Template_Strreplace('templates/signout.html');
 		} else {
-			$page_template = new Template_Strreplace('template/signin.html');
+			$page_template = new Template_Strreplace('templates/signin.html');
 			$page_template->set('errmsg', $errmsg);
 			$page_template->set('username', $usernamestr);
 		}
