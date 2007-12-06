@@ -90,7 +90,7 @@ class StartView {
 		$game = $locator->get('Game');
 		$game->pickRandomWord();
 		
-		$template = new A_Template_Strreplace('template/start.html');
+		$template = new A_Template_Strreplace('templates/start.html');
 		$template->set('game_levels_easy', $game->levels['easy']);
 		$template->set('game_levels_medium', $game->levels['medium']);
 		$template->set('game_levels_hard', $game->levels['hard']);
@@ -118,7 +118,7 @@ class GameView {
   			} 
 		}
 		
-		$template = new A_Template_Strreplace('template/game.html');
+		$template = new A_Template_Strreplace('templates/game.html');
 		$template->set('word', $game->word);
 		$template->set('guesses', $game->guesses);
 		$template->set('misses', $game->misses);
@@ -139,7 +139,7 @@ class WinView {
 		
 		$game = $locator->get('Game');
 
-		$template = new A_Template_Strreplace('template/win.html');
+		$template = new A_Template_Strreplace('templates/win.html');
 		$template->set('word', $request->get('word'));
 
 		$response->set('Content', $template->render());
@@ -154,7 +154,7 @@ class LoseView {
 		
 		$game = $locator->get('Game');
 
-		$template = new A_Template_Strreplace('template/lose.html');
+		$template = new A_Template_Strreplace('templates/lose.html');
 		$template->set('word', $request->get('word'));
 
 		$response->set('Content', $template->render());
@@ -197,7 +197,7 @@ class Hangman extends A_Controller_App {
 		$request = $locator->get('Request');
     	$response = $locator->get('Response');
 
-		$response->setRenderer(new A_Template_Strreplace('template/layout.html'));
+		$response->setRenderer(new A_Template_Strreplace('templates/layout.html'));
     	
         $number_rule = new A_Filter_Regexp('/[^0-9]/');
         $letter_rule = new A_Filter_Regexp('/[^A-Z]/');
