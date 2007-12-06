@@ -45,23 +45,4 @@ class A_Controller_Action_Loader {
 		}
 	}
 
-/*
-	public function model($class=null) {
-		if ($class === null) {
-			$class = $this->action;
-		}
-		$name = $class . $this->suffix['model'];
-echo "A_Controller_Loader: model: class=$class, name=$name<br/>";
-		return $this->locator->get($name, $name, $this->scope_path . 'models/');
-	}
-*/
-	 
-	public function view($class=null) {
-		if ($class === null) {
-			$class = $this->action;
-		}
-		$name = $class . $this->suffix['model'];
-		return $this->locator->get($name, $name, $this->scope_path . 'views/');
-	}
-	 
 }
