@@ -34,7 +34,7 @@ class A_Application {
       if (!$this->component('Response')->hasRenderer()) {
 			$this->component('Response')->setRenderer($this->components('Template'));
       }
-      return $this->component('Response')->render();           
+      var_dump($this->component('Response')->render());           
    }
    
    public function component($component) {
@@ -82,7 +82,8 @@ class A_Application {
 	}
 	
 	public function __call($method, $args) {
-		if (substr($method, 0, 4) == 'init') { //only want to intercept component initializations
+		//only want to intercept component initializations
+		if (substr($method, 0, 4) == 'init') {
 			return new $args[0];
 		}	
 		return false;
