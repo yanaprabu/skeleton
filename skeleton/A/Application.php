@@ -3,8 +3,7 @@
 ini_set('display_errors', 'on');   	
 error_reporting(E_ALL);
 
-class A_Application
-{
+class A_Application {
 	protected $exception;
 	protected $includePath = '';
 	protected $configPath = array('config.ini', 'skeleton');	
@@ -48,21 +47,6 @@ class A_Application
 		}
 		return $this->components[$component];
    }
-   
-	protected function initialize($component, $key) {
-		$key = ucfirst($key);
-		if (!is_object($component[0])) {
-			$this->load($component[0]);
-			$factory = 'init'. ucfirst($key);
-			$this->components[$key] = $this->$factory($component[0]);
-		} else {
-			$this->components[$key] = $component;
-		}
-		
-		if ($component[1]) {
-			$this->component('Locator')->set($key, $this->components[$key]);
-		}
-	}
 	
 	public function initConfig($component) {
 		$config = new $component($this->configPath[0], $this->configPath[1]);
@@ -83,7 +67,7 @@ class A_Application
 		$defaultAction = new A_DL('', $config->errorController, $config->errorAction);
 		return new $component($mapper, $defaultAction);
 	}
-	
+
 	public function initSession() {
 		$session = new A_Session('A');
 		$config = $this->component('Config');
@@ -104,19 +88,34 @@ class A_Application
 		}	
 		return false;
 	}
-
+	
 	public function set($component, $object, $register = true) {
 		if (is_string($object)) $this->load($component);
 		$this->loadComponents[$component] = array($object, (bool)$register);
 	}
 
-	protected function load($class) {
-		return include_once str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
-	}
-
 	public function setPath($path) {
 		return $this->includePath = $path;
 	}
+	
+	protected function load($class) {
+		return include_once str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
+	}   
+   
+	protected function initialize($component, $key) {
+		$key = ucfirst($key);
+		if (!is_object($component[0])) {
+			$this->load($component[0]);
+			$factory = 'init'. ucfirst($key);
+			$this->components[$key] = $this->$factory($component[0]);
+		} else {
+			$this->components[$key] = $component;
+		}
+		
+		if ($component[1]) {
+			$this->component('Locator')->set($key, $this->components[$key]);
+		}
+	}	
 } 
 
 ?>
