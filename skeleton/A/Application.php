@@ -16,7 +16,7 @@ class A_Application
 		'Mapper'   => array('A_Controller_Mapper', false), 
 		'Request'  => array('A_Http_Request', true),
 		'Response' => array('A_Http_Response', true),
-		#'Template' => array('A_Template', true),
+		'Template' => array('A_Template', true),
 		'Session'  => array('A_Session', true),
 		'Front' 	  => array('A_Controller_Front', false),
 	);
@@ -33,7 +33,7 @@ class A_Application
    	$this->component('Pathinfo')->run($this->component('Request'));
       $this->component('Front')->run($this->component('Locator'));
       if (!$this->component('Response')->hasRenderer()) {
-			#$this->component('Response')->setRenderer($this->components('Template'));
+			$this->component('Response')->setRenderer($this->components('Template'));
       }
       var_dump($this->component('Response')->render());           
    }
@@ -84,13 +84,12 @@ class A_Application
 		return new $component($mapper, $defaultAction);
 	}
 	
-	public function initSession()
-	{
+	public function initSession() {
 		$session = new A_Session('A');
 		$config = $this->component('Config');
 	  	if ($config->sessionHandler == 'database') {
-			include_once 'A/Session/Handler/Database.php';
-			$session->setHandler(new A_Session_Handler_Database());	  			
+			#include_once 'A/Session/Handler/Database.php';
+			#$session->setHandler(new A_Session_Handler_Database());	  			
 	  	} else {
   			#include_once 'A/Session/Handler/Filesystem.php';
   			#$session->setHandler(new A_Session_Handler_Filesystem($config->sessionPath));	  		
@@ -100,10 +99,9 @@ class A_Application
 	
 	public function __call($method, $args) {
 		//only want to intercept component initializations
-		if (substr($method, 0, 3) == 'init') {
+		if (substr($method, 0, 4) == 'init') {
 			return new $args[0];
-		}		
-		
+		}	
 		return false;
 	}
 
