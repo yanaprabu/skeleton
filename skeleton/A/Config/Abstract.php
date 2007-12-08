@@ -1,5 +1,7 @@
 <?php
 
+require_once 'A/DataContainer.php';
+
 abstract class A_Config_Abstract {
    protected $_filename;
    protected $_section;
@@ -29,9 +31,7 @@ abstract class A_Config_Abstract {
    
    public function errorHandler($errno, $errstr, $errfile, $errline) {
       if ($this->_exception) {
-         if (!class_exists('A_Exception')) {
-            include 'A/Exception.php';
-         } 
+        	include_once 'A/Exception.php';
          throw A_Exception::getInstance($this->_exception, $errstr);
       } else {
          $this->_error = $errno;
