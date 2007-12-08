@@ -68,8 +68,8 @@ class A_Application {
 		return new $component($mapper, $defaultAction);
 	}
 
-	public function initSession() {
-		$session = new A_Session('A');
+	public function initSession($component) {
+		$session = new $component('A');
 		$config = $this->component('Config');
 	  	if ($config->sessionHandler == 'database') {
 			#include_once 'A/Session/Handler/Database.php';
@@ -82,8 +82,7 @@ class A_Application {
 	}
 	
 	public function __call($method, $args) {
-		//only want to intercept component initializations
-		if (substr($method, 0, 4) == 'init') {
+		if (substr($method, 0, 4) == 'init') { //only want to intercept component initializations
 			return new $args[0];
 		}	
 		return false;
