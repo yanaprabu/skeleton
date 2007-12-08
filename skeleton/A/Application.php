@@ -34,7 +34,7 @@ class A_Application {
       if (!$this->component('Response')->hasRenderer()) {
 			$this->component('Response')->setRenderer($this->components('Template'));
       }
-      var_dump($this->component('Response')->render());           
+      return $this->component('Response')->render();           
    }
    
    public function component($component) {
