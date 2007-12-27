@@ -1,16 +1,17 @@
 <?php
+include_once 'A/Db/Sql/Common.php';
 
-class A_Db_Tabledatagateway {
-protected $db;
-protected $table = '';
-protected $key = 'id';
-protected $fields = '*';
-protected $errmsg = '';
-protected $where = '';
-protected $orderby = '';
-protected $limit = '';
-public $sql = '';
-protected $num_rows = 0;
+class A_Db_Tabledatagateway extends A_Db_Sql_Common {
+	protected $db;
+	protected $table = '';
+	protected $key = 'id';
+	protected $fields = '*';
+	protected $errmsg = '';
+	protected $where = '';
+	protected $orderby = '';
+	protected $limit = '';
+	public $sql = '';
+	protected $num_rows = 0;
 	
 	public function __construct($db, $table, $key='id') {
 		$this->db = $db;
@@ -57,10 +58,6 @@ protected $num_rows = 0;
 		return $allrows;
 	}
 	
-	public function equation($field, $op, $value) {
-		return "$field$op" . $this->quoteValue($this->db->escape($value));
-	}
-
 	public function where($where) {
 		$this->where[] = $where;
 	}
@@ -103,13 +100,6 @@ protected $num_rows = 0;
 
 	public function isBetween($field, $value1, $value2) {
 		$this->where[] = "$field BETWEEN " . $this->quoteValue($value1) . ' AND ' . $this->quoteValue($value2);
-	}
-
-	public function quoteValue($value) {
-		if (preg_match('/^[A-Z\_]*\(/', $value) == 0) {	// not a function
-			$value = "'$value'";
-		}
-		return $value;
 	}
 
 	public function orderBy($orderby) {
@@ -186,4 +176,3 @@ protected $num_rows = 0;
 	
 }
 
-?>
