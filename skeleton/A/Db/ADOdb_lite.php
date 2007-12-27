@@ -39,4 +39,3 @@ $result->MoveNext()
 $result->RecordCount()
 
 */
-?>
