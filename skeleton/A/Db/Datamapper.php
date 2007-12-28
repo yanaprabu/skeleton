@@ -47,8 +47,8 @@ class A_Db_Datamapper {
 
 	public function addJoin($join) {
 		$this->joins[] = $join;
-		$this->setTableKey($join->table_name1, $join->field_name1, '');
-		$this->setTableKey($join->table_name2, $join->field_name2, '');
+		$this->setTableKey($join->table1, $join->field1, '');
+		$this->setTableKey($join->table2, $join->field2, '');
 	}
 
 	public function getTableNames() {
@@ -72,9 +72,9 @@ class A_Db_Datamapper {
 				$sql = '';
 				foreach (array_keys($this->joins) as $id) {
 					// are both tables in join in the table array?
-					if (in_array($this->joins[$id]->table_name1, $tables) && in_array($this->joins[$id]->table_name2, $tables)) {
+					if (in_array($this->joins[$id]->table1, $tables) && in_array($this->joins[$id]->table2, $tables)) {
 						if (! $sql) {
-							$sql = $this->joins[$id]->table_name1;
+							$sql = $this->joins[$id]->table1;
 						}
 						$sql .= $this->joins[$id]->getSQL();
 					}
