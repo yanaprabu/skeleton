@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', 'on');   	
-error_reporting(E_ALL);
-
 class A_Application {
 	protected $exception;
 	protected $includePath = '';
@@ -17,7 +14,7 @@ class A_Application {
 		'Response' => array('A_Http_Response', true),
 		'Template' => array('A_Template', true),
 		'Session'  => array('A_Session', true),
-		'Front' 	  => array('A_Controller_Front', false),
+		'Front'    => array('A_Controller_Front', false),
 	);
 	
 	public function __construct($exception = null) {
@@ -29,19 +26,19 @@ class A_Application {
 		set_include_path(get_include_path() . PATH_SEPARATOR . $this->includePath);
 		array_walk($this->loadComponents, array($this, 'initialize'));
 		
-   	$this->component('Pathinfo')->run($this->component('Request'));
-      $this->component('Front')->run($this->component('Locator'));
-      if (!$this->component('Response')->hasRenderer()) {
+   		$this->component('Pathinfo')->run($this->component('Request'));
+      	$this->component('Front')->run($this->component('Locator'));
+      	if (!$this->component('Response')->hasRenderer()) {
 			$this->component('Response')->setRenderer($this->components('Template'));
-      }
-      var_dump($this->component('Response')->render());           
+      	}
+      	return $this->component('Response')->render();           
    }
    
    public function component($component) {
 		if (!isset($this->components[$component])) {
 			if ($this->component('Config')->useExceptions) {
-	         include_once 'A/Exception.php';
-	         throw A_Exception::getInstance($this->exception, 'Component "'. $component .' does not exist in stack"');				
+	         	include_once 'A/Exception.php';
+	         	throw A_Exception::getInstance($this->exception, 'Component "'. $component .' does not exist in stack"');				
 			}
 			return false;
 		}
@@ -98,10 +95,6 @@ class A_Application {
 		return $this->includePath = $path;
 	}
 	
-	protected function load($class) {
-		return include_once str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
-	}   
-   
 	protected function initialize($component, $key) {
 		$key = ucfirst($key);
 		if (!is_object($component[0])) {
@@ -115,7 +108,11 @@ class A_Application {
 		if ($component[1]) {
 			$this->component('Locator')->set($key, $this->components[$key]);
 		}
-	}	
+	}		
+	
+	protected function load($class) {
+		return include_once str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
+	}   
 } 
 
 ?>
