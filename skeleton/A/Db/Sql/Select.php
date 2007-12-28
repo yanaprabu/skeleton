@@ -8,6 +8,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	protected $columns = array();
 	protected $where = array();
 	protected $joins = array();
+	protected $sqlFormat = 'SELECT %s FROM %s %s WHERE %s';
 	
 	public function __construct($db=null) {
 		$this->db = $db !== null ? $db : $this;
@@ -81,7 +82,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 			}
 		}
 		
-		return "SELECT $columns FROM $table$joins WHERE $where";
+		return sprintf($this->sqlFormat, $columns, $table, $joins, $where);
 	}
 
 }
