@@ -12,7 +12,7 @@ class A_Db_Sql_Common {
 	}
 	
 	public function equation($field, $op, $value) {
-		return $this->quoteValue($field) . $op . $this->quoteValue($this->db->escape($value));
+		return $this->quoteValue($field) . " $op " . $this->quoteValue($this->db->escape($value));
 	}
 
 	public function quoteValue($value) {
