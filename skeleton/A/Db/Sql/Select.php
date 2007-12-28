@@ -17,12 +17,10 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	public function columns() {
 		if (func_num_args()) {
 			$args = func_get_args();
-			// if an array of columns was passed, use it
 			if (is_array($args[0])) {
 				$args = $args[0];
 			}
-			$callback = create_function('$a', 'return $a !== \'*\';');
-			$this->columns = array_filter($args, $callback);
+			$this->columns = array_filter($args, array($this, 'formatColumn'));
 		}
 		return $this;
 	}
@@ -32,14 +30,14 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		return $this;
 	}
 
-	function join($join) {
+	public function join($join) {
 		if ($join instanceof A_Db_Sql_Join) {
 			$this->joins[] = $join;
 		}
 		return $this;
 	}
 
-	function where($data, $value=null) {
+	public function where($data, $value=null) {
 		if (is_array($data)) {
 			$this->where = $data;
 		} elseif ($value !== null) {
@@ -84,5 +82,9 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		
 		return sprintf($this->sqlFormat, $columns, $table, $joins, $where);
 	}
-
+	
+	protected function formatColumn(&$column) {
+		$column = str_ireplace(' AS ', '` AS `', $column);
+		return !empty($column) || $column !== '*';
+	}	
 }
