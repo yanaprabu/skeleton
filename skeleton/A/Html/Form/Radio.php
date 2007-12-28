@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Html_Form_Radiocheckbox')) include 'A/Html/Form/Radiocheckbox.php';
+include_once 'A/Html/Form/Radiocheckbox.php';
 
 class A_Html_Form_Radio extends A_Html_Form_Radiocheckbox {
 

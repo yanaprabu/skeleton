@@ -1,23 +1,23 @@
 <?php
-if (! class_exists('A_DL')) include('A/DL.php');
-if (! class_exists('A_Template')) include('A/Template.php');
-if (! class_exists('A_Controller_Form')) include('A/Controller/Form.php');
-if (! class_exists('A_Controller_Form_Field')) include('A/Controller/Form/Field.php');
-if (! class_exists('A_Filter_Regexp')) include('A/Filter/Regexp.php');
+include_once 'A/DL.php';
+include_once 'A/Template.php';
+include_once 'A/Controller/Form.php';
+include_once 'A/Controller/Form/Field.php';
+include_once 'A/Filter/Regexp.php';
 
 class EditController extends A_Controller_Form {
-protected $template;
-protected $template_file = '';
-protected $template_text = '';
-protected $template_block_layout = '';
-protected $base_url = '';
-protected $redirect_url = '';
-protected $fields = array();
-protected $hidden = '';
-protected $db = null;
-protected $table = '';
-protected $table_key = '';
-protected $errmsg = '';
+	protected $template;
+	protected $template_file = '';
+	protected $template_text = '';
+	protected $template_block_layout = '';
+	protected $base_url = '';
+	protected $redirect_url = '';
+	protected $fields = array();
+	protected $hidden = '';
+	protected $db = null;
+	protected $table = '';
+	protected $table_key = '';
+	protected $errmsg = '';
 	
 	public function __construct($db) {
 		$this->db = $db;

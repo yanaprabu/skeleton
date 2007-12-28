@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Rule')) include 'A/Rule.php';
+include_once 'A/Rule.php';
 
 /*
  * Checks if the group(s) passed to the constructor are group(s) that the user 
@@ -9,9 +9,9 @@ if (! class_exists('A_Rule')) include 'A/Rule.php';
  * special case: if null group (array('')) is passed allow access
  */
 class A_User_Rule_Ingroup extends A_Rule {
-protected $groups;
-protected $field = 'access';
-protected $delimiter = '|';
+	protected $groups;
+	protected $field = 'access';
+	protected $delimiter = '|';
 	
 	// parameter that is usually errormsg is the action
 	public function __construct($groups, $errorMsg) {

@@ -1,7 +1,7 @@
 <?php
-if (! class_exists('A_FilterChain')) include 'A/FilterChain.php';
-if (! class_exists('A_Validator')) include 'A/Validator.php';
-if (! class_exists('A_DL')) include 'A/DL.php';
+include_once 'A/FilterChain.php';
+include_once 'A/Validator.php';
+include_once 'A/DL.php';
 
 class A_Controller_Input {
 	public $params = array();
@@ -188,7 +188,7 @@ class A_Controller_InputParameter {
 			// string is name of class with underscores in loadable convention
 			if (is_string($this->renderer)){
 				// load locator if not loaded
-				if (! class_exists('A_Locator')) include 'A/Locator.php';
+				include_once 'A/Locator.php';
 				if (A_Locator::loadClass($this->renderer)) {
 					// instantiate render passing the array of parameters
 					$this->renderer = new $this->renderer();

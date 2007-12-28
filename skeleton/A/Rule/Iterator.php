@@ -1,9 +1,9 @@
 <?php
-if (! class_exists('A_Rule_Abstract')) include 'A/Rule/Abstract.php';
+include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Iterator extends A_Rule_Abstract {
-protected $rule;
-protected $value;
+	protected $rule;
+	protected $value;
 	
     public function __construct($field, $rule, $errMsg) {
 		$this->field    = $field;

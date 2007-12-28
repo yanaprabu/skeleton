@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Http_View')) include 'A/Http/View.php';
+include_once 'A/Http/View.php';
 
 class A_Http_Response extends A_Http_View {
 

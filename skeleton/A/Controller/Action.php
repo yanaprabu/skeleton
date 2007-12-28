@@ -33,14 +33,14 @@ class A_Controller_Action {
 	
 	protected function load($module=null) {
 		if (! $this->loader) {
-		    if (! class_exists('A_Controller_Action_Loader')) include 'A/Controller/Action/Loader.php';
+		    include_once 'A/Controller/Action/Loader.php';
 			$this->loader = new A_Controller_Action_Loader($this->locator, $this->paths, $this->dirs, $this->action);
 		}
 		return $this->loader->setScope($module);
 	}
 
 	protected function getPhpRenderer($path='module') {
-	    if (! class_exists('A_Template_Include')) include 'A/Template/Include.php';
+	    include_once 'A/Template/Include.php';
 	    $filename = $this->paths[$path] . $this->dirs['view'] . $this->action . '.php';
 	    $renderer = new A_Template_Include($filename);
 	    return $renderer;

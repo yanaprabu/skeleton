@@ -1,6 +1,6 @@
 <?php
-if (! class_exists('A_Controller_App')) include 'A/Controller/App.php';
-if (! class_exists('A_Rule')) include 'A/Rule.php';
+include_once 'A/Controller/App.php';
+include_once 'A/Rule.php';
 
 
 class A_Controller_Form extends A_Controller_App {

@@ -57,9 +57,7 @@ class A_Locator {
 				$param = $this->_reg[$name]->param;
 			}
 			if ($class) {
-				if (! class_exists($class)) {
-					$this->loadClass($class, $dir);
-				}
+				$this->loadClass($class, $dir);
 			}
 /*
 // param is name of registered object the pass it a param

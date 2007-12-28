@@ -1,5 +1,5 @@
 <?php
-if (!class_exists('A_Db_Datamapper')) include 'A/Db/Datamapper.php';
+include_once 'A/Db/Datamapper.php';
 
 class A_Db_Datamapper_Xml extends A_Db_Datamapper {
 
@@ -20,13 +20,16 @@ class A_Db_Datamapper_Xml extends A_Db_Datamapper {
 				$mapping = new A_Db_Datamapper_Mapping($property, $field, $type, $size, $is_key, $table, $filters);
 				$this->addMapping($mapping);
 			}
-			foreach ($xml->join as $join) {
-				$table1 = strval($join->table1);
-				$field1 = strval($join->field1);
-				$table2 = strval($join->table2);
-				$field2 = strval($join->field2);
-				$join_type = strval($join->join_type);
-				$this->addJoin(new A_Db_Datamapper_Join($table1, $field1, $table2, $field2, $join_type));
+			if (isset($xml->join)) {
+				include_once 'A/Db/Sql/Join.php';
+				foreach ($xml->join as $join) {
+					$table1 = strval($join->table1);
+					$field1 = strval($join->field1);
+					$table2 = strval($join->table2);
+					$field2 = strval($join->field2);
+					$join_type = strval($join->join_type);
+					$this->addJoin(new A_Db_Sql_Join($table1, $field1, $table2, $field2, $join_type));
+				}
 			}
 		}
 	}

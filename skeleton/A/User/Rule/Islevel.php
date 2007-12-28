@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Rule')) include 'A/Rule.php';
+include_once 'A/Rule.php';
 
 /*
  * Check if user's access level is >= required access level

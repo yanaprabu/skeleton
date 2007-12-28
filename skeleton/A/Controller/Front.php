@@ -1,11 +1,11 @@
 <?php
-if (! class_exists('A_Locator')) include 'A/Locator.php';
-if (! class_exists('A_DL')) include 'A/DL.php';
+include_once 'A/Locator.php';
+include_once 'A/DL.php';
 
 class A_Controller_Front {
-   protected $_mapper;
-   protected $_error_action;
-   protected $_prefilters;
+	protected $_mapper;
+	protected $_error_action;
+	protected $_prefilters;
 
     public function __construct($mapper, $error_action, $prefilters=array()) {
     	$this->_mapper = $mapper;

@@ -1,9 +1,9 @@
 <?php
-if (! class_exists('A_Rule')) include 'A/Rule.php';
-if (! class_exists('A_Validator')) include 'A/Validator.php';
+include_once 'A/Rule.php';
+include_once 'A/Validator.php';
 
 class A_User_Access extends A_Validator {
-protected $user;
+	protected $user;
 	
 	public function __construct($user) {
 		$this->user = $user;

@@ -1,9 +1,9 @@
 <?php
-if (! class_exists('A_Html_Form_Field')) include 'A/Html/Form/Field.php';
+include_once 'A/Html/Form/Field.php';
 
 class A_Controller_Form_Field {
-protected $func_param = null;
-protected $db = null;
+	protected $func_param = null;
+	protected $db = null;
 	
 	public function __construct() {
 	}

@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Rule_Abstract')) include 'A/Rule/Abstract.php';
+include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Regexp extends A_Rule_Abstract {
 	protected $regex;

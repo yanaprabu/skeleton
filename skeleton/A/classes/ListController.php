@@ -66,7 +66,7 @@ protected $pagerdb = null;
 		$template->makeBlocks();
 		
 		
-		if (! class_exists('A_Pager_DB')) include('A/Pager/DB.php');
+		include_once 'A/Pager/DB.php';
 
 		$sql = 'SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->table . ' WHERE 1';
 		if ($this->search_fields) {
@@ -80,7 +80,7 @@ protected $pagerdb = null;
 #echo "SQL=$sql<br/>";
 		$pagerdb = new A_Pager_DB($sql, $this->db);
 		
-		if (! class_exists('A_Pager')) include('A/Pager.php');
+		include_once 'A/Pager.php';
 		$pager = new A_Pager($pagerdb);
 		if ($this->order_by) {
 			$pager->setOrderByFields($this->order_by);

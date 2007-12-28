@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Html_Tag')) include 'A/Html/Tag.php';
+include_once 'A/Html/Tag.php';
 
 class A_Html_Form_Textarea {
 

@@ -1,6 +1,6 @@
 <?php
-if (! class_exists('A_Session')) include 'A/Session.php';
-if (! class_exists('A_Cart_Manager')) include 'A/Cart/Manager.php';
+include_once 'A/Session.php';
+include_once 'A/Cart/Manager.php';
 
 class A_Cart_Session {
 

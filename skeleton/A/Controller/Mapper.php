@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_DL')) include 'A/DL.php';
+include_once 'A/DL.php';
 
 class A_Controller_Mapper
 {

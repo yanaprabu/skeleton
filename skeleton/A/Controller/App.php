@@ -1,5 +1,5 @@
 <?php
-if (! class_exists('A_Controller_Input')) include 'A/Controller/Input.php';
+include_once 'A/Controller/Input.php';
 
 class A_Controller_App extends A_Controller_Input {
 	protected $state_name = '';
