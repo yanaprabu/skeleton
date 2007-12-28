@@ -1,63 +1,63 @@
 <?php
+
 include_once 'A/Db/Sql/Common.php';
 
-class A_Db_Sql_Select extends A_Db_Sql_Common {	protected $columns = array();	protected $where = array();
-	protected $tables = null;
+class A_Db_Sql_Select extends A_Db_Sql_Common {
+	protected $db;
+	protected $table;
+	protected $columns = array();
+	protected $where = array();
 
-	public function __construct() {
-		$this->db = $this;
+	public function __construct($db=null) {
+		$this->db = $db;
 	}
-		
-	function columns($columns) {
-		if (is_array($columns)) {
-			$this->columns = array_merge($this->columns, $columns);
-		} else {
-			$this->columns = $columns;
+	
+	public function columns() {
+		if (func_num_args()) {
+			$callback = create_function('$a', 'return $a !== \'*\';');
+			$this->columns = array_filter(func_get_args(), $callback);
 		}
 		return $this;
 	}
 
-	function from($table) {
+	public function from($table) {
 		$this->table = $table;
 		return $this;
 	}
 
-	function table($table) {
-		$this->table = $table;
-		return $this;
-	}
-
-	function where($data, $value=null) {
+	public function where($data, $value=null) {
 		if (is_array($data)) {
-			$this->where = array_merge($this->where, $data);
+			if (count($data)) {
+				$this->where = array_merge($this->where, $data);
+			}
 		} elseif ($value !== null) {
 			$this->where[$data] = $value;
 		} else {
-			$this->where = $value;
+			$this->where[] = $value;
 		}
 		return $this;
 	}
 
-	function execute($db=null) {
-		$this->sql = '';
-		if ($this->table && $this->columns) {
-			if ($db !== null) {
-				$this->db = $db;
+	/**
+	 * @ TODO: Need to support multiple SQL formats
+	 * @ TODO: Need to support more than "AND" for WHERE clause grouping somehow
+	*/
+	public function execute($db=null) {
+		$db = $db !== null ? $this->db : $db;
+		$table = '`'. $this->table .'`';
+		$columns = count($this->columns) ? '`'. implode('`, `', $this->columns).'`' : '*';
+		
+		if (is_array($this->where)) {
+			$tmp = array();
+			foreach ($this->where as $field => $value) {
+				$tmp[] = '`'.$field.'`' . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
 			}
-			if ($this->columns && is_array($this->columns)) {
-				$this->columns = implode(',', $this->columns);
-			}
-			if (is_array($this->where)) {
-				// if data in array then build expressions
-				$tmp = array();
-				foreach ($this->where as $field => $value) {
-					$tmp[] = $field . '=' . $this->quoteValue($this->db->escape($value));
-				}
-				$this->where = implode(' AND ', $tmp);		// need to support more than AND
-			}
-			$this->sql = "SELECT {$this->columns} FROM {$this->table} WHERE ({$this->where})";
+			$where = implode(' AND ', $tmp);
 		}
-		return $this->sql;
+
+		return "SELECT $columns FROM $table WHERE $where";
 	}
 
 }
+
+?>
