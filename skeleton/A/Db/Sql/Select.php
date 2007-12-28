@@ -7,15 +7,21 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	protected $table;
 	protected $columns = array();
 	protected $where = array();
-
-	public function __construct($db=null) {
-		$this->db = $db;
-	}
+	protected $joins = array();
 	
+	public function __construct($db=null) {
+		$this->db = $db !== null ? $db : $this;
+	}
+		
 	public function columns() {
 		if (func_num_args()) {
+			$args = func_get_args();
+			// if an array of columns was passed, use it
+			if (is_array($args[0])) {
+				$args = $args[0];
+			}
 			$callback = create_function('$a', 'return $a !== \'*\';');
-			$this->columns = array_filter(func_get_args(), $callback);
+			$this->columns = array_filter($args, $callback);
 		}
 		return $this;
 	}
@@ -25,15 +31,24 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		return $this;
 	}
 
-	public function where($data, $value=null) {
+	function join($join) {
+		if ($join instanceof A_Db_Sql_Join) {
+			$this->joins[] = $join;
+		}
+		return $this;
+	}
+
+	function where($data, $value=null) {
 		if (is_array($data)) {
-			if (count($data)) {
-				$this->where = array_merge($this->where, $data);
-			}
+			$this->where = $data;
 		} elseif ($value !== null) {
+			if (is_string($this->where)) {
+				// reset to array if it has been converted to a string by execute()
+				$this->where = array();
+			}
 			$this->where[$data] = $value;
 		} else {
-			$this->where[] = $value;
+			$this->where = $data;
 		}
 		return $this;
 	}
@@ -45,7 +60,12 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	public function execute($db=null) {
 		$db = $db !== null ? $this->db : $db;
 		$table = '`'. $this->table .'`';
-		$columns = count($this->columns) ? '`'. implode('`, `', $this->columns).'`' : '*';
+		if (is_array($this->columns)) {
+			$str = implode('`, `', $this->columns);
+			$columns = count($this->columns) ? ('`'. $str .'`') : '*';
+		} else {
+			$columns = $this->columns;
+		}
 		
 		if (is_array($this->where)) {
 			$tmp = array();
@@ -54,10 +74,14 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 			}
 			$where = implode(' AND ', $tmp);
 		}
-
-		return "SELECT $columns FROM $table WHERE $where";
+		$joins = '';
+		if ($this->joins) {
+			foreach ($this->joins as $join) {
+				$joins .= $join->getSQL();
+			}
+		}
+		
+		return "SELECT $columns FROM $table$joins WHERE $where";
 	}
 
 }
-
-?>
