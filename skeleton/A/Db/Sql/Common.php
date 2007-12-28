@@ -1,6 +1,7 @@
 <?php
 
 class A_Db_Sql_Common {
+	protected $nameQuote = '`';
 	
 	public function __construct() {
 	}
@@ -11,7 +12,7 @@ class A_Db_Sql_Common {
 	}
 	
 	public function equation($field, $op, $value) {
-		return "$field$op" . $this->quoteValue($this->db->escape($value));
+		return $this->quoteValue($field) . $op . $this->quoteValue($this->db->escape($value));
 	}
 
 	public function quoteValue($value) {
@@ -19,6 +20,10 @@ class A_Db_Sql_Common {
 			$value = "'$value'";
 		}
 		return $value;
+	}
+	
+	public function quoteName($name) {
+		return $this->nameQuote . trim($name, $this->nameQuote) . $this->nameQuote;
 	}
 	
 }
