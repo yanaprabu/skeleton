@@ -1,22 +1,23 @@
 <?php
 
 class A_Db_Sql_Join {
-	public $table_name1;
-	public $field_name1;
-	public $table_name2;
-	public $field_name2;
-	public $join_type;
-
-	public function __construct($table_name1, $field_name1, $table_name2, $field_name2, $join_type='') {
-		$this->table_name1 = $table_name1;
-		$this->field_name1 = $field_name1;
-		$this->table_name2 = $table_name2;
-		$this->field_name2 = $field_name2;
-		$this->join_type = $join_type;
+	public $table1;
+	public $field1;
+	public $table2;
+	public $field2;
+	public $joinType;
+	protected $joinFormat = '%s JOIN `%s` ON `%s`.`%s`=`%s`.`%s`';
+	
+	public function __construct($table1, $field1, $table2, $field2, $joinType='') {
+		$this->table1 = $table1;
+		$this->field1 = $field1;
+		$this->table2 = $table2;
+		$this->field2 = $field2;
+		$this->joinType = $joinType;
 	}
 
 	public function getSQL() {
-		return " {$this->join_type} JOIN {$this->table_name2} ON {$this->table_name1}.{$this->field_name1}={$this->table_name2}.{$this->field_name2}";
+		return sprintf($this->joinFormat, $this->joinType, $this->table2, $this->table1, $this->field1, $this->table2, $this->field2);
 	}
 
 }
