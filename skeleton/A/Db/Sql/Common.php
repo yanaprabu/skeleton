@@ -7,7 +7,7 @@ class A_Db_Sql_Common {
 	
 	public function escape($value) {
 		$value = addslashes($value);
-		return $value;		// at least do something
+		return $value;		// at least do something. Will depend on db
 	}
 	
 	public function equation($field, $op, $value) {
