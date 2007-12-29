@@ -9,6 +9,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	protected $where = array();
 	protected $joins = array();
 	protected $sqlFormat = 'SELECT %s FROM %s %s WHERE %s';
+	protected $whereLogic = ' AND ';
 	
 	public function __construct($db=null) {
 		$this->db = $db !== null ? $db : $this;
@@ -34,6 +35,10 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 			$this->joins[] = $join;
 		}
 		return $this;
+	}
+
+	public function setWhereLogic($logic) {
+		$this->whereLogic = ' ' . trim($logic) . ' ';
 	}
 
 	public function where($data, $value=null) {
@@ -73,7 +78,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 			foreach ($this->where as $field => $value) {
 				$tmpWhere[] = $this->quoteName($field) . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
 			}
-			$where = implode(' AND ', $tmpWhere);
+			$where = implode($this->whereLogic, $tmpWhere);
 		}
 		$joins = '';
 		if ($this->joins) {
