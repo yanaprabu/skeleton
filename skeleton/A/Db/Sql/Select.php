@@ -69,11 +69,11 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		}
 		
 		if (is_array($this->where)) {
-			$tmp = array();
+			$tmpWhere = array();
 			foreach ($this->where as $field => $value) {
-				$tmp[] = $this->quoteName($field) . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
+				$tmpWhere[] = $this->quoteName($field) . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
 			}
-			$where = implode(' AND ', $tmp);
+			$where = implode(' AND ', $tmpWhere);
 		}
 		$joins = '';
 		if ($this->joins) {
