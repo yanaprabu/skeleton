@@ -23,6 +23,7 @@ class A_Db_Sql_Common {
 	}
 	
 	public function quoteName($name) {
+		$name = str_ireplace(' AS ', $this->nameQuote .' AS '. $this->nameQuote, $name);
 		return $this->nameQuote . trim($name, $this->nameQuote) . $this->nameQuote;
 	}
 	

@@ -15,15 +15,12 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	}
 		
 	public function columns() {
-		if (func_num_args()) {
-			$args = func_get_args();
-			if (is_array($args[0])) {
-				$args = $args[0];
-			}
-			$this->columns = array_filter($args, array($this, 'formatColumn'));
+		$args = func_get_args();
+		if (!array_search('*', $args)) { //if wildcard was passed, ignore it
+			$this->columns = is_array($args[0]) ? $args[0] : $args;
 		}
 		return $this;
-	}
+	} 
 
 	public function from($table) {
 		$this->table = $table;
@@ -58,18 +55,21 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	*/
 	public function execute($db=null) {
 		$db = $db !== null ? $this->db : $db;
-		$table = '`'. $this->table .'`';
-		if (is_array($this->columns)) {
-			$str = implode('`, `', $this->columns);
-			$columns = count($this->columns) ? ('`'. $str .'`') : '*';
+		$table = $this->quoteName($this->table);
+		if (count($this->columns)) {
+			$tmpColumns = array();
+			foreach ($this->columns as $column) {
+				$tmpColumns[] = $this->quoteName($column);
+			}
+			$columns = implode(', ', $tmpColumns);
 		} else {
-			$columns = $this->columns;
+			$columns = '*';
 		}
 		
 		if (is_array($this->where)) {
 			$tmp = array();
 			foreach ($this->where as $field => $value) {
-				$tmp[] = '`'.$field.'`' . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
+				$tmp[] = $this->quoteName($field) . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
 			}
 			$where = implode(' AND ', $tmp);
 		}
@@ -82,9 +82,4 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		
 		return sprintf($this->sqlFormat, $columns, $table, $joins, $where);
 	}
-	
-	protected function formatColumn(&$column) {
-		$column = str_ireplace(' AS ', '` AS `', $column);
-		return !empty($column) || $column !== '*';
-	}	
 }
