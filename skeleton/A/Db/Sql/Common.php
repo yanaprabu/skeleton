@@ -23,7 +23,7 @@ class A_Db_Sql_Common {
 	}
 	
 	public function quoteName($name) {
-		$name = str_ireplace(' AS ', $this->nameQuote .' AS '. $this->nameQuote, $name);
+		$name = str_ireplace(' AS ', $this->nameQuote .' AS '. $this->nameQuote, $name); //table aliases need backticks between AS
 		return $this->nameQuote . trim($name, $this->nameQuote) . $this->nameQuote;
 	}
 	
