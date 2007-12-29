@@ -15,9 +15,11 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	}
 		
 	public function columns() {
-		$args = func_get_args();
-		if (!array_search('*', $args)) { //if wildcard was passed, ignore it
-			$this->columns = is_array($args[0]) ? $args[0] : $args;
+		if (func_num_args()) {
+			$args = func_get_args();
+			if (!array_search('*', $args)) { //if wildcard was passed, ignore it
+				$this->columns = is_array($args[0]) ? $args[0] : $args;
+			}
 		}
 		return $this;
 	} 
