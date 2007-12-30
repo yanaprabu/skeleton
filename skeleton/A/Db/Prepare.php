@@ -1,13 +1,15 @@
 <?php
 
-class A_Db_Prepare {	protected $statement;	protected $db;						// object with escape() method
+class A_Db_Prepare {
+	protected $statement;
+	protected $db;						// object with escape() method
 	protected $named_args = array();	// assoc array
 	protected $numbered_args = array();	// 1-based indexed array
 	protected $sql;						// prepared sql
 	
-	public function __construct($statement='') {
+	public function __construct($statement='', $db=null) {
 		$this->statement = $statement;
-		$this->db = $this;
+		$this->db = $db === null ? $this : $db;
 	}
 		
 	public function escape($value) {
