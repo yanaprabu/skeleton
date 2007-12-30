@@ -9,7 +9,7 @@ class A_Db_Prepare {
 	
 	public function __construct($statement='', $db=null) {
 		$this->statement = $statement;
-		$this->db = $db === null ? $this : $db;
+		$this->db = $db;
 	}
 		
 	public function escape($value) {
@@ -47,7 +47,7 @@ class A_Db_Prepare {
 			if ($this->named_args) {
 				// escape all values
 				foreach ($this->named_args as $name => $value) {
-					$this->named_args[$name] = $this->db->escape($value);
+					$this->named_args[$name] = $this->db ? $this->db->escape($value) : $this->escape($value);
 				}
 				// replace array keys found in statement with values
 				$statement = str_replace(array_keys($this->named_args), array_values($this->named_args), $statement);
@@ -58,7 +58,8 @@ class A_Db_Prepare {
 				$this->sql = $statement_array[0];
 				$n = 1;
 				foreach ($this->numbered_args as $arg) {
-					$this->sql .= $this->db->escape($arg) . $statement_array[$n++];
+					$arg = $this->db ? $this->db->escape($arg) : $this->escape($arg);
+					$this->sql .= $arg . $statement_array[$n++];
 				}
 			} else {
 				$this->sql = $statement;

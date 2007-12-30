@@ -27,6 +27,8 @@ class A_Db_Sql_Delete extends A_Db_Sql_Common {	protected $table = '';
 	function toSQL($db=null) {
 		if ($this->table) {		// must at least specify a table
 			$this->setDB($db);			//override current database connection if passed
+
+			$table = $this->quoteName($this->table);
 /*
 			if (is_array($this->where)) {
 				foreach ($this->where as $field => $value) {
@@ -43,7 +45,7 @@ class A_Db_Sql_Delete extends A_Db_Sql_Common {	protected $table = '';
 			}
 			$this->sql = "DELETE FROM {$this->table} WHERE $where";
 */
-			$this->sql = "DELETE FROM {$this->table} WHERE " . $this->equationList($this->where, '=', ' AND ');
+			$this->sql = "DELETE FROM $table WHERE " . $this->equationList($this->where, '=', ' AND ');
 		} else {
 			$this->sql = '';
 		}

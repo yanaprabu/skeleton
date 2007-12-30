@@ -11,7 +11,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 	protected $whereLogic = ' AND ';
 	
 	public function __construct($db=null) {
-		$this->db = $db !== null ? $db : $this;
+		$this->db = $db;
 	}
 		
 	public function columns() {

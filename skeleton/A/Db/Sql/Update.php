@@ -5,8 +5,8 @@ class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 	protected $data = array();
 	protected $where = array();
 	
-	public function __construct() {
-		$this->db = $this;
+	public function __construct($db=null) {
+		$this->db = $db;
 	}
 		
 	function table($table) {
@@ -39,6 +39,8 @@ class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 	function toSQL($db=null) {
 		if ($this->table && $this->data && $this->where) {
 			$this->setDB($db);
+
+			$table = $this->quoteName($this->table);
 /*
 			if (is_array($this->data)) {
 				// if data in array then build comma separated assignments
@@ -65,7 +67,7 @@ class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 			}
 */
 			$where = $this->equationList($this->where, '=', ' AND ');
-			$this->sql = "UPDATE {$this->table} SET $set WHERE $where";
+			$this->sql = "UPDATE $table SET $set WHERE $where";
 		} else {
 			$this->sql = '';
 		}

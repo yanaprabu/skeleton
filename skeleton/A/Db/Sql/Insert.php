@@ -5,8 +5,8 @@ class A_Db_Sql_Insert extends A_Db_Sql_Common {	protected $table = '';
 	protected $fields = array();
 	protected $values = array();
 	
-	public function __construct() {
-		$this->db = $this;
+	public function __construct($db=null) {
+		$this->db = $db;
 	}
 		
 	function table($table) {
@@ -35,23 +35,27 @@ class A_Db_Sql_Insert extends A_Db_Sql_Common {	protected $table = '';
 	function toSQL($db=null) {
 		if ($this->table && $this->values) {	// must at least specify a table and values to insert
 			$this->setDB($db);			//override current database connection if passed
+
+			$table = $this->quoteName($this->table);
+
 			$fields = '';
 			if ($this->fields && is_array($this->fields)) {
-				$this->fields = implode(',', $this->fields);
+				$this->fields = $this->nameList($this->fields);
 			}
 			if (is_array($this->values)) {
 				$fields = array();
 				$values = array();
 				foreach ($this->values as $field => $value) {
-					$fields[] = $field;
-					$values[] = $this->quoteValue($this->db->escape($value));
+					$fields[] = $this->quoteName($field);
+					$value = $this->db ? $this->db->escape($value) : $this->escape($value);
+					$values[] = $this->quoteValue($value);
 				}
 				if (! $this->fields) {
 					$this->fields = implode(',', $fields);
 				}
 				$this->values = implode(',', $values);
 			}
-			$this->sql = "INSERT INTO {$this->table} ({$this->fields}) VALUES ({$this->values})";
+			$this->sql = "INSERT INTO $table ({$this->fields}) VALUES ({$this->values})";
 		} else {
 			$this->sql = '';
 		}
