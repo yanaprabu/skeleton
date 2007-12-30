@@ -16,16 +16,19 @@ class A_Db_Sql_Common {
 	}
 
 	public function quoteValue($value) {
-		$value = trim($value, '\''); //incase the user already quoted the value
 		if (preg_match('/^[A-Z\_]*\(/i', $value) || ctype_digit($value)) { //detect if the value is a function or digits
 			return $value;
 		}		
-		return '\''. $value .'\'';
+		return "'". trim($value, "'") ."'";
 	}
 	
 	public function quoteName($name) {
+		if (preg_match('/^[A-Z\_]*\(/i', $name) || ctype_digit($name)) { //detect if the value is a function or digits
+			return $name;
+		}		
+		$name = trim($name, $this->nameQuote); //incase the user already quoted the value
 		$name = str_ireplace(' AS ', $this->nameQuote .' AS '. $this->nameQuote, $name); //table aliases need backticks between AS
-		return $this->nameQuote . trim($name, $this->nameQuote) . $this->nameQuote;
+		return $this->nameQuote . $name . $this->nameQuote;
 	}
 
 	public function equation($name, $op, $value) {
