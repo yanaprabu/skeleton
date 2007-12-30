@@ -37,8 +37,7 @@ class A_Db_Prepare {
 		return $this; 
 	}
 	
-	public function execute($db=null) {
-		$this->sql = '';
+	public function toSQL($db=null) {
 		if ($this->statement) {
 			// set object with escape() method if passed
 			if ($db !== null) {
@@ -68,4 +67,11 @@ class A_Db_Prepare {
 		return $this->sql;
 	}
 	
+	function execute($db=null) {
+		$sql = $this->toSQL($db);
+		if ($this->db && $sql) {
+			return $this->db->query($sql);	
+		}
+	}
+
 }

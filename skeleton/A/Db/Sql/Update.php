@@ -4,7 +4,6 @@ include_once 'A/Db/Sql/Common.php';
 class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 	protected $data = array();
 	protected $where = array();
-	protected $db;
 	
 	public function __construct() {
 		$this->db = $this;
@@ -37,12 +36,10 @@ class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 		return $this;
 	}
 
-	function execute($db=null) {
-		$this->sql = '';
+	function toSQL($db=null) {
 		if ($this->table && $this->data && $this->where) {
-			if ($db !== null) {
-				$this->db = $db;
-			}
+			$this->setDB($db);
+/*
 			if (is_array($this->data)) {
 				// if data in array then build comma separated assignments
 				$tmp = array();
@@ -53,6 +50,9 @@ class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 			} else {
 				$set = $this->data;
 			}
+*/
+			$set = $this->equationList($this->data);
+/*
 			if (is_array($this->where)) {
 				// if data in array then build expressions
 				$tmp = array();
@@ -63,9 +63,20 @@ class A_Db_Sql_Update extends A_Db_Sql_Common {	protected $table = '';
 			} else {
 				$where = $this->where;
 			}
+*/
+			$where = $this->equationList($this->where, '=', ' AND ');
 			$this->sql = "UPDATE {$this->table} SET $set WHERE $where";
+		} else {
+			$this->sql = '';
 		}
 		return $this->sql;
+	}
+
+	function execute($db=null) {
+		$sql = $this->toSQL($db);
+		if ($this->db && $sql) {
+			return $this->db->query($sql);	
+		}
 	}
 
 }

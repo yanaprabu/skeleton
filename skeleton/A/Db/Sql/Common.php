@@ -1,14 +1,18 @@
 <?php
 
 class A_Db_Sql_Common {
+	protected $db = null;
+	protected $sql = '';
 	protected $nameQuote = '`';
 
-	public function escape($value) {
-		return addslashes($value); //at least do something. Will depend on db
+	function setDb($db=null) {
+		if ($db) {
+			$this->db = $db;
+		}
 	}
 	
-	public function equation($field, $op, $value) {
-		return $this->quoteValue($field) . " $op " . $this->quoteValue($this->db->escape($value));
+	public function escape($value) {
+		return addslashes($value); //at least do something. Will depend on db
 	}
 
 	public function quoteValue($value) {
@@ -23,4 +27,44 @@ class A_Db_Sql_Common {
 		$name = str_ireplace(' AS ', $this->nameQuote .' AS '. $this->nameQuote, $name); //table aliases need backticks between AS
 		return $this->nameQuote . trim($name, $this->nameQuote) . $this->nameQuote;
 	}
+
+	public function equation($name, $op, $value) {
+		$value = $this->db ? $this->db->escape($value) : $this->escape($value);
+		return $this->quoteName($name) . " $op " . $this->quoteValue($value);
+	}
+
+	public function equationList($list, $op='=', $separator=',') {
+		if (is_array($list)) {
+			$tmp = array();
+			foreach ($list as $name => $value) {
+				$tmp[] = $this->equation($name, $op, $value);
+			}
+			return implode($separator, $tmp);
+		}
+		return $list;
+	}
+
+	public function valueList($list) {
+		if (is_array($list)) {
+			$tmp = array();
+			foreach ($list as $value) {
+				$value = $this->db ? $this->db->escape($value) : $this->escape($value);
+				$tmp[] = $this->quoteName($value);
+			}
+			return implode(', ', $tmp);
+		}
+		return $list;
+	}
+
+	public function nameList($list) {
+		if (is_array($list)) {
+			$tmp = array();
+			foreach ($list as $name) {
+				$tmp[] = $this->quoteName($name);
+			}
+			return implode(', ', $tmp);
+		}
+		return $list;
+	}
+
 }

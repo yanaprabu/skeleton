@@ -7,6 +7,6 @@ include 'A/Db/Sql/Insert.php';
 
 $insert = new A_Db_Sql_Insert();
 $insert->table('mytable')->values(array('foo'=>'foo', 'bar'=>'bar', 'baz'=>'baz'));
-echo "A_Db_Sql_Insert::execute=" . $insert->execute() . '<br/>';
+echo "A_Db_Sql_Insert::execute=" . $insert->toSQL() . '<br/>';
 
 dump($insert);

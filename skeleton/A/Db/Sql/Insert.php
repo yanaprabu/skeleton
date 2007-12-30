@@ -4,7 +4,6 @@ include_once 'A/Db/Sql/Common.php';
 class A_Db_Sql_Insert extends A_Db_Sql_Common {	protected $table = '';
 	protected $fields = array();
 	protected $values = array();
-	protected $db;
 	
 	public function __construct() {
 		$this->db = $this;
@@ -33,12 +32,9 @@ class A_Db_Sql_Insert extends A_Db_Sql_Common {	protected $table = '';
 		return $this;
 	}
 
-	function execute($db=null) {
-		$this->sql = '';
-		if ($this->table && $this->values) {
-			if ($db !== null) {
-				$this->db = $db;
-			}
+	function toSQL($db=null) {
+		if ($this->table && $this->values) {	// must at least specify a table and values to insert
+			$this->setDB($db);			//override current database connection if passed
 			$fields = '';
 			if ($this->fields && is_array($this->fields)) {
 				$this->fields = implode(',', $this->fields);
@@ -56,8 +52,17 @@ class A_Db_Sql_Insert extends A_Db_Sql_Common {	protected $table = '';
 				$this->values = implode(',', $values);
 			}
 			$this->sql = "INSERT INTO {$this->table} ({$this->fields}) VALUES ({$this->values})";
+		} else {
+			$this->sql = '';
 		}
 		return $this->sql;
+	}
+
+	function execute($db=null) {
+		$sql = $this->toSQL($db);
+		if ($this->db && $sql) {
+			return $this->db->query($sql);	
+		}
 	}
 
 }

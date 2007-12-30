@@ -7,6 +7,6 @@ include 'A/Db/Sql/Delete.php';
 
 $delete = new A_Db_Sql_Delete();
 $delete->table('mytable')->where('id', 1);
-echo "A_Db_Sql_Delete::execute=" . $delete->execute() . '<br/>';
+echo "A_Db_Sql_Delete::execute=" . $delete->toSQL() . '<br/>';
 
 dump($delete);
