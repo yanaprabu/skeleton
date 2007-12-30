@@ -19,7 +19,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		if (func_num_args()) {
 			$args = func_get_args();
 			if (!array_search('*', $args)) { //if wildcard was passed, ignore it
-				$this->columns = is_array($args[0]) ? $args[0] : $args;
+				$this->columns = is_array($args[0]) ? $args[0] : $args; //if we received array use that instead of arguments
 			}
 		}
 		return $this;
@@ -37,17 +37,12 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		return $this;
 	}
 
-	public function setWhereLogic($logic) {
-		$this->whereLogic = ' ' . trim($logic) . ' ';
-	}
-
 	public function where($data, $value=null) {
 		if (is_array($data)) {
 			$this->where = $data;
 		} elseif ($value !== null) {
 			if (is_string($this->where)) {
-				// reset to array if it has been converted to a string by execute()
-				$this->where = array();
+				$this->where = array(); // reset to array if it has been converted to a string by execute()
 			}
 			$this->where[$data] = $value;
 		} else {
@@ -56,12 +51,18 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		return $this;
 	}
 
+	public function setWhereLogic($logic) {
+		$this->whereLogic = ' ' . trim($logic) . ' ';
+	}
+
 	/**
 	 * @ TODO: Need to support multiple SQL formats
 	 * @ TODO: Need to support more than "AND" for WHERE clause grouping somehow
+	 * @ TODO: Need to support DISTINCT, GROUP BY, HAVING, ORDER BY, LIMIT,
+	 *         other more complex syntax will require the SQL to be manually written (for now?)
 	*/
 	public function execute($db=null) {
-		$db = $db !== null ? $this->db : $db;
+		$db = $db !== null && ? $db : $this->db; //override current database connection if passed
 		$table = $this->quoteName($this->table);
 		if (count($this->columns)) {
 			$tmpColumns = array();
@@ -76,7 +77,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		if (is_array($this->where)) {
 			$tmpWhere = array();
 			foreach ($this->where as $field => $value) {
-				$tmpWhere[] = $this->quoteName($field) . '=' . $this->quoteValue($value); //$this->quoteValue($db->escape($value));
+				$tmpWhere[] = $this->quoteName($field) . '=' . $this->quoteValue($db->escape($value));
 			}
 			$where = implode($this->whereLogic, $tmpWhere);
 		}
@@ -87,6 +88,8 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 			}
 		}
 		
-		return sprintf($this->sqlFormat, $columns, $table, $joins, $where);
+		//this problably needs to be shifted towards it's own method to handle all the different
+		//possibilities/functions of the select statement that we plan on supporting
+		return sprintf($this->sqlFormat, $columns, $table, $joins, $where); 
 	}
 }
