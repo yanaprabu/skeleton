@@ -5,6 +5,8 @@ include_once 'A/Db/Sql/Common.php';
 class A_Db_Sql_Select extends A_Db_Sql_Common {
 	protected $table;
 	protected $columns = array();
+	protected $orderby = array();
+	protected $having = array();
 	protected $where = array();
 	protected $joins = array();
 	protected $sqlFormat = 'SELECT %s FROM %s %s WHERE %s';
@@ -36,6 +38,20 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 		return $this;
 	}
 
+	public function orderBy($data, $value=null) {
+		if (is_array($data)) {
+			$this->orderby = $data;
+		} elseif ($value !== null) {
+			if (is_string($this->orderby)) {
+				$this->orderby = array(); // reset to array if it has been converted to a string by execute()
+			}
+			$this->orderby[$data] = $value;
+		} else {
+			$this->orderby = $data;
+		}
+		return $this;
+	}
+
 	public function where($data, $value=null) {
 		if (is_array($data)) {
 			$this->where = $data;
@@ -46,6 +62,20 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 			$this->where[$data] = $value;
 		} else {
 			$this->where = $data;
+		}
+		return $this;
+	}
+
+	public function having($data, $value=null) {
+		if (is_array($data)) {
+			$this->having = $data;
+		} elseif ($value !== null) {
+			if (is_string($this->having)) {
+				$this->having = array(); // reset to array if it has been converted to a string by execute()
+			}
+			$this->having[$data] = $value;
+		} else {
+			$this->having = $data;
 		}
 		return $this;
 	}
@@ -86,6 +116,7 @@ class A_Db_Sql_Select extends A_Db_Sql_Common {
 				$where = implode($this->whereLogic, $tmpWhere);
 			}
 */
+//			$having = $this->equationList($this->having, '=', $this->whereLogic);
 			$where = $this->equationList($this->where, '=', $this->whereLogic);
 
 			$joins = '';
