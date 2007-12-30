@@ -33,9 +33,9 @@ class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $
 	}
 		
 	public function query ($sql) {
-		if (is_object($sql) && method_exists($sql, 'execute')) {
+		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
-			$sql = $sql->execute($this);   // pass $this to provide db specific escape() method
+			$sql = $sql->toSQL($this);   // pass $this to provide db specific escape() method
 		}
 		if ($this->limit && substri($sql, 'execute')) {
 			// convert object to string by executing SQL builder object
