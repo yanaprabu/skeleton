@@ -1,72 +1,47 @@
 <?php
-include_once 'A/Db/Sql/Common.php';
 
-class A_Db_Sql_Insert extends A_Db_Sql_Common {	protected $table = '';
-	protected $fields = array();
-	protected $values = array();
+class A_Sql_Insert {
+	/**
+	 * table()
+	*/	
+	protected $table;
 	
-	public function __construct($db=null) {
-		$this->db = $db;
-	}
-		
-	function table($table) {
-		$this->table = $table;
+	/**
+	 * set
+	*/	
+	protected $set;
+
+	/**
+	 * setEquation
+	*/	
+	protected $setEquation;
+
+	/**
+	 * table()
+	*/	
+	public function table($table) {
+		if (!$this->table) include_once('A/Sql/Piece/Table.php');
+		$this->table = new A_Sql_Piece_Table($table);
 		return $this;
 	}
 
-	function fields($fields) {
-		if (is_array($fields)) {
-			$this->fields = array_merge($this->fields, $fields);
-		} else {
-			$this->fields = $fields;
-		}
+	/**
+	 * values()
+	*/	
+	public function values($data, $value=null) {
+		if (!$this->setEquation) include_once ('A/Sql/Piece/Equation.php');
+		if (!$this->set) include_once('A/Sql/Piece/List.php');
+		$this->setEquation = new A_Sql_Piece_Equation($data, $value);	
+		$this->set = new A_Sql_Piece_List($this->setEquation);
 		return $this;
 	}
-
-	function values($values) {
-		if (is_array($values)) {
-			$this->values = array_merge($this->values, $values);
-		} else {
-			$this->values = $fields;
+	
+	public function render($db=null) {
+		if (!$this->table || !$this->set) {
+			return;
 		}
-		return $this;
+		$this->set->setLogic(', ');
+		$this->setEquation->setEscapeCallback($db);
+		return sprintf('INSERT INTO %s SET %s', $this->table->render(), $this->set->render());
 	}
-
-	function toSQL($db=null) {
-		if ($this->table && $this->values) {	// must at least specify a table and values to insert
-			$this->setDB($db);			//override current database connection if passed
-
-			$table = $this->quoteName($this->table);
-
-			$fields = '';
-			if ($this->fields && is_array($this->fields)) {
-				$this->fields = $this->nameList($this->fields);
-			}
-			if (is_array($this->values)) {
-				$fields = array();
-				$values = array();
-				foreach ($this->values as $field => $value) {
-					$fields[] = $this->quoteName($field);
-					$value = $this->db ? $this->db->escape($value) : $this->escape($value);
-					$values[] = $this->quoteValue($value);
-				}
-				if (! $this->fields) {
-					$this->fields = implode(',', $fields);
-				}
-				$this->values = implode(',', $values);
-			}
-			$this->sql = "INSERT INTO $table ({$this->fields}) VALUES ({$this->values})";
-		} else {
-			$this->sql = '';
-		}
-		return $this->sql;
-	}
-
-	function execute($db=null) {
-		$sql = $this->toSQL($db);
-		if ($this->db && $sql) {
-			return $this->db->query($sql);	
-		}
-	}
-
 }

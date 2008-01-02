@@ -83,7 +83,7 @@ class A_Sql_Select {
 	*/
 	public function where($data, $value=null) {
 		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
-		if (!$this->where) include_once('A/Sql/Piece/Where.php');
+		if (!$this->where) include_once('A/Sql/Piece/List.php');
 		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
 		$this->where = new A_Sql_Piece_Where($this->whereEquation);
 		return $this;
@@ -92,6 +92,7 @@ class A_Sql_Select {
 	/**
 	 * join()
 	 * Unsupported	 
+	 * Do we use the previous join class?
 	*/
 	public function join($table1, $column1, $table2, $column2) {
 		if (!$this->join) include_once('A/Sql/Piece/Join.php');
@@ -101,15 +102,12 @@ class A_Sql_Select {
 	
 	/**
 	 * having()
-	 * Identical to WHERE so lets just use that component, although since
-	 * we are stealing the WHERE clause component maybe it should be called
-	 * something more generic
 	*/	
 	public function having($data, $value=null) {
 		if (!$this->havingEquation) include_once ('A/Sql/Piece/Equation.php');
-		if (!$this->having) include_once('A/Sql/Piece/Where.php');
+		if (!$this->having) include_once('A/Sql/Piece/List.php');
 		$this->havingExpression = new A_Sql_Piece_Equation($data, $value);	
-		$this->having = new A_Sql_Piece_Where($this->havingEquation);
+		$this->having = new A_Sql_Piece_List($this->havingEquation);
 		return $this;
 	}
 	
@@ -165,10 +163,6 @@ class A_Sql_Select {
 		$columns = $this->columns ? $this->columns->render() : '*';
 		$joins 	= $this->joins ? $this->joins->render() : '';
 		$where 	= $this->where ? $this->where->render() : '1=1';
-		/**
-		 * TODO: This probably should be shifted to a more intelligent string
-		 * parser to detect which components need to be supplimented
-		*/
 		return sprintf('SELECT %s FROM %s %s WHERE %s', $columns, $table, $joins, $where);
 	}
 }
