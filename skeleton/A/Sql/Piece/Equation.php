@@ -50,7 +50,7 @@ class A_Sql_Piece_Equation extends A_Sql_Piece_Abstract {
 	 * escape()
 	*/		
 	public function escape($value) {
-		return $this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value);
+		return $this->quoteValue($this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value));
 	}
 
 	/**
@@ -59,13 +59,9 @@ class A_Sql_Piece_Equation extends A_Sql_Piece_Abstract {
 	protected function buildExpression($key, $value) {
 		if (preg_match('!('. implode('|', $this->operators).')$!i', $key, $matches)) { //operator detected
 			if (is_array($value)) {
-				foreach ($value as &$element) {
-					$element = $this->quoteValue($this->escape($value));
-				}
-				$value = '('. implode(', ', $value) .')';
+				$value = '('. implode(', ', array_map(array($this, 'escape'), $value)) .')';
 			} else {
-				
-				$value = $this->quoteValue($this->escape($value));
+				$value = $this->escape($value);
 			}
 			
 			return $this->quoteName(str_replace($matches[1], '', $key)) . ' ' . $matches[1] .' '. $value;

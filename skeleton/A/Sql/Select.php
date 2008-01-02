@@ -85,7 +85,7 @@ class A_Sql_Select {
 		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
 		if (!$this->where) include_once('A/Sql/Piece/List.php');
 		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
-		$this->where = new A_Sql_Piece_Where($this->whereEquation);
+		$this->where = new A_Sql_Piece_List($this->whereEquation);
 		return $this;
 	}
 
@@ -106,7 +106,7 @@ class A_Sql_Select {
 	public function having($data, $value=null) {
 		if (!$this->havingEquation) include_once ('A/Sql/Piece/Equation.php');
 		if (!$this->having) include_once('A/Sql/Piece/List.php');
-		$this->havingExpression = new A_Sql_Piece_Equation($data, $value);	
+		$this->havingEquation = new A_Sql_Piece_Equation($data, $value);	
 		$this->having = new A_Sql_Piece_List($this->havingEquation);
 		return $this;
 	}
@@ -155,6 +155,7 @@ class A_Sql_Select {
 			$this->whereEquation->setEscapeCallback($db);
 		}
 		if ($this->having) {
+		var_dump($this->havingEquation);
 			$this->having->setLogic($this->havingLogic);
 			$this->havingEquation->setEscapeCallback($db);
 		}
