@@ -9,8 +9,8 @@ $select->columns('foobar as foo')
 		 ->from('foobar')
 		 ->where(array('id >=' => 1, 
 		 					'foo' => 'bar', 
-							'foo NOT IN' => array(1,2,3,4,5,6))
-			);
+							'foo NOT IN' => array(1,2,3,4,5,6)))
+		->having('foo > bar');
  
 echo "A_Sql_Select::render=" . $select->render() . '<br/>';
 
