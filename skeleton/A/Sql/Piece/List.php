@@ -2,7 +2,7 @@
 
 include_once 'A/Sql/Piece/Abstract.php';
 
-class A_Sql_Piece_Where extends A_Sql_Piece_Abstract {
+class A_Sql_Piece_List extends A_Sql_Piece_Abstract {
 	protected $glue = ' AND ';
 	protected $equation;
 		

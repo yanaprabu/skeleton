@@ -35,15 +35,21 @@ class A_Sql_Piece_Equation extends A_Sql_Piece_Abstract {
 		if (preg_match('!('. implode('|', $this->operators).')$!i', $key, $matches)) { //operator detected
 			if (is_array($value)) {
 				foreach ($value as &$element) {
-					$element = $this->quoteValue($this->escapeCallback ? $this->escapeCallback->escape($element) : addslashes($element));
+					$element = $this->quoteValue($this->escape($value));
 				}
 				$value = '('. implode(', ', $value) .')';
 			} else {
-				$value = $this->quoteValue($this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value));
+				
+				$value = $this->quoteValue($this->escape($value));
 			}
+			
 			return $this->quoteName(str_replace($matches[1], '', $key)) . ' ' . $matches[1] .' '. $value;
-		} 
-		return $this->quoteName($key) .' = '. $this->quoteValue($value);
+		}
+		return $this->quoteName($key) .' = '. $this->quoteValue($this->escape($value));
+	}
+	
+	public function escape($value) {
+		return $this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value);
 	}
 }
 
