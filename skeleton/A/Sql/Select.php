@@ -17,9 +17,9 @@ class A_Sql_Select {
 	protected $where;
 
 	/**
-	 * $equation
+	 * $whereEquation
 	*/
-	protected $equation;
+	protected $whereEquation;
 
 	/**
 	 * $whereLogic
@@ -38,6 +38,16 @@ class A_Sql_Select {
 	*/
 	protected $having;
 
+	/**
+	 * $havingEquation
+	 * Unsupported
+	*/
+	protected $havingEquation;
+
+	/**
+	 * $havingLogic
+	*/
+	protected $havingLogic;	
 	/**
 	 * $groupby
 	 * Unsupported
@@ -72,18 +82,11 @@ class A_Sql_Select {
 	 * where()
 	*/
 	public function where($data, $value=null) {
+		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
 		if (!$this->where) include_once('A/Sql/Piece/Where.php');
-		if (!$this->equation) include_once ('A/Sql/Piece/Equation.php');
-		$this->equation = new A_Sql_Piece_Equation($data, $value);	
-		$this->where = new A_Sql_Piece_Where($this->equation);
+		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
+		$this->where = new A_Sql_Piece_Where($this->whereEquation);
 		return $this;
-	}
-
-	/**
-	 * setWhereLogic()
-	*/
-	public function setWhereLogic($logic) {
-		$this->whereLogic = $logic; 
 	}
 
 	/**
@@ -98,10 +101,15 @@ class A_Sql_Select {
 	
 	/**
 	 * having()
-	 * Unsupported	 
+	 * Identical to WHERE so lets just use that component, although since
+	 * we are stealing the WHERE clause component maybe it should be called
+	 * something more generic
 	*/	
-	public function having() {
-		if (!$this->having) include_once('A/Sql/Piece/Having.php');
+	public function having($data, $value=null) {
+		if (!$this->havingEquation) include_once ('A/Sql/Piece/Equation.php');
+		if (!$this->having) include_once('A/Sql/Piece/Where.php');
+		$this->havingExpression = new A_Sql_Piece_Equation($data, $value);	
+		$this->having = new A_Sql_Piece_Where($this->havingEquation);
 		return $this;
 	}
 	
@@ -118,9 +126,23 @@ class A_Sql_Select {
 	 * orderby()
 	 * Unsupported
 	*/	
-	public function orderby() {
+	public function orderby($data, $value=null) {
 		if (!$this->orderby) include_once('A/Sql/Piece/Orderby.php');
 		return $this;
+	}
+
+	/**
+	 * setWhereLogic()
+	*/
+	public function setWhereLogic($logic) {
+		$this->whereLogic = $logic; 
+	}
+
+	/**
+	 * setHavingLogic()
+	*/	
+	public function setHavingLogic($logic) {
+		$this->havingLogic = $logic;
 	}
 
 	/**
@@ -132,7 +154,11 @@ class A_Sql_Select {
 		}
 		if ($this->where) {
 			$this->where->setLogic($this->whereLogic);
-			$this->equation->setEscapeCallback($db);
+			$this->whereEquation->setEscapeCallback($db);
+		}
+		if ($this->having) {
+			$this->having->setLogic($this->havingLogic);
+			$this->havingEquation->setEscapeCallback($db);
 		}
 		
 		$table 	= $this->table->render();
