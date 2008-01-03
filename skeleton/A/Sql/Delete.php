@@ -1,61 +1,39 @@
 <?php
-include_once 'A/Db/Sql/Common.php';
 
-class A_Db_Sql_Delete extends A_Db_Sql_Common {	protected $table = '';
+class A_Sql_Delete {	protected $table;
 	protected $where = array();
+	protected $whereEquation;
+	protected $whereLogic;
 	
-	public function __construct($db=null) {
-		$this->db = $db;
-	}
-		
-	function table($table) {
-		$this->table = $table;
+	public function table($table) {
+		if (!$this->table) include_once('A/Sql/Piece/Table.php');
+		$this->table = new A_Sql_Piece_Table($table);
 		return $this;
 	}
 
-	function where($data, $value=null) {
-		if (is_array($data)) {
-			$this->where = array_merge($this->where, $data);
-		} elseif ($value !== null) {
-			$this->where[$data] = $value;
-		} else {
-			$this->where = $value;
-		}
+	public function where($data, $value=null) {
+		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
+		if (!$this->where) include_once('A/Sql/Piece/List.php');
+		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
+		$this->where = new A_Sql_Piece_List($this->whereEquation);
 		return $this;
 	}
 
-	function toSQL($db=null) {
+	public function setWhereLogic($logic) {
+		$this->whereLogic = $logic; 
+		return $this;
+	}
+
+	function render($db=null) {
 		if ($this->table) {		// must at least specify a table
-			$this->setDB($db);			//override current database connection if passed
-
-			$table = $this->quoteName($this->table);
-/*
-			if (is_array($this->where)) {
-				foreach ($this->where as $field => $value) {
-					if ($this->db) {
-						$value = $this->db->escape($value);
-					} else {
-						$value = $this->escape($value);
-					}
-					$tmp[] = $field . '=' . $this->quoteValue($value);
-				}
-				$where = implode(' AND ', $tmp);
-			} else {
-				$where = $this->where;
+			if ($this->where) {
+				$this->where->setLogic($this->whereLogic);
+				$this->whereEquation->setEscapeCallback($db);
 			}
-			$this->sql = "DELETE FROM {$this->table} WHERE $where";
-*/
-			$this->sql = "DELETE FROM $table WHERE " . $this->equationList($this->where, '=', ' AND ');
-		} else {
-			$this->sql = '';
-		}
-		return $this->sql;
-	}
+			$table = $this->table->render();
+			$where = $this->where ? ' WHERE ' . $this->where->render() : '';
 
-	function execute($db=null) {
-		$sql = $this->toSQL($db);
-		if ($this->db && $sql) {
-			return $this->db->query($sql);	
+			return "DELETE FROM $table$where";
 		}
 	}
 

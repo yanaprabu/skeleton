@@ -1,61 +1,58 @@
 <?php
 
-class A_Db_Sql_Select {
-	protected $sqlFormat = 'SELECT %s FROM %s %s WHERE %s';
-	protected $sql = '';
+class A_Sql_Update {
+	protected $sqlFormat = 'UPDATE %s SET %s%s';
 	protected $table;
-	protected $columns;
+	protected $set;
+	protected $setEquation;
 	protected $where;
-	protected $joins;
-
+	protected $whereEquation;
+	protected $whereLogic;
+	
 	public function table($table) {
-		if (!$this->table) include_once('A/Db/Sql/Piece/Table.php');
-		$this->table = new A_Db_Sql_Piece_Table($table);
+		if (!$this->table) include_once('A/Sql/Piece/Table.php');
+		$this->table = new A_Sql_Piece_Table($table);
+		return $this;
+	}
+
+	public function set($data, $value=null) {
+		if (!$this->setEquation) include_once ('A/Sql/Piece/Equation.php');
+		if (!$this->set) include_once('A/Sql/Piece/List.php');
+		$this->setEquation = new A_Sql_Piece_Equation($data, $value);	
+		$this->set = new A_Sql_Piece_List($this->setEquation);
 		return $this;
 	}
 	
-	public function set($data, $value=null) {
-		$this->equation = new A_Db_Piece_Equation($data, $value);
-		return $this;
-	}
-
 	public function where($data, $value=null) {
-		if (!$this->where) include_once('A/Db/Sql/Piece/Where.php');	
-		$this->where = new A_Db_Sql_Piece_Where($data, $value);
+		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
+		if (!$this->where) include_once('A/Sql/Piece/List.php');
+		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
+		$this->where = new A_Sql_Piece_List($this->whereEquation);
 		return $this;
 	}
 
 	public function setWhereLogic($logic) {
-		if ($this->where instanceof A_Db_Sql_Piece_Where) {
-			$this->where->setLogic($logic);
-		}
 		$this->whereLogic = $logic; 
+		return $this;
 	}
 
-	public function toSQL($db=null) {
+	public function render($db=null) {
 		if ($this->table) {
 			if ($this->where) {
-				$this->where->setLogic($this->wherelogic);
-				$this->where->setEscapeCallback($db);
+				$this->where->setLogic($this->whereLogic);
+				$this->whereEquation->setEscapeCallback($db);
+			}
+						
+			if ($this->set) {
+				$this->set->setLogic(',');
+				$this->setEquation->setEscapeCallback($db);
 			}
 			
-			if ($this->equation) {
-				$this->equation->setEscapeCallback($db);
-			}
-			
-			$table 	 = $this->table->parse();
-			$equation = $this->equation->parse();
-			$where 	 = $this->where ? $this->where->parse() : '1=1';
+			$table = $this->table->render();
+			$set = $this->set->render();
+			$where = $this->where ? ' WHERE ' . $this->where->render() : '';
 
-			$this->sql = sprintf($this->sqlFormat, $columns, $table, $joins, $where);
+			return sprintf($this->sqlFormat, $table, $set, $where);
 		}
-		
-		return $this->sql;
 	}
 }
-
-$select = new A_Db_Sql_Select;
-echo $select->columns()->from('foobar')->toSQL();
-
-
-?>

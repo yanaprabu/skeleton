@@ -41,7 +41,8 @@ class A_Sql_Piece_Equation extends A_Sql_Piece_Abstract {
 	*/		
 	public function render() {
 		if (is_string($this->data)) {
-			$this->data = array($this->data);
+//			$this->data = array($this->data);
+			return $this->data;
 		}
 		return array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data));
 	}
@@ -69,5 +70,3 @@ class A_Sql_Piece_Equation extends A_Sql_Piece_Abstract {
 		return $this->quoteName($key) .' = '. $this->quoteValue($this->escape($value));
 	}
 }
-
-?>

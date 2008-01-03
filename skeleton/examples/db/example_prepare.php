@@ -7,6 +7,6 @@ include 'A/Db/Prepare.php';
 
 $prepare = new A_Db_Prepare("INSERT mytable SET one=?, two='?', three=:three, three=?");
 $prepare->bind('foo', array(':three'=>'faz'), 'bar', 'baz');
-echo "A_Db_Prepare::execute=" . $prepare->toSQL() . '<br/>';
+echo "A_Db_Prepare::execute=" . $prepare->render() . '<br/>';
 
 dump($prepare);

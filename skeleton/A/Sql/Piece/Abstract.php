@@ -18,5 +18,3 @@ class A_Sql_Piece_Abstract {
 		return '\''. $value .'\'';
 	}	
 }
-
-?>

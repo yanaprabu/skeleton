@@ -21,5 +21,3 @@ class A_Sql_Piece_Columns extends A_Sql_Piece_Abstract {
 		return implode(', ', $this->columns);
 	}
 }
-
-?>

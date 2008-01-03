@@ -79,17 +79,6 @@ class A_Sql_Select {
 	}
 
 	/**
-	 * where()
-	*/
-	public function where($data, $value=null) {
-		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
-		if (!$this->where) include_once('A/Sql/Piece/List.php');
-		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
-		$this->where = new A_Sql_Piece_List($this->whereEquation);
-		return $this;
-	}
-
-	/**
 	 * join()
 	 * Unsupported	 
 	 * Do we use the previous join class?
@@ -111,6 +100,17 @@ class A_Sql_Select {
 		return $this;
 	}
 	
+	/**
+	 * where()
+	*/
+	public function where($data, $value=null) {
+		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
+		if (!$this->where) include_once('A/Sql/Piece/List.php');
+		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
+		$this->where = new A_Sql_Piece_List($this->whereEquation);
+		return $this;
+	}
+
 	/**
 	 * groupby()
 	 * Unsupported	 
@@ -134,6 +134,7 @@ class A_Sql_Select {
 	*/
 	public function setWhereLogic($logic) {
 		$this->whereLogic = $logic; 
+		return $this;
 	}
 
 	/**
@@ -141,6 +142,7 @@ class A_Sql_Select {
 	*/	
 	public function setHavingLogic($logic) {
 		$this->havingLogic = $logic;
+		return $this;
 	}
 
 	/**
@@ -155,17 +157,16 @@ class A_Sql_Select {
 			$this->whereEquation->setEscapeCallback($db);
 		}
 		if ($this->having) {
-		var_dump($this->havingEquation);
+dump($this->havingEquation);
 			$this->having->setLogic($this->havingLogic);
 			$this->havingEquation->setEscapeCallback($db);
 		}
 		
-		$table 	= $this->table->render();
+		$table = $this->table->render();
 		$columns = $this->columns ? $this->columns->render() : '*';
-		$joins 	= $this->joins ? $this->joins->render() : '';
-		$where 	= $this->where ? $this->where->render() : '1=1';
-		return sprintf('SELECT %s FROM %s %s WHERE %s', $columns, $table, $joins, $where);
+		$joins = $this->joins ? $this->joins->render() : '';
+		$having = $this->having ? ' HAVING ' . $this->having->render() : '';
+		$where = $this->where ? ' WHERE ' . $this->where->render() : '';
+		return "SELECT $columns FROM $table $joins$having$where";
 	}
 }
-
-?>

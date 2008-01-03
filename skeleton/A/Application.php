@@ -115,4 +115,3 @@ class A_Application {
 	}   
 } 
 
-?>

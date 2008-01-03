@@ -17,8 +17,7 @@ class A_Sql_Piece_List extends A_Sql_Piece_Abstract {
 	}
 	
 	public function render() {	
-		return implode($this->glue, $this->equation->render());
+		$list = $this->equation->render();
+		return is_array($list) ? implode($this->glue, $list) : $list;
 	}
 }
-
-?>

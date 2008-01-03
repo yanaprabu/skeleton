@@ -11,7 +11,8 @@ $select->columns('foobar as foo')
 		 					'foo' => 'bar', 
 							'foo NOT IN' => array(1,2,3,4,5,6)))
 		->having('foo > bar');
- 
+//		->having('COUNT(foo) >', 'bar');
+		
 echo "A_Sql_Select::render=" . $select->render() . '<br/>';
 
 dump($select);
