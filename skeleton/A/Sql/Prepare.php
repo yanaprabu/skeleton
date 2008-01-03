@@ -1,6 +1,6 @@
 <?php
 
-class A_Db_Prepare {
+class A_Sql_Prepare {
 	protected $statement;
 	protected $db;						// object with escape() method
 	protected $named_args = array();	// assoc array
@@ -37,7 +37,7 @@ class A_Db_Prepare {
 		return $this; 
 	}
 	
-	public function toSQL($db=null) {
+	public function render($db=null) {
 		if ($this->statement) {
 			// set object with escape() method if passed
 			if ($db !== null) {
@@ -68,11 +68,4 @@ class A_Db_Prepare {
 		return $this->sql;
 	}
 	
-	function execute($db=null) {
-		$sql = $this->toSQL($db);
-		if ($this->db && $sql) {
-			return $this->db->query($sql);	
-		}
-	}
-
 }
