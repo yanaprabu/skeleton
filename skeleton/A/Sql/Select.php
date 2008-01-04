@@ -62,7 +62,7 @@ class A_Sql_Select {
 	 * columns()
 	*/
 	public function columns() {
-		if (!$this->columns) include_once('A/Sql/Columns.php');
+		include_once('A/Sql/Columns.php');
 		$this->columns = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
@@ -71,7 +71,7 @@ class A_Sql_Select {
 	 * from()
 	*/
 	public function from($table) {
-		if (!$this->table) include_once('A/Sql/Table.php');
+		include_once('A/Sql/Table.php');
 		$this->table = new A_Sql_Table($table);
 		return $this;
 	}
@@ -82,7 +82,7 @@ class A_Sql_Select {
 	 * Do we use the previous join class?
 	*/
 	public function join($table1, $column1, $table2, $column2) {
-		if (!$this->join) include_once('A/Sql/Join.php');
+		include_once('A/Sql/Join.php');
 		$this->join = new A_Sql_Join($table1, $column1, $table2, $column2);
 		return $this;
 	}
@@ -91,8 +91,8 @@ class A_Sql_Select {
 	 * having()
 	*/	
 	public function having($data, $value=null) {
-		if (!$this->havingEquation) include_once ('A/Sql/Equation.php');
-		if (!$this->having) include_once('A/Sql/List.php');
+		include_once('A/Sql/Equation.php');
+		include_once('A/Sql/List.php');
 		$this->havingEquation = new A_Sql_Equation($data, $value);	
 		$this->having = new A_Sql_List($this->havingEquation);
 		return $this;
@@ -102,8 +102,8 @@ class A_Sql_Select {
 	 * where()
 	*/
 	public function where($data, $value=null) {
-		if (!$this->whereEquation) include_once ('A/Sql/Equation.php');
-		if (!$this->where) include_once('A/Sql/List.php');
+		include_once('A/Sql/Equation.php');
+		include_once('A/Sql/List.php');
 		$this->whereEquation = new A_Sql_Equation($data, $value);	
 		$this->where = new A_Sql_List($this->whereEquation);
 		return $this;
@@ -114,7 +114,7 @@ class A_Sql_Select {
 	 * Unsupported	 
 	*/	
 	public function groupby() {
-		if (!$this->groupby) include_once('A/Sql/Groupby.php');
+		include_once('A/Sql/Groupby.php');
 		return $this;
 	}
 	
@@ -123,7 +123,7 @@ class A_Sql_Select {
 	 * Unsupported
 	*/	
 	public function orderby($data, $value=null) {
-		if (!$this->orderby) include_once('A/Sql/Orderby.php');
+		include_once('A/Sql/Orderby.php');
 		return $this;
 	}
 
@@ -164,6 +164,7 @@ class A_Sql_Select {
 		$joins = $this->joins ? $this->joins->render() : '';
 		$having = $this->having ? ' HAVING ' . $this->having->render() : '';
 		$where = $this->where ? ' WHERE ' . $this->where->render() : '';
+		
 		return "SELECT $columns FROM $table $joins$having$where";
 	}
 }
