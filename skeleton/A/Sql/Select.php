@@ -34,13 +34,11 @@ class A_Sql_Select {
 
 	/**
 	 * $having
-	 * Unsupported
 	*/
 	protected $having;
 
 	/**
 	 * $havingEquation
-	 * Unsupported
 	*/
 	protected $havingEquation;
 
@@ -157,7 +155,6 @@ class A_Sql_Select {
 			$this->whereEquation->setEscapeCallback($db);
 		}
 		if ($this->having) {
-dump($this->havingEquation);
 			$this->having->setLogic($this->havingLogic);
 			$this->havingEquation->setEscapeCallback($db);
 		}
