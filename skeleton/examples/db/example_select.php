@@ -5,7 +5,7 @@ include 'A/Sql/Select.php';
 
 $select = new A_Sql_Select();
 
-$select->columns('`foobar`, foo')
+$select->columns('`foobar`, foo.bar')
 		 ->from(array('foobar', 'foo'))
 		 ->where(array('id >=' => 1, 
 		 					'foo' => 'bar', 
