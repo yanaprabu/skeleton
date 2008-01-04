@@ -20,8 +20,8 @@ class A_Sql_Insert {
 	 * table()
 	*/	
 	public function table($table) {
-		if (!$this->table) include_once('A/Sql/Piece/Table.php');
-		$this->table = new A_Sql_Piece_Table($table);
+		if (!$this->table) include_once('A/Sql/Table.php');
+		$this->table = new A_Sql_Table($table);
 		return $this;
 	}
 
@@ -29,10 +29,10 @@ class A_Sql_Insert {
 	 * values()
 	*/	
 	public function values($data, $value=null) {
-		if (!$this->setEquation) include_once ('A/Sql/Piece/Equation.php');
-		if (!$this->set) include_once('A/Sql/Piece/List.php');
-		$this->setEquation = new A_Sql_Piece_Equation($data, $value);	
-		$this->set = new A_Sql_Piece_List($this->setEquation);
+		if (!$this->setEquation) include_once ('A/Sql/Equation.php');
+		if (!$this->set) include_once('A/Sql/List.php');
+		$this->setEquation = new A_Sql_Equation($data, $value);	
+		$this->set = new A_Sql_List($this->setEquation);
 		return $this;
 	}
 	

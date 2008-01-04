@@ -1,21 +1,22 @@
 <?php
 
-class A_Sql_Delete {	protected $table;
+class A_Sql_Delete {
+	protected $table;
 	protected $where = array();
 	protected $whereEquation;
 	protected $whereLogic;
 	
 	public function table($table) {
-		if (!$this->table) include_once('A/Sql/Piece/Table.php');
-		$this->table = new A_Sql_Piece_Table($table);
+		if (!$this->table) include_once('A/Sql/Table.php');
+		$this->table = new A_Sql_Table($table);
 		return $this;
 	}
 
 	public function where($data, $value=null) {
-		if (!$this->whereEquation) include_once ('A/Sql/Piece/Equation.php');
-		if (!$this->where) include_once('A/Sql/Piece/List.php');
-		$this->whereEquation = new A_Sql_Piece_Equation($data, $value);	
-		$this->where = new A_Sql_Piece_List($this->whereEquation);
+		if (!$this->whereEquation) include_once ('A/Sql/Equation.php');
+		if (!$this->where) include_once('A/Sql/List.php');
+		$this->whereEquation = new A_Sql_Equation($data, $value);	
+		$this->where = new A_Sql_List($this->whereEquation);
 		return $this;
 	}
 
