@@ -4,7 +4,7 @@ class A_Session {
 	protected $namespace;
 	protected $regenerate;
 	
-	public function __construct($namespace='Session', $regenerate=false) {
+	public function __construct($namespace='A_Session', $regenerate=false) {
 		$this->namespace = $namespace;
 		$this->regenerate = $regenerate;
 	}
@@ -32,7 +32,7 @@ class A_Session {
 			if (strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
 				session_cache_limiter('must-revalidate');
 			}
-			 session_start();
+			session_start();
 			if ($this->regenerate) {
 				session_regenerate_id();
 			}
