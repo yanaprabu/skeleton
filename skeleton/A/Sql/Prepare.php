@@ -6,6 +6,7 @@ class A_Sql_Prepare {
 	protected $named_args = array();	// assoc array
 	protected $numbered_args = array();	// 1-based indexed array
 	protected $sql;						// prepared sql
+	protected $quote_values = false;
 	
 	public function __construct($statement='', $db=null) {
 		$this->statement = $statement;
@@ -14,6 +15,19 @@ class A_Sql_Prepare {
 		
 	public function escape($value) {
 		return addslashes($value);		// at least do something
+	}
+	
+	public function quoteValues($flag=true) {
+		$this->quote_values = $flag;
+		return $this;
+	}
+	
+	public function quoteEscape($value) {
+		$value = $this->db ? $this->db->escape($value) : addslashes($value);
+		if ($this->quote_values && ! (preg_match('/^[a-z\_]*\(/i', $value) || ctype_digit($value)) ) { //detect if the value is a function or digits
+			return  "'" . trim($value, "'") . "'";
+		}
+		return $value;
 	}
 	
 	public function statement($statement) {
@@ -47,7 +61,8 @@ class A_Sql_Prepare {
 			if ($this->named_args) {
 				// escape all values
 				foreach ($this->named_args as $name => $value) {
-					$this->named_args[$name] = $this->db ? $this->db->escape($value) : $this->escape($value);
+					$this->named_args[$name] = $this->quoteEscape($value);
+//					$this->named_args[$name] = $this->db ? $this->db->escape($value) : $this->escape($value);
 				}
 				// replace array keys found in statement with values
 				$statement = str_replace(array_keys($this->named_args), array_values($this->named_args), $statement);
@@ -58,8 +73,9 @@ class A_Sql_Prepare {
 				$this->sql = $statement_array[0];
 				$n = 1;
 				foreach ($this->numbered_args as $arg) {
-					$arg = $this->db ? $this->db->escape($arg) : $this->escape($arg);
-					$this->sql .= $arg . $statement_array[$n++];
+//					$arg = $this->db ? $this->db->escape($arg) : $this->escape($arg);
+//					$this->sql .= $arg . $statement_array[$n++];
+					$this->sql .= $this->quoteEscape($arg) . $statement_array[$n++];
 				}
 			} else {
 				$this->sql = $statement;

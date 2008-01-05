@@ -7,6 +7,6 @@ include 'A/Sql/Update.php';
 
 $update = new A_Sql_Update();
 $update->table('mytable')->set(array('foo'=>'foo', 'bar'=>'bar', 'baz'=>'baz'))->where('id', 1);
-echo "A_Sql_Update::execute=" . $update->render() . '<br/>';
+echo "A_Sql_Update::render=" . $update->render() . '<br/>';
 
 dump($update);
