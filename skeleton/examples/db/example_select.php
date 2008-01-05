@@ -5,12 +5,13 @@ include 'A/Sql/Select.php';
 
 $select = new A_Sql_Select();
 
-$select->columns('`foobar` as bleh, foo.bar')
+$select->columns('foobar as bleh, foo.bar')
 		 ->from(array('foobar', 'foo'))
 		 ->where(array('id >=' => 1, 
 		 					'foo' => 'bar', 
 							'foo NOT IN' => array(1,2,3,4,5,6)))
-		->having('foo > bar');
+		->orWhere(array('foo' => 'bar'));
+		#->having('foo > bar');
  
 echo "A_Sql_Select::render=" . $select->render() . '<br/>';
 
