@@ -14,7 +14,7 @@ class A_Sql_Select {
 	/**
 	 * $where
 	*/
-	protected $where;
+	protected $where = array();
 
 	/**
 	 * $whereEquation
@@ -91,10 +91,8 @@ class A_Sql_Select {
 	 * having()
 	*/	
 	public function having($data, $value=null) {
-		include_once('A/Sql/Equation.php');
-		include_once('A/Sql/List.php');
-		$this->havingEquation = new A_Sql_Equation($data, $value);	
-		$this->having = new A_Sql_List($this->havingEquation);
+		include_once('A/Sql/Expression.php');
+		$this->having = new A_Sql_Expression($data, $value);	
 		return $this;
 	}
 	
@@ -102,11 +100,18 @@ class A_Sql_Select {
 	 * where()
 	*/
 	public function where($data, $value=null) {
-		include_once('A/Sql/Equation.php');
-		include_once('A/Sql/List.php');
-		$this->whereEquation = new A_Sql_Equation($data, $value);	
-		$this->where = new A_Sql_List($this->whereEquation);
+		include_once('A/Sql/Expression.php');
+		$this->where[] = array(new A_Sql_Expression($data, $value), 'and');	
 		return $this;
+	}
+
+	/**
+	 * orWhere()
+	*/	
+	public function orWhere($data, $value=null) {
+		include_once('A/Sql/Expression.php');
+		$this->where[] = array(new A_Sql_Expression($data, $value), 'or');	
+		return $this;		
 	}
 
 	/**
@@ -128,43 +133,31 @@ class A_Sql_Select {
 	}
 
 	/**
-	 * setWhereLogic()
-	*/
-	public function setWhereLogic($logic) {
-		$this->whereLogic = $logic; 
-		return $this;
-	}
-
-	/**
-	 * setHavingLogic()
-	*/	
-	public function setHavingLogic($logic) {
-		$this->havingLogic = $logic;
-		return $this;
-	}
-
-	/**
 	 * render()
 	*/
 	public function render($db=null) {
 		if (!$this->table) {
 			return;
 		}
-		if ($this->where) {
-			$this->where->setLogic($this->whereLogic);
-			$this->whereEquation->setEscapeCallback($db);
-		}
-		if ($this->having) {
-			$this->having->setLogic($this->havingLogic);
-			$this->havingEquation->setEscapeCallback($db);
-		}
-		
+
 		$table = $this->table->render();
 		$columns = $this->columns ? $this->columns->render() : '*';
 		$joins = $this->joins ? $this->joins->render() : '';
 		$having = $this->having ? ' HAVING ' . $this->having->render() : '';
-		$where = $this->where ? ' WHERE ' . $this->where->render() : '';
-		
+
+		$where = '';
+		if (count($this->where)) {
+			foreach ($this->where as $key => $condition) {
+				list($expression, $logical) = $condition;
+				$expression->setEscapeCallback($db);
+				$render = $expression->render();
+				if ($key > 0) { //don't add logical on first element
+					$render = ' '. strtoupper($logical) .' '. $render;
+				}
+				$where .= $render;
+			}
+			$where = 'WHERE '. $where;
+		}
 		return "SELECT $columns FROM $table $joins$having$where";
 	}
 }

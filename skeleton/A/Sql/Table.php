@@ -11,8 +11,8 @@ class A_Sql_Table extends A_Sql_Abstract {
 	
 	public function render() {
 		if (is_array($this->table)) {
-			return implode(', ', array_map(array($this, 'quoteName'), $this->table));
+			return implode(', ', $this->table);
 		}
-		return $this->quoteName($this->table);
+		return $this->table;
 	}
 }
