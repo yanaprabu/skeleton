@@ -67,10 +67,13 @@ class A_Sql_Equation extends A_Sql_Abstract {
 			} else {
 				$value = $this->escape($value);
 			}
-			return $this->quoteName(str_replace($matches[1], '', $key)) . ' ' . $matches[1] .' '. $value;
+#			return $this->quoteName(str_replace($matches[1], '', $key)) . ' ' . $matches[1] .' '. $value;
+			return $key . ' ' . $matches[1] .' '. $value;
 		} elseif ($value !== null) {
-			return $this->quoteName($key) .' = '. $this->quoteValue($this->escape($value));
+#			return $this->quoteName($key) .' = '. $this->quoteValue($this->escape($value));
+			return $key .' = '. $this->quoteValue($this->escape($value));
 		}
-		return $this->quoteName($key);
+#		return $this->quoteName($key);
+		return $key;
 	}
 }

@@ -4,7 +4,6 @@ class A_Sql_Delete {
 	protected $table;
 	protected $where = array();
 	protected $whereEquation;
-	protected $whereLogic;
 	
 	public function table($table) {
 		if (!$this->table) include_once('A/Sql/Table.php');
@@ -20,15 +19,9 @@ class A_Sql_Delete {
 		return $this;
 	}
 
-	public function setWhereLogic($logic) {
-		$this->whereLogic = $logic; 
-		return $this;
-	}
-
 	function render($db=null) {
 		if ($this->table) {		// must at least specify a table
 			if ($this->where) {
-				$this->where->setLogic($this->whereLogic);
 				$this->whereEquation->setEscapeCallback($db);
 			}
 			$table = $this->table->render();

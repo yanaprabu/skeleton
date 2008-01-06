@@ -40,7 +40,6 @@ class A_Sql_Insert {
 		if (!$this->table || !$this->set) {
 			return;
 		}
-		$this->set->setLogic(', ');
 		$this->setEquation->setEscapeCallback($db);
 		return sprintf('INSERT INTO %s SET %s', $this->table->render(), $this->set->render());
 	}

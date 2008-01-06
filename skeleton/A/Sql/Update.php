@@ -7,7 +7,6 @@ class A_Sql_Update {
 	protected $setEquation;
 	protected $where;
 	protected $whereEquation;
-	protected $whereLogic;
 	
 	public function table($table) {
 		if (!$this->table) include_once('A/Sql/Table.php');
@@ -31,20 +30,13 @@ class A_Sql_Update {
 		return $this;
 	}
 
-	public function setWhereLogic($logic) {
-		$this->whereLogic = $logic; 
-		return $this;
-	}
-
 	public function render($db=null) {
 		if ($this->table) {
 			if ($this->where) {
-				$this->where->setLogic($this->whereLogic);
 				$this->whereEquation->setEscapeCallback($db);
 			}
 						
 			if ($this->set) {
-				$this->set->setLogic(',');
 				$this->setEquation->setEscapeCallback($db);
 			}
 			
