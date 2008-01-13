@@ -37,6 +37,7 @@ class example extends A_Controller_Action {
 	}
 
 	function foo($locator) {
+/*
 		$content = '
 <html>
 <body>
@@ -56,6 +57,8 @@ class example extends A_Controller_Action {
 </html>
 ';
 		$this->response->setContent($content);
+*/
+		$this->autoRender();
 	}
 
 }

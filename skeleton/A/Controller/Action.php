@@ -2,7 +2,7 @@
 
 class A_Controller_Action {
 	protected $paths = array();
-	protected $dirs = array('model'=>'models', 'view'=>'views', );
+	protected $dirs = array('model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
 	protected $action = null;
 	protected $locator;
 	protected $loader = null;
@@ -20,6 +20,7 @@ class A_Controller_Action {
 	}
 		
 	protected function addPath($name, $path, $relative_name=''){
+	    $path = rtrim($path, '/') . '/';		// add trailing dir separator
 	    if ($relative_name) {
 	    	$this->paths[$name] = $this->paths[$relative_name] . $path;
 	    } else {
@@ -39,11 +40,21 @@ class A_Controller_Action {
 		return $this->loader->setScope($module);
 	}
 
-	protected function getPhpRenderer($path='module') {
-	    include_once 'A/Template/Include.php';
-	    $filename = $this->paths[$path] . $this->dirs['view'] . $this->action . '.php';
+	protected function autoRender($name='', $path='module') {
+	    include_once 'A/Template.php';
+	    $filename = $this->paths[$path] . $this->dirs['template'] . $this->action . '.php';
 	    $renderer = new A_Template_Include($filename);
-	    return $renderer;
+	    $response = $this->locator->get('Response');
+	    if ($response) {
+	    	if ($name) {
+	    		$response->set($name, $renderer);
+			} else {
+	    		$response->setContent($renderer->render());
+	    	}
+	    } else {
+	    	echo $renderer->render();
+	    }
+		return $renderer;
 	}
 	
 	protected function _forward($dir, $class, $method, $args=null){
