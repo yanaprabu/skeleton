@@ -47,7 +47,7 @@ class A_Controller_Action_Loader {
 				}
 			}
 			
-			if (is_string($this->responseName)) {
+			if (strlen($this->responseName)) {
 				// this is the section for when setResponse() is called
 				
 				// templates are a template filename, not a class name -- need to load/create template class
@@ -61,7 +61,7 @@ class A_Controller_Action_Loader {
 
 			    $response = $this->locator->get('Response');
 			    if ($response) {
-			    	if ($this->response_name) {
+			    	if ($this->responseName) {
 			    		$response->set($this->responseName, $obj);
 					} else {
 			    		$response->setContent($obj->render());
