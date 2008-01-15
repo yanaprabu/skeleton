@@ -6,9 +6,8 @@ class A_Controller_Action_Loader {
 	protected $dirs;
 	protected $action;
 	protected $suffix;
-	protected $scope_path;
-	protected $response_set = false;
-	protected $response_name = '';
+	protected $scopePath;
+	protected $responseName = '';
 	
 	public function __construct($locator, $paths, $dirs, $action) {
 		$this->locator = $locator;
@@ -22,13 +21,12 @@ class A_Controller_Action_Loader {
 		if (! isset($this->paths[$module])) {
 			$module = 'module';     // the default setting e.g., "/app/module/models"
 		}
-		$this->scope_path = $this->paths[$module];
+		$this->scopePath = $this->paths[$module];
 		return $this;
 	}
 
 	public function setResponse($name='') {
-		$this->response_set = true;
-		$this->response_name = $name;
+		$this->responseName = $name;
 		return $this;
 	}
 
@@ -49,33 +47,31 @@ class A_Controller_Action_Loader {
 				}
 			}
 			
-			if ($this->response_set) {
+			if (is_string($this->responseName)) {
 				// this is the section for when setResponse() is called
 				
 				// templates are a template filename, not a class name -- need to load/create template class
 				if ($type == 'template') {
 				    include_once 'A/Template.php';
-				    $filename = $this->scope_path . $this->dirs['template'] . $class . '.php';
-				    $obj = new A_Template_Include($filename);
+				    $obj = new A_Template_Include($this->scopePath . $this->dirs['template'] . $class . '.php');
 				} else {
 					// load class if necessary
-					$obj = $this->locator->get($class, $class, $this->scope_path . $this->dirs[$type]);
+					$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]);
 				}
 
 			    $response = $this->locator->get('Response');
 			    if ($response) {
 			    	if ($this->response_name) {
-			    		$response->set($this->response_name, $obj);
+			    		$response->set($this->responseName, $obj);
 					} else {
 			    		$response->setContent($obj->render());
 			    	}
 			    } else {
 			    	echo $obj->render();	// do we really want this option? or should the action do this?
 			    }
-			
 			} else {
 				// load class if necessary
-				$obj = $this->locator->get($class, $class, $this->scope_path . $this->dirs[$type]);
+				$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]);
 			}
 			
 			return $obj;
