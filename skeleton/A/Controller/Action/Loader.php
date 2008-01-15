@@ -7,7 +7,9 @@ class A_Controller_Action_Loader {
 	protected $action;
 	protected $suffix;
 	protected $scope_path;
-
+	protected $response_set = false;
+	protected $response_name = '';
+	
 	public function __construct($locator, $paths, $dirs, $action) {
 		$this->locator = $locator;
 		$this->paths = $paths;
@@ -21,6 +23,12 @@ class A_Controller_Action_Loader {
 			$module = 'module';     // the default setting e.g., "/app/module/models"
 		}
 		$this->scope_path = $this->paths[$module];
+		return $this;
+	}
+
+	public function setResponse($name='') {
+		$this->response_set = true;
+		$this->response_name = $name;
 		return $this;
 	}
 
@@ -40,8 +48,37 @@ class A_Controller_Action_Loader {
 					$class .= $this->suffix[$type];
 				}
 			}
-			// load class if necessary and return instance
-			return $this->locator->get($class, $class, $this->scope_path . $this->dirs[$type]);
+			
+			if ($this->response_set) {
+				// this is the section for when setResponse() is called
+				
+				// templates are a template filename, not a class name -- need to load/create template class
+				if ($type == 'template') {
+				    include_once 'A/Template.php';
+				    $filename = $this->scope_path . $this->dirs['template'] . $class . '.php';
+				    $obj = new A_Template_Include($filename);
+				} else {
+					// load class if necessary
+					$obj = $this->locator->get($class, $class, $this->scope_path . $this->dirs[$type]);
+				}
+
+			    $response = $this->locator->get('Response');
+			    if ($response) {
+			    	if ($this->response_name) {
+			    		$response->set($this->response_name, $obj);
+					} else {
+			    		$response->setContent($obj->render());
+			    	}
+			    } else {
+			    	echo $obj->render();	// do we really want this option? or should the action do this?
+			    }
+			
+			} else {
+				// load class if necessary
+				$obj = $this->locator->get($class, $class, $this->scope_path . $this->dirs[$type]);
+			}
+			
+			return $obj;
 		}
 	}
 
