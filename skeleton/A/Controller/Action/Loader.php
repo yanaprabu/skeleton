@@ -5,7 +5,7 @@ class A_Controller_Action_Loader {
 	protected $paths;
 	protected $dirs;
 	protected $action;
-	protected $suffix;
+	protected $suffix = array('model'=>'Model', 'view'=>'View');
 	protected $scopePath;
 	protected $responseName = '';
 	protected $responseSet = false;
@@ -15,7 +15,6 @@ class A_Controller_Action_Loader {
 		$this->paths = $paths;
 		$this->dirs = $dirs;
 		$this->action = $action;
-		$this->suffix = array('model'=>'Model', 'view'=>'View', );
 	}
 	 
 	public function setScope($module=null) {
@@ -36,11 +35,7 @@ class A_Controller_Action_Loader {
 		// is this a defined type of subdirectory
 		if (isset($this->dirs[$type])) {
 			// get class name parameter or use action name
-			if (isset($params[0])) {
-				$class = $params[0];
-			} else {
-				$class = $this->action;
-			}
+			$class = isset($params[0]) ? $params[0] : $this->action;
 			if (isset($this->suffix[$type])) {
 				$length = strlen($this->suffix[$type]);
 				// if a suffix is defined and the end of the action name does not contain it -- append it
@@ -49,33 +44,33 @@ class A_Controller_Action_Loader {
 				}
 			}
 			
-			if ($this->responseSet) {
-				// this is the section for when setResponse() is called
-				
+			if ($this->responseSet) { // this is the section for when setResponse() is called
 				// templates are a template filename, not a class name -- need to load/create template class
 				if ($type == 'template') {
 				    include_once 'A/Template.php';
 				    $obj = new A_Template_Include($this->scopePath . $this->dirs['template'] . $class . '.php');
 				} else {
-					// load class if necessary
-					$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]);
+					$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]); // load class if necessary
 				}
 
-			    $response = $this->locator->get('Response');
-			    if ($response) {
-			    	if ($this->responseName) {
-			    		$response->set($this->responseName, $obj);
+				$response = $this->locator->get('Response');
+				if ($response) {
+					if ($this->responseName) {
+						$response->set($this->responseName, $obj);
 					} else {
-			    		$response->setContent($obj->render());
-			    	}
-			    } else {
-			    	echo $obj->render();	// do we really want this option? or should the action do this?
-			    }
+						$response->setContent($obj->render());
+					}
+				} else {
+					echo $obj->render();	// do we really want this option? or should the action do this?
+				}
 			} else {
 				// load class if necessary
 				$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]);
 			}
-			
+
+			//reset scope and response
+			$this->scopePath = null;
+			$this->responseSet = false;
 			return $obj;
 		}
 	}
