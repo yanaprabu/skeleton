@@ -8,6 +8,7 @@ class A_Controller_Action_Loader {
 	protected $suffix;
 	protected $scopePath;
 	protected $responseName = '';
+	protected $responseSet = false;
 	
 	public function __construct($locator, $paths, $dirs, $action) {
 		$this->locator = $locator;
@@ -25,7 +26,8 @@ class A_Controller_Action_Loader {
 		return $this;
 	}
 
-	public function setResponse($name='') {
+	public function setResponse($name='') {	
+		$this->responseSet = true;
 		$this->responseName = $name;
 		return $this;
 	}
@@ -47,7 +49,7 @@ class A_Controller_Action_Loader {
 				}
 			}
 			
-			if (strlen($this->responseName)) {
+			if ($this->responseSet) {
 				// this is the section for when setResponse() is called
 				
 				// templates are a template filename, not a class name -- need to load/create template class
