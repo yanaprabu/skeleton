@@ -25,7 +25,7 @@ class A_Controller_Action_Loader {
 		return $this;
 	}
 
-	public function setResponse($name='') {	
+	public function response($name='') {	
 		$this->responseSet = true;
 		$this->responseName = $name;
 		return $this;

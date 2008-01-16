@@ -38,11 +38,11 @@ class example extends A_Controller_Action {
 	}
 
 	function foo($locator) {
-		$this->autoRender();
+		$this->load()->response()->template();
 	}
 
 	function bar($locator) {
-		$this->load()->setResponse()->template();
+		$this->load()->response()->template();
 	}
 
 }

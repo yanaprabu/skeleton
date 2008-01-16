@@ -40,23 +40,6 @@ class A_Controller_Action {
 		return $this->loader->setScope($module);
 	}
 
-	protected function autoRender($name='', $path='module') {
-	    include_once 'A/Template.php';
-	    $filename = $this->paths[$path] . $this->dirs['template'] . $this->action . '.php';
-	    $renderer = new A_Template_Include($filename);
-	    $response = $this->locator->get('Response');
-	    if ($response) {
-	    	if ($name) {
-	    		$response->set($name, $renderer);
-			} else {
-	    		$response->setContent($renderer->render());
-	    	}
-	    } else {
-	    	echo $renderer->render();
-	    }
-		return $renderer;
-	}
-	
 	protected function _forward($dir, $class, $method, $args=null){
 		$forward = new A_DL($dir, $class, $method, $args=null);
 		return $forward;
