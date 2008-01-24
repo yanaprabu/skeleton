@@ -19,7 +19,6 @@ $ErrorAction = new A_DL('', 'error', 'run');
 $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $DefaultAction);
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
-$Controller->addPreFilter('A_Controller_Action', new A_Controller_Action_Injector($Mapper));
 $Controller->run($Locator);
 
 $Response->out();

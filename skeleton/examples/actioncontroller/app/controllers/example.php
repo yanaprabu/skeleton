@@ -38,7 +38,7 @@ class example extends A_Controller_Action {
 	}
 
 	function foo($locator) {
-		$this->load()->response()->template();
+		$this->load()->response()->view();
 	}
 
 	function bar($locator) {

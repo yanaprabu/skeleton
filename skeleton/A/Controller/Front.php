@@ -22,6 +22,7 @@ class A_Controller_Front {
     }
 
     public function run($locator) {
+        $locator->set('Mapper', $this->_mapper);		// set mapper in registry for mvc loader to use
         $action = $this->_mapper->doMapping($locator);
 		$error_action = $this->_error_action;
         while ($action) {

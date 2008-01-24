@@ -2,40 +2,67 @@
 
 class A_Controller_Action_Loader {
 	protected $locator;
-	protected $paths;
-	protected $dirs;
-	protected $action;
+	protected $paths = array('global'=>'', 'module'=>'', 'local'=>'');
+	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
+	protected $action = null;
 	protected $suffix = array('model'=>'Model', 'view'=>'View');
 	protected $scopePath;
 	protected $responseName = '';
 	protected $responseSet = false;
+	protected $errorMsg = '';
 	
-	public function __construct($locator, $paths, $dirs, $action) {
+	public function __construct($locator){
 		$this->locator = $locator;
-		$this->paths = $paths;
-		$this->dirs = $dirs;
-		$this->action = $action;
+		if ($locator) {
+			$mapper = $locator->get('Mapper');
+			if ($mapper) {
+				$this->setMapper($mapper);
+			}
+		}
 	}
 	 
-	public function setScope($module=null) {
-		if (! isset($this->paths[$module])) {
-			$module = 'module';     // the default setting e.g., "/app/module/models"
+	public function setMapper($mapper){
+		if ($mapper) {
+			$this->paths['global'] = $mapper->getBasePath();
+			$this->paths['module'] = $this->paths['global'] . $mapper->getDir();
+			$this->paths['local'] = $this->paths['module'] . $mapper->getClassDir();
+			$this->action = $mapper->getClass();
 		}
-		$this->scopePath = $this->paths[$module];
-		return $this;
 	}
-
+		
+	protected function setPath($name, $path, $relative_name=''){
+		$path = $path ? (rtrim($path, '/') . '/') : '';		// add trailing dir separator
+		if ($relative_name) {
+			$this->paths[$name] = $this->paths[$relative_name] . $path;
+		} else {
+			$this->paths[$name] = $path;
+		}
+	}
+	
+	protected function setDir($name, $dir){
+		$this->dirs[$name] = $dir ? (rtrim($dir, '/') . '/') : '';
+	}
+	
 	public function response($name='') {	
 		$this->responseSet = true;
 		$this->responseName = $name;
 		return $this;
 	}
 
+	public function load($module=null) {
+		if (! isset($this->paths[$module])) {
+			$module = 'module';	 // the default setting e.g., "/app/module/models"
+		}
+		$this->scopePath = $this->paths[$module];
+		return $this;
+	}
+
 	public function __call($type, $params) {
+		$obj = null;
 		// is this a defined type of subdirectory
 		if (isset($this->dirs[$type])) {
 			// get class name parameter or use action name
-			$class = isset($params[0]) ? $params[0] : $this->action;
+			$class = isset($params[0]) && $params[0] ? $params[0] : $this->action;
 			if (isset($this->suffix[$type])) {
 				$length = strlen($this->suffix[$type]);
 				// if a suffix is defined and the end of the action name does not contain it -- append it
@@ -44,17 +71,19 @@ class A_Controller_Action_Loader {
 				}
 			}
 			
-			if ($this->responseSet) { // this is the section for when setResponse() is called
-				// templates are a template filename, not a class name -- need to load/create template class
-				if ($type == 'template') {
-				    include_once 'A/Template.php';
-				    $obj = new A_Template_Include($this->scopePath . $this->dirs['template'] . $class . '.php');
-				} else {
-					$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]); // load class if necessary
+			// templates are a template filename, not a class name -- need to load/create template class
+			if ($type == 'template') {
+				include_once 'A/Template.php';
+				$obj = new A_Template_Include($this->scopePath . $this->dirs['template'] . $class . '.php');
+			} elseif ($this->locator) {
+				if ($this->locator->loadClass($class, $this->scopePath . $this->dirs[$type])) { // load class if necessary
+					$obj = new $class($this->locator);
 				}
+			}
 
+			if ($obj && $this->responseSet) { // this is the section for when setResponse() is called
 				$response = $this->locator->get('Response');
-				if ($response) {
+				if ($response && $obj) {
 					if ($this->responseName) {
 						$response->set($this->responseName, $obj);
 					} else {
@@ -63,11 +92,11 @@ class A_Controller_Action_Loader {
 				} else {
 					echo $obj->render();	// do we really want this option? or should the action do this?
 				}
-			} else {
-				// load class if necessary
-				$obj = $this->locator->get($class, $class, $this->scopePath . $this->dirs[$type]);
 			}
 
+			if (! $obj) {
+				$this->errorMsg .= "Could no load() {$this->dirs[$type]}{$this->scopePath}.php";
+			}
 			//reset scope and response
 			$this->scopePath = null;
 			$this->responseSet = false;
