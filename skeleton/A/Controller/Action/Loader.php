@@ -8,6 +8,7 @@ class A_Controller_Action_Loader {
 	protected $suffix = array('model'=>'Model', 'view'=>'View');
 	protected $scopePath;
 	protected $responseName = '';
+	protected $renderClass = 'A_Template_Include';
 	protected $responseSet = false;
 	protected $errorMsg = '';
 	
@@ -43,6 +44,10 @@ class A_Controller_Action_Loader {
 		$this->dirs[$name] = $dir ? (rtrim($dir, '/') . '/') : '';
 	}
 	
+	protected function setRenderClass($name){
+		$this->renderClass = $name;
+	}
+	
 	public function response($name='') {	
 		$this->responseSet = true;
 		$this->responseName = $name;
@@ -73,8 +78,8 @@ class A_Controller_Action_Loader {
 			
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
-				include_once 'A/Template/Include.php';
-				$obj = new A_Template_Include($this->scopePath . $this->dirs['template'] . $class . '.php');
+				include_once str_replace('_', '/', $this->renderClass) . '.php';
+				$obj = new $this->renderClass($this->scopePath . $this->dirs['template'] . $class . '.php');
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $this->scopePath . $this->dirs[$type])) { // load class if necessary
 					$obj = new $class($this->locator);
