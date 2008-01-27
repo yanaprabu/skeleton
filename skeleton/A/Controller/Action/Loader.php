@@ -73,7 +73,7 @@ class A_Controller_Action_Loader {
 			
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
-				include_once 'A/Template.php';
+				include_once 'A/Template/Include.php';
 				$obj = new A_Template_Include($this->scopePath . $this->dirs['template'] . $class . '.php');
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $this->scopePath . $this->dirs[$type])) { // load class if necessary
