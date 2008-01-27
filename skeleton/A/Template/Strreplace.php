@@ -1,5 +1,5 @@
 <?php
-include_once('A/Template.php');
+include_once('A/Template/File.php');
 
 class A_Template_Strreplace extends A_Template_File {
 	protected $tagprefix = '{';

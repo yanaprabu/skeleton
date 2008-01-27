@@ -1,5 +1,5 @@
 <?php
-if (!class_exists('A_Template')) include 'A/Template.php';
+include_once 'A/Template.php';
 
 class A_Template_Xslt extends A_Template {
 	protected $filenamexml = '';

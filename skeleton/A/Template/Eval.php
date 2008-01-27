@@ -1,6 +1,6 @@
 <?php
 
-include_once('A/Template.php');
+include_once('A/Template/File.php');
 
 class A_Template_Eval extends A_Template_File {
 	protected $str = '';
