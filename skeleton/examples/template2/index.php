@@ -22,7 +22,7 @@ $Locator->set('Response', $Response);
  
 $DefaultAction = new A_DL('', 'example', 'run');
 $ErrorAction = new A_DL('', 'error', 'run');
-$Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $DefaultAction);
+$Mapper = new A_Controller_Mapper($ConfigArray['APP'], $DefaultAction);
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
@@ -32,7 +32,7 @@ $Controller->run($Locator);
  
 if (! $Response->hasRenderer()) {
     // create a page renderer and load the outer layout page template
-    $Template = new A_Template_Strreplace('http://skeleton/examples/template2/app/templates/main.html');
+    $Template = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/main.html');
     $Response->setRenderer($Template);
    
     // get the layout specified by the Action
@@ -41,7 +41,7 @@ if (! $Response->hasRenderer()) {
         $Layout_name = 'standardlayout';    // or use the default
     }
     // load the layout for just the content area
-    $Layout = new A_Template_Strreplace('http://skeleton/examples/template2/app/templates/layout/' . $Layout_name . '.html');
+    $Layout = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.html');
     // set the two possible columns
     $Layout->set('maincontent', $Response->get('maincontent'));
     $Layout->set('rightcol', $Response->get('rightcol'));
