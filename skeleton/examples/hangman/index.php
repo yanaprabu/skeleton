@@ -3,16 +3,16 @@
 // Hangman game example ported from WACT hangman example and refactored to
 // follow MVC pattern.
 
-require_once 'config.php';
+include_once 'config.php';
 
-require_once 'A/Locator.php';
-require_once 'A/Http/Request.php';
-require_once 'A/Http/Response.php';
-require_once 'A/Template.php';
-require_once 'A/Rule.php';
-require_once 'A/Filter.php';
-require_once 'A/Controller/Input.php';
-require_once 'A/Controller/App.php';
+include_once 'A/Locator.php';
+include_once 'A/Http/Request.php';
+include_once 'A/Http/Response.php';
+include_once 'A/Template/Strreplace.php';
+include_once 'A/Rule.php';
+include_once 'A/Filter.php';
+include_once 'A/Controller/Input.php';
+include_once 'A/Controller/App.php';
 
 //-----------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@ include 'A/Http/Response.php';
 include 'A/Controller/Front.php';
 include 'A/Controller/Mapper.php';
 include 'A/Controller/Action.php';
-include 'A/Template.php';
+include 'A/Template/Strreplace.php';
 
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();

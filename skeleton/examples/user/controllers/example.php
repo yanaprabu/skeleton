@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Template.php';
+include_once 'A/Template/Strreplace.php';
 
 class example {
 	var $content;

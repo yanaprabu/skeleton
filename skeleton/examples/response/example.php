@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 include 'A/Http/Response.php';
-include 'A/Template.php';
+include 'A/Template/Strreplace.php';
 
 $response = new A_Http_Response();
 

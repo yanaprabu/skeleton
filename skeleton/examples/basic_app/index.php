@@ -9,7 +9,7 @@ require_once 'A/Http/Response.php';
 require_once 'A/Http/PathInfo.php';
 require_once 'A/Controller/Front.php';
 require_once 'A/Controller/Mapper.php';
-require_once 'A/Template.php';
+require_once 'A/Template/Strreplace.php';
 
 $Locator = new A_Locator();
 $Request = new A_Http_Request();

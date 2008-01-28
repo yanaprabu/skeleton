@@ -1,6 +1,6 @@
 <?php
 include_once 'A/DL.php';
-include_once 'A/Template.php';
+include_once 'A/Template/Strreplace.php';
 include_once 'A/Controller/Form.php';
 include_once 'A/Controller/Form/Field.php';
 include_once 'A/Filter/Regexp.php';
@@ -25,7 +25,7 @@ class EditController extends A_Controller_Form {
 		$this->formfield = new A_Controller_Form_Field();
 		$this->formfield->setDB($db);
 		
-		$this->template = new A_TemplateStrReplace();
+		$this->template = new A_Template_Strreplace();
 		
 		$handlers = array(
 			'init' => new A_DLInstance($this, 'init'), 
@@ -253,7 +253,7 @@ class EditController extends A_Controller_Form {
 		$row = '';
 		$content = '';
 
-		$template = new A_TemplateStrReplace($this->template_file);
+		$template = new A_Template_Strreplace($this->template_file);
 		$template->makeBlocks();
 		
 		if ($id) {

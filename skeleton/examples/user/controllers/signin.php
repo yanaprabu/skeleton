@@ -1,7 +1,7 @@
 <?php
 include_once 'A/Controller_Input.php';
 include_once 'A/Rule/Length.php';
-include_once 'A/Template.php';
+include_once 'A/Template/Strreplace.php';
 
 include_once 'UserTableGateway.php';
 

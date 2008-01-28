@@ -1,7 +1,7 @@
 <?php
 include_once 'A/Http/Upload.php';
 include_once 'A/Http/UploadForm.php';
-include_once 'A/Template.php';
+include_once 'A/Template/Strreplace.php';
 
 class upload_files {
 	var $content;

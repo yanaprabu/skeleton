@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ALL);
 require_once('config.php');
-require_once('A/Template.php');
+require_once('A/Template/Include.php');
+require_once('A/Template/Strreplace.php');
 
 echo '<h3>Template is PHP file</h3>';
 $template = new A_Template_Include('templates/example1.php');
