@@ -94,7 +94,7 @@ $Mapper->run($Request);
 <li><a href="<?php echo $_SERVER["SCRIPT_NAME"]; ?>/country/US/300">/country/US/300</a></li>
 <li><a href="<?php echo $_SERVER["SCRIPT_NAME"]; ?>/country/JP/400">/country/JP/400</a></li>
 <li><a href="<?php echo $_SERVER["SCRIPT_NAME"]; ?>/sports/">/sports/</a></li>
-<li><a href="<?php echo $_SERVER["SCRIPT_NAME"]; ?>/sports/">/sports/swimming/</a></li>
+<li><a href="<?php echo $_SERVER["SCRIPT_NAME"]; ?>/sports/swimming/">/sports/swimming/</a></li>
 </ul>
 <a href="<?php echo dirname($_SERVER["SCRIPT_NAME"]); ?>/..">Return to Examples Menu</a>
 </td>
