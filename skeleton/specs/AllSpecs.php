@@ -1,5 +1,5 @@
 <?php
-$phpspec_path = 'set your path here';
+$phpspec_path = '.';
 $library_path = '..';
 set_include_path(get_include_path() . PATH_SEPARATOR . $phpspec_path . PATH_SEPARATOR . $library_path);
 
