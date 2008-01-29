@@ -1,5 +1,5 @@
 <?php
-$phpspec_path = 'c:/Users/ct/workspace/php/PHPSpec';
+$phpspec_path = 'set your path here';
 $library_path = '..';
 set_include_path(get_include_path() . PATH_SEPARATOR . $phpspec_path . PATH_SEPARATOR . $library_path);
 
