@@ -3,7 +3,7 @@ $phpspec_path = '.';
 $library_path = '..';
 set_include_path(get_include_path() . PATH_SEPARATOR . $phpspec_path . PATH_SEPARATOR . $library_path);
 
-require_once 'Framework.php';
+require_once 'PHPSpec/Framework.php';
 
 $options = new stdClass;
 $options->recursive = true;
