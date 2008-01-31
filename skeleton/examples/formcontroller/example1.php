@@ -3,7 +3,7 @@ require_once('config.php');
 require_once('A/Locator.php');
 require_once('A/Http/Request.php');
 require_once('A/Http/Response.php');
-require_once('controller/Form1.php');
+require_once('controllers/Form1.php');
 
 $Locator = new A_Locator();
 $Response = new A_Http_Response();
