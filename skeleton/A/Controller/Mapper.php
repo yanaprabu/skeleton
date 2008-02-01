@@ -88,7 +88,8 @@ class A_Controller_Mapper
 	}
 
 	public function getPath() {
-		return $this->base_path . ($this->dir ? $this->dir : $this->default_dir) . $this->class_dir;
+		return $this->base_path . $this->dir . $this->class_dir;
+#		return $this->base_path . ($this->dir ? $this->dir : $this->default_dir) . $this->class_dir;
 	}
 
 	public function buildClass($base) {
@@ -110,7 +111,11 @@ class A_Controller_Mapper
 
 		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/', '/[^a-zA-Z0-9\_\-]/');
 		$this->dir = preg_replace($regex, array(''), $request->get($this->dir_param));
-		if ($this->dir) $this->dir .= '/';		// paths have trailing slash
+		if ($this->dir) {
+			$this->dir .= '/';		// paths have trailing slash
+		} else {
+			$this->dir = $this->default_dir;
+		}
 		$this->class = preg_replace($regex, array(''), $request->get($this->class_param));
 		$this->method = preg_replace($regex, array(''), $request->get($this->method_param));
 		
