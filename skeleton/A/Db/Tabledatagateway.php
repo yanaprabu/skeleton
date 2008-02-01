@@ -1,7 +1,6 @@
 <?php
-include_once 'A/Db/Sql/Common.php';
 
-class A_Db_Tabledatagateway extends A_Db_Sql_Common {
+class A_Db_Tabledatagateway {
 	protected $db;
 	protected $table = '';
 	protected $key = 'id';
