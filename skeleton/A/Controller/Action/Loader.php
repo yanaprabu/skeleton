@@ -84,6 +84,12 @@ class A_Controller_Action_Loader {
 			if ($type == 'template') {
 				include_once str_replace('_', '/', $this->renderClass) . '.php';
 				$obj = new $this->renderClass($this->scopePath . $this->dirs['template'] . $class . '.php');
+				// if 2nd param is array then use it to set template values
+				if (isset($params[1]) && is_array($params[1])) {
+					foreach ($params[1] as $key => $val) {
+						$obj->set($key, $val);
+					}
+				}
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $this->scopePath . $this->dirs[$type])) { // load class if necessary
 					$obj = new $class($this->locator);
