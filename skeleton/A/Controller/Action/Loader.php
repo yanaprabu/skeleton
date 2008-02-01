@@ -48,6 +48,10 @@ class A_Controller_Action_Loader {
 		$this->renderClass = $name;
 	}
 	
+	public function getErrorMsg() {	
+		return $this->errorMsg;
+	}
+
 	public function response($name='') {	
 		$this->responseSet = true;
 		$this->responseName = $name;
@@ -83,6 +87,8 @@ class A_Controller_Action_Loader {
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $this->scopePath . $this->dirs[$type])) { // load class if necessary
 					$obj = new $class($this->locator);
+				} else {
+					$this->errorMsg .=  "Error: locator->loadClass('$class', '{$this->scopePath}', '{$this->dirs[$type]}'). ";
 				}
 			}
 
@@ -100,7 +106,7 @@ class A_Controller_Action_Loader {
 			}
 
 			if (! $obj) {
-				$this->errorMsg .= "Could no load() {$this->dirs[$type]}{$this->scopePath}.php";
+				$this->errorMsg .= "Could not load() {$this->dirs[$type]}{$this->scopePath}.php. ";
 			}
 			//reset scope and response
 			$this->scopePath = null;
