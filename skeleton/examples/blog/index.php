@@ -13,6 +13,8 @@ include 'A/Http/PathInfo.php';
 include 'A/Controller/Front.php';
 include 'A/Controller/Mapper.php';
 include 'A/Controller/Action.php';
+include 'A/Template/Strreplace.php';
+include 'A/Template/Include.php';
 
 $Locator = new A_Locator();
 $Response = new A_Http_Response();
@@ -23,36 +25,56 @@ $Locator->set('Response', $Response);
 /* Map request */
 $map = array(
 	'' => array(
-		0 => array('name'=>'controller', 'default'=>'home'),
-		1 => array('name'=>'action', 'default'=>'run'),
-		2 => array('name'=>'id','default'=>''),
-		),
-	
-	'module1' => array(   // if 'module1' is found in the first element of PATH_INFO use the map below
-		0 => array('name'=>'module', 'default'=>'module1'),
-		1 => array('name'=>'controller', 'default'=>'example'),
+		0 => array('name'=>'module', 'default'=>''),
+		1 => array('name'=>'controller', 'default'=>'home'),
 		2 => array('name'=>'action', 'default'=>'run'),
-		3 => array('name'=>'id','default'=>'today'),
+		3 => array('name'=>'id','default'=>''),
 		),
-	'admin' => array(	// if 'admin' is found in the first element of PATH_INFO use the map below
+	'articles' => array(	// map to controller articles when /articles/
 		'' => array(
-			'module',
 			'controller',
 			'action',
 			'id',
 			),
 		),
+	'blog' => array(	// map to module blog when /blog/
+		'' => array(
+			0 => array('name'=>'module', 'default'=>'blog'),
+			1 => array('name'=>'controller', 'default'=>'index'),
+			2 => array('name'=>'action', 'default'=>'run'),
+			3 => array('name'=>'id','default'=>''),
+			),
+		),
 	);
+
 $Mapper = new A_Http_PathInfo($map);
 $Mapper->run($Request);
 
-$DefaultAction = new A_DL('', 'home', 'run');
+$Action = new A_DL('', 'home', 'run');
 $ErrorAction = new A_DL('', 'error', 'run');
 
-$Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $DefaultAction);
+$Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $Action);
+//$Mapper->setDefaultDir('/app/blog/'); ??
 
-$Controller = new A_Controller_Front($Mapper, $ErrorAction);
+$Controller = new A_Controller_Front($Mapper, $Action);
 $Controller->run($Locator);
+if (! $Response->hasRenderer()) { 
+    // create a page renderer and load the outer layout page template
+    $Template = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/main.html');
+    $Response->setRenderer($Template);
+    // get the layout specified by the Action
+    $Layout_name = $Response->get('layout');
+    if (! $Layout_name) {
+        $Layout_name = 'standardlayout';    // or use the default
+    }
+    $Layout = new A_Template_Include($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.php');
+    // set the two possible columns
+	$Layout->set('maincontent', $Response->get('maincontent'));
+    $Layout->set('subcontent', $Response->get('subcontent'));
+
+    // render the sub-layout as the content area of the main outer layout
+    $Response->set('content', $Layout->render());
+} 
 
 $Response->out();
 ?>

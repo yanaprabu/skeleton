@@ -1,6 +1,7 @@
 RewriteEngine on
 RewriteBase /examples/blog/
-RewriteRule !\.(php|htm|html|cgi|js|ico|gif|jpg|png|css)$ index.php
+#RewriteRule !\.(php|htm|html|cgi|js|ico|gif|jpg|png|css)$ index.php
+RewriteRule !\.[a-zA-Z0-9]{2,4}$ index.php
 #or a la wp
 #<IfModule mod_rewrite.c>
 #RewriteEngine On

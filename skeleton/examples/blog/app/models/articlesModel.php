@@ -12,6 +12,6 @@ class articlesModel {
 		return 'bar';
 	}
 	function listAll(){
-		return array('one article','two article');
+		return array('one article','twoeee article');
 	}
 }
