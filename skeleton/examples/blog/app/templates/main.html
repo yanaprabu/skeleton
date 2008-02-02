@@ -1,0 +1,31 @@
+<?php
+
+?>
+<html>
+
+<body>
+<div id="container">
+
+	<div id="header">
+		<h1>This is the main template</h1>
+	</div>
+	
+	<div id="menubar">
+		<ul>
+			<li><a href="/examples/blog/">/home</a></li>
+			<li><a href="/examples/blog/blog/">/blog/</a></li>
+			<li><a href="/examples/blog/blog/posts/">/blog/posts/</a></li>
+			<li><a href="/examples/blog/articles/">/articles/</a></li>
+			<li><a href="/examples/blog/articles/all/">/articles/all/</a></li>
+		</ul>
+		<p>This template is the outer "main" template, in which the content is included</p>
+		<p>Right of this is the content</p>
+	</div>
+	
+	<div id="content">
+		{content}
+	</div>
+
+</div>
+</body>
+</html>

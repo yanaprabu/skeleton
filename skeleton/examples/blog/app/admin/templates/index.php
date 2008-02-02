@@ -1,0 +1,1 @@
+<h2>This is the index file for admin</h2>
