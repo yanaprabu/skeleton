@@ -111,18 +111,22 @@ class A_Db_Tabledatagateway {
 		} else {
 			$this->fields = $fields;
 		}
+		return $this;
 	}
 
 	public function sortTable($table) {
 		$this->table = $table;
+		return $this;
 	}
 
 	public function sortKey($key) {
 		$this->key = $key;
+		return $this;
 	}
 
 	public function limit($start, $size) {
 		$this->limit = " LIMIT $start, $size";
+		return $this;
 	}
 
 	public function update($id, $data) {

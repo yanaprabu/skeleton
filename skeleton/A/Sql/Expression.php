@@ -34,6 +34,7 @@ class A_Sql_Expression extends A_Sql_Abstract {
 	*/		
 	public function setEscapeCallback($db) {
 		$this->escapeCallback = $db;
+		return $this;
 	}			
 
 	/**

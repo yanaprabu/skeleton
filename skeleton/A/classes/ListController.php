@@ -22,22 +22,27 @@ protected $pagerdb = null;
 		if ($block_layout) $this->template_block_layout = $block_layout;
 		if ($block_row) $this->template_block_row = $block_row;
 		if ($block_none) $this->template_block_none = $block_none;
+		return $this;
 	}
 
 	public function setBaseURL($url) {
 		$this->base_url = $url;
+		return $this;
 	}
 
 	public function setTable($table) {
 		$this->table = $table;
+		return $this;
 	}
 
 	public function setFields($fields) {
 		$this->fields = $fields;
+		return $this;
 	}
 
 	public function setOrderByFields($fields) {
 		$this->order_by = $fields;
+		return $this;
 	}
 
 	public function addSearchField($field, $param=null, $regex=null, $logic=null, $comparison=null, $prefix=null, $suffix=null) {
@@ -48,10 +53,12 @@ protected $pagerdb = null;
 		if ($prefix == null) $prefix = '%';
 		if ($suffix == null) $suffix = '%';
 		$this->search_fields[$field] = array('param'=>$param, 'regex'=>$regex, 'logic'=>$logic, 'comparison'=>$comparison, 'prefix'=>$prefix, 'suffix'=>$suffix);
+		return $this;
 	}
 
 	public function addSearchRegex($regex) {
 		$this->search_regex = $regex;
+		return $this;
 	}
 
 	public function render($locator) {

@@ -15,12 +15,14 @@ class A_Controller_App extends A_Controller_Input {
 	public function setInitState($state_name) {
 		$this->state_name = $state_name;
 		$this->state_name_init = $state_name;
+		return $this;
 	}
 
 	public function addState($state) {
 		if (($state instanceof A_Controller_App_State) && $state->name) {
 			$this->states[$state->name] = $state;
 		}
+		return $this;
 	}
 	
 	public function addTransition($transition) {

@@ -21,14 +21,17 @@ public function isSubmitted() {
 
 public function setFileParam($name) {
 	$this->file_param = $name;
+	return $this;
 }
 
 public function setPathParam($path) {
 	$this->path_param = $path;
+	return $this;
 }
 
 public function setSubmitParam($name) {
 	$this->submit_param = $name;
+	return $this;
 }
 
 public function setBasePath($base_path) {
@@ -38,10 +41,12 @@ public function setBasePath($base_path) {
 		}
 		$this->base_path = $base_path;
 	}
+	return $this;
 }
 
 public function setMinFilesize($min) {
 	$this->min_size = $min;
+	return $this;
 }
 
 public function setMaxFilesize($max)
@@ -51,19 +56,23 @@ public function setMaxFilesize($max)
 	if ($max && (($max < $this->max_size) || ($this->max_size == 0)) ) {
 		$this->max_size = $max;
 	}
+	return $this;
 }
 
 public function setAllowedTypes($types=array()) {
 	$this->allowed_types = $types;
+	return $this;
 }
 
 public function setReplace($replace) {
 	$this->replace = $replace;
+	return $this;
 }
 
 public function addPath($id, $path, $label='') {
 	$this->paths[$id] = $path;
 	$this->labels[$id] = $label;
+	return $this;
 }
 
 public function fileCount() {
@@ -125,6 +134,7 @@ public function setFileOption($value, $option, $n=0, $param='') {
 	} else {
 		$_FILES[$param][$option] = $value;
 	}
+	return $this;
 }
 
 public function getFileName($n=0, $param='') {

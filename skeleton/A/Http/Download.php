@@ -11,6 +11,7 @@ public function setMimeType ($type)
 	if ($type) {
 		$this->mime_type = $type;
 	}
+	return $this;
 }
 
 /*
@@ -21,6 +22,7 @@ public function setEncoding ($encoding)
 	if ($encoding) {
 		$this->encoding = $encoding;
 	}
+	return $this;
 }
 
 /*
@@ -32,6 +34,7 @@ public function setSourceFilePath ($path)
 	if ($path) {
 		$this->source_file = $path;
 	}
+	return $this;
 }
 
 /*
@@ -43,6 +46,7 @@ public function setTargetFileName ($name)
 	if ($name) {
 		$this->target_file = $name;
 	}
+	return $this;
 }
 
 /*
@@ -53,6 +57,7 @@ public function setContentLength ($length)
 	if ($length) {
 		$this->content_length = $length;
 	}
+	return $this;
 }
 
 protected function _header ($name, $value)

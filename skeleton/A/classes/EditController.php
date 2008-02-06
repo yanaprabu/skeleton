@@ -38,27 +38,33 @@ class EditController extends A_Controller_Form {
 	public function setTemplate($file, $block_layout='') {
 		$this->template_file = $file;
 		if ($block_layout) $this->template_block_layout = $block_layout;
+		return $this;
 	}
 
 	public function setTemplateText($text) {
 		$this->template_text = $text;
+		return $this;
 	}
 
 	public function setRedirectURL($url) {
 		$this->redirect_url = $url;
+		return $this;
 	}
 
 	public function setBaseURL($url) {
 		$this->base_url = $url;
+		return $this;
 	}
 
 	public function setTable($table, $table_key) {
 		$this->table = $table;
 		$this->table_key = $table_key;
+		return $this;
 	}
 
 	public function setFields($fields) {
 		$this->fields = $fields;
+		return $this;
 	}
 
 	public function run($locator) {

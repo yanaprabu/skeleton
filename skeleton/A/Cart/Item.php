@@ -35,6 +35,7 @@ public function getUnitPrice() {
 
 public function setUnitPrice($price) {
     $this->unitprice = $price;
+	return $this;
 }
 
 public function getPrice() {
@@ -49,10 +50,12 @@ public function setData($name, $value) {
     if ($name) {
     	$this->data[$name] = $value;
     }
+	return $this;
 }
 
 public function setUnique($isunique=true) {
     $this->isunique = $isunique;
+	return $this;
 }
 
 public function isUnique() {
@@ -70,6 +73,7 @@ public function setQuantity($quantity) {
     	}
 	}
    	$this->quantity = intval($quantity);
+	return $this;
 }
 
 public function setQuantityFixed($quantityfixed) {
@@ -81,6 +85,7 @@ public function setQuantityFixed($quantityfixed) {
 		}
 		$this->setQuantity($this->quantity);	// recalcualte the quantity
     }
+	return $this;
 }
 
 public function sameAs($item) {
@@ -90,6 +95,7 @@ public function sameAs($item) {
 
 public function add($item) {
     $this->setQuantity($this->quantity + $item->getQuantity());
+	return $this;
 }
 
 public function addData($data) {

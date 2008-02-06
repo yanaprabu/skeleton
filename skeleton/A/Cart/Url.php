@@ -16,6 +16,7 @@ class A_Cart_Url
 public function setManager ($cart)
 {
 	$this->cart = $cart;
+	return $this;
 }
 
 public function setBaseURL ($base_url)
@@ -28,6 +29,7 @@ public function setBaseURL ($base_url)
 		$base_url .= '?';
 	}
 	$this->base_url = $base_url;
+	return $this;
 }
 
 #

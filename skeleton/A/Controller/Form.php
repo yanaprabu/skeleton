@@ -16,12 +16,14 @@ class A_Controller_Form extends A_Controller_App {
 	
 	public function setStateHandlers($state_handlers) {
 		$this->state_handlers = $state_handlers;
+		return $this;
 	}
 	
 	public function setSubmitParameterName($name) {
 		if ($name) {
 			$this->submit_param_name = $name;
 		}
+		return $this;
 	}
 	
 	public function getSaveValues() {
@@ -85,18 +87,22 @@ public $save = true;
 	public function setType($type, $addtype='') {
 		$this->type = $type;
 		$this->addtype = $addtype;
+		return $this;
 	}
 	
 	public function setDefault($value) {
 		$this->default = $value;
+		return $this;
 	}
 	
 	public function setSourceName($value) {
 		$this->source_name = $value;
+		return $this;
 	}
 	
 	public function setSave($value=true) {
 		$this->save = $value;
+		return $this;
 	}
 
 }

@@ -62,6 +62,7 @@ class A_Cart_Payment_Payflow
 	
 	public function setServer($value) {
 		$this->server = $value;
+		return $this;
 	}
 	
 	public function setServerMode($mode=A_Cart_Payment_Payflow::SERVER_LIVE) {
@@ -77,50 +78,62 @@ class A_Cart_Payment_Payflow
 			$this->server = $this->serverlist[self::SERVER_LIVE];
 		}
 		$this->servermode = $mode;
+		return $this;
 	}
 	
 	public function setFraud($value) {
 		$this->fraud = ($value === true) || (strtoupper($value)=='YES') ? 'YES' : 'NO';
+		return $this;
 	}
 	
 	public function setUser($value) {
 		$this->transaction['USER'] = $value;
+		return $this;
 	}
 	
 	public function setPassword($value) {
 		$this->transaction['PWD'] = $value;
+		return $this;
 	}
 	
 	public function setPartner($value) {
 		$this->transaction['PARTNER'] = $value;
+		return $this;
 	}
 	
 	public function setTransactionType($value) {
 		$this->transaction['TRXTYPE'] = $value;
+		return $this;
 	}
 	
 	public function setTransactionID($value) {
 		$this->transactionID = $value;
+		return $this;
 	}
 	
 	public function setCurrency($value) {
 		$this->transaction['CURRENCY'] = $value;	// USD,GBP
+		return $this;
 	}
 	
 	public function setAmount($value) {
 		$this->transaction['AMT'] = $value;
+		return $this;
 	}
 	
 	public function setOrderNumber($value) {
 		$this->transaction['INVNUM'] = $value;
+		return $this;
 	}
 	
 	public function setCardNumber($value) {
 		$this->transaction['ACCT'] = $value;
+		return $this;
 	}
 	
 	public function setCardType($value) {
 		$this->transaction['ACCTTYPE'] = $value;
+		return $this;
 	}
 	
 	public function setExpDate($month, $year) {
@@ -128,50 +141,62 @@ class A_Cart_Payment_Payflow
 			$year = substr($year, -2);
 		}
 		$this->transaction['EXPDATE'] = sprintf('%02d%02d', $month, $year);
+		return $this;
 	}
 	
 	public function setCVV2($value) {
 		$this->transaction['CVV2'] = $value;
+		return $this;
 	}
 	
 	public function setName($value) {
 		$this->transaction['NAME'] = $value;
+		return $this;
 	}
 	
 	public function setFirstName($value) {
 		$this->transaction['FIRSTNAME'] = $value;
+		return $this;
 	}
 	
 	public function setLastName($value) {
 		$this->transaction['LASTNAME'] = $value;
+		return $this;
 	}
 	
 	public function setStreet($value) {
 		$this->transaction['STREET'] = $value;
+		return $this;
 	}
 	
 	public function setCity($value) {
 		$this->transaction['CITY'] = $value;
+		return $this;
 	}
 	
 	public function setState($value) {
 		$this->transaction['STATE'] = $value;
+		return $this;
 	}
 	
 	public function setZip($value) {
 		$this->transaction['ZIP'] = $value;
+		return $this;
 	}
 	
 	public function setCountry($value) {
 		$this->transaction['COUNTRY'] = $value;
+		return $this;
 	}
 	
 	public function setEmail($value) {
 		$this->transaction['EMAIL'] = $value;
+		return $this;
 	}
 
 	public function setDescription($value) {
 		$this->transaction['ORDERDESC'] = $value;
+		return $this;
 	}
 	
 	public function setComments($comment1='', $comment2='') {
@@ -181,6 +206,7 @@ class A_Cart_Payment_Payflow
 		if ($comment2) {
 			$this->transaction['COMMENT2'] = $comment2;
 		}
+		return $this;
 	}
 	
 	public function getReference() {

@@ -25,7 +25,8 @@ class A_Pager_Array {
     public function setOrderBy($field, $descending=0) {
 		$this->order_by_field = $field;
 		$this->order_by_descending = $descending;
-	}
+		return $this;
+    }
 
     public function orderBy() {
 		global $A_Pager_Array_Cmp_Key;
@@ -38,7 +39,8 @@ class A_Pager_Array {
 				usort($this->data, "pageable_array_cmp_number$reverse");
 			}
 		}
-	}
+		return $this;
+    }
 
 }
 

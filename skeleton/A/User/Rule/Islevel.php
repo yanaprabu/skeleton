@@ -15,6 +15,7 @@ class A_User_Rule_Islevel extends A_Rule {
 	
 	public function setLevel($level) {
 		$this->level = $level;
+		return $this;
 	}
 	
 	public function isValid($user) {

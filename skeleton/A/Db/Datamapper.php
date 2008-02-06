@@ -21,14 +21,17 @@ class A_Db_Datamapper {
 	
 	public function setDb($db) {
 	     $this->db = $db;
+		return $this;
 	}
 	
 	public function setClass($class_name) {
-	     $this->class_name = $class_name;
+		$this->class_name = $class_name;
+		return $this;
 	}
 	
 	public function setTable($table_name) {
-	     $this->table_name = $table_name;
+		$this->table_name = $table_name;
+		return $this;
 	}
 	
 	public function addMapping($mapping) {
@@ -42,13 +45,14 @@ class A_Db_Datamapper {
 			$this->mappings[$mapping->property_name] = $mapping;
 			$this->error = true;
 		}
-		return $this->error;
+		return $this;
 	}
 
 	public function addJoin($join) {
 		$this->joins[] = $join;
 		$this->setTableKey($join->table1, $join->field1, '');
 		$this->setTableKey($join->table2, $join->field2, '');
+		return $this;
 	}
 
 	public function getTableNames() {
@@ -154,6 +158,7 @@ class A_Db_Datamapper {
 				$this->table_keys[$table_name]['property_name'] = $property_name;
 			}
 		}
+		return $this;
 	}
 	
 	public function allowKeyChanges($flag=true) {
@@ -359,6 +364,7 @@ class A_Db_Datamapper_Mapping {
 	     		 $object->$property = $row[$this->field_name];
 	     	}
 	     }
+		return $this;
 	}
 	
 	public function setRow($row, $object) {
@@ -368,6 +374,7 @@ class A_Db_Datamapper_Mapping {
 	     		$row[$this->field_name] = $object->$property;
 	     	}
 	     }
+		return $this;
 	}
 
 	public function getTableFieldName() {

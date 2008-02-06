@@ -30,38 +30,47 @@ class A_Controller_Mapper
 
 	public function setMap($map) {
 		$this->map = $map;
+		return $this;
 	}
 
 	public function setBasePath($path) {
 		$this->base_path = $path ? rtrim($path, '/') . '/' : '';
+		return $this;
 	}
 
 	public function setDefaultDir($dir='default') {
 		$this->default_dir = $dir ? trim($dir, '/') . '/' : '';
+		return $this;
 	}
 
 	public function setClassDir($dir) {
 		$this->class_dir = $dir ? trim($dir, '/') . '/' : '';
+		return $this;
 	}
 
 	public function setDirParam($param) {
 		$this->dir_param = $param;
+		return $this;
 	}
 
 	public function setControllerParam($param) {
 		$this->class_param = $param;
+		return $this;
 	}
 
 	public function setActionParam($param) {
 		$this->method_param = $param;
+		return $this;
 	}
 
 	public function setDefaultMethod($default_method) {
 		$this->default_method = $default_method;
+		return $this;
 	}
 
 	public function setDefaultAction($default_action) {
 		$this->default_action = $default_action;
+		return $this;
 	}
 
 	public function setNaming($class_prefix='', $class_suffix='', $method_prefix='', $method_suffix='') {
@@ -69,6 +78,7 @@ class A_Controller_Mapper
 		$this->class_suffix = $class_suffix;
 		$this->method_prefix = $method_prefix;
 		$this->method_suffix = $method_suffix;
+		return $this;
 	}
 
 	public function getBasePath() {

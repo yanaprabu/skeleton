@@ -16,31 +16,38 @@ class A_Email {	protected $connection;	protected $subject = '';	protected $me
 	}
 	
 	public function setSubject($value) {
-	$this->subject = $value;
+		$this->subject = $value;
+		return $this;
 	}
 	
 	public function setMessage($value) {
 		$this->message = $value;
+		return $this;
 	}
 	
 	public function setTo($address, $name='') {
 		$this->to = $name ? $this->addressNamed($address, $name) : $address;
+		return $this;
 	}
 	
 	public function setFrom($address, $name='') {
 		$this->from = $name ? $this->addressNamed($address, $name) : $address;
+		return $this;
 	}
 	
 	public function setReplyto($address, $name='') {
 		$this->replyto = $name ? $this->addressNamed($address, $name) : $address;
+		return $this;
 	}
 	
 	public function setCC($address, $name='') {
 		$this->cc = $name ? $this->addressNamed($address, $name) : $address;
+		return $this;
 	}
 	
 	public function setBCC($address, $name='') {
 		$this->bcc = $name ? $this->addressNamed($address, $name) : $address;
+		return $this;
 	}
 	
 	public function addHeaders($value) {
@@ -48,6 +55,7 @@ class A_Email {	protected $connection;	protected $subject = '';	protected $me
 			$value .= "\r\n";
 		}
 		$this->extra_headers[] = $value;
+		return $this;
 	}
 	
 	public function send($from='', $to='', $subject='', $message='') {

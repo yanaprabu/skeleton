@@ -10,10 +10,12 @@ class A_Pager_HTMLWriterJump extends A_Pager_HTMLWriter {
 
 	public function setCurrentPageTemplate($template) {
 		$this->current_page_template = $template;
+		return $this;
 	}
 
 	public function setPageTemplate($template) {
 		$this->page_template = $template;
+		return $this;
 	}
 
     public function render($form_attr='', $submit_attr='', $option_attr='') {

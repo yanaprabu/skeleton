@@ -46,7 +46,8 @@ class A_Pager_DB {
     public function setOrderBy($field, $descending=0) {
 		$this->order_by_field = $field;
 		$this->order_by_descending = $descending;
-	}
+		return $this;
+    }
 
     public function orderBy() {
     	if ($this->order_by_field) {
@@ -58,7 +59,8 @@ class A_Pager_DB {
     	} else {
     		return '';
     	}
-	}
+		return $this;
+    }
 
 }
 

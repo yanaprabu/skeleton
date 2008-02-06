@@ -19,74 +19,82 @@ class A_Http_View {
 	
 	public function setCharacterSet($character_set) {
 		$this->character_set = $character_set;
+		return $this;
 	}
 
 	public function setQuoteStyle($escape_quote_style) {
 		$this->escape_quote_style = $escape_quote_style;
+		return $this;
 	}
 
 	public function setEscape($escape_output) {
 		$this->escape_output = $escape_output;
+		return $this;
 	}
 
 	public function setHeader($field, $param=null) {
-		 if (is_array($param)) {
+		if (is_array($param)) {
 			$this->headers[$field] = $param;
-		 } else {
+		} else {
 			$this->headers[$field][0] = $param;
-		 }
+		}
+		return $this;
 	}
 
 	public function getHeaders() {
-		 return $this->headers;
+		return $this->headers;
 	}
 
 	public function setCookie() {
-		 $args = func_get_args();
-		 $this->cookie[$args[0]] = $args;
+		$args = func_get_args();
+		$this->cookie[$args[0]] = $args;
+		return $this;
 	}
 
 	public function getCookie($name) {
-		 if (isset($this->cookie[$name])) {
-		 	return $this->cookie[$name];
-		 }
+		if (isset($this->cookie[$name])) {
+			return $this->cookie[$name];
+		}
 	}
 
 	public function setRedirect($url) {
-		 $this->redirect = $url;
+		$this->redirect = $url;
+		return $this;
 	}
 
 	public function getRedirect() {
-		 return $this->redirect;
+		return $this->redirect;
 	}
 
 	public function setContent($content) {
-		 $this->content = $content;
+		$this->content = $content;
+		return $this;
 	}
 
 	public function getContent() {
-		 return $this->content;
+		return $this->content;
 	}
 
 	public function setRenderer($renderer) {
-		 $this->renderer = $renderer;
+		$this->renderer = $renderer;
+		return $this;
 	}
 
 	public function hasRenderer() {
-		 return isset($this->renderer);
+		return isset($this->renderer);
 	}
 
 	public function set($name, $value) {
-		 $this->data[$name] = $value;
-		 return $this;
+		$this->data[$name] = $value;
+		return $this;
 	}
 
 	public function get($name) {
-		 return isset($this->data[$name]) ? $this->data[$name] : null;
+		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
 
 	public function has($name) {
-		 return isset($this->data[$name]);
+		return isset($this->data[$name]);
 	}
 
 	public function escape($content, $escape_quote_style=null) {
@@ -117,7 +125,7 @@ class A_Http_View {
 	
 	protected function load($module=null) {
 		if (! $this->loader) {
-		    include_once 'A/Controller/Action/Loader.php';
+			include_once 'A/Controller/Action/Loader.php';
 			$this->loader = new A_Controller_Action_Loader($this->locator);
 		}
 		return $this->loader->load($module);

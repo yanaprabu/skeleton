@@ -84,6 +84,7 @@ public function getDataTotal($name) {
 
 public function setOtherCost($name, $cost) {
 	$this->othercosts[$name] = $cost;
+	return $this;
 }
 
 public function getOtherCost($name) {
@@ -102,6 +103,7 @@ public function getGrandTotal() {
 
 public function setCurrency($currency) {
 	$this->currency = $currency;
+	return $this;
 }
 
 public function moneyFormat($value) {

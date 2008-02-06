@@ -24,18 +24,22 @@ class A_Rule_Captcha {
 	
     public function setCharset($value) {
 		return $this->charset = $value;
+		return $this;
     }
 
     public function setLength($value) {
 		return $this->length = $value;
+		return $this;
     }
 
     public function setBasePath($value) {
 		return $this->base_path = $value;
+		return $this;
     }
 
     public function setScriptName($value) {
 		return $this->script_name = $value;
+		return $this;
     }
 
     function isValid($request) {
@@ -56,6 +60,7 @@ class A_Rule_Captcha {
 			$this->length = $length;
 		}
 		$this->session->set($this->sessionkey,  substr(str_shuffle($this->charset), 0, $this->length));
+		return $this;
 	}
 	
 	public function getCode(){

@@ -65,6 +65,7 @@ class A_Cart_Payment_Authorizenet
 	
 	public function setServer($value) {
 		$this->server = $value;
+		return $this;
 	}
 	
 	public function setServerMode($mode=A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE) {
@@ -83,10 +84,12 @@ class A_Cart_Payment_Authorizenet
 			$this->server = $this->serverlist[A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE];
 		}
 		$this->servermode = $mode;
+		return $this;
 	}
 	
 	public function set($name, $value) {
 		$this->transaction[$name] = $value;
+		return $this;
 	}
 	
 	public function get($name) {
@@ -95,38 +98,46 @@ class A_Cart_Payment_Authorizenet
 	
 	public function setUser($value) {
 		$this->transaction['x_login'] = $value;
+		return $this;
 	}
 	
 	public function setPassword($value) {
 		$this->transaction['x_tran_key'] = $value;
+		return $this;
 	}
 	
 	public function setPartner($value) {
 	#	$this->transaction['PARTNER'] = $value;
+		return $this;
 	}
 	
 	public function setTransactionType($value) {
 		if (in_array($value, array('AUTH_CAPTURE', 'AUTH_ONLY', 'CAPTURE_ONLY', 'CREDIT', 'VOID', 'PRIOR_AUTH_CAPTURE'))) {
 			$this->transaction['x_type'] = $value;
 		}
+		return $this;
 	}
 	
 	public function setPaymentMethod($value) {
 		if (in_array($value, array('CC', 'ECHECK'))) {
 			$this->transaction['x_method'] = $value;
 		}
+		return $this;
 	}
 	
 	public function setOrderNumber($value) {
 		$this->transaction['x_invoice_num'] = $value;
+		return $this;
 	}
 	
 	public function setAmount($value) {
 		$this->transaction['x_amount'] = $value;
+		return $this;
 	}
 	
 	public function setCardNumber($value) {
 		$this->transaction['x_card_num'] = $value;
+		return $this;
 	}
 	
 	public function setExpDate($month, $year) {
@@ -134,40 +145,49 @@ class A_Cart_Payment_Authorizenet
 			$year = substr("$year", -2);
 		}
 		$this->transaction['x_exp_date'] = sprintf('%02d%02d', $month, $year);
+		return $this;
 	}
 	
 	public function setName($value) {
 		$names = explode(' ', $value);
 		$this->transaction['x_last_name'] = array_pop($names);
 		$this->transaction['x_first_name'] = array_shift($names);
+		return $this;
 	}
 	
 	public function setFirstName($value) {
 		$this->transaction['x_first_name'] = $value;
+		return $this;
 	}
 	
 	public function setLastName($value) {
 		$this->transaction['x_last_name'] = $value;
+		return $this;
 	}
 	
 	public function setStreet($value) {
 		$this->transaction['x_address'] = $value;
+		return $this;
 	}
 	
 	public function setCity($value) {
 		$this->transaction['x_city'] = $value;
+		return $this;
 	}
 	
 	public function setState($value) {
 		$this->transaction['x_state'] = $value;
+		return $this;
 	}
 	
 	public function setZip($value) {
 		$this->transaction['x_zip'] = $value;
+		return $this;
 	}
 	
 	public function setComments($comment1='', $comment2='') {
 		$this->transaction['x_description'] = $comment1;
+		return $this;
 	}
 	
 	public function getReference() {

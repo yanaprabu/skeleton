@@ -21,14 +21,17 @@ class A_User_Rule_Ingroup extends A_Rule {
 	
 	public function setField($field) {
 		$this->field = $field;
+		return $this;
 	}
 	
 	public function setDelimiter($delimiter) {
 		$this->delimiter = $delimiter;
+		return $this;
 	}
 	
 	public function setGroups($groups) {
 		$this->groups = $groups;
+		return $this;
 	}
 	
 	public function isValid($user) {

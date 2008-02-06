@@ -10,10 +10,12 @@ class A_Template_Xslt extends A_Template {
 	
 	public function setXML($xml) {
 	    $this->template = $xml;
+		return $this;
 	}
 	
 	public function setXMLFilename($filename) {
 	    $this->filenamexml = $filename;
+		return $this;
 	}
 	
 	public function render() {

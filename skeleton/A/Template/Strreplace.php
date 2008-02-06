@@ -13,12 +13,14 @@ class A_Template_Strreplace extends A_Template_File {
 			$field .= $this->tagsuffix;
 		}
     	parent::set($field, $value);
+		return $this;
     }
     
     public function import($data) {
     	foreach ($data as $key => $value) {
     		$this->set($key, $value);
     	}
+		return $this;
     }
 
 	public function render($block='') {

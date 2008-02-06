@@ -89,10 +89,12 @@ class A_Application {
 	public function set($component, $object, $register = true) {
 		if (is_string($object)) $this->load($component);
 		$this->loadComponents[$component] = array($object, (bool)$register);
+		return $this;
 	}
 
 	public function setPath($path) {
 		return $this->includePath = $path;
+		return $this;
 	}
 	
 	protected function initialize($component, $key) {
@@ -108,6 +110,7 @@ class A_Application {
 		if ($component[1]) {
 			$this->component('Locator')->set($key, $this->components[$key]);
 		}
+		return $this;
 	}		
 	
 	protected function load($class) {

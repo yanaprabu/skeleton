@@ -19,11 +19,13 @@ class A_Template_File extends A_Template {
 	public function setTemplate($template) {
 	    $this->template = $template;
 	    $this->blocks = array();
+		return $this;
 	}
 	
 	public function setFilename($filename) {
 	    $this->filename = $filename;
 	    $this->blocks = array();
+		return $this;
 	}
 	
 	public function loadTemplate() {
@@ -32,6 +34,7 @@ class A_Template_File extends A_Template {
 		} elseif (! isset($this->blocks['']) || ! $this->blocks['']) {
 			$this->blocks[''] = $this->readFile($this->filename);
 		}
+		return $this;
 	}
 
 	public function makeBlocks($prefix='', $suffix='') {
@@ -54,6 +57,7 @@ class A_Template_File extends A_Template {
 				}
 			}
 		}
+		return $this;
 	}
 
 	public function hasBlock($block=null) {
@@ -64,4 +68,3 @@ class A_Template_File extends A_Template {
 	   	}
 	}
 }
-?>

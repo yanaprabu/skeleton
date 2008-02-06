@@ -13,6 +13,7 @@ class A_User_Session {
 
 	public function setNamespace($namespace) {
 		$this->namespace = $namespace;
+		return $this;
 	}
 
 	public function isSignedIn() {
@@ -64,6 +65,7 @@ class A_User_Session {
 				$_SESSION[$this->namespace]['data'] = $data;
 			}
 		}
+		return $this;
 	}
 	
 	public function close() {

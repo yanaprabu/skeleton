@@ -14,14 +14,17 @@ class A_Template {
 	
 	public function setTemplate($template) {
 	    $this->template = $template;
+		return $this;
 	}
 	
 	public function setFilename($filename) {
 	    $this->filename = $filename;
+		return $this;
 	}
 	
 	public function clear() {
 	    $this->data = array();
+		return $this;
 	}
 	
 	public function renderArray($array, $block='') {
@@ -53,6 +56,7 @@ class A_Template {
 
     public function import($data) {
     	$this->data = array_merge($this->data, $data);
+		return $this;
     }
 
     public function has($name) {

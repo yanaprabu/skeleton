@@ -8,6 +8,7 @@ class A_Html_Tag {
 				$attr[$key] = $value;
 			}
 		}
+		return $this;
 	}
 	
 	public function render($tag, $attr=array(), $content=null) {

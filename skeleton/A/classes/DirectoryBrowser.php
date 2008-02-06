@@ -204,6 +204,7 @@ protected $errmsg = '';
 
 	public function setExtraParameters($params=array()) {
 		$this->extra_params = $params;
+		return $this;
 	}
 
 }

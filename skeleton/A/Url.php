@@ -9,6 +9,7 @@ class A_Url {
 
     public function setActionParam($action_param) {
         $this->action_param = $action_param;
+		return $this;
     }
 
     public function getActionParam() {

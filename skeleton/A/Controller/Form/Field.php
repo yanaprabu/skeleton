@@ -10,10 +10,12 @@ class A_Controller_Form_Field {
 
 	public function setDB($db) {
 		$this->db = $db;
+		return $this;
 	}
 
 	public function setFunctionParam($func_param) {
 		$this->func_param = $func_param;
+		return $this;
 	}
 
 	public function toHTML($attr, $value='') {

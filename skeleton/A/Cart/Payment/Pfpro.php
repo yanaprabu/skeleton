@@ -44,6 +44,7 @@ class A_Cart_Payment_Pfpro
 	
 	public function setServer($value) {
 		$this->server = $value;
+		return $this;
 	}
 	
 	public function setServerMode($mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE) {
@@ -59,30 +60,37 @@ class A_Cart_Payment_Pfpro
 			$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_LIVE];
 		}
 		$this->servermode = $mode;
+		return $this;
 	}
 	
 	public function setUser($value) {
 		$this->transaction['USER'] = $value;
+		return $this;
 	}
 	
 	public function setPassword($value) {
 		$this->transaction['PWD'] = $value;
+		return $this;
 	}
 	
 	public function setPartner($value) {
 		$this->transaction['PARTNER'] = $value;
+		return $this;
 	}
 	
 	public function setTransactionType($value) {
 		$this->transaction['TRXTYPE'] = $value;
+		return $this;
 	}
 	
 	public function setAmount($value) {
 		$this->transaction['AMT'] = $value;
+		return $this;
 	}
 	
 	public function setCardNumber($value) {
 		$this->transaction['ACCT'] = $value;
+		return $this;
 	}
 	
 	public function setExpDate($month, $year) {
@@ -90,18 +98,22 @@ class A_Cart_Payment_Pfpro
 			$year = substr("$year", -2);
 		}
 		$this->transaction['EXPDATE'] = sprintf('%02d%02d', $month, $year);
+		return $this;
 	}
 	
 	public function setName($value) {
 		$this->transaction['NAME'] = $value;
+		return $this;
 	}
 	
 	public function setStreet($value) {
 		$this->transaction['STREET'] = $value;
+		return $this;
 	}
 	
 	public function setZip($value) {
 		$this->transaction['ZIP'] = $value;
+		return $this;
 	}
 	
 	public function setComments($comment1='', $comment2='') {
@@ -111,6 +123,7 @@ class A_Cart_Payment_Pfpro
 		if ($comment2) {
 			$this->transaction['COMMENT2'] = $comment2;
 		}
+		return $this;
 	}
 	
 	public function getReference() {

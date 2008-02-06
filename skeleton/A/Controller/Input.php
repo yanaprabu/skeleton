@@ -68,18 +68,21 @@ class A_Controller_Input {
 		if (isset($this->params[$name])) {
 			return $this->params[$name]->value = $value;
 		}
+		return $this;
 	}
 
 	public function getParameterValue($name) {
 		if (isset($this->params[$name]->value)) {
 			return $this->params[$name]->value;
 		}
+		return $this;
 	}
 
 	public function setParameterVar($name, $var, $value) {
 		if ($name && $var) {
 			return $this->params[$name]->protected = $value;
 		}
+		return $this;
 	}
 
 	public function getParameterVar($name, $var) {
@@ -150,10 +153,12 @@ class A_Controller_InputParameter {
 	
 	public function setValue($value) {
 		$this->value = $value;
+		return $this;
 	}
 	
 	public function setRenderer($renderer) {
 		$this->renderer = $renderer;
+		return $this;
 	}
 	
 	public function getErrorMsg($separator=', ') {
@@ -169,6 +174,7 @@ class A_Controller_InputParameter {
 	public function setError($value='') {
 		$this->error_msg = $value;
 		$this->error = true;
+		return $this;
 	}
 	
 	public function isError() {

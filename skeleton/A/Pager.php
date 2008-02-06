@@ -29,24 +29,29 @@ class A_Pager {
 		if ($n > 0) {
 			$this->page_size = $n;
 		}
+		return $this;
 	}
 
 	public function setRangeSize($n) {
 		if ($n > 2) {
 			$this->range_size = $n;
 		}
+		return $this;
 	}
 
 	public function setPageParameter($name) {
 		$this->page_param = $name;
+		return $this;
 	}
 
 	public function setPageSizeParameter($name) {
 		$this->page_size_param = $name;
+		return $this;
 	}
 
 	public function setLastRowParameter($name) {
 		$this->last_row_param = $name;
+		return $this;
 	}
 
 	public function setOrderByCurrent($field, $direction) {
@@ -72,6 +77,7 @@ class A_Pager {
 			}
 		}
 			
+		return $this;
 	}
 
 	public function setOrderByFields($fields, $default_field=false) {
@@ -82,10 +88,12 @@ class A_Pager {
 			$this->order_by_default_field = 0;		// use first field as default
 		}
 		$this->setOrderByCurrent($this->order_by_default_field, 0);
+		return $this;
 	}
 
 	public function setOrderByParameter($name) {
 		$this->order_by_param = $name;
+		return $this;
 	}
 
 	public function getOrderByParameter($field) {
@@ -122,6 +130,7 @@ class A_Pager {
 			$this->start_row = 0;
 			$this->end_row = 0;
 		}
+		return $this;
 	}
 
 	public function getPageSize() {
@@ -344,10 +353,12 @@ class A_Pager_HTMLWriter {
 
 	public function setExtraParameters($params=array()) {
 		$this->extra_params = $params;
+		return $this;
 	}
 
 	public function setBaseUrl($url) {
 		$this->base_url = $url;
+		return $this;
 	}
 
 	public function getPageUrl($n, $params=array()) {

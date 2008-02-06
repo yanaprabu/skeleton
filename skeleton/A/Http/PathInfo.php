@@ -80,18 +80,22 @@ class A_Http_PathInfo {
 	
 	public function setScriptExtension($script_extension) {
 		$this->script_extension = $script_extension;
+		return $this;
 	}
 
 	public function setPath($path) {
 		$this->path = $path;
+		return $this;
 	}
 
 	public function setMap($map) {
 		$this->map = $map;
+		return $this;
 	}
 
 	public function addMap($map) {
 		$this->map = array_merge($this->map, $map);
+		return $this;
 	}
 
 	public function run($request) {

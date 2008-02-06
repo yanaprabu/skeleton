@@ -7,6 +7,7 @@ class A_User_Auth extends A_User_Access
 	public function setDB ($db)
 	{
 		$this->db = $db;
+		return $this;
 	}
 	
 	public function setDBTable ($table)
@@ -14,6 +15,7 @@ class A_User_Auth extends A_User_Access
 		if ($table){
 			$this->table=$table;
 		}
+		return $this;
 	}
 	
 	public function setDBFieldUserID ($field)
@@ -21,6 +23,7 @@ class A_User_Auth extends A_User_Access
 		if ($field){
 			$this->field_userid=$field;
 		}
+		return $this;
 	}
 	
 	public function setDBFieldPassword ($field)
@@ -28,21 +31,25 @@ class A_User_Auth extends A_User_Access
 		if ($field){
 			$this->field_password=$field;
 		}
+		return $this;
 	}
 	
 	public function setDBFieldSequence ($field)
 	{
 		$this->field_sequence=$field;
+		return $this;
 	}
 	
 	public function setSuccessRedirect ($url)
 	{
 		$this->success_url = $url;
+		return $this;
 	}
 	
 	public function setCryptFunction ($func)
 	{
 		$this->crypt_func = $func;
+		return $this;
 	}
 	
 	public function signin ($userid, $password)

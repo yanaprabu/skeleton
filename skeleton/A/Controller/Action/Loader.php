@@ -29,6 +29,7 @@ class A_Controller_Action_Loader {
 			$this->paths['local'] = $this->paths['module'] . $mapper->getClassDir();
 			$this->action = $mapper->getClass();
 		}
+		return $this;
 	}
 		
 	protected function setPath($name, $path, $relative_name=''){
@@ -38,14 +39,17 @@ class A_Controller_Action_Loader {
 		} else {
 			$this->paths[$name] = $path;
 		}
+		return $this;
 	}
 	
 	protected function setDir($name, $dir){
 		$this->dirs[$name] = $dir ? (rtrim($dir, '/') . '/') : '';
+		return $this;
 	}
 	
 	protected function setRenderClass($name){
 		$this->renderClass = $name;
+		return $this;
 	}
 	
 	public function getErrorMsg() {	
