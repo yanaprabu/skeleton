@@ -54,7 +54,7 @@ class A_Html_Form {
 	
 	public function __call($type, $args) {
 		if(is_array($args[0])) {
-			$params = $args;
+			$params = $args[0];
 		} else {
 			$params['name'] = $args[0];
 			$params['label'] = $args[1];
