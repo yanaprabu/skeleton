@@ -2,13 +2,12 @@
 
 class A_Html_Tag {
 
-	public function setDefaults($attr, $default_attr) {
+	public function setDefaults(&$attr, $default_attr) {
 		foreach($default_attr as $key => $value) {
 			if (! isset($attr[$key])) {
 				$attr[$key] = $value;
 			}
 		}
-		return $this;
 	}
 	
 	public function render($tag, $attr=array(), $content=null) {
