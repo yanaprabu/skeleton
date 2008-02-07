@@ -14,24 +14,23 @@ class A_Html_Form {
 	 * name=string, value=string or renderer
 	 */
 	public function render($attr=array(), $content=null) {
-		$attr = isset($this) ? array_merge($this->_attr, $attr) : $attr;
-#		if (! isset($attr['method'])) {
-#			$attr['method'] = 'post';
-#		}
+		if (isset($this)) {
+			$attr = array_merge($this->_attr, $attr);
 
-		$content = '';
-		foreach ($this->_elements as $param) {
-			$class = 'A_Html_Form_' . ucfirst($param['type']);
-			if (! class_exists($class)) {
-				include str_replace('_', '/', $class) . '.php';
-			}
-			if (class_exists($class)) {
-				unset($param['type']);
-				$element = new $class();
-				$content .= $element->render($param);
+			$content = '';
+			foreach ($this->_elements as $param) {
+				$class = 'A_Html_Form_' . ucfirst($param['type']);
+				if (! class_exists($class)) {
+					include str_replace('_', '/', $class) . '.php';
+				}
+				if (class_exists($class)) {
+					unset($param['type']);
+					$element = new $class();
+					$content .= $element->render($param);
+				}
 			}
 		}
-
+		
 		A_Html_Tag::setDefaults($attr, array('method'=>'post', 'action'=>'', ));
 		return A_Html_Tag::render('form', $attr, $content);
 	}
