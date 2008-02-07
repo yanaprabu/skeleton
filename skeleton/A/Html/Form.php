@@ -39,14 +39,17 @@ class A_Html_Form {
 	// Set the method. Is there a setter for the action?
 	public function setAction($action='') {
 		$this->attr['action'] = $action;
+		return $this;
 	}
                              // Optional method to set the Model
 	public function setMethod($method='post') {
 		$this->attr['action'] = $action;
+		return $this;
 	}
                              // Optional method to set the Model
 	public function setModel($model) {
 		$this->model = $model;
+		return $this;
 	}
 	
 	public function __call($type, $args) {
@@ -60,6 +63,7 @@ class A_Html_Form {
 			$params['type'] = $type;
 			$this->_elements[$params['name']] = $params;
 		}
+		return $this;
 	}
 
 }
