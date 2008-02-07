@@ -15,7 +15,6 @@ class A_Html_Form_File {
 		return 'enctype="multipart/form-data"' ;
 	}
 	public function getEnctypeAttribute() {
-		$attr['enctype'] = 'multipart/form-data';
 		return array('enctype' => 'multipart/form-data');
 	}
 }
