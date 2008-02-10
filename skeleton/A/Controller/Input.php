@@ -1,18 +1,20 @@
 <?php
+include_once 'A/Controller/Action.php';
 include_once 'A/FilterChain.php';
 include_once 'A/Validator.php';
 include_once 'A/DL.php';
 
-class A_Controller_Input {
+class A_Controller_Input extends A_Controller_Action {
 	public $params = array();
 	protected $handlers = array();
 	protected $filterchain;
 	protected $validator;
 	protected $error = false;
 	
-	public function __construct() {
+	public function __construct($locator=null){
+	    parent::__construct($locator);
 	}
-	
+	 
 	public function addHandler($object) {
 		if ($object) {
 			$this->handlers[] = $object;
