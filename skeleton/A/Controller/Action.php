@@ -4,7 +4,7 @@ class A_Controller_Action {
 	protected $locator;
 	protected $loader = null;
 	
-	public function __construct($locator){
+	public function __construct($locator=null){
 	    $this->locator = $locator;
 	}
 	 

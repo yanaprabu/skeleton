@@ -9,8 +9,8 @@ class A_Controller_Form extends A_Controller_App {
 	protected $state_name_init = 'init';
 	protected $submit_param_name = 'submit';
 	
-	public function __construct($state_handlers=array()) {
-		parent::__construct($this->state_name_init);
+	public function __construct($locator=null, $state_handlers=array()) {
+		parent::__construct($locator, $this->state_name_init);
 		$this->state_handlers = $state_handlers;
 	}
 	

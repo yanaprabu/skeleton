@@ -8,7 +8,8 @@ class A_Controller_App extends A_Controller_Input {
 	protected $states = array();
 	protected $transition = array();
 
-	public function __construct($state_name='') {
+	public function __construct($locator=null, $state_name='') {
+	    parent::__construct($locator);
 		$this->setInitState($state_name);
 	}
 
