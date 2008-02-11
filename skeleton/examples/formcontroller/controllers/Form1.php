@@ -9,7 +9,7 @@ require_once('A/Controller/Form.php');
 
 class Form1 extends A_Controller_Form {
 
-	function __construct() {
+	function __construct($locator=null) {
 /*
 		$handlers = array(
 			'init' => new Handle('views/Form1View.php', 'Form1View', 'init'), 
@@ -22,7 +22,7 @@ class Form1 extends A_Controller_Form {
 			'submit' => new A_DLInstance($this, '_submit'), 
 			'done' => new A_DLInstance($this, '_done')
 			);
-		parent::__construct($handlers);
+		parent::__construct($locator, $handlers);
 	}
 	
 	function run($locator) {
