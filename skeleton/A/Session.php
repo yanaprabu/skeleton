@@ -100,7 +100,11 @@ class A_Session {
 	}
 	
 	public function destroy() {
-		session_destroy();
+		if ($this->namespace) {
+			$_SESSION[$this->namespace] = array();
+		} else {
+			$_SESSION = array();
+		}
 	}
 	
 }
