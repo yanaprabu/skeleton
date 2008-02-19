@@ -35,12 +35,10 @@ public function setSubmitParam($name) {
 }
 
 public function setBasePath($base_path) {
-	if ($base_path) {
-		if (substr($base_path, -1) != '/') {
-			$base_path .= '/';
-		}
-		$this->base_path = $base_path;
+	if (substr($base_path, -1) != '/') {
+		$base_path .= '/';
 	}
+	$this->base_path = $base_path;
 	return $this;
 }
 
