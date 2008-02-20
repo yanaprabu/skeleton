@@ -7,14 +7,16 @@ class index extends A_Controller_Action {
 		parent::__construct($locator);
 		$this->response = $locator->get('Response');
 	}
-	
-	/* Default action. Shows latest articles */
-	function run($locator) {
-		$this->load()->response()->view();
-	//	$this->response->set('layout','adminlayout');
-	//	$this->response->set('maincontent','The maincontent for the admin index');
-	//	$this->response->set('subcontent','This is the subcontent of the admin index');
-		//	$this->response->setContent('hello world');
+
+	function run($locator) { 
+		$this->load()->response('maincontent')->view();
+		//dump($this);
 	}
 
+	function bar($locator) {
+		$model = $this->load()->model('DaysModel');
+		$template = $this->load()->template();
+		$template->set('model', $model);
+		$this->response->setRenderer($template);
+	}
 }

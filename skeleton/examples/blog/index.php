@@ -24,43 +24,48 @@ $Locator->set('Response', $Response);
 
 /* Map request */
 $map = array(
-	'' => array(
-		0 => array('name'=>'module', 'default'=>''),
-		1 => array('name'=>'controller', 'default'=>'home'),
-		2 => array('name'=>'action', 'default'=>'run'),
-		3 => array('name'=>'id','default'=>''),
-		),
-	'articles' => array(	// map to controller articles when /articles/
-		'' => array(
-			'controller',
-			'action',
-			'id',
-			),
-		),
-	'blog' => array(	// map to module blog when /blog/
-		'' => array(
-			0 => array('name'=>'module', 'default'=>'blog'),
-			1 => array('name'=>'controller', 'default'=>'index'),
-			2 => array('name'=>'action', 'default'=>'run'),
-			3 => array('name'=>'id','default'=>''),
-			),
-		),
-	);
+
+   '' => array(
+		'module',
+        'controller',
+        'action',
+        ), 
+
+   'blog' => array(  
+        '' => array(
+            array('name'=>'module','default'=>'blog'),
+            array('name'=>'controller','default'=>'index'),
+            array('name'=>'action','default'=>'run'),
+            ),
+        ),
+
+    'admin' => array(
+        '' => array(
+            'module',
+            array('name'=>'controller','default'=>'index'),
+            array('name'=>'action','default'=>'run'),
+            ),
+        ),
+
+    );
 
 $Mapper = new A_Http_PathInfo($map);
-$Mapper->run($Request);
+$Mapper->run($Request);//dump($Request);
 
 $Action = new A_DL('', 'home', 'run');
 $ErrorAction = new A_DL('', 'error', 'run');
 
 $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $Action);
-//$Mapper->setDefaultDir('/app/blog/'); ??
+//$Mapper->setDefaultDir('blog');
 
 $Controller = new A_Controller_Front($Mapper, $Action);
 $Controller->run($Locator);
+
+//dump($Response);
+
 if (! $Response->hasRenderer()) { 
     // create a page renderer and load the outer layout page template
-    $Template = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/main.html');
+    $Template = new A_Template_Include($ConfigArray['APP'] . 'templates/main.php');
     $Response->setRenderer($Template);
     // get the layout specified by the Action
     $Layout_name = $Response->get('layout');
@@ -69,6 +74,7 @@ if (! $Response->hasRenderer()) {
     }
     $Layout = new A_Template_Include($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.php');
     // set the two possible columns
+	$main = $Response->get('maincontent'); dump($main);
 	$Layout->set('maincontent', $Response->get('maincontent'));
     $Layout->set('subcontent', $Response->get('subcontent'));
 

@@ -8,6 +8,7 @@ class indexModel {
 		return 'foo';
 	}
 
+
 	function bar() {
 		return 'bar';
 	}

@@ -19,17 +19,25 @@ class posts extends A_Controller_Action {
 			$content = $model->single();
 			$template = $this->load()->template('singlePost');
 			$template->set('content', $content);
-			$this->response->setRenderer($template);
+			$maincontent = $template->render();
+			
+			$this->response->set('maincontent', $maincontent);
+			$this->response->set('subcontent','This is the subcontent');
+
 		} else {
 			$model = $this->load()->model('postsModel');
 			$content = $model->listAll();
 			$template = $this->load()->template();
 			$template->set('content', $content);
-			$this->response->setRenderer($template);
+			$maincontent = $template->render();		
+
+			$this->response->set('maincontent', $maincontent);
+			$this->response->set('subcontent','This is the subcontent');
+
 		}
-		
+				
 	}
-	
+
 	function showLatest(){
 		$model = $this->load()->model('postsModel');
 		$content = $model->listAll();
