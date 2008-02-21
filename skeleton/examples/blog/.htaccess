@@ -1,5 +1,5 @@
 RewriteEngine on
-RewriteBase /examples/blog/
+#RewriteBase /examples/blog/
 #used to be
 #RewriteRule !\.(php|htm|html|cgi|js|ico|gif|jpg|png|css)$ index.php
 #Now it is

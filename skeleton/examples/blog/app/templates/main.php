@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<base href="http://skeleton/" />
+	<base href="<?php echo $BASE ?>" />
 	<style type="text/css" media="screen">
 		body { margin:0;padding:0;color:#333;background:#fff;}
 		#container {}
@@ -24,10 +24,10 @@
 		<h3>Navigation</h3>
 		<div id="menubar">
 			<ul>
-			<li><a href="examples/blog/">/home</a></li>
-			<li><a href="examples/blog/blog/">/blog/</a></li>
-			<li><a href="examples/blog/blog/posts/">/blog/posts/</a></li>
-			<li><a href="examples/blog/admin/">/admin/</a></li>
+			<li><a href="">/home</a></li>
+			<li><a href="blog/">/blog/</a></li>
+			<li><a href="blog/posts/">/blog/posts/</a></li>
+			<li><a href="admin/">/admin/</a></li>
 			</ul>
 		</div>
 

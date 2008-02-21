@@ -4,6 +4,8 @@ ini_set('error_reporting', E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 ini_set('log_errors', 'Off');
 
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__) . '/../../');
+
 include 'config.php';
 include 'A/DL.php';
 include 'A/Locator.php';
@@ -56,7 +58,7 @@ $Action = new A_DL('', 'home', 'run');
 $ErrorAction = new A_DL('', 'error', 'run');
 
 $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $Action);
-//$Mapper->setDefaultDir('blog');
+$Mapper->setDefaultDir('blog');
 
 $Controller = new A_Controller_Front($Mapper, $Action);
 $Controller->run($Locator);
@@ -66,6 +68,8 @@ $Controller->run($Locator);
 if (! $Response->hasRenderer()) { 
     // create a page renderer and load the outer layout page template
     $Template = new A_Template_Include($ConfigArray['APP'] . 'templates/main.php');
+    $Template->set('BASE', $ConfigArray['BASE']);
+    
     $Response->setRenderer($Template);
     // get the layout specified by the Action
     $Layout_name = $Response->get('layout');

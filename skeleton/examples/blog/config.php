@@ -1,7 +1,4 @@
 <?php
-ini_set('error_reporting', E_ALL);
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__) . '/../../');
-
 $ConfigArray = array(
 // Site specific settings
 'DBDSN' => array(
@@ -13,7 +10,7 @@ $ConfigArray = array(
 	),
 
 'APP' => './app/',
-'BASE' => 'http://www.mydomain.com/',
+'BASE' => 'http://skeleton/examples/blog/',
 );
 
 function dump($var, $name='') {
