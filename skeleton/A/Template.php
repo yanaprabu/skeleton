@@ -63,4 +63,8 @@ class A_Template {
     	return isset($this->data[$name]);
     }
 
+	public function __toString() {
+		return $this->render();
+	}
+
 }

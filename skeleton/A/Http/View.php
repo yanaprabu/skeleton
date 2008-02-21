@@ -122,7 +122,11 @@ class A_Http_View {
 			return $this->escape($this->content);
 		}
 	}
-	
+
+	public function __toString() {
+		return $this->render();
+	}
+
 	protected function load($module=null) {
 		if (! $this->loader) {
 			include_once 'A/Controller/Action/Loader.php';
