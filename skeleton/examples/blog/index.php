@@ -42,7 +42,7 @@ $map = array(
     'admin' => array(
         '' => array(
             'module',
-            array('name'=>'controller','default'=>'index'),
+            array('name'=>'controller','default'=>'admin'),
             array('name'=>'action','default'=>'run'),
             ),
         ),
@@ -74,7 +74,6 @@ if (! $Response->hasRenderer()) {
     }
     $Layout = new A_Template_Include($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.php');
     // set the two possible columns
-	$main = $Response->get('maincontent'); dump($main);
 	$Layout->set('maincontent', $Response->get('maincontent'));
     $Layout->set('subcontent', $Response->get('subcontent'));
 

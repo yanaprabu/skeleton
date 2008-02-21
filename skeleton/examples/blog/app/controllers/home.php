@@ -10,18 +10,25 @@ class home extends A_Controller_Action {
 	
 	/* Default action. Shows latest articles */
 	function run($locator) {
-		/* Get latest posts and articles */
-		$model = $this->load()->model('articlesModel');
-		$content = $model->listAll();
+		/* Get latest posts to show on homepage */
 		$postsmodel = $this->load()->model('postsModel');
 		$postscontent = $postsmodel->listAll();
-
-		$template = $this->load()->template('home');
-		$template->set('articles', $content);
-		$template->set('posts', $postscontent);
-		$this->response->set('layout','homelayout');
-		$this->response->setRenderer($template);
 		
+		$maincontent = '<ul>';
+		foreach ($postscontent as $post){ 
+			$maincontent .= '<li>';
+			$maincontent .=  '<h4><a href="'. $post['permalink'] . '">' . $post['title'] . '</a></h4>';
+			$maincontent .=  '<p>' .  $post['date'] . '</p>';
+			$maincontent .=  '<p>' .  $post['excerpt'] . '</p>';
+			$maincontent .=  '<p>' .  $post['content'] . '</p>';
+			$maincontent .=  '</li>';
+		}
+		$maincontent .= '</ul>';
+		$subcontent = 'This is the subcontent of the homepage';
+		
+		$this->response->set('layout', 'homelayout');
+		$this->response->set('maincontent', $maincontent);
+		$this->response->set('subcontent', $subcontent);
 	}
 
 }

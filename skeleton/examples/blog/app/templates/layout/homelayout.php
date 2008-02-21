@@ -1,20 +1,13 @@
-<h3>A little home content</h3>
-<p>Lorum ipsum</p>
-<h3>Defaults to showing a list of the latest posts:</h3>
-<ul>
-<?php foreach($maincontent as $post){
-	echo '<li>';
-	echo '<h4><a href="'. $post['permalink'] . '">' . $post['title'] . '</a></h4>';
-	echo '<p>' .  $post['date'] . '</p>';
-	echo '<p>' .  $post['excerpt'] . '</p>';
-	echo '<p>' .  $post['content'] . '</p>';
-	echo '</li>';
-} ?>
-</ul>	
+<?php
 
-<h3>And showing a list of the latest articles:</h3>
-<ul>
-<?php foreach($articles as $article){
-	echo '<li>'.$article.'</li>';
-} ?>
-</ul>
+?>
+<h3>this is the template file homelayout</h3>
+<p>You could add some specific elements for the homepage</p>
+<div style="float:left;width:74%;">
+<?php echo $maincontent; ?>
+</div>
+
+<div style="float:right;width:25%;">
+<?php echo $subcontent; ?>
+</div>
+
