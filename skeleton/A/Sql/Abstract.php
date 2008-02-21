@@ -11,4 +11,12 @@ abstract class A_Sql_Abstract {
 		}		
 		return '\''. $value .'\'';
 	}	
+
+    public function render() {
+    }
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }
