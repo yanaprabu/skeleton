@@ -363,11 +363,14 @@ class A_Pager_HTMLWriter {
 
 	public function getPageUrl($n, $params=array()) {
 		if (($n > 0) && ($n <= $this->pager->last_page)) {
+/*
 			$params = array_merge($this->getParameters($n), $params);
 			foreach ($params as $name => $value) {
 				$param_strs[$name] = $name . '=' . $value;
 			}
 			$url = $this->base_url . '?' . implode('&', $param_strs);
+*/
+			$url = $this->base_url . '?' . http_build_query(array_merge($this->getParameters($n), $params));
 		} else {
 			$url = '';
 		}
