@@ -1,7 +1,7 @@
 <?php
 /*
  * PayPal (credit card processsing) class library
- *
+ * based on code from PayflowPro forums
  */
 
 
@@ -12,14 +12,13 @@ class A_Cart_Payment_Payflow
 	const TRXTYPE_SALE = 'S';
 	const TRXTYPE_AUTHORIZATION = 'A';
 
-	protected $certpath = '/usr/local/verisign/payflowpro/linux/certs/';	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $transactionID = 0;
+	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $transactionID = 0;
 	protected $response = null;	protected $fraud = 'NO';
 	protected $infomsg = '';
 	protected $errmsg = '';
 	
 	public function __construct($user='', $passwd='', $partner='', $mode=A_Cart_Payment_Payflow::SERVER_LIVE)
 	{
-		putenv('PFPRO_CERT_PATH=' . $this->certpath);
 		$this->serverlist = array(
 			self::SERVER_LIVE=>'https://payflow.verisign.com',
 			self::SERVER_TEST=>'https://pilot-payflowpro.verisign.com',		//'test-payflow.verisign.com',
@@ -56,8 +55,6 @@ class A_Cart_Payment_Payflow
 	
 		$this->setServerMode($mode);
 		
-##		pfpro_init();
-	
 	}
 	
 	public function setServer($value) {
@@ -217,7 +214,6 @@ class A_Cart_Payment_Payflow
 	}
 	
 	public function getVersion() {
-##		return pfpro_version();
 	}
 	
 	public function process() {
@@ -226,6 +222,7 @@ class A_Cart_Payment_Payflow
 			$this->response['RESULT'] = 0;
 			$this->response['RESPMSG'] = 'Did not connect to credit card processor (A_Cart_Payment_Payflow::SERVER_NONE). ';
 		} else {
+/*
 			$params = array();
 			foreach ($this->transaction as $key => $value) {
 				if ($value != '') {
@@ -233,6 +230,8 @@ class A_Cart_Payment_Payflow
 				}
 			}
 			$data = implode('&', $params);
+*/
+			$data = http_build_query($params);
 			$unique_id = $order_num;
 	
 			// post data and get results in this->response
@@ -471,4 +470,4 @@ class A_Cart_Payment_Payflow
 	public function close() {
 	}
 
-} // end class A_Cart_Payment_PayflowPro
+} // end class A_Cart_Payment_Payflow
