@@ -1,17 +1,17 @@
 <?php
 
 class ListController {
-protected $template_file = '';
-protected $template_block_layout = 'listing';
-protected $template_block_none = 'listing_row';
-protected $template_block_row = 'listing_none';
-protected $base_url = '';
-protected $table;
-protected $fields = array();
-protected $order_by = array();
-protected $search_fields = array();
-protected $db = null;
-protected $pagerdb = null;
+	protected $template_file = '';
+	protected $template_block_layout = 'listing';
+	protected $template_block_none = 'listing_row';
+	protected $template_block_row = 'listing_none';
+	protected $base_url = '';
+	protected $table;
+	protected $fields = array();
+	protected $order_by = array();
+	protected $search_fields = array();
+	protected $db = null;
+	protected $pagerdb = null;
 	
 	public function __construct($db) {
 		$this->db = $db;
@@ -69,7 +69,7 @@ protected $pagerdb = null;
 
 		$content = '';
 
-		$template = new A_TemplateStrReplace($this->template_file);
+		$template = new A_Template_Strreplace($this->template_file);
 		$template->makeBlocks();
 		
 		

@@ -1,12 +1,12 @@
 <?php
 
 class DeleteController {
-protected $template_file = '';
-protected $template_block_layout = '';
-protected $base_url = '';
-protected $fields = array();
-protected $db = null;
-protected $errmsg = '';
+	protected $template_file = '';
+	protected $template_block_layout = '';
+	protected $base_url = '';
+	protected $fields = array();
+	protected $db = null;
+	protected $errmsg = '';
 	
 	public function __construct($db) {
 		$this->db = $db;
@@ -21,7 +21,7 @@ protected $errmsg = '';
 
 		$content = '';
 
-		$template = new A_TemplateStrReplace($this->template_file);
+		$template = new A_Template_Strreplace($this->template_file);
 		$template->makeBlocks();
 		
 		if ($this->db->isError()) {
