@@ -102,13 +102,14 @@ class A_Controller_Action_Loader {
 				}
 			}
 
-			if ($obj && $this->responseSet) { // this is the section for when setResponse() is called
+			if ($obj && $this->responseSet) { // this is the section for when response() has been called
 				$response = $this->locator->get('Response');
 				if ($response && $obj) {
+					// if name then set data in response, otherwise use as renderer
 					if ($this->responseName) {
 						$response->set($this->responseName, $obj);
 					} else {
-						$response->setContent($obj->render());
+						$response->setRenderer($obj);
 					}
 				} else {
 					echo $obj->render();	// do we really want this option? or should the action do this?
