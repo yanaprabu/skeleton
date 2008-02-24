@@ -1,10 +1,11 @@
 <?php
+include_once 'config.php';
 include_once 'A/Email.php';
 include_once 'A/Email/Multipart.php';
 
 $email = new A_Email();
 $attachment = new A_Email_Multipart();
-$email->setReplyto($email_reply);
+$email->setReplyto('replyto@email.com');
 
 $emailtext = 'TITLE
 This is a text email.';
@@ -20,4 +21,4 @@ $body = $attachment->getMessage();
 $email->addHeaders($attachment->getHeaders('multipart/alternative'));
 $errmsg = $email->send('from@email.com', 'to@email.com', 'Example Email', $body);
 
-?>
+echo "Error=$errmsg<br/>";

@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 require_once 'A/DL.php';
-require_once 'A/DataSpace.php';
+require_once 'A/DataContainer.php';
 require_once 'A/Session.php';
 require_once 'A/Locator.php';
 require_once 'A/Http/Request.php';
@@ -42,5 +42,4 @@ if (! $Response->hasRenderer()) {
 }
 
 $Response->set('BASE', $ConfigArray['BASE']);	// this renders in all templates
-$Response->run($Locator);
-$Response->out();
+echo $Response->render();

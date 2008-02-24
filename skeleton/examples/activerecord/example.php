@@ -1,20 +1,14 @@
 <?php
+include 'config.php';
+include 'A/Db/MySQL.php';
+include 'A/Db/Activerecord.php';
 
-class User extends ActiveRecord
+class Projects extends A_Db_ActiveRecord
 {
-    public function __construct($id = NULL)
-    {
-        parent::__construct();
-        if ( $id ) {
-            $this->set($this->primary[0], $id);
-            $this->fetch();
-        }
-    }
-
-    public function initFields()
+	public function initFields()
     {
         $this->fields = array (
-            'userID',
+            'projectID',
             'title',
             'name',
             'surname',
@@ -26,12 +20,12 @@ class User extends ActiveRecord
 
     public function initTable()
     {
-        $this->table = 'user';
+        $this->table = 'project';
     }
 
     public function initPrimary()
     {
-        $this->primary[] = 'userID';
+        $this->primary[] = 'projectID';
     }
 
     public function getFullname()
@@ -40,38 +34,59 @@ class User extends ActiveRecord
     }
 }
 
- $user = new User();
-$user->set('title', 'Mr');
-$user->set('name', 'Frodo');
-$user->set('surname', 'Baggins');
-$user->set('email', 'frodo@the-shire.com');
-$user->insert();
+$dbdsn = array(
+'phptype' => "mysql",
+'hostspec' => "localhost",
+'database' => "a_todo",
+'username' => "skeleton",
+'password' => "skeleton"
+); 
+$db = new A_Db_MySQL($dbdsn);
+$db->connect();
+if ($db->isError()) die('ERROR: ' . $db->getMessage());
 
-$user->unsetAttr();
+Projects::setDb($db);
+$project = new Projects();
 
-$rs = $user->getAll();
+#$project->find("id='3'");
+$project->find("client_id='2'");
+
+#$project->set('title', 'Mr');
+#$project->set('name', 'Frodo');
+#$project->set('surname', 'Baggins');
+#$project->set('email', 'frodo@the-shire.com');
+//User::getInstance();
+echo 'table=' . $project->getTable() . '<br/>';
+dump($project->toArray());
+
+/*
+
+$project->insert();
+
+$project->unsetAttr();
+
+$rs = $project->getAll();
 foreach ( $rs as $result ) {
     echo $result->get('fullname') ."\n";
-    /* OR */
+    // OR
     echo $result->fullname ."\n";
 }
 
-$user->unsetAttr();
+$project->unsetAttr();
 
-$user->set('name', 'Frodo');
-$user->delete();
+$project->set('name', 'Frodo');
+$project->delete();
 
-$user->unsetAttr();
+$project->unsetAttr();
 
-$user->set('userID', 1);
-$user->set('title', 'title');
-$user->set('name', 'name');
-$user->set('surname', 'surname');
-$user->set('email', 'email');
-$user->update();
+$project->set('projectID', 1);
+$project->set('title', 'title');
+$project->set('name', 'name');
+$project->set('surname', 'surname');
+$project->set('email', 'email');
+$project->update();
 
 $newUser = new User(1);
 echo $newUser->fullname ."\n";
 
-?>
-
+*/
