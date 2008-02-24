@@ -80,7 +80,7 @@ class A_Db_Datamapper {
 						if (! $sql) {
 							$sql = $this->joins[$id]->table1;
 						}
-						$sql .= $this->joins[$id]->getSQL();
+						$sql .= $this->joins[$id]->render();
 					}
 					return $sql;
 				}
@@ -146,11 +146,11 @@ class A_Db_Datamapper {
 				if (! $property_name) {
 					// search joins for property name that goes with the field name
 					foreach ($this->joins as $join) {
-						if ($field_name == $join->field_name1) {
-							$property_name = $this->findPropertyByField($join->field_name2);
+						if ($field_name == $join->field1) {
+							$property_name = $this->findPropertyByField($join->field2);
 							 break;
-						} elseif ($field_name == $join->field_name2) {
-							$property_name = $this->findPropertyByField($join->field_name1);
+						} elseif ($field_name == $join->field2) {
+							$property_name = $this->findPropertyByField($join->field1);
 							break;
 						}
 					}
@@ -225,7 +225,7 @@ class A_Db_Datamapper {
 		return $this->objects_loaded[$key];
 	}
 	
-	public function getSQL() {
+	public function render() {
 
 		// update objects that have been added
 		if ($this->objects_loaded) {
@@ -327,7 +327,7 @@ class A_Db_Datamapper {
 	public function commit() {
 		if ($this->db) {
 			// generate SQL for each update/insert/delete
-			$this->getSQL();
+			$this->render();
 			if ($this->sql) {
 				foreach ($this->sql as $sql) {
 					$this->db->query($sql);
