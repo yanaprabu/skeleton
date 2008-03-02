@@ -3,7 +3,7 @@
 class A_Filter_Trim {
 protected $charset = null;
 
-	public function __construct($charset) {
+	public function __construct($charset=null) {
 		$this->charset = $charset;
 	}
 
