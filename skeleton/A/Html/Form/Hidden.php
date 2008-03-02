@@ -1,7 +1,7 @@
 <?php
 include_once 'A/Html/Tag.php';
 
-class A_Html_From_Hidden {
+class A_Html_Form_Hidden {
 
 	/*
 	 * name=string, value=string
