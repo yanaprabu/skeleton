@@ -7,6 +7,7 @@ include_once 'A/DL.php';
 class A_Controller_Input extends A_Controller_Action {
 	public $params = array();
 	protected $handlers = array();
+	protected $filters = array();	// global filters run on every parameter
 	protected $filterchain;
 	protected $validator;
 	protected $error = false;
@@ -19,6 +20,10 @@ class A_Controller_Input extends A_Controller_Action {
 		if ($object) {
 			$this->handlers[] = $object;
 		}
+	}
+	
+	public function addFilter($filter) {
+		$this->filters[] = $filter;
 	}
 	
 	public function addParameter($object) {
@@ -38,6 +43,11 @@ class A_Controller_Input extends A_Controller_Action {
 		$validator = new A_Validator();
 		$this->error = false;
 		$param_names = array_keys($this->params);
+		if ($this->filters) {
+			foreach ($param_names as $name) {
+				$request->set($name, $filterchain->run($request->get($name), $this->filters));
+			}
+		}
 		foreach ($param_names as $name) {
 			if ($this->params[$name]->filters) {
 				$request->set($name, $filterchain->run($request->get($name), $this->params[$name]->filters));
