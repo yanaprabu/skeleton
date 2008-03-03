@@ -1,7 +1,8 @@
 <?php
 require_once('A/DL.php');
-require_once('A/Filter.php');
-require_once('A/Rule.php');
+require_once('A/Filter/Regexp.php');
+require_once('A/Filter/Toupper.php');
+require_once('A/Rule/Notnull.php');
 require_once('A/Rule/Match.php');
 require_once('A/Rule/Range.php');
 require_once('A/Rule/Length.php');
