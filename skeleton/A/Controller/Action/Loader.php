@@ -2,10 +2,11 @@
 
 class A_Controller_Action_Loader {
 	protected $locator;
-	protected $paths = array('global'=>'', 'module'=>'', 'local'=>'');
+	protected $paths = array('global'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
 	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
 	protected $action = null;
 	protected $suffix = array('model'=>'Model', 'view'=>'View');
+	protected $rendererTypes = array('view', 'template');
 	protected $scopePath;
 	protected $responseName = '';
 	protected $renderClass = 'A_Template_Include';
@@ -22,12 +23,24 @@ class A_Controller_Action_Loader {
 		}
 	}
 	 
+	/*
+	 * Scopes are:
+	 * global /app/
+	 * module /app/$module/
+	 * controller /app/$module/$type/$controller/
+	 * action /app/$module/$type/$controller/$action/
+	 */
 	public function setMapper($mapper){
 		if ($mapper) {
+			$type = '%s/';
+			$this->action = $mapper->getClass();
 			$this->paths['global'] = $mapper->getBasePath();
 			$this->paths['module'] = $this->paths['global'] . $mapper->getDir();
-			$this->paths['local'] = $this->paths['module'] . $mapper->getClassDir();
-			$this->action = $mapper->getClass();
+			$this->paths['controller'] = $this->paths['module'] . $type . $mapper->getClassDir();
+			$this->paths['action'] = $this->paths['controller'] . $this->action;
+			$this->paths['global'] .= $type;
+			$this->paths['module'] .= $type;
+			dump($this->paths);
 		}
 		return $this;
 	}
@@ -67,6 +80,7 @@ class A_Controller_Action_Loader {
 			$module = 'module';	 // the default setting e.g., "/app/module/models"
 		}
 		$this->scopePath = $this->paths[$module];
+		$this->responseSet = false;		// reset response mode to off for each call
 		return $this;
 	}
 
@@ -84,10 +98,13 @@ class A_Controller_Action_Loader {
 				}
 			}
 			
+			// insert type path into scope path
+			$path = str_replace('%s', $this->dirs[$type], $this->scopePath);
+			
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
 				include_once str_replace('_', '/', $this->renderClass) . '.php';
-				$obj = new $this->renderClass($this->scopePath . $this->dirs['template'] . $class . '.php');
+				$obj = new $this->renderClass("$path$class.php");
 				// if 2nd param is array then use it to set template values
 				if (isset($params[1]) && is_array($params[1])) {
 					foreach ($params[1] as $key => $val) {
@@ -95,25 +112,28 @@ class A_Controller_Action_Loader {
 					}
 				}
 			} elseif ($this->locator) {
-				if ($this->locator->loadClass($class, $this->scopePath . $this->dirs[$type])) { // load class if necessary
+				if ($this->locator->loadClass($class, $path)) { // load class if necessary
 					$obj = new $class($this->locator);
 				} else {
-					$this->errorMsg .=  "Error: locator->loadClass('$class', '{$this->scopePath}', '{$this->dirs[$type]}'). ";
+					$this->errorMsg .=  "Error: locator->loadClass('$class', '$path'). ";
 				}
 			}
 
 			if ($obj && $this->responseSet) { // this is the section for when response() has been called
 				$response = $this->locator->get('Response');
-				if ($response && $obj) {
-					// if name then set data in response, otherwise use as renderer
+				if ($response && $obj) {					
 					if ($this->responseName) {
-						$response->set($this->responseName, $obj);
-					} else {
+						$response->set($this->responseName, $obj);		// if name then set data in response
+					
+					} elseif (in_array($type, $this->rendererTypes)) {	// if renderer set as renderer
 						$response->setRenderer($obj);
+					} else {
+						$response->set($class, $obj);					// otherwise set by class name
 					}
 				} else {
 					echo $obj->render();	// do we really want this option? or should the action do this?
 				}
+				return $this;				// if response set then allow chained
 			}
 
 			if (! $obj) {
