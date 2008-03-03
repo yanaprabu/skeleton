@@ -23,12 +23,16 @@ class A_Controller_Input extends A_Controller_Action {
 		}
 	}
 	
-	public function addFilter($filter) {
-		$this->filters[] = $filter;
+	public function addFilter($filter, $names=array()) {
+		$n = count($this->filters);
+		$this->filters[$n]['filter'] = $filter;
+		$this->filters[$n]['names'] = $names;
 	}
 	
-	public function addRule($rule) {
-		$this->rules[] = $rule;
+	public function addRule($rule, $names=array()) {
+		$n = count($this->rules);
+		$this->rules[$n]['rule'] = $rule;
+		$this->rules[$n]['names'] = $names;
 	}
 	
 	public function addParameter($object) {
@@ -50,8 +54,12 @@ class A_Controller_Input extends A_Controller_Action {
 		$param_names = array_keys($this->params);
 		if ($param_names) {
 			if ($this->filters) {
-				foreach ($param_names as $name) {
-					$request->set($name, $filterchain->run($request->get($name), $this->filters));
+				foreach ($this->filters as $filter) {
+					// if filter is only for specific params do only those, otherwise all
+					$names = $filter['names'] ? $filter['names'] : $param_names;
+					foreach ($names as $name) {
+						$request->set($name, $filterchain->run($request->get($name), $filter['filter']));
+					}
 				}
 			}
 			foreach ($param_names as $name) {
@@ -69,13 +77,15 @@ class A_Controller_Input extends A_Controller_Action {
 				}
 			}
 			if ($this->rules) {
-				foreach ($param_names as $name) {
-					foreach ($this->rules as $rule) {
-						$rule->setName($name);		// set all rules to work on this parameter
-					}
-					if (! $validator->validate($request, $this->rules)) {
-						$this->params[$name]->setError($validator->getErrorMsg());
-						$this->error = true;
+				foreach ($this->rules as $rule) {
+					// if rule is only for specific params do only those, otherwise all
+					$names = $rule['names'] ? $rule['names'] : $param_names;
+					foreach ($names as $name) {
+						$rule['rule']->setName($name);		// set all rules to work on this parameter
+						if (! $validator->validate($request, $rule['rule'])) {
+							$this->params[$name]->setError($validator->getErrorMsg());
+							$this->error = true;
+						}
 					}
 				}
 			}
