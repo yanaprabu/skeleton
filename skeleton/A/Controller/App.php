@@ -33,6 +33,12 @@ class A_Controller_App extends A_Controller_Input {
 	}
 	
 	public function findState($request) {
+		// if no initial state then set to first state
+		if (! $this->state_name && $this->states) {
+			reset($this->states);
+			$state = current($this->states);
+			$this->state_name = $state->name;
+		}
 		do {
 			$run = false;
 			$n = count($this->transitions[$this->state_name]);

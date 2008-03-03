@@ -1,12 +1,14 @@
 <?php
+/*
 require_once 'Horde/Routes/Mapper.php';
 require_once 'Horde/Routes/Exception.php';
 require_once 'Horde/Routes/Route.php';
 require_once 'Horde/Routes/Util.php';
+*/
 
 /*
 */
-class A_Http_HordeRoutes {\
+class A_Http_HordeRoutes {
 	protected $path;
 	protected $mapper;
 	

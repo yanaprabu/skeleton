@@ -33,9 +33,9 @@ class A_Db_Mysqli {	protected $dsn = null;	protected $link = null;	protected 
 	}
 		
 	public function query ($sql) {
-		if (is_object($sql) && method_exists($sql, 'execute')) {
+		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
-			$sql = $sql->execute($this);   // pass $this to provide db specific escape() method
+			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
 		mysql_select_db($this->dsn['database'], $this->link);
 		if (strpos(strtolower($sql), 'select') === 0) {

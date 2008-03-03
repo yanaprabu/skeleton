@@ -5,7 +5,7 @@ class A_Template_Xslt extends A_Template {
 	protected $filenamexml = '';
 
 	public function __construct($filenamexsl='', $data=array()) {
-	    $this->A_Template($filenamexsl, $data);
+	    parent::__construct($filenamexsl, $data);
 	}
 	
 	public function setXML($xml) {

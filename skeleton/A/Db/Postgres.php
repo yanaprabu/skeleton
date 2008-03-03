@@ -1,4 +1,12 @@
 <?php
+/*
+ * DSN array contain:
+ * 'host' or 'hostspec'
+ * 'user' or 'username'
+ * 'password'
+ * 'dbname' or 'database'
+ * 'port'
+ *  */
 
 class A_Db_Postgres {	protected $link = null;	protected $sequenceext = '_seq';	protected $sequencestart = 1;
 	
@@ -47,9 +55,9 @@ class A_Db_Postgres {	protected $link = null;	protected $sequenceext = '_seq';
 	}
 		
 	public function query ($sql) {
-		if (is_object($sql) && method_exists($sql, 'execute')) {
+		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
-			$sql = $sql->execute($this);   // pass $this to provide db specific escape() method
+			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
 		mysql_select_db($this->dsn['database'], $this->link);
 		if (strpos(strtolower($sql), 'select') === 0) {

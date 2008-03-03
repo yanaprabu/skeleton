@@ -48,8 +48,8 @@ class A_Http_PathInfo {
 						),
 					);
 	protected $map_extra_param_pairs;
-	protected $path = '';
-	protected $path_pos = 0;		// the position in path_info after the end of the current route
+	protected $path;
+	protected $path_pos;		// the position in path_info after the end of the current route
 	protected $script_extension = '.php';
 
     public function __construct($map=null, $map_extra_param_pairs=true) {
@@ -76,6 +76,7 @@ class A_Http_PathInfo {
 	        }
         }
         $this->path = trim($path, '/');
+        $this->path_pos = 0;
 	}
 	
 	public function setScriptExtension($script_extension) {

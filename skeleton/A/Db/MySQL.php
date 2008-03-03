@@ -1,5 +1,11 @@
 <?php
-
+/*
+ * DSN array contain:
+ * 'hostspec'
+ * 'username'
+ * 'password'
+ * 'database'
+ */
 class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $limit = '';
 	protected $orderby = '';
 	protected $sequenceext = '_seq';	protected $sequencestart = 1;
@@ -14,7 +20,8 @@ class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $
 			$this->dsn = $dsn;
 		}
 		if ($this->link == null) {
-			$this->link = mysql_connect($this->dsn['hostspec'], $this->dsn['username'], $this->dsn['password']);
+			$host = isset($this->dsn['host']) ? $this->dsn['host'] : $this->dsn['hostspec'];
+			$this->link = mysql_connect($host, $this->dsn['username'], $this->dsn['password']);
 			if ($this->link) {
 				if (isset($this->dsn['database'])) {
 					$result = mysql_select_db($this->dsn['database'], $this->link);
@@ -35,11 +42,7 @@ class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $
 	public function query ($sql) {
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
-			$sql = $sql->toSQL($this);   // pass $this to provide db specific escape() method
-		}
-		if ($this->limit && substri($sql, 'execute')) {
-			// convert object to string by executing SQL builder object
-			$sql = $sql->execute($this);   // pass $this to provide db specific escape() method
+			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
 		mysql_select_db($this->dsn['database'], $this->link);
 		if (strpos(strtolower($sql), 'select') === 0) {

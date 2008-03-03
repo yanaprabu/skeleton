@@ -1,26 +1,32 @@
 <?php
 /*
  * PayPal (credit card processsing) class library
- * based on code from PayflowPro forums
+ *
  */
 
 
 class A_Cart_Payment_Payflow
-{	const SERVER_LIVE = 1;
+{
+	const SERVER_LIVE = 1;
 	const SERVER_TEST = 2;
 	const SERVER_NONE = 3;
 	const TRXTYPE_SALE = 'S';
 	const TRXTYPE_AUTHORIZATION = 'A';
 
-	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $transactionID = 0;
-	protected $response = null;	protected $fraud = 'NO';
+	protected $server;
+	protected $serverlist;
+	protected $servermode;
+	protected $transaction;
+	protected $transactionID = 0;
+	protected $response = null;
+	protected $fraud = 'NO';
 	protected $infomsg = '';
 	protected $errmsg = '';
 	
 	public function __construct($user='', $passwd='', $partner='', $mode=A_Cart_Payment_Payflow::SERVER_LIVE)
 	{
 		$this->serverlist = array(
-			self::SERVER_LIVE=>'https://payflow.verisign.com',
+			self::SERVER_LIVE=>'https://payflowpro.verisign.com',
 			self::SERVER_TEST=>'https://pilot-payflowpro.verisign.com',		//'test-payflow.verisign.com',
 			self::SERVER_NONE=>'',
 		);
@@ -31,7 +37,7 @@ class A_Cart_Payment_Payflow
 			'PARTNER' => $partner,
 			'TRXTYPE' => self::TRXTYPE_AUTHORIZATION,		// A is Authorization, S is Sale
 			'TENDER' => 'C',			// C is Credit card, P is PayPal account
-			'VERBOSITY' => 'MEDIUM',	// LOW is normalized, MEDIUM for processor’s raw response
+			'VERBOSITY' => 'MEDIUM',	// LOW is normalized, MEDIUM for processor's raw response
 			'CURRENCY' => 'USD',
 		
 			'INVNUM' => '',
@@ -59,7 +65,6 @@ class A_Cart_Payment_Payflow
 	
 	public function setServer($value) {
 		$this->server = $value;
-		return $this;
 	}
 	
 	public function setServerMode($mode=A_Cart_Payment_Payflow::SERVER_LIVE) {
@@ -75,62 +80,51 @@ class A_Cart_Payment_Payflow
 			$this->server = $this->serverlist[self::SERVER_LIVE];
 		}
 		$this->servermode = $mode;
-		return $this;
+#echo "setServerMode: server={$this->server}, servermode={$this->servermode}<br/>";
 	}
 	
 	public function setFraud($value) {
 		$this->fraud = ($value === true) || (strtoupper($value)=='YES') ? 'YES' : 'NO';
-		return $this;
 	}
 	
 	public function setUser($value) {
 		$this->transaction['USER'] = $value;
-		return $this;
 	}
 	
 	public function setPassword($value) {
 		$this->transaction['PWD'] = $value;
-		return $this;
 	}
 	
 	public function setPartner($value) {
 		$this->transaction['PARTNER'] = $value;
-		return $this;
 	}
 	
 	public function setTransactionType($value) {
 		$this->transaction['TRXTYPE'] = $value;
-		return $this;
 	}
 	
 	public function setTransactionID($value) {
 		$this->transactionID = $value;
-		return $this;
 	}
 	
 	public function setCurrency($value) {
 		$this->transaction['CURRENCY'] = $value;	// USD,GBP
-		return $this;
 	}
 	
 	public function setAmount($value) {
 		$this->transaction['AMT'] = $value;
-		return $this;
 	}
 	
 	public function setOrderNumber($value) {
 		$this->transaction['INVNUM'] = $value;
-		return $this;
 	}
 	
 	public function setCardNumber($value) {
 		$this->transaction['ACCT'] = $value;
-		return $this;
 	}
 	
 	public function setCardType($value) {
 		$this->transaction['ACCTTYPE'] = $value;
-		return $this;
 	}
 	
 	public function setExpDate($month, $year) {
@@ -138,62 +132,50 @@ class A_Cart_Payment_Payflow
 			$year = substr($year, -2);
 		}
 		$this->transaction['EXPDATE'] = sprintf('%02d%02d', $month, $year);
-		return $this;
 	}
 	
 	public function setCVV2($value) {
 		$this->transaction['CVV2'] = $value;
-		return $this;
 	}
 	
 	public function setName($value) {
 		$this->transaction['NAME'] = $value;
-		return $this;
 	}
 	
 	public function setFirstName($value) {
 		$this->transaction['FIRSTNAME'] = $value;
-		return $this;
 	}
 	
 	public function setLastName($value) {
 		$this->transaction['LASTNAME'] = $value;
-		return $this;
 	}
 	
 	public function setStreet($value) {
 		$this->transaction['STREET'] = $value;
-		return $this;
 	}
 	
 	public function setCity($value) {
 		$this->transaction['CITY'] = $value;
-		return $this;
 	}
 	
 	public function setState($value) {
 		$this->transaction['STATE'] = $value;
-		return $this;
 	}
 	
 	public function setZip($value) {
 		$this->transaction['ZIP'] = $value;
-		return $this;
 	}
 	
 	public function setCountry($value) {
 		$this->transaction['COUNTRY'] = $value;
-		return $this;
 	}
 	
 	public function setEmail($value) {
 		$this->transaction['EMAIL'] = $value;
-		return $this;
 	}
 
 	public function setDescription($value) {
 		$this->transaction['ORDERDESC'] = $value;
-		return $this;
 	}
 	
 	public function setComments($comment1='', $comment2='') {
@@ -203,7 +185,25 @@ class A_Cart_Payment_Payflow
 		if ($comment2) {
 			$this->transaction['COMMENT2'] = $comment2;
 		}
-		return $this;
+	}
+	
+	public function getVersion() {
+	}
+	
+	public function getResponse($key='') {
+		if ($key) {
+			return $this->response[$key];
+		} else {
+			return $this->response;
+		}
+	}
+	
+	public function getTransaction($key='') {
+		if ($key) {
+			return $this->transaction[$key];
+		} else {
+			return $this->transaction;
+		}
 	}
 	
 	public function getReference() {
@@ -213,7 +213,26 @@ class A_Cart_Payment_Payflow
 		return '';
 	}
 	
-	public function getVersion() {
+	public function getResponseMessage() {
+		if ($this->response) {
+			return $this->response['RESPMSG'];
+		}
+		return 'Could not connect to credit card processor. ';
+	}
+	
+	public function getMessage() {
+		return $this->errmsg;
+	}
+	
+	public function getInformation() {
+		return $this->infomsg;
+	}
+	
+	public function getResult() {
+		if (isset($this->response['RESULT'])) {
+			return $this->response['RESULT'];
+		}
+		return -1;
 	}
 	
 	public function process() {
@@ -222,7 +241,6 @@ class A_Cart_Payment_Payflow
 			$this->response['RESULT'] = 0;
 			$this->response['RESPMSG'] = 'Did not connect to credit card processor (A_Cart_Payment_Payflow::SERVER_NONE). ';
 		} else {
-/*
 			$params = array();
 			foreach ($this->transaction as $key => $value) {
 				if ($value != '') {
@@ -230,8 +248,6 @@ class A_Cart_Payment_Payflow
 				}
 			}
 			$data = implode('&', $params);
-*/
-			$data = http_build_query($params);
 			$unique_id = $order_num;
 	
 			// post data and get results in this->response
@@ -243,7 +259,7 @@ class A_Cart_Payment_Payflow
 	/*
 	 * Post transaction, get response and check for errors
 	 */
-	function processTransaction($data) {
+	protected function processTransaction($data) {
 		
 		// Here's your custom headers; adjust appropriately for your setup:
 		$headers[] = "Content-Type: text/namevalue"; //or text/xml if using XMLPay.
@@ -312,7 +328,7 @@ class A_Cart_Payment_Payflow
 		}
 	}	 
 	
-	function checkResponse() {
+	protected function checkResponse() {
 	
 		$result_code = $this->response['RESULT']; // get the result code to validate.
 		$this->errmsg = 'General Error.  Please contact Customer Support.';  // Generic error for all results not captured below.
@@ -424,40 +440,8 @@ class A_Cart_Payment_Payflow
 		}
 	}
 		
-	function generateID ($length=32) {
-	    return substr(str_shuffle("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 0, $length));
-	}
-	
-	public function isError() {
-		if ($this->response && ($this->response['RESULT'] == 0)) {
-			return false;
-		}
-		return true;
-	}
-	
-	public function getResponseMessage() {
-		if ($this->response) {
-			return $this->response['RESPMSG'];
-		}
-		return 'Could not connect to credit card processor. ';
-	}
-	
-	public function getMessage() {
-		return $this->errmsg;
-	}
-	
-	public function getInformation() {
-		return $this->infomsg;
-	}
-	
-	public function getResult() {
-		if (isset($this->response['RESULT'])) {
-			return $this->response['RESULT'];
-		}
-		return -1;
-	}
-	
-	public function close() {
+	protected function generateID ($length=32) {
+	    return substr(str_shuffle("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
 	}
 	
 	public function isError() {
@@ -470,4 +454,4 @@ class A_Cart_Payment_Payflow
 	public function close() {
 	}
 
-} // end class A_Cart_Payment_Payflow
+} // end class A_Cart_Payment_PayflowPro
