@@ -5,7 +5,7 @@ class A_Controller_Action_Loader {
 	protected $paths = array('global'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
 	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
 	protected $action = null;
-	protected $suffix = array('model'=>'Model', 'view'=>'View');
+	protected $suffix = array('model'=>'Model', 'view'=>'View', 'helper'=>'Helper');
 	protected $rendererTypes = array('view', 'template');
 	protected $scopePath;
 	protected $responseName = '';
