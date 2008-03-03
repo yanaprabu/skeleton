@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Http/Upload.php');
 
-class xxxTest extends UnitTestCase {
+class Http_UploadTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testHttp_UploadNotNull() {
+  		$Http_Upload = new A_Http_Upload();
 		
 		$result = true;
   		$this->assertTrue($result);

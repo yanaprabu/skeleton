@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Sql/Insert.php');
 
-class xxxTest extends UnitTestCase {
+class Sql_InsertTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testSql_InsertNotNull() {
+  		$Sql_Insert = new A_Sql_Insert();
 		
 		$result = true;
   		$this->assertTrue($result);

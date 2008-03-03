@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Db/ADOdblite.php');
 
-class xxxTest extends UnitTestCase {
+class Db_ADOdbliteTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testDb_ADOdbliteNotNull() {
+  		$Db_ADOdblite = new A_Db_ADOdblite();
 		
 		$result = true;
   		$this->assertTrue($result);

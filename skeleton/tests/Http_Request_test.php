@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Http/Request.php');
 
-class xxxTest extends UnitTestCase {
+class Http_RequestTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testHttp_RequestNotNull() {
+  		$Http_Request = new A_Http_Request();
 		
 		$result = true;
   		$this->assertTrue($result);

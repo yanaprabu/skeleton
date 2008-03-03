@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Sql/Select.php');
 
-class xxxTest extends UnitTestCase {
+class Sql_SelectTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testSql_SelectNotNull() {
+  		$Sql_Select = new A_Sql_Select();
 		
 		$result = true;
   		$this->assertTrue($result);

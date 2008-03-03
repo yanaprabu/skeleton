@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/FilterChain.php');
 
-class xxxTest extends UnitTestCase {
+class FilterChainTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testFilterChainNotNull() {
+  		$FilterChain = new A_FilterChain();
 		
 		$result = true;
   		$this->assertTrue($result);

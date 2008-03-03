@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Cart/Url.php');
 
-class xxxTest extends UnitTestCase {
+class Cart_UrlTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testCart_UrlNotNull() {
+  		$Cart_Url = new A_Cart_Url();
 		
 		$result = true;
   		$this->assertTrue($result);

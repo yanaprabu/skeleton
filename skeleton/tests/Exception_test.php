@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Exception.php');
 
-class xxxTest extends UnitTestCase {
+class ExceptionTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testExceptionNotNull() {
+  		$Exception = new A_Exception();
 		
 		$result = true;
   		$this->assertTrue($result);

@@ -79,7 +79,7 @@ class LocatorTest extends UnitTestCase {
 				);
 		$locator->register($inject);
 		$example3 = $locator->get('', 'Example2');
-dump($example3);
+#dump($example3);
 		$this->assertTrue(class_exists('Example2'));
 		$this->assertTrue(is_a($example3, 'Example2'));
 	}

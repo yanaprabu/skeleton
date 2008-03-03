@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Db/Mysqli.php');
 
-class xxxTest extends UnitTestCase {
+class Db_MysqliTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testDb_MysqliNotNull() {
+  		$Db_Mysqli = new A_Db_Mysqli();
 		
 		$result = true;
   		$this->assertTrue($result);

@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Sql/Groupby.php');
 
-class xxxTest extends UnitTestCase {
+class Sql_GroupbyTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testSql_GroupbyNotNull() {
+  		$Sql_Groupby = new A_Sql_Groupby();
 		
 		$result = true;
   		$this->assertTrue($result);

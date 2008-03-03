@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Session.php');
 
-class xxxTest extends UnitTestCase {
+class SessionTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testSessionNotNull() {
+  		$Session = new A_Session();
 		
 		$result = true;
   		$this->assertTrue($result);

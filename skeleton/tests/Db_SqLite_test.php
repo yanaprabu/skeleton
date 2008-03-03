@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Db/SqLite.php');
 
-class xxxTest extends UnitTestCase {
+class Db_SqLiteTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testDb_SqLiteNotNull() {
+  		$Db_SqLite = new A_Db_SqLite();
 		
 		$result = true;
   		$this->assertTrue($result);

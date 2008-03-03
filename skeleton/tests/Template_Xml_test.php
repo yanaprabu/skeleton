@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Template/Xml.php');
 
-class xxxTest extends UnitTestCase {
+class Template_XmlTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testTemplate_XmlNotNull() {
+  		$Template_Xml = new A_Template_Xml();
 		
 		$result = true;
   		$this->assertTrue($result);

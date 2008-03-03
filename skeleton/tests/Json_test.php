@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Json.php');
 
-class xxxTest extends UnitTestCase {
+class JsonTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testJsonNotNull() {
+  		$Json = new A_Json();
 		
 		$result = true;
   		$this->assertTrue($result);

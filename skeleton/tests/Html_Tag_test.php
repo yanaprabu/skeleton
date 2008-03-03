@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Html/Tag.php');
 
-class xxxTest extends UnitTestCase {
+class Html_TagTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testHtml_TagNotNull() {
+  		$Html_Tag = new A_Html_Tag();
 		
 		$result = true;
   		$this->assertTrue($result);

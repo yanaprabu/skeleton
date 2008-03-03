@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Template.php');
 
-class xxxTest extends UnitTestCase {
+class TemplateTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testTemplateNotNull() {
+  		$Template = new A_Template();
 		
 		$result = true;
   		$this->assertTrue($result);

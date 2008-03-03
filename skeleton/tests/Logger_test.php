@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Logger.php');
 
-class xxxTest extends UnitTestCase {
+class LoggerTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,9 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testLoggerNotNull() {
+  		$writer = 'foo.log';
+  		$Logger = new A_Logger($writer);
 		
 		$result = true;
   		$this->assertTrue($result);

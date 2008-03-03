@@ -1,7 +1,7 @@
 <?php
-require_once('A/yyy.php');
+require_once('A/Db/Postgres.php');
 
-class xxxTest extends UnitTestCase {
+class Db_PostgresTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -9,8 +9,8 @@ class xxxTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testxxxNotNull() {
-  		$xxx = new A_xxx();
+	function testDb_PostgresNotNull() {
+  		$Db_Postgres = new A_Db_Postgres();
 		
 		$result = true;
   		$this->assertTrue($result);
