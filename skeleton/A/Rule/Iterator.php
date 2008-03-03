@@ -5,10 +5,9 @@ class A_Rule_Iterator extends A_Rule_Abstract {
 	protected $rule;
 	protected $value;
 	
-    public function __construct($field, $rule, $errMsg) {
+    public function __construct($field, $rule, $errorMsg) {
 		$this->field    = $field;
 		$this->rule     = $rule;
-		$this->max      = $max;
 		$this->errorMsg = $errorMsg;
     }
 
