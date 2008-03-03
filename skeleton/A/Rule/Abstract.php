@@ -9,6 +9,16 @@ class A_Rule_Abstract {
 		$this->errorMsg = $errorMsg;
 	}
 	
+    public function setName($field) {
+      $this->field = $field;
+      return $this;
+    }
+
+    public function setErrorMsg($errorMsg) {
+      $this->errorMsg = $errorMsg;
+      return $this;
+    }
+
     public function getErrorMsg() {
       return $this->errorMsg;
     }
