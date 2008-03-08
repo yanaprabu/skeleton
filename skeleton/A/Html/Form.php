@@ -6,10 +6,11 @@ class A_Html_Form {
 					'action' => '',
 					'method' => 'post',
 					); 
-	protected $_elements = array(); 
-	protected $_helpers = array(
-					); 
-					
+	protected $_elements = array();
+	protected $_helpers = array();
+	protected $_wrapper = null;
+	protected $_wrapperAttr = array();
+	
 	/*
 	 * name=string, value=string or renderer
 	 */
@@ -42,28 +43,7 @@ class A_Html_Form {
 	}
 
 	public function partial($attr=array()) {
-		$attr = array_merge($this->_attr, $attr);
-
-		$content = '';
-		foreach ($this->_elements as $params) {
-			$class = 'A_Html_Form_' . ucfirst($params['type']);
-			if (! class_exists($class)) {
-				include str_replace('_', '/', $class) . '.php';
-			}
-			if (class_exists($class)) {
-				if (isset($params['content'])) {
-					$str = $params['content'];
-					unset($params['content']);
-				} else {
-					$str = null;
-				}
-				unset($params['type']);
-				$element = new $class();
-				$content .= $element->render($params, $str);
-			}
-		}
-		
-		return $content;
+		return implode("\n", $this->_elements);
 	}
 
 	// Set the method. Is there a setter for the action?
@@ -80,6 +60,35 @@ class A_Html_Form {
 	public function setModel($model) {
 		$this->model = $model;
 		return $this;
+	}
+
+	public function setWrapper($obj, $attr=array()) {
+		if (is_string($obj)) {
+			include_once str_replace('_', '/', $obj) . '.php';
+			$this->_wrapper = new $obj();
+		} else {
+			$this->_wrapper = $obj;
+		}
+		$this->_wrapperAttr = $attr;
+		return $this;
+	}
+
+	protected function getHelperClass($type) {
+		return isset($this->_helpers[$type]) ? $this->_helpers[$type] : 'A_Html_Form_' . ucfirst($type);
+	}
+
+	protected function setHelperClass($type, $class) {
+		$this->_helpers[$type] = $class;
+		return $this;
+	}
+
+	protected function getHelper($type) {
+		$class = $this->getHelperClass($type);
+		include_once str_replace('_', '/', $class) . '.php';
+		if (class_exists($class)) {
+			$element = new $class();
+			return $element;
+		}
 	}
 
 	public function reset() {
@@ -101,13 +110,24 @@ class A_Html_Form {
 				}
 			}
 		}
-		if (isset($params['label'])) {
-			$this->_elements[] = array('type'=>'label', 'for'=>$params['name'], 'content'=>$params['label']);
-			unset($params['label']);
-		}
-		if (isset($params['name']) && $params['name']) {
-			$params['type'] = $type;
-			$this->_elements[] = $params;
+
+		if ($type == 'fieldset') {
+			$this->_elements[] = $params['content'];
+		} elseif (isset($params['name']) && $params['name']) {
+			$element = $this->getHelper($type);
+			if (isset($params['label'])) {
+				$str = $params['label'];
+				unset($params['label']);
+				$label = $this->getHelper('label');
+				$str = $label->render(array('type'=>'label', 'for'=>$params['name']), $str . $element->render($params));
+			} else {
+				$str = $element->render($attr);
+			}
+			// if we wrap elements in a tag
+			if ($this->_wrapper) {
+				$str = $this->_wrapper->render($this->_wrapperAttr, $str);
+			}
+			$this->_elements[] = $str;
 		}
 		return $this;
 	}
