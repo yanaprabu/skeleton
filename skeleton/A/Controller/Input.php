@@ -231,14 +231,14 @@ class A_Controller_InputParameter {
 				$this->renderer = $this->type['renderer'];
 				unset($this->type['renderer']);
 			}
-			// string is name of class with underscores in loadable convention
-			if (is_string($this->renderer)){
-				// load locator if not loaded
-				include_once 'A/Locator.php';
-				if (A_Locator::loadClass($this->renderer)) {
-					// instantiate render passing the array of parameters
-					$this->renderer = new $this->renderer();
-				}
+		}
+		// string is name of class with underscores in loadable convention
+		if (is_string($this->renderer)){
+			// load locator if not loaded
+			include_once 'A/Locator.php';
+			if (A_Locator::loadClass($this->renderer)) {
+				// instantiate render passing the array of parameters
+				$this->renderer = new $this->renderer();
 			}
 		}
 		if (isset($this->renderer) && method_exists($this->renderer, 'render')) {
