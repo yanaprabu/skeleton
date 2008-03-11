@@ -1,7 +1,12 @@
 <?php
 
 class A_Html_Tag {
-
+	protected $_attr;
+	
+	public function __construct($attr=array()) {
+		$this->_attr = $attr;
+	}
+	
 	public function setDefaults(&$attr, $default_attr) {
 		foreach($default_attr as $key => $value) {
 			if (! isset($attr[$key])) {
@@ -20,6 +25,9 @@ class A_Html_Tag {
  	 */
 	public function render($tag, $attr=array(), $content=null) {
 		$str = "<$tag";
+		if (isset($this) && isset($this->_attr)) {
+			$attr = array_merge($this->_attr, $attr);
+		}
 		foreach ($attr as $name=>$value) {
 			$str .= " $name=\"$value\"";
 		}

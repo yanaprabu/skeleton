@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Html/Tag.php';
+#include_once 'A/Html/Tag.php';
 
 class A_Html_Form {
 	protected $_attr = array(
