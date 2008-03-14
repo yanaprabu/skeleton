@@ -5,11 +5,14 @@ class A_Controller_Action_Loader {
 	protected $paths = array('global'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
 	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
 	protected $action = null;
+	protected $method = null;
 	protected $suffix = array('model'=>'Model', 'view'=>'View', 'helper'=>'Helper');
 	protected $rendererTypes = array('view', 'template');
+	protected $scope;
 	protected $scopePath;
 	protected $responseName = '';
 	protected $renderClass = 'A_Template_Include';
+	protected $renderExtension = '.php';
 	protected $responseSet = false;
 	protected $errorMsg = '';
 	
@@ -32,20 +35,20 @@ class A_Controller_Action_Loader {
 	 */
 	public function setMapper($mapper){
 		if ($mapper) {
-			$type = '%s/';
+			$type = '%s';
 			$this->action = $mapper->getClass();
+			$this->method = $mapper->getMethod();
 			$this->paths['global'] = $mapper->getBasePath();
 			$this->paths['module'] = $this->paths['global'] . $mapper->getDir();
-			$this->paths['controller'] = $this->paths['module'] . $type . $mapper->getClassDir();
-			$this->paths['action'] = $this->paths['controller'] . $this->action;
+			$this->paths['controller'] = $this->paths['module'] . $type . $this->action . '/';// . $mapper->getClassDir();
+			$this->paths['action'] = $this->paths['controller'] . ($this->method ? "$this->method/" : '');
 			$this->paths['global'] .= $type;
 			$this->paths['module'] .= $type;
-			dump($this->paths);
 		}
 		return $this;
 	}
 		
-	protected function setPath($name, $path, $relative_name=''){
+	public function setPath($name, $path, $relative_name=''){
 		$path = $path ? (rtrim($path, '/') . '/') : '';		// add trailing dir separator
 		if ($relative_name) {
 			$this->paths[$name] = $this->paths[$relative_name] . $path;
@@ -60,8 +63,9 @@ class A_Controller_Action_Loader {
 		return $this;
 	}
 	
-	protected function setRenderClass($name){
+	public function setRenderClass($name, $ext='.php'){
 		$this->renderClass = $name;
+		$this->renderExtension = $ext;
 		return $this;
 	}
 	
@@ -75,11 +79,12 @@ class A_Controller_Action_Loader {
 		return $this;
 	}
 
-	public function load($module=null) {
-		if (! isset($this->paths[$module])) {
-			$module = 'module';	 // the default setting e.g., "/app/module/models"
+	public function load($scope=null) {
+		if (! isset($this->paths[$scope])) {
+			$scope = 'module';	 // the default setting e.g., "/app/module/models"
 		}
-		$this->scopePath = $this->paths[$module];
+		$this->scope = $scope;
+		$this->scopePath = $this->paths[$scope];
 		$this->responseSet = false;		// reset response mode to off for each call
 		return $this;
 	}
@@ -88,8 +93,8 @@ class A_Controller_Action_Loader {
 		$obj = null;
 		// is this a defined type of subdirectory
 		if (isset($this->dirs[$type])) {
-			// get class name parameter or use action name
-			$class = isset($params[0]) && $params[0] ? $params[0] : $this->action;
+			// get class name parameter or use action name or use method name in controller scope for $type/$controller/$action.php
+			$class = isset($params[0]) && $params[0] ? $params[0] : ($this->scope == 'controller' && $this->method ? $this->method : $this->action);
 			if (isset($this->suffix[$type])) {
 				$length = strlen($this->suffix[$type]);
 				// if a suffix is defined and the end of the action name does not contain it -- append it
@@ -104,7 +109,7 @@ class A_Controller_Action_Loader {
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
 				include_once str_replace('_', '/', $this->renderClass) . '.php';
-				$obj = new $this->renderClass("$path$class.php");
+				$obj = new $this->renderClass("$path$class" . $this->renderExtension);
 				// if 2nd param is array then use it to set template values
 				if (isset($params[1]) && is_array($params[1])) {
 					foreach ($params[1] as $key => $val) {

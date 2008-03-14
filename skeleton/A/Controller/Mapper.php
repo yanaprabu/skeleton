@@ -93,13 +93,17 @@ class A_Controller_Mapper
 		return $this->class_dir;
 	}
 
+	public function getPath() {
+		return $this->base_path . $this->dir . $this->class_dir;
+#		return $this->base_path . ($this->dir ? $this->dir : $this->default_dir) . $this->class_dir;
+	}
+
 	public function getClass() {
 		return $this->class;
 	}
 
-	public function getPath() {
-		return $this->base_path . $this->dir . $this->class_dir;
-#		return $this->base_path . ($this->dir ? $this->dir : $this->default_dir) . $this->class_dir;
+	public function getMethod() {
+		return $this->method;
 	}
 
 	public function buildClass($base) {
