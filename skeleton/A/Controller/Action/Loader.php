@@ -118,7 +118,7 @@ class A_Controller_Action_Loader {
 				}
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
-					$obj = new $class($this->locator);
+					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
 				} else {
 					$this->errorMsg .=  "Error: locator->loadClass('$class', '$path'). ";
 				}
@@ -145,6 +145,7 @@ class A_Controller_Action_Loader {
 				$this->errorMsg .= "Could not load() {$this->dirs[$type]}{$this->scopePath}.php. ";
 			}
 			//reset scope and response
+			$this->scope = null;
 			$this->scopePath = null;
 			$this->responseSet = false;
 			return $obj;
