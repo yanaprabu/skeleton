@@ -7,8 +7,8 @@ protected $error_action;
 protected $action_param;
 protected $action = '';
 	 
-	public function __construct($action_dir='action', $default_action='home', $error_action='error', $action_param='action'){
-	    $this->action_dir = $action_dir;
+	public function __construct($action_dir='controllers', $default_action='home', $error_action='error', $action_param='action'){
+	    $this->action_dir = rtrim($action_dir, '/') . '/';
 	    $this->default_action = $default_action;
 	    $this->error_action = $error_action;
 	    $this->action_param = $action_param;
@@ -39,7 +39,7 @@ protected $action = '';
 		$this->action = $this->requestMapper($this->action_param, $this->default_action);
 	    $obj = $this->commandFactory($this->action_dir, $this->action);
 	    if (! $obj) {
-	        $obj = $this->commandFactory($this->error_action);
+	        $obj = $this->commandFactory($this->error_action, '');
 	    }
 	    $obj->run();
 	}
