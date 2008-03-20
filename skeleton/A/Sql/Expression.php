@@ -68,9 +68,9 @@ class A_Sql_Expression extends A_Sql_Abstract {
 			} else {
 				$value = $this->quoteValue($value);
 			}
-			return str_replace($matches[1], '', $key) . ' ' . $matches[1] .' '. $value;
+			return str_replace($matches[1], '', $key) . $matches[1] .$value;
 		} elseif ($value !== null) {
-			return $key .' = '. $this->quoteValue($value);
+			return $key .'='. $this->quoteValue($value);
 		}
 		return $key;
 	}
