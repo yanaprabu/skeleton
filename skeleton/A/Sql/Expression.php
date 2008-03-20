@@ -51,7 +51,7 @@ class A_Sql_Expression extends A_Sql_Abstract {
 	 * escape()
 	*/		
 	public function escape($value) {
-		return $this->quoteValue($this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value));
+		return $this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value);
 	}
 
 	/**
@@ -64,13 +64,13 @@ class A_Sql_Expression extends A_Sql_Abstract {
 		}
 		if (preg_match('!('. implode('|', $this->operators).')$!i', $key, $matches)) { //operator detected
 			if (is_array($value)) {
-				$value = '('. implode(', ', array_map(array($this, 'escape'), $value)) .')';
+				$value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)) .')';
 			} else {
-				$value = $this->escape($value);
+				$value = $this->quoteValue($value);
 			}
 			return str_replace($matches[1], '', $key) . ' ' . $matches[1] .' '. $value;
 		} elseif ($value !== null) {
-			return $key .' = '. $this->quoteValue($this->escape($value));
+			return $key .' = '. $this->quoteValue($value);
 		}
 		return $key;
 	}

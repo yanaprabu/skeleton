@@ -101,7 +101,7 @@ class A_Sql_Select {
 	*/
 	public function where($data, $value=null) {
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), 'and');	
+		$this->where[] = array(new A_Sql_Expression($data, $value), 'AND');	
 		return $this;
 	}
 
@@ -110,7 +110,7 @@ class A_Sql_Select {
 	*/	
 	public function orWhere($data, $value=null) {
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), 'or');	
+		$this->where[] = array(new A_Sql_Expression($data, $value), 'OR');	
 		return $this;		
 	}
 
