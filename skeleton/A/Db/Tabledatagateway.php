@@ -18,6 +18,10 @@ class A_Db_Tabledatagateway {
 		$this->key = $key;
 	}
 
+	public function quoteEscape($value) {
+		return "'" . $this->db->escape($value) . "'";
+	}
+
 	public function findByKey($id) {
 		$id = $this->db->escape($id);
 		$this->where = '';
@@ -61,8 +65,8 @@ class A_Db_Tabledatagateway {
 		$this->where[] = $where;
 	}
 	
-	public function is($field, $op, $value, $escape=false) {
-		$this->where[] = "$field$op" . $this->quoteValue($this->db->escape($value));
+	public function is($field, $op, $value, $quote=true) {
+		$this->where[] = "$field$op" . ($quote ? $this->quoteEscape($value) : $this->db->escape($value));
 	}
 
 	public function isEqual($field, $value) {
@@ -98,7 +102,7 @@ class A_Db_Tabledatagateway {
 	}
 
 	public function isBetween($field, $value1, $value2) {
-		$this->where[] = "$field BETWEEN " . $this->quoteValue($value1) . ' AND ' . $this->quoteValue($value2);
+		$this->where[] = "$field BETWEEN " . $this->quoteEscape($value1) . ' AND ' . $this->quoteEscape($value2);
 	}
 
 	public function orderBy($orderby) {
@@ -135,7 +139,7 @@ class A_Db_Tabledatagateway {
 				unset($data[$this->key]);
 			}
 			foreach ($data as $field => $value) {
-				$sets[] = $field . '=' . $this->quoteValue($this->db->escape($value));
+				$sets[] = $field . '=' . $this->quoteEscape($value);
 			}
 			$this->sql = "UPDATE {$this->table} SET " . implode(',', $sets) . " WHERE {$this->key}='$id'";
 			$this->db->query($this->sql);
@@ -149,7 +153,7 @@ class A_Db_Tabledatagateway {
 			}
 			foreach ($data as $field => $value) {
 				$cols[] = $field;
-				$values[] = $this->quoteValue($this->db->escape($value));
+				$values[] = $this->quoteEscape($value);
 			}
 			$this->sql = "INSERT INTO {$this->table} (" . implode(',', $cols) . ') VALUES (' . implode(',', $values) . ')';
 			$this->db->query($this->sql);
