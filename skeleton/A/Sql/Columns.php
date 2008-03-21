@@ -1,8 +1,6 @@
 <?php
 
-include_once 'A/Sql/Abstract.php';
-
-class A_Sql_Columns extends A_Sql_Abstract {
+class A_Sql_Columns {
 	protected $columns = array();
 	
 	public function __construct(array $arguments) {
@@ -18,4 +16,9 @@ class A_Sql_Columns extends A_Sql_Abstract {
 		}
 		return implode(', ', $this->columns);
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }

@@ -12,9 +12,9 @@ class A_Sql_Insert {
 	protected $set;
 
 	/**
-	 * setEquation
+	 * setExpression
 	*/	
-	protected $setEquation;
+	protected $setExpression;
 
 	/**
 	 * table()
@@ -29,10 +29,10 @@ class A_Sql_Insert {
 	 * values()
 	*/	
 	public function values($data, $value=null) {
-		if (!$this->setEquation) include_once ('A/Sql/Equation.php');
+		if (!$this->setExpression) include_once ('A/Sql/Expression.php');
 		if (!$this->set) include_once('A/Sql/List.php');
-		$this->setEquation = new A_Sql_Equation($data, $value);	
-		$this->set = new A_Sql_List($this->setEquation);
+		$this->setExpression = new A_Sql_Expression($data, $value);	
+		$this->set = new A_Sql_List($this->setExpression);
 		return $this;
 	}
 	
@@ -40,7 +40,12 @@ class A_Sql_Insert {
 		if (!$this->table || !$this->set) {
 			return;
 		}
-		$this->setEquation->setEscapeCallback($db);
+		$this->setExpression->setEscapeCallback($db);
 		return sprintf('INSERT INTO %s SET %s', $this->table->render(), $this->set->render());
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }

@@ -4,9 +4,9 @@ class A_Sql_Update {
 	protected $sqlFormat = 'UPDATE %s SET %s%s';
 	protected $table;
 	protected $set;
-	protected $setEquation;
+	protected $setExpression;
 	protected $where;
-	protected $whereEquation;
+	protected $whereExpression;
 	
 	public function table($table) {
 		if (!$this->table) include_once('A/Sql/Table.php');
@@ -15,29 +15,29 @@ class A_Sql_Update {
 	}
 
 	public function set($data, $value=null) {
-		if (!$this->setEquation) include_once ('A/Sql/Equation.php');
+		if (!$this->setExpression) include_once ('A/Sql/Expression.php');
 		if (!$this->set) include_once('A/Sql/List.php');
-		$this->setEquation = new A_Sql_Equation($data, $value);	
-		$this->set = new A_Sql_List($this->setEquation);
+		$this->setExpression = new A_Sql_Expression($data, $value);	
+		$this->set = new A_Sql_List($this->setExpression);
 		return $this;
 	}
 	
 	public function where($data, $value=null) {
-		if (!$this->whereEquation) include_once ('A/Sql/Equation.php');
+		if (!$this->whereExpression) include_once ('A/Sql/Expression.php');
 		if (!$this->where) include_once('A/Sql/List.php');
-		$this->whereEquation = new A_Sql_Equation($data, $value);	
-		$this->where = new A_Sql_List($this->whereEquation);
+		$this->whereExpression = new A_Sql_Expression($data, $value);	
+		$this->where = new A_Sql_List($this->whereExpression);
 		return $this;
 	}
 
 	public function render($db=null) {
 		if ($this->table) {
 			if ($this->where) {
-				$this->whereEquation->setEscapeCallback($db);
+				$this->whereExpression->setEscapeCallback($db);
 			}
 						
 			if ($this->set) {
-				$this->setEquation->setEscapeCallback($db);
+				$this->setExpression->setEscapeCallback($db);
 			}
 			
 			$table = $this->table->render();
@@ -47,4 +47,9 @@ class A_Sql_Update {
 			return sprintf($this->sqlFormat, $table, $set, $where);
 		}
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }

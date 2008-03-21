@@ -1,8 +1,6 @@
 <?php
 
-include_once 'A/Sql/Abstract.php';
-
-class A_Sql_List extends A_Sql_Abstract {
+class A_Sql_List {
 	protected $element;
 
 	public function __construct($element) {
@@ -13,4 +11,9 @@ class A_Sql_List extends A_Sql_Abstract {
 		$list = is_object($this->element) ? $this->element->render() : $this->element;
 		return is_array($list) ? implode(', ', $list) : $list;
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }

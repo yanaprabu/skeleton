@@ -1,8 +1,6 @@
 <?php
 
-include_once 'A/Sql/Abstract.php';
-
-class A_Sql_Table extends A_Sql_Abstract {
+class A_Sql_Table {
 	protected $table;
 	
 	public function __construct($table) {
@@ -15,4 +13,9 @@ class A_Sql_Table extends A_Sql_Abstract {
 		}
 		return $this->table;
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }

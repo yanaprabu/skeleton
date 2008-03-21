@@ -20,4 +20,8 @@ class A_Sql_Join {
 		return sprintf($this->joinFormat, $this->joinType, $this->table2, $this->table1, $this->field1, $this->table2, $this->field2);
 	}
 
+	public function __toString() {
+		return $this->render();
+	}
+
 }

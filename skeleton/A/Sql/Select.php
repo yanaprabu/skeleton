@@ -17,9 +17,9 @@ class A_Sql_Select {
 	protected $where = array();
 
 	/**
-	 * $whereEquation
+	 * $whereExpression
 	*/
-	protected $whereEquation;
+	protected $whereExpression;
 
 	/**
 	 * $whereLogic
@@ -38,9 +38,9 @@ class A_Sql_Select {
 	protected $having;
 
 	/**
-	 * $havingEquation
+	 * $havingExpression
 	*/
-	protected $havingEquation;
+	protected $havingExpression;
 
 	/**
 	 * $havingLogic
@@ -118,8 +118,9 @@ class A_Sql_Select {
 	 * groupby()
 	 * Unsupported	 
 	*/	
-	public function groupby() {
+	public function groupBy($columns) {
 		include_once('A/Sql/Groupby.php');
+		$this->groupby = new A_Sql_Groupby($columns);	
 		return $this;
 	}
 	
@@ -127,8 +128,9 @@ class A_Sql_Select {
 	 * orderby()
 	 * Unsupported
 	*/	
-	public function orderby($data, $value=null) {
+	public function orderBy($columns) {
 		include_once('A/Sql/Orderby.php');
+		$this->orderby = new A_Sql_Orderby($columns);	
 		return $this;
 	}
 
@@ -158,6 +160,14 @@ class A_Sql_Select {
 			}
 			$where = 'WHERE '. $where;
 		}
-		return "SELECT $columns FROM $table $joins$having$where";
+		$orderby = $this->orderby ? $this->orderby->render() : '';
+		$groupby = $this->groupby ? $this->groupby->render() : '';
+		
+		return "SELECT $columns FROM $table $joins$having$where$orderby$groupby";
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }

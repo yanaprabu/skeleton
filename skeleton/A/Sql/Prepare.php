@@ -13,32 +13,30 @@ class A_Sql_Prepare {
 		$this->db = $db;
 	}
 		
-	public function escape($value) {
-		return addslashes($value);		// at least do something
+	public function setDb($db) {
+		$this->db = $db;
+		return $this; 
 	}
-	
+		
 	public function quoteValues($flag=true) {
 		$this->quote_values = $flag;
-		return $this;
+		return $this; 
 	}
-	
+		
 	public function quoteEscape($value) {
 		$value = $this->db ? $this->db->escape($value) : addslashes($value);
-		if ($this->quote_values && ! (preg_match('/^[a-z\_]*\(/i', $value) || ctype_digit($value)) ) { //detect if the value is a function or digits
-			return  "'" . trim($value, "'") . "'";
-		}
-		return $value;
+		return $this->quote_values ? "'" . $value . "'" : $value;
 	}
-	
+
 	public function statement($statement) {
 		$this->statement = $statement;
+		return $this; 
 	}
 		
 	public function bind(/* args, ... */) {
 		$numargs = func_num_args();
 		if ($numargs > 1) {
 			$args = func_get_args();
-#			$this->template = array_shift($args);		// 1st arg is template
 			$n = 1;
 			foreach ($args as $arg) {
 				if (is_array($arg)) {
@@ -62,7 +60,6 @@ class A_Sql_Prepare {
 				// escape all values
 				foreach ($this->named_args as $name => $value) {
 					$this->named_args[$name] = $this->quoteEscape($value);
-//					$this->named_args[$name] = $this->db ? $this->db->escape($value) : $this->escape($value);
 				}
 				// replace array keys found in statement with values
 				$statement = str_replace(array_keys($this->named_args), array_values($this->named_args), $statement);
@@ -73,8 +70,6 @@ class A_Sql_Prepare {
 				$this->sql = $statement_array[0];
 				$n = 1;
 				foreach ($this->numbered_args as $arg) {
-//					$arg = $this->db ? $this->db->escape($arg) : $this->escape($arg);
-//					$this->sql .= $arg . $statement_array[$n++];
 					$this->sql .= $this->quoteEscape($arg) . $statement_array[$n++];
 				}
 			} else {
@@ -84,4 +79,8 @@ class A_Sql_Prepare {
 		return $this->sql;
 	}
 	
+	public function __toString() {
+		return $this->render();
+	}
+
 }

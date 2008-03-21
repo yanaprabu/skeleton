@@ -1,8 +1,6 @@
 <?php
 
-include_once 'A/Sql/Abstract.php';
-
-class A_Sql_Expression extends A_Sql_Abstract {
+class A_Sql_Expression {
 
 	/**
 	 * data
@@ -40,18 +38,19 @@ class A_Sql_Expression extends A_Sql_Abstract {
 	/**
 	 * render()
 	*/		
-	public function render() {
+	public function render($logic='AND') {
 		if (is_string($this->data)) {
 			$this->data = array($this->data);
 		}
-		return '('. implode(' AND ', array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data))).')';
+		return '('. implode(" $logic ", array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data))).')';
 	}
 
 	/**
 	 * escape()
 	*/		
-	public function escape($value) {
-		return $this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value);
+	public function quoteEscape($value) {
+		$value = $this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value);
+		return "'" . $value . "'";
 	}
 
 	/**
@@ -64,14 +63,19 @@ class A_Sql_Expression extends A_Sql_Abstract {
 		}
 		if (preg_match('!('. implode('|', $this->operators).')$!i', $key, $matches)) { //operator detected
 			if (is_array($value)) {
-				$value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)) .')';
+				$value = '('. implode(', ', array_map(array($this, 'quoteEscape'), $value)) .')';
 			} else {
-				$value = $this->quoteValue($value);
+				$value = $this->quoteEscape($value);
 			}
 			return str_replace($matches[1], '', $key) . $matches[1] .$value;
 		} elseif ($value !== null) {
-			return $key .'='. $this->quoteValue($value);
+			return $key .'='. $this->quoteEscape($value);
 		}
 		return $key;
 	}
+
+	public function __toString() {
+		return $this->render();
+	}
+
 }
