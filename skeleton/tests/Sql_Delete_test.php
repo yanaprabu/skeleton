@@ -9,12 +9,31 @@ class Sql_DeleteTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testSql_DeleteNotNull() {
-  		$Sql_Delete = new A_Sql_Delete();
+	function testSql_DeleteConstructorArgs() {
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+  		$Sql_Delete = new A_Sql_Delete();
+  		$this->assertEqual($Sql_Delete->render(), '');
+
+  		$Sql_Delete = new A_Sql_Delete('foo');
+  		$this->assertEqual($Sql_Delete->render(), 'DELETE FROM foo');
+
+  		$Sql_Delete = new A_Sql_Delete('foo', array('bar'=>1));
+  		$this->assertEqual($Sql_Delete->render(), "DELETE FROM foo WHERE (bar='1')");
+
+  		$Sql_Delete = new A_Sql_Delete('foo', array('bar'=>1, 'faz'=>'baz'));
+  		$this->assertEqual($Sql_Delete->render(), "DELETE FROM foo WHERE (bar='1' AND faz='baz')");
+	}
+	
+	function testSql_DeleteTableWhere() {
+		
+  		$Sql_Delete = new A_Sql_Delete();
+  		$this->assertEqual($Sql_Delete->table('foo')->render(), 'DELETE FROM foo');
+
+  		$Sql_Delete = new A_Sql_Delete();
+  		$this->assertEqual($Sql_Delete->table('foo')->where(array('bar'=>1))->render(), "DELETE FROM foo WHERE (bar='1')");
+
+  		$Sql_Delete = new A_Sql_Delete();
+  		$this->assertEqual($Sql_Delete->table('foo')->where(array('bar'=>1, 'faz'=>'baz'))->render(), "DELETE FROM foo WHERE (bar='1' AND faz='baz')");
 	}
 	
 }
