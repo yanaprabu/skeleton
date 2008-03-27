@@ -1,20 +1,11 @@
 <?php
 
 class A_Sql_Insert {
-	/**
-	 * table()
-	*/	
 	protected $table;
+	protected $data = array();
+	protected $columns = null;
+	protected $select = null;
 	
-	/**
-	 * set
-	*/	
-	protected $set;
-
-	/**
-	 * setExpression
-	*/	
-	protected $setExpression;
 
 	/**
 	 * table()
@@ -29,19 +20,51 @@ class A_Sql_Insert {
 	 * values()
 	*/	
 	public function values($data, $value=null) {
-		if (!$this->setExpression) include_once ('A/Sql/Expression.php');
-		if (!$this->set) include_once('A/Sql/List.php');
-		$this->setExpression = new A_Sql_Expression($data, $value);	
-		$this->set = new A_Sql_List($this->setExpression);
+		if ($data) {
+			// remove existing select
+			$this->columns = null;
+			$this->select = null;
+			
+			$this->data = array();
+			if (is_array($data)) {
+				$this->data = $data;	
+			} elseif (is_string($data) && $value) {
+				$this->data = array($data=>$value);	
+			}
+		}
 		return $this;
 	}
 	
-	public function render($db=null) {
-		if (!$this->table || !$this->set) {
-			return;
+	public function columns() {
+		include_once('A/Sql/Columns.php');
+		$this->columns = new A_Sql_Columns(func_get_args());
+		return $this;
+	}
+
+	public function select() {
+		if (! $this->select) {
+			include_once('A/Sql/Select.php');
+			$this->select = new A_Sql_Select();
 		}
-		$this->setExpression->setEscapeCallback($db);
-		return sprintf('INSERT INTO %s SET %s', $this->table->render(), $this->set->render());
+		return $this->select;
+	}
+
+	public function render($db=null) {
+		$columns = array();
+		if ($this->table) {
+			if ($this->data) {
+				$callback = $db ? array($db, 'escape') : 'addslashes';
+				$columns = implode(', ', array_keys($this->data));
+				$data = array_map($callback, array_values($this->data));
+				$values = "VALUES ('" . implode("', '", $data) . "')";
+			} elseif ($this->columns && $this->select) {
+				$columns = $this->columns->render();
+				$values = $this->select->render($db);
+			}
+		}
+		if ($columns && $values) {
+			return "INSERT INTO {$this->table} ($columns) $values";
+		}
 	}
 
 	public function __toString() {

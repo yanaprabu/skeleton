@@ -9,7 +9,7 @@ class A_Sql_Select {
 	/**
 	 * $columns
 	*/
-	protected $columns;
+	protected $columns = null;
 
 	/**
 	 * $where
@@ -30,12 +30,12 @@ class A_Sql_Select {
 	 * $joins
 	 * Unsupported
 	*/
-	protected $joins;
+	protected $joins = array();
 
 	/**
 	 * $having
 	*/
-	protected $having;
+	protected $having = null;
 
 	/**
 	 * $havingExpression
@@ -50,13 +50,13 @@ class A_Sql_Select {
 	 * $groupby
 	 * Unsupported
 	*/
-	protected $groupby;			
+	protected $groupby = null;			
 
 	/** 
 	 * $orderby
 	 * Unsupported
 	*/
-	protected $orderby;
+	protected $orderby = null;
 	
 	/**
 	 * columns()
@@ -83,7 +83,7 @@ class A_Sql_Select {
 	*/
 	public function join($table1, $column1, $table2, $column2) {
 		include_once('A/Sql/Join.php');
-		$this->join = new A_Sql_Join($table1, $column1, $table2, $column2);
+		$this->joins[$table2] = new A_Sql_Join($table1, $column1, $table2, $column2);
 		return $this;
 	}
 	
@@ -144,7 +144,12 @@ class A_Sql_Select {
 
 		$table = $this->table->render();
 		$columns = $this->columns ? $this->columns->render() : '*';
-		$joins = $this->joins ? $this->joins->render() : '';
+		$joins = '';
+		if ($this->joins) {
+			foreach ($this->joins as $join) {
+				$joins .= $join->render();
+			}
+		}
 		$having = $this->having ? ' HAVING ' . $this->having->render() : '';
 
 		$where = '';
@@ -158,12 +163,12 @@ class A_Sql_Select {
 				}
 				$where .= $render;
 			}
-			$where = 'WHERE '. $where;
+			$where = ' WHERE '. $where;
 		}
 		$orderby = $this->orderby ? $this->orderby->render() : '';
 		$groupby = $this->groupby ? $this->groupby->render() : '';
 		
-		return "SELECT $columns FROM $table $joins$having$where$orderby$groupby";
+		return "SELECT $columns FROM $table$joins$having$where$orderby$groupby";
 	}
 
 	public function __toString() {

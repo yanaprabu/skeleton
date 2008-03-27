@@ -3,8 +3,7 @@
 class A_Sql_Update {
 	protected $sqlFormat = 'UPDATE %s SET %s%s';
 	protected $table;
-	protected $set;
-	protected $setExpression;
+	protected $data;
 	protected $where;
 	protected $whereExpression;
 	
@@ -15,10 +14,14 @@ class A_Sql_Update {
 	}
 
 	public function set($data, $value=null) {
-		if (!$this->setExpression) include_once ('A/Sql/Expression.php');
-		if (!$this->set) include_once('A/Sql/List.php');
-		$this->setExpression = new A_Sql_Expression($data, $value);	
-		$this->set = new A_Sql_List($this->setExpression);
+		if ($data) {
+			$this->data = array();
+			if (is_array($data)) {
+				$this->data = $data;	
+			} elseif (is_string($data) && $value) {
+				$this->data = array($data=>$value);	
+			}
+		}
 		return $this;
 	}
 	
@@ -36,15 +39,20 @@ class A_Sql_Update {
 				$this->whereExpression->setEscapeCallback($db);
 			}
 						
-			if ($this->set) {
-				$this->setExpression->setEscapeCallback($db);
-			}
-			
-			$table = $this->table->render();
-			$set = $this->set->render();
-			$where = $this->where ? ' WHERE ' . $this->where->render() : '';
+			if ($this->data) {
+				$callback = $db ? array($db, 'escape') : 'addslashes';
+				$columns = array_keys($this->data);
+				$data = array_map($callback, array_values($this->data));
+				foreach ($columns as $key => $column) {
+					$sets[] = "$column='{$data[$key]}'";
+				}
 
-			return sprintf($this->sqlFormat, $table, $set, $where);
+				$table = $this->table->render();
+				$set = implode(', ', $sets);
+				$where = $this->where ? ' WHERE ' . $this->where->render() : '';
+
+				return sprintf($this->sqlFormat, $table, $set, $where);
+			}
 		}
 	}
 

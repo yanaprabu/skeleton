@@ -1,16 +1,22 @@
 <?php
 
 class A_Sql_Prepare {
-	protected $statement;
-	protected $db;						// object with escape() method
+	protected $statement = '';			// SQL template
+	protected $db = null;				// object with escape() method
 	protected $named_args = array();	// assoc array
 	protected $numbered_args = array();	// 1-based indexed array
 	protected $sql;						// prepared sql
 	protected $quote_values = false;
 	
-	public function __construct($statement='', $db=null) {
-		$this->statement = $statement;
-		$this->db = $db;
+	public function __construct(/*$statement, $args...*/) {
+		$args = func_get_args();
+		if (count($args) > 0) {
+			$this->statement = array_shift($args);
+			if (count($args) > 0) {
+#echo '__construct1 ARGS=<pre>' . print_r($args, 1) . '</pre>';
+				$this->bind($args);
+			}
+		}
 	}
 		
 	public function setDb($db) {
@@ -34,18 +40,39 @@ class A_Sql_Prepare {
 	}
 		
 	public function bind(/* args, ... */) {
-		$numargs = func_num_args();
-		if ($numargs > 1) {
-			$args = func_get_args();
+		$args = func_get_args();
+		// check for the case where they passed an array
+		if ((count($args) == 1) && is_array($args[0])) {
+			$args = $args[0];
+		}
+		if (count($args)) {
 			$n = 1;
-			foreach ($args as $arg) {
-				if (is_array($arg)) {
-					$this->named_args = array_merge($this->named_args, $arg);
+			// process each arg
+			foreach ($args as $key1 => $arg1) {
+#echo 'ARGS=<pre>' . print_r($arg, 1) . '</pre>';
+				// arg may be an array or a string
+				if (is_array($arg1)) {
+					foreach ($arg1 as $key2 => $value) {
+						// separate into numbered and named args
+						if (is_numeric($key2)) {
+							$this->numbered_args[$n++] = $value;
+						} else {
+							$this->named_args[$key2] = $value;
+						}
+					}
 				} else {
-					$this->numbered_args[$n++] = $arg;
+					// separate into numbered and named args
+					if (is_numeric($key1)) {
+						$this->numbered_args[$n++] = $arg1;
+					} else {
+						$this->named_args[$key1] = $arg1;
+					}
 				}
 			}
 		}
+#echo 'BIND ARGS=<pre>' . print_r($args, 1) . '</pre>';
+#echo 'NAMED=<pre>' . print_r($this->named_args, 1) . '</pre>';
+#echo 'NUMBERED=<pre>' . print_r($this->numbered_args, 1) . '</pre>';
 		return $this; 
 	}
 	

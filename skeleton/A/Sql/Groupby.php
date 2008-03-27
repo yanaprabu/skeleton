@@ -4,7 +4,11 @@ class A_Sql_Groupby {
 	protected $columns = null;
 	
 	public function __construct($columns) {
-		$this->columns = $columns;
+		if (is_array($columns)) {
+			$this->columns = $columns;
+		} else {
+			$this->columns = func_get_args();
+		}
 	}
 	
 	public function render() {

@@ -10,11 +10,14 @@ class Sql_OrderbyTest extends UnitTestCase {
 	}
 	
 	function testSql_OrderbyNotNull() {
-  		$Sql_Orderby = new A_Sql_Orderby();
-		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
-	}
+  		$Sql_Orderby = new A_Sql_Orderby('foo');
+  		$this->assertEqual($Sql_Orderby->render(), " ORDER BY foo");
+  				
+  		$Sql_Orderby = new A_Sql_Orderby('foo', 'bar');
+  		$this->assertEqual($Sql_Orderby->render(), " ORDER BY foo, bar");
+  				
+  		$Sql_Orderby = new A_Sql_Orderby(array('foo', 'bar'));
+  		$this->assertEqual($Sql_Orderby->render(), " ORDER BY foo, bar");
+  			}
 	
 }

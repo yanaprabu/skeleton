@@ -9,7 +9,7 @@ class A_Sql_Expression {
 	/**
 	 * operators
 	*/	
-	protected $operators = array('>', '<', '>=', '<=', '=', '<>', 'NOT IN', 'IN');
+	protected $operators = array('>', '<', '>=', '<=', '=', '<>', 'IN', 'NOT IN', ' LIKE ', ' NOT LIKE ');
 
 	/**
 	 * operators
@@ -19,7 +19,7 @@ class A_Sql_Expression {
 	/**
 	 * __construct()
 	*/	
-	public function __construct($data, $value) {
+	public function __construct($data, $value=null) {
 		if ($value !== null) {
 			$this->data[$data] = $value;
 		} else {

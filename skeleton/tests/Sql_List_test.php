@@ -9,13 +9,10 @@ class Sql_ListTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testSql_ListNotNull() {
-  		$element = null;
+	function testSql_List() {
+  		$element = array('foo', 'bar', 'baz');
   		$Sql_List = new A_Sql_List($element);
-		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+		$this->assertEqual($Sql_List->render(), "foo, bar, baz");
 	}
 	
 }

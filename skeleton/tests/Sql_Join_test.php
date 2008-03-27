@@ -9,17 +9,9 @@ class Sql_JoinTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testSql_JoinNotNull() {
-		$table1 = '';
-		$field1 = '';
-		$table2 = '';
-		$field2 = '';
-		$joinType = '';
-  		$Sql_Join = new A_Sql_Join($table1, $field1, $table2, $field2, $joinType);
-		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+	function testSql_Join() {
+		$Sql_Join = new A_Sql_Join('foo', 'id', 'bar', 'foo_id');
+ 		$this->assertEqual($Sql_Join->render(), " JOIN bar ON foo.id=bar.foo_id");
 	}
 	
 }

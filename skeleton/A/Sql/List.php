@@ -7,8 +7,8 @@ class A_Sql_List {
 		$this->element = $element;
 	}
 	
-	public function render() {
-		$list = is_object($this->element) ? $this->element->render() : $this->element;
+	public function render($db=null) {
+		$list = is_object($this->element) ? $this->element->setEscapeCallback($db)->render() : $this->element;
 		return is_array($list) ? implode(', ', $list) : $list;
 	}
 
