@@ -15,8 +15,8 @@ class example extends A_Controller_Action {
 	<h2>Front Controller: Page - Default Action</h2>
 	<ol>
 		<li><a href="?controller=example">Default controller, no action specified.</a></li>
-		<li><a href="?controller=example&action=foo">Default controller, specific action, this->autoRender().</a></li>
-		<li><a href="?controller=example&action=bar">Default controller, specific action, this->load->setResponse()->template().</a></li>
+		<li><a href="?controller=example&action=foo">Default controller, specific action - foo.</a></li>
+		<li><a href="?controller=example&action=bar">Default controller, specific action - bar.</a></li>
 		<li><a href="?module=module1&controller=example">Module and controller, no action specified.</a></li>
 		<li><a href="?module=module1&controller=example&action=bar">Module and controller, specific action specified.</a></li>
 	</ol>
@@ -38,11 +38,13 @@ class example extends A_Controller_Action {
 	}
 
 	function foo($locator) {
-		$this->load()->response()->view();
+		$this->flash()->set('foo', 'This is a flash var.');
+		$this->load()->response()->template('', array('foo'=>'Set flash var.'));
 	}
 
 	function bar($locator) {
-		$this->load()->response()->template();
+		$value = $this->flash()->get('foo');
+		$this->load()->response()->template('', array('foo'=>$value));
 	}
 
 }

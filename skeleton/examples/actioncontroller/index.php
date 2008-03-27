@@ -22,4 +22,5 @@ $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
 
 $Response->out();
-?>
+
+if (isset($_SESSION)) dump($_SESSION);
