@@ -8,12 +8,11 @@ class A_Session {
 	protected $isstarted = false;
 	
 	public function __construct($namespace=null, $regenerate=false) {
-		$this->namespace = $namespace;
+		$this->initNamespace($namespace);
 		$this->regenerate = $regenerate;
-		$this->_init();
 	}
 	
-	private function _init() {
+	public function initNamespace($namespace=null) {
 		if (session_id() != '') {
 			if ($this->namespace) {
 				$this->_data =& $_SESSION[$this->namespace];
@@ -22,6 +21,8 @@ class A_Session {
 			}
 			$this->isstarted = true;	// already started
 			$this->doExpiration();
+		} else {
+			$this->namespace = $namespace;
 		}
 	}
 	
@@ -49,7 +50,7 @@ class A_Session {
 				session_cache_limiter('must-revalidate');
 			}
 			session_start();
-			$this->_init();
+			$this->initNamespace();
 			if ($this->regenerate) {
 				session_regenerate_id();
 			}
@@ -85,7 +86,7 @@ class A_Session {
 	protected function doExpiration() {
 		if (isset($_SESSION[$this->a_namespace]['expire'])) {
 			foreach ($_SESSION[$this->a_namespace]['expire'] as $name => $value) {
-				if ($value > 1) {
+				if ($value > 0) {
 					--$_SESSION[$this->a_namespace]['expire'][$name];		// decrement counter if > 1
 				} else {
 					unset($this->_data[$name]);								// remove session var

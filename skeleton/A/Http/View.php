@@ -11,7 +11,7 @@ class A_Http_View {
 	protected $escape_output = false;
 	protected $character_set = 'UTF-8';
 	protected $locator = null;
-	protected $loader = null;
+	protected $helpers = array();
 	
 	public function __construct($locator=null) {
 		$this->locator = $locator;
@@ -127,12 +127,33 @@ class A_Http_View {
 		return $this->render();
 	}
 
+/*
 	protected function load($module=null) {
 		if (! $this->loader) {
 			include_once 'A/Controller/Action/Loader.php';
 			$this->loader = new A_Controller_Action_Loader($this->locator);
 		}
 		return $this->loader->load($module);
+	}
+*/
+	protected function __call($name, $args=null) {
+		$args = count($args) ? $args : null;
+		if (! isset($this->helpers[$name])) {
+		    $class = ucfirst($name);
+		    if (in_array($name, array('load', 'flash'))) {
+				include_once "A/Controller/Helper/$class.php";
+				$class = "A_Controller_Helper_$class";
+/*
+			// load view helpers -- what path to use?
+		    } elseif (! $this->locator->loadClass($class, 'helpers')) {
+		    	return;
+*/
+		    }
+		    $this->helpers[$name] = new $class($this->locator, $args);
+		} else {
+			$this->helpers[$name]->__construct($this->locator, $args);
+		}
+		return $this->helpers[$name];
 	}
 
 }

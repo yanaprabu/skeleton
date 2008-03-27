@@ -1,6 +1,6 @@
 <?php
 
-class A_Controller_Action_Loader {
+class A_Controller_Helper_Load {
 	protected $locator;
 	protected $paths = array('global'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
 	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
@@ -16,7 +16,7 @@ class A_Controller_Action_Loader {
 	protected $responseSet = false;
 	protected $errorMsg = '';
 	
-	public function __construct($locator){
+	public function __construct($locator, $scope=null){
 		$this->locator = $locator;
 		if ($locator) {
 			$mapper = $locator->get('Mapper');
@@ -24,6 +24,7 @@ class A_Controller_Action_Loader {
 				$this->setMapper($mapper);
 			}
 		}
+		$this->load($scope);
 	}
 	 
 	/*
@@ -117,7 +118,6 @@ class A_Controller_Action_Loader {
 					}
 				}
 			} elseif ($this->locator) {
-echo "locator->loadClass($class, $path)<br/>";
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
 					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
 				} else {

@@ -3,11 +3,12 @@
 class A_Locator {
    protected $_obj = array();
    protected $_reg = array();
+   protected $_dir = '';
    protected $_inject = array();
-   protected $file_extension;
+   protected $_extension;
     
 	public function __construct($ext='.php') {
-    	$this->file_extension = $ext;
+    	$this->_extension = $ext;
 	}
 
 /*
@@ -33,11 +34,15 @@ class A_Locator {
 		}
 	}
 
-	public function load($file, $dir='', $file_extension='') {
+	public function setDir($dir='') {
+		$this->_dir = $dir;
+	}
+
+	public function load($file, $dir='', $_extension='') {
 		if ($dir) {
 			$dir = rtrim($dir, '/') . '/';
 		}
-		$path = $dir . $file . $file_extension;
+		$path = $dir . $file . $_extension;
 		if (($dir == '') || file_exists($path)) {		// either in search path or absolute path exists
 			$result = include($path);
 			return $result !== false;
@@ -47,40 +52,51 @@ class A_Locator {
 	}
 
 	public function loadClass($class='', $dir='') {
-		if (class_exists($class)) {
-			return true;
-		} else {
+		if (! class_exists($class)) {
 			$file = str_replace(array('_','-'), array('/','_'), $class);
 			$class = str_replace('-', '_', $class);
-			return self::load($file, $dir, isset($this->file_extension) ? $this->file_extension : '.php')
+			return self::load($file, $dir, isset($this->_extension) ? $this->_extension : '.php')
 					&& class_exists($class);
 		}
+		return true;
 	}
 
-	public function get($name='', $class='', $dir='') {
+	public function get($name='', $class='') {
+		$param = null;
+	    if (func_num_args() > 2) {
+		    $param = array_slice(func_get_args(), 2);	// get params after name/clas/dir
+		    // if only one param then pass the param rather than an array of params
+		    if (count($param) == 1) {
+		    	$param = $param[0];
+		    }
+	    }
 		if ($name) {
 			if (isset($this->_obj[$name])) {
 				return $this->_obj[$name];		// return registered object
 			} elseif (isset($this->_reg[$name]->class)) {
-				return $this->newInstance($this->_reg[$name]->class, $this->_reg[$name]->dir, $this->_reg[$name]->param);
+				$this->setDir($this->_reg[$name]->dir);
+				return $this->newInstance($this->_reg[$name]->class, $this->_reg[$name]->param);
 			} elseif ($class) {
-				$obj = $this->newInstance($class, $dir);
+				$obj = $this->newInstance($class, $param);
 				if ($obj) {
 					$this->_obj[$name] = $obj;
 				}
 				return $obj;		// return registered object
 			}
 		} elseif ($class) {
-			return $this->newInstance($class, $dir);
+			return $this->newInstance($class, $param);
 		}
 	}
 
-	public function newInstance($class='', $dir='') {
+	public function newInstance($class='') {
 		$obj = null;
+		// get dir and clear
+		$dir = $this->_dir;
+		$this->_dir = null;
 		if ($class) {
 			$param = null;
-		    if (func_num_args() > 2) {
-			    $param = array_slice(func_get_args(), 2);	// get params after name/clas/dir
+		    if (func_num_args() > 1) {
+			    $param = array_slice(func_get_args(), 1);	// get params after name/clas/dir
 			    // if only one param then pass the param rather than an array of params
 			    if (count($param) == 1) {
 			    	$param = $param[0];
