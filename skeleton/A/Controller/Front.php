@@ -6,7 +6,9 @@ class A_Controller_Front {
 	protected $_mapper;
 	protected $_error_action;
 	protected $_prefilters;
-
+	protected $_actions = array();	// history of actions run
+	protected $_error = 0;
+	
     public function __construct($mapper, $error_action, $prefilters=array()) {
     	$this->_mapper = $mapper;
     	$this->_error_action = $error_action;
@@ -21,12 +23,21 @@ class A_Controller_Front {
    		$this->_prefilters[$name] = $prefilter;
     }
 
+    public function getActions() {
+		return $this->_actions;
+    }
+
+    public function isError() {
+		return $this->_error;
+    }
+
     public function run($locator) {
 		if (isset($locator) && method_exists($locator, 'set')) {
 			$locator->set('Mapper', $this->_mapper);		// set mapper in registry for mvc loader to use
 		}
         $action = $this->_mapper->doMapping($locator);
 		$error_action = $this->_error_action;
+        $n = 0;
         while ($action) {
 			$class  = $this->_mapper->buildClass($action->class);
 	        $method = $this->_mapper->buildMethod($action->method);
@@ -35,6 +46,7 @@ class A_Controller_Front {
 			} else {
 	    	    $dir = $action->dir;
 			}
+			$this->_actions[] = $action;	// save history of actions
 	        $action = null;
 	        $result = $locator->loadClass($class, $dir);
 			if ($result) {
@@ -75,12 +87,17 @@ class A_Controller_Front {
 				}
 				if (method_exists($controller, $method)) {
 					$action = $controller->{$method}($locator);
+				} else {
+					$this->_error = 2;		// no known method to dispatch
 				}
-			} else {
+			} elseif ($error_action) {
 				$action = $error_action;
 				$error_action = null;
+			} elseif ($n == 0) {
+				$this->_error = 1;			// cannot load class and not error action 
 			}
+			++$n;
         }
+		return $this->_error;
     }
-
 }
