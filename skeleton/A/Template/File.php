@@ -64,7 +64,7 @@ class A_Template_File extends A_Template {
 	   	if ($block) {
 			return isset($this->blocks[$block]);
 	   	} else {
-			return count($this->blocks['']) > 1;
+			return count($this->blocks) > 1;
 	   	}
 	}
 }
