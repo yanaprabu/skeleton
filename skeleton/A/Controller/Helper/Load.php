@@ -81,6 +81,9 @@ class A_Controller_Helper_Load {
 	}
 
 	public function load($scope=null) {
+		if (is_array($scope)) {
+			$scope = $scope[0];
+		}
 		if (! isset($this->paths[$scope])) {
 			$scope = 'module';	 // the default setting e.g., "/app/module/models"
 		}
@@ -124,25 +127,35 @@ class A_Controller_Helper_Load {
 					$this->errorMsg .=  "Error: locator->loadClass('$class', '$path'). ";
 				}
 			}
-
-			if ($obj && $this->responseSet) { // this is the section for when response() has been called
-				$response = $this->locator->get('Response');
-				if ($response && $obj) {					
-					if ($this->responseName) {
-						$response->set($this->responseName, $obj);		// if name then set data in response
-					
-					} elseif (in_array($type, $this->rendererTypes)) {	// if renderer set as renderer
-						$response->setRenderer($obj);
-					} else {
-						$response->set($class, $obj);					// otherwise set by class name
+			// initialize object
+			if ($obj) {
+				// template and view need passed values set
+				if (in_array($type, array('template', 'view'))) {
+					if (isset($params[1]) && is_array($params[1])) {
+						// if 2nd param is array then use it to set template values
+						foreach ($params[1] as $key => $val) {
+							$obj->set($key, $val);
+						}
 					}
-				} else {
-					echo $obj->render();	// do we really want this option? or should the action do this?
 				}
-				return $this;				// if response set then allow chained
-			}
-
-			if (! $obj) {
+				 // this is the section for when response() has been called
+				 if ($this->responseSet) {
+					$response = $this->locator->get('Response');
+					if ($response && $obj) {					
+						if ($this->responseName) {
+							$response->set($this->responseName, $obj);		// if name then set data in response
+						
+						} elseif (in_array($type, $this->rendererTypes)) {	// if renderer set as renderer
+							$response->setRenderer($obj);
+						} else {
+							$response->set($class, $obj);					// otherwise set by class name
+						}
+					} else {
+						echo $obj->render();	// do we really want this option? or should the action do this?
+					}
+					return $this;				// if response set then allow chained
+				}
+			} else {
 				$this->errorMsg .= "Could not load() {$this->dirs[$type]}{$this->scopePath}.php. ";
 			}
 			//reset scope and response

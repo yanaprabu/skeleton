@@ -9,17 +9,6 @@ class A_Controller_Action {
 	    $this->locator = $locator;
 	}
 	 
-/*
-	protected function load($module=null) {
-		if (! $this->loader) {
-		    include_once 'A/Controller/Action/Loader.php';
-			$this->loader = new A_Controller_Action_Loader($this->locator);
-		}
-dump($this->loader);
-		return $this->loader->load($module);
-	}
-	*/
-
 	protected function dispatch($dir, $class, $method='run', $args=null){
 		$dl = new A_DL($dir, $class, $method, $args=null);
 		return $dl->run($this->locator);
@@ -37,11 +26,9 @@ dump($this->loader);
 		    if (in_array($name, array('load', 'flash'))) {
 				include_once "A/Controller/Helper/$class.php";
 				$class = "A_Controller_Helper_$class";
-/*
-			// load controller helpers -- what path to use?
-		    } elseif (! $this->locator->loadClass($class, 'helpers')) {
-		    	return;
-*/
+			// return object from registry
+		    } elseif ($obj = $this->locator->get($name)) {
+		    	return $obj;
 		    }
 		    $this->helpers[$name] = new $class($this->locator, $args);
 		} else {
