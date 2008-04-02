@@ -144,8 +144,9 @@ class A_Http_View {
 				include_once "A/Controller/Helper/$class.php";
 				$class = "A_Controller_Helper_$class";
 			// return object from registry
-		    } elseif ($obj = $this->locator->get($name)) {
-		    	return $obj;
+		    } elseif (isset($this->locator) && $this->locator->has($name)) {
+		    	$obj = $this->locator->get($name);
+				return $obj;
 		    }
 		    $this->helpers[$name] = new $class($this->locator, $args);
 		} else {
