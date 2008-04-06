@@ -30,7 +30,9 @@
 			<li><a href="admin/">/admin/</a></li>
 			</ul>
 		</div>
-
+		<div id="loginbox">
+			<p><a href="admin/login/">login</a> | <a href="admin/login/?op=signout">logout</a></p>
+		</div>
 	</div>
 	
 	<div id="content">

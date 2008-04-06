@@ -17,6 +17,9 @@ include 'A/Controller/Mapper.php';
 include 'A/Controller/Action.php';
 include 'A/Template/Strreplace.php';
 include 'A/Template/Include.php';
+require_once('A/Session.php');
+include 'A/User/Session.php';
+include 'A/User/Access.php';
 
 $Locator = new A_Locator();
 $Response = new A_Http_Response();
@@ -24,18 +27,28 @@ $Request = new A_Http_Request();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 
+/* Added 23/3 */
+$Session = new A_Session();
+$Session->start();
+$UserSession = new A_User_Session($Session);
+$Locator->set('UserSession', $UserSession);
+
 /* Map request */
 $map = array(
-
+/*
    '' => array(
 		'module',
         'controller',
         'action',
         ), 
-
+*/
+	'' => array(
+		'controller',
+		'action',
+		),
    'blog' => array(  
         '' => array(
-            array('name'=>'module','default'=>'blog'),
+            array('name'=>'module','default'=>'blog'), 
             array('name'=>'controller','default'=>'index'),
             array('name'=>'action','default'=>'run'),
             ),
@@ -43,7 +56,8 @@ $map = array(
 
     'admin' => array(
         '' => array(
-            'module',
+            //'module',
+			array('name'=>'module','default'=>'admin'), 
             array('name'=>'controller','default'=>'admin'),
             array('name'=>'action','default'=>'run'),
             ),
@@ -52,15 +66,16 @@ $map = array(
     );
 
 $Mapper = new A_Http_PathInfo($map);
-$Mapper->run($Request);//dump($Request);
+$Mapper->run($Request); //dump($Request);
 
-$Action = new A_DL('', 'home', 'run');
+$Action = new A_DL('', 'index', 'run');
 $ErrorAction = new A_DL('', 'error', 'run');
 
 $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $Action);
-$Mapper->setDefaultDir('blog');
+//$Mapper->setDefaultDir('blog');
 
-$Controller = new A_Controller_Front($Mapper, $Action);
+$Controller = new A_Controller_Front($Mapper, $ErrorAction);
+$Controller->addPreMethod('denyAccess', new A_DL('', 'signin', 'run')); //dump($Controller);
 $Controller->run($Locator);
 
 //dump($Response);

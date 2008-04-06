@@ -3,7 +3,7 @@
 ?>
 <html>
 <body>
-	<h2>Front Controller: Page - Specific Action</h2>
+	<h2>Front Controller: Page - Specific Action this is the global example template</h2>
 	<ol>
 		<li><a href="?controller=example">Default controller, no action specified.</a></li>
 		<li><a href="?controller=example&action=foo">Default controller, specific action - foo.</a></li>

@@ -16,6 +16,7 @@ class example {
 		
 		$response->setContent($page_template->render());
 	}
+
 }
 
 ?>
