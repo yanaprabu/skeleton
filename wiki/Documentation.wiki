@@ -1,6 +1,4 @@
 #labels Featured
-*Documentation*
-_Skeleton Documentation_
 
 = Skeleton Documentation =
 
