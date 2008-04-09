@@ -6,4 +6,4 @@ _Skeleton Documentation_
 
   * Introduction
   * Requirements
-  * [http://code.google.com/p/skeleton/wiki/Todo] Todo
+  * [http://code.google.com/p/skeleton/wiki/Todo Todo]
