@@ -1,0 +1,8 @@
+*Documentation*
+_Skeleton Documentation_
+
+= Skeleton Documentation =
+
+  * Introduction
+  * Requirements
+  * [http://code.google.com/p/skeleton/wiki/Todo] Todo
