@@ -7,9 +7,9 @@ Add open and closed todo's below.
   * Work on blog example
   * Work on User Access (example)
   * Work on DB classes
-  * Add downloads of the project to googlecode
   * Write docs in wiki/move from older docs
 
 == Done ==
 
   * sync repository sourceforge with googlecode
+  * Add downloads of the project to googlecode
