@@ -39,7 +39,7 @@ class A_Html_Form {
 	}
                              // Optional method to set the Model
 	public function setModel($model) {
-		$this->model = is_object($model) ? $model->toArray() : $model;
+		$this->model = $model;
 		return $this;
 	}
 
@@ -97,8 +97,16 @@ class A_Html_Form {
 		} elseif (isset($params['name']) && $params['name']) {
 			$element = $this->getHelper($type);
 			// set the value from the model if it is set
-			if (isset($this->model[$params['name']])) {
-				$params['value'] = $this->model[$params['name']];
+			if (isset($this->model)) {
+				if (is_array($this->model)) {
+					if (isset($this->model[$params['name']])) {
+						$params['value'] = $this->model[$params['name']];
+					}
+				} elseif (is_object($this->model)) {
+					if ($this->model->has($params['name'])) {
+						$params['value'] = $this->model->get($params['name']);
+					}
+				}
 			}
 			// if this field has a label then wrap in a label tag
 			if (isset($params['label'])) {
