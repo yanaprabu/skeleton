@@ -8,6 +8,7 @@ Add open and closed todo's below.
   * Work on User Access (example)
   * Work on DB classes
   * Write docs in wiki/move from older docs
+  * Write a script that will remove require_once() from all classes to support autoload. We should support two releases (until proven that we don't need one). 
 
 == Done ==
 
