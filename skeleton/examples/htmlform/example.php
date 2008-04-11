@@ -1,9 +1,12 @@
 <?php
 include_once 'config.php';
+include_once 'A/DataContainer.php';
 include_once 'A/Html/Form.php';
 
 echo '<br/>Object usage:';
+$model = array('username'=>'foo');
 $form = new A_Html_Form();
+$form->setModel($model);
 $form->setWrapper('A_Html_Div', array('class'=>'fieldclass', 'style'=>'border:1px solid red;'));
 $form->text('username', 'Enter Username:');
 $form->password('passwd', 'Enter Password:');
@@ -11,6 +14,9 @@ $form->submit('submit', 'login');
 echo $form->render();
 
 $form->reset();
+$model = new A_DataContainer();
+$model->set('username', 'bar');
+$form->setModel($model);
 echo '<br/>Fluent usage:';
 echo $form->text(array('name'=>'username', 'label'=>'Enter Username:'))
 		->password('passwd', 'Enter Password:')
