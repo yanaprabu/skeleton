@@ -16,25 +16,6 @@ class A_Html_Form {
 	 */
 	public function render($attr=array(), $content=null) {
 		if (isset($this)) {
-/*
-			foreach ($this->_elements as $params) {
-				$class = 'A_Html_Form_' . ucfirst($params['type']);
-				if (! class_exists($class)) {
-					include str_replace('_', '/', $class) . '.php';
-				}
-				if (class_exists($class)) {
-					if (isset($params['content'])) {
-						$str = $params['content'];
-						unset($params['content']);
-					} else {
-						$str = null;
-					}
-					unset($params['type']);
-					$element = new $class();
-					$content .= $element->render($params, $str);
-				}
-			}
-*/
 			$content = $this->partial($attr);
 		}
 		
@@ -58,7 +39,7 @@ class A_Html_Form {
 	}
                              // Optional method to set the Model
 	public function setModel($model) {
-		$this->model = $model;
+		$this->model = is_object($model) ? $model->toArray() : $model;
 		return $this;
 	}
 
@@ -115,13 +96,18 @@ class A_Html_Form {
 			$this->_elements[] = $params['content'];
 		} elseif (isset($params['name']) && $params['name']) {
 			$element = $this->getHelper($type);
+			// set the value from the model if it is set
+			if (isset($this->model[$params['name']])) {
+				$params['value'] = $this->model[$params['name']];
+			}
+			// if this field has a label then wrap in a label tag
 			if (isset($params['label'])) {
 				$str = $params['label'];
 				unset($params['label']);
 				$label = $this->getHelper('label');
 				$str = $label->render(array('type'=>'label', 'for'=>$params['name']), $str . $element->render($params));
 			} else {
-				$str = $element->render($attr);
+				$str = $element->render($params);
 			}
 			// if we wrap elements in a tag
 			if ($this->_wrapper) {
