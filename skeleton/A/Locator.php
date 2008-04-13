@@ -155,4 +155,8 @@ class A_Locator {
 		return $this;
 	}
 
+	public function has($name) {
+		return isset($this->_obj[$name]);
+	}
+
 }
