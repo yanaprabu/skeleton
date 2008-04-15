@@ -10,6 +10,7 @@ include_once 'A/Http/Request.php';
 include_once 'A/Http/Response.php';
 include_once 'A/Template/Strreplace.php';
 include_once 'A/Rule.php';
+include_once 'A/Rule/Notnull.php';
 include_once 'A/Filter.php';
 include_once 'A/Controller/Input.php';
 include_once 'A/Controller/App.php';
