@@ -1,8 +1,10 @@
 <?php
-    require_once('config.php');
-    require_once(SIMPLETESTDIR . 'simpletest.php');
-    require_once(SIMPLETESTDIR . 'unit_tester.php');
-    require_once(SIMPLETESTDIR . 'reporter.php');
+ini_set('error_reporting', E_ALL | E_STRICT);
+
+require_once('config.php');
+require_once(SIMPLETESTDIR . 'simpletest.php');
+require_once(SIMPLETESTDIR . 'unit_tester.php');
+require_once(SIMPLETESTDIR . 'reporter.php');
 
 if (isset($_GET['test']) && file_exists($_GET['test'])) {
 	$testfile = $_GET['test'];
