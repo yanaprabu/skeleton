@@ -1,6 +1,7 @@
 <?php
-ini_set('error_reporting', E_ALL | E_STRICT);
-
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 'Off');
 require_once('config.php');
 require_once(SIMPLETESTDIR . 'simpletest.php');
 require_once(SIMPLETESTDIR . 'unit_tester.php');
@@ -13,6 +14,7 @@ if (isset($_GET['test']) && file_exists($_GET['test'])) {
 	$testfile = '';
 	$title = 'All Test Files';
 }
+//$test = &new TestSuite($title);
 $test = &new GroupTest($title);
 if ($testfile) {
 	$test->addTestFile($_GET['test']);
