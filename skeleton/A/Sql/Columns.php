@@ -4,7 +4,7 @@ class A_Sql_Columns {
 	protected $columns = array();
 	protected $args = array();
 	
-	public function __construct($args) {
+	public function __construct($args=null) {
 		if (is_array($args)) {
 			$this->args = $args;
 		} else {
@@ -13,10 +13,8 @@ class A_Sql_Columns {
 	}
 	
 	public function render() {
-		if (!array_search('*', $this->args)) {
-			$this->columns = is_array($this->args[0]) ? $this->args[0] : $this->args;
-		}
-		if (!count($this->columns)) {
+		$this->columns = isset($this->args[0]) && is_array($this->args[0]) ? $this->args[0] : $this->args;
+		if (array_search('*', $this->columns) !== false || !count($this->columns)) {
 			$this->columns = array('*');
 		}
 		return implode(', ', $this->columns);

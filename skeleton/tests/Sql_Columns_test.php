@@ -2,22 +2,40 @@
 require_once('A/Sql/Columns.php');
 
 class Sql_ColumnsTest extends UnitTestCase {
-	
 	function setUp() {
 	}
 	
 	function TearDown() {
 	}
 	
-	function testSql_ColumnsNotNull() {
-  		$Sql_Columns = new A_Sql_Columns('foo');
-  		$this->assertEqual($Sql_Columns->render(), 'foo');
+	function testSql_ColumnsDefaultColumn() {
+		$columns = new A_Sql_Columns();
+		$this->assertEqual($columns->render(), '*');
+	}
 
-  		$Sql_Columns = new A_Sql_Columns('foo', 'bar');
-  		$this->assertEqual($Sql_Columns->render(), "foo, bar");
-
-  		$Sql_Columns = new A_Sql_Columns(array('foo', 'bar'));
-  		$this->assertEqual($Sql_Columns->render(), "foo, bar");
+	function testSql_ColumnsOnlyWildcardColumn() {
+		$columns = new A_Sql_Columns('*');
+		$this->assertEqual($columns->render(), '*');
 	}
 	
+	function testSql_ColumnsWildcardWithMoreColumn() {
+		$columns = new A_Sql_Columns('*', 'foo', 'bar');
+		$this->assertEqual($columns->render(), '*', 
+			'All other columns should be ignored if wildcard is present in column list');
+	}	
+	
+	function testSql_ColumnsArrayColumns() {
+		$columns = new A_Sql_Columns(array('foo', 'bar'));
+		$this->assertEqual($columns->render(), 'foo, bar');
+	}
+
+	function testSql_ColumnsSingleParameterColumns() {
+		$columns = new A_Sql_Columns('foobar');
+		$this->assertEqual($columns->render(), 'foobar');
+	}	
+
+	function testSql_ColumnsMultipleParameterColumns() {
+		$columns = new A_Sql_Columns('foo', 'bar', 'fee', 'bah');
+		$this->assertEqual($columns->render(), 'foo, bar, fee, bah');
+	}	
 }

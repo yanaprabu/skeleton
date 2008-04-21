@@ -8,7 +8,7 @@ class Sql_SelectTest extends UnitTestCase {
 	
 	function TearDown() {
 	}
-	
+
 	function testSql_SelectColumns() {
 		$Sql_Select = new A_Sql_Select();
 		$this->assertEqual($Sql_Select
@@ -22,7 +22,7 @@ class Sql_SelectTest extends UnitTestCase {
 							->from('foobar')
 							->render(), "SELECT foo, bar FROM foobar");
 	}
-	
+
 	function testSql_SelectWhere() {
 		$Sql_Select = new A_Sql_Select();
 		$this->assertEqual($Sql_Select
