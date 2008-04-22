@@ -105,4 +105,16 @@ public $save = true;
 		return $this;
 	}
 
+	public function render() {
+		if ($this->addtype && ($this->value == '')) {
+			$savetype = $this->type;
+			$this->type = $this->addtype;
+			$result = parent::render();
+			$this->type = $savetype;
+			return $result;
+		} else {
+			return parent::render();
+		}
+	}
+
 }
