@@ -14,8 +14,8 @@ if (isset($_GET['test']) && file_exists($_GET['test'])) {
 	$testfile = '';
 	$title = 'All Test Files';
 }
-//$test = &new TestSuite($title);
-$test = &new GroupTest($title);
+//$test = new TestSuite($title);
+$test = new GroupTest($title);
 if ($testfile) {
 	$test->addTestFile($_GET['test']);
 } else {
