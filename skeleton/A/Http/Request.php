@@ -3,77 +3,115 @@
 class A_Http_Request {
 	public $data = array();
 	protected $is_post = false;
-   
-    public function __construct() {
-        if (!strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
-            $this->data =& $_POST;
-    		$this->is_post = true;
-        } else {
-            $this->data =& $_GET;
-        }
-        if (isset($_SERVER['PATH_INFO'])) {
-        	$this->data['PATH_INFO'] = trim($_SERVER['PATH_INFO'], '/');
-        }        
-    }
+	protected $filters = array();
+	
+	public function __construct() {
+		if (!strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+			$this->data =& $_POST;
+			$this->is_post = true;
+		} else {
+			$this->data =& $_GET;
+		}
+		if (isset($_SERVER['PATH_INFO'])) {
+			$this->data['PATH_INFO'] = trim($_SERVER['PATH_INFO'], '/');
+		}		
+	}
 
-    public function removeSlashes() {
+	public function removeSlashes() {
 		if (get_magic_quotes_gpc()) { 
-	        $input = array(&$_GET, &$_POST, &$_COOKIE, &$_ENV, &$_SERVER); 
-        	while (list($k,$v) = each($input)) { 
-                foreach ($v as $key => $val) { 
-		            if (!is_array($val)) { 
-	                    $input[$k][$key] = stripslashes($val); 
-	                    continue; 
-		            } 
+			$input = array(&$_GET, &$_POST, &$_COOKIE, &$_ENV, &$_SERVER); 
+			while (list($k,$v) = each($input)) { 
+				foreach ($v as $key => $val) { 
+					if (!is_array($val)) { 
+						$input[$k][$key] = stripslashes($val); 
+						continue; 
+					} 
 					$input[] =& $input[$k][$key]; 
-                } 
-		    } 
-		    unset($input); 
+				} 
+			} 
+			unset($input); 
 		} 
-    }
+		return $this;
+	}
 
 	public function setPathInfo($path_info) {
-       	$this->data['PATH_INFO'] = trim($path_info, '/');
+		$this->data['PATH_INFO'] = trim($path_info, '/');
+		return $this;
+	}
+
+	public function getFilters() {
+		return $this->filters;
+	}
+
+	public function setFilters($filters) {
+		$this->filters = is_array($filters) ? $filters : array($filters);
+		return $this;
 	}
 
 	public function isPost() {
 		return $this->is_post;
-    }
+	}
 
 	public function isAjax() {
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 	}
 
-   protected function _get(&$data, $name, $filter=null, $to='') {
-    	if (isset($data[$name])) {
-	    	if ($filter) {
-	    		if (is_string($filter)) {
-	    			 return preg_replace($filter, $to, $data[$name]);
-	    		} elseif (is_object($filter)) {
-	    			 return $filter->run($data[$name]);
-	    		}
-	    	}
+	protected function _get(&$data, $name, $filters=null, $to='') {
+		if (isset($data[$name])) {
+			if ($filters || $this->filters) {
+				// allow single filter to be passed - convert to array
+				if (! is_array($filters)) {
+					$filters = array($filters);
+				}
+				// if global filters - merge
+				if ($this->filters) {
+					$filters = array_merge($this->filters, $filters);
+				}
+				// allow parameter that is array
+				$d = is_array($data[$name]) ? $data[$name] : array($data[$name]);
+				foreach (array_keys($d) as $key) {
+					foreach ($filters as $filter) {
+						if (is_string($filter)) {
+							if (substr($filter, 0, 1) == '/') {
+								$d[$key] = preg_replace($filter, $to, $d[$key]);
+							} else {
+								$d[$key] = $filter($d[$key]);
+							}
+						} elseif (is_object($filter)) {
+							$d[$key] = $filter->run($d[$key]);
+						} elseif (is_array($filter)) {
+							$d[$key] = call_user_func($filter, $d[$key]);
+						}
+					}
+				}
+				// if orignial param was array return array else revert to scalar
+				if (is_array($data[$name])) {
+					return $d;
+				} else {
+					return $d[0];
+				}
+			}
 			return $data[$name];
-    	}
-    }
+		}
+	}
 
-    public function get($name, $filter=null, $to='') {
+	public function get($name, $filter=null, $to='') {
 		return $this->_get($this->data, $name, $filter, $to);
-    }
+	}
 
-    public function getPost($name, $filter=null, $to='') {
+	public function getPost($name, $filter=null, $to='') {
 		return $this->_get($_POST, $name, $filter, $to);
-    }
+	}
 
-    public function getQuery($name, $filter=null, $to='') {
+	public function getQuery($name, $filter=null, $to='') {
 		return $this->_get($_GET, $name, $filter, $to);
-    }
+	}
 
-    public function getCookie($name, $filter=null, $to='') {
+	public function getCookie($name, $filter=null, $to='') {
 		return $this->_get($_COOKIE, $name, $filter, $to);
-    }
+	}
 
-    public function export($filter=null, $pattern=null) {
+	public function export($filter=null, $pattern=null) {
 		if ($filter || $pattern) {
 			$export = array();
 			foreach (array_keys($this->data) as $key) {
@@ -85,15 +123,15 @@ class A_Http_Request {
 		} else {
 			return $this->data;
 		}
-    }
+	}
 
-    public function set($name, $value) {
-    	$this->data[$name] = $value;
-    	return $this;
-    }
+	public function set($name, $value) {
+		$this->data[$name] = $value;
+		return $this;
+	}
 
-    public function has($name) {
-    	return isset($this->data[$name]);
-    }
+	public function has($name) {
+		return isset($this->data[$name]);
+	}
 
 }
