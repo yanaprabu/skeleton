@@ -1,4 +1,5 @@
 <?php
+require_once('A/DataContainer.php');
 require_once('A/Rule/Regexp.php');
 
 class Rule_RegexpTest extends UnitTestCase {
@@ -9,15 +10,17 @@ class Rule_RegexpTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testRule_RegexpNotNull() {
-  		$field = 'foo';
-  		$regexp = '';
-  		$errorMsg = 'foo error';
-		$Rule_Regexp = new A_Rule_Regexp($field, $regexp, $errorMsg);
+	function testRuleRegexp() {
+  		$dataspace = new A_DataContainer();
+  		$rule = new A_Rule_Regexp('test', '/123$/', 'error');
+
+  		$dataspace->set('test', 'test123');
+  		$result = $rule->isValid($dataspace);
+		$this->assertTrue($result);
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+  		$dataspace->set('test', 'test234');
+ 		$result = $rule->isValid($dataspace);
+		$this->assertFalse($result);
 	}
 	
 }

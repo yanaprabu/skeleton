@@ -2,6 +2,7 @@
 require_once('A/DataContainer.php');
 require_once('A/Validator.php');
 require_once('A/Rule/Length.php');
+require_once('A/Rule/Notnull.php');
 require_once('A/Rule/Range.php');
 
 class ValidatorTest extends UnitTestCase {
@@ -12,11 +13,11 @@ class ValidatorTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testValidatorNotNull() {
+	function testValidatorRuleObject() {
   		$validator = new A_Validator();
   		$dataspace = new A_DataContainer();
 
-   		$rule = new A_Rule_NotNull('test', 'error');
+   		$rule = new A_Rule_Notnull('test', 'error');
   		$validator->addRule($rule);
   		$result = $validator->validate($dataspace);
 		$this->assertFalse($result);
@@ -25,61 +26,24 @@ class ValidatorTest extends UnitTestCase {
   		$result = $validator->validate($dataspace);
 		$this->assertTrue($result);
 	}
-	
-	function testValidatorRegexp() {
+
+	function testValidatorRuleName() {
   		$validator = new A_Validator();
   		$dataspace = new A_DataContainer();
 
-  		$rule = new A_Rule_Regexp('test', '/123$/', 'error');
-  		$validator->addRule($rule);
-  		$dataspace->set('test', 'test123');
-  		$result = $validator->validate($dataspace);
-		$this->assertTrue($result);
+		// should load A_Rule_Numeric
+  		$validator->addRule('numeric', 'test', 'not a number');
+
+ 		$dataspace->set('test', 'test123');
+ 		$this->assertFalse($validator->validate($dataspace));
+ 		$this->assertEqual($validator->getErrorMsg(), array(0=>'not a number'));
+ 		
+ 		$dataspace->set('test', '123');
+		$this->assertTrue($validator->validate($dataspace));
+ 		$this->assertEqual($validator->getErrorMsg(), array());
 		
-  		$dataspace->set('test', 'test234');
- 		$result = $validator->validate($dataspace);
-		$this->assertFalse($result);
+ 		$dataspace->set('test', 123);
+		$this->assertTrue($validator->validate($dataspace));
 	}
-	
-	function testValidatorLength() {
-  		$validator = new A_Validator();
-  		$dataspace = new A_DataContainer();
 
-  		$rule = new A_Rule_Length('test', 5, 10, 'error');
-  		$validator->addRule($rule);
-
-  		$dataspace->set('test', 'TEST123');
- 		$result = $validator->validate($dataspace);
-		$this->assertTrue($result);
-
-  		$dataspace->set('test', 'TEST');
- 		$result = $validator->validate($dataspace);
-		$this->assertFalse($result);
-
-  		$dataspace->set('test', 'TEST1234567890');
- 		$result = $validator->validate($dataspace);
-		$this->assertFalse($result);
-	}
-	
-	function testValidatorRange() {
-  		$validator = new A_Validator();
-  		$dataspace = new A_DataContainer();
-
-  		$rule = new A_Rule_Range('test', 5, 10, 'error');
-  		$validator->addRule($rule);
-
-  		$dataspace->set('test', 7);
- 		$result = $validator->validate($dataspace);
-		$this->assertTrue($result);
-
-  		$dataspace->set('test', 2);
- 		$result = $validator->validate($dataspace);
-		$this->assertFalse($result);
-
-  		$dataspace->set('test', 12);
- 		$result = $validator->validate($dataspace);
-		$this->assertFalse($result);
-	}
-	
 }
-?>

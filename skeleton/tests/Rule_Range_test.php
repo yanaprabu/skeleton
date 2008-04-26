@@ -1,4 +1,5 @@
 <?php
+require_once('A/DataContainer.php');
 require_once('A/Rule/Range.php');
 
 class Rule_RangeTest extends UnitTestCase {
@@ -9,16 +10,22 @@ class Rule_RangeTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testRule_RangeNotNull() {
-  		$field = 'foo';
-  		$min = 2;
-  		$max = 9;
-  		$errorMsg = 'foo error';
-		$Rule_Range = new A_Rule_Range($field, $min, $max, $errorMsg);
-		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+	function testRuleRange() {
+  		$dataspace = new A_DataContainer();
+
+  		$rule = new A_Rule_Range('test', 5, 10, 'error');
+
+  		foreach (array(5,7,10) as $value) {
+  			$dataspace->set('test', $value);
+ 			$result = $rule->isValid($dataspace);
+			$this->assertTrue($result);
+  		}
+  		
+		foreach (array(2,3,11,13) as $value) {
+  			$dataspace->set('test', $value);
+ 			$result = $rule->isValid($dataspace);
+			$this->assertFalse($result);
+  		}
 	}
 	
 }
