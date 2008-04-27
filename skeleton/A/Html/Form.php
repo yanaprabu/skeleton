@@ -34,7 +34,7 @@ class A_Html_Form {
 	}
                              // Optional method to set the Model
 	public function setMethod($method='post') {
-		$this->attr['action'] = $action;
+		$this->attr['method'] = $method;
 		return $this;
 	}
                              // Optional method to set the Model
@@ -78,20 +78,26 @@ class A_Html_Form {
 	}
 	
 	public function __call($type, $args) {
+		$params = array();
+		// allow (args), (name), (name, label), (name, args)
 		if(is_array($args[0])) {
-			$params = $args[0];
+			$params = $args[0];				// all params in array
 		} else {
-			$params['name'] = $args[0];
 			if (isset($args[1])) {
-				// fieldset is the exception that does not get a label
-				if ($type == 'fieldset') {
-					$params['content'] = $args[1];
+				if(is_array($args[1])) {
+					$params = $args[1];		// array of params in 2nd arg
 				} else {
-					$params['label'] = $args[1];
+					// fieldset is the exception that does not get a label
+					if ($type == 'fieldset') {
+						$params['content'] = $args[1];
+					} else {
+						$params['label'] = $args[1];
+					}
 				}
 			}
+			$params['name'] = $args[0];
 		}
-
+	
 		if ($type == 'fieldset') {
 			$this->_elements[] = $params['content'];
 		} elseif (isset($params['name']) && $params['name']) {
@@ -113,7 +119,7 @@ class A_Html_Form {
 				$str = $params['label'];
 				unset($params['label']);
 				$label = $this->getHelper('label');
-				$str = $label->render(array('type'=>'label', 'for'=>$params['name']), $str . $element->render($params));
+				$str = $label->render(array('for'=>$params['name']), $str) . $element->render($params);
 			} else {
 				$str = $element->render($params);
 			}
