@@ -19,7 +19,7 @@ $test = new GroupTest($title);
 if ($testfile) {
 	$test->addTestFile($_GET['test']);
 } else {
-	foreach(glob(dirname(__FILE__) . '/*_test.php') as $testfile) {
+	foreach(glob(dirname(__FILE__) . '/*Test.php') as $testfile) {
 		$test->addTestFile($testfile);
 	}
 }

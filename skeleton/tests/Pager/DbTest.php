@@ -1,7 +1,7 @@
 <?php
 require_once('A/Pager/DB.php');
 
-class Pager_DBTest extends UnitTestCase {
+class Pager_DbTest extends UnitTestCase {
 	
 	function setUp() {
 	}
