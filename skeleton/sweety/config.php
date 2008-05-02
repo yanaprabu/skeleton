@@ -28,7 +28,8 @@ define('SWEETY_TEST_PATH',
   SWEETY_HOME . '/../tests'
   );
 //Test locator strategies, separated by commas
-define('SWEETY_TEST_LOCATOR', 'A_Tests_SkeletonTestLocator');
+#define('SWEETY_TEST_LOCATOR', 'A_Tests_SkeletonTestLocator');
+define('SWEETY_TEST_LOCATOR', 'Sweety_TestLocator_PearStyleLocator');
 //A pattern used for filtering out certain class names expected to be tests
 define('SWEETY_IGNORED_CLASSES', '/(^|_)Abstract/');
 //The name which appears at the top of the test suite
@@ -45,7 +46,8 @@ set_include_path(
 );
 
 //Load in any dependencies
-require_once 'A/Tests/SkeletonTestLocator.php';
+#require_once 'A/Tests/SkeletonTestLocator.php';
+require_once 'Sweety/TestLocator/PearStyleLocator.php';
 
 //Load in some swift specific testig config
 require_once SWEETY_HOME . '/lib/yaymock-svn/yay_mock.php';

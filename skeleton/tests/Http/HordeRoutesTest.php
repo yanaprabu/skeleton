@@ -1,5 +1,5 @@
 <?php
-require_once('A/Http/HordeRoutes.php');
+#require_once('A/Http/HordeRoutes.php');
 
 class Http_HordeRoutesTest extends UnitTestCase {
 	
@@ -10,7 +10,7 @@ class Http_HordeRoutesTest extends UnitTestCase {
 	}
 	
 	function testHttp_HordeRoutesNotNull() {
-  		$Http_HordeRoutes = new A_Http_HordeRoutes();
+#  		$Http_HordeRoutes = new A_Http_HordeRoutes();
 		
 		$result = true;
   		$this->assertTrue($result);
