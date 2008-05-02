@@ -1,57 +1,71 @@
 <?php
 
-class A_Sql_Update {
+require_once 'A/Sql/Statement.php';
+
+class A_Sql_Update extends A_Sql_Statement {
 	protected $sqlFormat = 'UPDATE %s SET %s%s';
 	protected $table;
 	protected $data;
 	protected $where;
-	protected $whereExpression;
 	
 	public function table($table) {
-		if (!$this->table) include_once('A/Sql/Table.php');
+		include_once('A/Sql/Table.php');
 		$this->table = new A_Sql_Table($table);
 		return $this;
 	}
 
 	public function set($data, $value=null) {
-		if ($data) {
-			$this->data = array();
-			if (is_array($data)) {
-				$this->data = $data;	
-			} elseif (is_string($data) && $value) {
-				$this->data = array($data=>$value);	
-			}
-		}
+		include_once('A/Sql/Expression.php');
+		$this->data[] = new A_Sql_Expression($data, $value);	
+		$this->escapeListeners[] = end($this->data);	
 		return $this;
 	}
 	
-	public function where($data, $value=null) {
-		if (!$this->whereExpression) include_once ('A/Sql/Expression.php');
-		if (!$this->where) include_once('A/Sql/List.php');
-		$this->whereExpression = new A_Sql_Expression($data, $value);	
-		$this->where = new A_Sql_List($this->whereExpression);
+	public function where($data, $value=null, $logic = 'AND') {
+		include_once('A/Sql/Expression.php');
+		$this->where[] = array(new A_Sql_Expression($data, $value), $logic);	
+		$this->escapeListeners[] = end($this->where);	
 		return $this;
 	}
+	
+	public function orWhere($data, $value=null) {
+		include_once('A/Sql/Expression.php');
+		$this->where[] = array(new A_Sql_Expression($data, $value), 'OR');	
+		$this->escapeListeners[] = end($this->where);	
+		return $this;		
+	}
 
-	public function render($db=null) {
-		if ($this->table) {
-			if ($this->where) {
-				$this->whereExpression->setEscapeCallback($db);
-			}
-						
+	public function render() {
+		if ($this->table) {			
 			if ($this->data) {
-				$callback = $db ? array($db, 'escape') : 'addslashes';
-				$columns = array_keys($this->data);
-				$data = array_map($callback, array_values($this->data));
-				foreach ($columns as $key => $column) {
-					$sets[] = "$column='{$data[$key]}'";
-				}
+				$sets = array();
+				if (count($this->data)) {
+					foreach ($this->data as $data) {
+						$sets[] = $data->render();
+					}
+				}	
 
+				$logicTypes = array('having' => $this->having, 'where' => $this->where);
+				$logicRender = array('having' => null, 'where' => null);
+				foreach ($logicTypes as $type => $stack) {
+					if (count($stack)) {
+						foreach ($stack as $condition) {
+							list($expression, $logical) = $condition;
+							$logical = ' '. strtoupper($logical) .' ';
+							$logicRender[$type][] = (count($logicRender[$type]) ? $logical : '') . $expression->render(); //dont add the first logical statement
+						}
+					}
+				}
+				
+				$having = count($logicRender['having']) ? ' HAVING ' . implode(' ', $logicRender['having']) : '';
+				$where =  count($logicRender['where'])  ? ' WHERE ' . implode(' ', $logicRender['where']) : '';
+							
 				$table = $this->table->render();
 				$set = implode(', ', $sets);
-				$where = $this->where ? ' WHERE ' . $this->where->render() : '';
+				$joins = ''; //not implemented
+				$having = ''; //not implemented
 
-				return sprintf($this->sqlFormat, $table, $set, $where);
+				return "UPDATE $table SET $joins$set$columns FROM $table$joins$having$where";
 			}
 		}
 	}

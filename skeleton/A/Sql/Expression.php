@@ -12,9 +12,9 @@ class A_Sql_Expression {
 	protected $operators = array('>', '<', '>=', '<=', '=', '<>', 'IN', 'NOT IN', ' LIKE ', ' NOT LIKE ');
 
 	/**
-	 * operators
+	 * db
 	*/		
-	protected $escapeCallback;
+	protected $db;
 	
 	/**
 	 * __construct()
@@ -30,8 +30,8 @@ class A_Sql_Expression {
 	/**
 	 * setEscapeCallback()
 	*/		
-	public function setEscapeCallback($db) {
-		$this->escapeCallback = $db;
+	public function setDb($db) {
+		$this->db = $db;
 		return $this;
 	}			
 
@@ -42,14 +42,14 @@ class A_Sql_Expression {
 		if (is_string($this->data)) {
 			$this->data = array($this->data);
 		}
-		return '('. implode(" $logic ", array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data))).')';
+		return implode(' '. $logic.' ', array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
 	}
 
 	/**
 	 * escape()
 	*/		
 	public function quoteEscape($value) {
-		$value = $this->escapeCallback ? $this->escapeCallback->escape($value) : addslashes($value);
+		$value = $this->db ? $this->db->escape($value) : addslashes($value);
 		return "'" . $value . "'";
 	}
 

@@ -1,6 +1,8 @@
 <?php
 
-class A_Sql_Delete {
+require_once 'A/Sql/Statement.php';
+
+class A_Sql_Delete extends A_Sql_Statement{
 	protected $table = null;
 	protected $where = null;
 	protected $whereExpression;
@@ -18,6 +20,21 @@ class A_Sql_Delete {
 		return $this;
 	}
 
+	public function where($data, $value=null, $override = 'AND') {
+			include_once('A/Sql/Expression.php');
+			$this->where[] = array(new A_Sql_Expression($data, $value), $override);	
+			$this->escapeListeners[] = end($this->where);
+			return $this;
+		}
+	}
+
+	public function orWhere($data, $value=null) {
+		include_once('A/Sql/Expression.php');
+		$this->where[] = array(new A_Sql_Expression($data, $value), 'OR');	
+		$this->escapeListeners[] = end($this->where);
+		return $this;		
+	}	
+
 	public function where($data, $value=null) {
 		if ($data) {
 			if (!$this->whereExpression) include_once ('A/Sql/Expression.php');
@@ -27,14 +44,41 @@ class A_Sql_Delete {
 		}
 		return $this;
 	}
+	
+	public function having($data, $value=null, $override = 'AND') {
+		include_once('A/Sql/Expression.php');
+		$this->having[] = array(new A_Sql_Expression($data, $value), $override);	
+		$this->escapeListeners[] = end($this->having);
+		return $this;
+	}
 
-	function render($db=null) {
-		if ($this->table) {		// must at least specify a table
-			if ($this->where) {
-				$this->whereExpression->setEscapeCallback($db);
-			}
+	public function orHaving($data, $value=null) {
+		include_once('A/Sql/Expression.php');
+		$this->having[] = array(new A_Sql_Expression($data, $value), 'OR');	
+		$this->escapeListeners[] = end($this->having);
+		return $this;
+	}
+
+	function render() {
+		if ($this->table) {
 			$table = $this->table->render();
 			$where = $this->where ? ' WHERE ' . $this->where->render() : '';
+	
+			$logicTypes = array('having' => $this->having, 'where' => $this->where);
+			$logicRender = array('having' => null, 'where' => null);
+			foreach ($logicTypes as $type => $stack) {
+				if (count($stack)) {
+					foreach ($stack as $condition) {
+						list($expression, $logical) = $condition;
+						$logical = ' '. strtoupper($logical) .' ';
+						$result = count($stack) > 1 ? '('. $expression->render() .')' : $expression->render(); //dont need brackets if only 1 element
+						$logicRender[$type][] = (count($logicRender[$type]) > 0 ? $logical : '') . $result; //dont add the first logical statement
+					}
+				}
+			}
+					
+			$having = count($logicRender['having']) ? ' HAVING ' . implode(' ', $logicRender['having']) : '';
+			$where =  count($logicRender['where'])  ? ' WHERE ' . implode(' ', $logicRender['where']) : '';
 
 			return "DELETE FROM $table$where";
 		}

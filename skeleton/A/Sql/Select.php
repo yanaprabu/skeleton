@@ -1,6 +1,8 @@
 <?php
 
-class A_Sql_Select {
+require_once 'A/Sql/Statement.php';
+
+class A_Sql_Select extends A_Sql_Statement {
 	/**
 	 * $table
 	*/
@@ -15,16 +17,6 @@ class A_Sql_Select {
 	 * $where
 	*/
 	protected $where = array();
-
-	/**
-	 * $whereExpression
-	*/
-	protected $whereExpression;
-
-	/**
-	 * $whereLogic
-	*/
-	protected $whereLogic;
 	
 	/**
 	 * $joins
@@ -37,15 +29,6 @@ class A_Sql_Select {
 	*/
 	protected $having = null;
 
-	/**
-	 * $havingExpression
-	*/
-	protected $havingExpression;
-
-	/**
-	 * $havingLogic
-	*/
-	protected $havingLogic;	
 	/**
 	 * $groupby
 	 * Unsupported
@@ -78,8 +61,6 @@ class A_Sql_Select {
 
 	/**
 	 * join()
-	 * Unsupported	 
-	 * Do we use the previous join class?
 	*/
 	public function join($table1, $column1, $table2, $column2) {
 		include_once('A/Sql/Join.php');
@@ -90,18 +71,30 @@ class A_Sql_Select {
 	/**
 	 * having()
 	*/	
-	public function having($data, $value=null) {
+	public function having($data, $value=null, $override = 'AND') {
 		include_once('A/Sql/Expression.php');
-		$this->having = new A_Sql_Expression($data, $value);	
+		$this->having[] = array(new A_Sql_Expression($data, $value), $override);	
+		$this->escapeListeners[] = end($this->having);
+		return $this;
+	}
+	
+	/**
+	 * orHaving()
+	*/	
+	public function orHaving($data, $value=null) {
+		include_once('A/Sql/Expression.php');
+		$this->having[] = array(new A_Sql_Expression($data, $value), 'OR');	
+		$this->escapeListeners[] = end($this->having);
 		return $this;
 	}
 	
 	/**
 	 * where()
 	*/
-	public function where($data, $value=null) {
+	public function where($data, $value=null, $override = 'AND') {
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), 'AND');	
+		$this->where[] = array(new A_Sql_Expression($data, $value), $override);	
+		$this->escapeListeners[] = end($this->where);
 		return $this;
 	}
 
@@ -111,12 +104,12 @@ class A_Sql_Select {
 	public function orWhere($data, $value=null) {
 		include_once('A/Sql/Expression.php');
 		$this->where[] = array(new A_Sql_Expression($data, $value), 'OR');	
+		$this->escapeListeners[] = end($this->where);
 		return $this;		
 	}
 
 	/**
 	 * groupby()
-	 * Unsupported	 
 	*/	
 	public function groupBy($columns) {
 		include_once('A/Sql/Groupby.php');
@@ -126,7 +119,6 @@ class A_Sql_Select {
 	
 	/**
 	 * orderby()
-	 * Unsupported
 	*/	
 	public function orderBy($columns) {
 		include_once('A/Sql/Orderby.php');
@@ -137,34 +129,33 @@ class A_Sql_Select {
 	/**
 	 * render()
 	*/
-	public function render($db=null) {
-		if (!$this->table) {
-			return;
-		}
+	public function render() {
+		if (!$this->table) return;
 
 		$table = $this->table->render();
 		$columns = $this->columns ? $this->columns->render() : '*';
 		$joins = '';
-		if ($this->joins) {
+		if (count($this->joins)) {
 			foreach ($this->joins as $join) {
 				$joins .= $join->render();
 			}
 		}
-		$having = $this->having ? ' HAVING ' . $this->having->render() : '';
-
-		$where = '';
-		if (count($this->where)) {
-			foreach ($this->where as $key => $condition) {
-				list($expression, $logical) = $condition;
-				$expression->setEscapeCallback($db);
-				$render = $expression->render();
-				if ($key > 0) { //don't add logical on first element
-					$render = ' '. strtoupper($logical) .' '. $render;
+		
+		$logicTypes = array('having' => $this->having, 'where' => $this->where);
+		$logicRender = array('having' => null, 'where' => null);
+		foreach ($logicTypes as $type => $stack) {
+			if (count($stack)) {
+				foreach ($stack as $condition) {
+					list($expression, $logical) = $condition;
+					$logical = ' '. strtoupper($logical) .' ';
+					$result = count($stack) > 1 ? '('. $expression->render() .')' : $expression->render(); //dont need brackets if only 1 element
+					$logicRender[$type][] = (count($logicRender[$type]) > 0 ? $logical : '') . $result; //dont add the first logical statement
 				}
-				$where .= $render;
 			}
-			$where = ' WHERE '. $where;
 		}
+				
+		$having = count($logicRender['having']) ? ' HAVING ' . implode(' ', $logicRender['having']) : '';
+		$where =  count($logicRender['where'])  ? ' WHERE ' . implode(' ', $logicRender['where']) : '';
 		$orderby = $this->orderby ? $this->orderby->render() : '';
 		$groupby = $this->groupby ? $this->groupby->render() : '';
 		
