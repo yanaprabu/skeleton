@@ -71,40 +71,75 @@ class A_Sql_Select extends A_Sql_Statement {
 	/**
 	 * having()
 	*/	
-	public function having($data, $value=null, $override = 'AND') {
+	public function having() {
+		$numArguments = func_num_args();
+		if (!$numArguments) return;
+		
 		include_once('A/Sql/Expression.php');
-		$this->having[] = array(new A_Sql_Expression($data, $value), $override);	
-		$this->escapeListeners[] = end($this->having);
-		return $this;
-	}
+		$arguments = func_get_args();
+		if ($numArguments == 1 || $numArguments == 2) {
+			array_unshift($arguments, 'AND');
+			if ($numArguments == 1) {
+				array_push($arguments, null);
+			}			
+		}
+
+		$this->escapeListeners[] = $expression = new A_Sql_Expression($arguments[1], $arguments[2]);		
+		if ($this->having) {
+			$this->having[] = $arguments[0];
+        }
+        $this->having[] = $expression;    
+        return $this;
+    }
 	
+		
 	/**
 	 * orHaving()
 	*/	
 	public function orHaving($data, $value=null) {
 		include_once('A/Sql/Expression.php');
-		$this->having[] = array(new A_Sql_Expression($data, $value), 'OR');	
-		$this->escapeListeners[] = end($this->having);
-		return $this;
+        $this->escapeListeners[] = $expression = new A_Sql_Expression($data, $value);
+		if ($this->having) {
+			$this->having[] = 'OR';
+		}
+        $this->having[] = $expression;    
+		return $this;	
 	}
 	
 	/**
 	 * where()
 	*/
-	public function where($data, $value=null, $override = 'AND') {
+	public function where() {
+		$numArguments = func_num_args();
+		if (!$numArguments) return;
+		
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), $override);	
-		$this->escapeListeners[] = end($this->where);
-		return $this;
-	}
+		$arguments = func_get_args();
+		if ($numArguments == 1 || $numArguments == 2) {
+			array_unshift($arguments, 'AND');
+			if ($numArguments == 1) {
+				array_push($arguments, null);
+			}			
+		}
 
+		$this->escapeListeners[] = $expression = new A_Sql_Expression($arguments[1], $arguments[2]);		
+		if ($this->where) {
+			$this->where[] = $arguments[0];
+        }
+        $this->where[] = $expression;    
+        return $this;
+    }
+	
 	/**
 	 * orWhere()
 	*/	
 	public function orWhere($data, $value=null) {
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), 'OR');	
-		$this->escapeListeners[] = end($this->where);
+        $this->escapeListeners[] = $expression = new A_Sql_Expression($data, $value);
+		if ($this->where) {
+			$this->where[] = 'OR';
+		}
+        $this->where[] = $expression;    
 		return $this;		
 	}
 
@@ -131,7 +166,8 @@ class A_Sql_Select extends A_Sql_Statement {
 	*/
 	public function render() {
 		if (!$this->table) return;
-
+		include_once 'A/Sql/LogicalList.php';
+		
 		$table = $this->table->render();
 		$columns = $this->columns ? $this->columns->render() : '*';
 		$joins = '';
@@ -141,21 +177,18 @@ class A_Sql_Select extends A_Sql_Statement {
 			}
 		}
 		
-		$logicTypes = array('having' => $this->having, 'where' => $this->where);
-		$logicRender = array('having' => null, 'where' => null);
-		foreach ($logicTypes as $type => $stack) {
-			if (count($stack)) {
-				foreach ($stack as $condition) {
-					list($expression, $logical) = $condition;
-					$logical = ' '. strtoupper($logical) .' ';
-					$result = count($stack) > 1 ? '('. $expression->render() .')' : $expression->render(); //dont need brackets if only 1 element
-					$logicRender[$type][] = (count($logicRender[$type]) > 0 ? $logical : '') . $result; //dont add the first logical statement
-				}
-			}
+		$where = '';
+		if ($this->where) {
+			$wherelist = new A_Sql_LogicalList($this->where);
+			$where = ' WHERE '. $wherelist->render();
 		}
-				
-		$having = count($logicRender['having']) ? ' HAVING ' . implode(' ', $logicRender['having']) : '';
-		$where =  count($logicRender['where'])  ? ' WHERE ' . implode(' ', $logicRender['where']) : '';
+		
+		$having = '';
+		if ($this->having) {
+			$havinglist = new A_Sql_LogicalList($this->having);
+			$having = ' HAVING '. $havinglist->render();
+		}
+		
 		$orderby = $this->orderby ? $this->orderby->render() : '';
 		$groupby = $this->groupby ? $this->groupby->render() : '';
 		

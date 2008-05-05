@@ -3,7 +3,6 @@
 require_once 'A/Sql/Statement.php';
 
 class A_Sql_Update extends A_Sql_Statement {
-	protected $sqlFormat = 'UPDATE %s SET %s%s';
 	protected $table;
 	protected $data;
 	protected $where;
@@ -21,53 +20,60 @@ class A_Sql_Update extends A_Sql_Statement {
 		return $this;
 	}
 	
-	public function where($data, $value=null, $logic = 'AND') {
+	public function where() {
+		$numArguments = func_num_args();
+		if (!$numArguments) return;
+		
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), $logic);	
-		$this->escapeListeners[] = end($this->where);	
-		return $this;
-	}
+		$arguments = func_get_args();
+		if ($numArguments == 1 || $numArguments == 2) {
+			array_unshift($arguments, 'AND');
+			if ($numArguments == 1) {
+				array_push($arguments, null);
+			}			
+		}
+
+		$this->escapeListeners[] = $expression = new A_Sql_Expression($arguments[1], $arguments[2]);		
+		if ($this->where) {
+			$this->where[] = $arguments[0];
+        }
+        $this->where[] = $expression;    
+        return $this;
+    }
 	
 	public function orWhere($data, $value=null) {
 		include_once('A/Sql/Expression.php');
-		$this->where[] = array(new A_Sql_Expression($data, $value), 'OR');	
-		$this->escapeListeners[] = end($this->where);	
+        $this->escapeListeners[] = $expression = new A_Sql_Expression($data, $value);
+		if ($this->where) {
+			$this->where[] = 'OR';
+		}
+        $this->where[] = $expression;    
 		return $this;		
 	}
 
 	public function render() {
-		if ($this->table) {			
-			if ($this->data) {
-				$sets = array();
-				if (count($this->data)) {
-					foreach ($this->data as $data) {
-						$sets[] = $data->render();
-					}
-				}	
+		if (!$this->table || !$this->data) return;
+		include_once 'A/Sql/LogicalList.php';
+		
+		$table = $this->table->render();
+		$joins = ''; //not implemented
 
-				$logicTypes = array('having' => $this->having, 'where' => $this->where);
-				$logicRender = array('having' => null, 'where' => null);
-				foreach ($logicTypes as $type => $stack) {
-					if (count($stack)) {
-						foreach ($stack as $condition) {
-							list($expression, $logical) = $condition;
-							$logical = ' '. strtoupper($logical) .' ';
-							$logicRender[$type][] = (count($logicRender[$type]) ? $logical : '') . $expression->render(); //dont add the first logical statement
-						}
-					}
-				}
-				
-				$having = count($logicRender['having']) ? ' HAVING ' . implode(' ', $logicRender['having']) : '';
-				$where =  count($logicRender['where'])  ? ' WHERE ' . implode(' ', $logicRender['where']) : '';
-							
-				$table = $this->table->render();
-				$set = implode(', ', $sets);
-				$joins = ''; //not implemented
-				$having = ''; //not implemented
-
-				return "UPDATE $table SET $joins$set$columns FROM $table$joins$having$where";
+		$sets = array();
+		if (count($this->data)) {
+			foreach ($this->data as $data) {
+				$sets[] = $data->render(',');
 			}
+		}	
+		$set = implode(', ', $sets);
+
+		$where = '';
+		if ($this->where) {
+			$wherelist = new A_Sql_LogicalList($this->where);
+			$where = ' WHERE '. $wherelist->render();
 		}
+
+		return "UPDATE $table SET $set$joins$where";
+
 	}
 
 	public function __toString() {

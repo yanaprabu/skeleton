@@ -1,6 +1,6 @@
 <?php
 
-class A_Sql_Expression {
+class A_Sql_Expression extends A_Sql_Statement {
 
 	/**
 	 * data
@@ -26,14 +26,6 @@ class A_Sql_Expression {
 			$this->data = $data;
 		}	
 	}
-
-	/**
-	 * setEscapeCallback()
-	*/		
-	public function setDb($db) {
-		$this->db = $db;
-		return $this;
-	}			
 
 	/**
 	 * render()
