@@ -16,13 +16,20 @@ class Sql_UpdateTest extends UnitTestCase {
 		$Sql_Update = new A_Sql_Update();
 		$this->assertEqual($Sql_Update->table('foobar')->set('foo', "bar's")->render(), "UPDATE foobar SET foo='bar\\'s'");
 
-		// sets overwrite previous sets
+		// sets do not overwrite previous sets
 		$Sql_Update = new A_Sql_Update();
 		$this->assertEqual($Sql_Update
 							->table('foobar')
 							->set('foo', 'bar')
 							->set('baz', 'faz')
-							->render(), "UPDATE foobar SET baz='faz'");
+							->render(), "UPDATE foobar SET foo='bar', baz='faz'");
+
+			// sets do not overwrite previous sets
+		$Sql_Update = new A_Sql_Update();
+		$this->assertEqual($Sql_Update
+							->table('foobar')
+							->set(array('foo'=>'bar', 'baz'=>'faz'))
+							->render(), "UPDATE foobar SET foo='bar', baz='faz'");
 	}
 	
 	function testSql_UpdateWhere() {
