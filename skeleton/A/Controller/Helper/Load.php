@@ -108,7 +108,11 @@ class A_Controller_Helper_Load {
 			}
 			
 			// insert type path into scope path
-			$path = str_replace('%s', $this->dirs[$type], $this->scopePath);
+			if ($this->scopePath) { 
+				$path = str_replace('%s', $this->dirs[$type], $this->scopePath);
+			} else {
+				$path = $this->dirs[$type];		// just in case no scopePath
+			}
 			
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
@@ -140,20 +144,24 @@ class A_Controller_Helper_Load {
 				}
 				 // this is the section for when response() has been called
 				 if ($this->responseSet) {
-					$response = $this->locator->get('Response');
-					if ($response && $obj) {					
-						if ($this->responseName) {
-							$response->set($this->responseName, $obj);		// if name then set data in response
-						
-						} elseif (in_array($type, $this->rendererTypes)) {	// if renderer set as renderer
-							$response->setRenderer($obj);
+					 if ($this->locator) {
+					 	$response = $this->locator->get('Response');
+						if ($response && $obj) {					
+							if ($this->responseName) {
+								$response->set($this->responseName, $obj);		// if name then set data in response
+							
+							} elseif (in_array($type, $this->rendererTypes)) {	// if renderer set as renderer
+								$response->setRenderer($obj);
+							} else {
+								$response->set($class, $obj);					// otherwise set by class name
+							}
 						} else {
-							$response->set($class, $obj);					// otherwise set by class name
+							echo $obj->render();	// do we really want this option? or should the action do this?
 						}
+						return $this;				// if response set then allow chained
 					} else {
-						echo $obj->render();	// do we really want this option? or should the action do this?
+						$this->errmsg .= "No registry passed to A_Controller_Action::__construct(). ";
 					}
-					return $this;				// if response set then allow chained
 				}
 			} else {
 				$this->errorMsg .= "Could not load() {$this->dirs[$type]}{$this->scopePath}.php. ";
