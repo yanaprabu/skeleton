@@ -9,7 +9,7 @@ class A_Sql_Expression extends A_Sql_Statement {
 	/**
 	 * operators
 	*/	
-	protected $operators = array('>', '<', '>=', '<=', '=', '<>', 'IN', 'NOT IN', ' LIKE ', ' NOT LIKE ');
+	protected $operators = array('!=', '>', '<', '>=', '<=', '=', '<>', 'IN', 'NOT IN', ' LIKE ', ' NOT LIKE ');
 
 	/**
 	 * db
