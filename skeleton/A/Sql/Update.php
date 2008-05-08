@@ -1,5 +1,4 @@
 <?php
-
 require_once 'A/Sql/Statement.php';
 
 class A_Sql_Update extends A_Sql_Statement {
@@ -20,40 +19,18 @@ class A_Sql_Update extends A_Sql_Statement {
 		return $this;
 	}
 	
-	public function where() {
-		$numArguments = func_num_args();
-		if (!$numArguments) return;
-		
-		include_once('A/Sql/Expression.php');
-		$arguments = func_get_args();
-		if ($numArguments == 1 || $numArguments == 2) {
-			array_unshift($arguments, 'AND');
-			if ($numArguments == 1) {
-				array_push($arguments, null);
-			}			
-		}
-
-		$this->escapeListeners[] = $expression = new A_Sql_Expression($arguments[1], $arguments[2]);		
-		if ($this->where) {
-			$this->where[] = $arguments[0];
-        }
-        $this->where[] = $expression;    
-        return $this;
-    }
-	
-	public function orWhere($data, $value=null) {
-		include_once('A/Sql/Expression.php');
-        $this->escapeListeners[] = $expression = new A_Sql_Expression($data, $value);
-		if ($this->where) {
-			$this->where[] = 'OR';
-		}
-        $this->where[] = $expression;    
+	public function where($arg1, $arg2=null, $arg3=null) {
+		$this->_condition($this->where, $arg1, $arg2, $arg3);
 		return $this;		
 	}
 
+	public function orWhere($data, $value=null) {
+		$this->_condition($this->where, 'OR', $data, $value);
+		return $this;		
+	}
+	
 	public function render() {
 		if (!$this->table || !$this->data) return;
-		include_once 'A/Sql/LogicalList.php';
 		
 		$table = $this->table->render();
 		$joins = ''; //not implemented
@@ -68,9 +45,11 @@ class A_Sql_Update extends A_Sql_Statement {
 
 		$where = '';
 		if ($this->where) {
+			include_once 'A/Sql/LogicalList.php';
 			$wherelist = new A_Sql_LogicalList($this->where);
 			$where = ' WHERE '. $wherelist->render();
 		}
+		$this->where = null;
 
 		return "UPDATE $table SET $set$joins$where";
 

@@ -34,7 +34,8 @@ class A_Sql_Expression extends A_Sql_Statement {
 		if (is_string($this->data)) {
 			$this->data = array($this->data);
 		}
-		return implode(' '. $logic.' ', array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
+		$logic = $logic==',' ? ', ' : ' '.trim($logic).' ';
+		return implode($logic, array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
 	}
 
 	/**

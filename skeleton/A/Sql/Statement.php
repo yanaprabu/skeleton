@@ -13,4 +13,25 @@ class A_Sql_Statement {
 		}
 		return $this;
 	}
+
+	protected function _condition(&$list, $arg1, $arg2=null, $arg3=null) {
+		if ($arg1) {
+					
+			if ($arg3 === null) {
+				$logic = 'AND';		// if no 3rd arg is not set then logic is AND
+			} else {
+				$logic = $arg1;		// if 3rd arg is set then it is logic
+				$arg1 = $arg2;		// move args down
+				$arg2 = $arg3;
+			}
+				
+			include_once('A/Sql/Expression.php');
+			$this->escapeListeners[] = $expression = new A_Sql_Expression($arg1, $arg2);		
+			if ($list) {
+				$list[] = $logic;
+	        }
+	        $list[] = $expression;
+		}    
+        return $this;
+    }
 }

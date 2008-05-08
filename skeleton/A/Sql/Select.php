@@ -1,5 +1,4 @@
 <?php
-
 require_once 'A/Sql/Statement.php';
 
 class A_Sql_Select extends A_Sql_Statement {
@@ -69,77 +68,36 @@ class A_Sql_Select extends A_Sql_Statement {
 	}
 	
 	/**
-	 * having()
 	*/	
-	public function having() {
-		$numArguments = func_num_args();
-		if (!$numArguments) return;
-		
-		include_once('A/Sql/Expression.php');
-		$arguments = func_get_args();
-		if ($numArguments == 1 || $numArguments == 2) {
-			array_unshift($arguments, 'AND');
-			if ($numArguments == 1) {
-				array_push($arguments, null);
-			}			
-		}
-
-		$this->escapeListeners[] = $expression = new A_Sql_Expression($arguments[1], $arguments[2]);		
-		if ($this->having) {
-			$this->having[] = $arguments[0];
-        }
-        $this->having[] = $expression;    
-        return $this;
-    }
-	
-		
-	/**
-	 * orHaving()
-	*/	
-	public function orHaving($data, $value=null) {
-		include_once('A/Sql/Expression.php');
-        $this->escapeListeners[] = $expression = new A_Sql_Expression($data, $value);
-		if ($this->having) {
-			$this->having[] = 'OR';
-		}
-        $this->having[] = $expression;    
-		return $this;	
-	}
-	
 	/**
 	 * where()
-	*/
-	public function where() {
-		$numArguments = func_num_args();
-		if (!$numArguments) return;
-		
-		include_once('A/Sql/Expression.php');
-		$arguments = func_get_args();
-		if ($numArguments == 1 || $numArguments == 2) {
-			array_unshift($arguments, 'AND');
-			if ($numArguments == 1) {
-				array_push($arguments, null);
-			}			
-		}
+	*/	
+	public function where($arg1, $arg2=null, $arg3=null) {
+		$this->_condition($this->where, $arg1, $arg2, $arg3);
+		return $this;		
+	}
 
-		$this->escapeListeners[] = $expression = new A_Sql_Expression($arguments[1], $arguments[2]);		
-		if ($this->where) {
-			$this->where[] = $arguments[0];
-        }
-        $this->where[] = $expression;    
-        return $this;
-    }
-	
-	/**
+    /**
 	 * orWhere()
 	*/	
 	public function orWhere($data, $value=null) {
-		include_once('A/Sql/Expression.php');
-        $this->escapeListeners[] = $expression = new A_Sql_Expression($data, $value);
-		if ($this->where) {
-			$this->where[] = 'OR';
-		}
-        $this->where[] = $expression;    
+		$this->_condition($this->where, 'OR', $data, $value);
+		return $this;		
+	}
+
+	/**
+	 * having()
+	*/	
+	public function having($arg1, $arg2=null, $arg3=null) {
+		$this->_condition($this->having, $arg1, $arg2, $arg3);
+		return $this;		
+	}
+
+    /**
+	 * orHaving()
+	*/	
+	public function orHaving($data, $value=null) {
+		$this->_condition($this->having, 'OR', $data, $value);
 		return $this;		
 	}
 
@@ -182,12 +140,14 @@ class A_Sql_Select extends A_Sql_Statement {
 			$wherelist = new A_Sql_LogicalList($this->where);
 			$where = ' WHERE '. $wherelist->render();
 		}
+		$this->where = null;
 		
 		$having = '';
 		if ($this->having) {
 			$havinglist = new A_Sql_LogicalList($this->having);
 			$having = ' HAVING '. $havinglist->render();
 		}
+		$this->having = null;
 		
 		$orderby = $this->orderby ? $this->orderby->render() : '';
 		$groupby = $this->groupby ? $this->groupby->render() : '';
