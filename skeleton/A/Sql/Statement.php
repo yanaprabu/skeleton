@@ -8,7 +8,8 @@ class A_Sql_Statement {
 		if (!$arg1) return $this; //no need to proceed if arguments are empty
 		$arguments = array_filter(array($arg1, $arg2, $arg3));
 		$numArguments = count($arguments);
-		if ($numArguments <= 2) {
+		
+		if ($numArguments <= 2 && !is_array(isset($arguments[1]) ? $arguments[1] : null)){
 			array_unshift($arguments, 'AND');
 		}
 
