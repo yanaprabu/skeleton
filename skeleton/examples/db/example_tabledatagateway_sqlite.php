@@ -1,0 +1,22 @@
+<?php
+include 'config.php';
+include 'A/Db/Sqlite.php';
+include 'A/Db/Tabledatagateway.php';
+
+class Projects extends A_Db_Tabledatagateway
+{
+}
+
+$db = new A_Db_Sqlite($ConfigArray['DBDSN']);
+$db->connect();
+if ($db->isError()) die('ERROR: ' . $db->getMessage());
+
+$project = new Projects($db);
+
+$rows = $project->find(2);
+dump($project->sql);
+dump($rows);
+
+$rows = $project->find('client_id=', 1);
+dump($project->sql);
+dump($rows);

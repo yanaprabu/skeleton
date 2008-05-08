@@ -13,9 +13,9 @@ class A_Db_Sqlite {	protected $dsn = null;	protected $link = null;	protected 
 		}
 	}
 		
-	public function connect ($dsn, $options=null) {
+	public function connect ($dsn=null, $options=null) {
 		if ($this->link == null) {
-			$this->link = @sqlite_open($dsn['filename'], $dsn['mode']);
+			$this->link = sqlite_open($dsn['filename'], $dsn['mode']);
 		} 
 	}
 		
@@ -32,9 +32,9 @@ class A_Db_Sqlite {	protected $dsn = null;	protected $link = null;	protected 
 		}
 
 		if (strpos(strtolower($sql), 'select') === 0) {
-			$obj = new A_Db_Sqlite_Recordset(sqlite_query($sql));
+			$obj = new A_Db_Sqlite_Recordset(sqlite_query($this->link, $sql));
 		} else {
-			$obj = new A_Db_Sqlite_Result(sqlite_query($sql));
+			$obj = new A_Db_Sqlite_Result($this->link, sqlite_query($this->link, $sql));
 		}
 		$obj->errno = sqlite_last_error($this->link);
 		$obj->errmsg = sqlite_error_string($obj->errno);

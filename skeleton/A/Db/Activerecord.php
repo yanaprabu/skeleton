@@ -39,55 +39,73 @@ class A_Db_Activerecord extends A_DataContainer {
 		} else {
 			$this->table = strtolower(get_class($this));
 		}
+		return $this;
 	}
 	
 	public function getTable() {
 		return $this->table;
 	}
 	
-	public function find($sql) {
-		$result = $this->db->query("SELECT * FROM {$this->table} WHERE $sql");
-		if (! $this->db->isError()) {
-			$numrows = $result->numRows();
-			if ($numrows > 0) {
-				$this->_data = array();
-				if ($numrows == 1) {
-					$this->_data[0] = $result->fetchRow();
-					$this->num_rows = 1;
-				} else {
-					$this->num_rows = 0;
-					while ($this->_data[$this->num_rows] = $result->fetchRow()) {
-						++$this->num_rows;
-					}
-					// last fetch returns null, unset so to avoid copying rows in loop
-					unset($this->_data[$this->num_rows]);
-				}
-				$this->is_loaded = true;
-			} else {
-				// error
-			}
-		} else {
-			//error
+	public function where() {
+		$args = func_get_args();
+		// allow one param that is array of args
+		if (is_array($args[0])) {
+			$args = $args[0];
 		}
+		$nargs = count($args);
+#print_r($args);
+#echo "nargs=$nargs</br>";
+		if ($nargs == 1) {
+			// find match for key
+			$this->select->where($this->key . '=', $args[0]);
+		} else {
+			$this->select->where($args[0], $args[1], isset($args[2]) ? $args[2] : null);
+		}
+		return $this;
 	}
 
-	public function findBy($field, $value) {
-	}
-	
-	public function findOrCreateBy($field, $value) {
+	public function find() {
+		$allrows = array();
+
+		$args = func_get_args();
+		// if params then where condition passed
+		if (count($args)) {
+			$this->where($args);
+		}
+
+		$this->sql = $this->select->render();
+		$result = $this->db->query($this->sql);
+		if ($result->isError()) {
+			$this->errmsg = $result->getMessage();
+		} else {
+			$this->_data = $result->fetchRow();
+			$this->num_rows = count($this->_data);
+		}
+		return $this->errmsg;
 	}
 	
 	public function save() {
-		if ($this->is_loaded) {
-			// update
-		} else {
-			// insert
+		if (! $this->is_loaded) {
+			include_once 'A/Sql/Insert.php';
+			$insert = new A_Sql_Insert();
+			$insert->table($this->table)->set($this->_data);
+			$this->db->query($insert->render());
+			$try_update = ! $this->db->isError();
+		}
+		if (isset($this->_data[$this->key]) && ($this->is_loaded || $try_update)) {
+			include_once 'A/Sql/Update.php';
+			$update = new A_Sql_Update();
+			$update->table($this->table)->set($this->_data)->where($this->key, $this->_data[$this->key]);
+			$this->db->query($update->render());
 		}
 	}
 	
 	public function delete() {
-		if ($this->is_loaded) {
-			// update
+		if (isset($this->_data[$this->key]) && $this->is_loaded) {
+			include_once 'A/Sql/Delete.php';
+			$delete = new A_Sql_Delete();
+			$delete->table($this->table)->where($this->key, $this->_data[$this->key]);
+			$this->db->query($delete->render());
 		}
 	}
 

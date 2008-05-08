@@ -1,4 +1,5 @@
 <?php
+include_once 'A/Sql/Select.php';
 
 class A_Db_Tabledatagateway {
 	protected $db;
@@ -12,42 +13,55 @@ class A_Db_Tabledatagateway {
 	public $sql = '';
 	protected $num_rows = 0;
 	
-	public function __construct($db, $table, $key='id') {
+	public function __construct($db, $table='', $key='id') {
 		$this->db = $db;
-		$this->table = $table;
+		$this->setTable($table);
 		$this->key = $key;
+		$this->select = new A_Sql_Select();
+		$this->select->from($this->getTable());
 	}
 
-	public function quoteEscape($value) {
-		return "'" . $this->db->escape($value) . "'";
+	public function setTable($table=null) {
+		if ($table) {
+			$this->table = $table;
+		} else {
+			$this->table = strtolower(get_class($this));
+		}
+		return $this;
 	}
-
-	public function findByKey($id) {
-		$id = $this->db->escape($id);
-		$this->where = '';
-		$this->isEqual($this->key, $id);
-		$allrows = $this->find();
-		if (isset($allrows[0])) {
-			return $allrows[0];
-		}
+	
+	public function getTable() {
+		return $this->table;
 	}
-
-	public function findWhere($where='', $sort='') {
-		if ($where) {
-			$where = ' WHERE ' . $where;
+	
+	public function where() {
+		$args = func_get_args();
+		// allow one param that is array of args
+		if (is_array($args[0])) {
+			$args = $args[0];
 		}
-		if ($sort) {
-			$sort = ' ORDER BY ' . $sort;
+		$nargs = count($args);
+#print_r($args);
+#echo "nargs=$nargs</br>";
+		if ($nargs == 1) {
+			// find match for key
+			$this->select->where($this->key . '=', $args[0]);
+		} else {
+			$this->select->where($args[0], $args[1], isset($args[2]) ? $args[2] : null);
 		}
-		$this->sql = "SELECT {$this->fields} FROM {$this->table}$where$sort";
-		return $this->db->query($this->sql);
+		return $this;
 	}
 
 	public function find() {
 		$allrows = array();
-		$where = ($this->where ? ' WHERE ' . implode(' AND ', $this->where) : '');
-		$orderby = ($this->orderby ? ' ORDER BY ' . implode(', ', $this->orderby) : '');
-		$this->sql = "SELECT {$this->fields} FROM {$this->table}$where$orderby{$this->limit}";
+
+		$args = func_get_args();
+		// if params then where condition passed
+		if (count($args)) {
+			$this->where($args);
+		}
+
+		$this->sql = $this->select->render();
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
 			$this->errmsg = $result->getMessage();
@@ -57,82 +71,9 @@ class A_Db_Tabledatagateway {
 			}
 			$this->num_rows = count($allrows);
 		}
-		$this->where = '';
 		return $allrows;
 	}
 	
-	public function where($where) {
-		$this->where[] = $where;
-	}
-	
-	public function is($field, $op, $value, $quote=true) {
-		$this->where[] = "$field$op" . ($quote ? $this->quoteEscape($value) : $this->db->escape($value));
-	}
-
-	public function isEqual($field, $value) {
-		$this->is($field, '=', $value);
-	}
-
-	public function isNotEqual($field, $value) {
-		$this->is($field, '!=', $value);
-	}
-
-	public function isGreaterThan($field, $value) {
-		$this->is($field, '>', $value);
-	}
-
-	public function isLessThan($field, $value) {
-		$this->is($field, '<', $value);
-	}
-
-	public function isGreaterThanOrEqual($field, $value) {
-		$this->is($field, '>=', $value);
-	}
-
-	public function isLessThanOrEqual($field, $value) {
-		$this->is($field, '<=', $value);
-	}
-
-	public function isLike($field, $value) {
-		$this->is($field, ' LIKE ', "%$value%");
-	}
-
-	public function isNotLike($field, $value) {
-		$this->is($field, ' NOT LIKE ', "%$value%");
-	}
-
-	public function isBetween($field, $value1, $value2) {
-		$this->where[] = "$field BETWEEN " . $this->quoteEscape($value1) . ' AND ' . $this->quoteEscape($value2);
-	}
-
-	public function orderBy($orderby) {
-		$this->orderby[] = $orderby;
-	}
-
-	public function setFields($fields) {
-		if (is_array($fields)) {
-			$this->fields = implode(',', $fields);
-		} else {
-			$this->fields = $fields;
-		}
-		return $this;
-	}
-
-	public function sortTable($table) {
-		$this->table = $table;
-		return $this;
-	}
-
-	public function sortKey($key) {
-		$this->key = $key;
-		return $this;
-	}
-
-	public function limit($start, $size) {
-		$this->limit = " LIMIT $start, $size";
-		return $this;
-	}
-
 	public function update($id, $data) {
 		if ($id && $data) {
 			if (isset($data[$this->key])) {
