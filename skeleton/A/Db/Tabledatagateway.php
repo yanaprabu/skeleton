@@ -5,7 +5,7 @@ class A_Db_Tabledatagateway {
 	protected $db;
 	protected $table = '';
 	protected $key = 'id';
-	protected $fields = '*';
+	protected $columns = '*';
 	protected $errmsg = '';
 	public $sql = '';
 	protected $num_rows = 0;
@@ -29,6 +29,11 @@ class A_Db_Tabledatagateway {
 	
 	public function getTable() {
 		return $this->table;
+	}
+	
+	public function setColumns($columns) {
+		$this->columns = $columns;
+		return $this;
 	}
 	
 	public function where() {

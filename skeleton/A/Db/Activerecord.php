@@ -7,8 +7,9 @@ class A_Db_Activerecord extends A_DataContainer {
 	protected $db = null;
 	protected $table;
 	protected $key = 'id';
+	protected $select;
 	protected $errmsg = '';
-	protected $fields = '*';
+	protected $columns = '*';
 	public $sql = '';
 	protected $num_rows = 0;
 	protected $is_loaded = false;
@@ -53,6 +54,11 @@ class A_Db_Activerecord extends A_DataContainer {
 		return $this->table;
 	}
 	
+	public function setColumns($columns) {
+		$this->columns = $columns;
+		return $this;
+	}
+	
 	public function where() {
 		$args = func_get_args();
 		// allow one param that is array of args
@@ -84,9 +90,11 @@ class A_Db_Activerecord extends A_DataContainer {
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
 			$this->errmsg = $result->getMessage();
+			$this->is_loaded = false;
 		} else {
 			$this->_data = $result->fetchRow();
 			$this->num_rows = count($this->_data);
+			$this->is_loaded = true;
 		}
 		return $this->errmsg;
 	}
@@ -95,15 +103,17 @@ class A_Db_Activerecord extends A_DataContainer {
 		if (! $this->is_loaded) {
 			include_once 'A/Sql/Insert.php';
 			$insert = new A_Sql_Insert();
-			$insert->table($this->table)->set($this->_data);
-			$this->db->query($insert->render());
+			$insert->table($this->table)->values($this->_data);
+			$this->sql = $insert->render();
+			$this->db->query($this->sql);
 			$try_update = ! $this->db->isError();
 		}
 		if (isset($this->_data[$this->key]) && ($this->is_loaded || $try_update)) {
 			include_once 'A/Sql/Update.php';
 			$update = new A_Sql_Update();
 			$update->table($this->table)->set($this->_data)->where($this->key, $this->_data[$this->key]);
-			$this->db->query($update->render());
+			$this->sql = $update->render();
+			$this->db->query($this->sql);
 		}
 	}
 	
@@ -112,7 +122,8 @@ class A_Db_Activerecord extends A_DataContainer {
 			include_once 'A/Sql/Delete.php';
 			$delete = new A_Sql_Delete();
 			$delete->table($this->table)->where($this->key, $this->_data[$this->key]);
-			$this->db->query($delete->render());
+			$this->sql = $delete->render();
+			$this->db->query($this->sql);
 		}
 	}
 
