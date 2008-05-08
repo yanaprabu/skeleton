@@ -124,6 +124,8 @@ class A_Sql_Select extends A_Sql_Statement {
 	*/
 	public function render() {
 		if (!$this->table) return;
+		$this->notifyListeners();
+	
 		include_once 'A/Sql/LogicalList.php';
 		
 		$table = $this->table->render();

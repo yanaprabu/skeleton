@@ -31,6 +31,7 @@ class A_Sql_Delete extends A_Sql_Statement{
 	
 	function render() {
 		if ($this->table) {
+			$this->notifyListeners();
 			$table = $this->table->render();
 #			$where = $this->where ? ' WHERE ' . $this->where->render() : '';
 	

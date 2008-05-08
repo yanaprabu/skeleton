@@ -31,6 +31,7 @@ class A_Sql_Update extends A_Sql_Statement {
 	
 	public function render() {
 		if (!$this->table || !$this->data) return;
+		$this->notifyListeners();
 		
 		$table = $this->table->render();
 		$joins = ''; //not implemented

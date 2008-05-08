@@ -52,6 +52,7 @@ class A_Sql_Insert {
 	public function render($db=null) {
 		$columns = array();
 		if ($this->table) {
+			$this->notifyListeners();
 			if ($this->data) {
 				$callback = $db ? array($db, 'escape') : 'addslashes';
 				$columns = implode(', ', array_keys($this->data));
