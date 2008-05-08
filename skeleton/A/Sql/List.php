@@ -8,8 +8,6 @@ class A_Sql_List extends A_Sql_Statement {
 	}
 	
 	public function render() {
-		if (is_object($this->element
-	
 		$list = is_object($this->element) ? $this->element->setDb($this->db)->render() : $this->element;
 		return is_array($list) ? implode(', ', $list) : $list;
 	}
