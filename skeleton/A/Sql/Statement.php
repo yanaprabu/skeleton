@@ -31,7 +31,7 @@ class A_Sql_Statement {
 
 	protected function notifyListeners() {
 		if (count($this->escapeListeners)) {
-			foreach ($this->escapeListners[0] as $listener) {
+			foreach ($this->escapeListeners as $listener) {
 				$listener->setDb($this->db);
 			}
 		}
