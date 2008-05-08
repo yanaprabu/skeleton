@@ -21,7 +21,7 @@ $db->query("INSERT INTO clients VALUES (3, 'Project Three')");
 
 $sql = "CREATE TABLE projects (
   id INTEGER PRIMARY KEY,
-  client_id INTEGER,
+  clients_id INTEGER,
   name TEXT
 );";
 $db->query($sql);
