@@ -7,7 +7,13 @@ class A_Sql_Statement {
 	protected function condition(&$list, $arg1, $arg2=null, $arg3=null) {
 		if (!$arg1) return $this; //no need to proceed if arguments are empty
 		if ($arg3 === null) {
-			$logic = 'AND';
+			if ($arg2 === null) {
+				$logic = 'AND';
+			} else {
+				$logic = $arg1;
+				$arg1 = $arg2;
+				$arg2 = null;
+			}	
 		} else {
 			$logic = $arg1;	// if 3rd arg is set then it is logic
 			$arg1 = $arg2;	// move args down
