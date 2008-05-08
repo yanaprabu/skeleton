@@ -73,7 +73,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * where()
 	*/	
 	public function where($arg1, $arg2=null, $arg3=null) {
-		$this->_condition($this->where, $arg1, $arg2, $arg3);
+		$this->condition($this->where, $arg1, $arg2, $arg3);
 		return $this;		
 	}
 
@@ -81,7 +81,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * orWhere()
 	*/	
 	public function orWhere($data, $value=null) {
-		$this->_condition($this->where, 'OR', $data, $value);
+		$this->condition($this->where, 'OR', $data, $value);
 		return $this;		
 	}
 
@@ -89,7 +89,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * having()
 	*/	
 	public function having($arg1, $arg2=null, $arg3=null) {
-		$this->_condition($this->having, $arg1, $arg2, $arg3);
+		$this->condition($this->having, $arg1, $arg2, $arg3);
 		return $this;		
 	}
 
@@ -97,7 +97,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * orHaving()
 	*/	
 	public function orHaving($data, $value=null) {
-		$this->_condition($this->having, 'OR', $data, $value);
+		$this->condition($this->having, 'OR', $data, $value);
 		return $this;		
 	}
 

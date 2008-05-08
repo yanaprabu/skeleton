@@ -20,12 +20,12 @@ class A_Sql_Delete extends A_Sql_Statement{
 	}
 
 	public function where($arg1, $arg2=null, $arg3=null) {
-		$this->_condition($this->where, $arg1, $arg2, $arg3);
+		$this->condition($this->where, $arg1, $arg2, $arg3);
 		return $this;		
 	}
 
 	public function orWhere($data, $value=null) {
-		$this->_condition($this->where, 'OR', $data, $value);
+		$this->condition($this->where, 'OR', $data, $value);
 		return $this;		
 	}
 	
