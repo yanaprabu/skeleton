@@ -17,6 +17,6 @@ $rows = $project->find(2);
 dump($project->sql);
 dump($rows);
 
-$rows = $project->find('client_id=', 1);
+$rows = $project->find('clients_id=', 1);
 dump($project->sql);
 dump($rows);
