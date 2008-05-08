@@ -3,9 +3,9 @@ require_once 'A/Sql/Statement.php';
 
 class A_Sql_Update extends A_Sql_Statement {
 	protected $table;
-	protected $data;
 	protected $where;
 	protected $joins = array();	
+	protected $set;
 	
 	public function table($table) {
 		include_once('A/Sql/Table.php');
@@ -14,9 +14,11 @@ class A_Sql_Update extends A_Sql_Statement {
 	}	
 
 	public function set($data, $value=null) {
-		include_once('A/Sql/Expression.php');
-		$this->data[] = new A_Sql_Expression($data, $value);	
-		$this->escapeListeners[] = end($this->data);	
+		if (!$this->set) {
+			include_once('A/Sql/Set.php');	
+			$this->set = new A_Sql_Set();
+		}
+		$this->set->addExpression($data, $value);
 		return $this;
 	}
 	
@@ -27,39 +29,33 @@ class A_Sql_Update extends A_Sql_Statement {
 	}	
 	
 	public function where($arg1, $arg2=null, $arg3=null) {
-		$this->condition($this->where, $arg1, $arg2, $arg3);
+		if (!$this->where) {
+			include_once('A/Sql/Where.php');		
+			$this->where = new A_Sql_Where();
+		}
+		$this->where->addExpression($arg1, $arg2, $arg3);
 		return $this;		
 	}
 
 	public function orWhere($data, $value=null) {
-		$this->_condition($this->where, 'OR', $data, $value);
+		if (!$this->where) {
+			include_once('A/Sql/Where.php');
+			$this->where = new A_Sql_Where();
+		}
+		$this->where->addExpression('OR', $data, $value);
 		return $this;		
 	}
 	
 	public function render() {
-		if (!$this->table || !$this->data) return;
+		if (!$this->table || !$this->set) return;
 		$this->notifyListeners();
 		
 		$table = $this->table->render();
 		$joins = ''; //not implemented
+		$set 	 = $this->set->setDb($this->db)->render();
+		$where   = $this->where ? ' '. $this->where->setDb($this->db)->render() : '';
 
-		$sets = array();
-		if (count($this->data)) {
-			foreach ($this->data as $data) {
-				$sets[] = $data->render(',');
-			}
-		}	
-		$set = implode(', ', $sets);
-
-		$where = '';
-		if ($this->where) {
-			include_once 'A/Sql/LogicalList.php';
-			$wherelist = new A_Sql_LogicalList($this->where);
-			$where = ' WHERE '. $wherelist->render();
-		}
-		$this->where = null;
-
-		return "UPDATE $table SET $set$joins$where";
+		return "UPDATE $table $set$joins$where";
 	}
 
 	public function __toString() {

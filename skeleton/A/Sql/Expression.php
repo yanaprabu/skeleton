@@ -70,9 +70,7 @@ class A_Sql_Expression extends A_Sql_Statement {
 		return implode($logic, array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
 	}
 
-
 	public function __toString() {
 		return $this->render();
 	}
-
 }

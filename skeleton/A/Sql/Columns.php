@@ -34,5 +34,4 @@ class A_Sql_Columns {
 	public function __toString() {
 		return $this->render();
 	}
-
 }

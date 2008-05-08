@@ -4,35 +4,22 @@ require_once 'A/Sql/Statement.php';
 
 class A_Sql_Insert extends A_Sql_Statement {
 	protected $table;
-	protected $data = array();
-	protected $columns = null;
-	protected $select = null;
-	
+	protected $values;
+	protected $columns;
+	protected $select;
 
-	/**
-	 * table()
-	*/	
 	public function table($table) {
-		if (!$this->table) include_once('A/Sql/Table.php');
+		include_once('A/Sql/Table.php');
 		$this->table = new A_Sql_Table($table);
 		return $this;
 	}
 
-	/**
-	 * values()
-	*/	
 	public function values($data, $value=null) {
 		if ($data) {
-			// remove existing select
 			$this->columns = null;
-			$this->select = null;
-			
-			$this->data = array();
-			if (is_array($data)) {
-				$this->data = $data;	
-			} elseif (is_string($data) && $value) {
-				$this->data = array($data=>$value);	
-			}
+			$this->select = null;		
+			include_once('A/Sql/Values.php');
+			$this->values = new A_Sql_Values($data, $value);
 		}
 		return $this;
 	}
@@ -44,7 +31,7 @@ class A_Sql_Insert extends A_Sql_Statement {
 	}
 
 	public function select() {
-		if (! $this->select) {
+		if (!$this->select) {
 			include_once('A/Sql/Select.php');
 			$this->select = new A_Sql_Select();
 		}
@@ -54,19 +41,15 @@ class A_Sql_Insert extends A_Sql_Statement {
 	public function render($db=null) {
 		$columns = array();
 		if ($this->table) {
-			$this->notifyListeners();
-			if ($this->data) {
-				$callback = $db ? array($db, 'escape') : 'addslashes';
-				$columns = implode(', ', array_keys($this->data));
-				$data = array_map($callback, array_values($this->data));
-				$values = "VALUES ('" . implode("', '", $data) . "')";
-			} elseif ($this->columns && $this->select) {
-				$columns = $this->columns->render();
-				$values = $this->select->render($db);
+			if (!$this->values) {
+				if (!$this->columns || !$this->select) { 
+					return;
+				}
+				$this->values = new A_Sql_Values($this->columns->render(), $this->select->setDb($this->db)->render());
 			}
-		}
-		if ($columns && $values) {
-			return "INSERT INTO {$this->table} ($columns) $values";
+			$values = $this->values->render();
+			$table = $this->table->render();
+			return "INSERT INTO $table $values";
 		}
 	}
 
