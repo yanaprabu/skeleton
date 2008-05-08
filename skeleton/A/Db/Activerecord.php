@@ -1,11 +1,15 @@
 <?php
 include_once 'A/DataContainer.php';
+include_once 'A/Sql/Select.php';
 
 class A_Db_Activerecord extends A_DataContainer {
 	protected static $globaldb = null;
 	protected $db = null;
 	protected $table;
 	protected $key = 'id';
+	protected $errmsg = '';
+	protected $fields = '*';
+	public $sql = '';
 	protected $num_rows = 0;
 	protected $is_loaded = false;
 
@@ -15,15 +19,18 @@ class A_Db_Activerecord extends A_DataContainer {
 #	protected $has_many = array of A_Db_Activerecord_Hasmany (or A_Db_Activerecord) objects that
 #	knows the table.field=table.field mapping and is a list of records
 
-	public function __construct($db=null, $table=null) {
+	public function __construct($db=null, $table='', $key='id') {
 		if ($db) {
 			$this->db = $db;
 		} elseif (self::$globaldb) {
 			$this->db = self::$globaldb;
 		}
 		$this->setTable($table);
+		$this->key = $key;
+		$this->select = new A_Sql_Select();
+		$this->select->from($this->getTable());
 	}
-	
+
 	public function setDb($db) {
 		if (isset($this)) {
 			$this->db = $db;

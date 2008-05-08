@@ -7,9 +7,6 @@ class A_Db_Tabledatagateway {
 	protected $key = 'id';
 	protected $fields = '*';
 	protected $errmsg = '';
-	protected $where = '';
-	protected $orderby = '';
-	protected $limit = '';
 	public $sql = '';
 	protected $num_rows = 0;
 	

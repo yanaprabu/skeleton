@@ -15,8 +15,4 @@ $project = new Projects($db);
 
 $project->find(2);
 dump($project->sql);
-dump($rows);
-
-$project->find('client_id=', 1);
-dump($project->sql);
 dump($project->toArray());
