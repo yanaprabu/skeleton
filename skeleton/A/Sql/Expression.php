@@ -46,7 +46,7 @@ class A_Sql_Expression extends A_Sql_Statement {
 			$key = $value;
 			$value = null;
 		}
-		if (preg_match('!('. implode('|', $this->operators).')$!i', $key, $matches)) { //operator detected
+		if (preg_match('@('. implode('|', $this->operators).')$@i', $key, $matches)) { //operator detected
 			if (is_array($value)) {
 				$value = '('. implode(', ', array_map(array($this, 'quoteEscape'), $value)) .')';
 			} else {
