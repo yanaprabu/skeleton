@@ -6,18 +6,19 @@ class A_Sql_Columns {
 	
 	public function __construct($args=null) {
 		if (is_array($args)) {
-			$this->args = $args;
+			$this->columns = $args;
 		} else {
-			$this->args = func_get_args();
+			$this->columns = func_get_args();
 		}
 	}
 	
 	public function render() {
-		$this->columns = isset($this->args[0]) && is_array($this->args[0]) ? $this->args[0] : $this->args;
-		if (array_search('*', $this->columns) !== false || !count($this->columns)) {
-			$this->columns = array('*');
+		if ($this->columns) {
+			if (is_array($this->columns) && count($this->columns)) {
+				$this->columns = implode(', ', $this->columns);
+			}
+			return $this->columns;
 		}
-		return implode(', ', $this->columns);
 	}
 
 	public function __toString() {

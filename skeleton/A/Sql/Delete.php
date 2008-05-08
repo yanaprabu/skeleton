@@ -13,7 +13,7 @@ class A_Sql_Delete extends A_Sql_Statement{
 	
 	public function table($table) {
 		if ($table) {
-			if (!$this->table) include_once('A/Sql/Table.php');
+			include_once('A/Sql/Table.php');
 			$this->table = new A_Sql_Table($table);
 		}
 		return $this;

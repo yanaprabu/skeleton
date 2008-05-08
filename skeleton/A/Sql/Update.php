@@ -5,12 +5,13 @@ class A_Sql_Update extends A_Sql_Statement {
 	protected $table;
 	protected $data;
 	protected $where;
+	protected $joins = array();	
 	
 	public function table($table) {
 		include_once('A/Sql/Table.php');
 		$this->table = new A_Sql_Table($table);
 		return $this;
-	}
+	}	
 
 	public function set($data, $value=null) {
 		include_once('A/Sql/Expression.php');
@@ -18,6 +19,12 @@ class A_Sql_Update extends A_Sql_Statement {
 		$this->escapeListeners[] = end($this->data);	
 		return $this;
 	}
+	
+	public function join($table1, $column1, $table2, $column2) {
+		include_once('A/Sql/Join.php');
+		$this->joins[$table2] = new A_Sql_Join($table1, $column1, $table2, $column2);
+		return $this;
+	}	
 	
 	public function where($arg1, $arg2=null, $arg3=null) {
 		$this->condition($this->where, $arg1, $arg2, $arg3);
@@ -53,7 +60,6 @@ class A_Sql_Update extends A_Sql_Statement {
 		$this->where = null;
 
 		return "UPDATE $table SET $set$joins$where";
-
 	}
 
 	public function __toString() {

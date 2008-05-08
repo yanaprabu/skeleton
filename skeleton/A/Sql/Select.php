@@ -19,7 +19,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	
 	/**
 	 * $joins
-	 * Unsupported
 	*/
 	protected $joins = array();
 
@@ -105,8 +104,8 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * groupby()
 	*/	
 	public function groupBy($columns) {
-		include_once('A/Sql/Groupby.php');
-		$this->groupby = new A_Sql_Groupby($columns);	
+		include_once('A/Sql/Columns.php');
+		$this->groupby = new A_Sql_Columns($columns);	
 		return $this;
 	}
 	
@@ -114,8 +113,8 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * orderby()
 	*/	
 	public function orderBy($columns) {
-		include_once('A/Sql/Orderby.php');
-		$this->orderby = new A_Sql_Orderby($columns);	
+		include_once('A/Sql/Columns.php');
+		$this->orderby = new A_Sql_Columns($columns);	
 		return $this;
 	}
 
@@ -127,7 +126,6 @@ class A_Sql_Select extends A_Sql_Statement {
 		$this->notifyListeners();
 	
 		include_once 'A/Sql/LogicalList.php';
-		
 		$table = $this->table->render();
 		$columns = $this->columns ? $this->columns->render() : '*';
 		$joins = '';
@@ -151,8 +149,8 @@ class A_Sql_Select extends A_Sql_Statement {
 		}
 		$this->having = null;
 		
-		$orderby = $this->orderby ? $this->orderby->render() : '';
-		$groupby = $this->groupby ? $this->groupby->render() : '';
+		$orderby = $this->orderby ? ' ORDER BY '. $this->orderby->render() : '';
+		$groupby = $this->groupby ? ' GROUP BY '. $this->groupby->render() : '';
 		
 		return "SELECT $columns FROM $table$joins$having$where$orderby$groupby";
 	}

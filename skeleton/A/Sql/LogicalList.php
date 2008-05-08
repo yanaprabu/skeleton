@@ -1,7 +1,6 @@
 <?php
 
-class A_Sql_LogicalList
-{
+class A_Sql_LogicalList {
 	public function __construct($data) {
 		$this->data = (array)$data;
 	}
