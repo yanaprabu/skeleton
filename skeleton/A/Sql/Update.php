@@ -20,7 +20,7 @@ class A_Sql_Update extends A_Sql_Statement {
 	}
 	
 	public function where($arg1, $arg2=null, $arg3=null) {
-		$this->_condition($this->where, $arg1, $arg2, $arg3);
+		$this->condition($this->where, $arg1, $arg2, $arg3);
 		return $this;		
 	}
 
