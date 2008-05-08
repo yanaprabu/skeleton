@@ -1,14 +1,15 @@
 <?php
 
-class A_Sql_List {
-	protected $db;
-	protected $element;
+class A_Sql_List extends A_Sql_Statement {
+	protected $elements;
 
-	public function __construct($element) {
-		$this->element = $element;
+	public function __construct($elements) {
+		$this->elements = $elements;
 	}
 	
 	public function render() {
+		if (is_object($this->element
+	
 		$list = is_object($this->element) ? $this->element->setDb($this->db)->render() : $this->element;
 		return is_array($list) ? implode(', ', $list) : $list;
 	}

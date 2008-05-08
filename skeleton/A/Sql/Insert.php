@@ -1,6 +1,8 @@
 <?php
 
-class A_Sql_Insert {
+require_once 'A/Sql/Statement.php';
+
+class A_Sql_Insert extends A_Sql_Statement {
 	protected $table;
 	protected $data = array();
 	protected $columns = null;

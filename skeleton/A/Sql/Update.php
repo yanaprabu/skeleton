@@ -39,7 +39,7 @@ class A_Sql_Update extends A_Sql_Statement {
 		$sets = array();
 		if (count($this->data)) {
 			foreach ($this->data as $data) {
-				$sets[] = $data->render(',');
+				$sets[] = $data->render(', ');
 			}
 		}	
 		$set = implode(', ', $sets);

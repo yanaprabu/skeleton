@@ -28,20 +28,12 @@ class A_Sql_Expression extends A_Sql_Statement {
 	}
 
 	/**
-	 * render()
-	*/		
-	public function render($logic='AND') {
-		if (is_string($this->data)) {
-			$this->data = array($this->data);
-		}
-		$logic = $logic==',' ? ', ' : ' '.trim($logic).' ';
-		return implode($logic, array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
-	}
-
-	/**
 	 * escape()
 	*/		
 	public function quoteEscape($value) {
+		if (is_numeric($value)) {
+			return $value;
+		}
 		$value = $this->db ? $this->db->escape($value) : addslashes($value);
 		return "'" . $value . "'";
 	}
@@ -60,12 +52,24 @@ class A_Sql_Expression extends A_Sql_Statement {
 			} else {
 				$value = $this->quoteEscape($value);
 			}
-			return str_replace($matches[1], '', $key) . $matches[1] .$value;
+			return str_replace($matches[1], ' ', $key) . $matches[1] .' '. $value;
 		} elseif ($value !== null) {
-			return $key .'='. $this->quoteEscape($value);
-		}
+			return $key .' = '. $this->quoteEscape($value);
+		} 
 		return $key;
 	}
+
+	/**
+	 * render()
+	*/		
+	public function render($logic='AND') {
+		if (!is_array($this->data)) {
+			$this->data = array($this->data);
+		}
+
+		return implode($logic, array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
+	}
+
 
 	public function __toString() {
 		return $this->render();
