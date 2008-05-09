@@ -1,6 +1,5 @@
 <?php
-
-require_once 'A/Sql/Statement.php';
+include_once 'A/Sql/Statement.php';
 
 class A_Sql_Expression extends A_Sql_Statement {	
 	protected $data = array();

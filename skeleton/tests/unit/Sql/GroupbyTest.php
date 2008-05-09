@@ -9,16 +9,23 @@ class Sql_GroupbyTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testSql_GroupbyNotNull() {
-  		$Sql_Groupby = new A_Sql_Groupby('foo');
-  		$this->assertEqual($Sql_Groupby->render(), " GROUP BY foo");
-  				
-  		$Sql_Groupby = new A_Sql_Groupby('foo', 'bar');
-  		$this->assertEqual($Sql_Groupby->render(), " GROUP BY foo, bar");
-  				
-  		$Sql_Groupby = new A_Sql_Groupby(array('foo', 'bar'));
-  		$this->assertEqual($Sql_Groupby->render(), " GROUP BY foo, bar");
-  				
-	}
-	
+    function testEmptyStringColumnReturnsEmpty() {
+        $groupby = new A_Sql_Groupby();
+        $this->assertEqual($groupby->render(), '');
+    }
+ 
+    function testSingleStringParameterColumn() {
+        $groupby = new A_Sql_Groupby('bar');
+        $this->assertEqual($groupby->render(), 'GROUP BY bar');
+    }   
+ 
+    function testMultipleStringParameterColumns() {
+        $groupby = new A_Sql_Groupby('foo', 'bar', 'fee');
+        $this->assertEqual($groupby->render(), 'GROUP BY foo, bar, fee');
+    }       
+    
+    function testSingleArrayOfParameterColumns() {
+        $groupby = new A_Sql_Groupby(array('foo', 'bar'));
+        $this->assertEqual($groupby->render(), 'GROUP BY foo, bar');
+    }   
 }

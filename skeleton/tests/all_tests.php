@@ -7,7 +7,8 @@ require_once(SIMPLETESTDIR . 'simpletest.php');
 require_once(SIMPLETESTDIR . 'unit_tester.php');
 require_once(SIMPLETESTDIR . 'reporter.php');
 
-if (isset($_GET['test']) && file_exists($_GET['test'])) {
+$base_dir = dirname(__FILE__) . "/unit/";
+if (isset($_GET['test']) && file_exists($base_dir . $_GET['test'])) {
 	$testfile = $_GET['test'];
 	$title = "Test File $testfile";
 } else {
@@ -17,9 +18,9 @@ if (isset($_GET['test']) && file_exists($_GET['test'])) {
 //$test = new TestSuite($title);
 $test = new GroupTest($title);
 if ($testfile) {
-	$test->addTestFile($testfile);
+	$test->addTestFile($base_dir . $testfile);
 } else {
-	foreach(glob(dirname(__FILE__) . "/unit/Test.php") as $testfile) {
+	foreach(glob($base_dir . "*Test.php") as $testfile) {
 		$test->addTestFile($testfile);
 	}
 }

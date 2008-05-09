@@ -1,4 +1,5 @@
 <?php
+include_once 'A/Sql/Statement.php';
 
 class A_Sql_LogicalList extends A_Sql_Statement {
 	protected $data = array();
