@@ -17,9 +17,9 @@ if (isset($_GET['test']) && file_exists($_GET['test'])) {
 //$test = new TestSuite($title);
 $test = new GroupTest($title);
 if ($testfile) {
-	$test->addTestFile($_GET['test']);
+	$test->addTestFile($testfile);
 } else {
-	foreach(glob(dirname(__FILE__) . '/*Test.php') as $testfile) {
+	foreach(glob(dirname(__FILE__) . "/unit/Test.php") as $testfile) {
 		$test->addTestFile($testfile);
 	}
 }

@@ -11,7 +11,7 @@ class DLTest extends UnitTestCase {
 	}
 	
 	function testDLNotNull() {
-  		$locator = new A_Locator();
+		$locator = new A_Locator();
   		$example = new A_DL('', 'Example1', 'one', 'hello world');
 
 		$obj = $example->run($locator);
@@ -19,7 +19,6 @@ class DLTest extends UnitTestCase {
 
 		$obj2 = $example->run($locator);
 		$this->assertTrue($obj === $obj2);
-
 	}
 	
 /*

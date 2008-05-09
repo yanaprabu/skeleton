@@ -1,6 +1,6 @@
 <?php
 
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . '../');
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . '../' . PATH_SEPARATOR . './include');
 
 // Set this path to your SimpleTest installation
 define('SIMPLETESTDIR', '../../simpletest/');
