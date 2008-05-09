@@ -25,7 +25,7 @@ define('SWEETY_LIB_PATH', SWEETY_HOME . '/lib');
 define('SWEETY_SIMPLETEST_PATH', SWEETY_LIB_PATH . '/simpletest-svn');
 //The path to any testing directories
 define('SWEETY_TEST_PATH',
-  SWEETY_HOME . '/../tests'
+  SWEETY_HOME . '/../tests/unit'
   );
 //Test locator strategies, separated by commas
 #define('SWEETY_TEST_LOCATOR', 'A_Tests_SkeletonTestLocator');
