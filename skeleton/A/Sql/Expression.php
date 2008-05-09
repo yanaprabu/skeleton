@@ -1,24 +1,12 @@
 <?php
 
-class A_Sql_Expression extends A_Sql_Statement {
+require_once 'A/Sql/Statement.php';
 
-	/**
-	 * data
-	*/		
+class A_Sql_Expression extends A_Sql_Statement {	
 	protected $data = array();
-	/**
-	 * operators
-	*/	
-	protected $operators = array('!=', '>', '<', '>=', '<=', '=', '<>', 'IN', 'NOT IN', ' LIKE ', ' NOT LIKE ');
-
-	/**
-	 * db
-	*/		
+	protected $operators = array('!=', '>', '<', '>=', '<=', '=', '<>', 'IN', 'NOT IN', ' LIKE ', ' NOT LIKE ');	
 	protected $db;
-	
-	/**
-	 * __construct()
-	*/	
+
 	public function __construct($data, $value=null) {
 		if ($value !== null) {
 			$this->data[$data] = $value;
@@ -26,10 +14,7 @@ class A_Sql_Expression extends A_Sql_Statement {
 			$this->data = $data;
 		}	
 	}
-
-	/**
-	 * escape()
-	*/		
+		
 	public function quoteEscape($value) {
 		if (is_numeric($value)) {
 			return $value;
@@ -38,9 +23,6 @@ class A_Sql_Expression extends A_Sql_Statement {
 		return "'" . $value . "'";
 	}
 
-	/**
-	 * buildExpression()
-	*/	
 	protected function buildExpression($key, $value) {
 		if (is_int($key)) {
 			$key = $value;
@@ -52,16 +34,13 @@ class A_Sql_Expression extends A_Sql_Statement {
 			} else {
 				$value = $this->quoteEscape($value);
 			}
-			return str_replace($matches[1], ' ', $key) . $matches[1] .' '. $value;
+			return str_replace($matches[1], '', $key) . $matches[1] .' '. $value;
 		} elseif ($value !== null) {
 			return $key .' = '. $this->quoteEscape($value);
 		} 
 		return $key;
 	}
-
-	/**
-	 * render()
-	*/		
+	
 	public function render($logic='AND') {
 		if (!is_array($this->data)) {
 			$this->data = array($this->data);
