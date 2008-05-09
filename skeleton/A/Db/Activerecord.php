@@ -26,7 +26,7 @@ class A_Db_Activerecord extends A_DataContainer {
 		} elseif (self::$globaldb) {
 			$this->db = self::$globaldb;
 		}
-		$this->setTable($table);
+		$this->table($table);
 		$this->key = $key;
 		$this->select = new A_Sql_Select();
 		$this->select->from($this->getTable());
@@ -41,7 +41,7 @@ class A_Db_Activerecord extends A_DataContainer {
 		}
 	}
 	
-	public function setTable($table=null) {
+	public function table($table=null) {
 		if ($table) {
 			$this->table = $table;
 		} else {

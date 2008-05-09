@@ -10,15 +10,15 @@ class A_Db_Tabledatagateway {
 	public $sql = '';
 	protected $num_rows = 0;
 	
-	public function __construct($db, $table='', $key='id') {
+	public function __construct($db, $table=null, $key=null) {
 		$this->db = $db;
-		$this->setTable($table);
-		$this->key = $key;
+		$this->table($table);
+		$this->key($key);
 		$this->select = new A_Sql_Select();
 		$this->select->from($this->getTable());
 	}
 
-	public function setTable($table=null) {
+	public function table($table=null) {
 		if ($table) {
 			$this->table = $table;
 		} else {
@@ -31,7 +31,16 @@ class A_Db_Tabledatagateway {
 		return $this->table;
 	}
 	
-	public function setColumns($columns) {
+	public function key($key) {
+		$this->key = $key ? $key : 'id';
+		return $this;
+	}
+	
+	public function getKey() {
+		return $this->key;
+	}
+	
+	public function columns($columns) {
 		$this->columns = $columns;
 		return $this;
 	}
