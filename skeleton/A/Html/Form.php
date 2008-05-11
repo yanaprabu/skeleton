@@ -24,7 +24,21 @@ class A_Html_Form {
 	}
 
 	public function partial($attr=array()) {
-		return implode("\n", $this->_elements);
+		$out = '';
+		foreach ($this->_elements as $name => $element) {
+			$str = '';
+			if (isset($element['label'])) {
+				$str .= $element['label']->render();
+			}
+			$str .= $element['renderer']->render();
+			// if we wrap elements in a tag
+			if ($element['wrapper']) {
+				$str = $element['wrapper']->render($element['wrapperAttr'], $str);
+			}
+			$out .= $str;
+		}
+		return $out;
+#		return implode("\n", $this->_elements);
 	}
 
 	// Set the method. Is there a setter for the action?
@@ -63,11 +77,11 @@ class A_Html_Form {
 		return $this;
 	}
 
-	protected function getHelper($type) {
+	protected function getHelper($type, $attr=array()) {
 		$class = $this->getHelperClass($type);
 		include_once str_replace('_', '/', $class) . '.php';
 		if (class_exists($class)) {
-			$element = new $class();
+			$element = new $class($attr);
 			return $element;
 		}
 	}
@@ -101,7 +115,7 @@ class A_Html_Form {
 		if ($type == 'fieldset') {
 			$this->_elements[] = $params['content'];
 		} elseif (isset($params['name']) && $params['name']) {
-			$element = $this->getHelper($type);
+			$element = $this->getHelper($type, $params);
 			// set the value from the model if it is set
 			if (isset($this->model)) {
 				if (is_array($this->model)) {
@@ -118,16 +132,18 @@ class A_Html_Form {
 			if (isset($params['label'])) {
 				$str = $params['label'];
 				unset($params['label']);
-				$label = $this->getHelper('label');
-				$str = $label->render(array('for'=>$params['name']), $str) . $element->render($params);
-			} else {
-				$str = $element->render($params);
+				$label = $this->getHelper('label', array('for'=>$params['name'], 'content'=>$str));
+				$this->_elements[$params['name']]['label'] = $label;
+#				$str = $label->render() . $element->render($params);
+#			} else {
+#				$str = $element->render();
 			}
 			// if we wrap elements in a tag
 			if ($this->_wrapper) {
-				$str = $this->_wrapper->render($this->_wrapperAttr, $str);
+				$this->_elements[$params['name']]['wrapper'] = $this->_wrapper;
+				$this->_elements[$params['name']]['wrapperAttr'] = $this->_wrapperAttr;
 			}
-			$this->_elements[] = $str;
+			$this->_elements[$params['name']]['renderer'] = $element;
 		}
 		return $this;
 	}

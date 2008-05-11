@@ -1,12 +1,13 @@
 <?php
 include_once 'A/Html/Tag.php';
 
-class A_Html_Form_Select {
+class A_Html_Form_Select extends A_Html_Tag {
 
 	/*
 	 * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
 	 */
-	public function render($attr) {
+	public function render($attr=array()) {
+		$attr = parent::getAttr($attr);
 		$value = isset($attr['value']) ? A_Html_Form_Select::_toArray($attr['value']) : array();
 		unset($attr['value']);
 		$values = A_Html_Form_Select::_toArray($attr['values']);
@@ -32,7 +33,7 @@ class A_Html_Form_Select {
 			$str .= '>' . $labels[$i] . "</option>";
 		}
 
-		return A_Html_Tag::render('select', $attr, $str);
+		return parent::render('select', $attr, $str);
 	}
 
 	protected function _toArray($var) {

@@ -1,8 +1,10 @@
 <?php
+include_once 'A/Html/Tag.php';
 
-class A_Html_Form_Radiocheckbox {
+class A_Html_Form_Radiocheckbox extends A_Html_Tag {
 
-	public function render($attr) {
+	public function render($attr=array()) {
+		$attr = parent::getAttr($attr);
 		if (isset($attr['value'])) {
 			if (! is_array($attr['value'])) {
 				$attr['value'] = array($attr['value']);

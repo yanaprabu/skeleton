@@ -1,12 +1,13 @@
 <?php
 include_once 'A/Html/Tag.php';
 
-class A_Html_Form_Textarea {
+class A_Html_Form_Textarea extends A_Html_Tag {
 
 	/*
 	 * name=string, value=string
 	 */
-	public function render($attr) {
+	public function render($attr=array()) {
+		$attr = parent::getAttr($attr);
 		if (isset($attr['value'])) {
 			$str = $attr['value'];
 			unset($attr['value']);
