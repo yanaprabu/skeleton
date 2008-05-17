@@ -7,7 +7,8 @@ class A_Html_Form_Reset extends A_Html_Tag {
 	 * name=string, value=string
 	 */
 	public function render($attr=array()) {
-		$attr['type'] = 'reset';
+		parent::mergeAttr($attr);
+		parent::defaultAttr($attr, array('type'=>'reset'));
 		return parent::render('input', $attr);
 	}
 

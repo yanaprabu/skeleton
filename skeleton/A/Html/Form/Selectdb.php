@@ -12,7 +12,7 @@ class A_Html_Form_Selectdb extends A_Html_Form_Select {
 	 * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
 	 */
 	public function render($attr=array()) {
-		$attr = parent::getAttr($attr);
+		parent::mergeAttr($attr);
 		if (isset($attr['db']) && isset($attr['sql']) && isset($attr['value_col']) && isset($attr['label_cols'])) {
 			$db = $attr['db'];
 			$result = $db->query($attr['sql']);

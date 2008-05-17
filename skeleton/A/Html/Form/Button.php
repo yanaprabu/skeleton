@@ -7,7 +7,8 @@ class A_Html_Form_Button extends A_Html_Tag {
 	 * name=string, value=string
 	 */
 	public function render($attr=array()) {
-		$attr['type'] = 'button';
+		parent::mergeAttr($attr);
+		parent::defaultAttr($attr, array('type'=>'button', 'value'=>''));
 		return parent::render('input', $attr);
 	}
 

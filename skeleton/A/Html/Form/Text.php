@@ -7,7 +7,8 @@ class A_Html_Form_Text extends A_Html_Tag {
 	 * name=string, value=string
 	 */
 	public function render($attr=array()) {
-		$attr['type'] = 'text';
+		parent::mergeAttr($attr);
+		parent::defaultAttr($attr, array('type'=>'text', 'value'=>''));
 		return parent::render('input', $attr);
 	}
 

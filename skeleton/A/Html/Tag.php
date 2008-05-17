@@ -3,21 +3,32 @@
 class A_Html_Tag {
 	protected $_attr = array();
 	
-	public function __construct($attr=array()) {
+	public function __construct($attr=array(), $value=null) {
 		$this->_attr = $attr;
-	}
-	
-	public function getAttr($attr=array()) {
-		if (isset($this) && isset($this->_attr) && is_array($attr)) {
-			return array_merge($this->_attr, $attr);
+		if ($value !== null) {
+			$this->_attr['value'] = $value;
 		}
-		return $attr;
 	}
 	
-	public function setDefaults(&$attr, $default_attr) {
-		foreach($default_attr as $key => $value) {
+	public function mergeAttr(&$attr) {
+		if (isset($this) && isset($this->_attr) && is_array($attr)) {
+			$attr = array_merge($this->_attr, $attr);
+		}
+	}
+	
+	public function defaultAttr(&$attr, $defaults=array()) {
+		foreach($defaults as $key => $value) {
 			if (! isset($attr[$key])) {
 				$attr[$key] = $value;
+			}
+		}
+	}
+	
+	public function removeAttr(&$attr, $key) {
+		if ($key) {
+			unset($attr[$key]);
+			if (isset($this->_attr[$key])) {
+				unset($this->_attr[$key]);
 			}
 		}
 	}
@@ -31,8 +42,9 @@ class A_Html_Tag {
 	 * e.g. render('img', array('src'=>'foo.jpg', 'alt'=>'bar')) generates <img src="foo.jpg" alt="bar"/>
  	 */
 	public function render($tag, $attr=array(), $content=null) {
+		self::mergeAttr($attr);
+
 		$str = "<$tag";
-		$attr = self::getAttr($attr);
 		foreach ($attr as $name=>$value) {
 			$str .= " $name=\"$value\"";
 		}

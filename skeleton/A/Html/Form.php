@@ -19,7 +19,7 @@ class A_Html_Form {
 			$content = $this->partial($attr);
 		}
 		
-		A_Html_Tag::setDefaults($attr, array('method'=>'post', 'action'=>'', ));
+		A_Html_Tag::defaultAttr($attr, array('method'=>'post', 'action'=>'', ));
 		return A_Html_Tag::render('form', $attr, $content);
 	}
 
@@ -103,7 +103,7 @@ class A_Html_Form {
 				} else {
 					// fieldset is the exception that does not get a label
 					if ($type == 'fieldset') {
-						$params['content'] = $args[1];
+						$params['value'] = $args[1];
 					} else {
 						$params['label'] = $args[1];
 					}
@@ -113,7 +113,7 @@ class A_Html_Form {
 		}
 	
 		if ($type == 'fieldset') {
-			$this->_elements[] = $params['content'];
+			$this->_elements[] = $params['value'];
 		} elseif (isset($params['name']) && $params['name']) {
 			$element = $this->getHelper($type, $params);
 			// set the value from the model if it is set
@@ -132,7 +132,7 @@ class A_Html_Form {
 			if (isset($params['label'])) {
 				$str = $params['label'];
 				unset($params['label']);
-				$label = $this->getHelper('label', array('for'=>$params['name'], 'content'=>$str));
+				$label = $this->getHelper('label', array('for'=>$params['name'], 'value'=>$str));
 				$this->_elements[$params['name']]['label'] = $label;
 #				$str = $label->render() . $element->render($params);
 #			} else {

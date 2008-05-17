@@ -7,7 +7,7 @@ class A_Html_Form_Select extends A_Html_Tag {
 	 * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
 	 */
 	public function render($attr=array()) {
-		$attr = parent::getAttr($attr);
+		parent::mergeAttr($attr);
 		$value = isset($attr['value']) ? A_Html_Form_Select::_toArray($attr['value']) : array();
 		unset($attr['value']);
 		$values = A_Html_Form_Select::_toArray($attr['values']);

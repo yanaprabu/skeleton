@@ -10,11 +10,9 @@ class Html_FormTest extends UnitTestCase {
 	}
 	
 	function testHtml_FormNotNull() {
-  		$Html_Form = new A_Html_Form();
+  		$obj = new A_Html_Form();
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+		$this->assertEqual($obj->render(array('name'=>'foo')), '<xxx name="foo">foobar</xxx>');
 	}
 	
 }

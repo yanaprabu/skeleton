@@ -12,9 +12,7 @@ class Html_Form_FieldTest extends UnitTestCase {
 	function testHtml_Form_FieldNotNull() {
   		$Html_Form_Field = new A_Html_Form_Field();
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+		$this->assertEqual($obj->render(array('name'=>'foo')), '<xxx name="foo">foobar</xxx>');
 	}
 	
 }
