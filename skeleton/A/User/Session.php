@@ -52,7 +52,11 @@ class A_User_Session {
 	
 	public function set($key, $value) {
 		if ($key && $this->namespace) {
-			$_SESSION[$this->namespace]['data'][$key] = $value;
+			if ($value !== null) {
+				$_SESSION[$this->namespace]['data'][$key] = $value;
+			} else {
+				unset($_SESSION[$this->namespace]['data'][$key]);
+			}
 		}
 		return $this;
 	}

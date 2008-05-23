@@ -85,7 +85,11 @@ class A_Http_View {
 	}
 
 	public function set($name, $value) {
-		$this->data[$name] = $value;
+		if ($value !== null) {
+			$this->data[$name] = $value;
+		} else {
+			unset($this->data[$name]);
+		}
 		return $this;
 	}
 

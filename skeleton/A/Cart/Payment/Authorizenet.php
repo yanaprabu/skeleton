@@ -88,7 +88,11 @@ class A_Cart_Payment_Authorizenet
 	}
 	
 	public function set($name, $value) {
-		$this->transaction[$name] = $value;
+		if ($value !== null) {
+			$this->transaction[$name] = $value;
+		} else {
+			unset($this->transaction[$name]);
+		}
 		return $this;
 	}
 	

@@ -65,7 +65,11 @@ class A_Session {
 	public function set($name, $value, $count=0) {
 		if ($name) {
 			$this->start($this->namespace);
-			$this->_data[$name] = $value;
+			if ($value !== null) {
+				$this->_data[$name] = $value;
+			} else {
+				unset($this->_data[$name]);
+			}
 			if ($count > 0) {
 				$this->expire($name, $count);
 			}

@@ -151,7 +151,11 @@ class A_Locator {
 	}
 
 	public function set($name, $value) {
-		$this->_obj[$name] = $value;
+		if ($value !== null) {
+			$this->_obj[$name] = $value;
+		} else {
+			unset($this->_obj[$name]);
+		}
 		return $this;
 	}
 

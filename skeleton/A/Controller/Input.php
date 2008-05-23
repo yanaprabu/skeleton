@@ -104,31 +104,20 @@ class A_Controller_Input extends A_Controller_Action {
 		return $this->error;
 	}
 
-	public function setParameterValue($name, $value) {
-		if (isset($this->params[$name])) {
-			return $this->params[$name]->value = $value;
+	public function set($name, $value) {
+		if ($value !== null) {
+			$this->params[$name] = $value;
+		} else {
+			unset($this->params[$name]);
 		}
 		return $this;
 	}
 
-	public function getParameterValue($name) {
+	public function get($name) {
 		if (isset($this->params[$name]->value)) {
 			return $this->params[$name]->value;
 		}
 		return $this;
-	}
-
-	public function setParameterVar($name, $var, $value) {
-		if ($name && $var) {
-			return $this->params[$name]->protected = $value;
-		}
-		return $this;
-	}
-
-	public function getParameterVar($name, $var) {
-		if ($name && $var && isset($this->params[$name]->$var)) {
-			return $this->params[$name]->$var;
-		}
 	}
 
 	public function getParameterVarArray($var) {

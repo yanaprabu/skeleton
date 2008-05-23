@@ -93,7 +93,7 @@ class A_Application {
 	}
 
 	public function setPath($path) {
-		return $this->includePath = $path;
+		$this->includePath = $path;
 		return $this;
 	}
 	

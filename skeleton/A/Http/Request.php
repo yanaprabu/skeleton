@@ -126,7 +126,11 @@ class A_Http_Request {
 	}
 
 	public function set($name, $value) {
-		$this->data[$name] = $value;
+		if ($value !== null) {
+			$this->data[$name] = $value;
+		} else {
+			unset($this->data[$name]);
+		}
 		return $this;
 	}
 

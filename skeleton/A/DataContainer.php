@@ -78,7 +78,11 @@ class A_DataContainer implements Iterator {
 	 */
     public function set($key, $value=null) {
         if ($key) {
-	       	$this->_data[$key] = $value;
+			if ($value !== null) {
+				$this->_data[$key] = $value;
+			} else {
+				unset($this->_data[$key]);
+			}
         }
         return $this;
     }

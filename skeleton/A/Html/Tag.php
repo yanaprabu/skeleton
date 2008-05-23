@@ -33,6 +33,29 @@ class A_Html_Tag {
 		}
 	}
 	
+	public function get($key) {
+		if (isset($this->_attr[$key])) {
+			return $this->_attr[$key];
+		}
+	}
+	
+	/*
+	 * can be called as set('name', 'foo') or set(array('name'=>'foo'))  
+	 */
+	public function set($key, $value=null) {
+		if ($key != '') {
+			if (is_array($key)) {
+				foreach ($key as $name => $value) {
+					$this->_attr[$name] = $value;
+				}
+			} else {
+				$this->_attr[$key] = $value;
+			}
+		}
+		return $this;
+	}
+	
+	
 	/*
 	 * $tag - name of tag
 	 * $attr - array of attributes 
@@ -43,6 +66,19 @@ class A_Html_Tag {
  	 */
 	public function render($tag, $attr=array(), $content=null) {
 		self::mergeAttr($attr);
+ 
+		if (isset($attr['before'])) {
+			$before = is_object($attr['before']) ? $attr['before']->render() : $attr['before'];
+			unset($attr['before']);
+		} else {
+			$before = '';
+		}
+		if (isset($attr['after'])) {
+			$after = is_object($attr['after']) ? $attr['after']->render() : $attr['after'];
+			unset($attr['after']);
+		} else {
+			$after = '';
+		}
 
 		$str = "<$tag";
 		foreach ($attr as $name=>$value) {
@@ -53,12 +89,12 @@ class A_Html_Tag {
 		} elseif (is_array($content)) {
 			$str .= '>';
 			foreach ($content as $c) {
-				$str .= is_string($c) ? $c : $c->render();
+				$str .= is_object($c) ? $c->render() : $c;
 			}
 		} else {
-			$str .= '>' . (is_string($content) ? $content : $content->render()) . "</$tag>";
+			$str .= '>' . (is_object($content) ? $content->render() : $content) . "</$tag>";
 		}
-		return $str;
+		return $before.$str.$after;
 	}
 
 }
