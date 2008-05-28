@@ -9,6 +9,13 @@ class A_Sql_Statement {
 		return $this;
 	}
 
+	public function getDb() {
+		if (!$this->db) {
+			return false;	
+		}
+		return $this->db;
+	}
+
 	protected function notifyListeners() {
 		if (count($this->escapeListeners)) {
 			foreach ($this->escapeListeners as $listener) {
