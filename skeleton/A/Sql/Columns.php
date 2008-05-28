@@ -29,21 +29,26 @@ class A_Sql_Columns {
 		} else {
 			$this->columns = func_get_args();
 		}
+		
+		foreach ((array)$this->columns as $key => $columns) {
+			if (strpos($columns, ',')) {
+				unset($this->columns[$key]);
+				$this->columns = array_merge($this->columns, explode(',', $columns));
+			} 
+		}
+		$this->columns = array_filter(array_map('trim', (array)$this->columns));
 	}
 	
 	/**
 	 * Return prepared statement
 	 *
 	 * @return string
-	 * @question Why does this method also sets the columns member? {pytrin}
 	 */
 	public function render() {
-		if ($this->columns) {
-			if (is_array($this->columns) && count($this->columns)) {
-				$this->columns = implode(', ', $this->columns);
-			}
-			return $this->columns;
+		if (!count($this->columns)) {
+			return '';
 		}
+		return implode(', ', $this->columns);
 	}
 
 	/**
