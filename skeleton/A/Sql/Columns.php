@@ -39,6 +39,11 @@ class A_Sql_Columns {
 		$this->columns = array_filter(array_map('trim', (array)$this->columns));
 	}
 	
+	/**
+	 * Return list of columns
+	 *
+	 * @return array
+	 */	
 	public function getColumns() {
 		return $this->columns;
 	}
