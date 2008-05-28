@@ -1,21 +1,13 @@
 <?php
 
-class A_Sql_Table {
-	protected $table;
-	
-	public function __construct($table) {
-		$this->table = $table;
-	}
-	
-	public function render() {
-		if (is_array($this->table)) {
-			return implode(', ', $this->table);
-		}
-		return $this->table;
-	}
+require_once 'A/Sql/Columns.php';
 
-	public function __toString() {
-		return $this->render();
+class A_Sql_Table extends A_Sql_Columns  {
+	/** 
+	 * Alias for getColumns()
+	*/
+	public function getTables() {
+		return $this->getColumns();
 	}
 
 }
