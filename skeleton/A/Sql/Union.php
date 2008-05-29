@@ -1,15 +1,15 @@
 <?php
 
-class A_Sql_Union extends A_Sql_Select {
+class A_Sql_Union extends A_Sql_Statement {
 	protected $selects = array();
 	
 	public function select($select = null) {	
-		if (!($select instanceof A_Sql_Select)) {
+		if (!$select) {
 			require_once 'A/Sql/Select.php';
 			$select = new A_Sql_Select();
 		}
-		$this->escapeListeners[] = $select;
 		$this->selects[] = $select;
+		$this->addListener($select);
 		return $select;
 	}
 	
@@ -28,8 +28,10 @@ class A_Sql_Union extends A_Sql_Select {
 				$columnCount = count($select->getColumns());
 				$maxColumns = $columnCount > $maxColumns ? $columnCount : $maxColumns;
 			}
+
 			foreach ($this->selects as $select) {	
-				$select->columns(array_merge($select->getColumns(), array_fill(0, $maxColumns-1, 'null')));
+				$columns = $select->getColumns();
+				$select->columns(array_merge($columns, array_diff_key(array_fill(0, $maxColumns, 'null'), $columns)));
 			}			
 		}
 		
