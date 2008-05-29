@@ -10,10 +10,10 @@ require_once 'A/Sql/Statement.php';
 class A_Sql_Select extends A_Sql_Statement {
 	
 	/**
-	 * What is this? it's never used
+	 * Rendered SQL pieces
 	 * @var array
 	 */
-	protected $render = array();
+	protected $replace = array();
 	
 	/**
 	 * Select statement pieces
