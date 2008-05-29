@@ -9,5 +9,4 @@ class A_Sql_Table extends A_Sql_Columns  {
 	public function getTables() {
 		return $this->getColumns();
 	}
-
 }

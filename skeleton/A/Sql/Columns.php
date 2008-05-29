@@ -31,7 +31,7 @@ class A_Sql_Columns {
 		}
 		
 		foreach ((array)$this->columns as $key => $columns) {
-			if (strpos($columns, ',')) {
+			if (strpos($columns, ',')) { //if user passed string of multiple columns, we need to account those ose
 				unset($this->columns[$key]);
 				$this->columns = array_merge($this->columns, explode(',', $columns));
 			} 
@@ -47,6 +47,15 @@ class A_Sql_Columns {
 	public function getColumns() {
 		return $this->columns;
 	}
+
+	/**
+	 * Magic string transformation
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->render();
+	}
 	
 	/**
 	 * Return prepared statement
@@ -57,30 +66,6 @@ class A_Sql_Columns {
 		if (!count($this->columns)) {
 			return '';
 		}
-		return implode(', ', $this->columns);
-	}
-
-	/**
-	 * Perform table join
-	 *
-	 * @param string $table1
-	 * @param string $column1
-	 * @param string $table2
-	 * @param string $column2
-	 * @return self
-	 */
-	public function join($table1, $column1, $table2, $column2) {
-		include_once('A/Sql/Join.php');
-		$this->joins[$table2] = new A_Sql_Join($table1, $column1, $table2, $column2);
-		return $this;
-	}
-
-	/**
-	 * Magic string transformation
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->render();
+		return implode(', ', $this->columns);		
 	}
 }

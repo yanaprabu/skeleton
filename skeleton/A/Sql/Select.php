@@ -25,8 +25,8 @@ class A_Sql_Select extends A_Sql_Statement {
 		'joins' 	=> null,
 		'where' 	=> null,
 		'having' 	=> null,
-		'groupby' 	=> null,
 		'orderby' 	=> null,
+		'groupby' 	=> null,
 	);
 
 	/**
@@ -59,8 +59,8 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @question - see my notes on columns()
 	 */
 	public function from() {
-		require_once 'A/Sql/Table.php';	
-		$this->pieces['tables'] = new A_Sql_Table(func_get_args());
+		require_once 'A/Sql/From.php';	
+		$this->pieces['tables'] = new A_Sql_From(func_get_args());
 		return $this;
 	}
 	
@@ -79,6 +79,7 @@ class A_Sql_Select extends A_Sql_Statement {
 		if (!$this->pieces['where']) {
 			require_once 'A/Sql/Where.php';		
 			$this->pieces['where'] = new A_Sql_Where();
+			$this->addListener($this->pieces['where']);
 		}
 		$this->pieces['where']->addExpression($argument1, $argument2, $argument3);
 		return $this;		
@@ -96,6 +97,7 @@ class A_Sql_Select extends A_Sql_Statement {
 		if (!$this->pieces['where']) {
 			require_once 'A/Sql/Where.php';		
 			$this->pieces['where'] = new A_Sql_Where();
+			$this->addListener($this->pieces['where']);
 		}
 		$this->pieces['where']->addExpression('OR', $data, $value);
 		return $this;		
@@ -115,6 +117,7 @@ class A_Sql_Select extends A_Sql_Statement {
 		if (!$this->pieces['having']) {
 			require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
+			$this->addListener($this->pieces['having']);
 		}
 		$this->pieces['having']->addExpression($argument1, $argument2, $argument3);
 		return $this;		
@@ -132,6 +135,7 @@ class A_Sql_Select extends A_Sql_Statement {
 		if (!($this->pieces['having'] instanceof A_Sql_Having)) {
 			require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
+			$this->addListener($this->pieces['having']);
 		}
 		$this->pieces['having']->addExpression('OR', $data, $value);
 		return $this;		
@@ -146,7 +150,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function groupBy($columns) {
 		require_once 'A/Sql/Groupby.php';
-		$this->pieces['grouby'] = new A_Sql_Groupby($columns);	
+		$this->pieces['groupby'] = new A_Sql_Groupby($columns);	
 		return $this;
 	}
 	
@@ -176,18 +180,37 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @return string
 	 */
 	public function render() {
+		$this->notifyListeners();
+		
+		if (!($this->pieces['tables'] instanceof A_Sql_Table && count($this->pieces['tables']->getTables()))) {
+			return ''; //throw new A_Sql_Exception('No valid table name was supplied');
+		}
+
+		if (!($this->pieces['columns'] instanceof A_Sql_Columns && count($this->pieces['columns']->getColumns()))) {
+			$this->columns('*');
+		}
+
 		foreach ($this->pieces as $name => $piece) {
 			$output = null;
 			if (method_exists($piece, 'render')) {
-				if (method_exists($piece, 'setDb')) {
-					$piece->setDb($this->getDb());
-				}
 				$output = $piece->render();
 			}
 			$this->replace['['.$name.']'] = strlen($output) ? ' '. $output : $output; //add spacing
 		}
-		
-		$sql = "SELECT[columns] FROM [tables][joins][having][where][orderby][groupby]";
+
+		$sql = "SELECT[columns][tables][joins][having][where][orderby][groupby]";
 		return str_replace(array_keys($this->replace), array_values($this->replace), $sql);
+	}
+	
+	/**
+     * Clear the SQL statement parts
+     *
+     * @param string $part OPTIONAL
+     * @return Zend_Db_Select
+     */	
+	public function reset() {
+		foreach ($this->pieces as &$piece) {
+			$piece = null;
+		}
 	}
 }
