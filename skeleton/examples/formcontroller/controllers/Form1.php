@@ -13,15 +13,15 @@ class Form1 extends A_Controller_Form {
 	function __construct($locator=null) {
 /*
 		$handlers = array(
-			'init' => new Handle('views/Form1View.php', 'Form1View', 'init'), 
-			'submit' => new Handle('views/Form1View.php', 'Form1View', 'submit'), 
-			'done' => new Handle('views/Form1View.php', 'Form1View', 'done')
+			'init' => new A_DL('views/Form1View.php', 'Form1View', 'init'), 
+			'submit' => new A_DL('views/Form1View.php', 'Form1View', 'submit'), 
+			'done' => new A_DL('views/Form1View.php', 'Form1View', 'done')
 			);
 */
 	$handlers = array(
-			'init' => new A_DLInstance($this, '_init'), 
-			'submit' => new A_DLInstance($this, '_submit'), 
-			'done' => new A_DLInstance($this, '_done')
+			'init' => array($this, '_init'), 
+			'submit' => array($this, '_submit'), 
+			'done' => array($this, '_done')
 			);
 		parent::__construct($locator, $handlers);
 	}
@@ -61,10 +61,10 @@ class Form1 extends A_Controller_Form {
 		echo 'InitHandler: STATE INIT<br/>';
 		$controller = $locator->get('Controller');
 		
-		$this->setParameterValue('field1', 15);
-		$this->setParameterValue('field2', 'init');
-		$this->setParameterValue('field3', 'init');
-		$this->setParameterValue('field4', 'init');
+		$this->set('field1', 15);
+		$this->set('field2', 'init');
+		$this->set('field3', 'init');
+		$this->set('field4', 'init');
 
 		include 'templates/example_form.php';
 	}

@@ -26,6 +26,7 @@ class A_Html_Form {
 	public function partial($attr=array()) {
 		$out = '';
 		foreach ($this->_elements as $name => $element) {
+			$this->setValueFromModel($name, $element['renderer']);
 			$str = '';
 			if (isset($element['label'])) {
 				$str .= $element['label']->render();
@@ -38,7 +39,6 @@ class A_Html_Form {
 			$out .= $str;
 		}
 		return $out;
-#		return implode("\n", $this->_elements);
 	}
 
 	// Set the method. Is there a setter for the action?
@@ -116,36 +116,35 @@ class A_Html_Form {
 			$this->_elements[] = $params['value'];
 		} elseif (isset($params['name']) && $params['name']) {
 			$element = $this->getHelper($type, $params);
-			// set the value from the model if it is set
-			if (isset($this->model)) {
-				if (is_array($this->model)) {
-					if (isset($this->model[$params['name']])) {
-						$params['value'] = $this->model[$params['name']];
-					}
-				} elseif (is_object($this->model)) {
-					if ($this->model->has($params['name'])) {
-						$params['value'] = $this->model->get($params['name']);
-					}
-				}
-			}
 			// if this field has a label then wrap in a label tag
 			if (isset($params['label'])) {
 				$str = $params['label'];
 				unset($params['label']);
 				$label = $this->getHelper('label', array('for'=>$params['name'], 'value'=>$str));
 				$this->_elements[$params['name']]['label'] = $label;
-#				$str = $label->render() . $element->render($params);
-#			} else {
-#				$str = $element->render();
 			}
 			// if we wrap elements in a tag
 			if ($this->_wrapper) {
 				$this->_elements[$params['name']]['wrapper'] = $this->_wrapper;
 				$this->_elements[$params['name']]['wrapperAttr'] = $this->_wrapperAttr;
 			}
+			// set the value from the model if it is set
+			$this->setValueFromModel($params['name'], $element);
+
 			$this->_elements[$params['name']]['renderer'] = $element;
 		}
 		return $this;
+	}
+	
+	protected function setValueFromModel($name, &$element) {
+		if (isset($this->model)) {
+			// get value depending on if model is an array or object AND if value is set
+			if (is_array($this->model) && isset($this->model[$name])) {
+				$element->set('value', $this->model[$name]);
+			} elseif (is_object($this->model) && $this->model->has($name)) {
+				$element->set('value', $this->model->get($name));
+			}
+		}
 	}
 
 }

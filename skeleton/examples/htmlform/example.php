@@ -8,6 +8,17 @@ $model = array('username'=>'foo');
 $form = new A_Html_Form();
 $form->setModel($model);
 $form->setWrapper('A_Html_Div', array('class'=>'fieldclass', 'style'=>'border:1px solid red;'));
+$form->text(array('name'=>'blogPost[title]', 'val:regex'=>'\w{1,255}'));
+$form->text(array('name'=>'blogPost[body]', 'val:regex'=>'\w{1,65535}'));
+$form->submit('submit', 'login');
+echo $form->render();
+exit;
+
+echo '<br/>Object usage:';
+$model = array('username'=>'foo');
+$form = new A_Html_Form();
+$form->setModel($model);
+$form->setWrapper('A_Html_Div', array('class'=>'fieldclass', 'style'=>'border:1px solid red;'));
 $form->text('username', 'Enter Username:');
 $form->password('passwd', 'Enter Password:');
 $form->submit('submit', 'login');

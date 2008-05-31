@@ -30,6 +30,7 @@ class A_Controller_App extends A_Controller_Input {
 		if ($transition->fromState && $transition->toState) {
 			$this->transitions[$transition->fromState][] = $transition;
 		}
+		return $this;
 	}
 	
 	public function findState($request) {
@@ -63,15 +64,21 @@ class A_Controller_App extends A_Controller_Input {
     public function run($locator) {
 		$state = $this->findState($locator->get('Request'));
 
-// clear any error messages on init
+		// clear any error messages on init
 		if ($this->no_init_errors && ($this->state_name_init == $state->name)) {
 			foreach (array_keys($this->params) as $field) {
 				$this->params[$field]->error_msg = array();
 			}
 		}
 
-		parent::addHandler($state->handler);
-		parent::run($locator);
+		// run code for this state
+		if (isset($state->handler)) {
+			if (is_object($state->handler)) {
+				$state->handler->run($locator);				// is DL
+			} else {
+				call_user_func($state->handler, $locator);	// is string or array 
+			}
+		}
     }
 
 }

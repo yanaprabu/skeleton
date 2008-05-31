@@ -6,9 +6,8 @@ include_once 'A/DL.php';
 
 class A_Controller_Input extends A_Controller_Action {
 	public $params = array();
-	protected $handlers = array();
 	protected $filters = array();	// global filters run on every parameter
-	protected $rules = array();	// global rules run on every parameter
+	protected $rules = array();		// global rules run on every parameter
 	protected $filterchain;
 	protected $validator;
 	protected $error = false;
@@ -17,12 +16,6 @@ class A_Controller_Input extends A_Controller_Action {
 	    parent::__construct($locator);
 	}
 	 
-	public function addHandler($object) {
-		if ($object) {
-			$this->handlers[] = $object;
-		}
-	}
-	
 	public function addFilter($filter, $names=array()) {
 		$n = count($this->filters);
 		$this->filters[$n]['filter'] = $filter;
@@ -94,21 +87,13 @@ class A_Controller_Input extends A_Controller_Action {
 		return ! $this->error;
 	}
 	
-	public function run($locator) {
-		$locator->set('Controller', $this);
-	
-		foreach (array_keys($this->handlers) as $key) {
-			$this->handlers[$key]->run($locator);
-		}
-	
-		return $this->error;
-	}
-
 	public function set($name, $value) {
-		if ($value !== null) {
-			$this->params[$name] = $value;
-		} else {
-			unset($this->params[$name]);
+		if (isset($this->params[$name])) {
+			if ($value !== null) {
+				$this->params[$name]->value = $value;
+			} else {
+				unset($this->params[$name]);
+			}
 		}
 		return $this;
 	}
