@@ -2,6 +2,7 @@
 
 class A_Validator {
 	protected $chain = array();
+	protected $excludes = array();		// array of names not to be validated
 	protected $errorMsg = array();
 	protected $dir = 'A_Rule_';
 	
@@ -12,12 +13,22 @@ class A_Validator {
 		$this->chain[] = $rule;
 	}
 		
+	public function exclude($names=array()) {
+		if ($is_string($names)) {
+			$names = array($names);
+		}
+		$this->excludes = $names;
+	}
+		
 	public function validate ($container, $rule=null) {
 		if ($rule) {
 			$this->chain = $rule;
 		}
 		$this->errorMsg = array();
 		foreach ($this->chain as $key => $rule) {
+			if ($this->excludes && (in_array($rule->getName(), $this->excludes))) {
+				continue;
+			}
 			// class names with params are added as arrays
 			if (is_array($rule)) {
 				$name = array_shift($rule);
