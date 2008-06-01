@@ -1,29 +1,44 @@
 <?php
 include_once 'A/FilterChain.php';
 include_once 'A/Validator.php';
+require_once('A/Filter/Regexp.php');
+require_once('A/Filter/Toupper.php');
+require_once('A/Rule/Notnull.php');
+require_once('A/Rule/Match.php');
+require_once('A/Rule/Range.php');
+require_once('A/Rule/Length.php');
 
 class A_Model {
 	public $fields = array();
 	public $filters = array();
 	public $rules = array();
+	public $excludeRules = array();
 	protected $error = false;
 	
 	public function addField($object) {
 		if ($object) {
 			$this->fields[$object->name] = $object;
 		}
+		return $this;
 	}
 	
 	public function addFilter($filter) {
 		if ($filter) {
 			$this->filters[] = $filter;
 		}
+		return $this;
 	}
 	
 	public function addRule($rule) {
 		if ($rule) {
 			$this->rules[] = $rule;
 		}
+		return $this;
+	}
+	
+	public function excludeRules($rules=array()) {
+		$this->excludeRules = $rules;
+		return $this;
 	}
 	
 	public function getField($name) {
@@ -46,6 +61,8 @@ class A_Model {
 
 		$filterchain = new A_FilterChain();
 		$validator = new A_Validator();
+		$validator->exclude($this->excludeRules);
+		
 		$this->error = false;
 		$field_names = array_keys($this->fields);
 		if ($field_names) {
@@ -194,12 +211,14 @@ class A_Model_Field {
 		return $this;
 	}
 
-	public function addFilter($filter) {
+	public function filter($filter) {
 		$this->filters[] = $filter;
+		return $this;
 	}
 	
-	public function addRule($rule) {
+	public function fule($rule) {
 		$this->rules[] = $rule;
+		return $this;
 	}
 	
 	public function getValue() {
