@@ -14,7 +14,7 @@ class A_Validator {
 	}
 		
 	public function exclude($names=array()) {
-		if ($is_string($names)) {
+		if (is_string($names)) {
 			$names = array($names);
 		}
 		$this->excludes = $names;
