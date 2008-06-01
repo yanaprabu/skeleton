@@ -211,12 +211,12 @@ class A_Model_Field {
 		return $this;
 	}
 
-	public function filter($filter) {
+	public function addFilter($filter) {
 		$this->filters[] = $filter;
 		return $this;
 	}
 	
-	public function fule($rule) {
+	public function addRule($rule) {
 		$this->rules[] = $rule;
 		return $this;
 	}
