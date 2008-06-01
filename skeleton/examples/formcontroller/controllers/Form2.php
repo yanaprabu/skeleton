@@ -39,6 +39,7 @@ class Form2 {
 		$field4->addFilter(new A_Filter_ToUpper());
 		$field4->addRule(new A_Rule_NotNull('field4', 'Please enter Field 4'));
 		
+		$model->excludeRules('field3');
 		$model->run($locator);
 		
 		if ($model->isValid()) {
