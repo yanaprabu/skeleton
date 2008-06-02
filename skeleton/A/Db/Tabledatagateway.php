@@ -72,7 +72,10 @@ class A_Db_Tabledatagateway {
 			$this->where($args);
 		}
 
-		$this->sql = $this->select->render();
+		$this->sql = $this->select
+						->columns($this->columns)
+						->from($this->getTable())
+						->render();
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
 			$this->errmsg = $result->getMessage();
