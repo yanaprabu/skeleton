@@ -1,9 +1,10 @@
 <?php
+include_once 'A/Rule/Abstract.php';
 
 /*
  * class acts as both a Rule for Validaror and Renderer for View
  */
-class A_Rule_Captcha {
+class A_Rule_Captcha extends A_Rule_Abstract {
 	protected $field;
 	protected $errorMsg;
 	protected $renderer;
@@ -50,11 +51,6 @@ class A_Rule_Captcha {
 		return $this->field;
     }
 
-    public function getErrorMsg() {
-		return $this->errorMsg;
-    }
-
-	
 	public function generateCode($length=0) {
 		if ($length > 0) {
 			$this->length = $length;
