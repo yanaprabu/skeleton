@@ -32,33 +32,31 @@ class A_Locator {
 		} elseif ($dl instanceof A_DL) {
 			$this->_reg[$dl->class] = $dl;
 		}
+		return $this;
 	}
 
 	public function setDir($dir='') {
 		$this->_dir = $dir;
+		return $this;
 	}
 
-	public function load($file, $dir='', $_extension='') {
+	public function loadClass($class='', $dir='', $autoload=false) {
+		if (class_exists($class, $autoload)) {
+			return true;
+		}
+		$file = str_replace(array('_','-'), array('/','_'), $class);
+		$class = str_replace('-', '_', $class);
 		if ($dir) {
 			$dir = rtrim($dir, '/') . '/';
 		}
-		$path = $dir . $file . $_extension;
+		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
 		if (($dir == '') || file_exists($path)) {		// either in search path or absolute path exists
 			$result = include($path);
-			return $result !== false;
+			$result = $result !== false;
 		} else {
-			return false;
+			$result = false;
 		}
-	}
-
-	public function loadClass($class='', $dir='') {
-		if (! class_exists($class)) {
-			$file = str_replace(array('_','-'), array('/','_'), $class);
-			$class = str_replace('-', '_', $class);
-			return self::load($file, $dir, isset($this->_extension) ? $this->_extension : '.php')
-					&& class_exists($class);
-		}
-		return true;
+		return $result && class_exists($class, $autoload);
 	}
 
 	public function get($name='', $class='') {
