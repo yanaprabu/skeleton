@@ -1,0 +1,15 @@
+RewriteEngine on
+#RewriteBase /examples/blog/
+#used to be
+#RewriteRule !\.(php|htm|html|cgi|js|ico|gif|jpg|png|css)$ index.php
+#Now it is
+RewriteRule !\.[a-zA-Z0-9]{2,4}$ index.php
+#or a la wp
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule . /index.php [L]
+#</IfModule>
+php_flag magic_quotes_gpc off
