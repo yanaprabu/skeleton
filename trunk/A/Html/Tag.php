@@ -97,4 +97,7 @@ class A_Html_Tag {
 		return $before.$str.$after;
 	}
 
+	public function __toString() {
+		$this->render();
+	}
 }
