@@ -41,17 +41,50 @@ class A_Html_Form {
 		return $out;
 	}
 
-	// Set the method. Is there a setter for the action?
+	/*
+	 * get an attrubute of this HTML tag  
+	 */
+	public function get($key) {
+		if (isset($this->_attr[$key])) {
+			return $this->_attr[$key];
+		}
+	}
+	
+	/*
+	 * can be called as set('name', 'foo') or set(array('name'=>'foo'))  
+	 */
+	public function set($key, $value=null) {
+		if ($key != '') {
+			if (is_array($key)) {
+				foreach ($key as $name => $value) {
+					$this->_attr[$name] = $value;
+				}
+			} else {
+				$this->_attr[$key] = $value;
+			}
+		}
+		return $this;
+	}
+	
+	/*
+	 * set the URL for <form action="$action" ...>  
+	 */
 	public function setAction($action='') {
 		$this->attr['action'] = $action;
 		return $this;
 	}
                              // Optional method to set the Model
+	/*
+	 * set the POST/GET for <form method="$method" ...>  
+	 */
 	public function setMethod($method='post') {
 		$this->attr['method'] = $method;
 		return $this;
 	}
-                             // Optional method to set the Model
+	
+	/*
+	 * set data model that form will get/set values to/from  
+	 */
 	public function setModel($model) {
 		$this->model = $model;
 		return $this;
@@ -147,4 +180,7 @@ class A_Html_Form {
 		}
 	}
 
+	public function __toString() {
+		$this->render();
+	}
 }
