@@ -162,14 +162,14 @@ class A_Model {
 		}
 	}
 
-	public function getErrorMsgs($separator=', ') {
+	public function getErrorMsg($separator=null) {
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {
 			if ($this->fields[$field]->isError()) {
 				$data[$field] = $this->fields[$field]->getErrorMsg($separator);
 			}
 		}
-		return $data;
+		return $separator === null ? $data : implode($separator, $data);
 	}
 
 	public function getValues() {
@@ -230,18 +230,16 @@ class A_Model_Field {
 		return $this;
 	}
 	
-	public function getErrorMsg($separator=', ') {
-		if ($separator) {
-			if (is_array($this->errorMsg)) {
-				return implode($separator, $this->errorMsg);
-			}
-		} else {
+	public function getErrorMsg($separator=null) {
+		if (($separator === null) || ! is_array($this->errorMsg)) {
 			return $this->errorMsg;
+		} else {
+			return implode($separator, $this->errorMsg);
 		}
 	}
 	
-	public function setError($value='') {
-		$this->errorMsg = $value;
+	public function setError($value=array()) {
+		$this->errorMsg = array_merge($this->errorMsg, $value);
 		$this->error = true;
 		return $this;
 	}

@@ -115,14 +115,14 @@ class A_Controller_Input extends A_Controller_Action {
 		}
 	}
 
-	public function getErrorMsgs($separator=', ') {
+	public function getErrorMsgs($separator=null) {
 		$data = array();
 		foreach (array_keys($this->params) as $field) {
 			if ($this->params[$field]->isError()) {
 				$data[$field] = $this->params[$field]->getErrorMsg($separator);
 			}
 		}
-		return $data;
+		return $separator === null ? $data : implode($separator, $data);
 	}
 
 	public function getValues() {
@@ -175,13 +175,13 @@ class A_Controller_InputParameter {
 		return $this;
 	}
 	
-	public function getErrorMsg($separator=', ') {
-		if ($separator) {
+	public function getErrorMsg($separator=null) {
+		if ($separator === null) {
+			return $this->error_msg;
+		} else {
 			if (is_array($this->error_msg)) {
 				return implode($separator, $this->error_msg);
 			}
-		} else {
-			return $this->error_msg;
 		}
 	}
 	
