@@ -43,7 +43,7 @@ class A_Validator {
 				unset($ref);
 			}
 			if (! $this->chain[$key]->isValid($container)) {
-				$this->errorMsg[] = $this->chain[$key]->getErrorMsg();
+				$this->errorMsg[get_class($this->chain[$key])] = $this->chain[$key]->getErrorMsg();
 			}
 		}
 		return $this->isValid();
@@ -57,8 +57,8 @@ class A_Validator {
 		return empty($this->errorMsg);
 	}
 	
-	public function getErrorMsg() {
-		return $this->errorMsg;
+	public function getErrorMsg($separator=null) {
+		return $separator === null ? $this->errorMsg : implode($separator, $this->errorMsg);
 	}
 
 }
