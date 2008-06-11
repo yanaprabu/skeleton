@@ -2,7 +2,8 @@
 include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Match extends A_Rule_Abstract {
-   protected $refField;
+	const ERROR = 'A_Rule_Match';
+	protected $refField;
 
     public function __construct($field, $refField, $errorMsg) {
       $this->field    = $field;
