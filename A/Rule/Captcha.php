@@ -5,6 +5,7 @@ include_once 'A/Rule/Abstract.php';
  * class acts as both a Rule for Validaror and Renderer for View
  */
 class A_Rule_Captcha extends A_Rule_Abstract {
+	const ERROR = 'A_Rule_Captcha';
 	protected $field;
 	protected $errorMsg;
 	protected $renderer;
