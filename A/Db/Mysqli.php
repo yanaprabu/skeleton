@@ -1,6 +1,11 @@
 <?php
 
-class A_Db_Mysqli extends MySQLi {	protected $dsn = null;	protected $connected = false;	protected $sequenceext = '_seq';	protected $sequencestart = 1;
+class A_Db_Mysqli extends MySQLi {
+
+	protected $dsn = null;
+	protected $connected = false;
+	protected $sequenceext = '_seq';
+	protected $sequencestart = 1;
 	
 	public function __construct($dsn=null) {
 		$this->dsn = $dsn;
@@ -49,8 +54,9 @@ class A_Db_Mysqli extends MySQLi {	protected $dsn = null;	protected $connected
 		return $obj;
 	}
 		
-	public function limitQuery ($sql, $from, $count) {
-		return($this->query($sql . " LIMIT $from,$count"));
+	public function limit($sql, $count, $offset = null) {
+		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
+		return $sql . ' LIMIT ' . $limit;
 	}
 		
 	public function lastId() {
@@ -103,8 +109,11 @@ class A_Db_Mysqli extends MySQLi {	protected $dsn = null;	protected $connected
 } // end DAO class
 
 
-class A_Db_Mysqli_Result {	protected $result;
-	protected $affected_rows;	public $errno;	public $errmsg;
+class A_Db_Mysqli_Result {
+	protected $result;
+	protected $affected_rows;
+	public $errno;
+	public $errmsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;
