@@ -74,8 +74,11 @@ class A_Db_Postgres {
 	}
 		
 	public function limit($sql, $count, $offset = null) {
-		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
-		return $sql . ' LIMIT ' . $limit;
+		$sql .= ' LIMIT ' . $count;
+        if (is_int($offset) && $offset > 0) {
+            $sql .= ' OFFSET ' . $offset;
+        }
+		return $sql;
 	}
 		
 	public function nextId ($sequence) {
