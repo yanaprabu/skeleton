@@ -8,7 +8,10 @@
  * 'port'
  *  */
 
-class A_Db_Postgres {	protected $link = null;	protected $sequenceext = '_seq';	protected $sequencestart = 1;
+class A_Db_Postgres {
+	protected $link = null;
+	protected $sequenceext = '_seq';
+	protected $sequencestart = 1;
 	
 	public function __construct($dsn=null) {
 		if ($dsn) {
@@ -70,9 +73,9 @@ class A_Db_Postgres {	protected $link = null;	protected $sequenceext = '_seq';
 		return $obj;
 	}
 		
-	public function limitQuery ($sql, $from, $count)
-	{
-		return($this->query($this->link, $sql . " LIMIT $count OFFSET $from"));
+	public function limit($sql, $count, $offset = null) {
+		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
+		return $sql . ' LIMIT ' . $limit;
 	}
 		
 	public function nextId ($sequence) {
@@ -113,7 +116,10 @@ class A_Db_Postgres {	protected $link = null;	protected $sequenceext = '_seq';
 }
 
 
-class A_Db_Postgres_Result {	protected $result;	public $errno;	public $errmsg;
+class A_Db_Postgres_Result {
+	protected $result;
+	public $errno;
+	public $errmsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;

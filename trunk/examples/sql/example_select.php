@@ -40,3 +40,10 @@ $select->columns('foo, bar, baz')
 		 ->orderBy(array('foo', 'bar'))
 		 ->groupBy('baz');
 echo "<br>" . $select->render() . '<br/>';
+
+$select = new A_Sql_Select();
+$select->columns('foo, bar, baz')
+		 ->from('foobar')
+		 ->where(array('id >=' => 1))
+		 ->limit(5,10); //Select 5 rows with an offset of 10
+echo "<br>" . $select->render() . '<br/>';

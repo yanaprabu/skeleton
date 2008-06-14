@@ -1,30 +1,34 @@
 <?php
 /*
- * DSN array contain:
+ * config array contain:
  * 'hostspec'
  * 'username'
  * 'password'
  * 'database'
  */
-class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $limit = '';
+class A_Db_MySQL {
+	protected $config = null;
+	protected $link = null;
+	protected $limit = '';
 	protected $orderby = '';
-	protected $sequenceext = '_seq';	protected $sequencestart = 1;
+	protected $sequenceext = '_seq';
+	protected $sequencestart = 1;
 	
-	public function __construct($dsn=null) {
-		$this->dsn = $dsn;
+	public function __construct($config=null) {
+		$this->config = $config;
 	}
 		
-	public function connect ($dsn=null) {
+	public function connect ($config=null) {
 		$result = false;
-		if ($dsn) {
-			$this->dsn = $dsn;
+		if ($config) {
+			$this->config = $config;
 		}
 		if ($this->link == null) {
-			$host = isset($this->dsn['host']) ? $this->dsn['host'] : $this->dsn['hostspec'];
-			$this->link = mysql_connect($host, $this->dsn['username'], $this->dsn['password']);
+			$host = isset($this->config['host']) ? $this->config['host'] : $this->config['hostspec'];
+			$this->link = mysql_connect($host, $this->config['username'], $this->config['password']);
 			if ($this->link) {
-				if (isset($this->dsn['database'])) {
-					$result = mysql_select_db($this->dsn['database'], $this->link);
+				if (isset($this->config['database'])) {
+					$result = mysql_select_db($this->config['database'], $this->link);
 				} else {
 					$result = true;
 				}
@@ -44,7 +48,7 @@ class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-		mysql_select_db($this->dsn['database'], $this->link);
+		mysql_select_db($this->config['database'], $this->link);
 		if (strpos(strtolower($sql), 'select') === 0) {
 			$obj = new A_Db_MySQL_Recordset(mysql_query($sql));
 		} else {
@@ -55,8 +59,9 @@ class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $
 		return $obj;
 	}
 		
-	public function limitQuery ($sql, $from, $count) {
-		return($this->query($sql . " LIMIT $from,$count"));
+	public function limit($sql, $count, $offset = null) {
+		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
+		return $sql . ' LIMIT ' . $limit;
 	}
 	
 	public function lastId() {
@@ -131,7 +136,10 @@ class A_Db_MySQL {	protected $dsn = null;	protected $link = null;	protected $
 }
 	
 	
-class A_Db_MySQL_Result {	protected $result;	public $errno;	public $errmsg;
+class A_Db_MySQL_Result {
+	protected $result;
+	public $errno;
+	public $errmsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;

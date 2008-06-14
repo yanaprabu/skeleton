@@ -28,7 +28,19 @@ class A_Sql_Select extends A_Sql_Statement {
 		'orderby' 	=> null,
 		'groupby' 	=> null,
 	);
-
+	
+	/**
+	 * Limit clause count
+	 * @var int
+	 */
+	protected $_limit = null;
+	
+	/**
+	 * Limit clause offset
+	 * @var int
+	 */
+	protected $_offset = null;
+	
 	/**
 	 * Set select statement columns
 	 * @return self
@@ -146,7 +158,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	 *
 	 * @param unknown_type $columns
 	 * @return self
-	 * @question all those clauses extending the columns class are too magical...
 	 */
 	public function groupBy($columns) {
 		require_once 'A/Sql/Groupby.php';
@@ -167,6 +178,34 @@ class A_Sql_Select extends A_Sql_Statement {
 		return $this;
 	}
 	
+	/**
+     * Sets a limit count and offset
+     *
+     * @param int $count 
+     * @param int $offset 
+     * @return self
+     */
+    public function limit($count = null, $offset = null) {
+        $this-> _limit = (int) $count;
+        $this-> _offset = (int) $offset;
+        return $this;
+    }
+    
+    /**
+     * Sets the limit and count by page number
+     *
+     * @param int $page Page number
+     * @param int $rowCount Rows per page
+     * @return self
+     */
+    public function limitPage($page, $rowCount) {
+        $page = ($page > 0) ? $page : 1;
+        $rowCount = ($rowCount > 0) ? $rowCount : 1;
+        $this-> _limit = (int) $rowCount;
+        $this-> _offset = (int) $rowCount * ($page - 1);
+        return $this;
+    }
+    
 	/**
 	 * Convert object to string, invokes render()
 	 * @return string
@@ -199,7 +238,13 @@ class A_Sql_Select extends A_Sql_Statement {
 		}
 
 		$sql = "SELECT[columns][tables][joins][having][where][orderby][groupby]";
-		return str_replace(array_keys($this->replace), array_values($this->replace), $sql);
+		$sql = str_replace(array_keys($this->replace), array_values($this->replace), $sql);
+		
+		if(is_int($this -> _limit) && $this -> _limit > 0){ //Limit is handled by DB adapter due to engine differences
+			$sql = $this -> db -> limit($sql, $this -> _limit, $this -> _offset);
+		}
+		
+		return $sql;
 	}
 	
 	/**
