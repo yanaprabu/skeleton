@@ -2,13 +2,13 @@
 
 class A_Http_Request {
 	public $data = array();
-	protected $is_post = false;
+	protected $method = false;
 	protected $filters = array();
 	
 	public function __construct() {
-		if (!strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
+		if ($this->method == 'POST') {
 			$this->data =& $_POST;
-			$this->is_post = true;
 		} else {
 			$this->data =& $_GET;
 		}
@@ -48,8 +48,12 @@ class A_Http_Request {
 		return $this;
 	}
 
+	public function getMethod() {
+		return $this->method;
+	}
+
 	public function isPost() {
-		return $this->is_post;
+		return $this->method == 'POST';
 	}
 
 	public function isAjax() {
