@@ -41,10 +41,11 @@ class A_Db_Sqlite {	protected $dsn = null;	protected $link = null;	protected 
 		return $obj;
 	}
 		
-	public function limitQuery ($sql, $from, $count) {
-		return($this->query($sql . " LIMIT $from,$count"));
+	public function limit($sql, $count, $offset = null) {
+		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
+		return $sql . ' LIMIT ' . $limit;
 	}
-		
+	
 	public function lastId() {
 		if ($this->link) {
 			return(sqlite_last_insert_rowid($this->link));
