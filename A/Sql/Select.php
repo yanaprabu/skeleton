@@ -200,11 +200,11 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @param mixed $argument1
 	 * @return self
 	 */		
-	public function on($argument1, $argument2=null) {
+	public function on($argument1, $argument2=null, $argument3=null) {
 		if (!$this->pieces['joins']) {
 			return $this;
 		}
-		$this->pieces['joins']->on($argument1, $argument2);
+		$this->pieces['joins']->on($argument1, $argument2, $argument3);
 		return $this;
 	}
 	
