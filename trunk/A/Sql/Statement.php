@@ -4,6 +4,12 @@ class A_Sql_Statement {
 	protected $db;
 	protected $escapeListeners = array();	
 
+	public function __construct($db=null) {
+		if (is_object($db)) {
+			$this->db = $db;
+		}
+	}
+
 	public function setDb($db) {
 		$this->db = $db;
 		return $this;

@@ -20,26 +20,20 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @var array
 	 */
 	protected $pieces = array(
-		'tables' 	=> null,
-		'columns' 	=> null,
-		'joins' 	=> null,
-		'where' 	=> null,
-		'having' 	=> null,
-		'orderby' 	=> null,
-		'groupby' 	=> null,
+		'tables' => null,
+		'columns' => null,
+		'joins' => null,
+		'where' => null,
+		'having' => null,
+		'orderby' => null,
+		'groupby' => null,
 	);
 	
 	/**
-	 * Limit clause count
-	 * @var int
+	 * Limit A_Sql_Limit
+	 * @var object
 	 */
-	protected $_limit = null;
-	
-	/**
-	 * Limit clause offset
-	 * @var int
-	 */
-	protected $_offset = null;
+	protected $limit = null;
 	
 	/**
 	 * Set select statement columns
@@ -116,6 +110,105 @@ class A_Sql_Select extends A_Sql_Statement {
 	}
 	
 	/**
+	 * Set select statement JOIN clause with overidable join type parameter
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @param string $type
+	 * @return self
+	 */	
+	public function join($table1, $table2, $type='INNER') {
+		if (!$this->pieces['joins']) {
+			require_once 'A/Sql/Join.php';
+			$this->pieces['joins'] = new A_Sql_Join();
+		}
+		$this->pieces['joins']->join($table1, $table2, $type);
+		return $this;
+	}
+	
+	/**
+	 * Set select statement INNER JOIN clause
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @return self
+	 */		
+	public function innerJoin($table1, $table2) {
+		return $this->join($table1, $table2, 'INNER');
+	}
+	
+	
+	/**
+	 * Set select statement INNER JOIN clause
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @return self
+	 */		
+	public function leftJoin($table1, $table2) {
+		return $this->join($table1, $table2, 'LEFT');
+	}	
+
+	/**
+	 * Set select statement RIGHT JOIN clause
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @return self
+	 */		
+	public function rightJoin($table1, $table2) {
+		return $this->join($table1, $table2, 'RIGHT');
+	}	
+
+	/**
+	 * Set select statement CROSS JOIN clause
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @return self
+	 */		
+	public function crossJoin($table1, $table2) {
+		return $this->join($table1, $table2, 'CROSS');
+	}
+
+	/**
+	 * Set select statement FULL JOIN clause
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @return self
+	 */		
+	public function fullJoin($table1, $table2) {
+		return $this->join($table1, $table2, 'FULL');
+	}
+
+	/**
+	 * Set select statement NATURAL JOIN clause
+	 *
+	 * @param string $table1
+	 * @param string $table2
+	 * @return self
+	 */		
+	public function naturalJoin($table1, $table2) {
+		return $this->join($table1, $table2, 'NATURAL');
+	}
+
+	/**
+	 * Set select statement JOIN clause
+	 *
+	 * @param mixed $argument1
+	 * @param mixed $argument1
+	 * @return self
+	 */		
+	public function on($argument1, $argument2=null) {
+		if (!$this->pieces['joins']) {
+			return $this;
+		}
+		$this->pieces['joins']->on($argument1, $argument2);
+		return $this;
+	}
+	
+	/**
 	 * Set select statement HAVING clause
 	 *
 	 * Succesive having invocations are added by AND
@@ -185,9 +278,9 @@ class A_Sql_Select extends A_Sql_Statement {
      * @param int $offset 
      * @return self
      */
-    public function limit($count = null, $offset = null) {
-        $this-> _limit = (int) $count;
-        $this-> _offset = (int) $offset;
+    public function limit($count = null, $offset=null) {
+        $this->limit = (int)$count;
+        $this->offset = (int)$offset;
         return $this;
     }
     
@@ -240,8 +333,8 @@ class A_Sql_Select extends A_Sql_Statement {
 		$sql = "SELECT[columns][tables][joins][having][where][orderby][groupby]";
 		$sql = str_replace(array_keys($this->replace), array_values($this->replace), $sql);
 		
-		if(is_int($this -> _limit) && $this -> _limit > 0){ //Limit is handled by DB adapter due to engine differences
-			$sql = $this -> db -> limit($sql, $this -> _limit, $this -> _offset);
+		if(is_int($this->limit) && $this->limit > 0){ //Limit is handled by DB adapter due to engine differences
+			$sql = $this->db->limit($sql, $this->limit, $this->offset);
 		}
 		
 		return $sql;
@@ -251,7 +344,7 @@ class A_Sql_Select extends A_Sql_Statement {
      * Clear the SQL statement parts
      *
      * @param string $part OPTIONAL
-     * @return Zend_Db_Select
+     * @return self
      */	
 	public function reset() {
 		foreach ($this->pieces as &$piece) {

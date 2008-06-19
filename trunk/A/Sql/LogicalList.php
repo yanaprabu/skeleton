@@ -3,6 +3,11 @@ include_once 'A/Sql/Statement.php';
 
 class A_Sql_LogicalList extends A_Sql_Statement {
 	protected $data = array();
+	protected $escape = true;
+
+	public function setEscape($escape) {
+		$this->escape = (bool)$escape;
+	} 
 
 	public function addExpression($arg1, $arg2=null, $arg3=null) {
 		if ($arg1) {	
@@ -15,7 +20,7 @@ class A_Sql_LogicalList extends A_Sql_Statement {
 			}
 				
 			include_once('A/Sql/Expression.php');
-			$expression = new A_Sql_Expression($arg1, $arg2);
+			$expression = new A_Sql_Expression($arg1, $arg2, $this->escape);
 			$this->escapeListeners[] = $expression;
 			if (count($this->data)) {
 				$this->data[] = $logic;
