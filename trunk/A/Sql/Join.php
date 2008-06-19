@@ -2,7 +2,6 @@
 
 class A_Sql_Join {
 	protected $joins = array();
-	protected $joinFormat = '%s JOIN %s ON %s.%s=%s.%s';
 	protected $joinTypes = array('INNER', 'LEFT', 'RIGHT', 'FULL', 'CROSS', 'NATURAL');
 
 	public function join($table1, $table2, $type) {
@@ -12,11 +11,12 @@ class A_Sql_Join {
 		$this->joins[] = array('type' => strtoupper($type), 'table1' => $table1, 'table2' => $table2, 'on' => null); 
 	}
 	
-	public function on($argument1, $argument2=null) {
+	public function on($argument1, $argument2=null, $argument3=null) {
 		$joinkey = count($this->joins)-1;
 		if (!isset($this->joins[$joinkey])) { //no join has been set yet
 			return;
 		}
+		
 		if (!$this->joins[$joinkey]['on']) {
 			require_once 'A/Sql/LogicalList.php';						
 			$this->joins[$joinkey]['on'] = new A_Sql_LogicalList();
@@ -27,16 +27,23 @@ class A_Sql_Join {
 				return;
 			}
 			foreach($argument1 as $column1 => $column2) {
-				$this->joins[$joinkey]['on']->addExpression(
-					$this->prependTableAlias($this->joins[$joinkey]['table1'], $column1), 
-					$this->prependTableAlias($this->joins[$joinkey]['table2'], $column2)
-				);
+				$column1 = $this->prependTableAlias($this->joins[$joinkey]['table1'], $column1);
+				$column2 = $this->prependTableAlias($this->joins[$joinkey]['table2'], $column2);
+				$this->joins[$joinkey]['on']->addExpression($column1, $column2);
 			}
 		} else {
-			$this->joins[$joinkey]['on']->addExpression(
-				$this->prependTableAlias($this->joins[$joinkey]['table1'], $argument1), 
-				$this->prependTableAlias($this->joins[$joinkey]['table2'], $argument2)
-			);
+			//since we allow different style of parameters we must account for different
+			//amount of parameters
+			if ($argument3 === null && !is_array($argument2)) { 
+				$logic = 'AND';
+			} else {
+				$logic = $argument1;
+				$argument1 = $argument2;
+				$argument2 = $argument3;
+			}
+			$argument1 = $this->prependTableAlias($this->joins[$joinkey]['table1'], $argument1);
+			$argument2 = $this->prependTableAlias($this->joins[$joinkey]['table2'], $argument2);
+			$this->joins[$joinkey]['on']->addExpression($logic, $argument1, $argument2);
 		}
 	}
 
