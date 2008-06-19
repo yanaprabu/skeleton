@@ -15,6 +15,10 @@ class A_Sql_Statement {
 		}
 		return $this->db;
 	}
+	
+	protected function addListener($listener) {
+		$this->escapeListeners[] = $listener;
+	}
 
 	protected function notifyListeners() {
 		if (count($this->escapeListeners)) {
