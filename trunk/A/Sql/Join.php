@@ -16,19 +16,19 @@ class A_Sql_Join {
 		if (!isset($this->joins[$joinkey])) { //no join has been set yet
 			return;
 		}
-		
-		if (!$this->joins[$joinkey]['on']) {
+		$join = &$this->joins[$joinkey];
+		if (!$join['on']) {
 			require_once 'A/Sql/LogicalList.php';						
-			$this->joins[$joinkey]['on'] = new A_Sql_LogicalList();
-			$this->joins[$joinkey]['on']->setEscape(false);
+			$join['on'] = new A_Sql_LogicalList();
+			$join['on']->setEscape(false);
 		}		
 		if (is_array($argument1)) {
 			if (!count($argument1)) {  //empty array of expressions was passed
 				return;
 			}
 			foreach($argument1 as $column1 => $column2) {
-				$column1 = $this->prependTableAlias($this->joins[$joinkey]['table1'], $column1);
-				$column2 = $this->prependTableAlias($this->joins[$joinkey]['table2'], $column2);
+				$column1 = $this->prependTableAlias($join['table1'], $column1);
+				$column2 = $this->prependTableAlias($join['table2'], $column2);
 				$this->joins[$joinkey]['on']->addExpression($column1, $column2);
 			}
 		} else {
@@ -41,9 +41,9 @@ class A_Sql_Join {
 				$argument1 = $argument2;
 				$argument2 = $argument3;
 			}
-			$argument1 = $this->prependTableAlias($this->joins[$joinkey]['table1'], $argument1);
-			$argument2 = $this->prependTableAlias($this->joins[$joinkey]['table2'], $argument2);
-			$this->joins[$joinkey]['on']->addExpression($logic, $argument1, $argument2);
+			$argument1 = $this->prependTableAlias($join['table1'], $argument1);
+			$argument2 = $this->prependTableAlias($join['table2'], $argument2);
+			$join['on']->addExpression($logic, $argument1, $argument2);
 		}
 	}
 
@@ -57,14 +57,10 @@ class A_Sql_Join {
 	}
 
 	protected function prependTableAlias($alias, $table) {
-		if (strpos($table, '.')) {
-			$pieces = explode('.', $table);
-			if (strtolower($pieces[0]) == strtolower($alias)) { //user prepended themselves
-				return $table;
-			}
-			return $alias.'.'. implode('.', $pieces);
+		if (!strpos($table, '.')) { //already an alias
+			return $alias .'.'. $table;
 		}
-		return $alias .'.'. $table;
+		return $table;
 	}
 
 
