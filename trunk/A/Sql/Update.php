@@ -7,6 +7,19 @@ class A_Sql_Update extends A_Sql_Statement {
 	protected $joins = array();	
 	protected $set;
 	
+	/**
+	 * Class constructor
+	 *
+	 * @param string $table Table name
+	 * @param array $bind Column-value pairs
+	 * @param array $where Where statement
+	 */
+	public function __construct($table=null, $bind = array(), $where = array()) {
+		$this -> table($table);
+		$this -> set($bind);
+		$this -> where($where);
+	}
+	
 	public function table($table) {
 		include_once('A/Sql/Table.php');
 		$this->table = new A_Sql_Table($table);
