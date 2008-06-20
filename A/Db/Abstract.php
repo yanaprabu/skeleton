@@ -169,8 +169,6 @@ abstract class A_Db_Abstract
      * @return mixed An SQL-safe escaped value (or string of separated values).
      */
     public function escape($value) {
-        $this->_connect();
-
         if ($value instanceof A_Sql_Expression) {
             return $value->__toString();
         }
