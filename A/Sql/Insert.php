@@ -8,6 +8,17 @@ class A_Sql_Insert extends A_Sql_Statement {
 	protected $columns;
 	protected $select;
 
+	/**
+	 * Class constructor
+	 *
+	 * @param string $table Table name
+	 * @param array $bind Column-value pairs
+	 */
+	public function __construct($table = null,$bind = array()) {
+		$this->table($table);
+		$this->columns($bind);
+	}
+	
 	public function table($table) {
 		include_once('A/Sql/Table.php');
 		$this->table = new A_Sql_Table($table);

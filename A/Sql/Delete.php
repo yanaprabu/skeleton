@@ -1,11 +1,40 @@
 <?php
 require_once 'A/Sql/Statement.php';
-
+/**
+ * Class for SQL delete query generation.
+ *
+ * @category A
+ * @package A_Sql
+ * @subpackage Delete
+ * @license    BSD
+ * @version    $Id:$
+ */
 class A_Sql_Delete extends A_Sql_Statement{
+	
+	/**
+	 * Table name
+	 * @var string
+	 */
 	protected $table = null;
+	
+	/**
+	 * Where clause
+	 * @var string
+	 */
 	protected $where = null;
+	
+	/**
+	 * Where expression
+	 * @var unknown_type
+	 */
 	protected $whereExpression;
 	
+	/**
+	 * Class constructor
+	 *
+	 * @param string $table
+	 * @param array $where
+	 */
 	public function __construct($table=null, $where=array()) {
 		$this->table($table);
 		$this->where($where);
