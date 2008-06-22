@@ -98,7 +98,7 @@ abstract class A_Db_Abstract
     public function query($sql) {
         // connect to the database if needed
         $this->_connect();
-		$this -> _query($sql);
+		return $this -> _query($sql);
     }
 
     /**
