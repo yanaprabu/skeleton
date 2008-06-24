@@ -16,7 +16,7 @@ $map = array(
 	1=>array('name'=>'action', 'default'=>'listing'),
 	2=>array('name'=>'id', 'default'=>'today'),
 	),
-	'sports' => array(
+	'/^sport.*/' => array(
 		'' => array(
 			0=>array('name'=>'controller', 'replace'=>array('controller'=>'news', 'action'=>'listing', 'id'=>'sports')),
 			),
