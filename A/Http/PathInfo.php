@@ -111,11 +111,18 @@ class A_Http_PathInfo {
         		while ($i < $path_info_size) {
         			$value = $path_info[$i];
         			if ($value) {
-        				if (array_key_exists($value, $map)) {
+						$match = false;
+        				foreach (array_keys($map) as $key) {
+        					if (($key == $value) || ((substr($value, 0, 1) == '/') && preg_match($key, $value))) {
+								$match = true;
+								break;	// out of foreach
+        					}
+        				}
+        				if ($match) {
         					$map =& $map[$value];
         				} else {
 		        			++$i;
-        					break;
+        					break;	// out of while
         				}
         			}
         			++$i;
@@ -153,18 +160,33 @@ class A_Http_PathInfo {
 					$this->path_pos = $i;	// save position so route can be re-run
 				}
 
+				// assign extra, unmapped parameter pairs
 				if ($this->map_extra_param_pairs) {
-// assign extra parameter pairs
+	        		$params = array();
 	        		while ($i < $path_info_size) {
 						$param = isset($path_info[$i]) ? $path_info[$i] : null;
 		        		if (++$i < $path_info_size) {
 							$value = isset($path_info[$i]) ? $path_info[$i] : null;
-							if ($param != null) {
-								$request->set($param, $value);
+							if ($param !== null) {
+								// if values is already set then we have multiple values of the same name
+								if (isset($params[$param])) {
+									// if already an array then append
+									if (is_array($params[$param])) {
+										$params[$param][] = $value;
+									} else {
+										// if not an array then make one with current and new values
+										$params[$param] = array($params[$param], $value);
+									}
+								} else {
+									$params[$param] = $value;
+								}
 							}
 						}
 						++$i;
 	        		}
+	        		foreach ($params as $param => $value) {
+						$request->set($param, $value);
+					}
 				}
         	}
         }
