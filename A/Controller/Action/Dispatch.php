@@ -75,12 +75,12 @@ class A_Controller_Action_Dispatch {
      * Dispatch request
      *  - Register request object
      *  - Activate pre- and post-dispatch hooks
-     * @param A_Request $request
+     * @param string $action
+     * @param A_Locator $locator
      */
-    public function dispatch(A_Request $request) {
-    	$this -> _request = $request;
-    	$action = $request -> getActionName();
-    	   	
+    public function dispatch($action,A_Locator $locator) {
+    	$this -> _request = $locator -> get('request');
+    	    	   	
     	$this -> preDispatch();
     	$this -> $action;
     	$this -> postDispatch();
