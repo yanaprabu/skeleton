@@ -144,7 +144,7 @@ class A_Controller_Front {
 		        } else if (! method_exists($controller, $actionName)) { //Default action
 					$actionName = $this->_mapper->default_method;
 				} else if (method_exists($controller, $actionName)) { //Invoking action directly
-					$route = $controller -> {$method}($locator);
+					$route = $controller -> {$actionName}($locator);
 				} else {
 					$this->_error = self::METHOD_NOT_FOUND;
 				}
