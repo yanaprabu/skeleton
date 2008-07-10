@@ -2,7 +2,7 @@
 
 class A_Controller_Helper_Load {
 	protected $locator;
-	protected $paths = array('global'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
+	protected $paths = array('app'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
 	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
 	protected $action = null;
 	protected $method = null;
@@ -11,8 +11,13 @@ class A_Controller_Helper_Load {
 	protected $scope;
 	protected $scopePath;
 	protected $responseName = '';
+	protected $renderClasses = array(
+								'php' => 'A_Template_Include',
+								'html' => 'A_Template_Strreplace',
+								'txt' => 'A_Template_Strreplace',
+								);
 	protected $renderClass = 'A_Template_Include';
-	protected $renderExtension = '.php';
+	protected $renderExtension = 'php';
 	protected $responseSet = false;
 	protected $errorMsg = '';
 	
@@ -39,11 +44,11 @@ class A_Controller_Helper_Load {
 			$type = '%s';
 			$this->action = $mapper->getClass();
 			$this->method = $mapper->getMethod();
-			$this->paths['global'] = $mapper->getBasePath();
-			$this->paths['module'] = $this->paths['global'] . $mapper->getDir();
+			$this->paths['app'] = $mapper->getBasePath();
+			$this->paths['module'] = $this->paths['app'] . $mapper->getDir();
 			$this->paths['controller'] = $this->paths['module'] . $type . $this->action . '/';// . $mapper->getClassDir();
 			$this->paths['action'] = $this->paths['controller'] . ($this->method ? "$this->method/" : '');
-			$this->paths['global'] .= $type;
+			$this->paths['app'] .= $type;
 			$this->paths['module'] .= $type;
 		}
 		return $this;
@@ -64,9 +69,9 @@ class A_Controller_Helper_Load {
 		return $this;
 	}
 	
-	public function setRenderClass($name, $ext='.php'){
-		$this->renderClass = $name;
-		$this->renderExtension = $ext;
+	public function setRenderClass($name, $ext='php'){
+		$ext = ltrim($ext, '.');
+		$this->renderClasses[$ext] = $name;
 		return $this;
 	}
 	
@@ -116,8 +121,18 @@ class A_Controller_Helper_Load {
 			
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
-				include_once str_replace('_', '/', $this->renderClass) . '.php';
-				$obj = new $this->renderClass("$path$class" . $this->renderExtension);
+				// lookup the renderer by extension, if given
+				$path_parts = pathinfo($class);
+				// if dir in name the add to path
+				if ($path_parts['dirname'] != '.') {
+					$path .= trim($path_parts['dirname'], '/') . '/';
+				}
+				// if extension found and it is in array, use it
+				$ext = isset($path_parts['extension']) && isset($this->renderClasses[$path_parts['extension']]) ? $path_parts['extension'] : $this->renderExtension; 
+				$class = $path_parts['filename'];
+
+				include_once str_replace('_', '/', $this->renderClasses[$ext]) . '.php';
+				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
 				if (isset($params[1]) && is_array($params[1])) {
 					foreach ($params[1] as $key => $val) {
