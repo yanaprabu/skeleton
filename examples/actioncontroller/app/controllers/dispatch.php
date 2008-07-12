@@ -1,6 +1,7 @@
 <?php
+include_once 'A/Controller/Action/Dispatch.php';
 
-class example extends A_Controller_Action {
+class dispatch extends A_Controller_Action_Dispatch {
 	var $response;
 
 	function __construct($locator) {
@@ -12,7 +13,7 @@ class example extends A_Controller_Action {
 		$content = '
 <html>
 <body>
-	<h2>Front Controller: Page - Base Action Controller</h2>
+	<h2>Front Controller: Page - Dispatch Action Controller</h2>
 	<ol>
 		<li><a href="?controller=example">Default controller, no action specified.</a></li>
 		<li><a href="?controller=example&action=foo">Default controller, specific action - foo.</a></li>
@@ -50,6 +51,14 @@ dump($select, 'SELECT=');
 	function bar($locator) {
 		$value = $this->flash()->get('foo');
 		$this->load()->response()->template('', array('foo'=>$value));
+	}
+
+	function preDispatch() {
+		echo "preDispatch called.<br/>";
+	}
+
+	function postDispatch() {
+		echo "postDispatch called.<br/>";
 	}
 
 }

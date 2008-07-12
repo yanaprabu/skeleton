@@ -1,18 +1,22 @@
+<?php
+
+?>
 <html>
 <body>
-	<h2>Action Controller: Page - Module1 Base Action Controller</h2>
+	<h2>Front Controller: Page - Dispatch Action Controller</h2>
 	<ol>
 		<li><a href="?controller=example">Default controller, no action specified.</a></li>
-		<li><a href="?controller=example&action=foo">Default controller, specific action specified.</a></li>
+		<li><a href="?controller=example&action=foo">Default controller, specific action - foo.</a></li>
+		<li><a href="?controller=example&action=bar">Default controller, specific action - bar.</a></li>
 		<li><a href="?controller=dispatch">Dispatch Action controller, no action specified.</a></li>
 		<li><a href="?controller=dispatch&action=foo">Dispatch Action controller, specific action - foo.</a></li>
+		<li><a href="?controller=dispatch&action=bar">Dispatch Action controller, specific action - bar.</a></li>
 		<li><a href="?module=module1&controller=example">Module and controller, no action specified.</a></li>
 		<li><a href="?module=module1&controller=example&action=bar">Module and controller, specific action specified.</a></li>
 	</ol>
+	<br/>Flash var foo: <?php echo isset($foo) ? $foo : 'NULL'; ?><br/>
+
 	<br/>
 	<p><a href="../">Return to Examples</a></p>
-<?php
-		echo  '<br/>Model Object:<pre>' . print_r($model, 1) . '</pre>';
-?>
 </body>
 </html>

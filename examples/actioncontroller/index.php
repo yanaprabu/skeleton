@@ -1,4 +1,4 @@
-<?php
+ <?php
 include 'config.php';
 include 'A/DL.php';
 include 'A/Locator.php';

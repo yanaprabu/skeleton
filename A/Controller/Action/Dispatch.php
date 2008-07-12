@@ -1,4 +1,5 @@
 <?php
+include_once 'A/Controller/Action.php';
 
 /**
  * Action Controller Dispatch
@@ -9,32 +10,32 @@
  * @package Controller
  * @subpackage Action
  */
-class A_Controller_Action_Dispatch {
+class A_Controller_Action_Dispatch extends A_Controller_Action {
 	
 	/**
 	 * The dispatched request
 	 * @var A_Request
 	 */
-	protected $_request = null;
+	protected $request = null;
 	
 	/**
 	 * The result response
 	 * @var A_Reponse
 	 */
-	protected $_repsponse = null;
+	protected $response = null;
 	
 	/**
 	 * Registered plugins
 	 * @var array
 	 */
-	protected $_plugins = array();
+	protected $plugins = array();
 	
 	/**
 	 * Request getter
 	 * @return A_Request
 	 */
 	public function getRequest() {
-		return $this -> _request;
+		return $this->request;
 	}
 	
 	/**
@@ -43,11 +44,11 @@ class A_Controller_Action_Dispatch {
 	 * @return A_Reponse
 	 */
 	public function getResponse() {
-		if(!$this -> _response instanceof A_Response) {
-			$this -> _response = new A_Http_Reponse();
+		if(!$this->response instanceof A_Response) {
+			$this->response = new A_Http_Reponse();
 		}
 		
-		return $this -> _response;
+		return $this->response;
 	}
 
 	/**
@@ -57,7 +58,7 @@ class A_Controller_Action_Dispatch {
 	 * @param string $url
 	 */
 	public function redirect($url) {
-		return $this -> getResponse() -> redirect($url);
+		return $this->getResponse()->redirect($url);
 	}
 	
 	/**
@@ -67,51 +68,55 @@ class A_Controller_Action_Dispatch {
 	 * @param mixed $default
 	 * @return mixed
 	 */
-    public function getParam($param,$default = null) {
-    	return $this -> getRequest() -> getParam($param,$default);
-    }
-    
-    /**
-     * Dispatch request
-     *  - Register request object
-     *  - Activate pre- and post-dispatch hooks
-     * @param string $action
-     * @param A_Locator $locator
-     */
-    public function dispatch($action,A_Locator $locator) {
-    	$this -> _request = $locator -> get('request');
-    	    	   	
-    	$this -> preDispatch();
-    	$this -> $action;
-    	$this -> postDispatch();
-    }
-    
-    /**
-     * Pre-dispatch hook
-     */
-    public function preDispatch() {}
-    
-    /**
-     * Post-dispatch hook
-     */
-    public function postDispatch() {}
-    
-    /**
-     * Register plug-in
-     *  - Returns plug-in if only key is specified
-     * @param string $key
-     * @param A_Controller_Plugin $plugin
-     * @return mixed
-     */
-    public function plug($key,$plugin = null) {
-    	if(!is_string($key) || empty($key)) {
-    		throw new A_Controller_Exception('Plugin key must be a non-empty string');
-    	}
-    	
-    	if($plugin instanceof A_Controller_Plugin) {
-    		return $this -> _plugins[$key] = $plugin;
-    	} 
-    	
-    	return (isset($this -> _plugins[$key])) ? $this -> _plugins[$key] : null;
-    }
+	public function getParam($param,$default = null) {
+		return $this->getRequest()->getParam($param,$default);
+	}
+	
+	/**
+	 * Dispatch request
+	 *  - Register request object
+	 *  - Activate pre- and post-dispatch hooks
+	 * @param string $action
+	 * @param A_Locator $locator
+	 */
+	public function dispatch(A_Locator $locator, $action) {
+		if (method_exists($this, $action)) {
+			$this->request = $locator->get('Request');
+				   	
+			$this->preDispatch();
+			$this->$action($locator);
+			$this->postDispatch();
+		} else {
+			// set error here
+		}
+	}
+	
+	/**
+	 * Pre-dispatch hook
+	 */
+	public function preDispatch() {}
+	
+	/**
+	 * Post-dispatch hook
+	 */
+	public function postDispatch() {}
+	
+	/**
+	 * Register plug-in
+	 *  - Returns plug-in if only key is specified
+	 * @param string $key
+	 * @param A_Controller_Plugin $plugin
+	 * @return mixed
+	 */
+	public function plug($key, $plugin = null) {
+		if(!is_string($key) || empty($key)) {
+//			throw new A_Controller_Exception('Plugin key must be a non-empty string');
+		}
+		
+		if($plugin instanceof A_Controller_Plugin) {
+			return $this->plugins[$key] = $plugin;
+		} 
+		
+		return (isset($this->plugins[$key])) ? $this->plugins[$key] : null;
+	}
 }
