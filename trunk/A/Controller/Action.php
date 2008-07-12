@@ -1,6 +1,10 @@
 <?php
 
 class A_Controller_Action {
+	const APP = 'app';
+	const MODULE = 'module';
+	const CONTROLLER = 'controller';
+	const ACTION = 'action';
 	protected $locator;
 	protected $loader = null;
 	protected $helpers = array();
@@ -9,11 +13,6 @@ class A_Controller_Action {
 	    $this->locator = $locator;
 	}
 	 
-	protected function dispatch($dir, $class, $method='run', $args=null){
-		$dl = new A_DL($dir, $class, $method, $args=null);
-		return $dl->run($this->locator);
-	}
- 
 	protected function forward($dir, $class, $method='run', $args=null){
 		$forward = new A_DL($dir, $class, $method, $args=null);
 		return $forward;

@@ -73,10 +73,16 @@ class A_Controller_Mapper
 		return $this;
 	}
 
-	public function setNaming($class_prefix='', $class_suffix='', $method_prefix='', $method_suffix='') {
+	public function setClassNaming($class_prefix='', $class_transform=null, $class_suffix='') {
 		$this->class_prefix = $class_prefix;
+		$this->class_transform = $class_transform;
 		$this->class_suffix = $class_suffix;
+		return $this;
+	}
+
+	public function setMethodNaming($method_prefix='', $method_transform=null, $method_suffix='') {
 		$this->method_prefix = $method_prefix;
+		$this->method_transform = $method_transform;
 		$this->method_suffix = $method_suffix;
 		return $this;
 	}
@@ -95,7 +101,6 @@ class A_Controller_Mapper
 
 	public function getPath() {
 		return $this->base_path . $this->dir . $this->class_dir;
-#		return $this->base_path . ($this->dir ? $this->dir : $this->default_dir) . $this->class_dir;
 	}
 
 	public function getClass() {
@@ -106,21 +111,21 @@ class A_Controller_Mapper
 		return $this->method;
 	}
 
-	public function buildClass($base) {
+	public function formatClass($base) {
 		if ($this->class_transform) {
 			$base = call_user_func($this->class_transform, $base);
 		}
 		return $this->class_prefix . $base . $this->class_suffix;
 	}
 
-	public function buildMethod($base) {
+	public function formatMethod($base) {
 		if ($this->method_transform) {
 			$base = call_user_func($this->method_transform, $base);
 		}
 		return $this->method_prefix . $base . $this->method_suffix;
 	}
 
-	public function doMapping($locator) {
+	public function getRoute($locator) {
 		$request = $locator->get('Request');
 
 		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/', '/[^a-zA-Z0-9\_\-]/');
@@ -135,17 +140,17 @@ class A_Controller_Mapper
 		
 		$path = $this->getPath();
 		if ($this->class) {
-			$action = new A_DL($path, $this->class, $this->method, array());
+			$route = new A_DL($path, $this->class, $this->method, array());
 		} else {
-			$action = $this->default_action;
-			$action->dir = $path;
-			$this->class = $action->class;
+			$route = $this->default_action;
+			$route->dir = $path;
+			$this->class = $route->class;
 		}
-		if ($action->method == '') {
-			$action->method = $this->default_method;
+		if ($route->method == '') {
+			$route->method = $this->default_method;
 		}
 
-		return $action;
+		return $route;
 	}
 
 }
