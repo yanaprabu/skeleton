@@ -6,7 +6,7 @@ class A_Controller_Action {
 	const CONTROLLER = 'controller';
 	const ACTION = 'action';
 	protected $locator;
-	protected $loader = null;
+	protected $load = null;
 	protected $helpers = array();
 	
 	public function __construct($locator=null){
@@ -18,15 +18,50 @@ class A_Controller_Action {
 		return $forward;
 	}
  
+	protected function load($scope=null) {
+		if (isset($this->load)) {
+			$this->load->load($scope);
+		} else {
+			include_once "A/Controller/Helper/Load.php";
+			$this->load = new A_Controller_Helper_Load($this->locator, $this, $scope);
+		}
+		return $this->load;
+	}
+ 
+	protected function flash($name=null, $value=null) {
+		if (! isset($this->flash)) {
+			include_once "A/Controller/Helper/Flash.php";
+			$this->flash = new A_Controller_Helper_Flash($this->locator);
+		}
+		if ($name) {
+			if ($value) {
+				$this->flash->set($name, $value);
+			} else {
+				return $this->flash->get($name);
+			}
+		}
+		return $this->flash;
+	}
+ 
+	public function setHelper($name, $helper) {
+		if ($name) {
+			$this->helpers[$name] = $helper;
+		}
+		return $this;
+	}
+ 
+	protected function helper($name) {
+		if (isset($this->helpers[$name])) {
+			return $this->helpers[$name];
+		}
+	}
+ 
+/*
 	protected function __call($name, $args=null) {
 		$args = count($args) ? $args : null;
 		if (! isset($this->helpers[$name])) {
 		    $class = ucfirst($name);
-		    if (in_array($name, array('load', 'flash'))) {
-				include_once "A/Controller/Helper/$class.php";
-				$class = "A_Controller_Helper_$class";
-			// return object from registry
-		    } elseif (isset($this->locator) && $this->locator->has($name)) {
+		    if (isset($this->locator) && $this->locator->has($name)) {
 		    	$obj = $this->locator->get($name);
 		    	return $obj;
 		    }
@@ -36,5 +71,6 @@ class A_Controller_Action {
 		}
 		return $this->helpers[$name];
 	}
+*/
 
 }
