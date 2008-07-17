@@ -10,19 +10,20 @@ class dispatch extends A_Controller_Action_Dispatch {
 	}
 	
 	function run($locator) {
+echo "run called.<br/>";
 		$content = '
 <html>
 <body>
 	<h2>Front Controller: Page - Dispatch Action Controller</h2>
 	<ol>
-		<li><a href="?controller=example">Default controller, no action specified.</a></li>
-		<li><a href="?controller=example&action=foo">Default controller, specific action - foo.</a></li>
-		<li><a href="?controller=example&action=bar">Default controller, specific action - bar.</a></li>
-		<li><a href="?controller=dispatch">Dispatch Action controller, no action specified.</a></li>
-		<li><a href="?controller=dispatch&action=foo">Dispatch Action controller, specific action - foo.</a></li>
-		<li><a href="?controller=dispatch&action=bar">Dispatch Action controller, specific action - bar.</a></li>
-		<li><a href="?module=module1&controller=example">Module and controller, no action specified.</a></li>
-		<li><a href="?module=module1&controller=example&action=bar">Module and controller, specific action specified.</a></li>
+		<li><a href="?controller=example">Default controller, no specified.</a></li>
+		<li><a href="?controller=example&action=foo">Default controller, specific - foo.</a></li>
+		<li><a href="?controller=example&action=bar">Default controller, specific - bar.</a></li>
+		<li><a href="?controller=dispatch">Dispatch Action controller, no specified.</a></li>
+		<li><a href="?controller=dispatch&action=foo">Dispatch Action controller, specific - foo.</a></li>
+		<li><a href="?controller=dispatch&action=bar">Dispatch Action controller, specific - bar.</a></li>
+		<li><a href="?module=module1&controller=example">Module and controller, no specified.</a></li>
+		<li><a href="?module=module1&controller=example&action=bar">Module and controller, specific specified.</a></li>
 	</ol>
 	<br/>
 	<p><a href="../">Return to Examples</a></p>
@@ -42,13 +43,13 @@ class dispatch extends A_Controller_Action_Dispatch {
 	}
 
 	function foo($locator) {
-		$select = $this->load()->helper('A_Html_Form_Select');
-dump($select, 'SELECT=');
+echo "foo called.<br/>";
 		$this->flash()->set('foo', 'This is a flash var.');
 		$this->load()->response()->template('', array('foo'=>'Set flash var.'));
 	}
 
 	function bar($locator) {
+echo "bar called.<br/>";
 		$value = $this->flash()->get('foo');
 		$this->load()->response()->template('', array('foo'=>$value));
 	}

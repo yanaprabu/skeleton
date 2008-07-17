@@ -1,12 +1,19 @@
 <?php
 
+/**
+ * A_Controller_Helper_Flash
+ * 
+ * special helper provides flash style session variables
+ * 
+ * @package Controller
+ */
 class A_Controller_Helper_Flash {
 	protected $locator;
 	protected $session;
 	protected $get_pos = 0;
 	protected $set_pos = 0;
 	
-	public function __construct($locator, $args=null){
+	public function __construct($locator){
 		$this->locator = $locator;
 		if ($locator) {
 			$this->session = $locator->get('Session', 'A_Session', __CLASS__);

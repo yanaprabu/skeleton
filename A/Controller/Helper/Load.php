@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * A_Controller_Helper_Load
+ * 
+ * special helper for Action Controllers that provides class loading and instantiation within the applicaition directory
+ * 
+ * @package Controller
+ */
 class A_Controller_Helper_Load {
 	protected $locator;
 	protected $paths = array('app'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
@@ -21,7 +28,7 @@ class A_Controller_Helper_Load {
 	protected $responseSet = false;
 	protected $errorMsg = '';
 	
-	public function __construct($locator, $scope=null){
+	public function __construct($locator, $controller, $scope=null){
 		$this->locator = $locator;
 		if ($locator) {
 			$mapper = $locator->get('Mapper');
@@ -29,6 +36,7 @@ class A_Controller_Helper_Load {
 				$this->setMapper($mapper);
 			}
 		}
+		$this->controller = $controller;
 		$this->load($scope);
 	}
 	 
@@ -119,6 +127,11 @@ class A_Controller_Helper_Load {
 				$path = $this->dirs[$type];		// just in case no scopePath
 			}
 			
+			// helpers take a controller instance as the parameter
+			if ($type == 'helper') {
+				$params[1] = $this->controller;
+			}
+			
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
 				// lookup the renderer by extension, if given
@@ -149,13 +162,19 @@ class A_Controller_Helper_Load {
 			// initialize object
 			if ($obj) {
 				// template and view need passed values set
-				if (in_array($type, array('template', 'view'))) {
+				switch ($type) {
+				case 'template':
+				case 'view':
 					if (isset($params[1]) && is_array($params[1])) {
 						// if 2nd param is array then use it to set template values
 						foreach ($params[1] as $key => $val) {
 							$obj->set($key, $val);
 						}
 					}
+					break;
+				case 'helper':
+					$this->controller->setHelper($params[0], $obj);
+					break;
 				}
 				 // this is the section for when response() has been called
 				 if ($this->responseSet) {
