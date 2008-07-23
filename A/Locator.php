@@ -48,6 +48,8 @@ class A_Locator {
 		$class = str_replace('-', '_', $class);
 		if ($dir) {
 			$dir = rtrim($dir, '/') . '/';
+		} elseif (isset($this->_dir)) {
+			$dir = $this->_dir;
 		}
 		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
 		if (($dir == '') || file_exists($path)) {		// either in search path or absolute path exists
