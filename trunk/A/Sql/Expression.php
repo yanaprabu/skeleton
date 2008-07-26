@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Sql/Statement.php';
+/**
+ * Generate SQL logical expression/equation
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Expression extends A_Sql_Statement {	
 	protected $data = array();

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Registry plus Loader 
+ * 
+ * @package A 
+ */
 
 class A_Locator {
    protected $_obj = array();

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Filter a value with one or more filters. Will load filters if given class name.  
+ * 
+ * @package A_Filter 
+ */
 
 class A_FilterChain {
 	protected $chain = array();

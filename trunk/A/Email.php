@@ -1,4 +1,9 @@
 <?php
+/**
+ * Basic simple and multipart email functionality 
+ * 
+ * @package A_Email 
+ */
 
 class A_Email {	protected $connection;	protected $subject = '';	protected $message = '';	protected $headers = '';	protected $extra_headers = '';	protected $to;	protected $from='';	protected $replyto='';	protected $cc = '';	protected $bcc = '';	protected $errmsg = '';	protected $mailer;
 	

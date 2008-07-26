@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generate SQL a prepared statement 
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Prepare {
 	protected $statement = '';			// SQL template

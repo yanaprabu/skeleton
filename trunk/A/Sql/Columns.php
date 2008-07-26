@@ -1,6 +1,8 @@
 <?php
 /**
- * A_Sql_Columns
+ * Generate SQL table columns list
+ * 
+ * @package A_Sql 
  *
  * @license    BSD
  * @version    $Id:$

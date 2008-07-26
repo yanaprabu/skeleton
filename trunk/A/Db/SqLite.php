@@ -1,5 +1,9 @@
 <?php
-/*
+/**
+ * Database connection class using the SQLite library
+ *
+ * @package A_Db
+ * 
  * DSN array contain:
  * 'filename'
  * 'mode'

@@ -1,6 +1,11 @@
 <?php
 include_once 'A/DataContainer.php';
 include_once 'A/Sql/Select.php';
+/**
+ * DataSource access using the Active Record pattern 
+ *
+ * @package A_Db
+ */
 
 class A_Db_Activerecord extends A_DataContainer {
 	protected static $globaldb = null;

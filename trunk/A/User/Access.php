@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Rule.php';
 include_once 'A/Validator.php';
+/**
+ * Check if user has access based on supplied rules 
+ * 
+ * @package A_User 
+ */
 
 class A_User_Access extends A_Validator {
 	protected $user;

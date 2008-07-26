@@ -1,4 +1,9 @@
 <?php
+/**
+ * Support for downloading data with different MIME types and settings
+ * 
+ * @package A_Http 
+ */
 
 class A_Http_Download
 {protected $mime_type = 'text/none';protected $encoding = 'none';protected $content_length = 0;protected $source_file = '';protected $target_file = '';protected $errmsg = '';

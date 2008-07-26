@@ -7,7 +7,7 @@ include_once 'A/Controller/Action.php';
  * This action controller implementation controls the actual action dispatch process and allows for pre- and post- dispatch hooks to be used
  * 
  * @category Skeleton
- * @package Controller
+ * @package A_Controller
  * @subpackage Action
  */
 class A_Controller_Action_Dispatch extends A_Controller_Action {

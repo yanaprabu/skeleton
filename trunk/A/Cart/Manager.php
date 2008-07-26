@@ -1,4 +1,9 @@
 <?php
+/**
+ * Shopping cart management functionality
+ * 
+ * @package A_Cart 
+ */
 
 class A_Cart_Manager {protected $name = '';protected $itemid = 0;protected $items = array();protected $maxitems = 99;protected $othercosts = null;protected $currency = '$';
 

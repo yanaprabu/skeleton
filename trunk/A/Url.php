@@ -1,4 +1,9 @@
 <?php
+/**
+ * Genreate URLs 
+ * 
+ * @package A 
+ */
 
 class A_Url {
    protected $action_param = '';

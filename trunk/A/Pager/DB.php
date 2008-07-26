@@ -1,4 +1,9 @@
 <?php
+/**
+ * Datasource access class using A_Db_* object
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager_DB {
 	protected $query;

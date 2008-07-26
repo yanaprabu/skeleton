@@ -1,4 +1,9 @@
 <?php
+/**
+ * Log to file or provided writer object
+ * 
+ * @package A_Logger 
+ */
 
 class A_Logger {
 	protected $buffer = '';

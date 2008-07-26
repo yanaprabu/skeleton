@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Filter value with htmlspecialchars() function with provided quote style and character set
+ * 
+ * @package A_Filter
+ */
 class A_Filter_Htmlspecialchars {
 public $character_set;
 public $escape_quote_style;

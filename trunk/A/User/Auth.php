@@ -1,5 +1,10 @@
 <?php
 include_once 'A/User/Access.php';
+/**
+ * Check credentials 
+ * 
+ * @package A_User 
+ */
 
 class A_User_Auth extends A_User_Access
 {	protected $db;	protected $table = 'user';	protected $sequence = 'user';	protected $userid_func = null;	protected $password_func = null;	protected $success_url = '';				// set to redirect on successful signin	protected $crypt_func = 'md5';	protected $no_password = false;				// set to true for userid only signin

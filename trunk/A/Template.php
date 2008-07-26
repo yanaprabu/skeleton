@@ -1,4 +1,9 @@
 <?php
+/**
+ * Base Template class with template and get/set/has functionality  
+ * 
+ * @package A_Tempalte 
+ */
 
 class A_Template {
 	protected $template = '';

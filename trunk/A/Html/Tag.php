@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generic HTML tag w/attribute functionality
+ * 
+ * @package A_Html 
+ */
 
 class A_Html_Tag {
 	protected $_attr = array();

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Validate credit card numbers using Luhn formula
+ * 
+ * @package A_Cart
+ */
 
 class A_Cart_Creditcard_Validate
 {	protected $number = '';	protected $type = '';

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Datasource access class for Pager using a file 
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager_File {
 	protected $filename;

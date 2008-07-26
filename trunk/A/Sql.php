@@ -1,4 +1,9 @@
 <?php
+/**
+ * Wrap select, insert, update, delete SQL generators in a single inteface  
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql {
 	protected $connection;

@@ -1,4 +1,9 @@
 <?php
+/**
+ * File writer for the A_Logger class 
+ * 
+ * @package A_Logger 
+ */
 
 class A_Logger_File {
 protected $errmsg = '';

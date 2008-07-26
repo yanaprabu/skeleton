@@ -1,4 +1,10 @@
 <?php
+/**
+ * Filter string using specified length
+ * 
+ * @package A_Filter 
+ */
+
 
 class A_Filter_Length {
 protected $length = 0;

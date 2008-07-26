@@ -1,5 +1,4 @@
 <?php
-
 /**
  * A_Controller_Helper_Abstract
  * 
@@ -7,6 +6,7 @@
  *
  * @package A_Controller
  */
+
 abstract class A_Controller_Helper_Abstract {
 	/**
 	 * calling controller

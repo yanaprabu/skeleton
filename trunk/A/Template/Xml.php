@@ -1,4 +1,9 @@
 <?php
+/**
+ * Template class using XML files as templates 
+ * 
+ * @package A_Template 
+ */
 
 class A_Template_Xml {
 	protected $data = array();

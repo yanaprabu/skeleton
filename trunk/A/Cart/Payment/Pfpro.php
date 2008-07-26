@@ -1,7 +1,8 @@
 <?php
-/*
+/**
  * PayflowPro pfpro (credit card processsing) class library
  *
+ * @package A_Cart
  */
 
 define('A_CART_PAYMENT_PFPRO_SERVER_LIVE', 1);

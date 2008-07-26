@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generate HTML <select> to go to specific page in Pager 
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager_HTMLWriterJump extends A_Pager_HTMLWriter {
 	protected $current_page_template = 'Current Page {current_page}';

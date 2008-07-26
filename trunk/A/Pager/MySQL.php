@@ -1,4 +1,9 @@
 <?php
+/**
+ * Datasource access class for Pager using the mysql_* functions 
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager_MySQL {
 	protected $query;

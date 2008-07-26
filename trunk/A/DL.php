@@ -1,4 +1,9 @@
 <?php
+/**
+ * Encapsulate a path, class and method in an object 
+ * 
+ * @package A 
+ */
 
 class A_DL {
 	public $dir = '';

@@ -1,12 +1,12 @@
 <?php
-
 /**
  * A_Controller_Helper_Flash
  * 
  * special helper provides flash style session variables
  * 
- * @package Controller
+ * @package A_Controller
  */
+
 class A_Controller_Helper_Flash {
 	protected $locator;
 	protected $session;

@@ -1,9 +1,15 @@
 <?php
+/**
+ * Encapsulate a field/column within a Model 
+ * 
+ * @package A_Model 
+ */
 
 class A_Model_Field {
 	// from Input Controller
 	public $name = '';
 	public $value = '';
+	public $required = false;
 	public $filters = null;
 	public $rules = null;
 	public $errorMsg = array();
@@ -67,6 +73,15 @@ class A_Model_Field {
 	
 	public function isError() {
 		return $this->error;
+	}
+	
+	public function setRequired($value=true) {
+		$this->required = $value;
+		return $this;
+	}
+	
+	public function isRequired() {
+		return $this->required;
 	}
 	
 	public function isValid() {

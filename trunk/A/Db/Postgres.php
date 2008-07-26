@@ -1,5 +1,9 @@
 <?php
-/*
+/**
+ * Database connection using the postgres library
+ *
+ * @package A_Db
+ * 
  * DSN array contain:
  * 'host' or 'hostspec'
  * 'user' or 'username'

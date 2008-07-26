@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generate SQL joins 
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Join {
 	protected $joins = array();

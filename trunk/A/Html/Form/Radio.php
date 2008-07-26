@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Html/Form/Radiocheckbox.php';
+/**
+ * Generate HTML form radio button input
+ *
+ * @package A_Html
+ */
 
 class A_Html_Form_Radio extends A_Html_Form_Radiocheckbox {
 

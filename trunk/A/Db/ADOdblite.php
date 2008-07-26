@@ -1,5 +1,9 @@
 <?php
-/*
+/**
+ * Database connection class using ADOdb
+ *
+ * @package A_Db
+ * 
  * DSN array contain:
  * 'type'
  * 'hostspec'

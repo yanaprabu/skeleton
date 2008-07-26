@@ -1,4 +1,9 @@
 <?php
+/**
+ *  Wrap bootstrap in a class that has configuration settings
+ * 
+ * @package A 
+ */
 
 class A_Application {
 	protected $exception;

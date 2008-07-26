@@ -1,5 +1,10 @@
 <?php
 require_once 'A/Sql/Statement.php';
+/**
+ * Generate SQL UPDATE statement
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Update extends A_Sql_Statement {
 	protected $table;

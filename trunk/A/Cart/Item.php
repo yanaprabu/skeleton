@@ -1,4 +1,9 @@
 <?php
+/**
+ * Escapsulate a shopping cart item
+ * 
+ * @package A_Cart 
+ */
 
 class A_Cart_Item {protected $id;protected $productid;protected $unitprice;protected $quantity;protected $quantityfixed;protected $data;protected $isunique;protected $hastax;protected $hasshipping;
 

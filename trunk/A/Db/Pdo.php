@@ -1,4 +1,9 @@
 <?php
+/**
+ * Adapt PDO to basic database connection functionality
+ * 
+ * @package A_Db 
+ */
 
 class A_Db_Pdo extends PDO {
 

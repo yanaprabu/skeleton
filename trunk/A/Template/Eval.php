@@ -1,6 +1,10 @@
 <?php
-
 include_once('A/Template/File.php');
+/**
+ * Template class that loads and eval()'s PHP templates. Templates can have blocks.
+ * 
+ * @package A_Template 
+ */
 
 class A_Template_Eval extends A_Template_File {
 	protected $str = '';

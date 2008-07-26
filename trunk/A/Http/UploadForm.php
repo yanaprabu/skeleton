@@ -1,4 +1,9 @@
 <?php
+/**
+ * Support for generating HTML upload forms
+ * 
+ * @package A_Http 
+ */
 
 class A_Http_UploadForm {protected $upload;protected $hidden = array();
 

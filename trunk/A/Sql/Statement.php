@@ -1,4 +1,9 @@
 <?php
+/**
+ * Base class for SQL classes to provide Observer support for escaping 
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Statement {
 	protected $db;

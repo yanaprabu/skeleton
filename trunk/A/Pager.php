@@ -1,4 +1,9 @@
 <?php
+/**
+ * Pagination classes -- need to be split up 
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager {
 	public $datasource = null;					// Pageable datasource object

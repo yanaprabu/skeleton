@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generate SQL unions 
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Union extends A_Sql_Statement {
 	protected $selects = array();
