@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Cart/Url.php';
 include_once 'A/Cart/Item.php';
+/**
+ * Shopping Cart request processing class
+ *
+ * @package A_Cart
+ */
 
 class A_Cart_Request extends A_Cart_Url
 {	protected $newitems = array();

@@ -1,4 +1,9 @@
 <?php
+/**
+ * deprecated
+ * 
+ * @package A_Html 
+ */
 
 class A_Html_Form_Field {
 

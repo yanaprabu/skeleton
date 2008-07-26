@@ -1,4 +1,9 @@
 <?php
+/**
+ * Access to user data from session 
+ * 
+ * @package A_User 
+ */
 
 class A_User_Session {
 	protected $data = array();

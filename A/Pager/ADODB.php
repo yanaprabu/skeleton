@@ -1,4 +1,9 @@
 <?php
+/**
+ * Datasource access class for pager using ADODB  
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager_ADODB {
 	protected $query;

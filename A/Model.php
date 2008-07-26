@@ -2,6 +2,11 @@
 include_once 'A/FilterChain.php';
 include_once 'A/Validator.php';
 include_once 'A/Model/Field.php';
+/**
+ * Base class for Models with filtering and validation 
+ * 
+ * @package A_Base 
+ */
 
 class A_Model {
 	public $fields = array();

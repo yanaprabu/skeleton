@@ -1,4 +1,9 @@
 <?php
+/**
+ * Basic functionality to map table columns to object fields
+ * 
+ * @package A_Db 
+ */
 
 class A_Db_Datamapper {
 	protected $db = null;

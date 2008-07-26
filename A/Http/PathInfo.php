@@ -1,5 +1,10 @@
 <?php
-/*
+/**
+ * Parse PATH_INFO and set Request object with values
+ *
+ * @package A_Http
+ *
+
 This class maps PATH_INFO values onto request vars using an array that describes
 the mappings. The array in in the format of the following example:
 

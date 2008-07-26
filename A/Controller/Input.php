@@ -3,6 +3,11 @@ include_once 'A/Controller/Action.php';
 include_once 'A/FilterChain.php';
 include_once 'A/Validator.php';
 include_once 'A/DL.php';
+/**
+ * Controller class with request filtering and validation
+ *
+ * @package A_Controller
+ */
 
 class A_Controller_Input extends A_Controller_Action {
 	public $params = array();

@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Session.php';
 include_once 'A/Cart/Manager.php';
+/**
+ * Shoping Cart session support
+ *
+ * @package A_Cart
+ */
 
 class A_Cart_Session {
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Base filter class -- probably not needed 
+ * 
+ * @package A_ 
+ */
 
 class A_Filter {
 	public function run ($value) {
@@ -7,6 +12,7 @@ class A_Filter {
 }
 
 
+/*
 class A_Filter_Regexp extends A_Filter {
 	protected $from = '';
 	protected $to = '';
@@ -75,3 +81,4 @@ public function run ($value) {
 }
 
 }
+*/

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Encapsulate the HTTP request in a class to access information and values
+ * 
+ * @package A_Http 
+ */
 
 class A_Http_Request {
 	public $data = array();

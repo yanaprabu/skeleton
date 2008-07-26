@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Controller/Input.php';
+/**
+ * Application controller class for state/transition based action selection
+ *
+ * @package A_Controller
+ */
 
 class A_Controller_App extends A_Controller_Input {
 	protected $state_name = '';

@@ -1,9 +1,9 @@
 <?php
 require_once 'A/Sql/Statement.php';
 /**
- * A_Sql_Columns
- *
- * - Requires A_Sql_Statement
+ * Generate SQL SELECT statement
+ * 
+ * @package A_Sql 
  * @license    BSD
  * @version    $Id:$
  */

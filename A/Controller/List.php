@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Controller/Input.php';
 include_once 'A/Pager.php';
+/**
+ * was intended for pagination support -- not used
+ *
+ * @package A_Controller
+ */
 
 
 class A_Controller_List extends A_Controller_Input {

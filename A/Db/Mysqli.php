@@ -1,4 +1,9 @@
 <?php
+/**
+ * Basic database connection functionality using the mysqli library
+ * 
+ * @package A_Db 
+ */
 
 class A_Db_Mysqli extends MySQLi {
 

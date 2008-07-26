@@ -1,4 +1,9 @@
 <?php
+/**
+ * Base class for validation rules  
+ * 
+ * @package A_Validator 
+ */
 
 class A_Rule {
 	protected $field;

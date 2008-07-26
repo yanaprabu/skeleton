@@ -1,4 +1,9 @@
 <?php
+/**
+ * Instantiation of exception objects 
+ * 
+ * @package A 
+ */
 
 class A_Exception {
 

@@ -1,7 +1,8 @@
 <?php
-/*
+/**
  * PayPal (credit card processsing) class library
  *
+ * @package A_Cart
  */
 
 

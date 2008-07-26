@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 
 UPS Shipping Types:
 
@@ -14,8 +14,9 @@ UPS Shipping Types:
      XPR => Worldwide Express
      XPD => Worldwide Expedited
      XDM => Worldwide Express Plus
-      
-*/
+    
+ * @package A_Cart
+ */
 
 class A_Cart_Shipping_UPS
 {protected $http_post = false;		// true=POST, false=GETprotected $shipping_type;protected $postal_from;protected $postal_to;protected $country_to;protected $weight;protected $value = 0;protected $buffer = '';

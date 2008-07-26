@@ -1,6 +1,10 @@
 <?php
-
 require_once 'A/Sql/Expression.php';
+/**
+ * Generate SQL values list
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Values extends A_Sql_Expression {
 	public function render() {

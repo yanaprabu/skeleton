@@ -1,4 +1,9 @@
 <?php
+/**
+ * Run one or more Rules on a container
+ * 
+ * @package A_Validator 
+ */
 
 class A_Validator {
 	protected $chain = array();

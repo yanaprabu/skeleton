@@ -1,4 +1,9 @@
 <?php
+/**
+ * Filter a string extracting a specfied substring
+ * 
+ * @package A_Filter 
+ */
 
 class A_Filter_Substr {
 protected $start = 0;

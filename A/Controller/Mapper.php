@@ -1,5 +1,10 @@
 <?php
 include_once 'A/DL.php';
+/**
+ * Provides mapping from module/controller/action request vars to path/class/method
+ *
+ * @package A_Controller
+ */
 
 class A_Controller_Mapper
 {

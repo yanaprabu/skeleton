@@ -1,4 +1,9 @@
 <?php
+/**
+ * Simple front controller implementation
+ * 
+ * @package A_Controller
+ */
 
 class A_Controller_Frontsimple{
 protected $action_dir;

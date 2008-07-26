@@ -1,4 +1,9 @@
 <?php
+/**
+ * Datasource access class for Pager using array 
+ * 
+ * @package A_Pager 
+ */
 
 class A_Pager_Array {
 	protected $data;

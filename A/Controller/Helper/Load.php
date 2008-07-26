@@ -1,12 +1,12 @@
 <?php
-
 /**
  * A_Controller_Helper_Load
  * 
  * special helper for Action Controllers that provides class loading and instantiation within the applicaition directory
  * 
- * @package Controller
+ * @package A_Controller
  */
+
 class A_Controller_Helper_Load {
 	protected $locator;
 	protected $paths = array('app'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');

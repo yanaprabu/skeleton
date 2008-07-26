@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Model.php';
 include_once 'A/Model/Request/Field.php';
+/**
+ * Model containing filtered and validated Request values 
+ * 
+ * @package A_Model 
+ */
 
 class A_Model_Request extends A_Model {
 	protected $submit_field_name = 'submit';

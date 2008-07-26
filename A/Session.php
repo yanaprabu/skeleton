@@ -1,4 +1,9 @@
 <?php
+/**
+ * Encapsulate session data 
+ * 
+ * @package A_Session 
+ */
 
 class A_Session {
 	protected $_data = array();

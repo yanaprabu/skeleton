@@ -1,4 +1,9 @@
 <?php
+/**
+ * Basic MVC controller functionality
+ * 
+ * @package A_Controller 
+ */
 
 class A_Controller_Action {
 	const APP = 'app';

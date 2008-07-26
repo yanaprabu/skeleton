@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Html/Tag.php';
+/**
+ * Generate HTML paragraph tag
+ *
+ * @package A_Html
+ */
 
 class A_Html_P extends A_Html_Tag {
 

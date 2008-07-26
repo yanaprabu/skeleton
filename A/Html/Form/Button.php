@@ -1,6 +1,10 @@
 <?php
 include_once 'A/Html/Tag.php';
-
+/**
+ * Generate HTML form button
+ *
+ * @package A_Html
+ */
 class A_Html_Form_Button extends A_Html_Tag {
 
 	/*

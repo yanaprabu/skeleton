@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generate URLs to add items to the shopping cart
+ * 
+ * @package A_Cart 
+ */
 
 class A_Cart_Url
 {protected $cart;

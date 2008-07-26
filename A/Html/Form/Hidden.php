@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Html/Tag.php';
+/**
+ * Generate HTML form hidden input
+ *
+ * @package A_Html
+ */
 
 class A_Html_Form_Hidden extends A_Html_Tag {
 

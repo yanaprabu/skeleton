@@ -1,4 +1,9 @@
 <?php
+/**
+ * Filter value with htmlentities() function with provided quote style and character set
+ * 
+ * @package A_Filter
+ */
 
 class A_Filter_Htmlentities {
 public $character_set;

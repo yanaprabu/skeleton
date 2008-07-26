@@ -1,6 +1,10 @@
 <?php
-
 require_once 'A/Sql/Table.php';
+/**
+ * Generate SQL FROM clause
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_From extends A_Sql_Table  {
 	/**

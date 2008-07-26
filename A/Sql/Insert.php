@@ -1,6 +1,10 @@
 <?php
-
 require_once 'A/Sql/Statement.php';
+/**
+ * Generate SQL INSERT statement
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_Insert extends A_Sql_Statement {
 	protected $table;

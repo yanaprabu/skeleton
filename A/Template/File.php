@@ -1,5 +1,10 @@
 <?php
 include_once('A/Template.php');
+/**
+ * Base Template class for templates that are read as files
+ * 
+ * @package A_Template 
+ */
 
 class A_Template_File extends A_Template {
 	protected $blocks = array();

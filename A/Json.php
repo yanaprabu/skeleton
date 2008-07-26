@@ -1,4 +1,9 @@
 <?php
+/**
+ * JSON encoding and decoding 
+ * 
+ * @package A_Json 
+ */
 
 class A_Json {
 	protected $encoded = null;  // holds passed or last encoded JSON strings

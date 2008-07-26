@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Html/Tag.php';
+/**
+ * Generate HTML form textarea input
+ *
+ * @package A_Html
+ */
 
 class A_Html_Form_Textarea extends A_Html_Tag {
 

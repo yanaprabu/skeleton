@@ -1,6 +1,10 @@
 <?php
-
 require_once 'A/DataContainer.php';
+/**
+ * Abstract base class for configuration
+ *
+ * @package A_Config
+ */
 
 abstract class A_Config_Abstract {
    protected $_filename;

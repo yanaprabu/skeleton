@@ -1,6 +1,8 @@
 <?php
-/*
+/**
  * Authorizenet (credit card processsing) class library
+ * 
+ * @package A_Cart
  */
 
 define('A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE', 1);
@@ -11,14 +13,19 @@ define('A_CART_PAYMENT_AUTHORIZENET_TRXTYPE_AUTHORIZATION', 'A');
 
 
 class A_Cart_Payment_Authorizenet
-{	protected $server;	protected $serverlist;	protected $servermode;	protected $delimiter = '|';	protected $transaction;	protected $response = array();	// split on delimiters	protected $response_raw = '';	protected $errmsg;
+{	const SERVER_LIVE = 1;
+	const SERVER_TEST = 2;
+	const SERVER_NONE = 3;
+	const TRXTYPE_SALE = 'S';
+	const TRXTYPE_AUTHORIZATION = 'A';
+	protected $server;	protected $serverlist;	protected $servermode;	protected $delimiter = '|';	protected $transaction;	protected $response = array();	// split on delimiters	protected $response_raw = '';	protected $errmsg;
 	
-	public function __construct($user='', $passwd='', $partner='', $mode=A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE)
+	public function __construct($user='', $passwd='', $partner='', $mode=self::SERVER_LIVE)
 	{
 		$this->serverlist = array(
-			A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE=>'https://secure.authorize.net/gateway/transact.dll',
-			A_CART_PAYMENT_AUTHORIZENET_SERVER_TEST=>'https://test.authorize.net/gateway/transact.dll',
-			A_CART_PAYMENT_AUTHORIZENET_SERVER_NONE=>'',
+			self::SERVER_LIVE => 'https://secure.authorize.net/gateway/transact.dll',
+			self::SERVER_TEST => 'https://test.authorize.net/gateway/transact.dll',
+			self::SERVER_NONE => '',
 		);
 		$this->transaction = array(
 				'x_login'				=> $user,
@@ -68,20 +75,20 @@ class A_Cart_Payment_Authorizenet
 		return $this;
 	}
 	
-	public function setServerMode($mode=A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE) {
+	public function setServerMode($mode=self::SERVER_LIVE) {
 		switch ($mode) {
-		case A_CART_PAYMENT_AUTHORIZENET_SERVER_TEST:
+		case self::SERVER_TEST:
 			$this->transaction['x_test_request'] = 'TRUE';
-			$this->server = $this->serverlist[A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE];
+			$this->server = $this->serverlist[self::SERVER_LIVE];
 			break;
-		case A_CART_PAYMENT_AUTHORIZENET_SERVER_NONE:
+		case self::SERVER_NONE:
 			$this->transaction['x_test_request'] = 'TRUE';
-			$this->server = $this->serverlist[A_CART_PAYMENT_AUTHORIZENET_SERVER_NONE];
+			$this->server = $this->serverlist[self::SERVER_NONE];
 			break;
-		case A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE:
+		case self::SERVER_LIVE:
 		default:
 			$this->transaction['x_test_request'] = 'FALSE';
-			$this->server = $this->serverlist[A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE];
+			$this->server = $this->serverlist[self::SERVER_LIVE];
 		}
 		$this->servermode = $mode;
 		return $this;
@@ -207,9 +214,9 @@ class A_Cart_Payment_Authorizenet
 	
 	public function process() {
 		
-		if ($this->servermode == A_CART_PAYMENT_AUTHORIZENET_SERVER_NONE) {
+		if ($this->servermode == self::SERVER_NONE) {
 			$this->response[0] = 0;
-			$this->response[3] = 'Did not connect to credit card processor (A_CART_PAYMENT_AUTHORIZENET_SERVER_NONE). ';
+			$this->response[3] = 'Did not connect to credit card processor (self::SERVER_NONE). ';
 		} else {
 			
 			$fields = '';

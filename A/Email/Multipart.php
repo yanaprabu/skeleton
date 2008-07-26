@@ -1,4 +1,9 @@
 <?php
+/**
+ * Generate mime part for inclusion in multipart emails 
+ * 
+ * @package A_Email 
+ */
 
 class A_Email_Multipart
 {protected $parts;protected $headers;protected $boundary;protected $type;protected $non_mime_message;

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Filter an array of values using provided filter
+ * 
+ * @package A_Filter 
+ */
+
 class A_Filter_Iterator {
 protected $filter;
 	

@@ -4,6 +4,7 @@
  * A_Db_Schema
  *
  * - Requires A_Db_Schema
+ * @package A_Db
  * @license    BSD
  * @version    $Id:$
  */

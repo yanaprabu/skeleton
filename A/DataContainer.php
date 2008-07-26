@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * A_DataContainer
  *
  * standard container to contain scalars and arrays

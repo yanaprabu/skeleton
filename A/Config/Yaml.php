@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Config/Abstract.php';
+/**
+ * Support for reading YAML configuration files -- very minimal support
+ *
+ * @package A_Config
+ */
 
 class A_Config_Yaml extends A_Config_Abstract {
 

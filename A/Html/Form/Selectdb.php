@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Html/Form/Select.php';
+/**
+ * Generate HTML form select from database query data
+ *
+ * @package A_Html
+ */
 
 class A_Html_Form_Selectdb extends A_Html_Form_Select {
 

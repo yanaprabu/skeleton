@@ -1,6 +1,10 @@
 <?php
 include_once 'A/Sql/Select.php';
-
+/**
+ * Datasource access using the Table Data Gateway pattern
+ *
+ * @package A_Db
+ */
 class A_Db_Tabledatagateway {
 	protected $db;
 	protected $table = '';

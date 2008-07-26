@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Controller/App.php';
 include_once 'A/Rule.php';
+/**
+ * Controller class for callback style form support
+ *
+ * @package A_Controller
+ */
 
 
 class A_Controller_Form extends A_Controller_App {

@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Rule/Abstract.php';
+/**
+ * Rule to check for date value
+ * 
+ * @package A_Validator 
+ */
 
 class A_Rule_Date extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Date';

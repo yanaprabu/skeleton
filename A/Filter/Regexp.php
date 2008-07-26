@@ -1,4 +1,9 @@
 <?php
+/**
+ * Filter a string with a regular expression
+ * 
+ * @package A_Filter 
+ */
 
 class A_Filter_Regexp {
 protected $from = '';

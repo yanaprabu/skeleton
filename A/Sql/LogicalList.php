@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Sql/Statement.php';
+/**
+ * Generate SQL AND/OR/NOT list strings
+ * 
+ * @package A_Sql 
+ */
 
 class A_Sql_LogicalList extends A_Sql_Statement {
 	protected $data = array();

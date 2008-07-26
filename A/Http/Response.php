@@ -1,5 +1,10 @@
 <?php
 include_once 'A/Http/View.php';
+/**
+ * HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
+ * 
+ * @package A_Http 
+ */
 
 class A_Http_Response extends A_Http_View {
 
