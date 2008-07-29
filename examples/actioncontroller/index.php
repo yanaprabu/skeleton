@@ -1,5 +1,6 @@
  <?php
 include 'config.php';
+
 include 'A/DL.php';
 include 'A/Locator.php';
 include 'A/Http/Request.php';
@@ -22,5 +23,18 @@ $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
 
 $Response->out();
+
+/*
+require_once('A/Application.php');
+
+
+$App = new A_Application();
+
+$App->setPath(dirname($_SERVER['SCRIPT_FILENAME']) . 'application/');
+
+//output content directly to screen
+echo $App->run();
+#dump($App);
+*/
 
 if (isset($_SESSION)) dump($_SESSION);
