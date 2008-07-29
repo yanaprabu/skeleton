@@ -25,12 +25,6 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	protected $response = null;
 	
 	/**
-	 * Registered plugins
-	 * @var array
-	 */
-	protected $plugins = array();
-	
-	/**
 	 * Request getter
 	 * @return A_Request
 	 */
@@ -44,7 +38,7 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 * @return A_Reponse
 	 */
 	public function getResponse() {
-		if(!$this->response instanceof A_Response) {
+		if(!$this->response) {
 			$this->response = new A_Http_Reponse();
 		}
 		
@@ -58,7 +52,7 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 * @param string $url
 	 */
 	public function redirect($url) {
-		return $this->getResponse()->redirect($url);
+		return $this->getResponse()->setRedirect($url);
 	}
 	
 	/**
@@ -69,7 +63,7 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 * @return mixed
 	 */
 	public function getParam($param,$default = null) {
-		return $this->getRequest()->getParam($param,$default);
+		return $this->request->get($param,$default);
 	}
 	
 	/**
@@ -81,14 +75,30 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 */
 	public function dispatch(A_Locator $locator, $action) {
 		if (method_exists($this, $action)) {
-			$this->request = $locator->get('Request');
-				   	
 			$this->preDispatch();
 			$this->$action($locator);
 			$this->postDispatch();
 		} else {
 			// set error here
 		}
+	}
+	
+	/**
+	 * load view object
+	 */
+	public function view($name='', $scope='') {
+		if (!$this->view) {
+			$this->view = $this->load($scope)->view($name);
+		}
+		return $this->view;
+	}
+	
+	/**
+	 * render view
+	 */
+	public function render() {
+		$this->response->setContent($this->view->render());
+		return $this->response->render();
 	}
 	
 	/**
@@ -101,22 +111,4 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 */
 	public function postDispatch() {}
 	
-	/**
-	 * Register plug-in
-	 *  - Returns plug-in if only key is specified
-	 * @param string $key
-	 * @param A_Controller_Plugin $plugin
-	 * @return mixed
-	 */
-	public function plug($key, $plugin = null) {
-		if(!is_string($key) || empty($key)) {
-//			throw new A_Controller_Exception('Plugin key must be a non-empty string');
-		}
-		
-		if($plugin instanceof A_Controller_Plugin) {
-			return $this->plugins[$key] = $plugin;
-		} 
-		
-		return (isset($this->plugins[$key])) ? $this->plugins[$key] : null;
-	}
 }
