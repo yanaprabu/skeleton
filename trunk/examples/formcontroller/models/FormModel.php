@@ -1,5 +1,11 @@
 <?php
 include_once 'A/Model/Request.php';
+require_once('A/Filter/Regexp.php');
+require_once('A/Filter/Toupper.php');
+require_once('A/Rule/Notnull.php');
+require_once('A/Rule/Match.php');
+require_once('A/Rule/Range.php');
+require_once('A/Rule/Length.php');
 
 class FormModel extends A_Model_Request {
 	function __construct($locator=null) {
