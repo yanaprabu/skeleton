@@ -39,7 +39,8 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 */
 	public function getResponse() {
 		if(!$this->response) {
-			$this->response = new A_Http_Reponse();
+			include_once 'A/Http/Response.php';
+			$this->response = new A_Http_Response();
 		}
 		
 		return $this->response;
@@ -97,7 +98,7 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 * render view
 	 */
 	public function render() {
-		$this->response->setContent($this->view->render());
+		$this->getResponse()->setContent($this->view->render());
 		return $this->response->render();
 	}
 	
