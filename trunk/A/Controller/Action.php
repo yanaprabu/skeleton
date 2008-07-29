@@ -11,11 +11,17 @@ class A_Controller_Action {
 	const CONTROLLER = 'controller';
 	const ACTION = 'action';
 	protected $locator;
+	protected $request;
+	protected $response;
 	protected $load = null;
 	protected $helpers = array();
 	
 	public function __construct($locator=null){
-	    $this->locator = $locator;
+	    if ($locator) {
+			$this->locator = $locator;
+			$this->request = $locator->get('Request');
+			$this->response = $locator->get('Response');
+	    }
 	}
 	 
 	protected function forward($dir, $class, $method='run', $args=null){
@@ -61,21 +67,4 @@ class A_Controller_Action {
 		}
 	}
  
-/*
-	protected function __call($name, $args=null) {
-		$args = count($args) ? $args : null;
-		if (! isset($this->helpers[$name])) {
-		    $class = ucfirst($name);
-		    if (isset($this->locator) && $this->locator->has($name)) {
-		    	$obj = $this->locator->get($name);
-		    	return $obj;
-		    }
-		    $this->helpers[$name] = new $class($this->locator, $args);
-		} else {
-			$this->helpers[$name]->__construct($this->locator, $args);
-		}
-		return $this->helpers[$name];
-	}
-*/
-
 }
