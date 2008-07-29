@@ -9,7 +9,7 @@ class A_Model_Field {
 	// from Input Controller
 	public $name = '';
 	public $value = '';
-	public $required = false;
+	public $required = 0;
 	public $filters = null;
 	public $rules = null;
 	public $errorMsg = array();
@@ -39,12 +39,26 @@ class A_Model_Field {
 	}
 
 	public function addFilter($filter) {
-		$this->filters[] = $filter;
+		// assign one or more filters
+		if (is_array($filter)) {
+			foreach ($filter as $f) {
+				$this->filters[] = $f;
+			}
+		} else {
+			$this->filters[] = $filter;
+		}
 		return $this;
 	}
 	
 	public function addRule($rule) {
-		$this->rules[] = $rule;
+		// assign one or more rules
+		if (is_array($rule)) {
+			foreach ($rule as $r) {
+				$this->rules[] = $r;
+			}
+		} else {
+			$this->rules[] = $rule;
+		}
 		return $this;
 	}
 	
@@ -75,7 +89,8 @@ class A_Model_Field {
 		return $this->error;
 	}
 	
-	public function setRequired($value=true) {
+/*
+	public function setRequired($value=1) {
 		$this->required = $value;
 		return $this;
 	}
@@ -83,7 +98,8 @@ class A_Model_Field {
 	public function isRequired() {
 		return $this->required;
 	}
-	
+*/
+		
 	public function isValid() {
 		return ! $this->error;
 	}

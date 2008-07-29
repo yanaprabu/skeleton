@@ -9,6 +9,7 @@ include_once 'A/Model/Field.php';
  */
 
 class A_Model {
+	public $relations = array();
 	public $fields = array();
 	public $filters = array();
 	public $rules = array();
@@ -22,16 +23,48 @@ class A_Model {
 		return $this;
 	}
 	
-	public function addFilter($filter) {
-		if ($filter) {
-			$this->filters[] = $filter;
+	public function addFilter($filter, $fields=array()) {
+		if ($fields) {
+			// if field names provided then assign filter to multiple fields
+			foreach ($fields as $name) {
+				if (! isset($this->fields[$name])) {
+					// if field does not exist the create it
+					$this->fields[$name] = new A_Model_Field($name);
+				}
+				$this->fields[$name]->addFilter($filter);
+			}
+		} else {
+			// assign as global filter(s)
+			if (is_array($filter)) {
+				foreach ($filter as $f) {
+					$this->filters[] = $f;
+				}
+			} else {
+				$this->filters[] = $filter;
+			}
 		}
 		return $this;
 	}
 	
-	public function addRule($rule) {
-		if ($rule) {
-			$this->rules[] = $rule;
+	public function addRule($rule, $fields=array()) {
+		if ($fields) {
+			// if field names provided then assign rule to multiple fields
+			foreach ($fields as $name) {
+				if (! isset($this->fields[$name])) {
+					// if field does not exist the create it
+					$this->fields[$name] = new A_Model_Field($name);
+				}
+				$this->fields[$name]->addRule($rule);
+			}
+		} else {
+			// assign as global rule(s)
+			if (is_array($rule)) {
+				foreach ($rule as $r) {
+					$this->rules[] = $r;
+				}
+			} else {
+				$this->rules[] = $rule;
+			}
 		}
 		return $this;
 	}
@@ -68,8 +101,10 @@ class A_Model {
 		if ($field_names) {
 			if ($this->filters) {
 				foreach ($this->filters as $filter) {
+dump($filer, 'FILTER: ');
 					// if filter is only for specific fields do only those, otherwise all
 					$names = $filter['names'] ? $filter['names'] : $field_names;
+dump($names, 'NAMES: ');
 					foreach ($names as $name) {
 						$datasource->set($name, $filterchain->run($datasource->get($name), $filter['filter']));
 					}
