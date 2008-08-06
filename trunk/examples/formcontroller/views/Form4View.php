@@ -5,6 +5,7 @@ class Form4View {
 	protected $errmsgs = array();
 	
 	function __construct() {
+        parent::__construct($locator);
 	}
 
 	function setValues($values) {
