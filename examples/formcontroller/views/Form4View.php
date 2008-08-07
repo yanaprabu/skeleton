@@ -1,10 +1,10 @@
 <?php
 
-class Form4View {
+class Form4View extends A_Http_View {
 	protected $values = array();
 	protected $errmsgs = array();
 	
-	function __construct() {
+	function __construct($locator) {
         parent::__construct($locator);
 	}
 

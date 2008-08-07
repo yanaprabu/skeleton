@@ -2,7 +2,7 @@
 require_once('config.php');
 require_once('A/Locator.php');
 require_once('A/Http/Request.php');
-#require_once('A/Http/Response.php');
+require_once('A/Http/Response.php');
 require_once('controllers/Form4.php');
 
 error_reporting(E_ALL);
