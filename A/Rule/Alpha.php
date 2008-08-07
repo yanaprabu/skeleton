@@ -14,7 +14,7 @@ class A_Rule_Alpha extends A_Rule_Abstract {
       $this->errorMsg = $errorMsg;
     }
 
-    public function isValid($container) {
-      return (preg_match("/^[[:alpha:]]+$/", $container->get($this->field)));
+    protected function validate() {
+      return (preg_match("/^[[:alpha:]]+$/", $this->getValue()));
     }
 }

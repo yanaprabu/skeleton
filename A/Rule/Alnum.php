@@ -14,7 +14,7 @@ class A_Rule_Alnum extends A_Rule_Abstract {
       $this->errorMsg = $errorMsg;
     }
 
-    public function isValid($container) {
-      return (preg_match("/^[[:alnum:]]+$/", $container->get($this->field)));
+    protected function validate() {
+      return (preg_match("/^[[:alnum:]]+$/", $this->getValue()));
     }
 }

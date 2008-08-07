@@ -18,8 +18,8 @@ class A_Rule_Range extends A_Rule_Abstract {
 		$this->errorMsg = $errorMsg;
     }
 
-    public function isValid($container) {
-		$value = $container->get($this->field);
+    protected function validate() {
+		$value = $this->getValue();
 
 		// Only maximum defined
 		if ($this->min == NULL) {

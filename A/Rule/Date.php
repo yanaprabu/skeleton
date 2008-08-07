@@ -18,8 +18,8 @@ class A_Rule_Date extends A_Rule_Abstract {
       return $this->errorMsg;
     }
 
-    public function isValid($container) {
-      return (preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$/", $container->get($this->field),
+    protected function validate() {
+      return (preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$/", $this->getValue(),
               $matches) && checkdate($matches[2], $matches[3], $matches[1]));
     }
 }

@@ -15,7 +15,7 @@ class A_Rule_Inarray extends A_Rule_Abstract {
 		$this->errorMsg = $errorMsg;
 	}
 	
-	public function isValid($container) {
-		return in_array($container->get($this->field), $this->array);
+	protected function validate() {
+		return in_array($this->getValue(), $this->array);
 	}
 }

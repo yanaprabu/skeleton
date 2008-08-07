@@ -14,7 +14,7 @@ class A_Rule_Numeric extends A_Rule_Abstract {
       $this->errorMsg = $errorMsg;
     }
 
-    public function isValid($container) {
-      return (is_numeric($container->get($this->field)));
+    protected function validate() {
+      return (is_numeric($this->getValue()));
     }
 }
