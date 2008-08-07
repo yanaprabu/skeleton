@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<map>
+	<class>User</class>
+
+	<table>users</table>
+
+	<mapping>
+		<property>username</property>
+		<field>userid</field>
+		<type>string</type>
+		<size>20</size>
+		<is_key>1</is_key>
+		<table></table>
+		<filters></filters>
+	</mapping>
+
+	<mapping>
+		<property>password</property>
+		<field>password</field>
+		<type>string</type>
+		<size>24</size>
+		<is_key></is_key>
+		<table></table>
+		<filters></filters>
+	</mapping>
+
+	<mapping>
+		<property>active</property>
+		<field>inactive</field>
+		<type>string</type>
+		<size>20</size>
+		<is_key></is_key>
+		<table>company</table>
+		<filters></filters>
+	</mapping>
+
+	<join>
+		<table1>users</table1>
+		<field1>userid</field1>
+		<table2>company</table2>
+		<field2>users_id</field2>
+		<join_type>LEFT</join_type>
+	</join>
+</map>
