@@ -28,7 +28,6 @@ class A_Rule_Set implements A_Rule_Interface {
     
     public function isValid($container) {
     
-        pr($this->chain);
 		$this->errorMsg = array();
 		foreach ($this->chain as $key => $rule) {
 			if ($this->excludes && (in_array($rule->getName(), $this->excludes))) {
