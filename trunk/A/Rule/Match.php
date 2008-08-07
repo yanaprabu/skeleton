@@ -16,7 +16,7 @@ class A_Rule_Match extends A_Rule_Abstract {
       $this->errorMsg = $errorMsg;
     }
 
-    public function isValid($container) {
-      return (strcmp($container->get($this->field), $container->get($this->refField)) == 0);
+    protected function validate() {
+      return (strcmp($this->getValue(), $this->getValue($this->refField)) == 0);
     }
 }

@@ -14,7 +14,7 @@ class A_Rule_Digit extends A_Rule_Abstract {
       $this->errorMsg = $errorMsg;
     }
 
-    public function isValid($container) {
-      return (preg_match("/^[[:digit:]]+$/", $container->get($this->field)));
+    protected function validate() {
+      return (preg_match("/^[[:digit:]]+$/", $this->getValue()));
     }
 }

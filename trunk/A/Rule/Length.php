@@ -18,8 +18,8 @@ class A_Rule_Length extends A_Rule_Abstract {
 		$this->errorMsg = $errorMsg;
 	}
 	
-	public function isValid($container) {
-		$value = strlen($container->get($this->field));
+	protected function validate() {
+		$value = strlen($this->getValue());
 		
 		// Only maximum defined
 		if ($this->min == NULL) {

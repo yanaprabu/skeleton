@@ -20,19 +20,19 @@ class A_Rule_Iterator extends A_Rule_Abstract {
       return $this->value;
     }
 
-    public function isValid($container) {
-		$data = $container->get($this->field);
+    protected function validate() {
+		$data = $this->getValue();
 		$result = false;
 		if (is_array($data)) {
 			foreach ($data as $value) {
-				$this->value = $value;		// for $this->get()
+				$this->value = $value;		// to allow access to $this->get() above
 				if (! $this->rule->isValid($this)) {
 					return false;
 				}
 			}
 			return true;
 		} else {
-			return ($this->rule->isValid($container));
+			return ($this->rule->validate($container));
 		}
     }
 }

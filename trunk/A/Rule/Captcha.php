@@ -48,7 +48,7 @@ class A_Rule_Captcha extends A_Rule_Abstract {
 		return $this;
     }
 
-    function isValid($request) {
+    function validate($request) {
 		return $request->get($this->field) == $this->getCode() ? true : false;
 	}
 	
