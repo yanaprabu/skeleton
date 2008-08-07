@@ -16,6 +16,7 @@ class A_Validator {
 			$rule = func_get_args();
 		}
 		$this->chain[] = $rule;
+        return $this;
 	}
 		
 	public function exclude($names=array()) {
@@ -23,6 +24,7 @@ class A_Validator {
 			$names = array($names);
 		}
 		$this->excludes = $names;
+        return $this;
 	}
 		
 	public function validate ($container, $rule=null) {
