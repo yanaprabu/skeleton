@@ -8,8 +8,6 @@ include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Inarray extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Inarray';
-	protected $min;
-	protected $max;
 	
 	public function __construct($field, $array, $errorMsg) {
 		$this->field = $field;
@@ -17,7 +15,7 @@ class A_Rule_Inarray extends A_Rule_Abstract {
 		$this->errorMsg = $errorMsg;
 	}
 	
-	public function isValid($value) {
-		return in_array($value, $this->array);
+	public function isValid($container) {
+		return in_array($container->get($this->field), $this->array);
 	}
 }
