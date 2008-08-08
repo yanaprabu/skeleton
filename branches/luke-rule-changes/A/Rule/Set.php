@@ -6,7 +6,7 @@ class A_Rule_Set implements A_Rule_Interface {
 	protected $errorMsg = array();
 	protected $dir = 'A_Rule_';
     
-	public function add($rule) {
+	public function addRule(A_Rule_Interface $rule) {
     
 		if (is_string($rule)) {
 			$rule = func_get_args();

@@ -5,5 +5,6 @@
 interface A_Rule_Interface {
 
     public function isValid($container);
+    public function getErrorMsg();
 
 }
