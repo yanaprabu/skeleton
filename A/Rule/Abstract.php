@@ -5,27 +5,49 @@
  * @package A_Validator 
  */
 
-class A_Rule_Abstract {
+abstract class A_Rule_Abstract implements A_Rule_Interface {
+
 	protected $container;
 	protected $field;
 	protected $errorMsg;
-
+    /**
+     * When creating children here, remember to make $field the first param and
+     * $errorMsg the last param. All other params should be in the middle
+     * 
+     * @param string field this rule applies to
+     * @param string error message to be returned if validation fails
+     */
 	public function __construct($field, $errorMsg) {
 		$this->field = $field;
 		$this->errorMsg = $errorMsg;
 	}
-	
+    /**
+     * Changes the field this rule applies to
+     * 
+     * @param string field this rule applies to
+     * @return A_Rule_Abstract returns this instance of this object (for fluent interface)
+     */
 	public function setName($field) {
 		$this->field = $field;
 		return $this;
 	}
-
+    /**
+     * Returns the field this rule applies to
+     * 
+     * @return string field this rule applies to
+     */
 	public function getName() {
 		return $this->field;
 	}
-
-	public function getValue($name='') {
-		if ($name == '') {
+    /**
+     * Returns the value associated with this rule by default, but can return any value in
+     * the data container that this rule is validating
+     * 
+     * @param string field you're trying to access
+     * @return mixed whatever is inside the container array at key $name
+     */
+	public function getValue($name = null) {
+		if (is_null($name)) {
 			$name = $this->field;
 		}
 		if (is_array($this->container)) {
@@ -36,22 +58,38 @@ class A_Rule_Abstract {
 			return $this->container;
 		}
 	}
-
+    /**
+     * Sets the error message that is to be returned if this rule should fail
+     * 
+     * @param string error message
+     * @return A_Rule_Abstract returns this instance for fluent interface
+     */
 	public function setErrorMsg($errorMsg) {
 		$this->errorMsg = $errorMsg;
 		return $this;
 	}
-
+    /**
+     * Gets the error message that is to be returned if this rule should fail
+     * 
+     * @return string error message
+     */
 	public function getErrorMsg() {
 		return $this->errorMsg;
 	}
-
+    /**
+     * Tells whether this rule passes or not
+     * 
+     * @return boolean true if pass, fail otherwise
+     */
 	public function isValid($container) {
 		$this->container = $container;
 		return $this->validate($container);
 	}
+    /**
+     * Tells whether this rule passes or not (delegated to child class)
+     * 
+     * @return boolean true if pass, fail otherwise
+     */
+	abstract protected function validate();
 
-	protected function validate($container=null) {
-		trigger_error("A_Rule_::validate() is abstract!", E_USER_ERROR);
-	}
 }
