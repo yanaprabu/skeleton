@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 require_once('config.php');
 require_once('A/Http/Request.php');
-require_once('A/Validator.php');
+require_once('A/Rule/Set.php');
 require_once('A/Rule/Alpha.php');
 require_once('A/Rule/Length.php');
 require_once('A/Rule/Match.php');
@@ -10,7 +10,7 @@ require_once('A/Rule/Numeric.php');
 
 $request = new A_Http_Request();
 
-$validator = new A_Validator();
+$validator = new A_Rule_Set();
 $alpha = new A_Rule_Alpha('one', 'One is not alpha');
 $length = new A_Rule_Length('two', 5, null, 'Two must be 5 characters long');
 $match = new A_Rule_Match('one', 'two', 'Fields do not match');
@@ -21,8 +21,6 @@ $validator->addRule($match);
 #$validator->addRule($length);
 $validator->addRule('A_Rule_Length', 'two', 5, null, 'Two must be 5 characters long');
 
-$validator->validate($request);
-
 if ($validator->isValid($request)) {
 	$errmsg = 'OK';
 } else {
@@ -32,7 +30,7 @@ if ($validator->isValid($request)) {
 ?>
 <html>
 <head>
-<title>Validator Example</title>
+<title>A_Rule_Set and Rules Example</title>
 </head>
 <body>
 <h2>Validator Example</h2>
