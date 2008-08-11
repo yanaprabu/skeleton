@@ -5,11 +5,13 @@
  * @package A_Validator 
  */
 
-abstract class A_Rule_Abstract implements A_Rule_Interface {
+abstract class A_Rule_Abstract {
 
 	protected $container;
 	protected $field;
 	protected $errorMsg;
+	protected $optional = false;
+	
     /**
      * When creating children here, remember to make $field the first param and
      * $errorMsg the last param. All other params should be in the middle
@@ -25,7 +27,7 @@ abstract class A_Rule_Abstract implements A_Rule_Interface {
      * Changes the field this rule applies to
      * 
      * @param string field this rule applies to
-     * @return A_Rule_Abstract returns this instance of this object (for fluent interface)
+     * @return instance of this object (for fluent interface)
      */
 	public function setName($field) {
 		$this->field = $field;
@@ -40,6 +42,24 @@ abstract class A_Rule_Abstract implements A_Rule_Interface {
 		return $this->field;
 	}
     /**
+     * Sets whether field allows null values or not
+     * 
+     * @param boolean
+     * @return instance of this object (for fluent interface)
+     */
+	public function setOptional($tf) {
+		$this->optional = $tf;
+		return $this;
+	}
+    /**
+     * Whether field is allows null values or not
+     * 
+     * @return boolean value of optional flag
+     */
+	public function isOptional() {
+		return $this->optional;
+	}
+	/**
      * Returns the value associated with this rule by default, but can return any value in
      * the data container that this rule is validating
      * 
@@ -82,8 +102,20 @@ abstract class A_Rule_Abstract implements A_Rule_Interface {
      * @return boolean true if pass, fail otherwise
      */
 	public function isValid($container) {
-		$this->container = $container;
-		return $this->validate($container);
+	    $this->container = $container;
+	    if ($this->optional && $this->isNull()) {
+	        return true;
+	    } else {
+	        return $this->validate($container);
+	    }
+	}
+    /**
+     * Tells whether the value is '' or null
+     * 
+     * @return boolean true if value is '' or null, otherwise false
+     */
+	public function isNull() {
+	    return ($this->getValue() === '') || ($this->getValue() === null);
 	}
     /**
      * Tells whether this rule passes or not (delegated to child class)
