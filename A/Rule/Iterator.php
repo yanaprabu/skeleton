@@ -8,13 +8,21 @@ include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Iterator extends A_Rule_Abstract {
 	protected $rule;
-	protected $value;
+#	protected $value;
+	protected $params = array(
+							'rule' => null, 
+							'field' => '', 
+							'errorMsg' => '', 
+							'optional' => false
+							);
 	
+/*
     public function __construct($field, $rule, $errorMsg) {
 		$this->field    = $field;
 		$this->rule     = $rule;
 		$this->errorMsg = $errorMsg;
     }
+*/
 
     public function get($name) {
       return $this->value;
@@ -26,13 +34,13 @@ class A_Rule_Iterator extends A_Rule_Abstract {
 		if (is_array($data)) {
 			foreach ($data as $value) {
 				$this->value = $value;		// to allow access to $this->get() above
-				if (! $this->rule->isValid($this)) {
+				if (! $this->params['rule']->isValid($this)) {
 					return false;
 				}
 			}
 			return true;
 		} else {
-			return ($this->rule->validate($container));
+			return ($this->params['rule']->validate($container));
 		}
     }
 }

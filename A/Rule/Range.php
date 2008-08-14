@@ -8,28 +8,37 @@ include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Range extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Range';
-	protected $min;
-	protected $max;
-
-    public function __construct($field, $min, $max, $errorMsg) {
-		$this->field    = $field;
-		$this->min      = $min;
-		$this->max      = $max;
+#	protected $min;
+#	protected $max;
+	protected $params = array(
+							'min' => null, 
+							'max' => null, 
+							'field' => '', 
+							'errorMsg' => '', 
+							'optional' => false
+							);
+	
+/*
+	public function __construct($field, $min, $max, $errorMsg) {
+		$this->field= $field;
+		$this->min= $min;
+		$this->max= $max;
 		$this->errorMsg = $errorMsg;
-    }
-
+	}
+*/
+	
     protected function validate() {
 		$value = $this->getValue();
 
 		// Only maximum defined
-		if ($this->min == NULL) {
-			return ($value <= $this->max);
+		if ($this->params['min'] == NULL) {
+			return ($value <= $this->params['max']);
 		}
 		// Only minimum defined
-		if ($this->max == NULL) {
-			return ($value >= $this->min);
+		if ($this->params['max'] == NULL) {
+			return ($value >= $this->params['min']);
 		}
 		// Range defined
-		return (($this->min <= $value) && ($value <= $this->max));
+		return (($this->params['min'] <= $value) && ($value <= $this->params['max']));
 	}
 }

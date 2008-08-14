@@ -9,12 +9,7 @@ include_once 'A/Rule/Abstract.php';
 class A_Rule_Digit extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Digit';
 
-    public function __construct($field, $errorMsg) {
-      $this->field    = $field;
-      $this->errorMsg = $errorMsg;
-    }
-
-    protected function validate() {
+   protected function validate() {
       return (preg_match("/^[[:digit:]]+$/", $this->getValue()));
     }
 }

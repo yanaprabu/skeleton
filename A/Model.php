@@ -9,11 +9,12 @@ include_once 'A/Model/Field.php';
  */
 
 class A_Model {
-	public $relations = array();
-	public $fields = array();
-	public $filters = array();
-	public $rules = array();
-	public $excludeRules = array();
+	protected $relations = array();
+	protected $fields = array();
+	protected $filters = array();
+	protected $rules = array();
+	protected $excludeRules = array();
+	protected $fieldClass = 'A_Model_Field';
 	protected $error = false;
 	
 	public function addField(A_Model_Field $object) {
@@ -25,6 +26,9 @@ class A_Model {
 	
 	public function addFilter($filter, $fields=array()) {
 		if ($fields) {
+			if (! is_array($fields)) {
+				$fields = array($fields);
+			}
 			// if field names provided then assign filter to multiple fields
 			foreach ($fields as $name) {
 				if (! isset($this->fields[$name])) {
@@ -48,6 +52,9 @@ class A_Model {
 	
 	public function addRule($rule, $fields=array()) {
 		if ($fields) {
+			if (! is_array($fields)) {
+				$fields = array($fields);
+			}
 			// if field names provided then assign rule to multiple fields
 			foreach ($fields as $name) {
 				if (! isset($this->fields[$name])) {
@@ -74,7 +81,14 @@ class A_Model {
 		return $this;
 	}
 	
-	public function getField($name) {
+	public function newField($name) {
+		if (! isset($this->fields[$name])) {
+			$this->fields[$name] = new $this->fieldClass($name);
+		}
+		return $this->fields[$name];
+	}
+	
+	public function getField($name, $new=true) {
 		if (isset($this->fields[$name])) {
 			return $this->fields[$name];
 		}
@@ -99,26 +113,26 @@ class A_Model {
 		$this->error = false;
 		$field_names = array_keys($this->fields);
 		if ($field_names) {
-			if ($this->filters) {
-				foreach ($this->filters as $filter) {
-dump($filer, 'FILTER: ');
-					// if filter is only for specific fields do only those, otherwise all
-					$names = $filter['names'] ? $filter['names'] : $field_names;
-dump($names, 'NAMES: ');
-					foreach ($names as $name) {
-						$datasource->set($name, $filterchain->run($datasource->get($name), $filter['filter']));
-					}
-				}
-			}
-			foreach ($field_names as $name) {
-				if ($this->fields[$name]->filters) {
-					$datasource->set($name, $filterchain->run($datasource->get($name), $this->fields[$name]->filters));
-				}
-			}
+			// set values from datasource
 			foreach ($field_names as $name) {
 				$this->fields[$name]->value = $datasource->get($name);
+			}
+			// run global filters
+			if ($this->filters) {
+				foreach ($field_names as $name) {
+					$this->fields[$name]->value = $filterchain->run($this->fields[$name]->value, $this->filters);
+				}
+			}
+			// run filters for each field
+			foreach ($field_names as $name) {
+				if ($this->fields[$name]->filters) {
+					$this->fields[$name]->value = $filterchain->run($datasource->get($name), $this->fields[$name]->filters);
+				}
+			}
+			foreach ($field_names as $name) {
 				if (isset($this->fields[$name]->rules)) {
-					if (! $validator->validate($datasource, $this->fields[$name]->rules)) {
+					$this->fields[$name]->setName($name);		// set all rules to work on this field
+					if (! $validator->validate($this, $this->fields[$name]->rules)) {
 						$this->fields[$name]->setError($validator->getErrorMsg());
 						$this->error = true;
 					}

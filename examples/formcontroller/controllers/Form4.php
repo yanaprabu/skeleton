@@ -13,9 +13,9 @@ require_once 'A/Rule/Length.php';
 
 class MyRules extends A_Validator {
     public function init() {
-        $this->addRule(new A_Rule_Length(5, 9, 'Please provide a five or nine digit zip code'), array('zip_home', 'zip_work'));
-        $this->addRule(new A_Rule_Digit('Please provide a valid phone number'), array('zip_home', 'zip_work'));
-        $this->addRule(new A_Rule_Inarray(array('male', 'female'), 'You have selected an invalid choice'), array('gender'));
+        $this->addRule(new A_Rule_Length(5, 9, '', 'Please provide a five or nine digit zip code'), array('zip_home', 'zip_work'));
+        $this->addRule(new A_Rule_Digit('', 'Please provide a valid phone number'), array('zip_home', 'zip_work'));
+        $this->addRule(new A_Rule_Inarray(array('male', 'female'), '', 'You have selected an invalid choice'), array('gender'));
     }
 }
  

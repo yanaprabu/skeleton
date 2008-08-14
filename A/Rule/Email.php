@@ -9,11 +9,6 @@ include_once 'A/Rule/Abstract.php';
 class A_Rule_Email extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Email';
 	
-    public function __construct($field, $errorMsg) {
-      $this->field    = $field;
-      $this->errorMsg = $errorMsg;
-    }
-
     protected function validate() {
       $user      = '[a-zA-Z0-9_\-\.\+\^!#\$%&*+\/\=\?\|\{\}~\']+';
       $doIsValid = '(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9]\.?)+';

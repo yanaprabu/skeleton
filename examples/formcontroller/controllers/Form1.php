@@ -31,18 +31,18 @@ class Form1 extends A_Controller_Form {
 		$this->addParameter($param1 = new A_Controller_FormParameter('field1'));
 		$param1->addFilter(new A_Filter_Regexp('/[^0-9]/', ''));
 		$param1->addRule(new A_Rule_NotNull('field1', 'Please enter Field 1'));
-		$param1->addRule(new A_Rule_Range('field1', 1, 10, 'Field 1 must be 1-10'));
+		$param1->addRule(new A_Rule_Range(1, 10, 'field1', 'Field 1 must be 1-10'));
 		$param1->setType(array('renderer'=>'A_Html_Form_Select', 'values'=>array(5, 10, 15), 'labels'=>array('five', 'ten', 'fifteen')));
 		
 		$this->addParameter($param2 = new A_Controller_FormParameter('field2'));
 		$param2->addFilter(new A_Filter_Regexp('/[^0-9]/', ''));
 		$param2->addRule(new A_Rule_NotNull('field2', 'Please enter Field 2'));
-		$param2->addRule(new A_Rule_Match('field2', 'field1', 'Field 2 must match Field 1'));
+		$param2->addRule(new A_Rule_Match('field1', 'field2', 'Field 2 must match Field 1'));
 		$param2->setType(array('renderer'=>'A_Html_Form_Text','size'=>'10'));
 		
 		$this->addParameter($param3 = new A_Controller_FormParameter('field3'));
 		$param3->addFilter(new A_Filter_Regexp('/[^a-zA-Z]/', ''));
-		$param3->addRule(new A_Rule_Length('field3', 5, 20, 'Field 3 must be 5-20 characters'));
+		$param3->addRule(new A_Rule_Length(5, 20, 'field3', 'Field 3 must be 5-20 characters'));
 		
 		// create parameter object then add it to the controller
 		$this->addParameter($param4 = new A_Controller_FormParameter('field4'));

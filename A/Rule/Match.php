@@ -8,15 +8,23 @@ include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Match extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Match';
-	protected $refField;
-
+#	protected $refField;
+	protected $params = array(
+							'refField' => '', 
+							'field' => '', 
+							'errorMsg' => '', 
+							'optional' => false
+							);
+	
+/*
     public function __construct($field, $refField, $errorMsg) {
       $this->field    = $field;
       $this->refField = $refField;
       $this->errorMsg = $errorMsg;
     }
-
+*/
+							
     protected function validate() {
-      return (strcmp($this->getValue(), $this->getValue($this->refField)) == 0);
+      return (strcmp($this->getValue(), $this->getValue($this->params['refField'])) == 0);
     }
 }

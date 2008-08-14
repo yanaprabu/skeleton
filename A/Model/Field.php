@@ -9,7 +9,7 @@ class A_Model_Field {
 	// from Input Controller
 	public $name = '';
 	public $value = '';
-	public $required = 0;
+	public $optional = false;
 	public $filters = null;
 	public $rules = null;
 	public $errorMsg = array();
@@ -89,16 +89,15 @@ class A_Model_Field {
 		return $this->error;
 	}
 	
-/*
-	public function setRequired($value=1) {
-		$this->required = $value;
+	public function setOptional($value=true) {
+		$this->optional = $value;
 		return $this;
 	}
 	
-	public function isRequired() {
-		return $this->required;
+	public function isOptional() {
+		return $this->optional;
 	}
-*/
+
 		
 	public function isValid() {
 		return ! $this->error;
