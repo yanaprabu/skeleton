@@ -12,21 +12,31 @@ class A_Rule_Captcha extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Captcha';
 	protected $field;
 	protected $errorMsg;
-	protected $renderer;
-	protected $session;
-	protected $sessionkey;
+#	protected $renderer;
+#	protected $session;
+#	protected $sessionkey;
 	protected $charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	protected $length = 5;
 	protected $base_path = '';
 	protected $script_name = 'captcha_image.php';
+	protected $params = array(
+							'renderer' => null, 
+							'session' => null, 
+							'sessionkey' => 'A_Rule_Captcha', 
+							'field' => '', 
+							'errorMsg' => '', 
+							'optional' => false
+							);
 	
-	public function __construct($field, $errorMsg, $renderer, $session, $sessionkey='A_Rule_Captcha') {
+/*
+	public function __construct($field, $errorMsg, $renderer, $session, $sessionkey='') {
 		$this->field = $field;
 		$this->errorMsg = $errorMsg;
-		$this->renderer = $renderer;
-		$this->session = $session;
-		$this->sessionkey = $sessionkey;
+		$this->params['renderer'] = $renderer;
+		$this->params['session'] = $session;
+		$this->params['sessionkey'] = $sessionkey;
 	}
+*/
 	
     public function setCharset($value) {
 		return $this->charset = $value;
@@ -49,33 +59,33 @@ class A_Rule_Captcha extends A_Rule_Abstract {
     }
 
     function validate($request) {
-		return $request->get($this->field) == $this->getCode() ? true : false;
+		return $request->get($this->params['field']) == $this->getCode() ? true : false;
 	}
 	
     public function getParameter() {
-		return $this->field;
+		return $this->params['field'];
     }
 
 	public function generateCode($length=0) {
 		if ($length > 0) {
 			$this->length = $length;
 		}
-		$this->session->set($this->sessionkey,  substr(str_shuffle($this->charset), 0, $this->length));
+		$this->params['session']->set($this->params['sessionkey'],  substr(str_shuffle($this->charset), 0, $this->length));
 		return $this;
 	}
 	
 	public function getCode(){
-		$code = $this->session->get($this->sessionkey);
+		$code = $this->params['session']->get($this->params['sessionkey']);
 		if ($code == '') {
 			$this->generateCode();
 		}
-		return $this->session->get($this->sessionkey);
+		return $this->params['session']->get($this->params['sessionkey']);
 	}
 	
     public function render() {
-		if ($this->renderer) {
-			$this->renderer->set('url', $this->base_path . $this->script_name);
-			return $this->renderer->render();
+		if ($this->params['renderer']) {
+			$this->params['renderer']->set('url', $this->base_path . $this->script_name);
+			return $this->params['renderer']->render();
 		} else {
 			return "<img src=\"{$this->base_path}{$this->script_name}\"/>";
     	}

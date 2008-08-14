@@ -1,4 +1,5 @@
 <?php
+include_once 'A/Rule/Set.php';
 /**
  * Run one or more Rules on a container
  * 

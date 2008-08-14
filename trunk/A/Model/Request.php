@@ -11,6 +11,7 @@ class A_Model_Request extends A_Model {
 	protected $submit_field_name = 'submit';
 	protected $is_post = true;
 	protected $is_submitted = false;
+	protected $fieldClass = 'A_Model_Request_Field';
 	
 	public function setSubmitParameterName($name) {
 		if ($name) {

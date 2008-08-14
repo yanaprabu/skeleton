@@ -28,7 +28,47 @@ class A_Rule_Set {
 		return $this;
     }
     
-    public function isValid($container) {
+    /**
+     * Sets whether fields allow null values or not
+     * 
+     * @param boolean
+     * @return instance of this object (for fluent interface)
+     */
+	public function setOptional($names, $tf=true) {
+		if (! is_array($names)) {
+			$names = array($names);
+		}
+		foreach ($names as $name) {
+			foreach ($this->chain as $key => $rule) {
+				if ($key == $name) {
+					$rule->setOptional($tf);
+				}
+			}
+		}
+		return $this;
+	}
+    /**
+     * Whether field is allows null values or not
+     * 
+     * @return boolean value of optional flag
+     */
+	public function isOptional($name) {
+		$optional = true;
+		foreach ($this->chain as $key => $rule) {
+			if (($key == $name) && ! $rule->isOptional()) {
+				$optional = false;
+				break;
+			}
+		}
+		return $optional;
+	}
+
+    /**
+     * Tells whether this rule passes or not
+     * 
+     * @return boolean true if pass, fail otherwise
+     */
+	public function isValid($container) {
 		$this->errorMsg = array();
 		foreach ($this->chain as $key => $rule) {
 		    if ($this->excludes && (in_array($rule->getName(), $this->excludes))) {

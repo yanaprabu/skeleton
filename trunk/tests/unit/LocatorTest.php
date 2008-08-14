@@ -2,19 +2,6 @@
 require_once('A/Locator.php');
 require_once('A/DataContainer.php');
 
-class LocatorExample {
-var $value = '';
-
-function set($value) {
-	$this->value = $value;
-}
-
-function get() {
-	return $this->value;
-}
-
-}
-
 class LocatorTest extends UnitTestCase {
 	
 	function SetUp() {
@@ -85,4 +72,16 @@ class LocatorTest extends UnitTestCase {
 	}
 	
 }
-?>
+
+class LocatorExample {
+var $value = '';
+
+function set($value) {
+	$this->value = $value;
+}
+
+function get() {
+	return $this->value;
+}
+
+}

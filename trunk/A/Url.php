@@ -21,7 +21,15 @@ class A_Url {
         return $this->action_param;
     }
 
-	public function getBaseUrl ($page='', $server='', $protocol='') {
+	public function getProtocol() {
+		if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
+			return 'https';
+		} else {
+			return 'http';
+		}
+	}
+		
+    public function getBaseUrl ($page='', $server='', $protocol='') {
 		if (! $page) {
 			$page = $_SERVER['SCRIPT_NAME'];
 		}
@@ -29,11 +37,7 @@ class A_Url {
 			$server = $_SERVER['SERVER_NAME'];
 		}
 		if (! $protocol) {
-			if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
-				$protocol = 'https';
-			} else {
-				$protocol = 'http';
-			}
+			$protocol = $this->getProtocol();
 		}
 	
 		return "$protocol://$server$page";

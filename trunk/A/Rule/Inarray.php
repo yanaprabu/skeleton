@@ -8,14 +8,22 @@ include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Inarray extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Inarray';
+	protected $params = array(
+							'array' => array(), 
+							'field' => '', 
+							'errorMsg' => '', 
+							'optional' => false
+							);
 	
+/*
 	public function __construct($field, $array, $errorMsg) {
 		$this->field = $field;
 		$this->array = $array;
 		$this->errorMsg = $errorMsg;
 	}
-	
+*/
+
 	protected function validate() {
-		return in_array($this->getValue(), $this->array);
+		return in_array($this->getValue(), $this->params['array']);
 	}
 }
