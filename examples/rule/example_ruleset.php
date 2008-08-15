@@ -16,7 +16,7 @@ $length = new A_Rule_Length(4, null, 'two', 'Two must be {min} characters long')
 $match = new A_Rule_Match('two', 'one', 'Fields do not match');
 $numeric = new A_Rule_Numeric('two', 'Two is not numeric');
 
-$validator->addRule($alpha);
+$validator->addRule($alpha, array('one', 'two'), array('One is not alpha', 'Two is not alpha'));
 $validator->addRule($match);
 #$validator->addRule($length);
 $validator->addRule('A_Rule_Length', 4, null, 'two', 'Two must be {min} characters long');

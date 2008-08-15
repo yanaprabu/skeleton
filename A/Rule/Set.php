@@ -12,11 +12,33 @@ class A_Rule_Set {
     protected $errorMsg = array();
     protected $dir = 'A_Rule_';
     
-    public function addRule($rule) {
+    public function addRule($rule, $fields=array(), $errorMsgs=array()) {
+		// passing rule name to be instatiated later means rest of params are args for the rule
 		if (is_string($rule)) {
 		    $rule = func_get_args();
+		    $fields = null;
+		} else {
+			if (! is_array($fields)) {
+			    $fields = array($fields);
+			}
+			if (! is_array($errorMsgs)) {
+			    $fields = array($errorMsgs);
+			}
 		}
-		$this->chain[] = $rule;
+		if ($fields) {
+			$errMsg = current($errorMsgs);
+			foreach ($fields as $field) {
+				$rule->setName($field);
+				$rule->setErrorMsg($errMsg);
+				$this->chain[] = $rule;
+				$rule = clone $rule;
+				if (next($errorMsgs)) {
+					$errMsg = current($errorMsgs);
+				}
+			}
+		} else {
+			$this->chain[] = $rule;
+		}
 		return $this;
     }
 
