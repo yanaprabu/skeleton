@@ -14,14 +14,6 @@ class A_Rule_Inarray extends A_Rule_Abstract {
 							'errorMsg' => '', 
 							'optional' => false
 							);
-	
-/*
-	public function __construct($field, $array, $errorMsg) {
-		$this->field = $field;
-		$this->array = $array;
-		$this->errorMsg = $errorMsg;
-	}
-*/
 
 	protected function validate() {
 		return in_array($this->getValue(), $this->params['array']);
