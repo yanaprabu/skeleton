@@ -8,21 +8,13 @@ include_once 'A/Rule/Abstract.php';
 
 class A_Rule_Regexp extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Regexp';
-#	protected $regex;
+
 	protected $params = array(
 							'regexp' => '', 
 							'field' => '', 
 							'errorMsg' => '', 
 							'optional' => false
 							);
-	
-/*
-    public function __construct($field, $regexp, $errorMsg) {
-		$this->field = $field;
-		$this->regexp = $regexp;
-		$this->errorMsg = $errorMsg;
-    }
-*/
 							
     protected function validate() {
 		return (preg_match($this->params['regexp'], $this->getValue()));

@@ -13,10 +13,6 @@ class A_Rule_Date extends A_Rule_Abstract {
 							'errorMsg' => '', 
 							'optional' => false
 							);
-	
-    public function getErrorMsg() {
-      return $this->errorMsg;
-    }
 
     protected function validate() {
       return (preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$/", $this->getValue(),
