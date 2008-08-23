@@ -1,13 +1,14 @@
 <?php
+include_once 'A/Filter/Abstract.php';
 /**
  * Convert smart quotes to standard quotes
  * 
  * @package A_Filter 
  */
 
-class A_Filter_Smartquotes {
+class A_Filter_Smartquotes extends A_Filter_Abstract {
 	
-	public function run ($value) {
+	public function filter () {
 		/*
 		 * by Chris Shiflett (http://shiflett.org/)
 		 */
@@ -21,7 +22,7 @@ class A_Filter_Smartquotes {
 	                     '"', 
 	                     '"', 
 	                     '-'); 
-	    return str_replace($search, $replace, $value); 
+	    return str_replace($search, $replace, $this->getValue()); 
 	}
 
 }
