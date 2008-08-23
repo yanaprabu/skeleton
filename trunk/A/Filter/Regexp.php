@@ -1,13 +1,15 @@
 <?php
+include_once 'A/Filter/Abstract.php';
 /**
  * Filter a string with a regular expression
  * 
  * @package A_Filter 
  */
 
-class A_Filter_Regexp {
-protected $from = '';
-protected $to = '';
+class A_Filter_Regexp extends A_Filter_Abstract {
+
+	protected $from = '';
+	protected $to = '';
 	
 	public function __construct($from, $to='') {
 		$this->from = $from;
@@ -26,7 +28,7 @@ protected $to = '';
 		return $from;
 	}
 	
-	public function run ($value) {
+	public function filter () {
 		if (is_array($this->from)) {
 			foreach ($this->from as $key => $val) {
 				$this->from[$key] = $this->_filter_fix_from($val);
@@ -34,7 +36,7 @@ protected $to = '';
 		} else {
 			$this->from = $this->_filter_fix_from($this->from);
 		}
-		return preg_replace($this->from, $this->to, $value);
+		return preg_replace($this->from, $this->to, $this->getValue());
 	}
 
 }
