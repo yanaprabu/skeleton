@@ -99,7 +99,7 @@ abstract class A_Rule_Abstract {
 			$name = $this->params['field'];
 		}
 		if (is_array($this->container)) {
-			return $this->container[$name];
+			return (isset($this->container[$name])) ? $this->container[$name] : null;
 		} elseif (is_object($this->container)) {
 			return $this->container->get($name);
 		} else {
@@ -144,7 +144,7 @@ abstract class A_Rule_Abstract {
 	    if ($this->params['optional'] && $this->isNull()) {
 	        return true;
 	    } else {
-	        return $this->validate($container);
+	        return $this->validate();
 	    }
 	}
     /**

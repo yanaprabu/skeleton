@@ -1,9 +1,17 @@
 <?php
-require_once('A/FilterChain.php');
+require_once('A/Filter/Set.php');
 require_once('A/Filter/Tolower.php');
 
 class FilterChainTest extends UnitTestCase {
 	
+    protected $data = array(
+        'name' => 'John Smith',
+        'phone' => '555-123-1234',
+        'fax' => '(530) 123-1234',
+        'favorite_color' => 'Purple',
+        'comments' => '',
+    );
+    
 	function setUp() {
 	}
 	
@@ -11,37 +19,12 @@ class FilterChainTest extends UnitTestCase {
 	}
 	
 	function testValidatorFilterObject() {
-  		$filterchain = new A_FilterChain();
- 
-		$filterchain->addFilter(new A_Filter_Tolower());
-  		$foo = $filterchain->run('TEST123');
- 		$bar = $filterchain->run('ABC!');
+  		$filters = new A_Filter_Set();
 
-		$this->assertEqual($foo,'test123');
-		$this->assertEqual($bar,'abc!');
-	}
-	
-	function testValidatorFilterName() {
-  		$filterchain = new A_FilterChain();
- 
-		// should load A_Filter_Length
-		$filterchain->addFilter('length', 3);
-  		$foo = $filterchain->run('TEST123');
- 		$bar = $filterchain->run('ABC!');
+		$filters->addFilter(new A_Filter_Tolower(), 'name');
+ 		$data = $filters->doFilter($this->data);
 
-		$this->assertEqual($foo,'TES');
-		$this->assertEqual($bar,'ABC');
-	}
-	
-	function testValidatorFilterFunction() {
-  		$filterchain = new A_FilterChain();
-
- 		$filterchain->addFilter('strtolower');
-  		$foo = $filterchain->run('TEST123');
- 		$bar = $filterchain->run('ABC!');
-
-		$this->assertEqual($foo, 'test123');
-		$this->assertEqual($bar, 'abc!');
+		$this->assertEqual($data['name'],'john smith');
 	}
 
 }
