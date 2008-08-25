@@ -5,8 +5,8 @@
  * @package A_Filter 
  */
 
-class A_FilterChain {
-	protected $chain = array();
+class A_FilterChain extends A_Filter_Set {
+	/*protected $chain = array();
 	protected $dir = 'A_Filter_';
 	
 	public function addFilter ($filter) {
@@ -46,7 +46,12 @@ class A_FilterChain {
 			$value = $filter->run($value);
 		}
 		return $value;
-	}
+	}*/
+    public function run($value, $filter=null) {
+    
+        return $this->doFilter($value);
+    
+    }
 	
 }
 
