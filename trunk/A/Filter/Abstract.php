@@ -13,7 +13,6 @@ abstract class A_Filter_Abstract {
 	 */
 	protected $params = array(
 							'field' => '', 
-							'optional' => false
 							);
 							
 	/**
@@ -71,26 +70,6 @@ abstract class A_Filter_Abstract {
 	public function getName() {
 		return $this->params['field'];
 	}
-	
-    /**
-     * Sets whether field allows null values or not
-     * 
-     * @param boolean
-     * @return instance of this object (for fluent interface)
-     */
-	public function setOptional($tf=true) {
-		$this->params['optional'] = $tf;
-		return $this;
-	}
-	
-    /**
-     * Whether field is allows null values or not
-     * 
-     * @return boolean value of optional flag
-     */
-	public function isOptional() {
-		return $this->params['optional'];
-	}
 		
 	/**
      * Returns the value associated with this filter by default, but can return any value in
@@ -120,11 +99,7 @@ abstract class A_Filter_Abstract {
 	 */
 	public function doFilter($container) {
 	    $this->container = $container;
-	    if ($this->params['optional'] && $this->isNull()) {
-	        return true;
-	    } else {
-	        return $this->filter($container);
-	    }
+	    return $this->filter();
 	}
 	
     /**
