@@ -110,7 +110,12 @@ class A_Rule_Set {
 				unset($ref);
 		    }
 		    if (! $this->chain[$key]->isValid($container)) {
-				$this->errorMsg[$this->chain[$key]->getName()][] = $this->chain[$key]->getErrorMsg();
+				$errorMsg = $this->chain[$key]->getErrorMsg();
+				if (is_array($errorMsg)) {
+					$this->errorMsg = array_merge($this->errorMsg, $errorMsg);
+				} else {
+					$this->errorMsg[$this->chain[$key]->getName()][] = $errorMsg;
+				}
 		    }
 		}
 		return empty($this->errorMsg);
