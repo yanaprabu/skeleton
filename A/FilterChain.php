@@ -1,4 +1,5 @@
 <?php
+include_once('A/Filter/Set.php');
 /**
  * Filter a value with one or more filters. Will load filters if given class name.  
  * 
