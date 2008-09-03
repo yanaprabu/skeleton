@@ -15,6 +15,7 @@ include 'A/Http/Request.php';
 include 'A/Http/Response.php';
 include 'A/Http/PathInfo.php';
 include 'A/Controller/Front.php';
+include 'A/Controller/Front/Premethod.php';
 include 'A/Controller/Mapper.php';
 include 'A/Controller/Action.php';
 include 'A/Template/Strreplace.php';
@@ -77,7 +78,7 @@ $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $Action);
 //$Mapper->setDefaultDir('blog');
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
-$Controller->addPreMethod('denyAccess', new A_DL('', 'signin', 'run')); //dump($Controller);
+$Controller->addPreFilter('denyAccess', new A_Controller_Front_Premethod('denyAccess', new A_DL('', 'signin', 'run'), $Locator));
 $Controller->run($Locator);
 
 //dump($Response);
