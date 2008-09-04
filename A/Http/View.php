@@ -117,7 +117,7 @@ class A_Http_View {
 		if ($this->renderer) {
 			if ($this->data) {
 				foreach ($this->data as $name => $value) {
-					if (method_exists($this->data[$name], 'render')) {
+					if (is_object($this->data[$name]) && method_exists($this->data[$name], 'render')) {
 						$this->renderer->set($name, $this->data[$name]->render());
 					} else {
 						$this->renderer->set($name, $value);
