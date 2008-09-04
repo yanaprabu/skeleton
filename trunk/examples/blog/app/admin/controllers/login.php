@@ -82,8 +82,10 @@ class login extends A_Controller_Input {
 		$logintemplate = $this->load()->template('loginform');
 		$logintemplate->set('msg', $msg);
 		$logintemplate->set('username', $usernamestr);
-		$this->response->setRenderer($logintemplate);
-
+		
+		//$this->response->setRenderer($logintemplate);
+		$this->response->set('maincontent', $logintemplate->render());
+		$this->response->set('subcontent', 'The subcontent for the login');
 	}
 	
 }
