@@ -1,50 +1,49 @@
 <?php
-/* 
-error settings 
-*/
-ini_set('error_reporting', E_ALL | E_STRICT);
-ini_set('display_errors', 1);
-ini_set('log_errors', 'Off');
+/* For debugging */
+function dump($var, $name='') {
+	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
+	echo $name . '<pre>' . print_r($var, 1) . '</pre>';
+	echo '</div>';
+}
 
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__) . '/../../');
+// Basic config data
+$ConfigArray = array(
+	'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . '/examples/blog',
+	'PATH' => dirname($_SERVER['SCRIPT_FILENAME']) . '/',
+	'APP' => dirname($_SERVER['SCRIPT_FILENAME']) . '/app',
+	'LIB' => dirname($_SERVER['SCRIPT_FILENAME']) . '/library',
+	'ERROR' => E_ALL|E_STRICT,
+	);
 
-include 'config.php';
-include 'A/DL.php';
-include 'A/Locator.php';
-include 'A/Http/Request.php';
-include 'A/Http/Response.php';
-include 'A/Http/PathInfo.php';
-include 'A/Controller/Front.php';
-include 'A/Controller/Front/Premethod.php';
-include 'A/Controller/Mapper.php';
-include 'A/Controller/Action.php';
-include 'A/Template/Strreplace.php';
-include 'A/Template/Include.php';
-require_once('A/Session.php');
-include 'A/User/Session.php';
-include 'A/User/Access.php';
+// Configure PHP error reporting and include path
+error_reporting($ConfigArray['ERROR']);
+set_include_path(dirname(__FILE__) . '/../../' . PATH_SEPARATOR . $ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
 
-$Locator = new A_Locator();
-$Response = new A_Http_Response();
+// Init autoload
+require_once 'A/functions/a_autoload.php';
+	
+// Create config object from array
+$Config = new A_DataContainer($ConfigArray);
+
+// Create HTTP objects
 $Request = new A_Http_Request();
-$Locator->set('Request', $Request);
-$Locator->set('Response', $Response);
+$Response = new A_Http_Response();
 
-/* Added 23/3 */
+// Start Sessions
 $Session = new A_Session();
 $Session->start();
 $UserSession = new A_User_Session($Session);
+
+// Create registry/loader and add common objects
+$Locator = new A_Locator();
+$Locator->set('Config', $Config);
+$Locator->set('Request', $Request);
+$Locator->set('Response', $Response);
+$Locator->set('Session', $Session);
 $Locator->set('UserSession', $UserSession);
 
-/* Map request */
+// Create router and have it modify request
 $map = array(
-/*
-   '' => array(
-		'module',
-        'controller',
-        'action',
-        ), 
-*/
 	'' => array(
 		'controller',
 		'action',
@@ -56,37 +55,31 @@ $map = array(
             array('name'=>'action','default'=>'run'),
             ),
         ),
-
     'admin' => array(
         '' => array(
-            //'module',
 			array('name'=>'module','default'=>'admin'), 
             array('name'=>'controller','default'=>'admin'),
             array('name'=>'action','default'=>'run'),
             ),
         ),
-
     );
+$PathInfo = new A_Http_PathInfo($map);
+$PathInfo->run($Request); 
 
-$Mapper = new A_Http_PathInfo($map);
-$Mapper->run($Request); //dump($Request);
+// Create mapper with base application path and default action
+$Mapper = new A_Controller_Mapper($ConfigArray['APP'], new A_DL('', 'index', 'run'));
+$Mapper->setDefaultDir('blog');
 
-$Action = new A_DL('', 'index', 'run');
-$ErrorAction = new A_DL('', 'error', 'run');
-
-$Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $Action);
-//$Mapper->setDefaultDir('blog');
-
-$Controller = new A_Controller_Front($Mapper, $ErrorAction);
+// Create and run FC with error action
+$Controller = new A_Controller_Front($Mapper, new A_DL('', 'error', 'run'));
 $Controller->addPreFilter('denyAccess', new A_Controller_Front_Premethod('denyAccess', new A_DL('', 'signin', 'run'), $Locator));
 $Controller->run($Locator);
 
-//dump($Response);
-
+// Set up renderer and templates if the response doesnt have those already
 if (! $Response->hasRenderer()) { 
     // create a page renderer and load the outer layout page template
-    $Template = new A_Template_Include($ConfigArray['APP'] . 'templates/main.php');
-    $Template->set('BASE', $ConfigArray['BASE']);
+    $Template = new A_Template_Include($ConfigArray['APP'] . '/templates/main.php');
+   	$Template->set('BASE', $ConfigArray['BASE']);
     
     $Response->setRenderer($Template);
     // get the layout specified by the Action
@@ -94,7 +87,7 @@ if (! $Response->hasRenderer()) {
     if (! $Layout_name) {
         $Layout_name = 'standardlayout';    // or use the default
     }
-    $Layout = new A_Template_Include($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.php');
+    $Layout = new A_Template_Include($ConfigArray['APP'] . '/templates/layout/' . $Layout_name . '.php');
     // set the two possible columns
 	$Layout->set('maincontent', $Response->get('maincontent'));
     $Layout->set('subcontent', $Response->get('subcontent'));
@@ -103,5 +96,5 @@ if (! $Response->hasRenderer()) {
     $Response->set('content', $Layout->render());
 } 
 
+// Finally, display
 $Response->out();
-?>

@@ -14,7 +14,10 @@ class posts extends A_Controller_Action {
 		$request = $locator->get('Request');
 		$action = $request->get('action');
 		
-		if($request->has('action') && $request->get('action') == 1 ){ 
+		// If there's a request for a single post
+		if( $request->has('action') && is_numeric($request->get('action')) ){ 
+			
+			// How to translate URL in correct action variable?
 			$model = $this->load()->model('postsModel');
 			$content = $model->single();
 			$template = $this->load()->template('singlePost');
@@ -24,7 +27,9 @@ class posts extends A_Controller_Action {
 			$this->response->set('maincontent', $maincontent);
 			$this->response->set('subcontent','This is the subcontent');
 
-		} else {
+		} 
+		else  // show all posts 
+		{
 			$model = $this->load()->model('postsModel');
 			$content = $model->listAll();
 			$template = $this->load()->template();
@@ -38,6 +43,7 @@ class posts extends A_Controller_Action {
 				
 	}
 
+/*
 	function showLatest(){
 		$model = $this->load()->model('postsModel');
 		$content = $model->listAll();
@@ -46,9 +52,10 @@ class posts extends A_Controller_Action {
 		$this->response->setRenderer($template);
 	}
 	
-	/* Todo: make this to show all? posts */
+	/* Todo: make this to show all? posts * /
 	function all($locator) {
 		$this->load()->response()->view();
 	}
+*/
 	
 }

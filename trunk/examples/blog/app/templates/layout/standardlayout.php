@@ -1,4 +1,4 @@
-<h3>this is the template file standardlayout.</h3>
+<p>This is the template file standardlayout.</p>
 
 <div style="float:left;width:74%;">
 <?php echo $maincontent; ?>

@@ -6,32 +6,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<base href="<?php echo $BASE ?>" />
-	<style type="text/css" media="screen">
-		body { margin:0;padding:0;color:#333;background:#fff;}
-		#container {}
-		#header { padding:20px;background:#eee;}
-		#content { padding:20px; }
+	<base href="<?php // echo $BASE ?>" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $BASE ?>/app/templates/css/screen.css" >
 	
-	</style>
 </head>
 <body>
 <div id="container">
 
 	<div id="header">
-		<h1>This is the main template.</h1>
+		<h1>Blog example</h1>
 		
-		<h3>Navigation</h3>
-		<div id="menubar">
-			<ul>
-			<li><a href="">/home</a></li>
-			<li><a href="blog/">/blog/</a></li>
-			<li><a href="blog/posts/">/blog/posts/</a></li>
-			<li><a href="admin/">/admin/</a></li>
-			</ul>
-		</div>
+		<ul id="mainnav">
+			<li><a href="<?php echo $BASE ?>">Home</a></li>
+			<li><a href="<?php echo $BASE ?>posts/">Posts</a></li>
+			<li><a href="<?php echo $BASE ?>admin/">Admin</a></li>
+		</ul>
+		
 		<div id="loginbox">
-			<p><a href="admin/login/">login</a> | <a href="admin/login/?op=signout">logout</a></p>
+			<p>Admin: <a href="<?php echo $BASE ?>admin/login/">login</a> | <a href="<?php echo $BASE ?>admin/login/?op=signout">logout</a></p>
 		</div>
 	</div>
 	

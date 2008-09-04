@@ -3,6 +3,8 @@ require_once 'A/Controller/Input.php';
 require_once 'A/Rule/Length.php';
 require_once 'A/Rule/NotNull.php';
 require_once 'A/Filter.php';
+require_once 'A/Filter/Regexp.php';
+require_once 'A/Filter/Tolower.php';
 
 require_once 'app/admin/models/UserTableGateway.php';
 
