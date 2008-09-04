@@ -43,19 +43,5 @@ class posts extends A_Controller_Action {
 				
 	}
 
-/*
-	function showLatest(){
-		$model = $this->load()->model('postsModel');
-		$content = $model->listAll();
-		$template = $this->load()->template();
-		$template->set('content', $content);
-		$this->response->setRenderer($template);
-	}
-	
-	/* Todo: make this to show all? posts * /
-	function all($locator) {
-		$this->load()->response()->view();
-	}
-*/
 	
 }
