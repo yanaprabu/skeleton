@@ -21,7 +21,10 @@ $validator->addRule($match);
 #$validator->addRule($length);
 $validator->addRule('A_Rule_Length', 4, null, 'two', 'Two must be {min} characters long');
 
-$validator->validate($request);
+#$validator->excludeRules(array('one'));
+#$validator->excludeRules(array('two'));
+#$validator->includeRules(array('one'));
+#$validator->includeRules(array('two'));
 
 if ($validator->isValid($request)) {
 	$errmsg = 'OK';

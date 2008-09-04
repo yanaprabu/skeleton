@@ -9,6 +9,7 @@ class A_Rule_Set {
 
     protected $chain = array();
     protected $excludes = array();		// array of names not to be validated
+    protected $includes = array();		// array of names only to be validated
     protected $errorMsg = array();
     protected $dir = 'A_Rule_';
     
@@ -42,11 +43,19 @@ class A_Rule_Set {
 		return $this;
     }
 
-    public function exclude($names=array()) {
+    public function excludeRules($names=array()) {
 		if (is_string($names)) {
 		    $names = array($names);
 		}
 		$this->excludes = $names;
+		return $this;
+    }
+    
+    public function includeRules($names=array()) {
+		if (is_string($names)) {
+		    $names = array($names);
+		}
+		$this->includes = $names;
 		return $this;
     }
     
@@ -92,23 +101,47 @@ class A_Rule_Set {
      */
 	public function isValid($container) {
 		$this->errorMsg = array();
-		foreach ($this->chain as $key => $rule) {
-		    if ($this->excludes && (in_array($rule->getName(), $this->excludes))) {
-			    continue;
-		    }
+
+		// load helpers specified by array('class_name', 'param', ...)
+		foreach ($this->chain as $key => $args) {
 		    // class names with params are added as arrays
-		    if (is_array($rule)) {
-				$name = array_shift($rule);
+		    if (is_array($this->chain[$key])) {
+				$name = array_shift($args);
 				// can use built-in rules and $this->dir will be used
 				if(strstr($name, '_') === false) {
 				    $name = $this->dir . ucfirst($name);
 				}
 				include_once str_replace('_', '/', $name) . '.php';
 				$ref = new ReflectionClass($name);
-				$rule = $ref->newInstanceArgs($rule);
-				$this->chain[$key] = $rule;
+				$this->chain[$key] = $ref->newInstanceArgs($args);
 				unset($ref);
 		    }
+		}
+		
+		// in only for specific fields the build chain containing only those names 
+		if ($this->includes) {
+			$chain = array();
+			foreach ($this->chain as $key => $rule) {
+				if (!($rule instanceof A_Rule_Set) && (in_array($rule->getName(), $this->includes))) {
+					$chain[$key] = $key;
+				}
+			}
+		} else {
+			$chain = array_keys($this->chain);
+		}
+
+		// if excludes certain fields then remove rules with those names from the chain
+		if ($this->excludes) {
+			$keys = array_keys($chain);
+			foreach ($keys as $key) {
+				if (!($this->chain[$key] instanceof A_Rule_Set) && (in_array($this->chain[$key]->getName(), $this->excludes))) {
+					unset($chain[$key]);
+				}
+			}
+	    }
+
+		// check each rule in chain and gather error messages
+		foreach ($chain as $key) {
 		    if (! $this->chain[$key]->isValid($container)) {
 				$errorMsg = $this->chain[$key]->getErrorMsg();
 				if (is_array($errorMsg)) {
