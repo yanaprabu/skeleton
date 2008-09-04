@@ -6,8 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<base href="<?php // echo $BASE ?>" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $BASE ?>/app/templates/css/screen.css" >
+	<base href="<?php echo $BASE; ?>" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $BASE ?>css/screen.css" >
 	
 </head>
 <body>
@@ -18,8 +18,8 @@
 		
 		<ul id="mainnav">
 			<li><a href="<?php echo $BASE ?>">Home</a></li>
-			<li><a href="<?php echo $BASE ?>/posts/">Posts</a></li>
-			<li><a href="<?php echo $BASE ?>/admin/">Admin</a></li>
+			<li><a href="<?php echo $BASE ?>posts/">Posts</a></li>
+			<li><a href="<?php echo $BASE ?>admin/">Admin</a></li>
 		</ul>
 		
 		<div id="loginbox">

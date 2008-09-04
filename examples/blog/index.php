@@ -8,7 +8,7 @@ function dump($var, $name='') {
 
 // Basic config data
 $ConfigArray = array(
-	'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . '/examples/blog',
+	'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]) . '/',
 	'PATH' => dirname($_SERVER['SCRIPT_FILENAME']) . '/',
 	'APP' => dirname($_SERVER['SCRIPT_FILENAME']) . '/app',
 	'LIB' => dirname($_SERVER['SCRIPT_FILENAME']) . '/library',
