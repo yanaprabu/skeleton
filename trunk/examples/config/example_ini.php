@@ -11,7 +11,7 @@ if ($data === false) {
 }
 dump($data);
 
-$config = new A_Config_Ini('example1.inix', '', new Exception('Ini file error.'));
+$config = new A_Config_Ini('example1.ini', '', new Exception('Ini file error.'));
 try {
 	$data = $config->loadFile();
 } catch (Exception $e) {
