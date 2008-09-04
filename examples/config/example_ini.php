@@ -4,7 +4,7 @@
 include 'config.php';
 include 'A/Config/Ini.php';
 
-$config = new A_Config_Ini('example1.inix', '');
+$config = new A_Config_Ini('example1.ini', '');
 $data = $config->loadFile();
 if ($data === false) {
 	echo "Error found: loading file<br/>";
