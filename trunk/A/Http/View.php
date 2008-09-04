@@ -124,9 +124,9 @@ class A_Http_View {
 					}
 				}
 			}
-		}
-		if (method_exists($this->renderer, 'render')) {
-			$this->content = $this->renderer->render();
+			if (method_exists($this->renderer, 'render')) {
+				$this->content = $this->renderer->render();
+			}
 		}
 		if (! $this->escape_output) {
 			return $this->content;
