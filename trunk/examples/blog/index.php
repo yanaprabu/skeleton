@@ -24,12 +24,11 @@ set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
 require_once 'A/functions/a_autoload.php';
 
 // Load application config data
-$ConfigIni = new A_Config_Ini('app/config/example.ini', 'production');
+$ConfigIni = new A_Config_Ini('config/example.ini', 'production');
 $Config = $ConfigIni->loadFile();
 
 // import base config array into config object
 $Config->import($ConfigArray);
-
 
 // Create HTTP objects
 $Request = new A_Http_Request();
