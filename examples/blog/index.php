@@ -73,9 +73,7 @@ $PathInfo = new A_Http_PathInfo($map);
 $PathInfo->run($Request); 
 
 // Create mapper with base application path and default action
-$app = $Config->get('APP');
 $Mapper = new A_Controller_Mapper($Config->get('APP'), new A_DL('', 'index', 'run'));
-//$Mapper = new A_Controller_Mapper($ConfigArray['APP'], new A_DL('', 'index', 'run'));
 $Mapper->setDefaultDir('blog');
 
 // Create and run FC with error action
