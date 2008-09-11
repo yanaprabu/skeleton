@@ -1,29 +1,35 @@
 <?php
-/* For debugging */
+
+// Just for debugging 
 function dump($var, $name='') {
 	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
 	echo $name . '<pre>' . print_r($var, 1) . '</pre>';
 	echo '</div>';
 }
 
-// Basic config data
-$ConfigArray = array(
-	'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]) . '/',
-	'PATH' => dirname($_SERVER['SCRIPT_FILENAME']) . '/',
-	'APP' => dirname($_SERVER['SCRIPT_FILENAME']) . '/app',
-	'LIB' => dirname($_SERVER['SCRIPT_FILENAME']) . '/library',
-	'ERROR' => E_ALL|E_STRICT,
-	);
 
-// Configure PHP error reporting and include path
-error_reporting($ConfigArray['ERROR']);
-set_include_path(dirname(__FILE__) . '/../../' . PATH_SEPARATOR . $ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
+// Basic config data
+$path = dirname($_SERVER['SCRIPT_FILENAME']);
+$ConfigArray = array(
+    'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]) . '/',
+    'PATH' => $path . '/',
+    'APP' => $path . '/app',
+    'LIB' => $path . '/../../',     // will be $path . '/library'
+    );
+
+// Configure PHP include path
+set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
 
 // Init autoload
 require_once 'A/functions/a_autoload.php';
-	
-// Create config object from array
-$Config = new A_DataContainer($ConfigArray);
+
+// Load application config data
+$ConfigIni = new A_Config_Ini('app/config/example.ini', 'production');
+$Config = $ConfigIni->loadFile();
+
+// import base config array into config object
+$Config->import($ConfigArray);
+
 
 // Create HTTP objects
 $Request = new A_Http_Request();
@@ -67,7 +73,9 @@ $PathInfo = new A_Http_PathInfo($map);
 $PathInfo->run($Request); 
 
 // Create mapper with base application path and default action
-$Mapper = new A_Controller_Mapper($ConfigArray['APP'], new A_DL('', 'index', 'run'));
+$app = $Config->get('APP');
+$Mapper = new A_Controller_Mapper($Config->get('APP'), new A_DL('', 'index', 'run'));
+//$Mapper = new A_Controller_Mapper($ConfigArray['APP'], new A_DL('', 'index', 'run'));
 $Mapper->setDefaultDir('blog');
 
 // Create and run FC with error action
@@ -77,8 +85,10 @@ $Controller->run($Locator);
 
 // Set up renderer and templates if the response doesnt have those already
 if (! $Response->hasRenderer()) { 
+	
     // create a page renderer and load the outer layout page template
     $Template = new A_Template_Include($ConfigArray['APP'] . '/templates/main.php');
+
    	$Template->set('BASE', $ConfigArray['BASE']);
     
     $Response->setRenderer($Template);
