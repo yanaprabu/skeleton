@@ -1,87 +1,166 @@
-<h1>Skeleton Manual</h1>
-<hr/>
-<h2>Table of Contents</h2>
-<ol>
-<li><a href="introduction.html">Introduction</a></li>
-<li><a href="overview.html">Overview</a></li>
-<li><a href="getting_started.html">Getting Started</a></li>
-<li><a href="../A//LICENSE">LICENSE</a></li>
-<li><a href="directory_structure.html">Directory Structure</a></li>
-<li><a href="http_pathinfo.html">Clean URLs with A_Http_PathInfo</a></li>
-<li><a href="access_control.html">Access Control</a></li>
-<li><a href="./generated/index.html">API Documentation</a></li>
+<html>
+<head>
+<title>Skeleton Framework Manual</title>
 
+<script type="text/javascript" src="jquery-1.2.6.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(function($) {
+		$("#main_content").load("1.00_Introduction.html"); 
+	}); 
+	$("#main_menu a").click(function(){
+		$('#main_content').load($(this).attr("href"));
+		return false;
+	});
+});
+</script>
+</head>
+
+<style>
+#main_header {
+	clear: both;
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+	}
+#main_menu {
+	width: 300px;
+	float: left;
+	margin: 0px 0px 0px 0px;
+	}
+#main_content {
+	margin: 0px 0px 0px 310px;
+	}
+#main_footer {
+	clear: both;
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+	}
+</style>
+
+<body>
+
+<div id="main_header">
+	<h1>Skeleton Manual</h1>
+</div>
+
+<div id="main_menu">
+	<h2>Table of Contents</h2>
+	
+	<h3>Introduction</h3>
+	<ol>
+		<li><a href="1.00_Introduction.html">Introduction</a></li>
+		<li><a href="1.01_Overview.html">Overview</a></li>
+		<li><a href="1.02_Installation.html">Installation</a></li>
+		<li><a href="1.03_Application_Flow.html">Application Flow</a></li>
+		<li><a href="1.04_Model_View_Controller.html">Model View Controller</a></li>
+		<li><a href="1.00_Directory_Structure.html">Directory Structure</a></li>
+	</ol>
+	
+	<h3>Topics</h3>
+	<ol>
+		<li><a href="2.00_Getting_Started.html">Getting Started</a></li>
+		<li><a href="2.00_Access_Control.html">Access Control</a></li>
+	</ol>
+	
+	<h3>Components</h3>
+	<ol>
 <!--
-<li><a href="class.DataSpace.html">DataSpace.php</a></li>
-
-<li><a href="class.Db">DB</a></li>
-<ol>
-<li><a href="class.MySQL.html">MySQL.php</a></li>
-<li><a href="class.MySQLi.html">MySQLi.php</a></li>
-<li><a href="class.Postgres.html">Postgres.php</a></li>
-<li><a href="class.SQLite.html">SQLite.php</a></li>
-</ol>
-
-<li><a href="class.Filter">Filter</a></li>
-<ol>
-<li><a href="class.Filter.html">Filter.php</a></li>
-<li><a href="class.FilterChain.html">FilterChain.php</a></li>
-</ol>
-
-<li><a href="class.functions">functions</a></li>
-
-<li><a href="class.Html.html">Html</a></li>
-<ol>
-<li><a href="class.FormField.html">FormField.php</a></li>
-</ol>
-
-<li><a href="class.Http">HTTP</a></li>
-<ol>
-<li><a href="class.Download.html">Download.php</a></li>
-<li><a href="class.PathInfo.html">PathInfo.php</a></li>
-<li><a href="class.Request.html">Request.php</a></li>
-<li><a href="class.Response.html">Response.php</a></li>
-<li><a href="class.Upload.html">Upload.php</a></li>
-</ol>
-
-<li><a href="class.Locator.html">Locator.php</a></li>
-<li><a href="class.Logger.html">Logger.php</a></li>
-
-<li><a href="class.Pager">Pager</a></li>
-<li><a href="class.Pager.html">Pager.php</a></li>
-<ol>
-<li><a href="class.ADODB.html">ADODB.php</a></li>
-<li><a href="class.Array.html">Array.php</a></li>
-<li><a href="class.DB.html">DB.php</a></li>
-<li><a href="class.File.html">File.php</a></li>
-<li><a href="class.HTMLWriterJump.html">HTMLWriterJump.php</a></li>
-<li><a href="class.MySQL.html">MySQL.php</a></li>
-</ol>
-
-<li><a href="class.Rule">Rule.php</a></li>
-<li><a href="class.Rule.html">Rule.php</a></li>
-<ol>
-<li><a href="class.Alpha.html">Alpha.php</a></li>
-<li><a href="class.Date.html">Date.php</a></li>
-<li><a href="class.Email.html">Email.php</a></li>
-<li><a href="class.Length.html">Length.php</a></li>
-<li><a href="class.Match.html">Match.php</a></li>
-<li><a href="class.Numeric.html">Numeric.php</a></li>
-<li><a href="class.Range.html">Range.php</a></li>
-</ol>
-
-<li><a href="class.Session.html">Session.php</a></li>
-<li><a href="class.Template.html">Template.php</a></li>
-<li><a href="class.URL.html">URL.php</a></li>
-
-<li><a href="class.User">User</a></li>
-<ol>
-<li><a href="class.Access.html">Access.php</a></li>
-<li><a href="class.Auth.html">Auth.php</a></li>
-<li><a href="class.Session.html">Session.php</a></li>
-</ol>
-<li><a href="class.Validator.html">Validator.php</a></li>
-<li><a href="class.ValueObject.html">ValueObject.php</a></li>
+		<li><a href="3.00_DataSpace.html">DataSpace.php</a></li>
+		
+		<li><a href="3.00_Db">DB</a></li>
+		<ol>
+		<li><a href="3.00_MySQL.html">MySQL.php</a></li>
+		<li><a href="3.00_MySQLi.html">MySQLi.php</a></li>
+		<li><a href="3.00_Postgres.html">Postgres.php</a></li>
+		<li><a href="3.00_SQLite.html">SQLite.php</a></li>
+		</ol>
+		
+		<li><a href="3.00_Filter">Filter</a></li>
+		<ol>
+		<li><a href="3.00_Filter.html">Filter.php</a></li>
+		<li><a href="3.00_FilterChain.html">FilterChain.php</a></li>
+		</ol>
+		
+		<li><a href="3.00_functions">functions</a></li>
+		
+		<li><a href="3.00_Html.html">Html</a></li>
+		<ol>
+		<li><a href="3.00_FormField.html">FormField.php</a></li>
+		</ol>
+		
 -->
+		<li><a href="3.00_Http">Http</a>
+			<ol>
+				<li><a href="3.00_Http_PathInfo.html">A_Http_PathInfo.php</a></li>
+<!--
+				<li><a href="3.00_Http_Download.html">Download.php</a></li>
+				<li><a href="3.00_Http_Request.html">Request.php</a></li>
+				<li><a href="3.00_Http_Response.html">Response.php</a></li>
+				<li><a href="3.00_Http_Upload.html">Upload.php</a></li>
+-->
+			</ol>
+		</li>
+<!--
+		
+		<li><a href="3.00_Locator.html">Locator.php</a></li>
+		<li><a href="3.00_Logger.html">Logger.php</a></li>
+		
+		<li><a href="3.00_Pager">Pager</a></li>
+		<li><a href="3.00_Pager.html">Pager.php</a></li>
+		<ol>
+		<li><a href="3.00_ADODB.html">ADODB.php</a></li>
+		<li><a href="3.00_Array.html">Array.php</a></li>
+		<li><a href="3.00_DB.html">DB.php</a></li>
+		<li><a href="3.00_File.html">File.php</a></li>
+		<li><a href="3.00_HTMLWriterJump.html">HTMLWriterJump.php</a></li>
+		<li><a href="3.00_MySQL.html">MySQL.php</a></li>
+		</ol>
+		
+		<li><a href="3.00_Rule">Rule.php</a></li>
+		<li><a href="3.00_Rule.html">Rule.php</a></li>
+		<ol>
+		<li><a href="3.00_Alpha.html">Alpha.php</a></li>
+		<li><a href="3.00_Date.html">Date.php</a></li>
+		<li><a href="3.00_Email.html">Email.php</a></li>
+		<li><a href="3.00_Length.html">Length.php</a></li>
+		<li><a href="3.00_Match.html">Match.php</a></li>
+		<li><a href="3.00_Numeric.html">Numeric.php</a></li>
+		<li><a href="3.00_Range.html">Range.php</a></li>
+		</ol>
+		
+		<li><a href="3.00_Session.html">Session.php</a></li>
+		<li><a href="3.00_Template.html">Template.php</a></li>
+		<li><a href="3.00_URL.html">URL.php</a></li>
+		
+		<li><a href="3.00_User">User</a></li>
+		<ol>
+		<li><a href="3.00_Access.html">Access.php</a></li>
+		<li><a href="3.00_Auth.html">Auth.php</a></li>
+		<li><a href="3.00_Session.html">Session.php</a></li>
+		</ol>
+		<li><a href="3.00_Validator.html">Validator.php</a></li>
+		<li><a href="3.00_ValueObject.html">ValueObject.php</a></li>
+-->	
+	</ol>
 
-</ol>
+	<h3>API Documentation</h3>
+	<ol>
+	<li><a href="api/index.html">API Documentation</a></li>
+	</ol>
+	
+	<h3>Appendices</h3>
+	<ol>
+	<li><a href="../A//LICENSE">LICENSE</a></li>
+	</ol>
+	
+</div>
+
+<div id="main_content">
+</div>
+
+<div id="main_footer">
+	<a href="http://code.google.com/p/skeleton/">Project Repository</a>
+</div>
+
+</body>
+</html>
