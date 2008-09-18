@@ -155,9 +155,11 @@ class A_Controller_Front {
 				$controller = new $class($locator);
 	
 				if ($this->preFilters) {
-					$route = $this->runFilters($controller, $this->preFilters);
-					if ($route !== null) {
-						// if the filter has forwarded then go to top of loop
+					// run pre filtes and check if forward
+					$change_route = $this->runFilters($controller, $this->preFilters);
+					if ($change_route !== null) {
+						// if filter forwarded then set new route and reloop for mapping
+						$route = $change_route;
 						continue;
 					}
 				}
@@ -176,7 +178,11 @@ class A_Controller_Front {
 				}
 	
 				if ($this->postFilters) {
-					$route = $this->runFilters($controller, $this->postFilters);
+					$change_route = $this->runFilters($controller, $this->postFilters);
+					if ($change_route !== null) {
+						// if filter forwarded then set route to loop again
+						$route = $change_route;
+					}
 				}
 			} elseif ($error_route) {
 				$route = $error_route;
