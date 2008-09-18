@@ -155,11 +155,14 @@ class A_Controller_Front {
 				$controller = new $class($locator);
 	
 				if ($this->preFilters) {
-					$this->runFilters($controller, $this->preFilters);
+					$route = $this->runFilters($controller, $this->preFilters);
+					if ($route !== null) {
+						// if the filter has forwarded then go to top of loop
+						continue;
+					}
 				}
 				
 				if (method_exists($controller, $this->dispatchMethod)) {
-//					$method = $this->dispatchMethod;
 					$route = $controller->{$this->dispatchMethod}($locator, $method);
 				} else {
 					if (! method_exists($controller, $method)) {
@@ -173,7 +176,7 @@ class A_Controller_Front {
 				}
 	
 				if ($this->postFilters) {
-					$this->runFilters($controller, $this->postFilters);
+					$route = $this->runFilters($controller, $this->postFilters);
 				}
 			} elseif ($error_route) {
 				$route = $error_route;
@@ -204,15 +207,19 @@ class A_Controller_Front {
 				} else {
 					$change_route = null;
 				}
+				// return value is forward object or true
 				if ($change_route) {
 					if (is_object($change_route)) {
+						// change route is forward
 						$route = $change_route;
 					} elseif (is_object($filters[$name])) {
+						// use filter as forward
 						$route = $filters[$name];
 					} else {
+						// true triggers forward to error
 						$route = $this->errorRoute;
 					}
-					continue 2;
+					return $change_route;
 				}
 			} elseif (is_string($filters[$name]) && function_exists($filters[$name])) {
 				$func = $filters[$name];
