@@ -1,4 +1,5 @@
 <?php
+include 'config.php';
 include 'A/Pager.php';
 
 // check if other example has included this file and created a datasource
