@@ -36,7 +36,7 @@ $Response = new A_Http_Response();
 
 // Start Sessions
 $Session = new A_Session();
-$Session->start();
+//$Session->start();
 $UserSession = new A_User_Session($Session);
 
 // Create registry/loader and add common objects
