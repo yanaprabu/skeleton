@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 
 <script type="text/javascript" src="jquery-1.2.6.js"></script>
+<script type="text/javascript" src="jquery.phpcode.js"></script>
+<script type="text/javaScript" src="chili/jquery.chili-2.2.js"></script>
+<script type="text/javascript"> 
+    ChiliBook.recipeFolder = "chili/";  
+</script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(function($) {
@@ -17,7 +22,11 @@ $(document).ready(function(){
 		$('#main_content').load($(this).attr("href"));
 		return false;
 	});
+	$(".phpCode").phpCode("./phpcode.php"); 
 });
+
+
+
 </script>
 </head>
 
@@ -33,7 +42,6 @@ $(document).ready(function(){
 
 <div id="main_menu">
 	<h2>Table of Contents</h2>
-	
 	<h3>Introduction</h3>
 	<ol>
 		<li><span>1.00</span><a href="1.00_Introduction.html">Introduction</a></li>
