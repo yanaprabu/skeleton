@@ -1,0 +1,29 @@
+<h2>Directory Structure</h2>
+
+<p>The framework in its most basic configuration only references a 'controller' directory at this point. The Action Controller has 'model' and 'view' directories as default names and supports accessing them in the local, module or global scopes.</p> 
+
+<p>The Controller Mapper also supports modules similar to ZF. If you want the default controller directory in a 'default' directory there is a setDefaultDir() method to set the default directory. You define the name so it can be anything -- which is generally true through the framework. </p>
+
+<p>So the layouts are:</p>
+
+<p>Just specifying a application directory  when you configure the mapper with $Mapper->setBasePath('/path/to/app');</p>
+
+<pre>/app 
+/app/controller
+/app/model    * if using MVC
+/app/view    * if using MVC
+* Should there be other directories standars, such as inc or template?
+</pre>
+
+<p>Us modules with a default module dir when you configure the mapper with $Mapper->setDefaultDir('default');</p>
+<pre>/app
+/app/default
+/app/default/controller
+/app/default/model
+/app/default/view
+/app/mymodule/controller
+/app/mymodule/model
+/app/mymodule/view
+</pre>
+
+<p></p>
