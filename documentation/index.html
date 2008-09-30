@@ -9,10 +9,14 @@
 
 <script type="text/javascript" src="jquery-1.2.6.js"></script>
 
+<link href="prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="prettify.js"></script>
+<!--
 <script type="text/javaScript" src="chili/jquery.chili-2.2.js"></script>
 <script type="text/javascript"> 
     ChiliBook.recipeFolder = "chili/";  
 </script>
+-->
 <script type="text/javascript">
 $(document).ready(function(){
 	$(function($) {
@@ -20,6 +24,7 @@ $(document).ready(function(){
 	}); 
 	$("#main_menu a").click(function(){
 		$('#main_content').load($(this).attr("href"));
+		setTimeout('prettyPrint()', 100)
 		return false;
 	});
 	 
@@ -34,7 +39,7 @@ $(document).ready(function(){
 
 </style>
 
-<body>
+<body onload="prettyPrint()">
 
 <div id="main_header">
 	<h1>Skeleton Manual</h1>
