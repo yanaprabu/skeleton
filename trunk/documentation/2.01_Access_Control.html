@@ -2,7 +2,7 @@
 
 <p>The A_User_Session class has signin() and signout() methods to store user data in the session and indicate that the user has been authenticated. </p>
 <p>There are rules provided to do simple level and group access control. The basic way to check if a user is signed-in is:</p>
-<pre>
+<pre class="prettyprint lang-php">
 &lt;?php
 include_once 'A/User/Session.php';
 
@@ -23,14 +23,14 @@ class admin {
 </pre>
 <p>There is another way to do Access Control using a feature of the Front Controller. First you register a method to be executed before the normally dispatched method. This lets you do Dependency Injection. So in index.php you do:</p>
 
-<pre>
+<pre class="prettyprint lang-php">
 $FrontController->addPreMethod('denyAccess', new A_DL('', 'signin', 'run'));
 </pre>
 <p>This will run a method named denyAccess($locator) in an action -- if it exists. That method does not have to exist, but will be run if it does. If the action returns true, then the action passed to addPreMethod() will be run via a forward and the requested action will not run. The denyAccess() method can also return a A_DL object that specifies a different action to forward to. </p>
 
 <p>The Action Controller code is cleaner because you don't have to put access code in any of the action methods.</p>
 
-<pre>
+<pre class="prettyprint lang-php">
 &lt;?php
 
 class admin {
