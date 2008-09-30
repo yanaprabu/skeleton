@@ -72,7 +72,8 @@ class A_Http_PathInfo {
 	        } else {
 	            $base = dirname($_SERVER['SCRIPT_NAME']);		// using rewrite rules
 	        }
-	        if ($base != '/') {
+	        // fix by thinsoldier for NT servers
+	        if ($base != '/' && $base != '\\') {
 	        	$len = strlen($base) + 1;
 	        	$path = substr($path, $len);
 	        }
@@ -80,7 +81,7 @@ class A_Http_PathInfo {
 	            $path = substr($path, 0, strpos($path, '?'));
 	        }
         }
-        $this->path = trim($path, '/');
+        $this->path = trim($path, '/\\');
         $this->path_pos = 0;
 	}
 	
