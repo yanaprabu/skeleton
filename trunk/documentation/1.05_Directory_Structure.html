@@ -1,21 +1,37 @@
 <h2>Directory Structure</h2>
 
-<p>The framework in its most basic configuration only references a 'controller' directory at this point. The Action Controller has 'model' and 'view' directories as default names and supports accessing them in the local, module or global scopes.</p> 
+<p>There is no mandatory directory structure in Skeleton. All directory paths are customizable. However, the framework does have default directory names. There a also recommended directory structure. </p>
 
-<p>The Controller Mapper also supports modules similar to ZF. If you want the default controller directory in a 'default' directory there is a setDefaultDir() method to set the default directory. You define the name so it can be anything -- which is generally true through the framework. </p>
+<p>You may set the directories for controllers and modules in the A_Controller_Mapper using the setBaseDir() for the path to the application, setDefaultDir() for the path to the default module, and setClassDir() for the path to the controllers. Typically the base dire will be an absolute and the module and controllers paths will be relative to it. </p>
 
-<p>So the layouts are:</p>
+<h3>Minimal Structure</h3>
 
-<p>Just specifying a application directory  when you configure the mapper with $Mapper->setBasePath('/path/to/app');</p>
+<p>Assuming that you are using the Front Controller, in its most basic configuration only a 'controllers' directory is set as a default. 
+</p>
+<pre class="prettyprint">controllers/
+</pre>
+<br/>
 
+<p>If you choose to base your action controller classes on one of the Skeleton Action Controllers and use the load() functionalty, then 'models', 'views', 'templates' and 'helpers' directories are defaults. So a directory structure for a simple application might be:
+</p> 
+<pre class="prettyprint">controllers/
+helpers/
+models/
+templates/
+views/
+</pre>
+<br/>
+
+<h3>Recommended Structures</h3>
+
+<p>You can specify an application directory to contain all of the MVC directories. The default application directoyr is './'.  You specify this directory using the A_Controller_Mapper call with <strong>$Mapper->setBasePath('/path/to/app');</strong></p>
 <pre>/app 
-/app/controller
-/app/model    * if using MVC
-/app/view    * if using MVC
-* Should there be other directories standars, such as inc or template?
+/app/controllers
+/app/models
+/app/views
 </pre>
 
-<p>Us modules with a default module dir when you configure the mapper with $Mapper->setDefaultDir('default');</p>
+<p>You can further organize your application ito module directories by adding a 'module' parameter in the Request. Specify a default module directory the mapper with $Mapper->setDefaultDir('default');</p>
 <pre>/app
 /app/default
 /app/default/controller
