@@ -1,8 +1,8 @@
-<h2>Creating Controllers</h2>
+<h1>Creating Controllers</h1>
 
 <p>Action Controllers are classes that are loaded, instantiated and run by the Front controller. They typically are located in a <strong>controllers/</strong> directory. Each file must contain a class the same name. So the file <strong>controllers/foo.php</strong> should contain a class named <strong>foo</strong>.</p>
 
-<pre class="prettyprint lang-php">class foobar extends A_Controller_Action {
+<pre class="prettyprint lang-php"><code>class foobar extends A_Controller_Action {
 	public function __construct($locator) {
 		parent::__construct($locator);
 	}
@@ -12,19 +12,19 @@
 	}
 	public function _bar() {
 	}
-}</pre>
+}</code></pre>
 <p>The constructor and the dispatched method will be passed a Locator object by Front Controller. This parameter is optional and you may choose to use or or not. </p>  
 
-<h4>The Constructor</h4>
+<h3>The Constructor</h3>
 <p>The constructor is called when the controller class is instantiated in the Front Controller. This method is passed passed a Locator object by Front Controller. <strong>IMPORTANT</strong> - if your controller inherits a base class you need to call <strong>parent::__construct($locator)</strong>.</p>
 
-<h4>The Default Method - run()</h4>
+<h3>The Default Method - run()</h3>
 <p>If the value of the 'action' Request parameter is null or does not match the name of a method then the default method will be dispatched. That means that mysite.com/foobar/ or mysite.com/foobar/xqz will call the run() method. This method is passed passed a Locator object by Front Controller. </p>
 
-<h4>Action Methods</h4>
+<h3>Action Methods</h3>
 <p>If the value of the 'action' Request parameter matches the name of a method then it will be dispatched. That means that mysite.com/foobar/_bar/ will call the foo() method. This method is passed passed a Locator object by Front Controller. </p>
 
-<h4>Un-dispatchable Methods</h4>
+<h3>Un-dispatchable Methods</h3>
 <p>Method name that start with an underscore cannot be dispatched by the Front Controller. In the example above the _bar() method cannot be dispatched. That means that mysite.com/foobar/_bar/ will call the run() method, not the _bar() method.</p>
 
 <p>There are <b>five</b> ways to implement Action Controllers:</p>
@@ -64,4 +64,3 @@
 <p>This controller implement a dispatch() method that is called directly by the Front Controller. The dispatch() method in turn calls any pre-filters first, then the dispatched method, and then any post-filters. </p>
 <h3>Extend A_Controller_Action or A_Controller_Action_Dispatch</h3>
 <p>You may extend the Skeleton Action Controllers to add additional functionality as a base class. You would do this if you wanted to provide this addtionality to more than on of your Action Controllers. </p>
-<p>T
