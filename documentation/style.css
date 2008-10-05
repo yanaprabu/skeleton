@@ -20,8 +20,8 @@ body { font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#333;font-s
 h1, h2, h3, h4, h5, h6 { font-weight:normal;color:#252525; }
 h1 { font-size:28px;line-height:36px;margin:0 0 18px 0;padding:0;font-weight:bold;letter-spacing:-1px; }
 h2 { font-size:18px;font-size:20px;line-height:36px;margin:0 0 18px 0;padding:0;font-weight:bold; }
-h3 { font-size:16px;line-height:18px;margin:0 0 18px 0;padding:0;font-weight:bold; }
-h4 { font-size:14px;line-height:18px;margin:0 0 18px 0;padding:0;font-weight:bold; }
+h3 { font-size:15px;line-height:18px;margin:0 0 18px 0;padding:0;font-weight:bold; }
+h4 { font-size:13px;line-height:18px;margin:0 0 18px 0;padding:0;font-weight:bold; }
 h5 { font-size:13px;line-height:18px;margin: 0 0 0 0;padding:0;font-weight:bold; }
 h6 { font-size:13px;line-height:18px;margin: 0 0 0 0;padding:0;font-style:italic; }
 p { font-size:13px;margin:0 0 18px 0;padding:0;line-height:18px; }
@@ -30,9 +30,11 @@ ul li, ol li { font-size:13px;line-height:18px;margin:0 0 0 20px;list-style:none
 a { color:#600;}
 a:hover { color:#000;}
 strong { color:#444; }
-pre { margin:0 0 18px 0; white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -o-pre-wrap;background: #f8f8f8;}
+pre { padding:12px;border:1px solid #ddd;margin:0 0 18px 0;background:#f8f8f8;
+	white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -o-pre-wrap; }
 pre code { margin:0;padding:0;display:block; }
-p.note { padding:9px 0 9px 13px;color:#666;border:1px solid #ddd;border-left:2px solid #444; }
+p.note, p.devnote { padding:9px 0 9px 13px;color:#666;border:1px solid #ddd;border-left:2px solid #444; }
+p.devnote { color:#700; }
 
 /* Styling */
 #main_header { margin:0 0 20px;background:#444;border-bottom:1px solid #ddd; }
@@ -46,7 +48,8 @@ p.note { padding:9px 0 9px 13px;color:#666;border:1px solid #ddd;border-left:2px
 #main_menu a { text-decoration:none; }
 #main_menu p { margin-left:30px; }
 #main_content { margin: 0 20px 0 330px;padding-bottom:30px; }
-#main_content li { list-style:disc;}
+#main_content li { list-style:disc; }
+#main_content ol li { list-style:decimal; }
 #main_footer { clear:both;margin:0 30px;padding:20px 0 0;border-top:2px solid #ddd; }
 #main_footer p { font-size:12px;margin:0 0px 18px; }
 

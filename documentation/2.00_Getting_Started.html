@@ -3,7 +3,7 @@
 <p>Class files are located in the "A" directory and follow the PEAR naming convention where underscores in the class name correspond to directory separators in the file path. For example, the Front Controller class is named A_Controller_Front and is in the file A/Controller/Front.php</p>
 <p>The classes internally assume that the directory containing the "A" directory is in the include_path. In addition, the application will typicall need to include files from directories that contain "controllers", "models", and "views" classes. No specific directory layout is required. An example layout is provided.</p>
 <h2>Bootstrap File (index.php)</h2>
-<p>A minimum index.php file is a follows. This file creates the following filesRequest and response </p>
+<p>A minimum index.php file is a follows. This file creates the following objects Request and response </p>
 <pre class="prettyprint lang-php">
 &lt;?php
 require_once 'A/DL.php';
@@ -28,7 +28,7 @@ $Controller->run($Locator);
 $Response->run($Locator);
 echo $Response->render();
 </pre>
-<p>This file creates the following files</p>
+<p>This file creates the following objects</p>
 <ul>
 <li>Request object used to access GET or POST vars, and PATH_INFO.</li>
 <li>Response object used assemble the HTML output and headers to send to the browser.</li>

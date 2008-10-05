@@ -14,7 +14,7 @@
 <table>
     <tr>
       <td>Field 1 (Numbers only in range 1-10)</td>
-      <td><?php dump($this); //$p1 = $this->getParameter('field1'); echo $p1->render(); ?></td>
+      <td><?php $p1 = $this->getParameter('field1'); echo $p1->render(); ?></td>
       <td><span class="error"><?php echo implode(', ', $p1->error_msg); ?></span></td>
     </tr>
     <tr>

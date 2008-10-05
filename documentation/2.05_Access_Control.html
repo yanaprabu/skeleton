@@ -1,6 +1,7 @@
 <h1>Access Control</h1>
 
-<p>The A_User_Session class has signin() and signout() methods to store user data in the session and indicate that the user has been authenticated. </p>
+<p>For Access Control the class A_User_Session is used. The A_User_Session class has signin() and signout() methods to store user data in the session to indicate that the user has been authenticated. </p>
+<h2>Basic access control</h2>
 <p>There are rules provided to do simple level and group access control. The basic way to check if a user is signed-in is:</p>
 <pre class="prettyprint lang-php">
 &lt;?php
@@ -21,6 +22,8 @@ class admin {
 	
 }
 </pre>
+
+<h2>Access Control using Dependency Injection</h2>
 <p>There is another way to do Access Control using a feature of the Front Controller. First you register a method to be executed before the normally dispatched method. This lets you do Dependency Injection. So in index.php you do:</p>
 
 <pre class="prettyprint lang-php">
