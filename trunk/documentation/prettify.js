@@ -54,7 +54,7 @@
 var PR_SHOULD_USE_CONTINUATION = true;
 
 /** the number of characters between tab columns */
-var PR_TAB_WIDTH = 8;
+var PR_TAB_WIDTH = 4;
 
 /** Walks the DOM returning a properly escaped version of innerHTML.
   * @param {Node} node

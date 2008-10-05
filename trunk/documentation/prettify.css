@@ -11,7 +11,7 @@
 .atn { color: #606; }
 .atv { color: #080; }
 .dec { color: #606; }
-pre.prettyprint { padding: 0px 12px 12px; border: 1px solid #ddd; }
+pre.prettyprint { padding: 12px 12px 12px; border: 1px solid #ddd; }
 
 @media print {
   .str { color: #060; }
