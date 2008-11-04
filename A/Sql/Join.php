@@ -10,10 +10,11 @@ class A_Sql_Join {
 	protected $joinTypes = array('INNER', 'LEFT', 'RIGHT', 'FULL', 'CROSS', 'NATURAL');
 
 	public function join($table1, $table2, $type) {
+		$type = strtoupper($type);
 		if (!in_array($type, $this->joinTypes)) { //invalid join type
 			return;
 		}
-		$this->joins[] = array('type' => strtoupper($type), 'table1' => $table1, 'table2' => $table2, 'on' => null); 
+		$this->joins[] = array('type' => $type, 'table1' => $table1, 'table2' => $table2, 'on' => null); 
 	}
 	
 	public function on($argument1, $argument2=null, $argument3=null) {
