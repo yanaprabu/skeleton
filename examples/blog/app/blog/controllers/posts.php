@@ -1,7 +1,7 @@
 <?php
 
 class posts extends A_Controller_Action {
-	var $response;
+	protected $response;
 
 	function __construct($locator) {
 		parent::__construct($locator);
@@ -24,7 +24,7 @@ class posts extends A_Controller_Action {
 			$template->set('content', $content);
 			$maincontent = $template->render();
 			
-			$this->response->set('maincontent', $maincontent);
+			$this->response->set('maincontent', $template);
 			$this->response->set('subcontent','This is the subcontent');
 
 		} 

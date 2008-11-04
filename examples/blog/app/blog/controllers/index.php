@@ -1,7 +1,7 @@
 <?php
 
 class index extends A_Controller_Action {
-	var $response;
+	protected $response;
 
 	function __construct($locator) {
 		parent::__construct($locator);

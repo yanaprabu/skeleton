@@ -64,7 +64,7 @@ class A_Cart_Request extends A_Cart_Url
 		if ($allrequest) {
 			$allrequest =& $allrequest->data;
 		} else {
-			$allrequest =& $_REQUEST;
+			$allrequest =& $_REQUEST;		// fix/remove
 		}
 		$request = array();
 		$n = 0;

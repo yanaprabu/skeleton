@@ -126,7 +126,7 @@ class EditController extends A_Controller_Form {
 								}
 							}
 							if (class_exists($class)) {
-								$formfield[$n]->addRule(new $class($params['name'], $args[0], isset($args[1])?$args[1]:null, isset($args[2])?$args[2]:null));
+								$formfield[$n]->addRule(new $class($args[0], isset($args[1])?$args[1]:null, isset($args[2])?$args[2]:null), $params['name']);
 							}
 						}
 					}

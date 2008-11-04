@@ -32,7 +32,7 @@ $Controller->run($Locator);
 $Response->out();
 
 class InjectResponseFilter {
-	var $locator;
+	protected $locator;
 	
 	function InjectResponseFilter($locator) {
 		$this->locator = $locator;

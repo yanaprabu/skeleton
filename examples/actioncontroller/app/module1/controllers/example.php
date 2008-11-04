@@ -3,7 +3,7 @@ ini_set('error_reporting', E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 ini_set('log_errors', 'Off');
 class example extends A_Controller_Action {
-	var $response;
+	protected $response;
 
 	function __construct($locator) {
 		parent::__construct($locator);

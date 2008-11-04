@@ -2,8 +2,8 @@
 include_once 'A/Template/Strreplace.php';
 
 class example {
-	var $content;
-	var $template_main;
+	protected $content;
+	protected $template_main;
 
 	function example($locator) {
 	}

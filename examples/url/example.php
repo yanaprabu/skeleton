@@ -8,10 +8,10 @@ echo $url->getLink('test', array('style'=>'color:gold;'));
 
 class URL {
     
-    var $params;
-    var $mode;
-    var $basename;
-    var $path_info_base;
+    protected $params;
+    protected $mode;
+    protected $basename;
+    protected $path_info_base;
     
     function URL($mode = 1, $path_info_base=''){
         $this->params = array();

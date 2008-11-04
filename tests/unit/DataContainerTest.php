@@ -2,7 +2,7 @@
 require_once('A/DataContainer.php');
 
 class DataContainerExample {
-	var $value;
+	protected $value;
 	function Test($value='not set') {
 		$this->value = $value;
 	}

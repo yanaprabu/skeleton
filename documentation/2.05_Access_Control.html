@@ -38,7 +38,7 @@ $FrontController->addPreMethod('denyAccess', new A_DL('', 'signin', 'run'));
 
 class admin {
 	
-	var $response;
+	protected $response;
 
 	function admin($locator) {
 		$this->response = $locator->get('Response');

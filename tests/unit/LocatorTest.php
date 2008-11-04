@@ -74,14 +74,13 @@ class LocatorTest extends UnitTestCase {
 }
 
 class LocatorExample {
-var $value = '';
-
-function set($value) {
-	$this->value = $value;
-}
-
-function get() {
-	return $this->value;
-}
-
+	protected $value = '';
+	
+	function set($value) {
+		$this->value = $value;
+	}
+	
+	function get() {
+		return $this->value;
+	}
 }

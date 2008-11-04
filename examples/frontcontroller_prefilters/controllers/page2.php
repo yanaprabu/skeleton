@@ -1,7 +1,7 @@
 <?php
 
 class page2 {
-	var $response;
+	protected $response;
 
 	function denyAccess($locator) {
 		echo "ACCESS CHECK\n";
