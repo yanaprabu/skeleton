@@ -9,7 +9,7 @@ include_once 'A/Locator.php';
 include_once 'A/Http/Request.php';
 include_once 'A/Http/Response.php';
 include_once 'A/Template/Strreplace.php';
-include_once 'A/Rule.php';
+include_once 'A/Rule/Abstract.php';
 include_once 'A/Rule/Notnull.php';
 include_once 'A/Filter.php';
 include_once 'A/Controller/Input.php';
@@ -18,13 +18,13 @@ include_once 'A/Controller/App.php';
 //-----------------------------------------------------------------------------
 
 class HangmanGame {
-    var $word;
-    var $level;
-    var $levels;
-    var $guesses = '';
-    var $misses = 0;
-    var $feedback = '';
-    var $availableLetters;
+    protected $word;
+    protected $level;
+    protected $levels;
+    protected $guesses = '';
+    protected $misses = 0;
+    protected $feedback = '';
+    protected $availableLetters;
 
     function HangmanGame() {
     	$this->levels  = $this->getLevels();
@@ -162,7 +162,7 @@ class LoseView {
     }
 }
 
-class WinRule extends A_Rule {
+class WinRule extends A_Rule_Abstract {
 
 	function WinRule($game) {
 		$this->game = $game;
@@ -173,7 +173,7 @@ class WinRule extends A_Rule {
 	}
 }
 
-class LoseRule extends A_Rule {
+class LoseRule extends A_Rule_Abstract {
 
 	function LoseRule($game) {
 		$this->game = $game;
@@ -184,7 +184,7 @@ class LoseRule extends A_Rule {
 	}
 }
 
-class Guess extends A_Rule {
+class Guess extends A_Rule_Abstract {
 
 	function isValid($dataspace) {
 		$value = $dataspace->get('level');
@@ -239,8 +239,8 @@ class Hangman extends A_Controller_App {
 		$this->addState(new A_Controller_App_State('win', new A_DL('', 'WinView', 'render')));
 		$this->addState(new A_Controller_App_State('lose', new A_DL('', 'LoseView', 'render')));
 
-		$this->addTransition(new A_Controller_App_Transition('start', 'lose', new A_Rule_NotNull('giveup', '')));
-		$this->addTransition(new A_Controller_App_Transition('start', 'game', new A_Rule_NotNull('level', '')));
+		$this->addTransition(new A_Controller_App_Transition('start', 'lose', new A_Rule_Notnull('giveup', '')));
+		$this->addTransition(new A_Controller_App_Transition('start', 'game', new A_Rule_Notnull('level', '')));
 		$this->addTransition(new A_Controller_App_Transition('game', 'lose', new LoseRule($game)));
 		$this->addTransition(new A_Controller_App_Transition('game', 'win', new WinRule($game)));
 	

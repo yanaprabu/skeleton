@@ -12,7 +12,7 @@ class Rule_RegexpTest extends UnitTestCase {
 	
 	function testRuleRegexp() {
   		$dataspace = new A_DataContainer();
-  		$rule = new A_Rule_Regexp('test', '/123$/', 'error');
+  		$rule = new A_Rule_Regexp('/123$/', 'test', 'error');
 
   		$dataspace->set('test', 'test123');
   		$result = $rule->isValid($dataspace);

@@ -1,7 +1,7 @@
 <?php
 require_once 'A/Controller/Input.php';
 require_once 'A/Rule/Length.php';
-require_once 'A/Rule/NotNull.php';
+require_once 'A/Rule/Notnull.php';
 require_once 'A/Filter.php';
 require_once 'A/Filter/Regexp.php';
 require_once 'A/Filter/Tolower.php';
@@ -10,10 +10,10 @@ require_once 'app/admin/models/UserTableGateway.php';
 
 class login extends A_Controller_Input {
 
-	var $response;
-	var $request;
-	var $usersession;
-	var $db;
+	protected $response;
+	protected $request;
+	protected $usersession;
+	protected $db;
 
 	function __construct($locator) {
 		parent::__construct($locator);
@@ -34,13 +34,13 @@ class login extends A_Controller_Input {
 				$username = new A_Controller_InputParameter('username');
 				$username->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9]/', ''));
 				$username->addFilter(new A_Filter_ToLower());
-				$username->addRule(new A_Rule_NotNull('username', 'Username required'));
+				$username->addRule(new A_Rule_Notnull('username', 'Username required'));
 				$username->addRule(new A_Rule_Length(4, 20, 'username', 'Username must be 4 characters long'));
 				$this->addParameter($username);
 				
 				$password = new A_Controller_InputParameter('password');
 				$password->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/', ''));
-				$password->addRule(new A_Rule_NotNull('password', 'Password required'));
+				$password->addRule(new A_Rule_Notnull('password', 'Password required'));
 				$password->addRule(new A_Rule_Length(4, 20, 'password', 'Password must be 4 characters long'));
 				$this->addParameter($password);
 				

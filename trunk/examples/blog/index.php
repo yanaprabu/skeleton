@@ -9,12 +9,17 @@ function dump($var, $name='') {
 
 
 // Basic config data
-$path = dirname($_SERVER['SCRIPT_FILENAME']);
+$file_path = dirname($_SERVER['SCRIPT_FILENAME']);
+$approot = substr(dirname(__FILE__),strlen($_SERVER['DOCUMENT_ROOT']));
+$url_path = dirname($_SERVER['SCRIPT_NAME']);
+if ($url_path == '\\') {
+	$url_path = '';						// fix on Windows
+}
 $ConfigArray = array(
-    'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]) . '/',
-    'PATH' => $path . '/',
-    'APP' => $path . '/app',
-    'LIB' => $path . '/../../',     // will be $path . '/library'
+    'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . $url_path . '/',
+    'PATH' => $file_path . '/',
+    'APP' => $file_path . '/app',
+    'LIB' => $file_path . '/../../',     // will be $file_path . '/library'
     );
 
 // Configure PHP include path
@@ -105,3 +110,5 @@ if (! $Response->hasRenderer()) {
 
 // Finally, display
 $Response->out();
+
+echo '<pre>' . implode(get_included_files(), "\n") . '</pre>';

@@ -1,7 +1,7 @@
 <?php
 
 class page4 {
-	var $_response = null;
+	protected $_response = null;
 
 	function forceError($locator) {
 		echo "FORCE ERROR\n";

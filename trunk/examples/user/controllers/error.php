@@ -2,8 +2,9 @@
 include_once 'A_Template.php';
 
 class error extends A_Controller_Action {
-	var $content;
-	var $template_main;
+	protected $content;
+	protected $template_main;
+	
 	function __construct($locator){
 		parent::__construct($locator);
 		$this->usersession = $locator->get('UserSession');

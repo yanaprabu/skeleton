@@ -1,6 +1,6 @@
 <?php
 include_once 'A/Controller/App.php';
-include_once 'A/Rule.php';
+include_once 'A/Rule/Notnull.php';
 /**
  * Controller class for callback style form support
  *
@@ -55,7 +55,7 @@ class A_Controller_Form extends A_Controller_App {
 		}
 	
 // register register transitions with from state, to states and rule
-		$this->addTransition(new A_Controller_App_Transition('init', 'submit', new A_Rule_NotNull($this->submit_param_name, 'submit')));
+		$this->addTransition(new A_Controller_App_Transition('init', 'submit', new A_Rule_Notnull($this->submit_param_name, 'submit')));
 		$this->addTransition(new A_Controller_App_Transition('submit', 'done', $this));
 	
 		$this->processRequest($request);

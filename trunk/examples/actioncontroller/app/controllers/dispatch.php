@@ -2,7 +2,7 @@
 include_once 'A/Controller/Action/Dispatch.php';
 
 class dispatch extends A_Controller_Action_Dispatch {
-	var $response;
+	protected $response;
 
 	function __construct($locator) {
 		parent::__construct($locator);

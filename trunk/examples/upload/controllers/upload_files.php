@@ -4,8 +4,8 @@ include_once 'A/Http/UploadForm.php';
 include_once 'A/Template/Strreplace.php';
 
 class upload_files {
-	var $content;
-	var $template_main;
+	protected $content;
+	protected $template_main;
 
 	function upload_files($locator) {
 	}

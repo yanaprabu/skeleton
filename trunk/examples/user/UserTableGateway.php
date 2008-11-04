@@ -1,7 +1,7 @@
 <?php
 
 class UserTableGateway {
-	var $users;
+	protected $users;
 
 	function UserTableGateway() {
 		$this->users = array(

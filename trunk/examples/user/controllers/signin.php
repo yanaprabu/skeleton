@@ -6,7 +6,7 @@ include_once 'A/Template/Strreplace.php';
 include_once 'UserTableGateway.php';
 
 class signin extends A_Controller_Input {
-	var $usersession;
+	protected $usersession;
 
 	function __construct($locator) {
 		parent::__construct($locator);
@@ -24,13 +24,13 @@ class signin extends A_Controller_Input {
 				$username = new A_Controller_InputParameter('username');
 				$username->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9]/', ''));
 				$username->addFilter(new A_Filter_ToLower());
-				$username->addRule(new A_Rule_NotNull('username', 'Username required'));
+				$username->addRule(new A_Rule_Notnull('username', 'Username required'));
 				$username->addRule(new A_Rule_Length(4, 20, 'username', 'Username must be 4 characters long'));
 				$this->addParameter($username);
 				
 				$password = new A_Controller_InputParameter('password');
 				$password->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/', ''));
-				$password->addRule(new A_Rule_NotNull('password', 'Password required'));
+				$password->addRule(new A_Rule_Notnull('password', 'Password required'));
 				$password->addRule(new A_Rule_Length(4, 20, 'password', 'Password must be 4 characters long'));
 				$this->addParameter($password);
 			

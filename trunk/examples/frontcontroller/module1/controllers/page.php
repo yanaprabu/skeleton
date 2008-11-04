@@ -1,7 +1,7 @@
 <?php
 
 class page {
-	var $response;
+	protected $response;
 
 	function page($locator) {
 		$this->response = $locator->get('Response');

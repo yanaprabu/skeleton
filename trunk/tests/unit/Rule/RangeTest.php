@@ -13,7 +13,7 @@ class Rule_RangeTest extends UnitTestCase {
 	function testRuleRange() {
   		$dataspace = new A_DataContainer();
 
-  		$rule = new A_Rule_Range('test', 5, 10, 'error');
+  		$rule = new A_Rule_Range(5, 10, 'test', 'error');
 
   		foreach (array(5,7,10) as $value) {
   			$dataspace->set('test', $value);
