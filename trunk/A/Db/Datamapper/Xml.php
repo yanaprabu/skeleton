@@ -21,14 +21,13 @@ class A_Db_Datamapper_Xml extends A_Db_Datamapper {
 				$this->addMapping($mapping);
 			}
 			if (isset($xml->join)) {
-				include_once 'A/Sql/Join.php';
 				foreach ($xml->join as $join) {
 					$table1 = strval($join->table1);
 					$field1 = strval($join->field1);
 					$table2 = strval($join->table2);
 					$field2 = strval($join->field2);
 					$join_type = strval($join->join_type);
-					$this->addJoin(new A_Sql_Join($table1, $field1, $table2, $field2, $join_type));
+					$this->addJoin(new A_Db_Datamapper_Join($table1, $field1, $table2, $field2, $join_type));
 				}
 			}
 		}
