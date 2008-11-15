@@ -1,6 +1,6 @@
 <?php
 
-class Domain_Model_Cargo_Cargo	{
+class Cargo	{
 
 private $trackingId;
 private $origin;
