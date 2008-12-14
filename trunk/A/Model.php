@@ -132,6 +132,14 @@ class A_Model {
 					}
 				}
 			}
+			
+			// check if there are rules and run those as well
+			if ($this->rules) {
+				foreach ($this->rules as $rule) { //dump($rule);dump($field_names);
+					$validator->addRule($rule);
+				}
+			}			
+			
 			// if the validator is not valid get its errors
 			if(!$validator->validate($datasource)){
 				$this->error = true; 
@@ -140,21 +148,7 @@ class A_Model {
 					$this->fields[$fieldname]->setError($errorarray);
 				}
 			}
-			
-			
-			if ($this->rules) {
-				foreach ($this->rules as $rule) {
-					// if rule is only for specific fields do only those, otherwise all
-					$names = $rule['names'] ? $rule['names'] : $field_names;
-					foreach ($names as $name) {
-						$rule['rule']->setName($name);		// set all rules to work on this field
-						if (! $validator->validate($datasource, $rule['rule'])) {
-							$this->fields[$name]->setError($validator->getErrorMsg());
-							$this->error = true;
-						}
-					}
-				}
-			}
+		
 		}
 			
 		return ! $this->error;
