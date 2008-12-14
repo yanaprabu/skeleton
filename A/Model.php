@@ -123,21 +123,25 @@ class A_Model {
 					$this->fields[$name]->value = $filterchain->run($this->fields[$name]->value, $this->filters);
 				}
 			}
-			// run filters for each field
-			foreach ($field_names as $name) {
-				if ($this->fields[$name]->filters) {
-					$this->fields[$name]->value = $filterchain->run($datasource->get($name), $this->fields[$name]->filters);
-				}
-			}
-			foreach ($field_names as $name) {
-				if (isset($this->fields[$name]->rules)) {
-					$this->fields[$name]->setName($name);		// set all rules to work on this field
-					if (! $validator->validate($this, $this->fields[$name]->rules)) {
-						$this->fields[$name]->setError($validator->getErrorMsg());
-						$this->error = true;
+
+			// run rules for each field
+			foreach ($this->fields as $field) {   	
+			//	if (isset($field->rules)) {
+					foreach($field->rules as $rule ){ 	
+						$validator->addRule($rule);
 					}
+			//	}
+			}
+			// if the validator is not valid get its errors
+			if(!$validator->validate($datasource)){
+				$this->error = true; 
+				$errors = $validator->getErrorMsg(); 
+				foreach($errors as $fieldname => $errorarray) { 	
+					$this->fields[$fieldname]->setError($errorarray);
 				}
 			}
+			
+			
 			if ($this->rules) {
 				foreach ($this->rules as $rule) {
 					// if rule is only for specific fields do only those, otherwise all
