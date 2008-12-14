@@ -30,8 +30,10 @@ class FormModel extends A_Model_Request {
 		$this->addField($field4 = new A_Model_Request_Field('field4'));
 		$field4->addFilter(new A_Filter_Regexp('/[^a-zA-Z]/', ''));
 		$field4->addFilter(new A_Filter_ToUpper());
-		$field4->addRule(new A_Rule_Notnull('field4', 'Please enter Field 4'));
+		//$field4->addRule(new A_Rule_Notnull('field4', 'Please enter Field 4'));
 		
-		$this->excludeRules('field3');
+		//$this->excludeRules('field3');
+		
+		$this->addRule(new A_Rule_Notnull('field4', 'Please enter Field 4'));
 	}
 }
