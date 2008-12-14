@@ -126,11 +126,11 @@ class A_Model {
 
 			// run rules for each field
 			foreach ($this->fields as $field) {   	
-			//	if (isset($field->rules)) {
+				if (isset($field->rules)) {
 					foreach($field->rules as $rule ){ 	
 						$validator->addRule($rule);
 					}
-			//	}
+				}
 			}
 			// if the validator is not valid get its errors
 			if(!$validator->validate($datasource)){
