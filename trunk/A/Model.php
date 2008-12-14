@@ -108,7 +108,7 @@ class A_Model {
 
 		$filterchain = new A_FilterChain();
 		$validator = new A_Validator();
-		$validator->exclude($this->excludeRules);
+		$validator->excludeRules($this->excludeRules);
 		
 		$this->error = false;
 		$field_names = array_keys($this->fields);
