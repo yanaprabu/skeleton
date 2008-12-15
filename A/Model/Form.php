@@ -21,7 +21,7 @@ class A_Model_Form extends A_Model {
 	}
 	
 	public function processRequest($request) {
-		if ($request->has($this->submit_field_name) && ($request->isPost() == $this->is_post)) {
+		if (($request->isPost() == $this->is_post) && (($this->submit_field_name == '') || $request->has($this->submit_field_name))) {
 			$this->is_submitted = true;
 
 			$this->process($request);
