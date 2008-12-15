@@ -1,6 +1,6 @@
 <?php
 require_once 'A/Controller/Action/Dispatch.php';
-include_once 'A/Model/Request.php';
+include_once 'A/Model/Form.php';
 require_once 'A/Validator.php';
 require_once 'A/FilterChain.php';
 require_once 'A/Html/Form.php';
@@ -35,7 +35,7 @@ class Form4 extends A_Controller_Action_Dispatch {
 #echo '<pre>' . print_r($this, 1) . '</pre>';
 #		$model->run($locator);
 		
-		$input = new A_Model_Request(); 
+		$input = new A_Model_Form(); 
 #		$input->setRequired($model->getRequired()); // get required fields from model
 #		$input->addRule(new AddressRules); // modularity!
 #		$input->addRule(new PhoneRules); // modularity!
