@@ -8,11 +8,17 @@ include_once 'A/Model/Form/Field.php';
  */
 
 class A_Model_Form extends A_Model {
-	protected $submit_field_name = 'submit';
+	protected $method = 'POST';
+	protected $submit_param = '';
 	protected $is_post = true;
 	protected $is_submitted = false;
 	protected $fieldClass = 'A_Model_Form_Field';
 	
+	public function setMethod($method) {
+        $this->method = strtoupper($method);
+        return $this;
+    }
+
 	public function setSubmitParameterName($name) {
 		if ($name) {
 			$this->submit_field_name = $name;
@@ -21,7 +27,7 @@ class A_Model_Form extends A_Model {
 	}
 	
 	public function processRequest($request) {
-		if (($request->isPost() == $this->is_post) && (($this->submit_field_name == '') || $request->has($this->submit_field_name))) {
+		  if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
 			$this->is_submitted = true;
 
 			$this->process($request);
