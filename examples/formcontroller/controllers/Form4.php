@@ -37,7 +37,7 @@ class Form4 extends A_Controller_Action_Dispatch {
 		$model = $this->load()->model('Users');
 
 		$form = new A_Model_Form();
-		$form->addFields($model->getFields());  
+		$form->addField($model->getFields());  
 #		$input->setRequired($model->getRequired()); // get required fields from model
 #		$input->addRule(new AddressRules); // modularity!
 #		$input->addRule(new PhoneRules); // modularity!
