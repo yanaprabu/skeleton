@@ -17,8 +17,11 @@ class Form4View extends A_Http_View {
 	}
 	
 	function render() {
-		dump($this->errmsgs, 'ERROR MESSAGES: ');
-		dump($this->values, 'VALUES: ');
+		$layout = $this->load()->template('example_form4');
+		$layout->set('values', $this->values);
+		$layout->set('errmsg', $this->errmsgs);
+		$content = $layout->render();
+		return $content;
 	}
 
 }

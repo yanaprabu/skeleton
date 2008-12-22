@@ -24,6 +24,14 @@ class A_Model {
 		return $this;
 	}
 	
+	public function addFields($objects) {
+		if(is_array($objects)){
+			foreach($objects as $object){
+				$this->fields[$object->name] = $object;
+			}
+		}
+	}
+	
 	public function addFilter($filter, $fields=array()) {
 		if ($fields) {
 			if (! is_array($fields)) {
@@ -135,7 +143,7 @@ class A_Model {
 			
 			// check if there are rules and run those as well
 			if ($this->rules) {
-				foreach ($this->rules as $rule) { //dump($rule);dump($field_names);
+				foreach ($this->rules as $rule) { 
 					$validator->addRule($rule);
 				}
 			}			
