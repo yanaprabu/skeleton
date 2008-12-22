@@ -10,6 +10,8 @@ require_once 'A/Filter/Trim.php';
 require_once 'A/Rule/Digit.php';
 require_once 'A/Rule/Inarray.php';
 require_once 'A/Rule/Length.php';
+require_once 'A/Rule/Match.php';
+
 
 class MyRules extends A_Validator {
     public function init() {
@@ -31,32 +33,41 @@ class MyFilters extends A_FilterChain {
 class Form4 extends A_Controller_Action_Dispatch {
 	
 	function run($locator) {
-		$model = $this->load()->model('Users');
-#echo '<pre>' . print_r($this, 1) . '</pre>';
-#		$model->run($locator);
 		
-		$input = new A_Model_Form(); 
+		$model = $this->load()->model('Users');
+
+		$form = new A_Model_Form();
+		$form->addFields($model->getFields());  
 #		$input->setRequired($model->getRequired()); // get required fields from model
 #		$input->addRule(new AddressRules); // modularity!
 #		$input->addRule(new PhoneRules); // modularity!
-		$input->addRule($model->getRules()); // modularity!
-		$input->addRule(new MyRules);
-		$input->addFilter(new MyFilters);
-		 
+		$form->addRule($model->getRules()); // modularity!
+		
+		// Now add an additional field, the second password field. Which must match the first password field. 
+		// The $form get the Rules for the first password field from $usersmodel 
+		$form->addField($passwordfield = new A_Model_Form_Field('password2'));
+		// now we add an additional rule, specific for the form we are dealing with.
+		$form->addRule(new A_Rule_Match('password', 'password2', 'Password 2 must match Password 1'));
+		
+	//	$form->addRule(new MyRules);
+	//	$form->addFilter(new MyFilters);dump($form);
+		
 		$view = $this->load()->view('Form4');
 		if ($this->getRequest()->isPost()) {
-		    if ($input->isValid()) {
+		    $form->run($locator);
+		
+			if ($form->isValid()) {
 		        try {
-		            $model->save($input);
+		            $model->save($form);
 		            // redirect to user detail page or whatever
 		        } catch (A_Model_Exception $e) {
 		            // bummer!
 		        }
 		        exit;
 		    } else {
-		        $view->setErrorMsg($input->getErrorMsg());
+		        $view->setErrorMsg($form->getErrorMsg());
 		    }
-		    $view->setValues($input->getValues());
+		    $view->setValues($form->getValues());
 		}
 		echo $view->render();
 	}

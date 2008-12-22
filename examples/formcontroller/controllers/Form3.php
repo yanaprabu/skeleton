@@ -6,7 +6,7 @@ class Form3 extends A_Controller_Action {
 	
 	function run($locator) {
 		$model = $this->load()->model('Form');
-#echo '<pre>' . print_r($this, 1) . '</pre>';
+		#echo '<pre>' . print_r($this, 1) . '</pre>';
 		$model->run($locator);
 		
 		if ($model->isValid()) {
