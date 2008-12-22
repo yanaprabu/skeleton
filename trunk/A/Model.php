@@ -16,21 +16,16 @@ class A_Model {
 	protected $excludeRules = array();
 	protected $fieldClass = 'A_Model_Field';
 	protected $error = false;
-	
-	public function addField(A_Model_Field $object) {
-		if ($object) {
-			$this->fields[$object->name] = $object;
-		}
-		return $this;
-	}
-	
-	public function addFields($objects) {
-		if(is_array($objects)){
-			foreach($objects as $object){
-				$this->fields[$object->name] = $object;
-			}
-		}
-	}
+
+	public function addField($objects){
+        if(is_array($objects)){
+            foreach($objects as $object){
+                $this->fields[$object->name] = $object;
+            }
+        } else {
+            $this->fields[$objects->name] = $objects;
+        }   
+    }
 	
 	public function addFilter($filter, $fields=array()) {
 		if ($fields) {
