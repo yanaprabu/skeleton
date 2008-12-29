@@ -29,7 +29,11 @@ class A_Db_MySQL {
 		}
 		if ($this->link == null) {
 			$host = isset($this->config['host']) ? $this->config['host'] : $this->config['hostspec'];
-			$this->link = mysql_connect($host, $this->config['username'], $this->config['password']);
+			if (isset($this->config['persistent'])) {
+				$this->link = mysql_pconnect($host, $this->config['username'], $this->config['password']);
+			} else {
+				$this->link = mysql_connect($host, $this->config['username'], $this->config['password']);
+			}
 			if ($this->link) {
 				if (isset($this->config['database'])) {
 					$result = mysql_select_db($this->config['database'], $this->link);
@@ -41,10 +45,23 @@ class A_Db_MySQL {
 		return $result;
 	}
 		
+	public function selectDb($database='') {
+		if ($this->link) {
+			if (! $database) {
+				$database = $this->dsn['database'];
+			}
+			$result = mysql_select_db($database, $this->link);
+		}
+	}
+		
 	public function close() {
 		if ($this->link) {
 			mysql_close($this->link);
 		} 
+	}
+		
+	public function disconnect () {
+		$this->close();
 	}
 		
 	public function query ($sql) {

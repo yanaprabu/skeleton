@@ -13,52 +13,63 @@
  *  */
 
 class A_Db_Postgres {
+	protected $config = null;
 	protected $link = null;
 	protected $sequenceext = '_seq';
 	protected $sequencestart = 1;
 	
-	public function __construct($dsn=null) {
-		if ($dsn) {
-			$this->connect($dsn);
-		}
+	public function __construct($config=null) {
+		$this->config = $config;
 	}
 		
-	public function connect ($dsn, $options=null) {
-		$connstr = '';
-		foreach ($dsn as $param => $value) {
-			if ($value) {
-				switch ($param) {
-				case 'hostspec':
-				case 'host':
-					$connstr .= "host={$value} ";
-					break;
-				case 'dbname':
-				case 'database':
-					$connstr .= "dbname={$value} ";
-					break;
-				case 'port':
-					$connstr .= "port={$value} ";
-					break;
-				case 'username':
-				case 'user':
-					$connstr .= "user={$value} ";
-					break;
-				case 'password':
-					$connstr .= "password={$value} ";
-					break;
-				}
-			}
+	public function connect ($config=null) {
+		$result = false;
+		if ($config) {
+			$this->config = $config;
 		}
 		if ($this->link == null) {
-			$this->link = @pg_connect($connstr);
+			$connstr = '';
+			foreach ($this->config as $param => $value) {
+				if ($value) {
+					switch ($param) {
+					case 'hostspec':
+					case 'host':
+						$connstr .= "host={$value} ";
+						break;
+					case 'dbname':
+					case 'database':
+						$connstr .= "dbname={$value} ";
+						break;
+					case 'port':
+						$connstr .= "port={$value} ";
+						break;
+					case 'username':
+					case 'user':
+						$connstr .= "user={$value} ";
+						break;
+					case 'password':
+						$connstr .= "password={$value} ";
+						break;
+					}
+				}
+			}
+			if (isset($this->config['persistent'])) {
+				$this->link = pg_pconnect($connstr);
+			} else {
+				$this->link = pg_connect($connstr);
+			}
 		}
 		return $this->link;
 	}
 		
-	public function disconnect () {
+	public function close() {
 		if ($this->link) {
 			pg_disconnect($this->link);
 		} 
+	}
+		
+	public function disconnect () {
+		$this->close();
 	}
 		
 	public function query ($sql) {
