@@ -40,6 +40,7 @@ class A_Db_Mysqli extends MySQLi {
 		
 	public function selectDb($database) {
 		$this->dsn['database'] = $database;
+		return $this->select_db($this->dsn['database']);
 	}
 		
 	public function query($sql) {
@@ -47,7 +48,6 @@ class A_Db_Mysqli extends MySQLi {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-		$this->select_db($this->dsn['database']);
 		if (stripos($sql, 'select') === 0) {
 			$obj = new A_Db_Mysqli_Recordset(parent::query($sql));
 		} else {
