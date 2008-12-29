@@ -50,7 +50,7 @@ class A_Db_Postgres {
 			}
 		}
 		if ($this->link == null) {
-			$this->link = @pg_pconnect($connstr);
+			$this->link = @pg_connect($connstr);
 		}
 		return $this->link;
 	}
