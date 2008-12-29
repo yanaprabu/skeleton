@@ -12,8 +12,7 @@ class A_Template_Include extends A_Template {
 	    extract($this->data);
 		ob_start();
 	    include($this->filename);
-	    $str = ob_get_clean();
-	    return($str);
+	    return ob_get_clean();
 	}
 
 }
