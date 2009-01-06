@@ -1,5 +1,8 @@
 <?php
 
+include ('A/Sandbox/Collection.php');
+include ('A/Sandbox/Paginator.php');
+
 Mock::Generate ('Collection');
 
 class PaginatorTest extends UnitTestCase	{

@@ -1,5 +1,7 @@
 <?php
 
+include ('A/Sandbox/Collection.php');
+
 class CollectionTest extends UnitTestCase	{
 
 function __construct() {
