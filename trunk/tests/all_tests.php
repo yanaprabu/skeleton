@@ -5,6 +5,7 @@ ini_set('log_errors', 'Off');
 require_once('config.php');
 require_once(SIMPLETESTDIR . 'simpletest.php');
 require_once(SIMPLETESTDIR . 'unit_tester.php');
+require_once(SIMPLETESTDIR . 'mock_objects.php');
 require_once(SIMPLETESTDIR . 'reporter.php');
 
 $base_dir = dirname(__FILE__) . "/unit/";
