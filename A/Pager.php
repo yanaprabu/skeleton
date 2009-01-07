@@ -146,6 +146,30 @@ class A_Pager {
 		return $this->current_page;
 	}
 
+	public function getPrevPage($length=1)	{
+		if ($length < 1) {
+			$length = 1;
+		}
+		$page = $this->current_page - $length;
+		if ($page > $this->first_page) {
+			return $page;
+		} else {
+			return $this->first_page;
+		}		
+	}
+	
+	public function getNextPage($length=1)	{
+		if ($length < 1) {
+			$length = 1;
+		}
+		$page = $this->current_page + $length;
+		if ($page < $this->last_page) {
+			return $page;
+		} else {
+			return $this->last_page;
+		}
+	}
+
 	public function getLastPage() {
 		return $this->last_page;
 	}
