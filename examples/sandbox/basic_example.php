@@ -45,8 +45,8 @@ $helper = new PaginationHelper ($paginator, $template, 2);
 
 ?>
 
-<p><?=$helper->render(); ?></p>
-<? foreach ($paginator->current() as $key => $value): ?>
-<strong><?=$key; ?>:</strong> <?=$value ?><br />
-<? endforeach; ?>
-<p><?=$helper->render(); ?></p>
+<p><?php echo $helper->render(); ?></p>
+<?php foreach ($paginator->current() as $key => $value): ?>
+<strong><?php echo $key; ?>:</strong> <?php echo $value ?><br />
+<?php endforeach; ?>
+<p><?php echo $helper->render(); ?></p>
