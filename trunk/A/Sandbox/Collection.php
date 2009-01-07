@@ -27,7 +27,7 @@ function count()	{
 }
 
 function slice ($offset, $length)	{
-	return array_slice ($this->collection, $offset, $length, true);
+	return new Collection (array_slice ($this->collection, $offset, $length, true));
 }
 
 function has ($key)	{	
