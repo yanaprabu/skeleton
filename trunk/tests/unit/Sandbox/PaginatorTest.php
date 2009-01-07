@@ -14,7 +14,9 @@ function __construct() {
 function setUp()	{
 	$this->collection = new MockCollection();
 	$this->collection->setReturnValue ('count', 20);
-	$this->paginator = new Paginator ($this->collection, 4, 3);
+	$this->paginator = new Paginator ($this->collection);
+	$this->paginator->setPageSize (3);
+	$this->paginator->setCurrentPage (4);
 }
 
 function testCurrent()	{
@@ -23,28 +25,28 @@ function testCurrent()	{
 }
 
 function testCount()	{
-	$this->collection->expectOnce ('count');
+	$this->collection->expectAtLeastOnce ('count');
 	$this->paginator->count();
 }
 
 function testfirst()	{
-	$this->assertEqual ($this->paginator->first(), 1);
+	$this->assertEqual ($this->paginator->firstPage(), 1);
 }
 
 function testLast()	{
-	$this->assertEqual ($this->paginator->last(), 7);
+	$this->assertEqual ($this->paginator->lastPage(), 7);
 }
 
 function testValidIsWithinBoundsReturnsTrue()	{
-	$this->assertTrue ($this->paginator->valid (3));
+	$this->assertTrue ($this->paginator->validPage (3));
 }
 
 function testValidIsBelowBoundsReturnsFalse()	{
-	$this->assertFalse ($this->paginator->valid (-1));
+	$this->assertFalse ($this->paginator->validPage (-1));
 }
 
 function testValidIsAboveBoundsReturnsFalse()	{
-	$this->assertFalse ($this->paginator->valid (100));
+	$this->assertFalse ($this->paginator->validPage (100));
 }
 
 function testPreviousReturnedWhenPreviousExists()	{
@@ -52,7 +54,7 @@ function testPreviousReturnedWhenPreviousExists()	{
 }
 
 function testNoPreviousReturnsFirst()	{
-	$this->assertEqual ($this->paginator->previous (4), $this->paginator->first());
+	$this->assertEqual ($this->paginator->previous (4), $this->paginator->firstPage());
 }
 
 function testNextReturnedTrueWhenNextExists()	{
@@ -60,7 +62,7 @@ function testNextReturnedTrueWhenNextExists()	{
 }
 
 function testNoNextReturnsLast()	{
-	$this->assertEqual ($this->paginator->next (4), $this->paginator->last());
+	$this->assertEqual ($this->paginator->next (4), $this->paginator->lastPage());
 }
 
 }

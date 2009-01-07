@@ -46,4 +46,9 @@ function testValidPositionReturnsTrue()	{
 	$this->assertTrue ($collection->valid());
 }
 
+function testSliceReturnsCollection()	{
+	$collection = new Collection (array (1, 2, 3, 4));
+	$this->assertIsA ($collection->slice  (1, 2), 'Collection');
+}
+
 }
