@@ -2,6 +2,10 @@
 
 class Paginator	{
 
+private $collection;
+private $page;
+private $length = 10;
+
 function __construct (Collection $collection, $page, $length)	{
 	if ($collection == null) throw new Exception ('missing Collection object');
 	if ($page == null) throw new Exception ('missing page');
@@ -9,6 +13,14 @@ function __construct (Collection $collection, $page, $length)	{
 	$this->collection = $collection;
 	$this->page = $page;
 	$this->length = $length;
+}
+
+function setPage ($page)	{
+	$this->page = $this->valid ($page) ? $page : $this->first();
+}
+
+function setLength ($length)	{
+	$this->length = $this->valid ($length) ? $length : $this->length;
 }
 
 function current()	{
@@ -35,21 +47,18 @@ function last()	{
 	return ceil ($this->count() / $this->length);
 }
 
-function valid()	{
-	return $length < $this->count();
+function valid ($page)	{
+	return ($page >= $this->first() && $page <= $this->last()) ? true : false; 
 }
 
 function previous ($length = 1)	{
-	if ($length <= 0) throw new Exception ('length must be greater than 0');
-	if ($this->page - $length < $this->first()) return false;
-	return $this->page - $length;
-	
+	$page = $this->page - $length;
+	return ($this->valid ($page)) ? $page : $this->first();
 }
 
 function next ($length = 1)	{
-	if ($length <= 0) throw new Exception ('length must be greater than 0');
-	if ($this->page + $length > $this->last()) return false;
-	return $this->page + $length;
+	$page = $this->page + $length;
+	return ($this->valid ($page)) ? $page : $this->last();
 }
 
 }
