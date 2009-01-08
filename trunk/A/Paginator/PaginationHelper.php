@@ -32,7 +32,7 @@ function before()	{
 	$before = new Collection();
 	if ($this->paginator->previous (5) > $this->paginator->first()) $before->add (-$this->size + 1, $this->paginator->previous (5));
 	for ($a = $this->size; $a >= 1; $a--):
-	if ($this->paginator->previous ($a)) $before->add ($a, $this->paginator->previous ($a));
+	if ($this->paginator->isValid ($a)) $before->add ($a, $this->paginator->previous ($a));
 	endfor;
 	return $before;
 }
@@ -40,7 +40,7 @@ function before()	{
 function after()	{
 	$after = new Collection();
 	for ($a = 1; $a <= $this->size; $a++):
-	if ($this->paginator->next ($a)) $after->add ($a, $this->paginator->next ($a));
+	if ($this->paginator->isValid ($a)) $after->add ($a, $this->paginator->next ($a));
 	endfor;
 	if ($this->paginator->next (5) < $this->paginator->last()) $after->add ($this->size + 1, $this->paginator->next (5));
 	return $after;
