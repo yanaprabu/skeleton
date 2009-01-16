@@ -92,6 +92,26 @@ abstract class A_Filter_Abstract {
 	}
 	
 	/**
+     * Sets the value in the data container that this filter is validating
+     * 
+     * @param string name of field
+     * @param mixed value to set
+     * @return mixed whatever is inside the container array at key $name
+     */
+	public function setValue($name, $value=null) {
+		if ($name && ($value !== null)) {
+			if (is_array($this->container)) {
+				$this->container[$name] = $value;
+			} elseif (is_object($this->container)) {
+				$this->container->set($name, $value);
+			} else {
+				$this->container = $value;
+			}
+		}
+		return $this;
+	}
+	
+	/**
 	 * Filters data
 	 *
 	 * @param $container

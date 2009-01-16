@@ -12,16 +12,15 @@ class A_Filter_Set {
     protected $dir = 'A_Filter_';
 
 	public function addFilter($filter, $fields=array()) {	
+		// if filter is string then we load the class later
 		if(is_string($filter)) {
 			$filter = func_get_args();
 			$fields = null;
-		} else {
-			if (! is_array($fields)) {
-			    $fields = array($fields);
-			}
+		} elseif ($fields && ! is_array($fields)) {
+			$fields = array($fields);
 		}
-		if ($fields) {
-			
+		// if for specific fields only then create filter for each field
+		if ($fields) {			
 			foreach ($fields as $field) {
 				$filter->setName($field);
 				$this->chain[] = $filter;
@@ -54,9 +53,9 @@ class A_Filter_Set {
 				$this->chain[$key] = $filter;
 				unset($ref);
 		    }
-			$result[$this->chain[$key]->getName()] = $this->chain[$key]->doFilter($container);
+			$this->chain[$key]->doFilter($container);
 		}
-		return $result;
+		return $container;
     }
 	
 }
