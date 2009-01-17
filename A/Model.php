@@ -5,7 +5,7 @@ include_once 'A/Model/Field.php';
 /**
  * Base class for Models with filtering and validation 
  * 
- * @package A_Base 
+ * @package A_Model 
  */
 
 class A_Model {
@@ -107,7 +107,7 @@ class A_Model {
 		return $data;
 	}
 
-	public function process($datasource) {
+	public function isValid($datasource=null) {
 
 		$filterchain = new A_FilterChain();
 		$validator = new A_Validator();
@@ -116,9 +116,14 @@ class A_Model {
 		$this->error = false;
 		$field_names = array_keys($this->fields);
 		if ($field_names) {
+			if (!$datasource) {
+				$datasource = $this->datasource;
+			}
 			// set values from datasource
 			foreach ($field_names as $name) {
-				$this->fields[$name]->value = $datasource->get($name);
+				if ($datasource->has($name)) {
+					$this->fields[$name]->value = $datasource->get($name);
+				}
 			}
 			// run global filters
 			if ($this->filters) {
@@ -161,10 +166,6 @@ class A_Model {
 		return $this->error;
 	}
 	
-	public function isValid() {
-		return ! $this->error;
-	}
-
 	public function getFieldNames() {
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {
