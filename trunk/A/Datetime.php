@@ -247,6 +247,14 @@ class A_Datetime extends DateTime {
 			return $this->getTimestamp() > $date->getTimestamp();
 		}
 	}
+
+	public function isWithin (A_DateTime_Interval $interval, $inclusive = false)	{
+		if ($inclusive)	{
+			return $this->getTimestamp() >= $interval->getTimestampBefore() && $this->getTimestamp() <= $interval->getTimestampAfter();
+		} else {
+			return $this->getTimestamp() > $interval->getTimestampBefore() && $this->getTimestamp() < $interval->getTimestampAfter();
+		}
+	}
 	
 	/**
 	 * get date using internal format value
