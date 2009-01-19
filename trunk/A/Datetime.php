@@ -171,8 +171,12 @@ class A_Datetime extends DateTime {
 	/**
 	 * get date in basd on internat format value
 	 */
-	public function __toString() {
+	public function toString()	{
 		return $this->format($this->dateFormat);
+	}
+	
+	public function __toString() {
+		return $This->toString();
 	}
 
 }
