@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-include 'A/Sandbox/Collection.php';
+include 'A/Paginator/Collection.php';
 include 'A/Pager.php';
 include 'A/Pager/Array.php';
 include 'A/Template/Include.php';		// same as A/Sandbox/Template.php
