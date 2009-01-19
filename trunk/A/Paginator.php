@@ -1,12 +1,12 @@
 <?php
 
-class A_Paginator	{
+class Paginator	{
 
 	private $collection;
 	private $currentPage = 1;
 	private $pageSize = 10;
 
-	public function __construct ($collection, $pageSize)	{
+	public function __construct (Collection $collection, $pageSize)	{
 		if ($collection == null) throw new Exception ('Must supply valid Collection');
 		if ($pageSize == null) throw new Exception ('Must supply valid page size');
 		$this->collection = $collection;
@@ -21,20 +21,12 @@ class A_Paginator	{
 		return $this->page;
 	}
 
-	public function getItems()	{
-		if (this->collection instanceof ICollection):
-			return $this->collection->slice ($this->offset ($this->currentPage), $this->pageSize);
-		elseif ($this->collection instanceof IDataContainer):
-			return $this->collection->getRows ($this->offset ($this->currentPage), $this->offset ($this->currentPage) + $this->pageSize);
-		endif;
+	public function getCollection()	{
+		return $this->collection->slice ($this->offset ($this->currentPage), $this->pageSize);
 	}
 
 	public function count()	{
-		if ($this->collection instanceof A_Paginator_ICollection):
-			return $this->collection->count();
-		elseif ($this->collection instanceof A_Pager_IDataContainer):
-			return $this->collection->getNumRows();
-		endif;
+		return $this->collection->count();
 	}
 
 	public function firstPage()	{
@@ -45,6 +37,14 @@ class A_Paginator	{
 		return ceil ($this->count() / $this->pageSize);
 	}
 
+	public function firstItem()	{
+		return $this->offset ($this->currentPage) + 1;
+	}
+	
+	public function lastItem()	{
+		return $this->offset ($this->currentPage) + $this->pageSize > $this->count() ? $this->count() : $this->offset ($this->currentPage) + $this->pageSize;
+	}
+	
 	public function isValid ($page)	{
 		return ($page >= $this->firstPage() && $page <= $this->lastPage()) ? true : false; 
 	}
@@ -52,5 +52,6 @@ class A_Paginator	{
 	private function offset ($page)	{
 		return (($page - 1) * $this->pageSize);
 	}
-		
+	
+	
 }
