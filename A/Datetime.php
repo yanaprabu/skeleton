@@ -32,7 +32,7 @@ class A_Datetime extends DateTime {
 	/**
 	 * date format returnd by _toString
 	 */
-	protected $dateFormat = "Ymd\THis\Z";
+	protected $dateFormat = 'Ymd\THis\Z';
 	/**
 	 * true dd/mm, false mm/dd
 	 */
@@ -119,43 +119,43 @@ class A_Datetime extends DateTime {
 	/**
 	 * get year
 	 */
-	public function getYear($twodigit=false) {
-		return $this->format($twodigit ? "y" : "Y");
+	public function getYear() {
+		return (int)$this->format('Y');
 	}
 
 	/**
 	 * get month
 	 */
-	public function getMonth($name=false) {
-		return $this->format($name ? "F" : "n");
+	public function getMonth() {
+		return (int)$this->format('n');
 	}
 
 	/**
 	 * get day
 	 */
-	public function getDay($ordinal=false) {
-		return $this->format($ordinal ? "jS" : "j");
+	public function getDay() {
+		return (int)$this->format('j');
 	}
 
 	/**
 	 * get hour
 	 */
 	public function getHour($meridian=false) {
-		return $this->format($ordinal ? "h" : "H");
+		return (int)$this->format($ordinal ? 'h' : 'H');
 	}
 
 	/**
 	 * get minute
 	 */
 	public function getMinute() {
-		return $this->format("i");
+		return (int)$this->format('i');
 	}
 
 	/**
 	 * get second
 	 */
 	public function getSecond() {
-		return $this->format("s");
+		return (int)$this->format('s');
 	}
 
 	/**
