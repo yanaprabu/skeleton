@@ -32,7 +32,7 @@ class A_Datetime extends DateTime {
 	/**
 	 * date format returnd by _toString
 	 */
-	protected $dateFormat = 'U';
+	protected $dateFormat = "Ymd\THis\Z";
 	/**
 	 * true dd/mm, false mm/dd
 	 */
@@ -79,7 +79,7 @@ class A_Datetime extends DateTime {
 	}
 
 	/**
-	 * Set $dayMonthOrder property
+	 * Set format of value returned by __toString()
 	 */
 	public function setFormat($format) {
 		$this->dateFormat = $format;
@@ -102,10 +102,60 @@ class A_Datetime extends DateTime {
 	}
 
 	/**
-	 * get date in YYYY-MM-DD format
+	 * get date string in YYYY-MM-DD format
 	 */
-	public function getYmd($time=false) {
+	public function getDate($time=false) {
 		return $this->format('Y-m-d' . ($time ? ' H:i:s' : ''));
+	}
+
+	/**
+	 * get time string in 23:15 or 11:15 pm format, with or without seconds
+	 */
+	public function getTime($meridian=false, $seconds=false) {
+		$sec = $seconds ? ':s' : '';
+		return $this->format($meridian ? "g:i$sec a" : "G:i$sec");
+	}
+
+	/**
+	 * get year
+	 */
+	public function getYear($twodigit=false) {
+		return $this->format($twodigit ? "y" : "Y");
+	}
+
+	/**
+	 * get month
+	 */
+	public function getMonth($name=false) {
+		return $this->format($name ? "F" : "n");
+	}
+
+	/**
+	 * get day
+	 */
+	public function getDay($ordinal=false) {
+		return $this->format($ordinal ? "jS" : "j");
+	}
+
+	/**
+	 * get hour
+	 */
+	public function getHour($meridian=false) {
+		return $this->format($ordinal ? "h" : "H");
+	}
+
+	/**
+	 * get minute
+	 */
+	public function getMinute() {
+		return $this->format("i");
+	}
+
+	/**
+	 * get second
+	 */
+	public function getSecond() {
+		return $this->format("s");
 	}
 
 	/**
@@ -169,14 +219,17 @@ class A_Datetime extends DateTime {
 	}
 
 	/**
-	 * get date in basd on internat format value
+	 * get date using internal format value
 	 */
 	public function toString()	{
 		return $this->format($this->dateFormat);
 	}
 	
+	/**
+	 * get date in in string context using internal format value
+	 */
 	public function __toString() {
-		return $This->toString();
+		return $this->toString();
 	}
 
 }
