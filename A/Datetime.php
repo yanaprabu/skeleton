@@ -32,7 +32,7 @@ class A_Datetime extends DateTime {
 	/**
 	 * date format returnd by _toString
 	 */
-	protected $dateFormat = 'Ymd\THis\Z';
+	protected $dateFormat = 'Y-m-d H:i:s';
 	/**
 	 * true dd/mm, false mm/dd
 	 */
@@ -109,6 +109,13 @@ class A_Datetime extends DateTime {
 	}
 
 	/**
+	 * get timestamp
+	 */
+	public function getTimestamp() {
+		return $this->format('U');
+	}
+
+	/**
 	 * get time string in 23:15 or 11:15 pm format, with or without seconds
 	 */
 	public function getTime($meridian=false, $seconds=false) {
@@ -120,46 +127,46 @@ class A_Datetime extends DateTime {
 	 * get year
 	 */
 	public function getYear() {
-		return (int)$this->format('Y');
+		return $this->format('Y');
 	}
 
 	/**
 	 * get month
 	 */
 	public function getMonth() {
-		return (int)$this->format('n');
+		return $this->format('n');
 	}
 
 	/**
 	 * get day
 	 */
 	public function getDay() {
-		return (int)$this->format('j');
+		return $this->format('j');
 	}
 
 	/**
 	 * get hour
 	 */
 	public function getHour($meridian=false) {
-		return (int)$this->format($ordinal ? 'h' : 'H');
+		return $this->format($meridian ? 'h' : 'H');
 	}
 
 	/**
 	 * get minute
 	 */
 	public function getMinute() {
-		return (int)$this->format('i');
+		return $this->format('i');
 	}
 
 	/**
 	 * get second
 	 */
 	public function getSecond() {
-		return (int)$this->format('s');
+		return $this->format('s');
 	}
 
 	/**
-	 * Set $dayMonthOrder property
+	 * return a new modified object based on the format string 
 	 */
 	public function newModify($format) {
 		$date = clone $this;
@@ -168,7 +175,8 @@ class A_Datetime extends DateTime {
 	}
 
 	/**
-	 * set date from dates in YYYY-MM-DD
+	 * Set date from dates in dd-mm- or mm-dd order, with 2 or 4 digit years and any non-digit separater
+	 *  This pro
 	 */
 	public function parseDate($date) {
 		// fix dates in mm-dd-yy or mm/dd/yy format
@@ -218,6 +226,28 @@ class A_Datetime extends DateTime {
 		return $this;
 	}
 
+	/**
+	 * check if date/time of another objects is before the date/time of this object
+	 */
+	public function isBefore($date, $inclusive=false)	{
+		if ($inclusive) {
+			return $this->getTimestamp() <= $date->getTimestamp();
+		} else {
+			return $this->getTimestamp() < $date->getTimestamp();
+		}
+	}
+	
+	/**
+	 * check if date/time of another objects is after the date/time of this object
+	 */
+	public function isAfter($date, $inclusive=false)	{
+		if ($inclusive) {
+			return $this->getTimestamp() >= $date->getTimestamp();
+		} else {
+			return $this->getTimestamp() > $date->getTimestamp();
+		}
+	}
+	
 	/**
 	 * get date using internal format value
 	 */
