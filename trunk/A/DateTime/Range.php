@@ -1,18 +1,18 @@
 <?php
 /**
- * Date & Time Interval functionality 
+ * Date & Time Rangel functionality 
  *
  *
  * @package A_Datetime
  */
 
-class A_DateTime_Period {
+class A_DateTime_Range {
 
 	/*
-	 * Iterval spec parameter is in ISO 8601 Time Intervals format
+	 * Range spec parameter is in ISO 8601 Time Intervals format
 	 * See http://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 	 */
-	public function __construct($interval_spec) {
+	public function __construct($range_spec) {
 
 	}
 	
