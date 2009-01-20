@@ -2,8 +2,8 @@
 require_once('A/Datetime.php');
 require_once('A/DateTime/Interval.php');
 
-Mock::Generate ('A_DateTime_Interval');
 Mock::Generate ('A_DateTime_Period');
+Mock::Generate ('A_DateTime_Duration');
 
 class DatetimeTest extends UnitTestCase {
 	
@@ -105,30 +105,30 @@ class DatetimeTest extends UnitTestCase {
 		
 	}
 
-	function testIsWithinIntervalReturnsTrue()	{
+	function testIsWithinPeriodReturnsTrue()	{
 		$date1 = new A_DateTime();
 		$date1->parseDate ('2008/12/22');
 		$date2 = new A_DateTime();
 		$date2->parseDate ('2008/12/21');
 		$date3 = new A_DateTime();
 		$date3->parseDate ('2008/12/23');
-		$interval = new MockA_DateTime_Interval();
-		$interval->setReturnValue ('getTimestampBefore', $date2->getTimestamp());
-		$interval->setReturnValue ('getTimestampAfter', $date3->getTimestamp());
-		$this->assertTrue ($date1->isWithin ($interval));
+		$period = new MockA_DateTime_Period();
+		$period->setReturnValue ('getTimestampBefore', $date2->getTimestamp());
+		$period->setReturnValue ('getTimestampAfter', $date3->getTimestamp());
+		$this->assertTrue ($date1->isWithin ($period));
 	}
 
-	function testIsNotWithinIntervalReturnsFalse()	{
+	function testIsNotWithinPeriodReturnsFalse()	{
 		$date1 = new A_DateTime();
 		$date1->parseDate ('2008/12/20');
 		$date2 = new A_DateTime();
 		$date2->parseDate ('2008/12/21');
 		$date3 = new A_DateTime();
 		$date3->parseDate ('2008/12/23');
-		$interval = new MockA_DateTime_Interval();
-		$interval->setReturnValue ('getTimestampBefore', $date2->getTimestamp());
-		$interval->setReturnValue ('getTimestampAfter', $date3->getTimestamp());
-		$this->assertFalse ($date1->isWithin ($interval));
-	}
+		$period = new MockA_DateTime_Period();
+		$period->setReturnValue ('getTimestampBefore', $date2->getTimestamp());
+		$period->setReturnValue ('getTimestampAfter', $date3->getTimestamp());
+		$this->assertFalse ($date1->isWithin ($period));
+
 	
 }
