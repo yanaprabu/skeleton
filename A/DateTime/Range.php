@@ -1,6 +1,6 @@
 <?php
 /**
- * Date & Time Rangel functionality 
+ * Date & Time Range functionality 
  *
  *
  * @package A_Datetime
