@@ -8,7 +8,7 @@
 
 class A_DateTime_Range {
 
-	protected $before; // how are these stored internally? unix timestamps?
+	protected $before;
 	protected $after;
 
 	/*
@@ -16,16 +16,27 @@ class A_DateTime_Range {
 	 * See http://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 	 * Can instantiate using start & duration, duration & end, start & end 
 	 */
-	public function __construct($range_spec) {
-
+	public function __construct ($first, $second) {
+		if ($first instanceof A_DateTime && $second instanceof A_DateTime)	{
+			$this->start = $first;
+			$this->end = $second;
+		}
+		if ($first instanceof A_DateTime && $second instanceof A_DateTime_Duration)	{
+			$this->start = $first;
+			$this->end = $this->start->add ($second);
+		}
+		if ($first instanceof A_DateTime_Duration && $second instanceof A_DateTime)	{
+			$this->start = $second->remove ($first);	
+			$this->end = $second;
+		}
 	}
 	
-	public function getStart ($format) {
-	
+	public function getStart ($format = null) { // what is the appropriate default value for $format? -Cory
+		return $this->start;
 	}
 	
-	public function getEnd ($format) {
-	
+	public function getEnd ($format = null) {
+		return $this->end;
 	}
 	
 	public function toArray ($duration)	{
@@ -34,9 +45,9 @@ class A_DateTime_Range {
 	
 	public function contains ($datetime, $inclusive = false)	{
 		if ($inclusive)	{
-			return $datetime->getTimestamp() >= $this->before && $datetime->getTimestamp() <= $this->after;
+			return $datetime->getTimestamp() >= $this->before->getTimestamp() && $datetime->getTimestamp() <= $this->after->getTimestamp();
 		} else {
-			return $datetime->getTimestamp() > $this->before && $datetime->getTimestamp() < $this->after;
+			return $datetime->getTimestamp() > $this->before->getTimestamp() && $datetime->getTimestamp() < $this->after->getTimestamp();
 		}
 	}
 	

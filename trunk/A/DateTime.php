@@ -21,7 +21,7 @@ DateTimeZone::getTransitions()
 DateTimeZone::listAbbreviations()
 DateTimeZone::listIdentifiers()
 
-date_sub  ( DateTime $object  , DateInterval $interval  )
+date_sub  ( DateTime $object  , DateRange $range  )
 
 Ideas: http://laughingmeme.org/2007/02/27/
  *
@@ -226,6 +226,14 @@ class A_DateTime extends DateTime {
 		return $this;
 	}
 
+	public function add (A_DateTime_Duration $duration)	{
+		
+	}
+	
+	public function remove (A_DateTime_Duration $duration)	{
+		
+	}
+	
 	/**
 	 * check if date/time of another objects is before the date/time of this object
 	 */
@@ -248,11 +256,11 @@ class A_DateTime extends DateTime {
 		}
 	}
 
-	public function isWithin (A_DateTime_Interval $interval, $inclusive = false)	{
+	public function isWithin (A_DateTime_Range $range, $inclusive = false)	{
 		if ($inclusive)	{
-			return $this->getTimestamp() >= $interval->getTimestampBefore() && $this->getTimestamp() <= $interval->getTimestampAfter();
+			return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
 		} else {
-			return $this->getTimestamp() > $interval->getTimestampBefore() && $this->getTimestamp() < $interval->getTimestampAfter();
+			return $this->getTimestamp() > $range->getStart() && $this->getTimestamp() < $range->getEnd();
 		}
 	}
 	
