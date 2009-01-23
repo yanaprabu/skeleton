@@ -15,6 +15,7 @@ class RangeTest extends UnitTestCase	{
 		$this->end = new MockA_DateTime();
 		$this->end->setReturnValue ('getTimestamp', 1230786000);
 		$this->duration = new MockA_DateTime_Duration();
+		$this->range = new A_DateTime_Range ($this->start, $this->end);
 	}
 
 	function testConstructFromStartAndEnd()	{
@@ -34,6 +35,16 @@ class RangeTest extends UnitTestCase	{
 		$this->end->setReturnValue ('remove', $this->end);
 		$this->end->expectOnce ('remove', array ($this->duration));
 		$range = new A_DateTime_Range ($this->duration, $this->end);
+	}
+
+	function testGetStartWithFormatDelegatesToStart()	{
+		$this->start->expectOnce ('format');
+		$this->range->getStart ('Y-m-d');
+	}
+	
+	function testGetEndWithFormatDelegatesToEnd()	{
+		$this->end->expectOnce ('format');
+		$this->range->getEnd ('Y-m-d');
 	}
 	
 }

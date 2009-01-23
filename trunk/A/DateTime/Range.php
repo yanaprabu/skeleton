@@ -32,10 +32,16 @@ class A_DateTime_Range {
 	}
 	
 	public function getStart ($format = null) { // what is the appropriate default value for $format? -Cory
+		if ($format)	{
+			return $this->start->format ($format);
+		}
 		return $this->start;
 	}
 	
 	public function getEnd ($format = null) {
+		if ($format)	{
+			return $this->end->format ($format);
+		}
 		return $this->end;
 	}
 	
