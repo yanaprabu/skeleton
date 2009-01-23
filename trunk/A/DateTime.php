@@ -256,10 +256,6 @@ class A_DateTime extends DateTime {
 		}
 	}
 	
-	public function contains (A_DateTime_Interval $interval, $inclusive = false)	{
-		return $this->isWithin ($interval, $inclusive);
-	}
-	
 	/**
 	 * get date using internal format value
 	 */
