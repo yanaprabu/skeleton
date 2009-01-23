@@ -40,8 +40,4 @@ class A_DateTime_Range {
 		}
 	}
 	
-	public function isWithin (A_DateTime $datetime, $inclusive = $false)	{
-		return $this->contains ($datetime, $inclusive);
-	}
-	
 }
