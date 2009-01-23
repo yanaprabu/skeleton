@@ -28,7 +28,7 @@ Ideas: http://laughingmeme.org/2007/02/27/
  * @package A_Datetime
  */
 
-class A_Datetime extends DateTime {
+class A_DateTime extends DateTime {
 	/**
 	 * date format returnd by _toString
 	 */
@@ -254,6 +254,10 @@ class A_Datetime extends DateTime {
 		} else {
 			return $this->getTimestamp() > $interval->getTimestampBefore() && $this->getTimestamp() < $interval->getTimestampAfter();
 		}
+	}
+	
+	public function contains (A_DateTime_Interval $interval, $inclusive = false)	{
+		return $this->isWithin ($interval, $inclusive);
 	}
 	
 	/**
