@@ -1,6 +1,7 @@
 <?php
-require_once('A/Datetime.php');
-require_once('A/DateTime/Interval.php');
+require_once('A/DateTime.php');
+require_once('A/DateTime/Range.php');
+require_once('A/DateTime/Duration.php');
 
 Mock::Generate ('A_DateTime_Range');
 Mock::Generate ('A_DateTime_Duration');
@@ -14,7 +15,7 @@ class DatetimeTest extends UnitTestCase {
 	}
 	
 	function testDatetime_parseDate() {
-  		$datetime = new A_Datetime();
+  		$datetime = new A_DateTime();
 
 		$datetime->parseDate('2001/12/20');
 		$this->assertTrue($datetime->getDate() == '2001-12-20');
@@ -113,8 +114,8 @@ class DatetimeTest extends UnitTestCase {
 		$date3 = new A_DateTime();
 		$date3->parseDate ('2008/12/23');
 		$range = new MockA_DateTime_Range();
-		$range->setReturnValue ('getTimestampBefore', $date2->getTimestamp());
-		$range->setReturnValue ('getTimestampAfter', $date3->getTimestamp());
+		$range->setReturnValue ('getStart', $date2->getTimestamp());
+		$range->setReturnValue ('getEnd', $date3->getTimestamp());
 		$this->assertTrue ($date1->isWithin ($range));
 	}
 
@@ -126,9 +127,9 @@ class DatetimeTest extends UnitTestCase {
 		$date3 = new A_DateTime();
 		$date3->parseDate ('2008/12/23');
 		$range = new MockA_DateTime_Range();
-		$range->setReturnValue ('getTimestampBefore', $date2->getTimestamp());
-		$range->setReturnValue ('getTimestampAfter', $date3->getTimestamp());
+		$range->setReturnValue ('getStart', $date2->getTimestamp());
+		$range->setReturnValue ('getEnd', $date3->getTimestamp());
 		$this->assertFalse ($date1->isWithin ($range));
-
+	}
 	
 }
