@@ -136,9 +136,20 @@ class DatetimeTest extends UnitTestCase {
 		$date = new A_DateTime();
 		$duration = new MockA_DateTime_Duration();
 		$duration->setReturnValue ('toString', '+1 day');
+		$duration->expectOnce ('setPositive');
 		$duration->expectOnce ('toString');
 		$date2 = $date->add ($duration);
 		$this->assertEqual ($date2->getTimestamp(), strtotime ('+1 day', $date->getTimestamp()));
+	}
+	
+	function testRemoveReturnsNewDate()	{
+		$date = new A_DateTime();
+		$duration = new MockA_DateTime_Duration();
+		$duration->setReturnValue ('toString', '-1 days');
+		$duration->expectOnce ('setNegative');
+		$duration->expectOnce ('toString');
+		$date2 = $date->remove ($duration);
+		$this->assertEqual ($date2->getTimestamp(), strtotime ('-1 day', $date->getTimestamp())); 
 	}
 	
 }
