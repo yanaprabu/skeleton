@@ -227,10 +227,13 @@ class A_DateTime extends DateTime {
 	}
 
 	public function add (A_DateTime_Duration $duration)	{
+		$duration->setPositive();
 		return $this->newModify ($duration->toString());
 	}
 	
 	public function remove (A_DateTime_Duration $duration)	{
+		$duration->setNegative();
+		return $this->newModify ($duration->toString());
 	}
 	
 	/**

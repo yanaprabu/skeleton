@@ -66,7 +66,6 @@ class RangeTest extends UnitTestCase	{
 		
 		$this->start->setReturnValue ('newModify', $date1);
 		$this->assertEqual ($this->range->toArray ($this->duration), array ($date1, $date2, $date3));
-		
 	}
 	
 }
