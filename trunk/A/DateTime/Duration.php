@@ -17,7 +17,7 @@ protected $minutes;
 protected $seconds;
 protected $positive = true;
 
-function construct ($years = 0, $months = 0, $weeks = 0, $days = 0, $hours = 0, $minutes = 0, $seconds = 0)	{
+function __construct ($years = 0, $months = 0, $weeks = 0, $days = 0, $hours = 0, $minutes = 0, $seconds = 0)	{
 	$this->years = $years;
 	$this->months = $months;
 	$this->weeks = $weeks;
@@ -44,7 +44,7 @@ function toString()	{
 	$string[] = $this->buildString ('hours', $this->hours);
 	$string[] = $this->buildString ('minutes', $this->minutes);
 	$string[] = $this->buildString ('seconds', $this->seconds);
-	return join (', ' $string);  
+	return join (', ', $string);  
 }
 
 function buildString ($key, $value)	{
