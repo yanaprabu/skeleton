@@ -44,7 +44,7 @@ function toString()	{
 	$string[] = $this->buildString ('hours', $this->hours);
 	$string[] = $this->buildString ('minutes', $this->minutes);
 	$string[] = $this->buildString ('seconds', $this->seconds);
-	return $string;  
+	return join (', ' $string);  
 }
 
 function buildString ($key, $value)	{
