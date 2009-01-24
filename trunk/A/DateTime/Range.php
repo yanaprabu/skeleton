@@ -45,8 +45,14 @@ class A_DateTime_Range {
 		return $this->end;
 	}
 	
-	public function toArray ($duration)	{
-		
+	public function toArray (A_DateTime_Duration $duration)	{
+		$date = $this->start->newModify();
+		$ranges = array();
+		while ($date->getTimestamp() <= $this->end->getTimestamp()):
+		$ranges[] = $date;
+		$date = $date->add ($duration);
+		endwhile;
+		return $ranges;
 	}
 	
 	public function contains ($datetime, $inclusive = false)	{

@@ -11,10 +11,11 @@ class RangeTest extends UnitTestCase	{
 
 	function setUp()	{
 		$this->start = new MockA_DateTime();
-		$this->start->setReturnValue ('getTimestamp', 946702800);
+		$this->start->setReturnValue ('getTimestamp', strtotime ('1/1/07'));
 		$this->end = new MockA_DateTime();
-		$this->end->setReturnValue ('getTimestamp', 1230786000);
+		$this->end->setReturnValue ('getTimestamp', strtotime ('1/1/09'));
 		$this->duration = new MockA_DateTime_Duration();
+		$this->duration->setReturnValue ('toString', '+1 year');
 		$this->range = new A_DateTime_Range ($this->start, $this->end);
 	}
 
@@ -45,6 +46,27 @@ class RangeTest extends UnitTestCase	{
 	function testGetEndWithFormatDelegatesToEnd()	{
 		$this->end->expectOnce ('format');
 		$this->range->getEnd ('Y-m-d');
+	}
+	
+	function testToArray()	{
+		$date4 = new MockA_DateTime();
+		$date4->setReturnValue ('getTimestamp', strtotime ('1/1/10'));
+		
+		$date3 = new MockA_DateTime();
+		$date3->setReturnValue ('getTimestamp', strtotime ('1/1/09'));
+		$date3->setReturnValue ('add', $date4);
+		
+		$date2 = new MockA_DateTime();
+		$date2->setReturnValue ('getTimestamp', strtotime ('1/1/08'));
+		$date2->setReturnValue ('add', $date3);
+		
+		$date1 = new MockA_DateTime();
+		$date1->setReturnValue ('getTimestamp', strtotime ('1/1/07'));
+		$date1->setReturnValue ('add', $date2);
+		
+		$this->start->setReturnValue ('newModify', $date1);
+		$this->assertEqual ($this->range->toArray ($this->duration), array ($date1, $date2, $date3));
+		
 	}
 	
 }

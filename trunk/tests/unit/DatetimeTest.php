@@ -131,5 +131,14 @@ class DatetimeTest extends UnitTestCase {
 		$range->setReturnValue ('getEnd', $date3->getTimestamp());
 		$this->assertFalse ($date1->isWithin ($range));
 	}
+
+	function testAddReturnsNewDate()	{
+		$date = new A_DateTime();
+		$duration = new MockA_DateTime_Duration();
+		$duration->setReturnValue ('toString', '+1 day');
+		$duration->expectOnce ('toString');
+		$date2 = $date->add ($duration);
+		$this->assertEqual ($date2->getTimestamp(), strtotime ('+1 day', $date->getTimestamp()));
+	}
 	
 }
