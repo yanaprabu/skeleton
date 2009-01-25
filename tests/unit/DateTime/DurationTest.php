@@ -5,7 +5,7 @@ require_once('A/DateTime/Range.php');
 require_once('A/DateTime/Duration.php');
 
 
-class RangeTest extends UnitTestCase	{
+class DurationTest extends UnitTestCase	{
 
 	function setUp()	{
 		$this->duration = new A_DateTime_Duration();
