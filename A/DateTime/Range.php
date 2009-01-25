@@ -31,7 +31,7 @@ class A_DateTime_Range {
 		}
 	}
 	
-	public function getStart ($format = null) { // what is the appropriate default value for $format? -Cory
+	public function getStart ($format = null) {
 		if ($format)	{
 			return $this->start->format ($format);
 		}
@@ -45,12 +45,13 @@ class A_DateTime_Range {
 		return $this->end;
 	}
 	
-	public function toArray (A_DateTime_Duration $duration)	{
+	public function toArray ($duration)	{
 		$date = $this->start->newModify();
+		$string = $duration instanceof A_DateTime_Duration ? $duration->toString() : $duration;
 		$ranges = array();
 		while ($date->getTimestamp() <= $this->end->getTimestamp())	{
 			$ranges[] = $date;
-			$date = $date->add ($duration);
+			$date = $date->newModify ($string);
 		}
 		return $ranges;
 	}
