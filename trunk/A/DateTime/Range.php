@@ -82,7 +82,7 @@ class A_DateTime_Range {
 	 * format: DATE_ISO8601/DATE_ISO8601 
 	 */
 	public function toString()	{
-		return $this->start->format(DATE_ISO8601) . '/' . $this->start->format(DATE_ISO8601);  
+		return $this->start->format(DATE_ISO8601) . '/' . $this->end->format(DATE_ISO8601);  
 	}
 	
 
