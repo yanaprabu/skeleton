@@ -16,13 +16,14 @@ class RangeTest extends UnitTestCase	{
 		$expectedArray = array(
 			'years' => 2,
 			'months' => 3,
+			'weeks' => 0,
 			'days' => 5,
 			'hours' => 1,
 			'minutes' => 10,
 			'seconds' => 3
 		);
-		$parts = $this -> duration -> fromString($string);
-		$this -> assertEqual($expectedArray,$parts);
+		$this -> duration -> fromString($string);
+		$this -> assertEqual($expectedArray, $this->duration->toArray());
 	}
 
 }

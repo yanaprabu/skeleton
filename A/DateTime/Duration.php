@@ -9,29 +9,33 @@
 class A_DateTime_Duration {
 	
 	protected $_partNames = array('years','months','weeks','days','hours','minutes','seconds');
-	protected $years;
-	protected $months;
-	protected $weeks;
-	protected $days;
-	protected $hours;
-	protected $minutes;
-	protected $seconds;
+	protected $years = 0;
+	protected $months = 0;
+	protected $weeks = 0;
+	protected $days = 0;
+	protected $hours = 0;
+	protected $minutes = 0;
+	protected $seconds = 0;
 	protected $positive = true;
 	
 	public function __construct ($years = 0, $months = 0, $weeks = 0, $days = 0, $hours = 0, $minutes = 0, $seconds = 0)	{
-		if (func_num_args() == 1 && is_array (get_func_arg (0)))	{
-			extract (get_func_arg (0));
-		} elseif (func_num_args() == 1 && is_string (get_func_arg (0)))	{
-			extract ($this->fromString (get_func_arg (0)));
+		if (func_num_args() == 1) {
+			if (is_array ($years)) {
+				$this->fromArray ($years);
+			} elseif (is_string ($years)) {
+				$this->fromString ($years);
+			}
+		} else	{
+			$this->fromArray (array (
+				'years' => $years,
+				'months' => $months,
+				'weeks' => $weeks,
+				'days' => $days,
+				'hours' => $hours,
+				'minutes' => $minutes,
+				'seconds' => $seconds)
+			);
 		}
-	
-		$this->years = $years;
-		$this->months = $months;
-		$this->weeks = $weeks;
-		$this->days = $days;
-		$this->hours = $hours;
-		$this->minutes = $minutes;
-		$this->seconds = $seconds;
 	}
 	
 	public function fromString ($string)	{
@@ -54,7 +58,13 @@ class A_DateTime_Duration {
 				$parts[$partName] = $num;
 			}
 		}
-		return $parts;
+		$this->fromArray ($parts);
+	}
+	
+	public function fromArray ($array)	{
+		foreach ($array as $key => $value)	{
+			if (property_exists ($this, $key)) $this->{$key} = $value;
+		}		
 	}
 	
 	public function setPositive()	{
@@ -75,6 +85,18 @@ class A_DateTime_Duration {
 		$string[] = $this->buildString ('minutes', $this->minutes);
 		$string[] = $this->buildString ('seconds', $this->seconds);
 		return join (', ', $string);  
+	}
+	
+	public function toArray()	{
+		return array (
+			'years' => $this->years,
+			'months' => $this->months,
+			'weeks' => $this->weeks,
+			'days' => $this->days,
+			'hours' => $this->hours,
+			'minutes' => $this->minutes,
+			'seconds' => $this->seconds
+		);
 	}
 	
 	public function buildString ($key, $value)	{
