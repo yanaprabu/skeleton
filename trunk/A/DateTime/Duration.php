@@ -7,7 +7,8 @@
  */
 	
 class A_DateTime_Duration {
-		
+	
+	protected $_partNames = array('years','months','weeks','days','hours','minutes','seconds');
 	protected $years;
 	protected $months;
 	protected $weeks;
