@@ -34,7 +34,26 @@ class A_DateTime_Duration {
 	}
 	
 	public function fromString ($string)	{
-		// pytrin's string function - returns key/value array of parts
+		$parts = array();
+		$stringParts = explode(',',$string);
+		foreach($stringParts as $part) {
+			$part = trim($part);
+			$breakPos = strpos($part,' ');
+			if($breakPos !== false) {
+				$num = (int) substr($part,0,$breakPos);
+				$partName = substr($part,$breakPos + 1);
+			} else {
+				$num = 1;
+				$partName = $part;
+			}
+			if($partName[strlen($partName) - 1] != 's') {
+				$partName .= 's';
+			}
+			if(in_array($partName,$this -> _partNames)) {
+				$parts[$partName] = $num;
+			}
+		}
+		return $parts;
 	}
 	
 	public function setPositive()	{
