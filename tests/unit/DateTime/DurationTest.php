@@ -18,6 +18,16 @@ class RangeTest extends UnitTestCase	{
 			'minutes' => 10,
 			'seconds' => 3
 		);
+		$this->expectedArray2 = array(
+			'years' => 0,
+			'months' => 0,
+			'weeks' => 3,
+			'days' => 0,
+			'hours' => 0,
+			'minutes' => 0,
+			'seconds' => 0
+		);
+		
 	}
 
 	function testConstructFromIntegers()	{
@@ -57,6 +67,15 @@ class RangeTest extends UnitTestCase	{
 			'seconds' => 3			
 		));
 		$this->assertEqual ($this->duration->toArray(), $this->expectedArray);		
+	}
+	
+	function testFromStringOverwritesExistingValues()	{
+		$duration = new A_DateTime_Duration ('4 years, 4 months, 4 weeks, 4 days, 4 hours, 4 minutes, 4 seconds');
+		$duration->fromString ('2 years, 3 months, 5 days, 1 hour, 10 minutes, 3 seconds');
+		$this->assertEqual ($duration->toArray(), $this->expectedArray);
+		$duration2 = new A_DateTime_Duration ('4 years, 4 months, 4 weeks, 4 days, 4 hours, 4 minutes, 4 seconds');
+		$duration2->fromString ('3 weeks');
+		$this->assertEqual ($duration2->toArray(), $this->expectedArray2);
 	}
 	
 }
