@@ -54,15 +54,15 @@ class RangeTest extends UnitTestCase	{
 		
 		$date3 = new MockA_DateTime();
 		$date3->setReturnValue ('getTimestamp', strtotime ('1/1/09'));
-		$date3->setReturnValue ('add', $date4);
+		$date3->setReturnValue ('newModify', $date4);
 		
 		$date2 = new MockA_DateTime();
 		$date2->setReturnValue ('getTimestamp', strtotime ('1/1/08'));
-		$date2->setReturnValue ('add', $date3);
+		$date2->setReturnValue ('newModify', $date3);
 		
 		$date1 = new MockA_DateTime();
 		$date1->setReturnValue ('getTimestamp', strtotime ('1/1/07'));
-		$date1->setReturnValue ('add', $date2);
+		$date1->setReturnValue ('newModify', $date2);
 		
 		$this->start->setReturnValue ('newModify', $date1);
 		$this->assertEqual ($this->range->toArray ($this->duration), array ($date1, $date2, $date3));
