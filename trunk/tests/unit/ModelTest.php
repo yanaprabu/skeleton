@@ -16,9 +16,7 @@ class ModelTest extends UnitTestCase {
 		
 		$datasource = new A_DataContainer();
 		
-		$model->process($datasource);
-
-		$this->assertTrue($model->isValid());
+		$this->assertTrue($model->isValid($datasource));
 	}
 	
 	function testModelFieldFilters() {
@@ -34,9 +32,7 @@ class ModelTest extends UnitTestCase {
  		$bar = $model->newField('bar');
 		$bar->addFilter(new A_Filter_Regexp('/[^A-Z]/'));
 		
-		$model->process($datasource);
-
-		$this->assertTrue($model->isValid());
+		$this->assertTrue($model->isValid($datasource));
 		
 		$values = $model->getValues();
 		$this->assertTrue($values['foo'], 'bar');
@@ -55,9 +51,7 @@ class ModelTest extends UnitTestCase {
  		$model->addFilter(new A_Filter_Regexp('/[^a-z]/'), array('foo'));
  		$model->addFilter(new A_Filter_Regexp('/[^A-Z]/'), 'bar');
 		
-		$model->process($datasource);
-
-		$this->assertTrue($model->isValid());
+		$this->assertTrue($model->isValid($datasource));
 		
 		$values = $model->getValues();
 		$this->assertTrue($values['foo'], 'bar');
@@ -75,9 +69,7 @@ class ModelTest extends UnitTestCase {
 		
  		$model->addFilter(new A_Filter_Regexp('/[^a-z]/'), array('foo', 'bar'));
 		
-		$model->process($datasource);
-
-		$this->assertTrue($model->isValid());
+		$this->assertTrue($model->isValid($datasource));
 		
 		$values = $model->getValues();
 		$this->assertTrue($values['foo'], 'bar');
