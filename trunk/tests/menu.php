@@ -1,3 +1,8 @@
+<html>
+<head>
+<title>Test Runner Menu</title>
+</head>
+<body>
 <ul>
 <li><a href="all_tests.php">All Tests</a></li>
 </ul>
@@ -10,7 +15,7 @@ function show_test_in_dir($base_dir, $dir) {
 		$filename = basename($testfile);
 		if (substr($filename, -$length_ext) == $test_ext) {
 			$classname = 'A_' . substr($filename, 0, strlen($filename)-$length_ext);
-			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$classname</li>\n";
+			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$classname</a></li>\n";
 		} elseif (! in_array($filename, array('.', '..'))) {
 			echo "<li>$filename\n";
 			show_test_in_dir($base_dir, "$dir$filename/");
@@ -22,3 +27,5 @@ function show_test_in_dir($base_dir, $dir) {
 $base_dir = dirname(__FILE__) . "/unit/";
 show_test_in_dir($base_dir, '');
 ?>
+</body>
+</html>
