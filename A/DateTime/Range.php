@@ -48,10 +48,10 @@ class A_DateTime_Range {
 	public function toArray (A_DateTime_Duration $duration)	{
 		$date = $this->start->newModify();
 		$ranges = array();
-		while ($date->getTimestamp() <= $this->end->getTimestamp()):
-		$ranges[] = $date;
-		$date = $date->add ($duration);
-		endwhile;
+		while ($date->getTimestamp() <= $this->end->getTimestamp())	{
+			$ranges[] = $date;
+			$date = $date->add ($duration);
+		}
 		return $ranges;
 	}
 	
