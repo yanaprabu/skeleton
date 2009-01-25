@@ -53,9 +53,10 @@ class A_DateTime_Duration {
 				$partName .= 's';
 			}
 			if(in_array($partName,$this -> _partNames)) {
-				$parts[$partName] = $this -> $partName = $num;
+				$parts[$partName] = $num;
 			}
 		}
+		$this -> fromArray($parts);
 		return $parts;
 	}
 	
