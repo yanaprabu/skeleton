@@ -4,6 +4,11 @@ require_once('A/DateTime.php');
 require_once('A/DateTime/Range.php');
 require_once('A/DateTime/Duration.php');
 
+$date = new A_DateTime();
+echo $date->format (A_DateTime::W3C);
+$date->modify ('10 days 20 hours');
+echo $date->format (A_DateTime::W3C);
+
 Mock::Generate ('A_DateTime');
 Mock::Generate ('A_DateTime_Duration');
 
