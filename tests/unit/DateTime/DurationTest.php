@@ -35,7 +35,7 @@ class DurationTest extends UnitTestCase	{
 		$this->assertEqual ($duration->toArray(), $this->expectedArray);
 	}
 	
-	function testConstructFromArray()	{
+	function testConstructconfig()	{
 		$duration = new A_DateTime_Duration (array (
 			'years' => 2,
 			'months' => 3,
@@ -47,18 +47,18 @@ class DurationTest extends UnitTestCase	{
 		$this->assertEqual ($duration->toArray(), $this->expectedArray);
 	}
 	
-	function testConstructFromString()	{
+	function testConstructparseDuration()	{
 		$duration = new A_DateTime_Duration ('2 years, 3 months, 5 days, 1 hour, 10 minutes, 3 seconds');
 		$this->assertEqual ($duration->toArray(), $this->expectedArray);
 	}
 	
-	function testFromString()	{
-		$this -> duration -> fromString ('2 years, 3 months, 5 days, 1 hour, 10 minutes, 3 seconds');
+	function testParseDuration()	{
+		$this -> duration -> parseDuration ('2 years, 3 months, 5 days, 1 hour, 10 minutes, 3 seconds');
 		$this -> assertEqual ($this->duration->toArray(), $this->expectedArray);
 	}
 
-	function testFromArray()	{
-		$this->duration->fromArray (array (
+	function testConfig()	{
+		$this->duration->config (array (
 			'years' => 2,
 			'months' => 3,
 			'days' => 5,
@@ -69,12 +69,12 @@ class DurationTest extends UnitTestCase	{
 		$this->assertEqual ($this->duration->toArray(), $this->expectedArray);		
 	}
 	
-	function testFromStringOverwritesExistingValues()	{
+	function testParseDurationOverwritesExistingValues()	{
 		$duration = new A_DateTime_Duration ('4 years, 4 months, 4 weeks, 4 days, 4 hours, 4 minutes, 4 seconds');
-		$duration->fromString ('2 years, 3 months, 5 days, 1 hour, 10 minutes, 3 seconds');
+		$duration->parseDuration ('2 years, 3 months, 5 days, 1 hour, 10 minutes, 3 seconds');
 		$this->assertEqual ($duration->toArray(), $this->expectedArray);
 		$duration2 = new A_DateTime_Duration ('4 years, 4 months, 4 weeks, 4 days, 4 hours, 4 minutes, 4 seconds');
-		$duration2->fromString ('3 weeks');
+		$duration2->parseDuration ('3 weeks');
 		$this->assertEqual ($duration2->toArray(), $this->expectedArray2);
 	}
 	

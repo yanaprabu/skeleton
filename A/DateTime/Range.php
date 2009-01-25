@@ -8,8 +8,8 @@
 
 class A_DateTime_Range {
 
-	protected $before;
-	protected $after;
+	protected $start;		// A_Datetime object containing start of range
+	protected $end;			// A_Datetime object containing end  of range
 
 	/*
 	 * Range spec parameter is in ISO 8601 Time Intervals format
@@ -31,6 +31,9 @@ class A_DateTime_Range {
 		}
 	}
 	
+	/*
+	 * Return start date/time as object, or if format given as formatted string
+	 */
 	public function getStart ($format = null) {
 		if ($format)	{
 			return $this->start->format ($format);
@@ -38,6 +41,9 @@ class A_DateTime_Range {
 		return $this->start;
 	}
 	
+	/*
+	 * Return end date/time as object, or if format given as formatted string
+	 */
 	public function getEnd ($format = null) {
 		if ($format)	{
 			return $this->end->format ($format);
@@ -45,6 +51,9 @@ class A_DateTime_Range {
 		return $this->end;
 	}
 	
+	/*
+	 * Return an array of date/time objects from the start to end date using $duration as the interval
+	 */
 	public function toArray ($duration)	{
 		$date = $this->start->newModify();
 		$string = $duration instanceof A_DateTime_Duration ? $duration->toString() : $duration;
@@ -56,6 +65,10 @@ class A_DateTime_Range {
 		return $ranges;
 	}
 	
+	/*
+	 * Return true|false whether a given date/time object is withiin this range
+	 * The inclusive parameter determines whether the start and end dates are included in the Range
+	 */
 	public function contains ($datetime, $inclusive = false)	{
 		if ($inclusive)	{
 			return $datetime->getTimestamp() >= $this->before->getTimestamp() && $datetime->getTimestamp() <= $this->after->getTimestamp();
@@ -64,4 +77,20 @@ class A_DateTime_Range {
 		}
 	}
 	
+	/*
+	 * Return Range string in strtotime() style
+	 * format: DATE_ISO8601/DATE_ISO8601 
+	 */
+	public function toString()	{
+		return $this->start->format(DATE_ISO8601) . '/' . $this->start->format(DATE_ISO8601);  
+	}
+	
+
+		/*
+	 * Return value of Range when used in string context per toString() method
+	 */
+	public function __toString() {
+		return $this->toString();
+	}
+
 }
