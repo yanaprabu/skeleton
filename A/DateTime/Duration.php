@@ -62,9 +62,14 @@ class A_DateTime_Duration {
 	}
 	
 	public function fromArray ($array)	{
-		foreach ($array as $key => $value)	{
-			if (property_exists ($this, $key)) $this->{$key} = $value;
-		}		
+		extract ($array);			
+		$this->years = isset ($years) ? $years : 0;
+		$this->months = isset ($months) ? $months : 0;
+		$this->weeks = isset ($weeks) ? $weeks : 0;
+		$this->days = isset ($days) ? $days : 0;
+		$this->hours = isset ($hours) ? $hours : 0;
+		$this->minutes = isset ($minutes) ? $minutes : 0;
+		$this->seconds = isset ($seconds) ? $seconds : 0;
 	}
 	
 	public function setPositive()	{
