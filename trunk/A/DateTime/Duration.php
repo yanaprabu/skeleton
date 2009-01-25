@@ -19,13 +19,11 @@ class A_DateTime_Duration {
 	protected $positive = true;
 	
 	public function __construct ($years = 0, $months = 0, $weeks = 0, $days = 0, $hours = 0, $minutes = 0, $seconds = 0)	{
-		if (func_num_args() == 1) {
-			if (is_array ($years)) {
-				$this->fromArray ($years);
-			} elseif (is_string ($years)) {
-				$this->fromString ($years);
-			}
-		} else	{
+		if( is_array($years) ) {
+			$this->fromArray ($years);
+		} else if ( is_string($years) ) {
+			$this->fromString($years);
+		} else {
 			$this->fromArray (array (
 				'years' => $years,
 				'months' => $months,
@@ -55,21 +53,16 @@ class A_DateTime_Duration {
 				$partName .= 's';
 			}
 			if(in_array($partName,$this -> _partNames)) {
-				$parts[$partName] = $num;
+				$parts[$partName] = $this -> $partName = $num;
 			}
 		}
-		$this->fromArray ($parts);
+		return $parts;
 	}
 	
-	public function fromArray ($array)	{
-		extract ($array);			
-		$this->years = isset ($years) ? $years : 0;
-		$this->months = isset ($months) ? $months : 0;
-		$this->weeks = isset ($weeks) ? $weeks : 0;
-		$this->days = isset ($days) ? $days : 0;
-		$this->hours = isset ($hours) ? $hours : 0;
-		$this->minutes = isset ($minutes) ? $minutes : 0;
-		$this->seconds = isset ($seconds) ? $seconds : 0;
+	public function fromArray ($parts)	{
+		foreach($this -> _partNames as $part) {
+			$this -> $part = isset($parts[$part]) ? $parts[$part] : 0;
+		}
 	}
 	
 	public function setPositive()	{
@@ -82,14 +75,11 @@ class A_DateTime_Duration {
 	
 	public function toString()	{
 		$string = array();
-		$string[] = $this->buildString ('years', $this->years);
-		$string[] = $this->buildString ('months', $this->months);
-		$string[] = $this->buildString ('weeks', $this->weeks);
-		$string[] = $this->buildString ('days', $this->days);
-		$string[] = $this->buildString ('hours', $this->hours);
-		$string[] = $this->buildString ('minutes', $this->minutes);
-		$string[] = $this->buildString ('seconds', $this->seconds);
-		return join (', ', $string);  
+		foreach($this -> _partNames as $part) {
+			$value = $this -> $part;
+			$string[] = $this->positive ? $value : ((0 - $value) . ' ' . $part);
+		}
+		return implode(', ', $string);  
 	}
 	
 	public function toArray()	{
@@ -103,11 +93,7 @@ class A_DateTime_Duration {
 			'seconds' => $this->seconds
 		);
 	}
-	
-	public function buildString ($key, $value)	{
-		return ($this->positive ? $value : (0 - $value)) . ' ' . $key;
-	}
-		
+			
 	public function __toString() {
 		return $this->toString();
 	}
