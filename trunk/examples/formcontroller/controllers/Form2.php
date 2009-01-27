@@ -40,18 +40,19 @@ class Form2 {
 		$field4->addRule(new A_Rule_Notnull('field4', 'Please enter Field 4'));
 		
 		$model->excludeRules('field3');
-		$model->run($locator);
+		//$model->run($locator);
+		$request = $locator->get('Request');
 		
-		if ($model->isValid()) {
+		if ($model->isValid($request)) {
 			echo 'DONE<br/><br/><a href="../">Return to Examples</a>';
-		} else {
+		} else { 
 			if (! $model->isSubmitted()) {
 				$model->set('field1', 15);
 				$model->set('field2', 'init');
 				$model->set('field3', 'init');
 				$model->set('field4', 'init');
 			}
-
+			//dump($model);
 			// create HTML form generator
 			$form = new A_Html_Form();
 			$form->setModel($model)

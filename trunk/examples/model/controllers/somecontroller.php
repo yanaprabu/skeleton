@@ -18,7 +18,7 @@ class Somecontroller extends A_Controller_Action_Dispatch {
 		
 		$usersmodel = $this->load()->model('Users');	
 		$view = $this->load()->view('Form');
-		
+		$request = $locator->get('Request');
 		// Instantiate a new form model/controller
 		$form = new A_Model_Form();
 		// Hand the Form the fields and rules from the model
@@ -31,14 +31,14 @@ class Somecontroller extends A_Controller_Action_Dispatch {
 		// now we add an additional rule, specific for the form we are dealing with.
 		$form->addRule(new A_Rule_Match('password', 'password2', 'Password 2 must match Password 1'));
 				
-		$form->run($locator);
-				
+		//$form->run($locator);
+			//dump($form);	
 		// ask the form if it is valid. The form checks internally if the model fields are valid?
-		if($form->isValid()){
+		if($form->isValid($request)){
 			// save
 			$usersmodel->save($form->getSaveValues());	
 			// redirect to user detail page or whatever
-		} else {
+		} else { 
 			// show errors if submitted
 			$view->setErrorMsg($form->getErrorMsg());
 		}
