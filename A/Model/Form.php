@@ -30,7 +30,7 @@ class A_Model_Form extends A_Model {
 		  if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
 			$this->is_submitted = true;
 
-			$this->process($request);
+			parent::isValid($request);
 		} else {
 			$this->is_submitted = false;
 			$this->error = true;
@@ -45,6 +45,9 @@ class A_Model_Form extends A_Model {
 		$this->processRequest($request);
 
 		return $this->error;
+	}
+	public function issValid(){
+		
 	}
 	
 	public function isSubmitted() {

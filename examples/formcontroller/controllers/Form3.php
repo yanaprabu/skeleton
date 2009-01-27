@@ -7,9 +7,10 @@ class Form3 extends A_Controller_Action {
 	function run($locator) {
 		$model = $this->load()->model('Form');
 		#echo '<pre>' . print_r($this, 1) . '</pre>';
-		$model->run($locator);
+		//$model->run($locator);
+		$request = $locator->get('Request');
 		
-		if ($model->isValid()) {
+		if ($model->isValid($request)) {
 			echo 'DONE<br/><br/><a href="../">Return to Examples</a>';
 		} else {
 			if (! $model->isSubmitted()) {
