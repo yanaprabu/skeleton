@@ -93,7 +93,7 @@ class ListController {
 			$pager->setOrderByFields($this->order_by);
 		}
 
-		$pagerrequest = new A_Pager_SessionRequest($pager);
+		$pagerrequest = new A_Pager_Request_Session($pager);
 		$pagerrequest->process();
 
 		$rows = $pager->getRows();

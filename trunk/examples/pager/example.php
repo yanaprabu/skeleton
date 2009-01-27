@@ -1,6 +1,9 @@
 <?php
 include 'config.php';
 include 'A/Pager.php';
+include 'A/Pager/Request.php';
+include 'A/Pager/Request/Session.php';
+include 'A/Pager/HTMLWriter.php';
 
 // check if other example has included this file and created a datasource
 if (! isset($datasource)) {
@@ -27,7 +30,7 @@ $pager->setOrderByFields(array('id', 'text', 'sort'), 'text');
 
 // create a request processor to set pager from GET parameters
 #$request = new PagerRequest($pager);
-$request = new A_Pager_SessionRequest($pager);
+$request = new A_Pager_Request_Session($pager);
 $request->process();
 	
 if ($pager->getLastRow() > 0) {

@@ -1,6 +1,8 @@
 <?php
+require_once 'A/Pager/HTMLWriter.php';
+
 /**
- * Generate HTML <select> to go to specific page in Pager 
+ * Generate HTML <select> to go to specific page for A_Pager 
  * 
  * @package A_Pager 
  */
