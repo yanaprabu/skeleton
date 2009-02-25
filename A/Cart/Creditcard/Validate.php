@@ -20,7 +20,7 @@ class A_Cart_Creditcard_Validate
 		if (! $number) {
 			$number = $this->number;
 		}
-		$n = ereg_replace('[^[:digit:]]', '', $number);
+		$n = preg_replace('/[^0-9]/', '', $number);
 		if (! $number) {
 			$this->number = $n;
 		}
