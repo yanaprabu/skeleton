@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Rule.php';
+include_once 'A/Rule/Abstract.php';
 
 /*
  * Checks if the group(s) passed to the constructor are group(s) that the user 
@@ -8,7 +8,7 @@ include_once 'A/Rule.php';
  * if $group is a string, it is split into an array on $this->delimiter
  * special case: if null group (array('')) is passed allow access
  */
-class A_User_Rule_Ingroup extends A_Rule {
+class A_User_Rule_Ingroup extends A_Rule_Abstract {
 	protected $groups;
 	protected $field = 'access';
 	protected $delimiter = '|';
@@ -34,7 +34,7 @@ class A_User_Rule_Ingroup extends A_Rule {
 		return $this;
 	}
 	
-	public function isValid($user) {
+	public function validate() {
 		if (is_string($this->groups)) {
 			$this->groups = explode ($this->delimiter, $this->groups);
 		}
@@ -43,12 +43,12 @@ class A_User_Rule_Ingroup extends A_Rule {
 			return true;
 		}
 		$allow = false;
-		if ($user->isSignedIn()) {
+		if ($this->container->isSignedIn()) {
 	
 			if ($this->groups) {
-				$usergroups = $user->get($this->field);
+				$usergroups = $this->container->get($this->field);
 				if ($usergroups) {
-	// split if not an array
+// split if not an array
 					if (! is_array($usergroups) ) {
 						$usergroups = explode ($this->delimiter, $usergroups);
 					}

@@ -1,10 +1,10 @@
 <?php
-include_once 'A/Rule.php';
+include_once 'A/Rule/Abstract.php';
 
 /*
  * Check if user's access level is >= required access level
  */
-class A_User_Rule_Islevel extends A_Rule {
+class A_User_Rule_Islevel extends A_Rule_Abstract {
 	protected $level;
 	
 	// parameter that is usually errormsg is the action
@@ -18,10 +18,10 @@ class A_User_Rule_Islevel extends A_Rule {
 		return $this;
 	}
 	
-	public function isValid($user) {
+	public function validate() {
 		$allow = false;
-		if ($user->isSignedIn()) {
-			$userlevel = $user->get($this->field);
+		if ($this->container->isSignedIn()) {
+			$userlevel = $this->container->get($this->field);
 			if ($userlevel >= $this->level) {
 				$allow = true;
 			}
