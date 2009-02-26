@@ -1,6 +1,6 @@
 <?php
-include_once 'A/FilterChain.php';
-include_once 'A/Validator.php';
+include_once 'A/Filter/Set.php';
+include_once 'A/Rule/Set.php';
 include_once 'A/Model/Field.php';
 /**
  * Base class for Models with filtering and validation 
@@ -109,8 +109,8 @@ class A_Model {
 
 	public function isValid($datasource=null) {
 
-		$filterchain = new A_FilterChain();
-		$validator = new A_Validator();
+		$filterchain = new A_Filter_Set();
+		$validator = new A_Rule_Set();
 		$validator->excludeRules($this->excludeRules);
 		
 		$this->error = false;
@@ -128,7 +128,7 @@ class A_Model {
 			// run global filters
 			if ($this->filters) {
 				foreach ($field_names as $name) {
-					$this->fields[$name]->value = $filterchain->run($this->fields[$name]->value, $this->filters);
+					$this->fields[$name]->value = $filterchain->doFilter($this->fields[$name]->value, $this->filters);
 				}
 			}
 
@@ -149,7 +149,7 @@ class A_Model {
 			}			
 			
 			// if the validator is not valid get its errors
-			if(!$validator->validate($datasource)){
+			if(!$validator->isValid($datasource)){
 				$this->error = true; 
 				$errors = $validator->getErrorMsg(); 
 				foreach($errors as $fieldname => $errorarray) { 	
