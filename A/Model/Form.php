@@ -19,8 +19,9 @@ class A_Model_Form extends A_Model {
 	 * @return $this for fluent interface
 	 */
 	public function setMethod($method) {
+		$method = strtoupper($method);
         if (in_array($method, array('POST','GET',''))) {
-        	$this->method = strtoupper($method);
+        	$this->method = $method;
         }
         return $this;
     }
@@ -40,7 +41,7 @@ class A_Model_Form extends A_Model {
 	 * @param $request A Request object
 	 * @return true if not error
 	 */
-	public function processRequest($request) {
+	public function isValid($request) {
 		  if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
 			$this->is_submitted = true;
 
