@@ -54,9 +54,8 @@ class Form4 extends A_Controller_Action_Dispatch {
 		
 		$view = $this->load()->view('Form4');
 		if ($this->getRequest()->isPost()) {
-		    $form->run($locator);
 		
-			if ($form->isValid()) {
+			if ($form->isValid($this->getRequest())) {
 		        try {
 		            $model->save($form);
 		            // redirect to user detail page or whatever
