@@ -183,7 +183,7 @@ class A_Model {
 	}
 
 	public function set($name, $value) {
-		if ($name) {
+		if (isset($this->fields[$name])) {
 			if ($value !== null) {
 				$this->fields[$name]->value = $value;
 			} else {
