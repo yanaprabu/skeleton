@@ -2,13 +2,14 @@
 /**
  * A_Controller_Helper_Load
  * 
- * special helper for Action Controllers that provides class loading and instantiation within the applicaition directory
+ * Provides class loading and instantiation within the application directory
  * 
  * @package A_Controller
  */
 
 class A_Controller_Helper_Load {
 	protected $locator;
+	protected $parent;
 	protected $paths = array('app'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
 	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
 	protected $action = null;
@@ -28,7 +29,7 @@ class A_Controller_Helper_Load {
 	protected $responseSet = false;
 	protected $errorMsg = '';
 	
-	public function __construct($locator, $controller, $scope=null){
+	public function __construct($locator, $parent, $scope=null){
 		$this->locator = $locator;
 		if ($locator) {
 			$mapper = $locator->get('Mapper');
@@ -36,7 +37,7 @@ class A_Controller_Helper_Load {
 				$this->setMapper($mapper);
 			}
 		}
-		$this->controller = $controller;
+		$this->parent = $parent;
 		$this->load($scope);
 	}
 	 
@@ -127,9 +128,9 @@ class A_Controller_Helper_Load {
 				$path = $this->dirs[$type];		// just in case no scopePath
 			}
 			
-			// helpers take a controller instance as the parameter
+			// helpers take a parent instance as the parameter
 			if ($type == 'helper') {
-				$params[1] = $this->controller;
+				$params[1] = $this->parent;
 			}
 			
 			// templates are a template filename, not a class name -- need to load/create template class
@@ -174,7 +175,7 @@ class A_Controller_Helper_Load {
 					}
 					break;
 				case 'helper':
-					$this->controller->setHelper($params[0], $obj);
+					$this->parent->setHelper($params[0], $obj);
 					break;
 				}
 				 // this is the section for when response() has been called
@@ -195,7 +196,7 @@ class A_Controller_Helper_Load {
 						}
 						return $this;				// if response set then allow chained
 					} else {
-						$this->errmsg .= "No registry passed to A_Controller_Action::__construct(). ";
+						$this->errmsg .= "No registry passed to __construct(). ";
 					}
 				}
 			} else {

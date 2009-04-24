@@ -16,8 +16,8 @@ class A_Controller_Front {
 	 */
 	const NO_ERROR = '';
 	const NO_MAPPER = 'Mapper object not available';
-	const CLASS_NOT_LOADED = 'Requested class not loaded';
-	const METHOD_NOT_FOUND = 'Requested method not found';
+	const NO_CLASS = 'Requested class not loaded';
+	const NO_METHOD = 'Requested method not found';
 	
 	/**
 	 * The front controller mapper object
@@ -188,7 +188,7 @@ class A_Controller_Front {
 				$route = $error_route;
 				$error_route = null;
 			} elseif ($n == 0) {
-				$this->error = self::CLASS_NOT_LOADED;			// cannot load class and not error route 
+				$this->error = self::NO_CLASS;			// cannot load class and not error route 
 			}
 			++$n;
 		}
