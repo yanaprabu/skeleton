@@ -58,7 +58,7 @@ class A_Http_PathInfo {
 	protected $script_extension = '.php';
 
     public function __construct($map=null, $map_extra_param_pairs=true) {
-    	if ($map != null) {
+    	if ($map !== null) {
     		$this->map = $map;
     	}
     	$this->map_extra_param_pairs = $map_extra_param_pairs;
@@ -102,6 +102,34 @@ class A_Http_PathInfo {
 
 	public function addMap($map) {
 		$this->map = array_merge($this->map, $map);
+		return $this;
+	}
+
+	public function getMap() {
+		return $this->map;
+	}
+
+	public function addRoute($route, $params) {
+		$map =& $this->map;		// get reference that we can set to each level in the map as we assign
+        if (is_string($route)) {
+        	if ($route != '') {
+        		$route = explode('/', trim($route, '/'));
+        	} else {
+        		$route = array('');
+        	}
+        }
+		$last = count($route) - 1;
+		for ($i=0; $i<=$last; ++$i) {
+			if (! isset($map[$route[$i]])) {
+				if ($i == $last) {
+					$map[$route[$i]][''] = $params;
+				} else {
+					$map[$route[$i]] = array(''=>array());
+					$map =& $map[$route[$i]];
+				}
+			}
+		}
+		$map[''] = $params;
 		return $this;
 	}
 
