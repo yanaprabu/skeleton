@@ -1,6 +1,6 @@
 <?php
 /**
- * Date & Time Duration functionality 
+ * Date & Time Timezone functionality 
  *
  *
  * @package A_Datetime
