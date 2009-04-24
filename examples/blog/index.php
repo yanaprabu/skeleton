@@ -7,6 +7,55 @@ function dump($var, $name='') {
 	echo '</div>';
 }
 
+class requireGroupsFilter {
+	protected $session;
+	protected $action = 'login';
+	protected $method = '_requireGroups';
+	protected $field = '';
+	
+	function __construct($session) {
+		if ($session) {
+			$this->session = $session;
+		} else {
+			include_once 'A/Session.php';
+			$this->session = new A_Session();
+		}
+	}
+
+	function setAction($action) {
+		$this->action = $action;
+	}
+
+	function setPreMethod($method) {
+		$this->method = $method;
+	}
+
+	function setField($field) {
+		$this->field = $field;
+	}
+
+	function run($controller) {
+		if (method_exists($controller, $this->method)) {
+			$this->session->start();
+			session_start();
+			include_once 'A/User/Session.php';
+			include_once 'A/User/Rule/Ingroup.php';
+			$user = new A_User_Session($this->session, 'apluser');
+			$groups = $controller->$this->method();
+			$access = new A_User_Rule_Ingroup($groups, 'Access Denied.');
+			if ($this->field) {
+				$access->setField($this->field);		// change default from 'access'
+			}
+			
+			if (! $access->isValid($user)) {
+				$action = new A_DL('', $this->action, '');
+				return $action;
+			}
+		}
+	}
+
+}
+	
 
 // Basic config data
 $file_path = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -82,7 +131,7 @@ $Mapper->setDefaultDir('blog');
 
 // Create and run FC with error action
 $Controller = new A_Controller_Front($Mapper, new A_DL('', 'error', 'run'));
-$Controller->addPreFilter('denyAccess', new A_Controller_Front_Premethod('denyAccess', new A_DL('', 'signin', 'run'), $Locator));
+$Controller->addPreFilter('denyAccess', new requireGroupsFilter($Session));
 $Controller->run($Locator);
 
 // Set up renderer and templates if the response doesnt have those already
@@ -111,4 +160,4 @@ if (! $Response->hasRenderer()) {
 // Finally, display
 $Response->out();
 
-echo '<pre>' . implode(get_included_files(), "\n") . '</pre>';
+echo '<div style="clear:both;"><b>Included files:</b><pre>' . implode(get_included_files(), "\n") . '</pre></div>';

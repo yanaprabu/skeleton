@@ -5,5 +5,5 @@
 </div>
 
 <div style="float:right;width:25%;">
-<?php echo $subcontent; ?>
+<?php echo isset($subcontent) ? $subcontent : '&nbsp;'; ?>
 </div>
