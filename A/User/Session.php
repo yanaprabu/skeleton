@@ -31,6 +31,7 @@ class A_User_Session {
 	
 	public function signout() {
 		if ($this->namespace) {
+			$this->session->start();
 			unset ($_SESSION[$this->namespace]);
 #			session_unregister ($this->namespace);
 		}
@@ -38,12 +39,14 @@ class A_User_Session {
 	
 	public function signin($data=array()) {
 		if ($this->namespace) {
+			$this->session->start();
 			$_SESSION[$this->namespace]['auth'] = true;
 			$this->merge($data);
 		}
 	}
 	
 	public function get($key='') {
+		$this->session->start();
 		if ($this->namespace && isset($_SESSION[$this->namespace]['data'] ) ) {
 			if ($key) {
 				if (isset($_SESSION[$this->namespace]['data'][$key]) ) {
@@ -57,6 +60,7 @@ class A_User_Session {
 	
 	public function set($key, $value) {
 		if ($key && $this->namespace) {
+			$this->session->start();
 			if ($value !== null) {
 				$_SESSION[$this->namespace]['data'][$key] = $value;
 			} else {
@@ -68,6 +72,7 @@ class A_User_Session {
 	
 	public function merge($data) {
 		if (is_array($data) && $this->namespace) {
+			$this->session->start();
 			if (isset($_SESSION[$this->namespace]['data']) && is_array($_SESSION[$this->namespace]['data'])) {
 				$_SESSION[$this->namespace]['data'] = array_merge($_SESSION[$this->namespace]['data'], $data);
 			} else {
@@ -78,7 +83,8 @@ class A_User_Session {
 	}
 	
 	public function close() {
-		session_write_close();
+		$this->session->close();
+		//session_write_close();
 	}
 
 }
