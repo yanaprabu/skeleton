@@ -51,7 +51,7 @@ class login extends A_Controller_Input {
 						$this->usersession->signin($username->value, $password->value);
 						// TODO: now redirect to last visited page
 					} else {
-						$msg = 'You gave an invalid username/and/or password. Try again';
+						$msg = 'You gave an invalid username and/or password. Try again';
 						$usernamestr = $username->value;
 					}
 				} else {
