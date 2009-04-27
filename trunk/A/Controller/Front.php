@@ -138,15 +138,17 @@ class A_Controller_Front {
 		$route = $this->mapper->getRoute($locator); // Route is an A_DL instance
 		$error_route = $this->errorRoute;
 		
-		$n = 0;
+		$n = -1;
 		while ($route) {
+			++$n;
 			$class  = $this->mapper->formatClass($route->class);
 			$method = $this->mapper->formatMethod($route->method);
-			if ($route->dir == '') {
-				$dir = $this->mapper->getPath();
-			} else {
-				$dir = $route->dir;
+			if ($n) {			// set mapper for forwards
+				$this->mapper->setDir($route->dir);
+				$this->mapper->setClass($route->class);
+				$this->mapper->setMethod($route->method);
 			}
+			$dir = $this->mapper->getPath();
 			$this->routeHistory[] = $route;	// save history of routes
 			$route = null;
 			$result = $locator->loadClass($class, $dir);
@@ -190,7 +192,6 @@ class A_Controller_Front {
 			} elseif ($n == 0) {
 				$this->error = self::NO_CLASS;			// cannot load class and not error route 
 			}
-			++$n;
 		}
 		return $this->error;
 	}
