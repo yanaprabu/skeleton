@@ -75,7 +75,8 @@ class login extends A_Controller_Input {
 			{
 				// just show the form? Or redirect to homepage?
 				$msg = 'You are logged in';
-				$this->response->setRedirect('/admin/'); 
+echo "ADMIN/LOGIN!!!!!!!<br>";
+#				$this->response->setRedirect('/admin/'); 
 			}
 		}
 		

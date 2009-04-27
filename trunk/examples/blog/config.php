@@ -13,9 +13,15 @@ $ConfigArray = array(
 'BASE' => 'http://skeleton/examples/blog/',
 );
 
-function dump($var, $name='') {
-	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
-	echo $name . '<pre>' . print_r($var, 1) . '</pre>';
-	echo '</div>';
+function dump($var='', $name='') {
+	static $output = '';
+		
+	if ($var) {
+#	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
+		$output .= '<div style="clear:both;background:#fff;border:1px solid #ddd;padding:10px;">';
+		$output .= $name . '<pre>' . print_r($var, 1) . '</pre>';
+		$output .= '</div>';
+	} else {
+		echo $output;
+	}
 }
-?>

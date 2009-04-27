@@ -23,7 +23,7 @@
 		</ul>
 		
 		<div id="loginbox">
-			<p>Admin: <a href="<?php echo $BASE ?>admin/login/">login</a> | <a href="<?php echo $BASE ?>admin/login/?op=signout">logout</a></p>
+			<p>Admin: <a href="<?php echo $BASE ?>login/">login</a> | <a href="<?php echo $BASE ?>login/logout">logout</a></p>
 		</div>
 	</div>
 	

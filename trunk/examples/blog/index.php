@@ -1,10 +1,17 @@
 <?php
 
 // Just for debugging 
-function dump($var, $name='') {
-	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
-	echo $name . '<pre>' . print_r($var, 1) . '</pre>';
-	echo '</div>';
+function dump($var='', $name='') {
+	static $output = '';
+		
+	if ($var) {
+#	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
+		$output .= '<div style="clear:both;background:#fff;border:1px solid #ddd;padding:10px;">';
+		$output .= $name . '<pre>' . print_r($var, 1) . '</pre>';
+		$output .= '</div>';
+	} else {
+		echo $output;
+	}
 }
 
 class requireGroupsFilter {
@@ -37,17 +44,21 @@ class requireGroupsFilter {
 	function run($controller) {
 		if (method_exists($controller, $this->method)) {
 			$this->session->start();
-			session_start();
 			include_once 'A/User/Session.php';
 			include_once 'A/User/Rule/Ingroup.php';
-			$user = new A_User_Session($this->session, 'apluser');
-			$groups = $controller->$this->method();
+			$user = new A_User_Session($this->session);
+			$groups = $controller->{$this->method}();
 			$access = new A_User_Rule_Ingroup($groups, 'Access Denied.');
 			if ($this->field) {
 				$access->setField($this->field);		// change default from 'access'
 			}
-			
+#dump("GROUP PREFILTER :: run()");
+#dump($controller, "prefilter CONTROLLER {$this->method}: ");
+#dump($user, 'prefilter USER SESSION: ');
+#dump($groups, 'prefilter GROUPS: ');
+
 			if (! $access->isValid($user)) {
+#dump("GROUP PREFILTER :: NOT isValid()");
 				$action = new A_DL('', $this->action, '');
 				return $action;
 			}
@@ -160,4 +171,5 @@ if (! $Response->hasRenderer()) {
 // Finally, display
 $Response->out();
 
+dump();
 echo '<div style="clear:both;"><b>Included files:</b><pre>' . implode(get_included_files(), "\n") . '</pre></div>';
