@@ -10,6 +10,18 @@ class admin extends A_Controller_Action {
 		$this->userdata = $this->usersession->get();
 	}
 
+	/*
+	 * This function is called only if it exists. Front Controller pre-filter 
+	 * calls it to get required groups for this controller
+	 */
+	public function _requireGroups(){
+		return array('post','admin');
+	}
+	
+/*
+	// These are examples of Access Control done in the Action Controller
+	// where the method called by the pre-filter acts as a forward
+
 	public function denyAccess($locator){ //dump($this);
 		// Start Sessions
 		$Session = $locator->get('Session');
@@ -36,7 +48,7 @@ class admin extends A_Controller_Action {
 	//		echo 'user is not signed in';
 	//	}
 	}
-	/*
+
 	function denyAccess($locator) {
 
 		if (! $this->usersession->isSignedIn()) {  
@@ -51,11 +63,11 @@ class admin extends A_Controller_Action {
 		$subcontent = 'The sidebar of the admin section';
 		
 		$template = $this->load()->template('admin');
-		$template->set('BASE', 'http://skeleton/examples/blog/' ); // $ConfigArray['BASE']  TODO: Fix this BASE/config mess
-		$template->set('maincontent', $content);
-		$template->set('subcontent', $subcontent);
+#		$template->set('BASE', 'http://skeleton/examples/blog/' ); // $ConfigArray['BASE']  TODO: Fix this BASE/config mess
+#		$template->set('maincontent', $content);
+#		$template->set('subcontent', $subcontent);
 		
-		$this->response->setRenderer($template);
+		$this->response->set('maincontent', $template->render());
 
 	}
 
