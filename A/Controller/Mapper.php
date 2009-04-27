@@ -53,6 +53,25 @@ class A_Controller_Mapper
 		return $this;
 	}
 
+	public function setDir($dir) {
+		if ($dir) {
+			$this->dir = $dir . '/';		// paths have trailing slash
+		} else {
+			$this->dir = $this->default_dir;
+		}
+		return $this;
+	}
+
+	public function setClass($class) {
+		$this->class = $class;
+		return $this;
+	}
+
+	public function setMethod($method) {
+		$this->method = $method;
+		return $this;
+	}
+
 	public function setDirParam($param) {
 		$this->dir_param = $param;
 		return $this;
@@ -134,21 +153,18 @@ class A_Controller_Mapper
 		$request = $locator->get('Request');
 
 		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/', '/[^a-zA-Z0-9\_\-]/');
-		$this->dir = preg_replace($regex, array(''), $request->get($this->dir_param));
-		if ($this->dir) {
-			$this->dir .= '/';		// paths have trailing slash
-		} else {
-			$this->dir = $this->default_dir;
-		}
+		$this->setDir(preg_replace($regex, array(''), $request->get($this->dir_param)));
 		$this->class = preg_replace($regex, array(''), $request->get($this->class_param));
 		$this->method = preg_replace($regex, array(''), $request->get($this->method_param));
 		
-		$path = $this->getPath();
+#		$path = $this->getPath();
 		if ($this->class) {
-			$route = new A_DL($path, $this->class, $this->method, array());
+#			$route = new A_DL($path, $this->class, $this->method, array());
+			$route = new A_DL($this->dir, $this->class, $this->method, array());
 		} else {
 			$route = $this->default_action;
-			$route->dir = $path;
+#			$route->dir = $path;
+			$route->dir = $this->dir;
 			$this->class = $route->class;
 		}
 		if ($route->method == '') {
