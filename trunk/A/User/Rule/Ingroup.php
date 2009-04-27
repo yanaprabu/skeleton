@@ -12,12 +12,11 @@ class A_User_Rule_Ingroup extends A_Rule_Abstract {
 	protected $groups;
 	protected $field = 'access';
 	protected $delimiter = '|';
-	
-	// parameter that is usually errormsg is the action
-	public function __construct($groups, $errorMsg) {
-		$this->groups = $groups;
-		$this->errorMsg = $errorMsg;
-	}
+	protected $params = array(
+							'groups' => '', 
+							'errorMsg' => '', 
+							'optional' => false
+							);
 	
 	public function setField($field) {
 		$this->field = $field;
@@ -30,15 +29,17 @@ class A_User_Rule_Ingroup extends A_Rule_Abstract {
 	}
 	
 	public function setGroups($groups) {
-		$this->groups = $groups;
+		$this->params['groups'] = $groups;
 		return $this;
 	}
 	
 	public function validate() {
-		if (is_string($this->groups)) {
-			$this->groups = explode ($this->delimiter, $this->groups);
+		if (is_string($this->params['groups'])) {
+			$this->groups = explode ($this->delimiter, $this->params['groups']);
+		} else {
+			$this->groups = $this->params['groups'];
 		}
-// special case: if null group is passed allow access
+		// special case: if null group is passed allow access
 		if ($this->groups && ($this->groups[0] == '')) {
 			return true;
 		}
@@ -48,7 +49,7 @@ class A_User_Rule_Ingroup extends A_Rule_Abstract {
 			if ($this->groups) {
 				$usergroups = $this->container->get($this->field);
 				if ($usergroups) {
-// split if not an array
+					// split if not an array
 					if (! is_array($usergroups) ) {
 						$usergroups = explode ($this->delimiter, $usergroups);
 					}
