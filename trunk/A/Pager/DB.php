@@ -1,11 +1,11 @@
 <?php
 /**
  * Datasource access class using A_Db_* object
- * 
- * @package A_Pager 
+ *
+ * @package A_Pager
  */
 
-class A_Pager_DB {
+class A_Pager_DB implements A_Pager_Adapter_Interface {
 	protected $query;
 	protected $db;
 	protected $numrows = 0;
@@ -28,7 +28,15 @@ class A_Pager_DB {
 		        }
 	        }
     	}
-        return $this->numrows;    
+        return $this->numrows;
+    }
+
+    public function getNumItems()	{
+    	return $this->getNumRows();
+    }
+
+    public function getItems ($start, $length)	{
+    	return $this->getRows ($start, $start + $length);
     }
 
     public function getRows($begin, $end) {
