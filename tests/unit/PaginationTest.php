@@ -1,8 +1,9 @@
 <?php
 require_once('A/DataContainer.php');
 require_once('A/Pagination.php');
+require_once('A/Pagination/Datasource/Interface.php');
 
-class DatasourceMock {
+class DatasourceMock implements A_Pagination_Datasource_Interface {
 	protected $items = array(
 							array('id'=>1, 'name'=>'One', 'color'=>'blue'),
 							array('id'=>2, 'name'=>'Two', 'color'=>'red'),
@@ -31,16 +32,16 @@ class PaginationTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testPaginationFirstPage() {
+	function testPaginationgetFirstPage() {
  		$datasource = new DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
 		
 		$result = true;
-		$this->assertEqual($pager->currentPage(), 1);
-		$this->assertEqual($pager->firstPage(), 1);
-		$this->assertEqual($pager->lastPage(), 2);
-		$this->assertEqual($pager->firstItem(), 1);
-		$this->assertEqual($pager->lastItem(), 5);
+		$this->assertEqual($pager->getCurrentPage(), 1);
+		$this->assertEqual($pager->getFirstPage(), 1);
+		$this->assertEqual($pager->getLastPage(), 2);
+		$this->assertEqual($pager->getFirstItem(), 1);
+		$this->assertEqual($pager->getLastItem(), 5);
 		$this->assertEqual($pager->getNumItems(), $datasource->getNumItems());
 	}
 	
@@ -50,11 +51,11 @@ class PaginationTest extends UnitTestCase {
 		$pager->setCurrentPage(2);
 		
 		$result = true;
-		$this->assertEqual($pager->currentPage(), 2);
-		$this->assertEqual($pager->firstPage(), 1);
-		$this->assertEqual($pager->lastPage(), 2);
-		$this->assertEqual($pager->firstItem(), 6);
-		$this->assertEqual($pager->lastItem(), 8);
+		$this->assertEqual($pager->getCurrentPage(), 2);
+		$this->assertEqual($pager->getFirstPage(), 1);
+		$this->assertEqual($pager->getLastPage(), 2);
+		$this->assertEqual($pager->getFirstItem(), 6);
+		$this->assertEqual($pager->getLastItem(), 8);
 		$this->assertEqual($pager->getNumItems(), $datasource->getNumItems());
 	}
 	
