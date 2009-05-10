@@ -15,12 +15,12 @@ class A_Pagination	{
 	protected $pageSize = 10;
 	protected $currentPage = 1;
 	protected $numPages = false;
-	
+
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
-	public function __construct(A_Pagination_Datasource_Interface $datasource, $pageSize=10, $currentPage=1)	{
+	public function __construct(A_Pagination_Adapter_Interface $datasource, $pageSize=10, $currentPage=1)	{
 		$this->datasource = $datasource;
 		$this->pageSize = $pageSize;
 		$this->currentPage = $currentPage;
@@ -28,7 +28,7 @@ class A_Pagination	{
 
 	/**
 	 * @param integer - number of last page
-	 * @type 
+	 * @type
 	 */
 	public function setCurrentPage($page)	{
 		if (($page >= $this->getFirstPage()) && ($page <= $this->getLastPage())) {
@@ -37,7 +37,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type integer - number of current page
 	 */
 	public function getCurrentPage()	{
@@ -45,7 +45,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type array - of items
 	 */
 	public function getItems()	{
@@ -53,7 +53,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type integer - number of total items
 	 */
 	public function getNumItems()	{
@@ -64,7 +64,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type integer - number of last page
 	 */
 	public function getFirstPage()	{
@@ -72,7 +72,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type integer - number of last page
 	 */
 	public function getLastPage()	{
@@ -81,7 +81,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type integer - position of first item on current page
 	 */
 	public function getFirstItem()	{
@@ -89,7 +89,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type integer - position of last item on current page
 	 */
 	public function getLastItem()	{
@@ -102,7 +102,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type boolean - true if page in range of 1..last page
 	 */
 	public function isPage($page)	{
@@ -111,7 +111,7 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param 
+	 * @param
 	 * @type boolean - true if number of pages > 1
 	 */
 	public function hasPages()	{
