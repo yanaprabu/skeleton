@@ -21,7 +21,7 @@ class A_Pager_DB implements A_Pager_Adapter_Interface {
     	if ($this->numrows == 0) {
 	        $query = preg_replace('#SELECT\s+(.*?)\s+FROM#i', 'SELECT COUNT(*) AS count FROM', $this->query);
 	        $result = $this->db->query($query);
-	        if (! $result->isError()) {
+	        if (!$result->isError()) {
 	        	$row = $result->fetchRow();
 	        	if ($row) {
 		            $this->numrows = $row['count'];
