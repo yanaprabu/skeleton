@@ -129,5 +129,9 @@ class A_Pagination	{
 
 	public function getDataSource()	{
 		return $this->datasource;
+	}
+
+	public function setOrderBy ($field, $descending = false)	{
+		$this->datasource->setOrderBy ($field, $descending = false);
 
 }
