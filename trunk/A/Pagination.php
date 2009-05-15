@@ -15,6 +15,7 @@ class A_Pagination	{
 	protected $pageSize = 10;
 	protected $currentPage = 1;
 	protected $numPages = false;
+	protected $paramNames = array();
 
 	/**
 	 * @param
@@ -116,6 +117,15 @@ class A_Pagination	{
 	 */
 	public function hasPages()	{
 		return $this->getNumItems() >= $this->pageSize;
+	}
+
+	public function getParamName ($param)	{
+		if (isset ($this->paramNames[$param])) return $this->paramNames[$param];
+		return $param;
+	}
+
+	public function setParamName ($param, $name)	{
+		$this->paramNames[$param] = $name;
 	}
 
 }

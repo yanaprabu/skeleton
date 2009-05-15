@@ -1,9 +1,9 @@
 <?php
 require_once('A/DataContainer.php');
 require_once('A/Pagination.php');
-require_once('A/Pagination/Datasource/Interface.php');
+require_once('A/Pagination/Adapter/Interface.php');
 
-class DatasourceMock implements A_Pagination_Datasource_Interface {
+class DatasourceMock implements A_Pagination_Adapter_Interface {
 	protected $items = array(
 							array('id'=>1, 'name'=>'One', 'color'=>'blue'),
 							array('id'=>2, 'name'=>'Two', 'color'=>'red'),
@@ -14,28 +14,28 @@ class DatasourceMock implements A_Pagination_Datasource_Interface {
 							array('id'=>7, 'name'=>'Seven', 'color'=>'green'),
 							array('id'=>8, 'name'=>'Eight', 'color'=>'blue'),
 							);
-							
+
 	public function getItems($start, $size) {
 		return slice($this->items, $start-1, $size);
 	}
-	
+
 	public function getNumItems() {
 		return count($this->items);
 	}
 }
 
 class PaginationTest extends UnitTestCase {
-	
+
 	function setUp() {
 	}
-	
+
 	function TearDown() {
 	}
-	
+
 	function testPaginationgetFirstPage() {
  		$datasource = new DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
-		
+
 		$result = true;
 		$this->assertEqual($pager->getCurrentPage(), 1);
 		$this->assertEqual($pager->getFirstPage(), 1);
@@ -44,12 +44,12 @@ class PaginationTest extends UnitTestCase {
 		$this->assertEqual($pager->getLastItem(), 5);
 		$this->assertEqual($pager->getNumItems(), $datasource->getNumItems());
 	}
-	
+
 	function testPaginationSecondPage() {
  		$datasource = new DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
 		$pager->setCurrentPage(2);
-		
+
 		$result = true;
 		$this->assertEqual($pager->getCurrentPage(), 2);
 		$this->assertEqual($pager->getFirstPage(), 1);
@@ -58,5 +58,18 @@ class PaginationTest extends UnitTestCase {
 		$this->assertEqual($pager->getLastItem(), 8);
 		$this->assertEqual($pager->getNumItems(), $datasource->getNumItems());
 	}
-	
+
+	public function testGetParamNameSetsKeyIfNotSet()	{
+		$datasource = new DatasourceMock();
+		$pager = new A_Pagination($datasource, 5);
+		$this->assertEqual ($pager->getParamName ('abc123'), 'abc123');
+	}
+
+	public function testSetParamName()	{
+		$datasource = new DatasourceMock();
+		$pager = new A_Pagination($datasource, 5);
+		$pager->setParamName ('abc123', 'page');
+		$this->assertEqual ($pager->getParamName ('abc123'), 'page');
+	}
+
 }
