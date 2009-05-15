@@ -26,7 +26,7 @@ class A_Pagination_Url	{
 	public function render ($page = false, $params = array())	{
 		$params = array_merge ($params, $this->state);
 		$base = $this->base ? $this->protocol . '://' . $this->base . '/' : '';
-		$page = $page ? $page : $_SERVER['PHP_SELF'];
+		$page = $page ? $page : $_SERVER['SCRIPT_NAME'];
 		$query = count ($params) > 0 ? '?' . http_build_query ($params) : '';
 		return $base . $page . $query;
 	}
