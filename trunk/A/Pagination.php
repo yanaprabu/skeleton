@@ -119,19 +119,21 @@ class A_Pagination	{
 		return $this->getNumItems() >= $this->pageSize;
 	}
 
-	if (isset ($this->paramNames[$param])) return $this->paramNames[$param];
-		return $param;
+	public function getParamName ($param)	{
+		if (isset ($this->paramNames[$param]))	{
+			return $this->paramNames[$param];
+		} else	{
+			$this->paramNames[$param] = $param;
+			return $param;
+		}
 	}
 
 	public function setParamName ($param, $name)	{
 		$this->paramNames[$param] = $name;
 	}
 
-	public function getDataSource()	{
-		return $this->datasource;
-	}
-
 	public function setOrderBy ($field, $descending = false)	{
 		$this->datasource->setOrderBy ($field, $descending = false);
+	}
 
 }
