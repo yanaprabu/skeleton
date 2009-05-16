@@ -1,17 +1,19 @@
 <?php
+include_once 'A/Pagination.php';
+include_once 'A/Pagination/Url.php';
 
 class A_Pagination_Request	{
 
 	protected $adapter;
 	protected $pager;
 
-	public function __construct ($adapter, $pageSize, $currentPage)	{
+	public function __construct ($adapter, $pageSize=0, $currentPage=0)	{
 		$this->pager = new A_Pagination($adapter, $pageSize, $currentPage);
 		$this->process();
 	}
 
 	public function process()	{
-		$this->pager->setcurrentPage(intval($this->get('page'), $this->pager->getFirstPage()));
+		$this->pager->setcurrentPage($this->get('page'), $this->pager->getFirstPage());
 		if ($pageSize = $this->get('page_size')) $this->pager->setPageSize(intval ($pageSize));
 		if ($orderBy = $this->get('order_by'))	{
 			list($field, $dir) = explode('_', $orderBy);
@@ -19,8 +21,12 @@ class A_Pagination_Request	{
 		}
 	}
 
-	public function get ($param, $default = '')	{
-		return (isset ($_GET[$this->pager->getParamName($key)]) ? $_GET[$this->pager->getParamName($key)] : $default);
+	public function get($param, $default='')	{
+		$name = $this->pager->getParamName($param);
+		return isset($_GET[$name]) ? intval($_GET[$name]) : $default;
 	}
 
+	public function pager() {
+		return $this->pager;
+	}
 }
