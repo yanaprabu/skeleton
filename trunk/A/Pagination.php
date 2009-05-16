@@ -21,28 +21,14 @@ class A_Pagination	{
 	 * @param
 	 * @type
 	 */
-	public function __construct(A_Pagination_Adapter_Interface $datasource, $pageSize=10, $currentPage=1)	{
+	public function __construct(A_Pagination_Adapter_Interface $datasource, $pageSize=0, $currentPage=0)	{
 		$this->datasource = $datasource;
-		$this->pageSize = $pageSize;
-		$this->currentPage = $currentPage;
-	}
-
-	/**
-	 * @param integer - number of last page
-	 * @type
-	 */
-	public function setCurrentPage($page)	{
-		if (($page >= $this->getFirstPage()) && ($page <= $this->getLastPage())) {
-			$this->currentPage = $page;
+		if ($pageSize > 0) {
+			$this->pageSize = $pageSize;
 		}
-	}
-
-	/**
-	 * @param
-	 * @type integer - number of current page
-	 */
-	public function getCurrentPage()	{
-		return $this->currentPage;
+		if ($currentPage > 0) {
+			$this->currentPage = $currentPage;
+		}
 	}
 
 	/**
@@ -62,6 +48,29 @@ class A_Pagination	{
 			$this->numPages = $this->datasource->getNumItems();
 		}
 		return $this->numPages;
+	}
+
+	/**
+	 * @param integer - number of last page
+	 * @type
+	 */
+	public function setCurrentPage($page)	{
+		if (($page >= $this->getFirstPage()) && ($page <= $this->getLastPage())) {
+			$this->currentPage = $page;
+		}
+	}
+
+	public function getPage($page)	{
+		$page += $this->currentPage;
+		return ($page >= $this->getFirstPage()) && ($page <= $this->getLastPage()) ? $page : 0;
+	}
+
+	/**
+	 * @param
+	 * @type integer - number of current page
+	 */
+	public function getCurrentPage()	{
+		return $this->currentPage;
 	}
 
 	/**
@@ -108,7 +117,7 @@ class A_Pagination	{
 	 */
 	public function isPage($page)	{
 		$page += $this->currentPage;
-		return ($page >= $this->firstPage()) && ($page <= $this->lastPage());
+		return ($page >= $this->getFirstPage()) && ($page <= $this->getLastPage());
 	}
 
 	/**

@@ -2,7 +2,7 @@
 
 class A_Pagination_View_Link	{
 
-	public function ($pager)	{
+	public function __construct($pager)	{
 		$this->pager = $pager;
 	}
 
