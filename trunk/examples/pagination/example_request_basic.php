@@ -19,8 +19,8 @@ $datasource = new Datasource($myarray);
 // create a request processor to set pager from GET parameters
 $pager = new A_Pagination_Request($datasource);
 $pager->process();
-	
-$rows = $pager->pager()->getItems();
+
+$rows = $pager->getItems();
 
 // display the data
 echo '<table border="1">';
@@ -34,11 +34,11 @@ echo '</table>';
 
 echo '<div>';
 // display the paging links
-$current_page = $pager->pager()->getCurrentPage();
+$current_page = $pager->getCurrentPage();
 $links = array();
 for ($n=-5; $n<=5; ++$n) {
-	if ($pager->pager()->isPage($n)) {
-		$page = $pager->pager()->getPage($n);
+	if ($pager->isPage($n)) {
+		$page = $pager->getPage($n);
 		if ($page != $current_page) {
 			$links[] = "<a href=\"?page=$page\">$page</a>";
 		} else {
