@@ -6,7 +6,7 @@ class A_Pagination_Url	{
 	protected $protocol;
 	protected $state = array();
 
-	public function __construct ($base, $protocol = 'http')	{
+	public function __construct ($base = '', $protocol = 'http')	{
 		$this->base = $base;
 		$this->protocol = $protocol;
 	}
@@ -24,7 +24,7 @@ class A_Pagination_Url	{
 	}
 
 	public function render ($page = false, $params = array())	{
-		$params = array_merge ($params, $this->state);
+		$params = array_merge ($this->state, $params);
 		$base = $this->base ? $this->protocol . '://' . $this->base . '/' : '';
 		$page = $page ? $page : $_SERVER['SCRIPT_NAME'];
 		$query = count ($params) > 0 ? '?' . http_build_query ($params) : '';

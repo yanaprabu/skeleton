@@ -2,24 +2,24 @@
 include_once 'A/Pagination/Adapter/Interface.php';
 
 /**
- * Datasource access class for Pager using array 
- * 
- * @package A_Pager 
+ * Datasource access class for Pager using array
+ *
+ * @package A_Pager
  */
 
 class Datasource implements A_Pagination_Adapter_Interface {
 	protected $data;
 	protected $order_by_field = '';
 	protected $order_by_descending = 0;
-	
+
     public function __construct($data) {
         $this->data = $data;
     }
 
-    public function getNumItems() { 
+    public function getNumItems() {
         return count($this->data);
     }
-    
+
     public function getItems($start, $size) {
 		$max = count($this->data);
 		if (($max > 0) && ($start > 0) && ($size > 0)) {
@@ -48,6 +48,10 @@ class Datasource implements A_Pagination_Adapter_Interface {
 		return $this;
     }
 
+    public function getOrderBy()	{
+    	return $this->order_by_field . ($this->order_by_descending ? '_desc' : '');
+    }
+
 }
 
 $A_Pager_Array_Cmp_Key = '';
@@ -55,28 +59,28 @@ $A_Pager_Array_Cmp_Key = '';
 function pageable_array_cmp_string($a, $b)
 {
 	global $A_Pager_Array_Cmp_Key;
-	
+
 	return strcmp($a[$A_Pager_Array_Cmp_Key], $b[$A_Pager_Array_Cmp_Key]);
 }
 
 function pageable_array_cmp_number($a, $b)
 {
 	global $A_Pager_Array_Cmp_Key;
-	
+
 	return $a[$A_Pager_Array_Cmp_Key] > $b[$A_Pager_Array_Cmp_Key];
 }
 
 function pageable_array_cmp_string_reverse($a, $b)
 {
 	global $A_Pager_Array_Cmp_Key;
-	
+
 	return strcmp($b[$A_Pager_Array_Cmp_Key], $a[$A_Pager_Array_Cmp_Key]);
 }
 
 function pageable_array_cmp_number_reverse($a, $b)
 {
 	global $A_Pager_Array_Cmp_Key;
-	
+
 	return $a[$A_Pager_Array_Cmp_Key] < $b[$A_Pager_Array_Cmp_Key];
 }
 
