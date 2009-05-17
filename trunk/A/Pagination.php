@@ -121,8 +121,8 @@ class A_Pagination	{
 	}
 
 	public function isIntervalPage ($page)	{
-		$page += $this->currentPage + 1;
-		return ($page >= $this->getFirstPage()) && ($page <= $this->getLastPage());
+		$page += $this->currentPage;
+		return ($page > $this->getFirstPage()) && ($page < $this->getLastPage());
 	}
 
 	/**
