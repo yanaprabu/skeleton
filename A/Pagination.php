@@ -142,7 +142,11 @@ class A_Pagination	{
 	}
 
 	public function setOrderBy ($field, $descending = false)	{
-		$this->datasource->setOrderBy ($field, $descending = false);
+		$this->datasource->setOrderBy ($field, $descending);
+	}
+
+	public function getOrderBy()	{
+		return $this->datasource->getOrderBy();
 	}
 
 }
