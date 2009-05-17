@@ -2,31 +2,21 @@
 include_once 'A/Pagination.php';
 include_once 'A/Pagination/Url.php';
 
-class A_Pagination_Request	{
-
-	protected $adapter;
-	protected $pager;
-
-	public function __construct ($adapter, $pageSize=0, $currentPage=0)	{
-		$this->pager = new A_Pagination($adapter, $pageSize, $currentPage);
-		$this->process();
-	}
+class A_Pagination_Request extends A_Pagination	{
 
 	public function process()	{
-		$this->pager->setcurrentPage($this->get('page'), $this->pager->getFirstPage());
-		if ($pageSize = $this->get('page_size')) $this->pager->setPageSize(intval ($pageSize));
+		$this->setcurrentPage($this->get('page'), $this->getFirstPage());
+		if ($pageSize = $this->get('page_size')) $this->setPageSize(intval ($pageSize));
 		if ($orderBy = $this->get('order_by'))	{
 			list($field, $dir) = explode('_', $orderBy);
-			$this->pager->setOrderBy ($field, ($dir == 'asc' ? false : true));
+			$this->setOrderBy ($field, ($dir == 'asc' ? false : true));
 		}
 	}
 
+	// Should we rename this method to something more request-specific?
 	public function get($param, $default='')	{
-		$name = $this->pager->getParamName($param);
+		$name = $this->getParamName($param);
 		return isset($_GET[$name]) ? intval($_GET[$name]) : $default;
 	}
 
-	public function pager() {
-		return $this->pager;
-	}
 }

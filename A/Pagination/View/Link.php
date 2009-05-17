@@ -15,14 +15,14 @@ class A_Pagination_View_Link	{
 
 	public function previous ($offset = 1)	{
 		$html = '<a href="{url}">{text}</a>';
-		$html = str_replace ('{url}', $this->pager->url ('page.php', array ('page' => $pager->getCurrentPage() - $offset)));
+		$html = str_replace ('{url}', $this->pager->url ('page.php', array ('page' => $pager->getPage(-$offset))));
 		$html = str_replace ('{text}', 'Previous');
 		return $html;
 	}
 
 	public function next ($offset = 1)	{
 		$html = '<a href="{url}">{text}</a>';
-		$html = str_replace ('{url}', $this->pager->url ('page.php', array ('page' => $pager->getCurrentPage() + $offset)));
+		$html = str_replace ('{url}', $this->pager->url ('page.php', array ('page' => $pager->getPage($offset))));
 		$html = str_replace ('{text}', 'Next');
 		return $html;
 	}
