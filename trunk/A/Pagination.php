@@ -100,8 +100,8 @@ class A_Pagination	{
 	 * @type array - of sequential page numbers
 	 */
 	public function getPageRange($size = false, $page = false)	{
-		$size = $size ? $this->rangeSize : $size;
-		$page = $page ? $this->currentPage : $page;
+		$size = $size ? $size : $this->rangeSize;
+		$page = $page ? $page : $this->currentPage;
 		$start = $page - $size;
 		if ($start > $this->getLastPage())	{
 			$start = $this->getLastPage();
