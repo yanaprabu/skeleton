@@ -95,6 +95,7 @@ class A_Pagination	{
 
 	public function setRangeSize($size)  {
 		$this->rangeSize = $size;
+		return $this;
 	}
 
 	/**
@@ -114,7 +115,7 @@ class A_Pagination	{
 	 * @param $size - number of pages in range
 	 * @type boolean - true if in range, false if not
 	 */
-	public function inPageRange ($page, $size)	{
+	public function inPageRange ($page, $size = false)	{
 		return in_array ($page, $this->getPageRange ($size));
 	}
 
