@@ -91,6 +91,49 @@ class A_Pagination	{
 	}
 
 	/**
+	 * @param $start - offset relative to current page
+	 * @param $size - number of pages in range
+	 * @type array - of sequential page numbers
+	 */
+	public function getPageRange($start, $size)	{
+		$start += $this->currentPage;
+		$lastPage = $this->getLastPage();
+		if ($start > $lastPage) {
+			$start = $lastPage;
+		}
+		$end = $start + $size - 1;
+		if ($start < 1) {
+			$start = 1;
+		}
+		if ($end > $lastPage) {
+			$end = $lastPage;
+		}
+		return range($start, $end, 1);
+	}
+
+	/**
+	 * @param $page - page number to check
+	 * @param $start - offset relative to current page
+	 * @param $size - number of pages in range
+	 * @type boolean - true if in range, false if not
+	 */
+	public function inPageRange($page, $start, $size)	{
+		$start += $this->currentPage;
+		$lastPage = $this->getLastPage();
+		if ($start > $lastPage) {
+			$start = $lastPage;
+		}
+		$end = $start + $size - 1;
+		if ($start < 1) {
+			$start = 1;
+		}
+		if ($end > $lastPage) {
+			$end = $lastPage;
+		}
+		return ($page >= $start) && ($page <= $end);
+	}
+
+	/**
 	 * @param
 	 * @type integer - position of first item on current page
 	 */
