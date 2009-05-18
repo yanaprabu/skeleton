@@ -90,12 +90,17 @@ class A_Pagination	{
 		return ceil($this->getNumItems() / $this->pageSize);
 	}
 
+	public function setRangeSize($size)  {
+		$this->rangeSize = $size;
+	}
+
 	/**
 	 * @param $size - number of pages to offset from center
 	 * @param $page - center of range
 	 * @type array - of sequential page numbers
 	 */
-	public function getPageRange($size, $page = false)	{
+	public function getPageRange($size = false, $page = false)	{
+		$size = $size ? $this->rangeSize : $size;
 		$page = $page ? $this->currentPage : $page;
 		$start = $page - $size;
 		if ($start > $this->getLastPage())	{
@@ -108,12 +113,6 @@ class A_Pagination	{
 			$end = $this->getLastPage();
 		}
 		return range ($start, $end, 1);
-	}
-
-
-		$start = ($page + $size) > $this->getLastPage() ? $this->getLastPage() : ($page + $size);
-
-
 	}
 
 	/**
