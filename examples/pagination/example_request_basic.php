@@ -49,7 +49,7 @@ echo '</div>';
 
 // display the data
 echo '<table border="1">';
-echo '<tr><th>Row</th><th><a href="' . $url->render (false, array ('order_by' => 'title')) . '">Title</a></th><th><a href="' . $url->render (false, array ('order_by' => 'month')) . '">Month</a></th></tr>';
+echo '<tr><th><a href="' . $url->render (false, array ('order_by' => '')) . '">Row</a></th><th><a href="' . $url->render (false, array ('order_by' => 'title')) . '">Title</a></th><th><a href="' . $url->render (false, array ('order_by' => 'month')) . '">Month</a></th></tr>';
 $n = 1;
 foreach ($rows as $value) {
 	echo '<tr>';
