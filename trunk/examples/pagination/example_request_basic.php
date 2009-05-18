@@ -19,13 +19,33 @@ $datasource = new Datasource($myarray);
 
 // create a request processor to set pager from GET parameters
 $pager = new A_Pagination_Request($datasource);
-$pager->process();
+$pager->setRangeSize(3)->process();
 
 $url = new A_Pagination_Url();
-$url->set ('page', $pager->getCurrentPage());
-$url->set ('order_by', $pager->getOrderBy());
+$url->set('page', $pager->getCurrentPage());
+$url->set('order_by', $pager->getOrderBy());
 
 $rows = $pager->getItems();
+
+// display the paging links ... should this go in a template?
+$links = array();
+if ($pager->isPage(-1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-1))) . "\">Previous</a>";
+if (!$pager->inPageRange($pager->getFirstPage())) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getFirstPage())) . "\">1</a> ... ";
+//if ($pager->isIntervalPage(-10)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-10))) . "\">" . $pager->getPage(-10) . "</a> ...";
+foreach ($pager->getPageRange() as $page) {
+	if ($page != $pager->getCurrentPage()) {
+		$links[] = "<a href=\"" . $url->render(false, array ('page' => $page)) . "\">$page</a>";
+	} else {
+		$links[] = $page;
+	}
+}
+//if ($pager->isIntervalPage(+10)) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $pager->getPage(+10))) . "\">" . $pager->getPage(+10) . "</a>";
+if (!$pager->inPageRange($pager->getLastPage())) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $pager->getLastPage())) . "\">" . $pager->getLastPage() . "</a>";
+if ($pager->isPage(+1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage (+1))) . "\">Next</a>";
+
+echo '<div>';
+echo implode(' ', $links); // eventually $pager->render() -- or $links->render()?
+echo '</div>';
 
 // display the data
 echo '<table border="1">';
@@ -39,21 +59,6 @@ foreach ($rows as $value) {
 echo '</table>';
 
 echo '<div>';
-// display the paging links
-$links = array();
-if ($pager->isPage(-1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-1))) . "\">Previous</a>";
-if (!$pager->inPageRange($pager->getFirstPage(), 5)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getFirstPage())) . "\">1</a> ... ";
-if ($pager->isIntervalPage(-10)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-10))) . "\">" . $pager->getPage(-10) . "</a> ...";
-foreach ($pager->getPageRange(5) as $page) {
-	if ($page != $pager->getCurrentPage()) {
-		$links[] = "<a href=\"" . $url->render(false, array ('page' => $page)) . "\">$page</a>";
-	} else {
-		$links[] = $page;
-	}
-}
-if ($pager->isIntervalPage(+10)) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $pager->getPage(+10))) . "\">" . $pager->getPage(+10) . "</a>";
-if (!$pager->inPageRange($pager->getLastPage(), 5)) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $pager->getLastPage())) . "\">" . $pager->getLastPage() . "</a>";
-if ($pager->isPage(+1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage (+1))) . "\">Next</a>";
 echo implode(' ', $links);
 echo '</div>';
 
