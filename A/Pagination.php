@@ -62,7 +62,9 @@ class A_Pagination	{
 
 	public function getPage($page)	{
 		$page += $this->currentPage;
-		return ($page >= $this->getFirstPage()) && ($page <= $this->getLastPage()) ? $page : 0;
+		if ($page < $this->getFirstPage()) return $this->getFirstPage();
+		if ($page > $this->getLastPage())  return $this->getLastPage();
+		return $page;
 	}
 
 	/**
