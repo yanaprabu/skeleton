@@ -60,8 +60,9 @@ class A_Pagination	{
 		}
 	}
 
-	public function getPage($page)	{
-		$page += $this->currentPage;
+	public function getPage($page, $center = false)	{
+		$center = $center ? $center : $this->currentPage;
+		$page += $center;
 		if ($page < $this->getFirstPage()) return $this->getFirstPage();
 		if ($page > $this->getLastPage())  return $this->getLastPage();
 		return $page;
@@ -104,17 +105,7 @@ class A_Pagination	{
 	public function getPageRange($size = false, $page = false)	{
 		$size = $size ? $size : $this->rangeSize;
 		$page = $page ? $page : $this->currentPage;
-		$start = $page - $size;
-		if ($start > $this->getLastPage())	{
-			$start = $this->getLastPage();
-		} elseif ($start < 1)	{
-			$start = 1;
-		}
-		$end = $page + $size;
-		if ($end > $this->getLastPage())	{
-			$end = $this->getLastPage();
-		}
-		return range ($start, $end, 1);
+		return range ($this->getPage (-$size, $page), $this->getPage (+$size, $page), 1);
 	}
 
 	/**
