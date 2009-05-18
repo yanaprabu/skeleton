@@ -91,24 +91,29 @@ class A_Pagination	{
 	}
 
 	/**
-	 * @param $start - offset relative to current page
-	 * @param $size - number of pages in range
+	 * @param $size - number of pages to offset from center
+	 * @param $page - center of range
 	 * @type array - of sequential page numbers
 	 */
-	public function getPageRange($start, $size)	{
-		$start += $this->currentPage;
-		$lastPage = $this->getLastPage();
-		if ($start > $lastPage) {
-			$start = $lastPage;
-		}
-		$end = $start + $size - 1;
-		if ($start < 1) {
+	public function getPageRange($size, $page = false)	{
+		$page = $page ? $this->currentPage : $page;
+		$start = $page - $size;
+		if ($start > $this->getLastPage())	{
+			$start = $this->getLastPage();
+		} elseif ($start < 1)	{
 			$start = 1;
 		}
-		if ($end > $lastPage) {
-			$end = $lastPage;
+		$end = $page + $size;
+		if ($end > $this->getLastPage())	{
+			$end = $this->getLastPage();
 		}
-		return range($start, $end, 1);
+		return range ($start, $end, 1);
+	}
+
+
+		$start = ($page + $size) > $this->getLastPage() ? $this->getLastPage() : ($page + $size);
+
+
 	}
 
 	/**
@@ -117,20 +122,8 @@ class A_Pagination	{
 	 * @param $size - number of pages in range
 	 * @type boolean - true if in range, false if not
 	 */
-	public function inPageRange($page, $start, $size)	{
-		$start += $this->currentPage;
-		$lastPage = $this->getLastPage();
-		if ($start > $lastPage) {
-			$start = $lastPage;
-		}
-		$end = $start + $size - 1;
-		if ($start < 1) {
-			$start = 1;
-		}
-		if ($end > $lastPage) {
-			$end = $lastPage;
-		}
-		return ($page >= $start) && ($page <= $end);
+	public function inPageRange ($page, $size)	{
+		return in_array ($page, $this->getPageRange ($size));
 	}
 
 	/**

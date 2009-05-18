@@ -42,19 +42,17 @@ echo '<div>';
 // display the paging links
 $links = array();
 if ($pager->isPage(-1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-1))) . "\">Previous</a>";
-if (! $pager->inPageRange(1, -5, 11)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getFirstPage())) . "\">1</a> ... ";
+if (! $pager->inPageRange($pager->getCurrentPage(), 5)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getFirstPage())) . "\">1</a> ... ";
 if ($pager->isIntervalPage(-10)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-10))) . "\">" . $pager->getPage(-10) . "</a> ...";
-$current_page = $pager->getCurrentPage();
-foreach ($pager->getPageRange(-5, 11) as $page) {
-	if ($page != $current_page) {
+foreach ($pager->getPageRange(5) as $page) {
+	if ($page != $pager->getCurrentPage()) {
 		$links[] = "<a href=\"" . $url->render(false, array ('page' => $page)) . "\">$page</a>";
 	} else {
 		$links[] = $page;
 	}
 }
 if ($pager->isIntervalPage(+10)) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $pager->getPage(+10))) . "\">" . $pager->getPage(+10) . "</a>";
-$lastPage = $pager->getLastPage();
-if (! $pager->inPageRange($lastPage, -5, 11)) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $lastPage)) . "\">$lastPage</a>";
+if (! $pager->inPageRange($pager->getLastPage(), 5)) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $lastPage)) . "\">$lastPage</a>";
 if ($pager->isPage(+1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage (+1))) . "\">Next</a>";
 echo implode(' ', $links);
 echo '</div>';
