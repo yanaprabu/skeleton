@@ -60,9 +60,9 @@ class A_Pagination	{
 		}
 	}
 
-	public function getPage($page, $center = false)	{
-		$center = $center ? $center : $this->currentPage;
-		$page += $center;
+	public function getPage($page, $centerPage = false)	{
+		$centerPage = $centerPage ? $centerPage : $this->currentPage;
+		$page += $centerPage;
 		if ($page < $this->getFirstPage()) return $this->getFirstPage();
 		if ($page > $this->getLastPage())  return $this->getLastPage();
 		return $page;
