@@ -60,9 +60,9 @@ class A_Pagination	{
 		}
 	}
 
-	public function getPage($page, $centerPage = false)	{
-		$centerPage = $centerPage ? $centerPage : $this->currentPage;
-		$page += $centerPage;
+	public function getPage($offset, $page = false)	{
+		if (!$page) $page = $this->currentPage;
+		$page += $offset;
 		if ($page < $this->getFirstPage()) return $this->getFirstPage();
 		if ($page > $this->getLastPage())  return $this->getLastPage();
 		return $page;
@@ -103,9 +103,9 @@ class A_Pagination	{
 	 * @param $page - center of range
 	 * @type array - of sequential page numbers
 	 */
-	public function getPageRange($size = false, $page = false)	{
-		$size = $size ? $size : $this->rangeSize;
-		$page = $page ? $page : $this->currentPage;
+	public function getPageRange($offset = false, $page = false)	{
+		if (!$offset) $offset = $this->rangeSize;
+		if (!$page) $page = $this->currentPage;
 		return range ($this->getPage (-$size, $page), $this->getPage (+$size, $page), 1);
 	}
 
