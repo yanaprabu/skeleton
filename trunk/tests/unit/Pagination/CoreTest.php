@@ -24,7 +24,7 @@ class DatasourceMock implements A_Pagination_Adapter_Interface {
 	}
 }
 
-class PaginationTest extends UnitTestCase {
+class Pagination_CoreTest extends UnitTestCase {
 
 	function setUp() {
 	}

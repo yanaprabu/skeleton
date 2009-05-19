@@ -1,8 +1,8 @@
 <?php
-include_once 'A/Pagination.php';
+include_once 'A/Pagination/Core.php';
 include_once 'A/Pagination/Url.php';
 
-class A_Pagination_Request extends A_Pagination	{
+class A_Pagination_Request extends A_Pagination_Core	{
 
 	public function process()	{
 		$this->setcurrentPage($this->get('page'), $this->getFirstPage());
