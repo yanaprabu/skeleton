@@ -103,10 +103,10 @@ class A_Pagination_Core	{
 	 * @param $page - center of range
 	 * @type array - of sequential page numbers
 	 */
-	public function getPageRange($offset = false, $page = false)	{
+	public function getPageRange($offset=false, $page=false)	{
 		if (!$offset) $offset = $this->rangeSize;
 		if (!$page) $page = $this->currentPage;
-		return range ($this->getPage (-$size, $page), $this->getPage (+$size, $page), 1);
+		return range($this->getPage(-$offset, $page), $this->getPage($offset, $page), 1);
 	}
 
 	/**
@@ -115,7 +115,7 @@ class A_Pagination_Core	{
 	 * @param $size - number of pages in range
 	 * @type boolean - true if in range, false if not
 	 */
-	public function inPageRange ($page, $size = false)	{
+	public function inPageRange ($page, $size=false)	{
 		return in_array ($page, $this->getPageRange ($size));
 	}
 
