@@ -9,7 +9,7 @@
  * @version @package_version@
  */
 
-class A_Pagination	{
+class A_Pagination_Core	{
 
 	protected $datasource;
 	protected $pageSize = 10;
