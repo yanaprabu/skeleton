@@ -32,11 +32,11 @@ $rows = $pager->getItems();
 
 // display the paging links ... should this go in a template?
 $links = '';
-$links .= $link->previous('Previous') . $link->separator();
-$links .= $link->first() . $link->separator();
+$links .= $link->first('First');
+$links .= $link->previous('Previous');
 $links .= $link->range();
-$links .= $link->separator() . $link->last();
-$links .= $link->separator() . $link->next('Next');
+$links .= $link->last();
+$links .= $link->next('Next');
 
 echo "<div>$links</div>";
 

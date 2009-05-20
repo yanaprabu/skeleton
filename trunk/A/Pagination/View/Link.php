@@ -48,17 +48,21 @@ class A_Pagination_View_Link {
 	 * @param 
 	 * @type 
 	 */
-	public function first($label=false)	{
-		$page = $pager->getFirstPage();
-		return (!$pager->inPageRange($page)) ? $this->page($page, $label) : '';
+	public function first($label=false, $separator=true)	{
+		$page = $this->pager->getFirstPage();
+		if (!$this->pager->inPageRange($page)) {
+			return $this->page($page, $label) . ($separator ? $this->separator : '');
+		}
+		return '';
+#		return (!$this->pager->inPageRange($page) ? $this->page($page, $label) : '') . ($separator ? $this->separator : '');
 	}
 
 	/**
 	 * @param 
 	 * @type 
 	 */
-	public function previous ($label=false)	{
-		return $this->page(-1, $label);
+	public function previous ($label=false, $separator=true)	{
+		return $this->page($this->pager->getPage(-1), $label) . ($separator ? $this->separator : '');
 	}
 
 	/**
@@ -67,8 +71,7 @@ class A_Pagination_View_Link {
 	 */
 	public function page($page=false, $label=false) {
 		$html = '';
-		if ($this->pager->isPage($page)) {
-			$page = $this->pager->getPage($page);
+		if (($page >= $this->pager->getFirstPage()) && ($page <= $this->pager->getLastPage())) {
 			$param = $this->pager->getParamName('page');
 			$html .= '<a href="';
 			$html .= $this->url->render(false, array ($param => $page));
@@ -85,17 +88,21 @@ class A_Pagination_View_Link {
 	 * @param 
 	 * @type 
 	 */
-	public function next($label=false) {
-		return $this->page(1, $label);
+	public function next($label=false, $separator=true) {
+		return ($separator ? $this->separator : '') . $this->page($this->pager->getPage(1), $label);
 	}
 
 	/**
 	 * @param 
 	 * @type 
 	 */
-	public function last($label=false) {
-		$page = $pager->getLastPage();
-		return (!$pager->inPageRange($page)) ? $this->page($page, $label) : '';
+	public function last($label=false, $separator=true) {
+		$page = $this->pager->getLastPage();
+		if (!$this->pager->inPageRange($page)) {
+			return ($separator ? $this->separator : '') . $this->page($page, $label);
+		}
+		return '';
+#		return ($separator ? $this->separator : '') . (!$this->pager->inPageRange($page) ? $this->page($page, $label) : '');
 	}
 
 	/**

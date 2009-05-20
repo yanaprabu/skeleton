@@ -12,9 +12,10 @@
 class A_Pagination_Core	{
 
 	protected $datasource;
-	protected $pageSize = 10;
+	protected $pageSize = 10;				// number of items per page
 	protected $currentPage = 1;
 	protected $numPages = false;
+	protected $rangeSize = 4;				// size of range either side of current page
 	protected $paramNames = array();
 
 	/**
