@@ -1,4 +1,14 @@
 <?php
+/**
+ * A_Pagination_Request
+ *
+ * Component to initialize the core object from the request
+ *
+ * @author Cory Kaufman, Christopher Thompson
+ * @package A_Pagination
+ * @version @package_version@
+ */
+
 include_once 'A/Pagination/Core.php';
 include_once 'A/Pagination/Url.php';
 
