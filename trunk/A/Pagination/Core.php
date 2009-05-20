@@ -1,8 +1,8 @@
 <?php
 /**
- * A_Pagination
+ * A_Pagination_
  *
- * Component to paginate items from a datasource
+ * Core value object to paginate items from a datasource
  *
  * @author Cory Kaufman, Christopher Thompson
  * @package A_Pagination

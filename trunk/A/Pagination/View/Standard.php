@@ -1,4 +1,13 @@
 <?php
+/**
+ * A_Pagination_View_Standard
+ *
+ * Component to paginate items from a datasource
+ *
+ * @author Cory Kaufman, Christopher Thompson
+ * @package A_Pagination
+ * @version @package_version@
+ */
 
 class A_Pagination_View_Standard	{
 
