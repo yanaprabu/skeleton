@@ -2,7 +2,7 @@
 /**
  * A_Pagination_View_Link
  *
- * Generate HTML links
+ * Genreate HTML links
  *
  * @author Cory Kaufman, Christopher Thompson
  * @package A_Pagination
@@ -18,8 +18,8 @@ class A_Pagination_View_Link {
 	protected $separator = ' ';
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function __construct($pager, $url=false)	{
 		$this->pager = $pager;
@@ -27,8 +27,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function setSeparator ($separator) {
 		$this->separator = $separator;
@@ -36,8 +36,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function setClass($class) {
 		$this->class = $class;
@@ -45,8 +45,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function first($label=false, $separator=true)	{
 		$page = $this->pager->getFirstPage();
@@ -54,47 +54,50 @@ class A_Pagination_View_Link {
 			return $this->page($page, $label) . ($separator ? $this->separator : '');
 		}
 		return '';
-#		return (!$this->pager->inPageRange($page) ? $this->page($page, $label) : '') . ($separator ? $this->separator : '');
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function previous ($label=false, $separator=true)	{
-		return $this->page($this->pager->getPage(-1), $label) . ($separator ? $this->separator : '');
+		if ($this->pager->isPage(-1)) {
+			return $this->page($this->pager->getPage(-1), $label) . ($separator ? $this->separator : '');
+		}
+		return '';
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function page($page=false, $label=false) {
 		$html = '';
-		if (($page >= $this->pager->getFirstPage()) && ($page <= $this->pager->getLastPage())) {
-			$param = $this->pager->getParamName('page');
-			$html .= '<a href="';
-			$html .= $this->url->render(false, array ($param => $page));
-			$html .= '"';
-			$html .= $this->class ? " class=\"{$this->class}\"" : '';
-			$html .= '>';
-			$html .= $label ? $label : $page;
-			$html .= '</a>';
-		}
+		$param = $this->pager->getParamName('page');
+		$html .= '<a href="';
+		$html .= $this->url->render(false, array ($param => $page));
+		$html .= '"';
+		$html .= $this->class ? " class=\"{$this->class}\"" : '';
+		$html .= '>';
+		$html .= $label ? $label : $page;
+		$html .= '</a>';
 		return $html;
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function next($label=false, $separator=true) {
-		return ($separator ? $this->separator : '') . $this->page($this->pager->getPage(+1), $label);
+		if ($this->pager->isPage(+1)) {
+			return ($separator ? $this->separator : '') . $this->page($this->pager->getPage(+1), $label);
+		}
+		return '';
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function last($label=false, $separator=true) {
 		$page = $this->pager->getLastPage();
@@ -102,12 +105,11 @@ class A_Pagination_View_Link {
 			return ($separator ? $this->separator : '') . $this->page($page, $label);
 		}
 		return '';
-#		return ($separator ? $this->separator : '') . (!$this->pager->inPageRange($page) ? $this->page($page, $label) : '');
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
 	public function range($offset=false, $page=false) {
 		$links = array();
@@ -123,10 +125,10 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param 
+	 * @type 
 	 */
-	public function separator() {
+	public function separator () {
 		return $this->separator;
 	}
 
