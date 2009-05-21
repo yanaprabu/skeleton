@@ -23,7 +23,6 @@ class A_Pagination_Request extends A_Pagination_Core	{
 		}
 	}
 
-	// Should we rename this method to something more request-specific?
 	public function get($param, $default='')	{
 		$name = $this->getParamName($param);
 		return isset($_GET[$name]) ? $_GET[$name] : $default;
