@@ -59,5 +59,8 @@ echo "<div>$links</div>";
 <a href="../">Return to Examples</a>
 </p>
 
+<div><?php echo $this->previous('Previous')->first()->range()->last()->next('Next'); ?></div>
+
+
 </body>
 </html>
