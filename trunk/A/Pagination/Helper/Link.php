@@ -23,7 +23,7 @@ class A_Pagination_Helper_Link {
 	 */
 	public function __construct($pager, $url=false)	{
 		$this->pager = $pager;
-		$this->url = $url ? $url : new A_Pagination_Url();
+		$this->url = $url ? $url : new A_Pagination_Helper_Url();
 	}
 
 	/**

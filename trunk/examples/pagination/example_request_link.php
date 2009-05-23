@@ -21,12 +21,12 @@ $datasource = new Datasource($myarray);
 $pager = new A_Pagination_Request($datasource);
 $pager->setRangeSize(3)->process();
 
-$url = new A_Pagination_Url();
+$url = new A_Pagination_Helper_Url();
 $url->set('page', $pager->getCurrentPage());
 $url->set('order_by', $pager->getOrderBy());
 
-include 'A/Pagination/View/Link.php';
-$link = new A_Pagination_View_Link($pager);
+include 'A/Pagination/Helper/Link.php';
+$link = new A_Pagination_Helper_Link($pager);
 
 $rows = $pager->getItems();
 
