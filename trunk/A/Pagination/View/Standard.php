@@ -11,11 +11,15 @@
 
 class A_Pagination_View_Standard	{
 
+	protected $links = '';
 	protected $helpers = array();
+	protected $cacheNumItems = true;
 
-	public function __construct ($pager, $url=false)	{
+	public function __construct ($pager, $url=false, $cache=true)	{
 		$this->pager = $pager;
-		$this->helpers['url'] = $url ? $url : new A_Pagination_Helper_Url();
+		if ($url) $this->setHelper ('url', $url);
+		if ($this->pager->getOrderBy()) $this->url()->set ($this->pager->getParamName ('order_by'), $this->pager->getOrderBy());
+		if ($this->cache == true) $this->url()->set ($this->pager->getParamName ('num_items'), $this->pager->getNumItems());
 	}
 
 	public function setHelper ($name, $helper)	{
@@ -40,20 +44,59 @@ class A_Pagination_View_Standard	{
 
 	public function url()	{
 		if (! isset($this->helpers['url']))	{
-			include_once 'A/Pagination/View/Link.php';
-			$this->helpers['url'] = new A_Pagination_Helper_Url ($this->pager);
+			include_once 'A/Pagination/Helper/Url.php';
+			$this->helpers['url'] = new A_Pagination_Helper_Url();
 		}
 		return $this->helpers['url'];
 	}
 
+	public function first ($label = false, $separator = true)	{
+		$this->links .= $this->link()->first ($label, $separator);
+		return $this;
+	}
+
+	public function previous ($label = false, $separator = true)	{
+		$this->links .= $this->link()->previous ($label, $separator);
+		return $this;
+	}
+
+	public function page($page=false, $label=false) {
+		$this->links .= $this->link->page ($page, $label);
+		return $this;
+	}
+
+	public function next($label = false, $separator = true)	{
+		$this->links .= $this->link()->next($label, $separator);
+		return $this;
+	}
+
+	public function last($label = false, $separator = true)	{
+		$this->links .= $this->link()->last($label, $separator);
+		return $this;
+	}
+
+	public function range($offset=false, $page=false) {
+		$this->links .= $this->link()->range($offset, $page);
+		return $this;
+	}
+
 	public function render()	{
-		$links = '';
-		$links .= $this->link()->first('First');
-		$links .= $this->link()->previous('Previous');
-		$links .= $this->link()->range();
-		$links .= $this->link()->next('Next');
-		$links .= $this->link()->last('Last');
-		return $links;
+		if ($this->links == '')	{
+			$this->links .= $this->link()->first('First');
+			$this->links .= $this->link()->previous('Previous');
+			$this->links .= $this->link()->range();
+			$this->links .= $this->link()->next('Next');
+			$this->links .= $this->link()->last('Last');
+		}
+		return $this->links;
+	}
+
+	public function alwaysShowFirstLast()	{
+		$this->link()->alwaysShowFirstLast();
+	}
+
+	public function alwaysShowPreviousNext()	{
+		$this->link()->alwaysShowPreviousNext();
 	}
 
 	public function __call ($method, $params)	{

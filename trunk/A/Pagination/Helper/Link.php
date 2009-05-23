@@ -16,6 +16,8 @@ class A_Pagination_Helper_Link {
 	public $url;
 	protected $class = false;
 	protected $separator = ' ';
+	protected $alwaysShowFirstLast = false;
+	protected $alwaysShowPreviousNext = false;
 
 	/**
 	 * @param
@@ -50,7 +52,7 @@ class A_Pagination_Helper_Link {
 	 */
 	public function first($label=false, $separator=true)	{
 		$page = $this->pager->getFirstPage();
-		if (!$this->pager->inPageRange($page)) {
+		if (!$this->pager->inPageRange($page) || $this->alwaysShowFirstLast == true) {
 			return $this->page($page, $label) . ($separator ? $this->separator : '');
 		}
 		return '';
@@ -61,7 +63,7 @@ class A_Pagination_Helper_Link {
 	 * @type
 	 */
 	public function previous ($label=false, $separator=true)	{
-		if ($this->pager->isPage(-1)) {
+		if ($this->pager->isPage(-1) || $this->alwaysShowPreviousNext == true) {
 			return $this->page($this->pager->getPage(-1), $label) . ($separator ? $this->separator : '');
 		}
 		return '';
@@ -74,11 +76,7 @@ class A_Pagination_Helper_Link {
 	public function page($page=false, $label=false) {
 		$html = '';
 		$html .= '<a href="';
-		$html .= $this->url->render(false, array(
-											$this->pager->getParamName('page') => $page,
-											$this->pager->getParamName('num_items') => $this->pager->getNumItems(),
-											$this->pager->getParamName('order_by') => $this->pager->getOrderBy(),
-											));
+		$html .= $this->url->render(false, array($this->pager->getParamName('page') => $page));
 		$html .= '"';
 		$html .= $this->class ? " class=\"{$this->class}\"" : '';
 		$html .= '>';
@@ -92,7 +90,7 @@ class A_Pagination_Helper_Link {
 	 * @type
 	 */
 	public function next($label=false, $separator=true) {
-		if ($this->pager->isPage(+1)) {
+		if ($this->pager->isPage(+1) || $this->alwaysShowPreviousNext == true) {
 			return ($separator ? $this->separator : '') . $this->page($this->pager->getPage(+1), $label);
 		}
 		return '';
@@ -104,7 +102,7 @@ class A_Pagination_Helper_Link {
 	 */
 	public function last($label=false, $separator=true) {
 		$page = $this->pager->getLastPage();
-		if (!$this->pager->inPageRange($page)) {
+		if (!$this->pager->inPageRange($page) || $this->alwaysShowFirstLast == true) {
 			return ($separator ? $this->separator : '') . $this->page($page, $label);
 		}
 		return '';
@@ -134,11 +132,7 @@ class A_Pagination_Helper_Link {
 	public function order($field, $label='') {
 		$html = '';
 		$html .= '<a href="';
-		$html .= $this->url->render(false, array(
-											$this->pager->getParamName('page') => $this->pager->getCurrentPage(),
-											$this->pager->getParamName('num_items') => $this->pager->getNumItems(),
-											$this->pager->getParamName('order_by') => $field,
-											));
+		$html .= $this->url->render(false, array($this->pager->getParamName('page') => $this->pager->getCurrentPage()));
 		$html .= '"';
 		$html .= $this->class ? " class=\"{$this->class}\"" : '';
 		$html .= '>';
@@ -153,6 +147,14 @@ class A_Pagination_Helper_Link {
 	 */
 	public function separator () {
 		return $this->separator;
+	}
+
+	public function alwaysShowFirstLast()	{
+		$this->alwaysShowFirstLast = true;
+	}
+
+	public function alwaysShowPreviousNext()	{
+		$this->alwaysShowPreviousNext = true;
 	}
 
 }
