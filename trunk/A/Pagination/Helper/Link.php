@@ -77,6 +77,7 @@ class A_Pagination_Helper_Link {
 		$html .= $this->url->render(false, array(
 											$this->pager->getParamName('page') => $page,
 											$this->pager->getParamName('num_items') => $this->pager->getNumItems(),
+											$this->pager->getParamName('order_by') => $this->pager->getOrderBy(),
 											));
 		$html .= '"';
 		$html .= $this->class ? " class=\"{$this->class}\"" : '';
@@ -124,6 +125,26 @@ class A_Pagination_Helper_Link {
 			}
 		}
 		return implode($this->separator, $links);
+	}
+
+	/**
+	 * @param
+	 * @type
+	 */
+	public function order($field, $label='') {
+		$html = '';
+		$html .= '<a href="';
+		$html .= $this->url->render(false, array(
+											$this->pager->getParamName('page') => $this->pager->getCurrentPage(),
+											$this->pager->getParamName('num_items') => $this->pager->getNumItems(),
+											$this->pager->getParamName('order_by') => $field,
+											));
+		$html .= '"';
+		$html .= $this->class ? " class=\"{$this->class}\"" : '';
+		$html .= '>';
+		$html .= $label ? $label : $field;
+		$html .= '</a>';
+		return $html;
 	}
 
 	/**
