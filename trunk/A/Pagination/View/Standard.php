@@ -42,8 +42,8 @@ class A_Pagination_View_Standard	{
 		if (! isset($this->helpers['url']))	{
 			include_once 'A/Pagination/View/Link.php';
 			$this->helpers['url'] = new A_Pagination_Helper_Url ($this->pager);
-			return $this->helpers['url'];
 		}
+		return $this->helpers['url'];
 	}
 
 	public function render()	{
@@ -54,6 +54,12 @@ class A_Pagination_View_Standard	{
 		$links .= $this->link()->next('Next');
 		$links .= $this->link()->last('Last');
 		return $links;
+	}
+
+	public function __call ($method, $params)	{
+		if (method_exists ($this->pager, $method))	{
+			return call_user_func_array (array ($this->pager, $method), $params);
+		}
 	}
 
 /*

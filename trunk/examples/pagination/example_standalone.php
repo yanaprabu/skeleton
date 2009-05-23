@@ -6,7 +6,7 @@
 <?php
 include 'config.php';
 include 'Datasource.php';
-include 'A/Pagination/Request.php';
+include 'A/Pagination/Standalone.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -18,31 +18,24 @@ for ($i=0; $i<=750; ++$i) {
 $datasource = new Datasource($myarray);
 
 // create a request processor to set pager from GET parameters
-$pager = new A_Pagination_Request($datasource);
+$pager = new A_Pagination_Standalone($datasource);
 $pager->setRangeSize(3)->process();
-
-$url = new A_Pagination_Helper_Url();
-$url->set('page', $pager->getCurrentPage());
-$url->set('order_by', $pager->getOrderBy());
-
-include 'A/Pagination/View/Standard.php';
-$view = new A_Pagination_View_Standard($pager);
 
 $rows = $pager->getItems();
 
 // display the paging links ... should this go in a template?
 $links = '';
-$links .= $view->link()->first('First');
-$links .= $view->link()->previous('Previous');
-$links .= $view->link()->range();
-$links .= $view->link()->last();
-$links .= $view->link()->next('Next');
+$links .= $pager->link()->first('First');
+$links .= $pager->link()->previous('Previous');
+$links .= $pager->link()->range();
+$links .= $pager->link()->last();
+$links .= $pager->link()->next('Next');
 
 echo "<div>$links</div>";
 
 // display the data
 echo '<table border="1">';
-echo '<tr><th><a href="' . $url->render (false, array ('order_by' => '')) . '">Row</a></th><th><a href="' . $url->render (false, array ('order_by' => 'title')) . '">Title</a></th><th><a href="' . $url->render (false, array ('order_by' => 'month')) . '">Month</a></th></tr>';
+echo '<tr><th><a href="' . $pager->url()->render (false, array ('order_by' => '')) . '">Row</a></th><th><a href="' . $pager->url()->render (false, array ('order_by' => 'title')) . '">Title</a></th><th><a href="' . $pager->url()->render (false, array ('order_by' => 'month')) . '">Month</a></th></tr>';
 $n = 1;
 foreach ($rows as $value) {
 	echo '<tr>';
