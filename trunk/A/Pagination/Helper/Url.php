@@ -9,15 +9,15 @@
  * @version @package_version@
  */
 
-class A_Pagination_Url	{
+class A_Pagination_Helper_Url	{
 
 	protected $base;
 	protected $protocol;
 	protected $state = array();
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function __construct ($base = '', $protocol = 'http')	{
 		$this->base = $base;
@@ -25,32 +25,32 @@ class A_Pagination_Url	{
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function set ($key, $value)	{
 		$this->state[$key] = $value;
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function setBase ($base)	{
 		$this->base = $base;
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function setProtocol ($protocol)	{
 		$this->protocol = $protocol;
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function render ($page = false, $params = array())	{
 		$params = array_merge ($this->state, $params);

@@ -9,7 +9,11 @@
  * @version @package_version@
  */
 
-class A_Pagination_View_Order	{
+class A_Pagination_Helper_Order	{
+
+	public function __construct ($pager, $url)	{
+
+	}
 
 	public function links()	{
 

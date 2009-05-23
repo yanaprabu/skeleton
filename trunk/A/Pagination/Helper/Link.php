@@ -9,17 +9,17 @@
  * @version @package_version@
  */
 
-include_once 'A/Pagination/Url.php';
+include_once 'A/Pagination/Helper/Url.php';
 
-class A_Pagination_View_Link {
+class A_Pagination_Helper_Link {
 	protected $pager;
 	public $url;
 	protected $class = false;
 	protected $separator = ' ';
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function __construct($pager, $url=false)	{
 		$this->pager = $pager;
@@ -27,8 +27,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function setSeparator ($separator) {
 		$this->separator = $separator;
@@ -36,8 +36,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function setClass($class) {
 		$this->class = $class;
@@ -45,8 +45,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function first($label=false, $separator=true)	{
 		$page = $this->pager->getFirstPage();
@@ -57,8 +57,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function previous ($label=false, $separator=true)	{
 		if ($this->pager->isPage(-1)) {
@@ -68,14 +68,14 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function page($page=false, $label=false) {
 		$html = '';
 		$html .= '<a href="';
 		$html .= $this->url->render(false, array(
-											$this->pager->getParamName('page') => $page, 
+											$this->pager->getParamName('page') => $page,
 											$this->pager->getParamName('num_items') => $this->pager->getNumItems(),
 											));
 		$html .= '"';
@@ -87,8 +87,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function next($label=false, $separator=true) {
 		if ($this->pager->isPage(+1)) {
@@ -98,8 +98,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function last($label=false, $separator=true) {
 		$page = $this->pager->getLastPage();
@@ -110,8 +110,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function range($offset=false, $page=false) {
 		$links = array();
@@ -127,8 +127,8 @@ class A_Pagination_View_Link {
 	}
 
 	/**
-	 * @param 
-	 * @type 
+	 * @param
+	 * @type
 	 */
 	public function separator () {
 		return $this->separator;
