@@ -14,6 +14,14 @@ include_once 'A/Pagination/Url.php';
 
 class A_Pagination_Request extends A_Pagination_Core	{
 
+	public function setRequest ($request)	{
+		$this->request = $request;
+	}
+
+	public function setSession ($session)	{
+		$this->session = $session;
+	}
+
 	public function process()	{
 		if ($numItems = $this->get('num_items')) {
 			$this->setNumItems(intval($numItems));
@@ -30,6 +38,9 @@ class A_Pagination_Request extends A_Pagination_Core	{
 
 	public function get($param, $default='')	{
 		$name = $this->getParamName($param);
+		// Is get() the standard interface for a request object?
+		if ($this->request->get($name)) return $this->request->get($name);
+		if ($this->session->get($name)) return $this->session->get($name);
 		return isset($_GET[$name]) ? $_GET[$name] : $default;
 	}
 
