@@ -73,9 +73,11 @@ class A_Pagination_View_Link {
 	 */
 	public function page($page=false, $label=false) {
 		$html = '';
-		$param = $this->pager->getParamName('page');
 		$html .= '<a href="';
-		$html .= $this->url->render(false, array ($param => $page));
+		$html .= $this->url->render(false, array(
+											$this->pager->getParamName('page') => $page, 
+											$this->pager->getParamName('num_items') => $this->pager->getNumItems(),
+											));
 		$html .= '"';
 		$html .= $this->class ? " class=\"{$this->class}\"" : '';
 		$html .= '>';

@@ -14,6 +14,7 @@ class A_Pagination_Core	{
 	protected $datasource;
 	protected $pageSize = 10;				// number of items per page
 	protected $currentPage = 1;
+	protected $numItems = false;
 	protected $numPages = false;
 	protected $rangeSize = 4;				// size of range either side of current page
 	protected $paramNames = array();
@@ -44,11 +45,20 @@ class A_Pagination_Core	{
 	 * @param
 	 * @type integer - number of total items
 	 */
+	public function setNumItems($numItems)	{
+		$this->numItems = $numItems;
+		return $this;
+	}
+
+	/**
+	 * @param
+	 * @type integer - number of total items
+	 */
 	public function getNumItems()	{
-		if ($this->numPages === false) {
-			$this->numPages = $this->datasource->getNumItems();
+		if ($this->numItems === false) {
+			$this->numItems = $this->datasource->getNumItems();
 		}
-		return $this->numPages;
+		return $this->numItems;
 	}
 
 	/**
@@ -59,6 +69,7 @@ class A_Pagination_Core	{
 		if (($page >= $this->getFirstPage()) && ($page <= $this->getLastPage())) {
 			$this->currentPage = $page;
 		}
+		return $this;
 	}
 
 	public function getPage($offset, $page = false)	{
@@ -174,10 +185,12 @@ class A_Pagination_Core	{
 
 	public function setParamName ($param, $name)	{
 		$this->paramNames[$param] = $name;
+		return $this;
 	}
 
 	public function setOrderBy ($field, $descending = false)	{
 		$this->datasource->setOrderBy ($field, $descending);
+		return $this;
 	}
 
 	public function getOrderBy()	{
