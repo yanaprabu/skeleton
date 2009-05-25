@@ -132,7 +132,7 @@ class A_Pagination_Helper_Link {
 	public function order($field, $label='') {
 		$html = '';
 		$html .= '<a href="';
-		$html .= $this->url->render(false, array($this->pager->getParamName('page') => $this->pager->getCurrentPage()));
+		$html .= $this->url->render(false, array($this->pager->getParamName('order_by') => $field));
 		$html .= '"';
 		$html .= $this->class ? " class=\"{$this->class}\"" : '';
 		$html .= '>';
