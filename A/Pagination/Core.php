@@ -1,10 +1,10 @@
 <?php
 /**
- * A_Pagination_
+ * A_Pagination_Core
  *
  * Core value object to paginate items from a datasource
  *
- * @author Cory Kaufman, Christopher Thompson
+ * @author Kaufman, Christopher Thompson
  * @package A_Pagination
  * @version @package_version@
  */

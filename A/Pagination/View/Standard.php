@@ -18,8 +18,8 @@ class A_Pagination_View_Standard	{
 	public function __construct ($pager, $url=false, $cache=true)	{
 		$this->pager = $pager;
 		if ($url) $this->setHelper ('url', $url);
-		if ($this->pager->getOrderBy()) $this->url()->set ($this->pager->getParamName ('order_by'), $this->pager->getOrderBy());
-		if ($this->cache == true) $this->url()->set ($this->pager->getParamName ('num_items'), $this->pager->getNumItems());
+#		if ($this->pager->getOrderBy()) $this->url()->set ($this->pager->getParamName ('order_by'), $this->pager->getOrderBy());
+#		if ($this->cache == true) $this->url()->set ($this->pager->getParamName ('num_items'), $this->pager->getNumItems());
 	}
 
 	public function setHelper ($name, $helper)	{

@@ -50,6 +50,24 @@ class A_Pagination_Helper_Link {
 	 * @param
 	 * @type
 	 */
+	public function alwaysShowFirstLast($always=true) {
+		$this->alwaysShowFirstLast = $always;
+		return $this;
+	}
+
+	/**
+	 * @param
+	 * @type
+	 */
+	public function alwaysShowPreviousNext($always=true) {
+		$this->alwaysShowPreviousNext = $always;
+		return $this;
+	}
+
+	/**
+	 * @param
+	 * @type
+	 */
 	public function first($label=false, $separator=true)	{
 		$page = $this->pager->getFirstPage();
 		if (!$this->pager->inPageRange($page) || $this->alwaysShowFirstLast == true) {
@@ -74,15 +92,7 @@ class A_Pagination_Helper_Link {
 	 * @type
 	 */
 	public function page($page=false, $label=false) {
-		$html = '';
-		$html .= '<a href="';
-		$html .= $this->url->render(false, array($this->pager->getParamName('page') => $page));
-		$html .= '"';
-		$html .= $this->class ? " class=\"{$this->class}\"" : '';
-		$html .= '>';
-		$html .= $label ? $label : $page;
-		$html .= '</a>';
-		return $html;
+		return $this->_link($this->url->render(false, $this->_params($this->pager->getParamName('page'), $page)), $label ? $label : $page);
 	}
 
 	/**
@@ -130,16 +140,8 @@ class A_Pagination_Helper_Link {
 	 * @type
 	 */
 	public function order($field, $label='') {
-		$html = '';
-		$html .= '<a href="';
-		$html .= $this->url->render(false, array($this->pager->getParamName('order_by') => $field));
-		$html .= '"';
-		$html .= $this->class ? " class=\"{$this->class}\"" : '';
-		$html .= '>';
-		$html .= $label ? $label : $field;
-		$html .= '</a>';
-		return $html;
-	}
+		return $this->_link($this->url->render(false, $this->_params($this->pager->getParamName('order_by'), $field)), $label ? $label : $page);
+			}
 
 	/**
 	 * @param
@@ -149,12 +151,34 @@ class A_Pagination_Helper_Link {
 		return $this->separator;
 	}
 
-	public function alwaysShowFirstLast()	{
-		$this->alwaysShowFirstLast = true;
+	/**
+	 * @param url - string containing URL
+	 * @param label - string containing link text
+	 * @type string - complete HTML link
+	 */
+	protected function _link($url, $label) {
+		return "<a href=\"$url\"" .($this->class ? " class=\"{$this->class}\"" : '') . ">$label</a>";
 	}
 
-	public function alwaysShowPreviousNext()	{
-		$this->alwaysShowPreviousNext = true;
+	/**
+	 * @type array - persisted parameters
+	 */
+	protected function _params($field, $value) {
+		$params = array();
+		$page = $this->pager->getCurrentPage();
+		if ($page) {
+			$params[$this->pager->getParamName('page')] = $page;
+		}
+		$num_items = $this->pager->getNumItems();
+		if ($num_items) {
+			$params[$this->pager->getParamName('num_items')] = $num_items;
+		}
+		$order_by = $this->pager->getOrderBy();
+		if ($order_by) {
+			$params[$this->pager->getParamName('order_by')] = $order_by;
+		}
+		$params[$field] = $value;
+		return $params;
 	}
 
 }
