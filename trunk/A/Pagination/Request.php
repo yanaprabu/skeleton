@@ -30,8 +30,8 @@ class A_Pagination_Request extends A_Pagination_Core	{
 			$this->setPageSize(intval($pageSize));
 		}
 		if ($orderBy = $this->get('order_by'))	{
-			list ($field, $dir) = explode('_', $orderBy);
-			$this->setOrderBy ($field, ($dir == 'desc' ? true : false));
+			list ($field, $dir) = explode('|', $orderBy);
+			$this->setOrderBy ($field, ($dir === 'desc' ? true : false));
 		}
 		$this->setcurrentPage(intval($this->get('page')), $this->getFirstPage());	// do after getting num_items
 	}
