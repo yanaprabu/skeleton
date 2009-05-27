@@ -18,6 +18,8 @@ class A_Pagination_Core	{
 	protected $numPages = false;
 	protected $rangeSize = 4;				// size of range either side of current page
 	protected $paramNames = array();
+	protected $orderByField = '';
+	protected $orderByDirection = 'asc';
 
 	/**
 	 * @param
@@ -189,12 +191,18 @@ class A_Pagination_Core	{
 	}
 
 	public function setOrderBy ($field, $descending = false)	{
+		$this->orderByField = $field;
+		if ($descending) $this->orderByDirection = 'desc';
 		$this->datasource->setOrderBy ($field, $descending);
 		return $this;
 	}
 
 	public function getOrderBy()	{
-		return $this->datasource->getOrderBy();
+		return $this->orderByField;
+	}
+
+	public function getOrderByDirection()	{
+		return $this->orderByDirection;
 	}
 
 }

@@ -139,9 +139,10 @@ class A_Pagination_Helper_Link {
 	 * @param
 	 * @type
 	 */
-	public function order($field, $label='') {
-		return $this->_link($this->url->render(false, $this->_params($this->pager->getParamName('order_by'), $field)), $label ? $label : $page);
-			}
+	public function order($field, $label='', $descending = false) {
+		$orderBy = $field . ($descending ? '|desc':'');
+		return $this->_link($this->url->render(false, $this->_params($this->pager->getParamName('order_by'), $orderBy)), $label ? $label : $page);
+	}
 
 	/**
 	 * @param

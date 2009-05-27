@@ -28,7 +28,7 @@ class Datasource implements A_Pagination_Adapter_Interface {
         }
 	}
 
-    public function setOrderBy($field, $descending=0) {
+    public function setOrderBy($field, $descending=false) {
 		$this->order_by_field = $field;
 		$this->order_by_descending = $descending;
 		return $this;
