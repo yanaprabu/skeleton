@@ -17,9 +17,21 @@ class A_Pagination_View_Standard	{
 
 	public function __construct ($pager, $url=false, $cache=true)	{
 		$this->pager = $pager;
-		if ($url) $this->setHelper ('url', $url);
-#		if ($this->pager->getOrderBy()) $this->url()->set ($this->pager->getParamName ('order_by'), $this->pager->getOrderBy());
-#		if ($this->cache == true) $this->url()->set ($this->pager->getParamName ('num_items'), $this->pager->getNumItems());
+		if ($url)	{
+			$this->setHelper ('url', $url);
+		}
+		$page = $this->pager->getCurrentPage();
+		if ($page > 1) {
+			$this->url()->set ($this->pager->getParamName('page'), $page);
+		}
+		$num_items = $this->pager->getNumItems();
+		if ($num_items) {
+			$this->url()->set ($this->pager->getParamName('num_items'), $num_items);
+		}
+		$order_by = $this->pager->getOrderBy();
+		if ($order_by) {
+			$this->url()->set ($this->pager->getParamName('order_by'), $order_by);
+		}
 	}
 
 	public function setHelper ($name, $helper)	{
