@@ -30,14 +30,15 @@ $view = new A_Pagination_View_Standard($pager);
 
 $rows = $pager->getItems();
 
-$view
-	->previous('Previous')
-	->first()
-	->range()
-	->last()
-	->next('Next');
+// display the paging links ... should this go in a template?
+$links = '';
+$links .= $view->link()->first('First');
+$links .= $view->link()->previous('Previous');
+$links .= $view->link()->range();
+$links .= $view->link()->last();
+$links .= $view->link()->next('Next');
 
-echo "<div>{$view->render()}</div>";
+echo "<div>$links</div>";
 
 // display the data
 echo '<table border="1">';
@@ -50,7 +51,7 @@ foreach ($rows as $value) {
 }
 echo '</table>';
 
-echo "<div>{$view->render()}</div>";
+echo "<div>$links</div>";
 
 #dump($pager);
 ?>
