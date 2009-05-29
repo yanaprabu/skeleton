@@ -7,6 +7,8 @@
 include 'config.php';
 include 'Datasource.php';
 include 'A/Pagination/Request.php';
+include 'A/Pagination/Helper/Link.php';
+include 'A/Pagination/Helper/Order.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -19,18 +21,17 @@ $datasource = new Datasource($myarray);
 
 // create a request processor to set pager from GET parameters
 $pager = new A_Pagination_Request($datasource);
+
+// set range (number of links on either side of current page) and process core based on request
 $pager->setRangeSize(3)->process();
 
-$url = new A_Pagination_Helper_Url();
-$url->set('page', $pager->getCurrentPage());
-$url->set('order_by', $pager->getOrderBy());
-
-include 'A/Pagination/Helper/Link.php';
+// create a new link helper
 $link = new A_Pagination_Helper_Link($pager);
 
-include 'A/Pagination/Helper/Order.php';
+// create a new order link helper
 $order = new A_Pagination_Helper_Order($pager, $url, array(''=>'Row', 'title'=>'Title', 'month'=>'Month'));
 
+// retrieve items on current page
 $rows = $pager->getItems();
 
 // display the paging links ... should this go in a template?
@@ -41,9 +42,8 @@ $links .= $link->range();
 $links .= $link->last();
 $links .= $link->next('Next');
 
-echo "<div>$links</div>";
-
 // display the data
+echo "<div>$links</div>";
 echo '<table border="1">';
 echo '<tr><th>' . $order->render() . '</th></tr>';
 $n = 1;
@@ -53,10 +53,8 @@ foreach ($rows as $value) {
 	echo '</tr>';
 }
 echo '</table>';
-
 echo "<div>$links</div>";
 
-#dump($pager);
 ?>
 <p/>
 <a href="../">Return to Examples</a>
