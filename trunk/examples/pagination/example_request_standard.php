@@ -21,7 +21,7 @@ $datasource = new Datasource($myarray);
 // create a request processor to set pager from GET parameters
 $pager = new A_Pagination_Request($datasource);
 
-// set range (number of links on either side of current page and process core based on request
+// set range (number of links on either side of current page) and process core based on request
 $pager->setRangeSize(3)->process();
 
 // create a new standard view
