@@ -13,7 +13,7 @@ for ($i=0; $i<=750; ++$i) {
 	$myarray[$i]['title'] = 'This is row ' . $i;
 	$myarray[$i]['month'] = date ('F', time() + ($i * 60 * 60 * 24 * 30));
 }
-#$myarray = null;
+
 // create a data object that has the interface needed by the Pager object
 $datasource = new Datasource($myarray);
 
