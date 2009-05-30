@@ -157,7 +157,7 @@ class A_Pagination_Helper_Link {
 			$descending = $this->pager->getOrderByDirection() == 'desc' ? false : true;
 		}
 		$orderBy = $field . ($descending ? '|desc':'');
-		return $this->_link($this->url->render(false, array ($this->pager->getParamName('order_by') => $orderBy), array ('page')), $label ? $label : $page);
+		return $this->_link($this->url->render(false, array ($this->pager->getParamName('order_by') => $orderBy), array ($this->pager->getParamName ('page'))), $label ? $label : $page);
 	}
 
 	/**
