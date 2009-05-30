@@ -40,7 +40,7 @@ class A_Pagination_Core	{
 	 * @type array - of items
 	 */
 	public function getItems()	{
-		return $this->datasource->getItems($this->getFirstItem($this->currentPage), $this->pageSize);
+		return $this->datasource->getItems($this->getFirstItem(), $this->pageSize);
 	}
 
 	/**
