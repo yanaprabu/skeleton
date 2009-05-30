@@ -52,8 +52,9 @@ class A_Pagination_Helper_Url	{
 	 * @param
 	 * @type
 	 */
-	public function render ($page = false, $params = array())	{
+	public function render ($page = false, $params = array(), $ignore = array())	{
 		$params = array_merge ($this->state, $params);
+		foreach ($ignore as $key) unset ($params[$key]);
 		$base = $this->base ? $this->protocol . '://' . $this->base . '/' : '';
 		$page = $page ? $page : $_SERVER['SCRIPT_NAME'];
 		$query = count ($params) > 0 ? '?' . http_build_query ($params) : '';
