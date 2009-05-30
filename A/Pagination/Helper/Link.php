@@ -151,7 +151,11 @@ class A_Pagination_Helper_Link {
 	 * @param
 	 * @type
 	 */
-	public function order($field, $label='', $descending = false) {
+	public function order($field, $label='', $descending = null) {
+		// if descending not specified the currently sorting on this field then reverse sort
+		if (($descending === null) && ($field == $this->pager->getOrderBy())) {
+			$descending = $this->pager->getOrderByDirection() == 'desc' ? false : true;
+		}
 		$orderBy = $field . ($descending ? '|desc':'');
 		return $this->_link($this->url->render(false, array ($this->pager->getParamName('order_by') => $orderBy)), $label ? $label : $page);
 	}
