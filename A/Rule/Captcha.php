@@ -4,7 +4,7 @@ include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check for captcha value
  * 
- * @package A_Validator 
+ * @package A_Rule_Set 
  *
  * class acts as both a Rule for Validaror and Renderer for View
  */

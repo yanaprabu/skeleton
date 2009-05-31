@@ -3,7 +3,7 @@ include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check a rule against an array of values 
  * 
- * @package A_Validator 
+ * @package A_Rule_Set 
  */
 
 class A_Rule_Iterator extends A_Rule_Abstract {

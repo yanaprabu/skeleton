@@ -1,11 +1,11 @@
 <?php
 require_once('A/DataContainer.php');
-require_once('A/Validator.php');
+require_once('A/Rule/Set.php');
 require_once('A/Rule/Length.php');
 require_once('A/Rule/Notnull.php');
 require_once('A/Rule/Range.php');
 
-class ValidatorTest extends UnitTestCase {
+class Rule_SetTest extends UnitTestCase {
 	
     protected $data = array(
         'test' => '1234ambcAZAZAZ'
@@ -17,8 +17,8 @@ class ValidatorTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testValidatorRuleObject() {
-  		$rules = new A_Validator();
+	function testRule_SetRuleObject() {
+  		$rules = new A_Rule_Set();
   		//$dataspace = new A_DataContainer();
 
    		$rule = new A_Rule_Notnull(array('field' => 'test', 'errorMsg' => 'error'));
@@ -30,8 +30,8 @@ class ValidatorTest extends UnitTestCase {
 		$this->assertTrue($result);
 	}
 /*
-	function testValidatorRuleName() {
-  		$rules = new A_Validator();
+	function testRule_SetRuleName() {
+  		$rules = new A_Rule_Set();
   		$dataspace = new A_DataContainer();
 
 		// should load A_Rule_Numeric

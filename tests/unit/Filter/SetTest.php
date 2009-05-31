@@ -2,7 +2,7 @@
 require_once('A/Filter/Set.php');
 require_once('A/Filter/Tolower.php');
 
-class FilterChainTest extends UnitTestCase {
+class Filter_SetTest extends UnitTestCase {
 	
     protected $data = array(
         'name' => 'John Smith',
@@ -22,9 +22,8 @@ class FilterChainTest extends UnitTestCase {
   		$filters = new A_Filter_Set();
 
 		$filters->addFilter(new A_Filter_Tolower(), 'name');
- 		$data = $filters->doFilter($this->data);
-
-		$this->assertEqual($data['name'],'john smith');
+ 		$this->data = $filters->doFilter($this->data);
+		$this->assertEqual($this->data['name'], 'john smith');
 	}
 
 }

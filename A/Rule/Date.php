@@ -3,7 +3,7 @@ include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check for date value
  * 
- * @package A_Validator 
+ * @package A_Rule_Set 
  */
 
 class A_Rule_Date extends A_Rule_Abstract {

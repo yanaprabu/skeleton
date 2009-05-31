@@ -5,7 +5,7 @@ ini_set('log_errors', 'Off');
 error_reporting(E_ALL);
 require_once('config.php');
 require_once('A/Http/Request.php');
-require_once('A/Validator.php');
+require_once('A/Rule/Set.php');
 require_once('A/Rule/Alnum.php');
 require_once('A/Rule/Alpha.php');
 //require_once('A/Rule/Captcha.php');
@@ -22,7 +22,7 @@ require_once('A/Rule/Range.php');
 require_once('A/Rule/Regexp.php');
 
 $request = new A_Http_Request();
-$validator = new A_Validator();
+$validator = new A_Rule_Set();
 
 // Alnum:
 $validator->addRule('A_Rule_Alnum', 'alnum', 'Please fill in a valid alnum');

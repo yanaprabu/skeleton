@@ -3,7 +3,7 @@ include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check for strings of a specified length
  * 
- * @package A_Validator 
+ * @package A_Rule_Set 
  */
 
 class A_Rule_Length extends A_Rule_Abstract {

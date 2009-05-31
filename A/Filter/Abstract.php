@@ -119,6 +119,12 @@ abstract class A_Filter_Abstract {
 	 */
 	public function doFilter($container) {
 	    $this->container = $container;
+/*
+	    $value = $this->filter();
+echo "doFilter: $value<br/>";
+	    $this->setValue($this->getName(), $value);
+	    return $value;
+*/
 	    return $this->filter();
 	}
 	
