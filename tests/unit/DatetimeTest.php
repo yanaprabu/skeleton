@@ -71,26 +71,26 @@ class DatetimeTest extends UnitTestCase {
   		$datetime->parseDate('2008-12-20 21:11:10');
   		
 		$str = $datetime->getDate();
-		$this->assertTrue($str == '2008-12-20');
+		$this->assertEqual($str, '2008-12-20');
 
 		$str = $datetime->getDate(true);
-		$this->assertTrue($str == '2008-12-20 21:11:10');
+		$this->assertEqual($str, '2008-12-20 21:11:10');
 	}
 	
 	function testDatetime_getTime() {
   		$datetime = new A_Datetime();
 
 		$str = $datetime->getTime();
-		$this->assertTrue($str == date('H:i'));
+		$this->assertEqual($str, date('G:i'));
 
 		$str = $datetime->getTime(false, true);
-		$this->assertTrue($str == date('H:i:s'));
+		$this->assertEqual($str, date('G:i:s'));
 
 		$str = $datetime->getTime(true);
-		$this->assertTrue($str == date('g:i a'));
+		$this->assertEqual($str, date('g:i a'));
 
 		$str = $datetime->getTime(true, true);
-		$this->assertTrue($str == date('g:i:s a'));
+		$this->assertEqual($str, date('g:i:s a'));
 	}
 	
 	function testDatetime_BeforeAfter() {
