@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 require_once('config.php');
 require_once('A/Http/Request.php');
-require_once('A/Validator.php');
+require_once('A/Rule/Set.php');
 require_once('A/Rule/Alpha.php');
 require_once('A/Rule/Length.php');
 require_once('A/Rule/Match.php');
@@ -10,7 +10,7 @@ require_once('A/Rule/Numeric.php');
 
 $request = new A_Http_Request();
 
-$validator = new A_Validator();
+$validator = new A_Rule_Set();
 $alpha = new A_Rule_Alpha('one', 'One is not alpha');
 $length = new A_Rule_Length(4, null, 'two', 'Two must be {min} characters long');
 $match = new A_Rule_Match('two', 'one', 'Fields do not match');

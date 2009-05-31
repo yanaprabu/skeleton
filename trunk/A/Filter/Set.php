@@ -53,7 +53,15 @@ class A_Filter_Set {
 				$this->chain[$key] = $filter;
 				unset($ref);
 		    }
-			$this->chain[$key]->doFilter($container);
+		    $value = $this->chain[$key]->doFilter($container);
+		    $name = $this->chain[$key]->getName();
+			if (is_array($container)) {
+				$container[$name] = $value;
+			} elseif (is_object($container)) {
+				$container->set($name, $value);
+			} else {
+				$container = $value;
+			}
 		}
 		return $container;
     }

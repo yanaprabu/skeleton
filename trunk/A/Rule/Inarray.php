@@ -3,7 +3,7 @@ include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check if string is in provided array
  * 
- * @package A_Validator 
+ * @package A_Rule_Set 
  */
 
 class A_Rule_Inarray extends A_Rule_Abstract {
