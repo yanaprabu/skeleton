@@ -8,12 +8,25 @@
 class A_Locator {
    protected $_obj = array();
    protected $_reg = array();
-   protected $_dir = '';
+   protected $_dir = array();
    protected $_inject = array();
-   protected $_extension;
+   protected $_extension = '.php';
     
-	public function __construct($ext='.php') {
-    	$this->_extension = $ext;
+	public function __construct($dir=false) {
+    	if ($dir) {
+    		if (is_array($dir)) {
+    			foreach($dir as $ns => $d) {
+    				$this->setDir($d, $ns);
+    			}
+    		} else {
+    			$this->setDir($dir);
+    		}
+    	}
+	}
+
+	public function setDir($dir, $namespace='') {
+    	$this->_dir[$namespace] = rtrim($dir, '/') . '/';
+		return $this;
 	}
 
 /*
@@ -40,21 +53,29 @@ class A_Locator {
 		return $this;
 	}
 
-	public function setDir($dir='') {
-		$this->_dir = $dir;
-		return $this;
-	}
-
 	public function loadClass($class='', $dir='', $autoload=false) {
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
 		$file = str_replace(array('_','-'), array('/','_'), $class);
 		$class = str_replace('-', '_', $class);
+		
 		if ($dir) {
 			$dir = rtrim($dir, '/') . '/';
-		} elseif (isset($this->_dir)) {
-			$dir = $this->_dir;
+		} else {
+			$ns = '';
+			$pos = strpos($file, '/');
+			// find if in namespace
+			if ($pos) {
+				$ns = substr($file, 0, $pos);
+				// don't use if namespace not registered
+				if (! isset($this->_dir[$ns])) {
+					$ns = '';
+				}
+			}
+			if (isset($this->_dir[$ns])) {
+				$dir = $this->_dir[$ns];
+			}
 		}
 		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
 		if (($dir == '') || file_exists($path)) {		// either in search path or absolute path exists
@@ -96,19 +117,17 @@ class A_Locator {
 	public function newInstance($class='') {
 		$obj = null;
 		// get dir and clear
-		$dir = $this->_dir;
-		$this->_dir = null;
 		if ($class) {
 			$param = null;
 		    if (func_num_args() > 1) {
-			    $param = array_slice(func_get_args(), 1);	// get params after name/clas/dir
+			    $param = array_slice(func_get_args(), 1);	// get params after $class
 			    // if only one param then pass the param rather than an array of params
 			    if (count($param) == 1) {
 			    	$param = $param[0];
 			    }
 		    }
 
-			if ($this->loadClass($class, $dir)) {
+			if ($this->loadClass($class)) {
 				// do constructor injection here
 				if (isset($this->_inject[$class])) {
 					$inject = array();
