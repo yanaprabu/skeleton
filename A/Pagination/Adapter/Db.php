@@ -1,20 +1,17 @@
 <?php
+include_once 'A/Pagination/Adapter/Abstract.php';
 
-class A_Pagination_Adapter_Db implements A_Pagination_Adapter_Interface	{
+/**
+ * Datasource access class for pager using ADODB  
+ * 
+ * @package A_Pagination 
+ */
 
-	public $db;
-	public $query;
-	public $order_field = '';
-	public $order_descending = 0;
-
-	public function __construct ($db, $query)	{
-		$this->db = $db;
-		$this->query = $query;
-	}
+class A_Pagination_Adapter_Db extends A_Pagination_Adapter_Abstract	{
 
 	public function getItems ($start, $length)	{
-		$result = $this->db->limit ($this->query . $this->constructOrderBy(), $start, $length);
-		if (!$result->isError() && $result->numRows() > 0)	{
+		$result = $this->db->limit($this->query . $this->constructOrderBy(), $start, $length);
+		if (!$result->isError() && $result->numItems() > 0)	{
 			$rows = array();
 			while ($row = $result->fetchRow())	{
 				$rows[] = $row;
@@ -31,17 +28,6 @@ class A_Pagination_Adapter_Db implements A_Pagination_Adapter_Interface	{
 			if ($row = $result->fetchRow())	{
 				return $row['count'];
 			}
-		}
-	}
-
-	public function setOrderByField ($field, $descending = 0)	{
-		$this->order_field = $field;
-		$this->order_descending = ($descending === 0 ? 0 : 1);
-	}
-
-	public function constructOrderBy()	{
-		if ($this->order_field)	{
-			return ' ORDER BY ' . $this->order_field . ' ' . ($this->order_descending ? 'DESC' : 'ASC');
 		}
 	}
 
