@@ -27,7 +27,7 @@ class A_Orm_DataMapper	{
 		return $this;
 	}
 
-	public function loadOne($array)	{
+	public function load($array)	{
 		if (!class_exists ($this->class))	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
 		}
