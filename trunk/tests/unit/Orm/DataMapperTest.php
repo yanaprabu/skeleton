@@ -8,10 +8,10 @@ Mock::Generate ('DomainObject','MockDomainObject');
 class Orm_DataMapperTest extends UnitTestCase	{
 
 	public function setUp()	{
-		$this->mapper = new A_Orm_DataMapper();
-		$this->mapper->setClass('MockObject');
+		$db = true;
+		$this->mapper = new A_Orm_DataMapper ($db, 'MockObject','pages');
 		$this->mapper->mapMethods('getTitle','setTitle')->toField('title');
-		$this->mapper->mapProperty('description')->toField('description');
+		$this->mapper->mapProperty('description')->toField('description', 'items');
 		$this->object = $this->mapper->load(array(
 			'title' => 'Hello',
 			'description' => 'Cheesy',
@@ -28,6 +28,10 @@ class Orm_DataMapperTest extends UnitTestCase	{
 
 	public function testMapPropertytoField()	{
 		$this->assertEqual ($this->object->description, 'Cheesy');
+	}
+
+	public function testGetTableNames()	{
+		$this->assertEqual ($this->mapper->getTableNames(), array('pages', 'items'));
 	}
 
 }

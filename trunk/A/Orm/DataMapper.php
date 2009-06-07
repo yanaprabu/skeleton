@@ -6,6 +6,27 @@ class A_Orm_DataMapper	{
 	protected $class;
 	protected $table;
 
+	public function __construct($db, $class, $table='') {
+	     $this->db = $db;
+	     $this->class = $class;
+	     $this->table = $table;
+	}
+
+	public function setDb($db) {
+	     $this->db = $db;
+		return $this;
+	}
+
+	public function setClass($class)	{
+		$this->class = $class;
+		return $this;
+	}
+
+	public function setTable($table)	{
+		$this->table = $table;
+		return $this;
+	}
+
 	public function load($array)	{
 		if (!class_exists ($this->class))	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
@@ -19,10 +40,23 @@ class A_Orm_DataMapper	{
 
 	public function mapMethods($getMethod, $setMethod)	{
 		$mapping = new A_Orm_Mapping();
+		$this->mappings[] = $mapping;
 		$mapping->setSetMethod ($setMethod);
 		$mapping->setGetMethod ($getMethod);
-		$this->mappings[] = $mapping;
 		return $mapping;
+	}
+
+	public function getTableNames() {
+		$tables = array();
+		if ($this->table) {
+			$tables[] = $this->table;
+		}
+		foreach ($this->mappings as $mapping) {
+			if ($mapping->getTable() && !in_array ($mapping->getTable(), $tables)) {
+				$tables[] = $mapping->getTable();
+			}
+		}
+		return $tables;
 	}
 
 	public function mapProperty($property)	{
@@ -30,14 +64,6 @@ class A_Orm_DataMapper	{
 		$mapping->setProperty ($property);
 		$this->mappings[] = $mapping;
 		return $mapping;
-	}
-
-	public function setClass($class)	{
-		$this->class = $class;
-	}
-
-	public function setTable($table)	{
-		$this->table = $table;
 	}
 
 }
