@@ -48,15 +48,25 @@ class A_Orm_DataMapper	{
 
 	public function getTableNames() {
 		$tables = array();
-		if ($this->table) {
-			$tables[] = $this->table;
-		}
+		if ($this->table) $tables[] = $this->table;
 		foreach ($this->mappings as $mapping) {
 			if ($mapping->getTable() && !in_array ($mapping->getTable(), $tables)) {
 				$tables[] = $mapping->getTable();
 			}
 		}
 		return $tables;
+	}
+
+	public function getFieldNames()	{
+		$fields = array();
+		foreach ($this->mappings as $mapping)	{
+			if ($mapping->getAlias())	{
+				$fields[] = array ($mapping->getAlias() => $mapping->getField());
+			} else 	{
+				$fields[] = $mapping->getField();
+			}
+		}
+		return $fields;
 	}
 
 	public function mapProperty($property)	{
