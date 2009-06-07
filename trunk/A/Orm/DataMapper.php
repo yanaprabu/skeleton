@@ -46,6 +46,19 @@ class A_Orm_DataMapper	{
 		return $mapping;
 	}
 
+	public function mapProperty($property)	{
+		$mapping = new A_Orm_Mapping();
+		$this->mappings[] = $mapping;
+		$mapping->setProperty ($property);
+		return $mapping;
+	}
+
+	public function mapGeneric($name)	{
+		$mapping = new A_Orm_Mapping();
+		$mappig->setGeneric($name);
+		return $mapping;
+	}
+
 	public function getTableNames() {
 		$tables = array();
 		if ($this->table) $tables[] = $this->table;
@@ -67,13 +80,6 @@ class A_Orm_DataMapper	{
 			}
 		}
 		return $fields;
-	}
-
-	public function mapProperty($property)	{
-		$mapping = new A_Orm_Mapping();
-		$mapping->setProperty ($property);
-		$this->mappings[] = $mapping;
-		return $mapping;
 	}
 
 }
