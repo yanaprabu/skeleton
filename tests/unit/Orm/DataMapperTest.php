@@ -44,6 +44,7 @@ class Orm_DataMapperTest extends UnitTestCase	{
 class MockObject extends MockDomainObject	{
 
 	public $description;
+	public $body;
 
 	public function getTitle()	{
 		return $this->title;
