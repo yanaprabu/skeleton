@@ -10,9 +10,9 @@ class Orm_DataMapperTest extends UnitTestCase	{
 	public function setUp()	{
 		$db = true;
 		$this->mapper = new A_Orm_DataMapper ($db, 'MockObject','pages');
-		$this->mapper->mapMethods('getTitle','setTitle')->toField('title');
-		$this->mapper->mapProperty('description')->toField('description', 'items');
-		$this->mapper->mapProperty('body')->toField(array ('body' => 'page_body'));
+		$this->mapper->mapMethods('getTitle','setTitle')->toColumn('title');
+		$this->mapper->mapProperty('description')->toColumn('description', 'items');
+		$this->mapper->mapProperty('body')->toColumn(array ('body' => 'page_body'));
 		$this->object = $this->mapper->load(array(
 			'title' => 'Hello',
 			'description' => 'Cheesy',
@@ -23,11 +23,11 @@ class Orm_DataMapperTest extends UnitTestCase	{
 		$this->assertIsA ($this->object, 'MockObject');
 	}
 
-	public function testMapMethodsToField()	{
+	public function testMapMethodsToColumn()	{
 		$this->assertEqual ($this->object->getTitle(), 'Hello');
 	}
 
-	public function testMapPropertytoField()	{
+	public function testMapPropertytoColumn()	{
 		$this->assertEqual ($this->object->description, 'Cheesy');
 	}
 
