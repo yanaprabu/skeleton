@@ -77,10 +77,15 @@ class A_Orm_Mapping	{
 		}
 		$this->table = $table;
 		$this->key = $key;
+		return $this;
 	}
 
-	public function map($object)	{
-		if ($this->getMethod) $object->{$this->getMethod}($this->field);
+	public function map($object, $array)	{
+		if (method_exists ($object, $this->setMethod))	{
+			call_user_func (array ($object, $this->setMethod), $array[$this->field]);
+		} elseif (property_exists ($object, $this->property))	{
+			$object->{$this->property} = $array[$this->field];
+		}
 	}
 
 }
