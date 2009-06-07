@@ -27,7 +27,7 @@ class A_Orm_DataMapper	{
 		return $this;
 	}
 
-	public function load($array)	{
+	public function loadOne($array)	{
 		if (!class_exists ($this->class))	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
 		}
@@ -39,7 +39,7 @@ class A_Orm_DataMapper	{
 	}
 
 	public function mapMethods($getMethod, $setMethod)	{
-		$mapping = new A_Orm_Mapping();
+		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
 		$mapping->setSetMethod ($setMethod);
 		$mapping->setGetMethod ($getMethod);
@@ -47,14 +47,14 @@ class A_Orm_DataMapper	{
 	}
 
 	public function mapProperty($property)	{
-		$mapping = new A_Orm_Mapping();
+		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
 		$mapping->setProperty ($property);
 		return $mapping;
 	}
 
 	public function mapGeneric($name)	{
-		$mapping = new A_Orm_Mapping();
+		$mapping = new A_Orm_DataMapper_Mapping();
 		$mappig->setGeneric($name);
 		return $mapping;
 	}
