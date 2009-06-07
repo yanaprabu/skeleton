@@ -8,14 +8,14 @@ class Orm_Mapping_Test extends UnitTestCase	{
 		$this->setMethod = 'setDescription';
 		$this->getMethod = 'getDescription';
 		$this->property = 'description';
-		$this->field = 'table.description';
+		$this->column = 'table.description';
 		$this->alias = 'description';
 		$this->table = 'items';
 		$this->mapping = new A_Orm_Mapping (array (
 			'setMethod' => $this->setMethod,
 			'getMethod' => $this->getMethod,
 			'property' => $this->property,
-			'field' => array ($this->alias => $this->field),
+			'column' => array ($this->alias => $this->column),
 			'table' => $this->table,
 			'key' => true
 		));
@@ -48,13 +48,13 @@ class Orm_Mapping_Test extends UnitTestCase	{
 		$this->assertEqual ($this->mapping->getProperty(), 'title');
 	}
 
-	public function testGetField()	{
-		$this->assertEqual ($this->mapping->getField(), $this->field);
+	public function testGetColumn()	{
+		$this->assertEqual ($this->mapping->getColumn(), $this->column);
 	}
 
-	public function testSetField()	{
-		$this->mapping->setField('title');
-		$this->assertEqual ($this->mapping->getField(), 'title');
+	public function testSetColumn()	{
+		$this->mapping->setColumn('title');
+		$this->assertEqual ($this->mapping->getColumn(), 'title');
 	}
 
 	public function testGetAlias()	{
@@ -69,10 +69,10 @@ class Orm_Mapping_Test extends UnitTestCase	{
 		$this->assertEqual ($this->mapping->isKey(), true);
 	}
 
-	public function testToField()	{
-		$this->mapping->toField(array ('pageTitle' => 'title'), 'page', true);
+	public function testToColumn()	{
+		$this->mapping->toColumn(array ('pageTitle' => 'title'), 'page', true);
 		$this->assertEqual ($this->mapping->getAlias(), 'pageTitle');
-		$this->assertEqual ($this->mapping->getField(), 'title');
+		$this->assertEqual ($this->mapping->getColumn(), 'title');
 		$this->assertEqual ($this->mapping->getTable(), 'page');
 		$this->assertEqual ($this->mapping->isKey(), true);
 	}

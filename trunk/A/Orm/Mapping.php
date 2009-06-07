@@ -6,7 +6,7 @@ class A_Orm_Mapping	{
 	public $setMethod;
 	public $property;
 	public $genericName;
-	public $field;
+	public $column;
 	public $alias;
 	public $table;
 	public $callback = array();
@@ -17,11 +17,11 @@ class A_Orm_Mapping	{
 		if ($params['setMethod']) $this->setMethod = $params['setMethod'];
 		if ($params['property']) $this->property = $params['property'];
 		if ($params['genericName']) $this->genericName = $params['genericName'];
-		if (is_array ($params['field']))	{
-			$this->field = current($params['field']);
-			$this->alias = key ($params['field']);
+		if (is_array ($params['column']))	{
+			$this->column = current($params['column']);
+			$this->alias = key ($params['column']);
 		} else	{
-			$this->field = $params['field'];
+			$this->column = $params['column'];
 		}
 		if ($params['table']) $this->table = $params['table'];
 		if ($params['key']) $this->key = $params['key'] ? true : false;
@@ -59,12 +59,12 @@ class A_Orm_Mapping	{
 		$this->genericName = $name;
 	}
 
-	public function getField()	{
-		return $this->field;
+	public function getColumn()	{
+		return $this->column;
 	}
 
-	public function setField($field)	{
-		$this->field = $field;
+	public function setColumn($column)	{
+		$this->column = $column;
 	}
 
 	public function getAlias()	{
@@ -79,12 +79,12 @@ class A_Orm_Mapping	{
 		return $this->key?true:false;
 	}
 
-	public function toField($field = '', $table = '', $key = false)	{
-		if (is_array ($field))	{
-			$this->field = current ($field);
-			$this->alias = key ($field);
+	public function toColumn($column, $table = '', $key = false)	{
+		if (is_array ($column))	{
+			$this->column = current ($column);
+			$this->alias = key ($column);
 		} else	{
-			$this->field = $field;
+			$this->column = $column;
 		}
 		$this->table = $table;
 		$this->key = $key;
@@ -113,8 +113,8 @@ class A_Orm_Mapping	{
 	}
 
 	public function getValue($array)	{
-		if ($this->field)	{
-			return $array[$this->field];
+		if ($this->column)	{
+			return $array[$this->column];
 		} elseif ($this->callback)	{
 			call_user_func_array (array ($this->callback['object'], $this->callback['method']), $this->callback['params']);
 		}
