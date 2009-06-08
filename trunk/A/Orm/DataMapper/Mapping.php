@@ -12,19 +12,18 @@ class A_Orm_DataMapper_Mapping	{
 	public $callback = array();
 	public $key = false;
 
-	public function __construct ($params = array())	{
-		if ($params['getMethod']) $this->getMethod = $params['getMethod'];
-		if ($params['setMethod']) $this->setMethod = $params['setMethod'];
-		if ($params['property']) $this->property = $params['property'];
-		if ($params['genericName']) $this->genericName = $params['genericName'];
-		if (is_array ($params['column']))	{
-			$this->column = current($params['column']);
-			$this->alias = key ($params['column']);
+	public function __construct ($getMethod, $setMethod, $property, $genericName, $column, $table, $key = false)	{
+		$this->getMethod = $getMethod;
+		$this->setMethod = $setMethod;
+		$this->property = $property;
+		$this->genericName = $genericName;
+		if (is_array ($column))	{
+			list ($this->alias, $this->column) = each ($column);
 		} else	{
-			$this->column = $params['column'];
+			$this->column = $column;
 		}
-		if ($params['table']) $this->table = $params['table'];
-		if ($params['key']) $this->key = $params['key'] ? true : false;
+		$this->table = $table;
+		$this->key = $key ? true : false;
 	}
 
 	public function getSetMethod()	{

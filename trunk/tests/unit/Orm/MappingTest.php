@@ -11,14 +11,15 @@ class Orm_Mapping_Test extends UnitTestCase	{
 		$this->column = 'table.description';
 		$this->alias = 'description';
 		$this->table = 'items';
-		$this->mapping = new A_Orm_Mapping (array (
-			'setMethod' => $this->setMethod,
-			'getMethod' => $this->getMethod,
-			'property' => $this->property,
-			'column' => array ($this->alias => $this->column),
-			'table' => $this->table,
-			'key' => true
-		));
+		$this->mapping = new A_Orm_DataMapper_Mapping(
+			$this->getMethod,
+			$this->setMethod,
+			$this->property,
+			'',
+			array ($this->alias => $this->column),
+			$this->table,
+			true
+		);
 	}
 
 	public function testGetSetMethod()	{
