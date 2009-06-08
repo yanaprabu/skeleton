@@ -105,7 +105,7 @@ class A_Orm_DataMapper_Mapping	{
 			call_user_func (array ($object, $this->setMethod), $this->getValue($array));
 		} elseif (property_exists ($object, $this->property))	{
 			$object->{$this->property} = $this->getValue($array);
-		} elseif (property_exists ($object, 'get') && property_exists ($object, 'set') && $this->genericName)	{
+		} elseif (method_exists ($object, 'get') && method_exists ($object, 'set') && $this->genericName)	{
 			$object->set ($this->genericName, $this->getValue($array));
 		} else	{
 			throw new Exception ('could not map');
