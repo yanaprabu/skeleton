@@ -7,6 +7,7 @@ class A_Orm_DataMapper	{
 	protected $class;
 	protected $table;
 
+	public function __construct($db='', $class='', $table='') {
 
 	public function __construct($db, $class, $table='', $params=array()) {
 	     $this->db = $db;
@@ -64,7 +65,7 @@ class A_Orm_DataMapper	{
 	public function mapProperty($property)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
-		$mapping->setProperty($property);
+		$mapping->setProperty ($property);
 		return $mapping;
 	}
 
