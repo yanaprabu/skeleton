@@ -32,19 +32,19 @@ class A_Orm_DataMapper	{
 	}
 
 	public function load($array)	{
-		$object = call_user_func_array (array ($this, 'create'), $this->getParams($array));
+		$object=  $this->create($this->getParams($array));
 		foreach ($this->mappings as $mapping)	{
 			$mapping->loadObject ($object, $array);
 		}
 		return $object;
 	}
 
-	public function create()	{
+	public function create($params=array())	{
 		if (!class_exists ($this->class))	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
 		}
 		$class = new ReflectionClass($this->class);
-		return $class->newInstanceArgs(func_get_args());
+		return $class->newInstanceArgs($params);
 	}
 
 	public function map($property)	{
