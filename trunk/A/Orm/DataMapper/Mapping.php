@@ -79,6 +79,10 @@ class A_Orm_DataMapper_Mapping	{
 		return $this->key?true:false;
 	}
 
+	public function setKey()	{
+		$this->key = true;
+	}
+
 	public function toColumn($column, $table = '', $key = false)	{
 		if (is_array ($column))	{
 			$this->column = current ($column);
