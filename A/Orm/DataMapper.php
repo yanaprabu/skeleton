@@ -3,13 +3,16 @@
 class A_Orm_DataMapper	{
 
 	protected $mappings = array();
+	protected $params = array();
 	protected $class;
 	protected $table;
 
-	public function __construct($db, $class, $table='') {
+
+	public function __construct($db, $class, $table='', $params=array()) {
 	     $this->db = $db;
 	     $this->class = $class;
 	     $this->table = $table;
+	     $this->params = $params;
 	}
 
 	public function setDb($db) {
@@ -28,7 +31,7 @@ class A_Orm_DataMapper	{
 	}
 
 	public function load($array)	{
-		$object = $this->create();
+		$object = call_user_func_array (array ($this, 'create'), $this->getParams($array));
 		foreach ($this->mappings as $mapping)	{
 			$mapping->loadObject ($object, $array);
 		}
@@ -43,6 +46,13 @@ class A_Orm_DataMapper	{
 		return $class->newInstanceArgs(func_get_args());
 	}
 
+	public function map($property)	{
+		$mapping = new A_Orm_DataMapper_Mapping();
+		$this->mappings[] = $mapping;
+		$mapping->setProperty ($property);
+		return $mapping;
+	}
+
 	public function mapMethods($getMethod, $setMethod)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
@@ -54,14 +64,31 @@ class A_Orm_DataMapper	{
 	public function mapProperty($property)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
-		$mapping->setProperty ($property);
+		$mapping->setProperty($property);
 		return $mapping;
 	}
 
 	public function mapGeneric($name)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
-		$mappig->setGeneric($name);
+		$this->mappings[] = $mapping;
+		$mapping->setSetMethod('set');
+		$mapping->setGetMethod('get');
+		$mapping->setGeneric($name);
 		return $mapping;
+	}
+
+	public function mapParam()	{
+		$param = new A_Orm_DataMapper_Mapping();
+		$this->params[] = $param;
+		return $param;
+	}
+
+	public function getParams($array)	{
+		$params = array();
+		foreach ($this->params as $param)	{
+			$params[] = $param->getValue($array);
+		}
+		return $params;
 	}
 
 	public function getTableNames() {
@@ -77,7 +104,7 @@ class A_Orm_DataMapper	{
 
 	public function getFieldNames()	{
 		$fields = array();
-		foreach ($this->mappings as $mapping)	{
+		foreach (array_merge ($this->mappings, $this->params) as $mapping)	{
 			if ($mapping->getAlias())	{
 				$fields[] = array ($mapping->getAlias() => $mapping->getColumn());
 			} else 	{
