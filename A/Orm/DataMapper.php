@@ -103,7 +103,7 @@ class A_Orm_DataMapper	{
 		return $tables;
 	}
 
-	public function getFieldNames()	{
+	public function getColumns()	{
 		$fields = array();
 		foreach (array_merge ($this->mappings, $this->params) as $mapping)	{
 			if ($mapping->getAlias())	{
