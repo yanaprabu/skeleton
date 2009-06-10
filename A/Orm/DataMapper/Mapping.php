@@ -12,7 +12,7 @@ class A_Orm_DataMapper_Mapping	{
 	public $callback = array();
 	public $key = false;
 
-	public function __construct ($getMethod, $setMethod, $property, $genericName, $column, $table, $key = false)	{
+	public function __construct ($getMethod='', $setMethod='', $property='', $genericName='', $column='', $table='', $key = false, $callback = array())	{
 		$this->getMethod = $getMethod;
 		$this->setMethod = $setMethod;
 		$this->property = $property;
@@ -24,6 +24,7 @@ class A_Orm_DataMapper_Mapping	{
 		}
 		$this->table = $table;
 		$this->key = $key ? true : false;
+		$this->callback = $callback;
 	}
 
 	public function getSetMethod()	{
@@ -99,9 +100,10 @@ class A_Orm_DataMapper_Mapping	{
 		return $this;
 	}
 
-	public function map($object, $array)	{
+	public function loadObject($object, $array)	{
 		if (method_exists ($object, $this->setMethod))	{
-			call_user_func (array ($object, $this->setMethod), $this->getValue($array));
+			$value = $this->property ? array ($this->property, $this->getValue($array)) : array($this->getValue($array));
+			call_user_func_array (array ($object, $this->setMethod), $value);
 		} elseif (property_exists ($object, $this->property))	{
 			$object->{$this->property} = $this->getValue($array);
 		} elseif (method_exists ($object, 'get') && method_exists ($object, 'set') && $this->genericName)	{

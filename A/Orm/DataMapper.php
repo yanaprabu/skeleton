@@ -28,14 +28,19 @@ class A_Orm_DataMapper	{
 	}
 
 	public function load($array)	{
+		$object = $this->create();
+		foreach ($this->mappings as $mapping)	{
+			$mapping->loadObject ($object, $array);
+		}
+		return $object;
+	}
+
+	public function create()	{
 		if (!class_exists ($this->class))	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
 		}
-		$object = new $this->class();
-		foreach ($this->mappings as $mapping)	{
-			$mapping->map ($object, $array);
-		}
-		return $object;
+		$class = new ReflectionClass($this->class);
+		return $class->newInstanceArgs(func_get_args());
 	}
 
 	public function mapMethods($getMethod, $setMethod)	{
@@ -74,9 +79,9 @@ class A_Orm_DataMapper	{
 		$fields = array();
 		foreach ($this->mappings as $mapping)	{
 			if ($mapping->getAlias())	{
-				$fields[] = array ($mapping->getAlias() => $mapping->getField());
+				$fields[] = array ($mapping->getAlias() => $mapping->getColumn());
 			} else 	{
-				$fields[] = $mapping->getField();
+				$fields[] = $mapping->getColumn();
 			}
 		}
 		return $fields;
