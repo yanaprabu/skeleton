@@ -33,6 +33,7 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function setSetMethod ($setMethod)	{
 		$this->setMethod = $setMethod;
+		return $this;
 	}
 
 	public function getGetMethod()	{
@@ -41,6 +42,7 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function setGetMethod ($getMethod)	{
 		$this->getMethod = $getMethod;
+		return $this;
 	}
 
 	public function getProperty()	{
@@ -49,6 +51,7 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function setProperty($property)	{
 		$this->property = $property;
+		return $this;
 	}
 
 	public function getGenericName()	{
@@ -57,6 +60,7 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function setGenericName($name)	{
 		$this->genericName = $name;
+		return $this;
 	}
 
 	public function getColumn()	{
@@ -65,6 +69,7 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function setColumn($column)	{
 		$this->column = $column;
+		return $this;
 	}
 
 	public function getAlias()	{
@@ -73,14 +78,6 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function getTable()	{
 		return $this->table;
-	}
-
-	public function isKey()	{
-		return $this->key?true:false;
-	}
-
-	public function setKey()	{
-		$this->key = true;
 	}
 
 	public function toColumn($column, $table = '', $key = false)	{
@@ -101,6 +98,20 @@ class A_Orm_DataMapper_Mapping	{
 			'method' => $method,
 			'params' => params
 		);
+		return $this;
+	}
+
+	public function isKey()	{
+		return $this->key?true:false;
+	}
+
+	public function setKey()	{
+		$this->key = true;
+		return $this;
+	}
+
+	public function saveMethod($method)	{
+		$this->setGetMethod($method);
 		return $this;
 	}
 
