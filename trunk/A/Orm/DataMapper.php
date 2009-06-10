@@ -36,7 +36,7 @@ class A_Orm_DataMapper	{
 				$this->map($column);
 			}
 		}
-		foreach ($this->mappings as $mapping)	{
+		foreach ($this->getMappings() as $mapping)	{
 			$mapping->loadObject ($object, $array);
 		}
 		return $object;
@@ -87,17 +87,29 @@ class A_Orm_DataMapper	{
 	}
 
 	public function mapParam()	{
-		$param = new A_Orm_DataMapper_Mapping();
-		$this->params[] = $param;
-		return $param;
+		$mapping = new A_Orm_DataMapper_Mapping();
+		$this->mappings[] = $mapping;
+		return $mapping;
 	}
 
 	public function getParams($array)	{
 		$params = array();
-		foreach ($this->params as $param)	{
-			$params[] = $param->getValue($array);
+		foreach ($this->mappings as $mapping)	{
+			if (!$mapping->getProperty() && !$mapping->getSetMethod())	{
+				$params[] = $mapping->getValue($array);
+			}
 		}
 		return $params;
+	}
+
+	public function getMappings()	{
+		$mappings = array();
+		foreach ($this->mappings as $mapping)	{
+			if ($mapping->getProperty || $mapping->getSetMethod())	{
+				$mappings[] = $mapping;
+			}
+		}
+		return $mappings;
 	}
 
 	public function getTableNames() {
@@ -113,10 +125,10 @@ class A_Orm_DataMapper	{
 
 	public function getColumns()	{
 		$fields = array();
-		if (empty ($this->mappings) && empty ($this->params))	{
+		if (empty ($this->mappings))	{
 			return array('*');
 		}
-		foreach (array_merge ($this->mappings, $this->params) as $mapping)	{
+		foreach ($this->mappings as $mapping)	{
 			if ($mapping->getAlias())	{
 				$fields[] = array ($mapping->getAlias() => $mapping->getColumn());
 			} else 	{
