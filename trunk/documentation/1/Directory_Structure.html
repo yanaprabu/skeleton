@@ -27,7 +27,9 @@ views/
 </code></pre>
 
 <h2>Recommended Structures</h2>
+<p>It is recommended that you put all of the application files in a separate directory. This directory should be either outside of your public HTML directory or protected by webserver configuration. Within this application directory you can have one or multiple sets of MVC directories depending on your needs. </p>
 
+<h3>Simple Single Module Application</h3>
 <p>You can specify an application directory to contain all of the MVC directories. The default application directoyr is './'.  You specify this directory using the A_Controller_Mapper call with <strong>$Mapper->setBasePath('/path/to/app');</strong></p>
 <pre><code>/app 
 /app/controllers
@@ -35,15 +37,15 @@ views/
 /app/views
 </code></pre>
 
+<h3>Complex Multi-Module Application</h3>
 <p>You can further organize your application ito module directories by adding a 'module' parameter in the Request. Specify a default module directory the mapper with $Mapper->setDefaultDir('default');</p>
 <pre><code>/app
-/app/default
-/app/default/controller
-/app/default/model
-/app/default/view
-/app/mymodule/controller
-/app/mymodule/model
-/app/mymodule/view
+/app/admin/controller
+/app/admin/model
+/app/admin/view
+/app/blog/controller
+/app/blog/model
+/app/blog/view
 </code></pre>
 
 

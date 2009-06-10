@@ -22,6 +22,7 @@
 
 <h3>The Default Method - run()</h3>
 <p>If the value of the 'action' Request parameter is null or does not match the name of a method then the default method will be dispatched. That means that mysite.com/foobar/ or mysite.com/foobar/xqz will call the run() method. This method is passed a Locator object by the Front Controller. </p>
+<p>You can change the name of this default method to anything you want using the A_Controller_Mapper::setDefaultMethod(). All the defaults, such as the name of the request parameters, are configurable. </p>
 
 <h3>Action Methods</h3>
 <p>If the value of the 'action' Request parameter matches the name of a method then it will be dispatched. That means that mysite.com/foobar/foo/ will call the foo() method. This method is passed a Locator object by the Front Controller. </p>
@@ -70,3 +71,18 @@
 
 <h3>5. Extend A_Controller_Action or A_Controller_Action_Dispatch</h3>
 <p>You may extend the Skeleton Action Controllers to add additional functionality as a base class. You would do this if you wanted to provide this functionality to more than one of your Action Controllers.</p>
+
+<h3>5. Orgainzing Controllers in Sub-Directories</h3>
+<p>Typically you would have several Action methods in each controller file. But you don't have to have multiple methods per Action Controller. Skeleton provides a ways in the URL to organize controllers into sub-directories in the controllers directory. Here are the options:</p>
+<ul>
+    <li>mysite.com/foobar/ loads controllers/foobar.php</li>
+    <li>mysite.com/foo_bar/ loads controllers/foo/bar.php</li>
+    <li>mysite.com/foo-bar/ loads controllers/foo_bar.php</li>
+</ul>
+
+<p>And remember that you can also organize your controllers into module directories, each with its own controllers, models, views sub-directories. See the documenation about Working With URLs. Here are some examples:</p>
+<ul>
+    <li>mysite.com/admin/foo/ loads admin/controllers/foobar.php</li>
+    <li>mysite.com/blog/post/ loads admin/blog/controllers/post.php</li>
+</ul>
+
