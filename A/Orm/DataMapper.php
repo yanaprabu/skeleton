@@ -7,8 +7,6 @@ class A_Orm_DataMapper	{
 	protected $class;
 	protected $table;
 
-	public function __construct($db='', $class='', $table='') {
-
 	public function __construct($db, $class, $table='', $params=array()) {
 	     $this->db = $db;
 	     $this->class = $class;
@@ -32,7 +30,12 @@ class A_Orm_DataMapper	{
 	}
 
 	public function load($array)	{
-		$object=  $this->create($this->getParams($array));
+		$object = $this->create($this->getParams($array));
+		if (empty ($this->mappings))	{
+			foreach (array_keys ($array) as $column)	{
+				$this->map($column);
+			}
+		}
 		foreach ($this->mappings as $mapping)	{
 			$mapping->loadObject ($object, $array);
 		}
@@ -44,13 +47,18 @@ class A_Orm_DataMapper	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
 		}
 		$class = new ReflectionClass($this->class);
-		return $class->newInstanceArgs($params);
+		if ($class->getConstructor())	{
+			return $class->newInstanceArgs($params);
+		} else	{
+			return $class->newInstance();
+		}
 	}
 
 	public function map($property)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
-		$mapping->setProperty ($property);
+		$mapping->setProperty($property);
+		$mapping->setColumn($property);
 		return $mapping;
 	}
 
@@ -105,6 +113,9 @@ class A_Orm_DataMapper	{
 
 	public function getColumns()	{
 		$fields = array();
+		if (empty ($this->mappings) && empty ($this->params))	{
+			return array('*');
+		}
 		foreach (array_merge ($this->mappings, $this->params) as $mapping)	{
 			if ($mapping->getAlias())	{
 				$fields[] = array ($mapping->getAlias() => $mapping->getColumn());

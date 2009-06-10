@@ -106,14 +106,13 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function loadObject($object, $array)	{
 		if (method_exists ($object, $this->setMethod))	{
-			$value = $this->property ? array ($this->property, $this->getValue($array)) : array($this->getValue($array));
-			call_user_func_array (array ($object, $this->setMethod), $value);
-		} elseif (property_exists ($object, $this->property))	{
+			if ($this->property)	{
+				$params[] = $this->property;
+			}
+			$params[] = $this->getValue($array);
+			call_user_func_array (array ($object, $this->setMethod), $params);
+		} else {
 			$object->{$this->property} = $this->getValue($array);
-		} elseif (method_exists ($object, 'get') && method_exists ($object, 'set') && $this->genericName)	{
-			$object->set ($this->genericName, $this->getValue($array));
-		} else	{
-			throw new Exception ('could not map');
 		}
 	}
 
