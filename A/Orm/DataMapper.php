@@ -33,7 +33,10 @@ class A_Orm_DataMapper	{
 		$object = $this->create($this->getParams($array));
 		if (empty ($this->mappings))	{
 			foreach (array_keys ($array) as $column)	{
-			$this->map($column);
+				$mapping = $this->map($column);
+				if ($column == 'id')	{
+					$mapping->setKey();
+				}
 			}
 		}
 		foreach ($this->getMappings() as $mapping)	{
@@ -110,6 +113,34 @@ class A_Orm_DataMapper	{
 			}
 		}
 		return $mappings;
+	}
+
+	public function getKey($object)	{
+		$key = array();
+		if (empty ($this->mappings))	{
+			$key['id'] = $object->id;
+		} else	{
+			foreach ($this->mappings as $mapping)	{
+				if ($mapping->isKey())	{
+					$key = $mapping->loadArray($object, $values);
+				}
+			}
+		}
+		return $key;
+	}
+
+	public function getValues($object)	{
+		$values = array();
+		if (empty ($this->mappings))	{
+			$values = get_object_vars($object);
+		} else	{
+			foreach ($this->mappings as $mapping)	{
+				if (!$mapping->isKey())	{
+					$values = $mapping->loadArray($object, $values);
+				}
+			}
+		}
+		return $values ? $values : array();
 	}
 
 	public function getTableNames() {
