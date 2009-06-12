@@ -6,6 +6,10 @@ include('PostMapper.php');
 include('Post.php');
 
 $mapper = new PostMapper($db);
+$post->title = 'New Title';
+$post->body = 'New Body';
+$post->author_id = 1;
+$mapper->insert($post);
 $posts = $mapper->getAll();
 
 ?>
