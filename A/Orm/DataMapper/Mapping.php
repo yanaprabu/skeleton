@@ -116,7 +116,7 @@ class A_Orm_DataMapper_Mapping	{
 	}
 
 	public function loadObject($object, $array)	{
-		if (method_exists ($object, $this->setMethod))	{
+		if (method_exists($object, $this->setMethod))	{
 			if ($this->property)	{
 				$params[] = $this->property;
 			}
@@ -125,6 +125,23 @@ class A_Orm_DataMapper_Mapping	{
 		} else {
 			$object->{$this->property} = $this->getValue($array);
 		}
+	}
+
+	public function loadArray($object)	{
+		if ($this->key === false)	{
+			if (method_exists($object, $this->getMethod))	{
+				if ($this->property)	{
+					$params[] = $this->property;
+				}
+				$array[($this->table?$this->table.'.':'').$this->column] = call_user_func_array(array($object, $this->getMethod), $params);
+			} else	{
+				$array[($this->table?$this->table.'.':'').$this->column] = $object->{$this->property};
+			}
+			return $array;
+		} else 	{
+			return array();
+		}
+
 	}
 
 	public function getValue($array)	{
