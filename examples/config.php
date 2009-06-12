@@ -10,9 +10,13 @@ function dump($var, $name='') {
 }
 
 function d($var, $name='')	{
-	echo $name . '<pre>' . var_dump($var) . '</pre>';
+	echo $name . '<pre>';
+	var_dump($var);
+	echo '</pre>';
 }
 
 function p($var, $name='')	{
-	echo $name . '<pre>' . print_r($var, $true) . '</pre>';
+	echo $name . '<pre>';
+	print_r($var, $true);
+	echo '</pre>';
 }

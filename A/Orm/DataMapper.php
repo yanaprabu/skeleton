@@ -105,7 +105,7 @@ class A_Orm_DataMapper	{
 	public function getMappings()	{
 		$mappings = array();
 		foreach ($this->mappings as $mapping)	{
-			if ($mapping->getProperty || $mapping->getSetMethod())	{
+			if ($mapping->getProperty() || $mapping->getSetMethod())	{
 				$mappings[] = $mapping;
 			}
 		}
