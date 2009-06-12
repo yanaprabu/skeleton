@@ -122,7 +122,7 @@ class A_Orm_DataMapper_Mapping	{
 			}
 			$params[] = $this->getValue($array);
 			call_user_func_array (array ($object, $this->setMethod), $params);
-		} else {
+		} elseif (!empty($this->property)) {
 			$object->{$this->property} = $this->getValue($array);
 		}
 	}
