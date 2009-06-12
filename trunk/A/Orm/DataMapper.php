@@ -36,7 +36,7 @@ class A_Orm_DataMapper	{
 			$this->map($column);
 			}
 		}
-		foreach ($this->mappings as $mapping)	{
+		foreach ($this->getMappings() as $mapping)	{
 			$mapping->loadObject ($object, $array);
 		}
 		return $object;
