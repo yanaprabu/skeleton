@@ -33,10 +33,10 @@ class A_Orm_DataMapper	{
 		$object = $this->create($this->getParams($array));
 		if (empty ($this->mappings))	{
 			foreach (array_keys ($array) as $column)	{
-				$this->map($column);
+			$this->map($column);
 			}
 		}
-		foreach ($this->getMappings() as $mapping)	{
+		foreach ($this->mappings as $mapping)	{
 			$mapping->loadObject ($object, $array);
 		}
 		return $object;
