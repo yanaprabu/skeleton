@@ -127,7 +127,7 @@ class A_Orm_DataMapper_Mapping	{
 		}
 	}
 
-	public function loadArray($object)	{
+	public function loadArray($object, $array)	{
 		if (method_exists($object, $this->getMethod))	{
 			if ($this->property)	{
 				$params[] = $this->property;

@@ -10,6 +10,12 @@ $post->title = 'New Title';
 $post->body = 'New Body';
 $post->author_id = 1;
 $mapper->insert($post);
+$post->id = 2;
+$mapper->update($post);
+$post = $mapper->getById(1);
+$post->title = 'Updated Title';
+$post->body = 'Updated Body';
+$mapper->update($post);
 $posts = $mapper->getAll();
 
 ?>
