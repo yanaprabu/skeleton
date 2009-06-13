@@ -35,7 +35,11 @@ class A_Controller_Helper_Load {
 			$mapper = $locator->get('Mapper');
 			if ($mapper) {
 				$this->setMapper($mapper);
+			} else {
+				$this->errorMsg .=  "No Mapper to provide paths. ";
 			}
+		} else {
+			$this->errorMsg .=  "No Locator: Action Controller constructor may not be calling self::__construct($locator). ";
 		}
 		$this->parent = $parent;
 		$this->load($scope);
@@ -158,8 +162,15 @@ class A_Controller_Helper_Load {
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
 					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
 				} else {
-					$this->errorMsg .=  "Error: locator->loadClass('$class', '$path'). ";
+					$this->errorMsg .=  "Locator->loadClass('$class', '$path') failed. ";
 				}
+			} elseif (file_exists("$path$class.php")) {
+				include_once "$path$class.php";
+				if (class_exists($class)) {
+					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
+				}
+			} else {
+				$this->errorMsg .=  "Could not load $path$class.php. ";
 			}
 			// initialize object
 			if ($obj) {
@@ -195,12 +206,10 @@ class A_Controller_Helper_Load {
 							echo $obj->render();	// do we really want this option? or should the action do this?
 						}
 						return $this;				// if response set then allow chained
-					} else {
-						$this->errmsg .= "No registry passed to __construct(). ";
 					}
 				}
 			} else {
-				$this->errorMsg .= "Could not load() {$this->dirs[$type]}{$this->scopePath}.php. ";
+				$this->errorMsg .= "Did not create $class object. ";
 			}
 			//reset scope and response
 			$this->scope = null;
