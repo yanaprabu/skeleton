@@ -25,7 +25,7 @@ class A_Db_Tabledatagateway {
 	public function table($table=null) {
 		if ($table) {
 			$this->table = $table;
-		} else {
+		} elseif ($this->table == '') {
 			$this->table = strtolower(get_class($this));
 		}
 		return $this;
@@ -35,7 +35,7 @@ class A_Db_Tabledatagateway {
 		return $this->table;
 	}
 	
-	public function key($key) {
+	public function key($key='') {
 		$this->key = $key ? $key : 'id';
 		return $this;
 	}
@@ -81,9 +81,7 @@ class A_Db_Tabledatagateway {
 						->from($this->getTable())
 						->render();
 		$result = $this->db->query($this->sql);
-		if ($result->isError()) {
-			$this->errmsg = $result->getMessage();
-		} else {
+		if (! $result->isError()) {
 			while ($row = $result->fetchRow()) {
 				$allrows[] = $row;
 			}
@@ -98,7 +96,7 @@ class A_Db_Tabledatagateway {
 				unset($data[$this->key]);
 			}
 			foreach ($data as $field => $value) {
-				$sets[] = $field . '=' . $this->quoteEscape($value);
+				$sets[] = $field . "='" . $this->db->escape($value) . "'";
 			}
 			$this->sql = "UPDATE {$this->table} SET " . implode(',', $sets) . " WHERE {$this->key}='$id'";
 			$this->db->query($this->sql);
@@ -107,14 +105,25 @@ class A_Db_Tabledatagateway {
 	
 	public function insert($data) {
 		if ($data) {
-			if (empty($data[$this->key])) {			// remove array element for key unless it contains a value
-				unset($data[$this->key]);
+			// if one row then 1st element is scalar
+			if(! is_array(current($data))) {
+				$cols = array_keys($data);
+				$data = array($data);
+			} else {
+				$cols = array_keys(current($data));
 			}
-			foreach ($data as $field => $value) {
-				$cols[] = $field;
-				$values[] = $this->quoteEscape($value);
+			$values = array();
+			foreach ($data as $row) {
+				if (empty($row[$this->key])) {			// remove array element for key unless it contains a value
+					unset($row[$this->key]);
+					unset($cols[$this->key]);
+				}
+				foreach ($row as $key => $value) {
+					$row[$key] = $this->db->escape($value);
+				}
+				$values[] = "('" . implode("','", $row) . "')";
 			}
-			$this->sql = "INSERT INTO {$this->table} (" . implode(',', $cols) . ') VALUES (' . implode(',', $values) . ')';
+			$this->sql = "INSERT INTO {$this->table} (" . implode(',', $cols) . ') VALUES ' . implode(',', $values);
 			$this->db->query($this->sql);
 			return $this->db->lastId();
 		}
@@ -132,13 +141,12 @@ class A_Db_Tabledatagateway {
 	}
 	
 	public function isError() {
-		return $this->db->isError();
+		return $this->db->isError() || ($this->errmsg != '');
 	}
 	
-	public function getMessage() {
-		return $this->db->getMessage();
+	public function getErrorMsg() {
+		return $this->db->getMessage() . $this->errmsg;
 	}
 	
 	
 }
-
