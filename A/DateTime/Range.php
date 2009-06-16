@@ -4,6 +4,7 @@
  *
  *
  * @package A_Datetime
+ * @author Eran Galt, Cory Kaufman, Christopher Thompson
  */
 
 class A_DateTime_Range {

@@ -23,9 +23,9 @@ DateTimeZone::listIdentifiers()
 
 date_sub  ( DateTime $object  , DateRange $range  )
 
-Ideas: http://laughingmeme.org/2007/02/27/
  *
  * @package A_Datetime
+ * @author Eran Galt, Cory Kaufman, Christopher Thompson, Cliff Ingham
  */
 
 class A_DateTime extends DateTime {
@@ -39,10 +39,30 @@ class A_DateTime extends DateTime {
 	protected $dayMonthOrder = true;
 	
 	/**
+	* constructor add date array support.
+	*
+	* @param array $date
+	*/
+	public function __construct($date=null, $timezone=null)
+	{
+		if (is_array($date)) {
+			$date = $this->arrayToString($date);
+		}
+		if ($timezone) {
+			parent::__construct($date, $timezone);
+		} else {
+			parent::__construct($date);
+		}
+	}
+
+	/**
 	 * provide fluent interface for DateTime::modify()
 	 */
-	public function modify($modify) {
-		parent::modify($modify);
+	public function modify($date) {
+		if (is_array($date)) {
+			$date = $this->arrayToString($date);
+		}
+		parent::modify($date);
 		return $this;
 	}
 
@@ -266,6 +286,43 @@ class A_DateTime extends DateTime {
 		}
 	}
 	
+	/**
+	* Converts date array to string.  Array should be in the form of PHP's getdate() array
+	*
+	* @param array $date
+	*/
+	public function arrayToString($date=null)
+	{
+		if (is_array($date)) {
+			if (isset($date['month'])) {
+				$date['mon'] = $date['month'];		
+			}
+			if (isset($date['day'])) {
+				$date['mday'] = $date['day'];
+			}
+			if ($date['year'] && $date['mon'] && $date['mday']) {
+				$str = "{$date['year']}-{$date['mon']}-{$date['mday']}";
+				if (isset($date['hour'])) {
+					$date['hours'] = $date['hour'];	 		
+				}
+				if (isset($date['minute'])) {
+					$date['minutes'] = $date['minute'];	 		
+				}
+				if (isset($date['second'])) {
+					$date['seconds'] = $date['second'];	 		
+				}
+				if (isset($date['hours']) || isset($date['minutes']) || isset($date['seconds'])) {
+					$str .= (isset($date['hours']) && $date['hours']) ? " {$date['hours']}:" : ' 00:';
+					$str .= (isset($date['minutes']) && $date['minutes']) ? "{$date['minutes']}:" : '00:';
+					$str .= (isset($date['seconds']) && $date['seconds']) ? $date['seconds'] : '00';
+	 
+				}
+				return $str;
+			}
+		}
+		return '';
+	}
+
 	/**
 	 * get date using internal format value
 	 */
