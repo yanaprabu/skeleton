@@ -152,4 +152,19 @@ class DatetimeTest extends UnitTestCase {
 		$this->assertEqual ($date2->getTimestamp(), strtotime ('-1 day', $date->getTimestamp())); 
 	}
 	
+	function testArrayToString()	{
+		$array1 = array('year'=>'2008','mon'=>'12','mday'=>'20','hours'=>'21','minutes'=>'11','seconds'=>'10');
+		$array2 = array('year'=>'2008','month'=>'12','day'=>'20','hour'=>'21','minute'=>'11','second'=>'10');
+		$array3 = array('year'=>'2009','month'=>'11','day'=>'10','hour'=>'01','minute'=>'21','second'=>'11');
+		$datetime = new A_DateTime($array2);
+		$str = $datetime->getDate(true);
+		$this->assertEqual($str, '2008-12-20 21:11:10');
+
+		$str = $datetime->arrayToString($array1);
+		$this->assertEqual($str, '2008-12-20 21:11:10');
+
+		$str = $datetime->arrayToString($array2);
+		$this->assertEqual($str, '2008-12-20 21:11:10');
+	}
+	
 }
