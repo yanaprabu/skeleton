@@ -27,6 +27,3 @@ class A_Sql_Set extends A_Sql_Statement
 		return 'SET '. $set;
 	}
 }
-
-
-?>

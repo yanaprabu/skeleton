@@ -16,6 +16,3 @@ class A_Sql_From extends A_Sql_Table  {
 		return 'FROM '. parent::render();		
 	}
 }
-
-
-?>
