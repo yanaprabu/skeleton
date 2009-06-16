@@ -48,5 +48,3 @@ class A_Sql_Union extends A_Sql_Statement {
 		return "(". implode(") UNION (", $this->selects) .")$orderby"; 
 	}
 }
-
-?>
