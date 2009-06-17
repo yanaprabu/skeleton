@@ -18,6 +18,7 @@ class A_Pagination_Core	{
 	protected $numPages = false;
 	protected $rangeSize = 4;				// size of range either side of current page
 	protected $paramNames = array();
+	protected $paramNamespace = '';
 	protected $orderByField = '';
 	protected $orderByDirection = 'asc';
 
@@ -178,16 +179,20 @@ class A_Pagination_Core	{
 
 	public function getParamName ($param)	{
 		if (isset ($this->paramNames[$param]))	{
-			return $this->paramNames[$param];
+			return $this->paramNamespace . $this->paramNames[$param];
 		} else	{
 			$this->paramNames[$param] = $param;
-			return $param;
+			return $this->paramNamespace . $param;
 		}
 	}
 
 	public function setParamName ($param, $name)	{
 		$this->paramNames[$param] = $name;
 		return $this;
+	}
+
+	public function setParamNamespace($namespace)	{
+		$this->paramNamespace = $namespace;
 	}
 
 	public function setOrderBy ($field, $descending = false)	{
