@@ -42,7 +42,7 @@ class A_Pagination_Request extends A_Pagination_Core	{
 		if ($this->request != null)	{
 			if ($this->request->get($name)) return $this->request->get($name);
 		}
-		if ($this->request != null)	{
+		if ($this->session != null)	{
 			if ($this->session->get($name)) return $this->session->get($name);
 		}
 		return isset($_GET[$name]) ? $_GET[$name] : $default;
