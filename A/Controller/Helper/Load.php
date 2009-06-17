@@ -147,8 +147,8 @@ class A_Controller_Helper_Load {
 				}
 				// if extension found and it is in array, use it
 				$ext = isset($path_parts['extension']) && isset($this->renderClasses[$path_parts['extension']]) ? $path_parts['extension'] : $this->renderExtension; 
-		        // fix by thinsoldier for NT servers
-				$class = $path_parts['basename'];
+		        // fix by thinsoldier for NT servers that do not return filename
+				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
 
 				include_once str_replace('_', '/', $this->renderClasses[$ext]) . '.php';
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
