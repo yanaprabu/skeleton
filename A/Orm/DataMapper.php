@@ -57,6 +57,16 @@ class A_Orm_DataMapper	{
 		}
 	}
 
+	public function getParams($array)	{
+		$params = array();
+		foreach ($this->mappings as $mapping)	{
+			if (!$mapping->getProperty() && !$mapping->getSetMethod())	{
+				$params[] = $mapping->getValue($array);
+			}
+		}
+		return $params;
+	}
+
 	public function map($property)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
@@ -93,16 +103,6 @@ class A_Orm_DataMapper	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
 		return $mapping;
-	}
-
-	public function getParams($array)	{
-		$params = array();
-		foreach ($this->mappings as $mapping)	{
-			if (!$mapping->getProperty() && !$mapping->getSetMethod())	{
-				$params[] = $mapping->getValue($array);
-			}
-		}
-		return $params;
 	}
 
 	public function getMappings()	{
