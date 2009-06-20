@@ -142,7 +142,7 @@ $Mapper->setDefaultDir('blog');
 
 // Create and run FC with error action
 $Controller = new A_Controller_Front($Mapper, new A_DL('', 'error', 'run'));
-$Controller->addPreFilter('denyAccess', new requireGroupsFilter($Session));
+$Controller->addPreFilter('denyAccess', new A_User_Prefilter_Group($Session));
 $Controller->run($Locator);
 
 // Set up renderer and templates if the response doesnt have those already
