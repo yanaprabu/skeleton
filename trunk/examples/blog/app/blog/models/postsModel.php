@@ -10,7 +10,7 @@ class postsModel {
 		return array(
 			0 => array(
 				'permalink' => 'posts/1/',
-				'title' => 'First title here',
+				'title' => 'First title here!',
 				'date' => '01-01-08',
 				'content' => 'Hello world this is your first post',
 				'excerpt' => 'Hello world this is the summery odf the first article',
