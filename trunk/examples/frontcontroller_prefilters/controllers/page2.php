@@ -5,7 +5,7 @@ class page2 {
 
 	function denyAccess($locator) {
 		echo "ACCESS CHECK\n";
-		$forward = new A_DL('', 'security-custom', 'run');
+		$forward = array('', 'security-custom', 'run');
 		return $forward;
 	}
 	

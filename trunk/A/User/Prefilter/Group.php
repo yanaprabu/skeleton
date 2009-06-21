@@ -39,7 +39,7 @@ class A_User_Prefilter_Group {
 				$access->setField($this->field);		// change default from 'access'
 			}
 			if (! $access->isValid($user)) {
-				$action = new A_DL('', $this->action, '');
+				$action = action('', $this->action, '');
 				return $action;
 			}
 		}

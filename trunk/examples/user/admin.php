@@ -47,9 +47,9 @@ $UserAccess->run($Locator);
 //dump($UserAccess);
 dump2($Locator);
 
-$Mapper = new A_Controller_Mapper('', new A_DL('', 'example', 'run'));// dump($Mapper);
+$Mapper = new A_Controller_Mapper('', array('', 'example', 'run'));// dump($Mapper);
 //dump2($Request);
-$Controller = new A_Controller_Front($Mapper, new A_DL('', 'error', 'run'));
+$Controller = new A_Controller_Front($Mapper, array('', 'error', 'run'));
 $Controller->run($Locator);
 //dump($Controller);
 echo "<pre>Session:\n" . print_r($_SESSION, 1) . '</pre>';

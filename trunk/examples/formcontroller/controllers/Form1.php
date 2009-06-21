@@ -11,13 +11,6 @@ require_once('A/Controller/Form.php');
 class Form1 extends A_Controller_Form {
 
 	function __construct($locator=null) {
-/*
-		$handlers = array(
-			'init' => new A_DL('views/Form1View.php', 'Form1View', 'init'), 
-			'submit' => new A_DL('views/Form1View.php', 'Form1View', 'submit'), 
-			'done' => new A_DL('views/Form1View.php', 'Form1View', 'done')
-			);
-*/
 	$handlers = array(
 			'init' => array($this, '_init'), 
 			'submit' => array($this, '_submit'), 
