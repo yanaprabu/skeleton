@@ -20,14 +20,14 @@ $Locator = new A_Locator();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
  
-$DefaultAction = new A_DL('', 'example', 'run');
-$ErrorAction = new A_DL('', 'error', 'run');
+$DefaultAction = array('', 'example', 'run');
+$ErrorAction = array('', 'error', 'run');
 $Mapper = new A_Controller_Mapper($ConfigArray['APP'], $DefaultAction);
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
 
-//$Controller->addPreMethod('denyAccess', new A_DL('', 'signin', 'run'));
+//$Controller->addPreMethod(array('', 'signin', 'run'));
 //$Controller->run($Locator);
  
 if (! $Response->hasRenderer()) {

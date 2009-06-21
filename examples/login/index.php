@@ -55,10 +55,10 @@ $PathInfo = new A_Http_Pathinfo($map, false);
 $PathInfo->run($Request);
 
 // create mapper with base application path and default action
-$Mapper = new A_Controller_Mapper($ConfigArray['APP'], new A_DL('', 'home', 'run'));
+$Mapper = new A_Controller_Mapper($ConfigArray['APP'], array('', 'home', 'run'));
 
 // create and run FC with error action
-$Controller = new A_Controller_Front($Mapper, new A_DL('', 'error', 'run'));
+$Controller = new A_Controller_Front($Mapper, array('', 'error', 'run'));
 
 // add filter to run if Action implement a denyAccess() method
 include_once('application/helpers/AccessCheck.php');
