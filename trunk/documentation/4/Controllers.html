@@ -1,0 +1,88 @@
+<h1>Controllers</h1>
+
+<h2>About controllers</h2>
+
+<p>Action Controllers are classes that are loaded, instantiated and run by the Front Controller. They typically are located in a <strong>controllers/</strong> directory. Each file must contain a class with the same name. So the file <strong>controllers/foo.php</strong> should contain a class named <strong>foo</strong>.</p>
+
+<pre class="prettyprint lang-php"><code>class foobar extends A_Controller_Action {
+	public function __construct($locator) {
+		parent::__construct($locator);
+	}
+	public function run($locator) {
+	}
+	public function foo($locator) {
+	}
+	public function _bar() {
+	}
+}</code></pre>
+<p>The constructor and the dispatched method will be passed a Locator object by the Front Controller. This parameter is optional and you may choose to use it or not. </p>  
+
+<h3>The Constructor</h3>
+<p>The constructor is called when the controller class is instantiated in the Front Controller. This method is passed a Locator object by the Front Controller. <strong>IMPORTANT</strong> - if your controller inherits a base class you need to call <strong>parent::__construct($locator)</strong> in the constructor.</p>
+
+<h3>The Default Method - run()</h3>
+<p>If the value of the 'action' Request parameter is null or does not match the name of a method then the default method will be dispatched. That means that mysite.com/foobar/ or mysite.com/foobar/xqz will call the run() method. This method is passed a Locator object by the Front Controller. </p>
+<p>You can change the name of this default method to anything you want using the A_Controller_Mapper::setDefaultMethod(). All the defaults, such as the name of the request parameters, are configurable. </p>
+
+<h3>Action Methods</h3>
+<p>If the value of the 'action' Request parameter matches the name of a method then it will be dispatched. That means that mysite.com/foobar/foo/ will call the foo() method. This method is passed a Locator object by the Front Controller. </p>
+
+<h3>Un-dispatchable Methods</h3>
+<p>A method name that starts with an underscore cannot be dispatched by the Front Controller. In the example above the _bar() method cannot be dispatched. That means that mysite.com/foobar/_bar/ will call the run() method, not the _bar() method.</p>
+
+<h2>Types of Controllers</h2>
+
+<p>There are <b>five</b> ways to implement Action Controllers:</p>
+
+<ol>
+<li>No base class -- Skeleton's Front Controller will dispatch plain PHP classes</li>
+<li>Inherit your own base class</li>
+<li>Inherit A_Controller_Action for basic functionality</li>
+<li>Inherit A_Controller_Action_Dispatch for pre/post-filter functionality, etc.</li>
+<li>Inherit your own base class extend A_Controller_Action or A_Controller_Action_Dispatch</li>
+</ol>
+
+<h3>1. No Base Class</h3>
+<p>Skeleton's Front Controller will dispatch plain PHP classes. So you can create an Action Controller like this:
+<pre class="prettyprint lang-php">class foobar {
+	public function run() {
+		// called for no action mysite.com/foobar/ or missing action mysite.com/foobar/xxx
+	}
+	public function foo() {
+		// called for mysite.com/foobar/foo/
+	}
+	public function bar() {
+		// called for mysite.com/foobar/bar/
+	}
+}</pre>
+
+<h3>2. Inherit Your Own Base Class</h3>
+<p>Because Skeleton can dispatch any properly named class, you can create your own base class for groups of controllers. </p>
+
+<h3>3. Inherit A_Controller_Action for basic functionality</h3>
+<p>The basic Skeleton Action Controller provides a forward() and load() methods. The forward() method is for telling the Front Controller to run another controller after returning from the dispatched method. The load() method loads instances of models, views, templates, helpers, etc. objects. </p>
+
+<h3>4. Inherit A_Controller_Action_Dispatch</h3>
+<p>The Dispatch Action Controller adds pre/post-filter functionality to the base Action Controller. You can implement methods in your Action Controller class that are called </p>
+<ol><li>after __construct() but before the dispatched method is called, or </li>
+	<li>after the dispatched method exits but before returning control to the Front Controller.</li>
+	</ol>
+<p>This controller implements a dispatch() method that is called directly by the Front Controller. The dispatch() method in turn calls any pre-filters first, then the dispatched method and then any post-filters. </p>
+
+<h3>5. Extend A_Controller_Action or A_Controller_Action_Dispatch</h3>
+<p>You may extend the Skeleton Action Controllers to add additional functionality as a base class. You would do this if you wanted to provide this functionality to more than one of your Action Controllers.</p>
+
+<h3>5. Orgainzing Controllers in Sub-Directories</h3>
+<p>Typically you would have several Action methods in each controller file. But you don't have to have multiple methods per Action Controller. Skeleton provides a ways in the URL to organize controllers into sub-directories in the controllers directory. Here are the options:</p>
+<ul>
+    <li>mysite.com/foobar/ loads controllers/foobar.php</li>
+    <li>mysite.com/foo_bar/ loads controllers/foo/bar.php</li>
+    <li>mysite.com/foo-bar/ loads controllers/foo_bar.php</li>
+</ul>
+
+<p>And remember that you can also organize your controllers into module directories, each with its own controllers, models, views sub-directories. See the documenation about Working With URLs. Here are some examples:</p>
+<ul>
+    <li>mysite.com/admin/foo/ loads admin/controllers/foobar.php</li>
+    <li>mysite.com/blog/post/ loads admin/blog/controllers/post.php</li>
+</ul>
+

@@ -1,0 +1,71 @@
+<h1>Access Control</h1>
+
+<p>For Access Control the class A_User_Session is used. The A_User_Session class has signin() and signout() methods to store user data in the session to indicate that the user has been authenticated. </p>
+<h2>Basic access control</h2>
+<p>There are rules provided to do simple level and group access control. The basic way to check if a user is signed-in is:</p>
+<pre class="prettyprint lang-php">
+&lt;?php
+include_once 'A/User/Session.php';
+
+class admin {
+	
+	function run($locator) {
+		$usersession = A_User_Session();
+		if ($usersession->isSignedIn()) {
+			// access allowed
+		} else {
+			// create a DL to an action and return to Front Controller to forward
+			$forward = new A_DL('', 'signin', 'run');
+			return $forward;
+		}
+	}
+	
+}
+</pre>
+
+<h2>Access Control using Dependency Injection</h2>
+<p>There is another way to do Access Control using a feature of the Front Controller. First you register a method to be executed before the normally dispatched method. This lets you do Dependency Injection. So in index.php you do:</p>
+
+<pre class="prettyprint lang-php">
+$FrontController->addPreMethod('denyAccess', new A_DL('', 'signin', 'run'));
+</pre>
+<p>This will run a method named denyAccess($locator) in an action -- if it exists. That method does not have to exist, but will be run if it does. If the action returns true, then the action passed to addPreMethod() will be run via a forward and the requested action will not run. The denyAccess() method can also return a A_DL object that specifies a different action to forward to. </p>
+
+<p>The Action Controller code is cleaner because you don't have to put access code in any of the action methods.</p>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+
+class admin {
+	
+	protected $response;
+
+	function admin($locator) {
+		$this->response = $locator->get('Response');
+		$this->userdata = $this->usersession->get();
+	}
+	
+	function denyAccess($locator) {
+		$usersession = $locator->get('UserSession');
+		if (! $usersession->isSignedIn()) {
+			return true;
+
+// or to forward to a controller different from the registered one
+#			$action = new A_DL('', 'error', '');
+#			return $action;
+		}
+	}
+
+	function run($locator) {
+		$username = $this->userdata['userid'];
+		$page_template = new A_Template_Include('examples/userapp/template/admin.tpl.php');
+		$page_template->set('username', $username);
+		$this->response->setContent($page_template->render());
+	}
+	
+	function foo($locator) {
+	}
+
+}
+</pre>
+<p></p>
