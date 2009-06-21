@@ -62,7 +62,7 @@ $Controller = new A_Controller_Front($Mapper, new A_DL('', 'error', 'run'));
 
 // add filter to run if Action implement a denyAccess() method
 include_once('application/helpers/AccessCheck.php');
-$Controller->addPreFilter('denyAccess', new A_Controller_Front_Premethod('denyAccess', new AccessCheck($UserSession), $Locator));
+$Controller->addPreFilter(new A_Controller_Front_Premethod('denyAccess', new AccessCheck($UserSession), $Locator));
 
 $Controller->run($Locator);//dump($Controller);
 #echo '<pre>' . print_r($Front->getRoutes(), 1) . '</pre>';		// show what actions were called

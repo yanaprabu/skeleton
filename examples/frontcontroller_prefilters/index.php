@@ -24,9 +24,9 @@ $Mapper = new A_Controller_Mapper('', $DefaultAction);
 #$Mapper->setDefaultMethod('execute');	// add this line to run 0.4.x and 0.3.x code
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
-$Controller->addPreFilter('Deny Access', new A_Controller_Front_Premethod('denyAccess', $SecurityAction, $Locator));
-$Controller->addPreFilter('Force Error', new A_Controller_Front_Premethod('forceError', $NoAction, $Locator));
-$Controller->addPreFilter('Inject Response', new A_Controller_Front_Injector('_response', $Response));
+$Controller->addPreFilter(new A_Controller_Front_Premethod('denyAccess', $SecurityAction, $Locator));
+$Controller->addPreFilter(new A_Controller_Front_Premethod('forceError', $NoAction, $Locator));
+$Controller->addPreFilter(new A_Controller_Front_Injector('_response', $Response));
 $Controller->run($Locator);
 
 $Response->out();

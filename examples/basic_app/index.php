@@ -24,12 +24,11 @@ $Locator->set('Session', $Session);
 $Mapper = new A_Http_PathInfo(array('' => array('controller','action','id',)));	// array('' => array('class', 'method')));
 $Mapper->run($Request);	// copies clean URL values into the Request based on the map
 
-$Action = new A_DL('', 'home', 'run');
+$Action = array('', 'home', 'run');
 $Mapper = new A_Controller_Mapper($ConfigArray['APP'], $Action);        // action controllers in default 'controller' directory
 #$Mapper->setDefaultMethod('execute');	// uncomment to make compatable with pre 0.4.x
 
 $Controller = new A_Controller_Front($Mapper, $Action);
-$Controller->addPreMethod('denyAccess', new A_DL('', 'signin', 'run'));   // will run this method before dispatching and forward on return true
 $Controller->run($Locator);
 
 if (! $Response->hasRenderer()) {

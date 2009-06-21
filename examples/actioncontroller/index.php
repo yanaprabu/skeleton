@@ -14,8 +14,8 @@ $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
 
-$DefaultAction = new A_DL('', 'example', 'run');
-$ErrorAction = new A_DL('', 'error', 'run');
+$DefaultAction = array('', 'home', 'run');
+$ErrorAction = array('', 'error', 'run');
 
 $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $DefaultAction);
 
