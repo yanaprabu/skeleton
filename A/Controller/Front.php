@@ -84,8 +84,8 @@ class A_Controller_Front {
 	 * @param string $name
 	 * @param object with run($controller) method
 	 */
-	public function addPreFilter($name, $filter) {
-   		$this->preFilters[$name] = $filter;
+	public function addPreFilter($filter) {
+   		$this->preFilters[] = $filter;
 	}
 	
 	/**
@@ -94,8 +94,8 @@ class A_Controller_Front {
 	 * @param string $name
 	 * @param object with run($controller) method
 	 */
-	public function addPostFilter($name, $filter) {
-   		$this->postFilters[$name] = $filter;
+	public function addPostFilter($filter) {
+   		$this->postFilters[] = $filter;
 	}
 	
 	/**
@@ -141,8 +141,8 @@ class A_Controller_Front {
 		$n = -1;
 		while ($route) {
 			++$n;
-			$class  = $this->mapper->formatClass($route->class);
-			$method = $this->mapper->formatMethod($route->method);
+			$class  = $this->mapper->getFormattedClass($route->class);
+			$method = $this->mapper->getFormattedMethod($route->method);
 			if ($n) {			// set mapper for forwards
 				$this->mapper->setDir($route->dir);
 				$this->mapper->setClass($route->class);
