@@ -5,20 +5,29 @@ include_once 'A/User/Rule/Ingroup.php';
 class A_User_Prefilter_Group {
 	
 	protected $session;
-	protected $action = 'login';
+	protected $forward = array('','login','');
 	protected $method = '_requireGroups';
 	protected $field = '';
 	
-	function __construct($session) {
+	function __construct($session, $forward='', $method='', $field='') {
 		if ($session) {
 			$this->session = $session;
 		} else {
 			$this->session = new A_Session();
 		}
+		if ($forward) {
+			$this->forward = $forward;
+		}
+		if ($method) {
+			$this->method = $method;
+		}
+		if ($field) {
+			$this->field = $field;
+		}
 	}
 
-	function setAction($action) {
-		$this->action = $action;
+	function setForward($forward) {
+		$this->forward = $forward;
 	}
 
 	function setPreMethod($method) {
@@ -39,8 +48,9 @@ class A_User_Prefilter_Group {
 				$access->setField($this->field);		// change default from 'access'
 			}
 			if (! $access->isValid($user)) {
-				$action = action('', $this->action, '');
-				return $action;
+				if ($this->forward) {
+					return $this->forward;
+				}
 			}
 		}
 	}
