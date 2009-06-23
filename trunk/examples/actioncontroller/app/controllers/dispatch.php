@@ -10,7 +10,6 @@ class dispatch extends A_Controller_Action_Dispatch {
 	}
 	
 	function run($locator) {
-echo "run called.<br/>";
 		$content = '
 <html>
 <body>
@@ -43,23 +42,21 @@ echo "run called.<br/>";
 	}
 
 	function foo($locator) {
-echo "foo called.<br/>";
 		$this->flash()->set('foo', 'This is a flash var.');
 		$this->load()->response()->template('', array('foo'=>'Set flash var.'));
 	}
 
 	function bar($locator) {
-echo "bar called.<br/>";
 		$value = $this->flash()->get('foo');
 		$this->load()->response()->template('', array('foo'=>$value));
 	}
 
 	function preDispatch() {
-		echo "preDispatch called.<br/>";
+		echo "<!--preDispatch called.-->\n";
 	}
 
 	function postDispatch() {
-		echo "postDispatch called.<br/>";
+		echo "<!--postDispatch called.-->\n";
 	}
 
 }

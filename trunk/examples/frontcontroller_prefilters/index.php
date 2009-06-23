@@ -14,9 +14,9 @@ $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
 
-$DefaultAction = new A_DL('', 'home', 'run');
-$ErrorAction = new A_DL('', 'error', 'run');
-$SecurityAction = new A_DL('', 'security-default', 'run');
+$DefaultAction = array('', 'home', 'run');
+$ErrorAction = array('', 'error', 'run');
+$SecurityAction = array('', 'security-default', 'run');
 $NoAction = 0;
 
 $Mapper = new A_Controller_Mapper('', $DefaultAction);

@@ -15,6 +15,7 @@
 		<li><a href="?module=module1&controller=example&action=bar">Module and controller, specific action specified.</a></li>
 	</ol>
 	<br/>Flash var foo: <?php echo isset($foo) ? $foo : 'NULL'; ?><br/>
+	<br/>Helper bar: <?php echo isset($bar) ? $bar : 'NULL'; ?><br/>
 
 	<br/>
 	<p><a href="../">Return to Examples</a></p>

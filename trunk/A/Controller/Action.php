@@ -24,9 +24,8 @@ class A_Controller_Action {
 	    }
 	}
 	 
-	protected function forward($dir, $class, $method='run', $args=null){
-		$forward = new A_DL($dir, $class, $method, $args=null);
-		return $forward;
+	protected function forward($dir, $class, $method='', $args=null){
+		return array($dir, $class, $method, $args);
 	}
  
 	protected function load($scope=null) {
