@@ -9,7 +9,6 @@ class example extends A_Controller_Action {
 	}
 	
 	function run($locator) {
-echo "run called.<br/>";
 		$content = '
 <html>
 <body>
@@ -42,17 +41,15 @@ echo "run called.<br/>";
 	}
 
 	function foo($locator) {
-echo "foo called.<br/>";
 		$this->flash()->set('foo', 'This is a flash var.');
 		$this->load()->response()->template('', array('foo'=>'Set flash var.'));
 	}
 
 	function bar($locator) {
 		$this->load()->helper('foo');
-		$this->helper('foo')->bar();
-		echo "bar called.<br/>";
+		$bar = $this->helper('foo')->bar('This is the arg for bar helper. ');
 		$value = $this->flash()->get('foo');
-		$this->load()->response()->template('', array('foo'=>$value));
+		$this->load()->response()->template('', array('foo'=>$value, 'bar'=>$bar));
 	}
 
 }

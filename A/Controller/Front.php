@@ -1,6 +1,4 @@
 <?php
-include_once 'A/Locator.php';
-include_once 'A/DL.php';
 
 /**
  * A_Controller_Front
@@ -26,8 +24,8 @@ class A_Controller_Front {
 	protected $mapper = null;
 	
 	/**
-	 * A_DL object with the route for when dispatch error occurs
-	 * @var A_DL
+	 * array with the dir/class/method/args for when dispatch error occurs
+	 * @var array
 	 */
 	protected $errorRoute;
 	
@@ -71,7 +69,7 @@ class A_Controller_Front {
 	 * Class constructor
 	 *
 	 * @param A_Controller_Mapper $mapper
-	 * @param A_DL $error_route for when dispatch error occurs
+	 * @param array $error_route containing dir/class/method/args for when dispatch error occurs
 	 */
 	public function __construct(A_Controller_Mapper $mapper, $error_route) {
 		$this->mapper = $mapper;
@@ -125,29 +123,30 @@ class A_Controller_Front {
 	public function run($locator = null) {
 		
 		if(! $locator){
+			include_once 'A/Locator.php';
 			$locator = new A_Locator();
 		}
-		$this->locator = $locator;
-		
-		if ($this->mapper) {
-			$locator->set('Mapper', $this->mapper); // set mapper in registry for mvc loader to use 
-		} else {
-			return self::NO_MAPPER;
+		if (! $locator->has('Request')) {
+			include_once 'A/Http_Request.php';
+			$locator->set('Request', new A_Http_Request());
 		}
 		
-		$route = $this->mapper->getRoute($locator); // Route is an A_DL instance
+		if (! $this->mapper) {
+			include_once 'A/Controller/Mapper.php';
+			$this->mapper = new A_Controller_Mapper();
+		}
+		$locator->set('Mapper', $this->mapper); // set mapper in registry for mvc loader to use 
+		$this->locator = $locator;
+		
+		$route = $this->mapper->getRoute($locator->get('Request'));
 		$error_route = $this->errorRoute;
 		
 		$n = -1;
 		while ($route) {
+			$this->mapper->setRoute($route); // set dir/class/method
 			++$n;
-			$class  = $this->mapper->getFormattedClass($route->class);
-			$method = $this->mapper->getFormattedMethod($route->method);
-			if ($n) {			// set mapper for forwards
-				$this->mapper->setDir($route->dir);
-				$this->mapper->setClass($route->class);
-				$this->mapper->setMethod($route->method);
-			}
+			$class  = $this->mapper->getFormattedClass();
+			$method = $this->mapper->getFormattedMethod();
 			$dir = $this->mapper->getPath();
 			$this->routeHistory[] = $route;	// save history of routes
 			$route = null;
@@ -170,7 +169,7 @@ class A_Controller_Front {
 					$route = $controller->{$this->dispatchMethod}($locator, $method);
 				} else {
 					if (! method_exists($controller, $method)) {
-						$method = $this->mapper->default_method;
+						$method = $this->mapper->getDefaultMethod();
 					}
 					if (method_exists($controller, $method)) {
 						$route = $controller->{$method}($locator);
@@ -203,34 +202,28 @@ class A_Controller_Front {
 	 * @filters array of filter objects with run($controller) method
 	 * 	 */
 	protected function runFilters($controller, $filters) {
-		foreach (array_keys($filters) as $name) {
-			if (is_object($filters[$name])) {
-				if (! ($filters[$name] instanceof A_DL)) {
-					// pass controller to DI object to modify
-					$change_route = $filters[$name]->run($controller);
-				} elseif (method_exists($controller, $name)) {
-					// pre-execute method if it exists 
-					$change_route = $controller->{$name}($this->locator);
-				} else {
-					$change_route = null;
-				}
-				// return value is forward object or true
-				if ($change_route) {
-					if (is_object($change_route)) {
-						// change route is forward
-						$route = $change_route;
-					} elseif (is_object($filters[$name])) {
-						// use filter as forward
-						$route = $filters[$name];
-					} else {
-						// true triggers forward to error
-						$route = $this->errorRoute;
+		foreach ($filters as $filter) {
+			$change_route = null;
+			switch (gettype($filter)) {
+				case 'object': 
+					if (method_exists($filter, 'run')) {
+						// pass controller to DI object to modify
+						$change_route = $filter->run($controller);
 					}
-					return $change_route;
-				}
-			} elseif (is_string($filters[$name]) && function_exists($filters[$name])) {
-				$func = $filters[$name];
-				$func($controller);
+					break;
+				case 'string':
+					if (method_exists($controller, $filter)) {
+						// pre-execute method if it exists 
+						$change_route = $controller->{$filter}($this->locator);
+					}
+					break;
+				case 'array':
+					$change_route = call_user_func($filter, $controller);
+					break;
+			}
+			// return value is forward object or true
+			if ($change_route) {
+				return $change_route;
 			}
 		}
 	}

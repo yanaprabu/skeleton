@@ -4,9 +4,9 @@
  *
  * Create object of this class to pass to Front Controller preFilter() method
  * to call the method named $method, if it exists, before action is dispatched.
- * The method may return an A_DL object which will be returned to the Front Controller
- * to short circuit dispatch. Or it may return true and then the $change_action A_DL object
- * is returned. 
+ * The method may return an array which will be returned to the Front Controller
+ * to short circuit dispatch. Or it may return true and then the $change_action 
+ * array containing dir/class/method/args is returned. 
  */
 
 class A_Controller_Front_Premethod {

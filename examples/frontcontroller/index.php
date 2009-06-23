@@ -13,8 +13,8 @@ $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
 
-$DefaultAction = array('', 'home', 'run');	// new A_DL('', 'home', 'run');
-$ErrorAction = 'error';	// new A_DL('', 'error', 'run');
+$DefaultAction = array('', 'home', 'run');
+$ErrorAction = 'error';
 
 $Mapper = new A_Controller_Mapper('', $DefaultAction);
 #$Mapper->setParams('action', '');		// add this line to run 0.3.x code 

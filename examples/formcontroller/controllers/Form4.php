@@ -1,8 +1,8 @@
 <?php
 require_once 'A/Controller/Action/Dispatch.php';
 include_once 'A/Model/Form.php';
-require_once 'A/Validator.php';
-require_once 'A/FilterChain.php';
+require_once 'A/Rule/Set.php';
+require_once 'A/Filter/Set.php';
 require_once 'A/Html/Form.php';
 require_once 'A/Filter/Alnum.php';
 require_once 'A/Filter/Digit.php';
@@ -13,7 +13,7 @@ require_once 'A/Rule/Length.php';
 require_once 'A/Rule/Match.php';
 
 
-class MyRules extends A_Validator {
+class MyRules extends A_Rule_Set {
     public function init() {
         $this->addRule(new A_Rule_Length(5, 9, '', 'Please provide a five or nine digit zip code'), array('zip_home', 'zip_work'));
         $this->addRule(new A_Rule_Digit('', 'Please provide a valid phone number'), array('zip_home', 'zip_work'));
@@ -22,7 +22,7 @@ class MyRules extends A_Validator {
 }
  
 // same goes for filter sets
-class MyFilters extends A_FilterChain {
+class MyFilters extends A_Filter_Set {
     public function init() {
         $this->addFilter(new A_Filter_Trim()); // apply to all 
         $this->addFilter(new A_Filter_Digit(), array('zip_home', 'zip_work', 'phone_home', 'phone_work')); // apply to only the elements in the array

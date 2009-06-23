@@ -1,8 +1,8 @@
 <?php
 include_once 'A/Controller/Action.php';
-include_once 'A/FilterChain.php';
-include_once 'A/Validator.php';
-include_once 'A/DL.php';
+include_once 'A/Filter/Set.php';
+include_once 'A/Rule/Set.php';
+#include_once 'A/DL.php';
 /**
  * Controller class with request filtering and validation
  *
@@ -46,8 +46,8 @@ class A_Controller_Input extends A_Controller_Action {
 	}
 	
 	public function processRequest($request) {
-		$filterchain = new A_FilterChain();
-		$validator = new A_Validator();
+		$filterchain = new A_Filter_Set();
+		$validator = new A_Rule_Set();
 		$this->error = false;
 		$param_names = array_keys($this->params);
 		if ($param_names) {

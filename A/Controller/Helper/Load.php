@@ -59,7 +59,7 @@ class A_Controller_Helper_Load {
 			$this->method = $mapper->getMethod();
 			$this->paths['app'] = $mapper->getBasePath();
 			$this->paths['module'] = $this->paths['app'] . $mapper->getDir();
-			$this->paths['controller'] = $this->paths['module'] . $type . $this->action . '/';// . $mapper->getClassDir();
+			$this->paths['controller'] = $this->paths['module'] . $type . $this->action . '/';
 			$this->paths['action'] = $this->paths['controller'] . ($this->method ? "$this->method/" : '');
 			$this->paths['app'] .= $type;
 			$this->paths['module'] .= $type;
