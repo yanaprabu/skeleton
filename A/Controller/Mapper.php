@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/DL.php';
 /**
  * Provides mapping from module/controller/action request vars to path/class/method
  *

@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 ini_set('log_errors', 'Off');
 
 include 'config.php';
-include 'A/DL.php';
+
 include 'A/Locator.php';
 include 'A/Http/Request.php';
 include 'A/Http/Response.php';
@@ -20,14 +20,14 @@ $Locator = new A_Locator();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
  
-$DefaultAction = array('', 'example', 'run');
-$ErrorAction = array('', 'error', 'run');
+$DefaultAction = array('', 'example', 'index');
+$ErrorAction = array('', 'error', 'index');
 $Mapper = new A_Controller_Mapper($ConfigArray['APP'], $DefaultAction);
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
 
-//$Controller->addPreMethod(array('', 'signin', 'run'));
+//$Controller->addPreMethod(array('', 'signin', 'index'));
 //$Controller->run($Locator);
  
 if (! $Response->hasRenderer()) {

@@ -83,7 +83,9 @@ abstract class A_Filter_Abstract {
 			$name = $this->params['field'];
 		}
 		if (is_array($this->container)) {
-			return $this->container[$name];
+			if (isset($this->container[$name])) {
+				return $this->container[$name];
+			}
 		} elseif (is_object($this->container)) {
 			return $this->container->get($name);
 		} else {

@@ -58,7 +58,7 @@ class admin extends A_Controller_Action {
 		}
 	}
 */
-	function run($locator) { 
+	function index($locator) { 
 		$content = 'This is the content for the admin section';
 		$subcontent = 'The sidebar of the admin section';
 		

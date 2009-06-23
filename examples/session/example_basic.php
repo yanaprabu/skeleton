@@ -6,6 +6,9 @@ require_once('A/Session.php');
 $session1 = new A_Session();
 $counter = $session1->get('counter', 9);
 $session1->set('counter', ++$counter);
+?><html>
+<body>
+<?php
 echo "Start counter with a default of 10, counter=$counter<br/>";
 $session1->set('one.two', 'hi1');
 $session1->set('one.three.six', 'hi2');
@@ -31,3 +34,6 @@ echo '<pre>' . print_r($_SESSION, true) . '</pre>';
 if (isset($_REQUEST['destroy']) && ($_REQUEST['destroy'] == 'yes')) {
 	$session1->destroy();
 }
+?>
+</body>
+</html>

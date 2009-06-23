@@ -2,7 +2,7 @@
 
 class signin extends A_Controller_Action {
 
-	function run($locator) {
+	function index($locator) {
 	
 		$request = $locator->get('Request'); 
 		$response = $locator->get('Response');

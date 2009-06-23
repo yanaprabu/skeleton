@@ -2,7 +2,7 @@
 
 class error {
 
-	function run($locator) {
+	function index($locator) {
 		$content = '
 <html>
 <body>

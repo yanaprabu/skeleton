@@ -2,7 +2,7 @@
 
 class home extends A_Controller_Action {
 
-	function run($locator) {
+	function index($locator) {
 		$layout = $this->load()->template('home.tpl');
 		$message = $this->flash('Message');
 		

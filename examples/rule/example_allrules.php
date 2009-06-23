@@ -54,8 +54,6 @@ $validator->addRule('A_Rule_Range', 10, 20, 'range', 'Please pick no between 10 
 $validator->addRule('A_Rule_Regexp', '/^[a-z0-9]+$/', 'regexp', 'Fill in a correct format for regexp');
 
 
-$validator->validate($request);
-
 if ($validator->isValid($request)) {
 	$errmsg = 'OK';
 } else {

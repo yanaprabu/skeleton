@@ -38,13 +38,13 @@ $PathInfo = new A_Http_Pathinfo();
 $PathInfo->run($Request);
 
 // create mapper with base application path and default action
-$Mapper = new A_Controller_Mapper($ConfigArray['APP'], array('', 'home', 'run'));
+$Mapper = new A_Controller_Mapper($ConfigArray['APP'], array('', 'home', 'index'));
 #$Mapper->setDefaultDir('default');		// set default module to 'application/default'
 #$Mapper->setClassNaming('', 'ucfirst', 'Controller');	// ZF controller naming
 #$Mapper->setMethodNaming('', '', 'Action');	// ZF action naming
 
 // create and run FC with error action
-$Front = new A_Controller_Front($Mapper, array('', 'error', 'run'));
+$Front = new A_Controller_Front($Mapper, array('', 'error', 'index'));
 $Front->run($Locator);
 #echo '<pre>' . print_r($Front->getRoutes(), 1) . '</pre>';		// show what actions were called
 

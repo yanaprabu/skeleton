@@ -2,7 +2,7 @@
 
 class home {
 
-	function run($locator) {
+	function index($locator) {
 		$content = '
 <html>
 <body>

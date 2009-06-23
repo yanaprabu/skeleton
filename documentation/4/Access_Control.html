@@ -14,9 +14,8 @@ class admin {
 		if ($usersession->isSignedIn()) {
 			// access allowed
 		} else {
-			// create a DL to an action and return to Front Controller to forward
-			$forward = new A_DL('', 'signin', 'run');
-			return $forward;
+			// return action to Front Controller to forward
+			return array('', 'signin', 'index');
 		}
 	}
 	
@@ -27,9 +26,9 @@ class admin {
 <p>There is another way to do Access Control using a feature of the Front Controller. First you register a method to be executed before the normally dispatched method. This lets you do Dependency Injection. So in index.php you do:</p>
 
 <pre class="prettyprint lang-php">
-$FrontController->addPreMethod('denyAccess', new A_DL('', 'signin', 'run'));
+$FrontController->addPreMethod('denyAccess');
 </pre>
-<p>This will run a method named denyAccess($locator) in an action -- if it exists. That method does not have to exist, but will be run if it does. If the action returns true, then the action passed to addPreMethod() will be run via a forward and the requested action will not run. The denyAccess() method can also return a A_DL object that specifies a different action to forward to. </p>
+<p>This will run a method named denyAccess($locator) in an action -- if it exists. The method does not have to exist, but will be run if it does. If the action returns true, then the error action passed to Front Controller will be run via a forward. The requested action will not run. The denyAccess() method can also return an array that specifies a different action to forward to. </p>
 
 <p>The Action Controller code is cleaner because you don't have to put access code in any of the action methods.</p>
 
@@ -51,7 +50,7 @@ class admin {
 			return true;
 
 // or to forward to a controller different from the registered one
-#			$action = new A_DL('', 'error', '');
+#			$action = array('', 'error', '');
 #			return $action;
 		}
 	}

@@ -10,7 +10,7 @@ class upload_files {
 	function upload_files($locator) {
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		

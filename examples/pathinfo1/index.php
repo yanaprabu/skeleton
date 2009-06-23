@@ -73,13 +73,28 @@ $map2 = array(
 		'' => array(
 			'subcontroller',
 			'subaction',
-			'subparam=]',
+			'subparam',
 			),
 		),
 	);
+$map3 = array(
+	'' => array(
+		'controller',
+		'action',
+		'id',
+		),
+	'admin' => array(
+		'' => array(
+			'module',
+			'controller',
+			'action',
+			),
+		),
+	);
+
 $Request = new A_Http_Request();
-$Mapper = new A_Http_PathInfo($map);
-$Mapper->run($Request);
+$Router = new A_Http_PathInfo($map3);
+$Router->run($Request);
 
 ?>
 <table border="1">
@@ -107,7 +122,7 @@ echo '<h2>Request vars:</h2><pre>' . print_r($Request->data, true) . '</pre>';
 <td width="40">&nbsp;</td>
 <td valign="top">
 <?php
-echo '<h2>Using this map:</h2><pre>' . print_r($map, true) . '</pre>';
+echo '<h2>Using this map:</h2><pre>' . print_r($map3, true) . '</pre>';
 ?>
 </td>
 </tr>

@@ -3,7 +3,9 @@ include_once 'config.php';
 include_once 'A/DataContainer.php';
 include_once 'A/Html/Form.php';
 
-echo '<br/>Object usage:';
+echo '<html>
+<body>
+<br/>Object usage:';
 $model = array('username'=>'foo');
 $form = new A_Html_Form();
 $form->setModel($model);
@@ -51,4 +53,7 @@ $form->fieldset('set1', $fields1->partial());
 $form->fieldset('set2', $fields2->partial());
 $form->submit('submit', 'login');
 echo $form->render();
-	
+
+echo '
+</body>
+</html>';

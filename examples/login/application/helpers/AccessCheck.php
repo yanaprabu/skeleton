@@ -14,7 +14,7 @@ class AccessCheck {
      	if(! $this->user->isValid()) { 
           	// if access check fails then return DL so Front Controller
           	// will forward to 'signin' instead of requested Action
-          	return array('', 'signin', 'run');
+          	return array('', 'signin', 'index');
      	}
 	}
 }

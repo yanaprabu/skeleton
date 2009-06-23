@@ -1,14 +1,14 @@
 <?php
 
 class page4 {
-	protected $_response = null;
+	public $_response = null;
 
 	function forceError($locator) {
 		echo "FORCE ERROR\n";
 		return false;
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		if ($this->_response) {
 			$message = 'Response object set as property by setter injection. ';
 		} else {

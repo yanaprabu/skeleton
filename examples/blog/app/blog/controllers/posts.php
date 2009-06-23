@@ -9,7 +9,7 @@ class posts extends A_Controller_Action {
 	}
 	
 	/* Default action: show list of latest */
-	function run($locator) {
+	function index($locator) {
 		
 		$request = $locator->get('Request');
 		$action = $request->get('action');

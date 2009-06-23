@@ -2,7 +2,7 @@
 
 class security_default {
 
-	function run($locator) {
+	function index($locator) {
 		$response = $locator->get('Response');
 
 		$content = '

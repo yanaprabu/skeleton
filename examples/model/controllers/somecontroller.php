@@ -1,8 +1,8 @@
 <?php
 require_once 'A/Controller/Action/Dispatch.php';
 include_once 'A/Model/Form.php';
-require_once 'A/Validator.php';
-require_once 'A/FilterChain.php';
+require_once 'A/Rule/Set.php';
+require_once 'A/Filter/Set.php';
 require_once 'A/Html/Form.php';
 require_once 'A/Filter/Alnum.php';
 require_once 'A/Filter/Digit.php';
@@ -14,7 +14,7 @@ require_once 'A/Rule/Match.php';
 
 class Somecontroller extends A_Controller_Action_Dispatch {
 	
-	function run($locator) {
+	function index($locator) {
 		
 		$usersmodel = $this->load()->model('Users');	
 		$view = $this->load()->view('Form');

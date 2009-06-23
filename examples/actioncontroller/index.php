@@ -1,7 +1,6 @@
  <?php
 include 'config.php';
 
-include 'A/DL.php';
 include 'A/Locator.php';
 include 'A/Http/Request.php';
 include 'A/Http/Response.php';
@@ -14,8 +13,8 @@ $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
 
-$DefaultAction = array('', 'home', 'run');
-$ErrorAction = array('', 'error', 'run');
+$DefaultAction = array('', 'example', 'index');
+$ErrorAction = array('', 'error', 'index');
 
 $Mapper = new A_Controller_Mapper(dirname(__FILE__) . '/app/', $DefaultAction);
 
