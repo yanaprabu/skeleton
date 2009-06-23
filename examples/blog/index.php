@@ -13,59 +13,6 @@ function dump($var='', $name='') {
 		echo $output;
 	}
 }
-
-class requireGroupsFilter {
-	protected $session;
-	protected $action = 'login';
-	protected $method = '_requireGroups';
-	protected $field = '';
-	
-	function __construct($session) {
-		if ($session) {
-			$this->session = $session;
-		} else {
-			include_once 'A/Session.php';
-			$this->session = new A_Session();
-		}
-	}
-
-	function setAction($action) {
-		$this->action = $action;
-	}
-
-	function setPreMethod($method) {
-		$this->method = $method;
-	}
-
-	function setField($field) {
-		$this->field = $field;
-	}
-
-	function run($controller) {
-		if (method_exists($controller, $this->method)) {
-			$this->session->start();
-			include_once 'A/User/Session.php';
-			include_once 'A/User/Rule/Ingroup.php';
-			$user = new A_User_Session($this->session);
-			$groups = $controller->{$this->method}();
-			$access = new A_User_Rule_Ingroup($groups, 'Access Denied.');
-			if ($this->field) {
-				$access->setField($this->field);		// change default from 'access'
-			}
-#dump("GROUP PREFILTER :: run()");
-#dump($controller, "prefilter CONTROLLER {$this->method}: ");
-#dump($user, 'prefilter USER SESSION: ');
-#dump($groups, 'prefilter GROUPS: ');
-
-			if (! $access->isValid($user)) {
-#dump("GROUP PREFILTER :: NOT isValid()");
-				$action = array('', $this->action, 'run');
-				return $action;
-			}
-		}
-	}
-
-}
 	
 
 // Basic config data

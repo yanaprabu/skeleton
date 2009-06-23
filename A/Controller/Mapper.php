@@ -25,7 +25,7 @@ class A_Controller_Mapper
 	protected $dir_param = 'module';
 	protected $class_param = 'controller';
 	protected $method_param = 'action';
-	protected $default_method = 'run';
+	protected $default_method = 'index';
 	protected $map;
 
 	public function __construct($base_path, $default_action) {
