@@ -9,7 +9,7 @@ class dispatch extends A_Controller_Action_Dispatch {
 		$this->response = $locator->get('Response');
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$content = '
 <html>
 <body>

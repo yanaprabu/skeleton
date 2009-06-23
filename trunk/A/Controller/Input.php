@@ -2,7 +2,7 @@
 include_once 'A/Controller/Action.php';
 include_once 'A/Filter/Set.php';
 include_once 'A/Rule/Set.php';
-#include_once 'A/DL.php';
+
 /**
  * Controller class with request filtering and validation
  *
@@ -56,13 +56,13 @@ class A_Controller_Input extends A_Controller_Action {
 					// if filter is only for specific params do only those, otherwise all
 					$names = $filter['names'] ? $filter['names'] : $param_names;
 					foreach ($names as $name) {
-						$request->set($name, $filterchain->run($request->get($name), $filter['filter']));
+						$request->set($name, $filterchain->doFilter($request->get($name), $filter['filter']));
 					}
 				}
 			}
 			foreach ($param_names as $name) {
 				if ($this->params[$name]->filters) {
-					$request->set($name, $filterchain->run($request->get($name), $this->params[$name]->filters));
+					$request->set($name, $filterchain->doFilter($request->get($name), $this->params[$name]->filters));
 				}
 			}
 			foreach ($param_names as $name) {

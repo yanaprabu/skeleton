@@ -8,7 +8,7 @@ class example extends A_Controller_Action {
 		$this->response = $locator->get('Response');
 	}
 	
-	function run($locator) {
+	function index($locator) {
 	
 		$maincontent = 'this is the maincontent';
 		$rightcol = 'this is the rightcol';

@@ -29,6 +29,12 @@ class A_Controller_Front {
 	 */
 	protected $errorRoute;
 	
+	/**
+	 * array with the dir/class/method/args for when dispatch no route given
+	 * @var array
+	 */
+	protected $defaultRoute;
+	
 	/*
 	 * name of method for Actions with dipatcher
 	 * @var string
@@ -63,7 +69,7 @@ class A_Controller_Front {
 	 * Error indicator
 	 * @var int
 	 */
-	protected $error = self::NO_ERROR;
+	protected $errmsg = self::NO_ERROR;
 	
 	/**
 	 * Class constructor
@@ -71,9 +77,10 @@ class A_Controller_Front {
 	 * @param A_Controller_Mapper $mapper
 	 * @param array $error_route containing dir/class/method/args for when dispatch error occurs
 	 */
-	public function __construct(A_Controller_Mapper $mapper, $error_route) {
+	public function __construct($mapper, $error_route, $default_route='') {
 		$this->mapper = $mapper;
 		$this->errorRoute = $error_route;
+		$this->defaultRoute = $default_route;
 	}
 	
 	/**
@@ -111,7 +118,16 @@ class A_Controller_Front {
 	 * @return boolean
 	 */
 	public function isError() {
-		return $this->error; 
+		return $this->errmsg != ''; 
+	}
+	
+	/**
+	 * return error message
+	 *
+	 * @return boolean
+	 */
+	public function getErrorMsg() {
+		return $this->errmsg; 
 	}
 	
 	/**
@@ -131,9 +147,10 @@ class A_Controller_Front {
 			$locator->set('Request', new A_Http_Request());
 		}
 		
-		if (! $this->mapper) {
+		// route passed as 1st param to contstructor, create a mapper
+		if (! is_object($this->mapper)) {
 			include_once 'A/Controller/Mapper.php';
-			$this->mapper = new A_Controller_Mapper();
+			$this->mapper = new A_Controller_Mapper($this->mapper, $this->defaultRoute ? $this->defaultRoute : $this->errorRoute);
 		}
 		$locator->set('Mapper', $this->mapper); // set mapper in registry for mvc loader to use 
 		$this->locator = $locator;
@@ -174,7 +191,7 @@ class A_Controller_Front {
 					if (method_exists($controller, $method)) {
 						$route = $controller->{$method}($locator);
 					} else {
-						$this->error = self::NO_METHOD;		// no known method to dispatch
+						$this->errmsg = self::NO_METHOD;		// no known method to dispatch
 					}
 				}
 	
@@ -189,10 +206,10 @@ class A_Controller_Front {
 				$route = $error_route;
 				$error_route = null;
 			} elseif ($n == 0) {
-				$this->error = self::NO_CLASS;			// cannot load class and not error route 
+				$this->errmsg = self::NO_CLASS;			// cannot load class and not error route 
 			}
 		}
-		return $this->error;
+		return $this->errmsg;
 	}
 	
 	/**

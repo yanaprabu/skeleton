@@ -10,7 +10,7 @@ class example extends A_Controller_Action {
 		$this->response = $locator->get('Response');
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$this->load()->response()->view();
 	}
 

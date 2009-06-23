@@ -12,7 +12,7 @@ class signin extends A_Controller_Input {
 		parent::__construct($locator);
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		$usersession = $locator->get('UserSession');

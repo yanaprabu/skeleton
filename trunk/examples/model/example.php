@@ -12,5 +12,5 @@ $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
 $Controller = new Somecontroller($Locator);
-$Controller->run($Locator);
+$Controller->index($Locator);
 echo $Response->render();

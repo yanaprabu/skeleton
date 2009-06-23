@@ -48,17 +48,17 @@ $Locator->set('UserSession', $UserSession);
 $map = array(
 	'' => array(
 		0 => array('name'=>'controller', 'default'=>'home'),
-		1 => array('name'=>'action', 'default'=>'run'),
+		1 => array('name'=>'action', 'default'=>'index'),
 		),
 	);
 $PathInfo = new A_Http_Pathinfo($map, false);
 $PathInfo->run($Request);
 
 // create mapper with base application path and default action
-$Mapper = new A_Controller_Mapper($ConfigArray['APP'], array('', 'home', 'run'));
+$Mapper = new A_Controller_Mapper($ConfigArray['APP'], array('', 'home', 'index'));
 
 // create and run FC with error action
-$Controller = new A_Controller_Front($Mapper, array('', 'error', 'run'));
+$Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));
 
 // add filter to run if Action implement a denyAccess() method
 include_once('application/helpers/AccessCheck.php');

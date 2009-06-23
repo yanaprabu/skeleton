@@ -11,7 +11,7 @@ function dump2($var, $name='') {
 }
 error_reporting(E_ALL);
 require_once 'config.php';
-require_once 'A/DL.php';
+
 require_once 'A/Session.php';
 require_once 'A/Locator.php';
 require_once 'A/Http/Request.php';
@@ -47,9 +47,9 @@ $UserAccess->run($Locator);
 //dump($UserAccess);
 dump2($Locator);
 
-$Mapper = new A_Controller_Mapper('', array('', 'example', 'run'));// dump($Mapper);
+$Mapper = new A_Controller_Mapper('', array('', 'example', 'index'));// dump($Mapper);
 //dump2($Request);
-$Controller = new A_Controller_Front($Mapper, array('', 'error', 'run'));
+$Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));
 $Controller->run($Locator);
 //dump($Controller);
 echo "<pre>Session:\n" . print_r($_SESSION, 1) . '</pre>';

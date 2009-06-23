@@ -5,11 +5,11 @@ class page2 {
 
 	function denyAccess($locator) {
 		echo "ACCESS CHECK\n";
-		$forward = array('', 'security-custom', 'run');
+		$forward = array('', 'security-custom', 'index');
 		return $forward;
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$content = '
 <html>
 <body>

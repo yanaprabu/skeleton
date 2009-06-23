@@ -18,13 +18,13 @@ include_once 'A/Controller/App.php';
 //-----------------------------------------------------------------------------
 
 class HangmanGame {
-    protected $word;
-    protected $level;
-    protected $levels;
-    protected $guesses = '';
-    protected $misses = 0;
-    protected $feedback = '';
-    protected $availableLetters;
+    public $word;
+    public $level;
+    public $levels;
+    public $guesses = '';
+    public $misses = 0;
+    public $feedback = '';
+    public $availableLetters;
 
     function HangmanGame() {
     	$this->levels  = $this->getLevels();
@@ -168,7 +168,7 @@ class WinRule extends A_Rule_Abstract {
 		$this->game = $game;
 	}
 	
-	function isValid($dataspace) {
+	function validate() {
 		return $this->game->hasWon();
 	}
 }
@@ -179,15 +179,15 @@ class LoseRule extends A_Rule_Abstract {
 		$this->game = $game;
 	}
 	
-	function isValid($dataspace) {
+	function validate() {
 		return $this->game->hasLost();
 	}
 }
 
 class Guess extends A_Rule_Abstract {
 
-	function isValid($dataspace) {
-		$value = $dataspace->get('level');
+	function validate() {
+		$value = $this->getValue('level');
 		return in_array($value, HangmanGame::getLevels());
 	}
 }
@@ -234,10 +234,10 @@ class Hangman extends A_Controller_App {
         $game->level = $request->get('level');
 		$game->guess($letter->value);
 		
-		$this->addState(new A_Controller_App_State('start', new A_DL('', 'StartView', 'render')));
-		$this->addState(new A_Controller_App_State('game', new A_DL('', 'GameView', 'render')));
-		$this->addState(new A_Controller_App_State('win', new A_DL('', 'WinView', 'render')));
-		$this->addState(new A_Controller_App_State('lose', new A_DL('', 'LoseView', 'render')));
+		$this->addState(new A_Controller_App_State('start', array(new StartView(), 'render')));
+		$this->addState(new A_Controller_App_State('game', array(new GameView(), 'render')));
+		$this->addState(new A_Controller_App_State('win', array(new WinView(), 'render')));
+		$this->addState(new A_Controller_App_State('lose', array(new LoseView(), 'render')));
 
 		$this->addTransition(new A_Controller_App_Transition('start', 'lose', new A_Rule_Notnull('giveup', '')));
 		$this->addTransition(new A_Controller_App_Transition('start', 'game', new A_Rule_Notnull('level', '')));
@@ -255,7 +255,7 @@ $Request = new A_Http_Request();
 $Response = new A_Http_Response();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
-$controller = new Hangman('start');
+$controller = new Hangman($Locator, 'start');
 $controller->run($Locator);
 echo $Response->render($Locator);
 

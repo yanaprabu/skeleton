@@ -1,5 +1,4 @@
 <?php
-require_once('A/DL.php');
 require_once('A/Filter/Regexp.php');
 require_once('A/Filter/Toupper.php');
 require_once('A/Rule/Notnull.php');
@@ -14,7 +13,7 @@ class Form2 {
 	function __construct($locator=null) {
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$model = new A_Model_Form();
 		// get fieldeter object from controller
 		$model->addField($field1 = new A_Model_Form_Field('field1'));

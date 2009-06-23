@@ -8,7 +8,7 @@ class page3 {
 		return true;
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$content = '
 <html>
 <body>

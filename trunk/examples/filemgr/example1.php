@@ -27,10 +27,7 @@ while ($entry = $browser->nextFile()) {
 	$html .= "<td>{$entry['filename']}</td>\n";
 	$html .= "</tr>\n";
 }
-?>
-
-<doctype html public "-//w3c//dtd html 3.2//en">
-<html>
+?><html>
 <head>
 <title>Directory Browser Example</title>
 </head>

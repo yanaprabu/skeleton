@@ -19,6 +19,8 @@ if ($expire) {
 $session->set('counter', ++$counter);
 
 ?>
+<html>
+<body>
 <p>Submit form to set value with expiration count, then click refresh to expure.</p>
 <form action="" method="post">
 <input type="hidden" name="destroy" value=""/>
@@ -32,3 +34,7 @@ echo '<pre>' . print_r($_SESSION, true) . '</pre>';
 if (isset($_REQUEST['destroy']) && ($_REQUEST['destroy'] == 'yes')) {
 	$session->destroy();
 }
+?>
+</form>
+</body>
+</html>

@@ -1,5 +1,4 @@
 <?php
-require_once('A/DL.php');
 require_once('A/Filter/Regexp.php');
 require_once('A/Filter/Toupper.php');
 require_once('A/Rule/Notnull.php');
@@ -19,7 +18,7 @@ class Form1 extends A_Controller_Form {
 		parent::__construct($locator, $handlers);
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		// get parameter object from controller
 		$this->addParameter($param1 = new A_Controller_FormParameter('field1'));
 		$param1->addFilter(new A_Filter_Regexp('/[^0-9]/', ''));

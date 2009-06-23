@@ -13,7 +13,7 @@ $Locator = new A_Locator();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 
-$ErrorAction = array('', 'upload-files', 'run');
+$ErrorAction = array('', 'upload-files', 'index');
 $Mapper = new A_Controller_Mapper('', $ErrorAction);
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);

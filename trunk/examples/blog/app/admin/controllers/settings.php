@@ -11,7 +11,7 @@ class settings extends A_Controller_Action {
 		return array('admin');
 	}
 	
-	function run($locator) { 
+	function index($locator) { 
 		$template = $this->load()->template();
 		
 		$locator->get('Response')->set('maincontent', $template->render());

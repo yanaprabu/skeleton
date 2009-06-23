@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 require_once('config.php');
-require_once('A/DL.php');
+
 require_once('A/Locator.php');
 require_once('A/Http/Request.php');
 require_once('A/Http/Response.php');
@@ -13,7 +13,7 @@ $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
 
-$DefaultAction = array('', 'home', 'run');
+$DefaultAction = array('', 'home', 'index');
 $ErrorAction = 'error';
 
 $Mapper = new A_Controller_Mapper('', $DefaultAction);
@@ -25,4 +25,7 @@ $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
 
 $Response->out();
-?>
+
+if ($Controller->isError()) {
+	echo '<br/><br/>Front Controller errors: ' . $Controller->getErrorMsg();
+}

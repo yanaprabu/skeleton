@@ -8,7 +8,7 @@ class example {
 	function example($locator) {
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		

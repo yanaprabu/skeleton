@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-require_once 'A/DL.php';
+
 require_once 'A/DataContainer.php';
 require_once 'A/Session.php';
 require_once 'A/Locator.php';
@@ -24,7 +24,7 @@ $Locator->set('Session', $Session);
 $Mapper = new A_Http_PathInfo(array('' => array('controller','action','id',)));	// array('' => array('class', 'method')));
 $Mapper->run($Request);	// copies clean URL values into the Request based on the map
 
-$Action = array('', 'home', 'run');
+$Action = array('', 'home', 'index');
 $Mapper = new A_Controller_Mapper($ConfigArray['APP'], $Action);        // action controllers in default 'controller' directory
 #$Mapper->setDefaultMethod('execute');	// uncomment to make compatable with pre 0.4.x
 

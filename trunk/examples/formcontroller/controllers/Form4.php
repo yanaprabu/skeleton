@@ -32,7 +32,7 @@ class MyFilters extends A_Filter_Set {
 
 class Form4 extends A_Controller_Action_Dispatch {
 	
-	function run($locator) {
+	function index($locator) {
 		
 		$model = $this->load()->model('Users');
 

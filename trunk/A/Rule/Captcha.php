@@ -12,30 +12,21 @@ class A_Rule_Captcha extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Captcha';
 	protected $field;
 	protected $errorMsg;
-#	protected $renderer;
-#	protected $session;
-#	protected $sessionkey;
 	protected $charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	protected $length = 5;
 	protected $base_path = '';
 	protected $script_name = 'captcha_image.php';
 	protected $params = array(
+							'field' => '', 
+							'errorMsg' => '', 
 							'renderer' => null, 
 							'session' => null, 
 							'sessionkey' => 'A_Rule_Captcha', 
-							'field' => '', 
-							'errorMsg' => '', 
 							'optional' => false
 							);
 	
 /*
 	public function __construct($field, $errorMsg, $renderer, $session, $sessionkey='') {
-		$this->field = $field;
-		$this->errorMsg = $errorMsg;
-		$this->params['renderer'] = $renderer;
-		$this->params['session'] = $session;
-		$this->params['sessionkey'] = $sessionkey;
-	}
 */
 	
     public function setCharset($value) {
@@ -58,8 +49,8 @@ class A_Rule_Captcha extends A_Rule_Abstract {
 		return $this;
     }
 
-    function validate($request) {
-		return $request->get($this->params['field']) == $this->getCode() ? true : false;
+    function validate() {
+		return $this->getValue($this->params['field']) == $this->getCode();
 	}
 	
     public function getParameter() {

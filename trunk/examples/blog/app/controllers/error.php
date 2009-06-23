@@ -8,7 +8,7 @@ class error  extends A_Controller_Action {
 		$this->response = $locator->get('Response');
 	}
 	
-	function run($locator) {
+	function index($locator) {
 		$maincontent = '<h2>Front Controller: Error</h2>';
 		$subcontent = 'subcontent error page';
 		

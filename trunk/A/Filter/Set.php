@@ -55,6 +55,7 @@ class A_Filter_Set {
 		    }
 		    $value = $this->chain[$key]->doFilter($container);
 		    $name = $this->chain[$key]->getName();
+echo "value=$value, name=$name<br/>\n";
 			if (is_array($container)) {
 				$container[$name] = $value;
 			} elseif (is_object($container)) {

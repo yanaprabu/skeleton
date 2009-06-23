@@ -25,15 +25,15 @@ if (! isset($datasource)) {
 
 // create pager using values from datasource and request params
 $pager = new A_Pager($datasource);
-$pager->setRangeSize(5);
-$pager->setOrderByFields(array('id', 'text', 'sort'), 'text');
+$pager->setPageSize(25);				// change from default of 10 of you want
+$pager->setOrderByFields(array('id', 'text', 'sort'), 'text');	// allowed orderby fields and starting sort
 
 // create a request processor to set pager from GET parameters
 #$request = new PagerRequest($pager);
 $request = new A_Pager_Request_Session($pager);
 $request->process();
 	
-if ($pager->getLastRow() > 0) {
+if ($pager->hasPages()) {
 
 	// create a HTML writer to output
 	$writer = new A_Pager_HTMLWriter($pager);

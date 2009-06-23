@@ -2,7 +2,7 @@
 
 class admin extends A_Controller_Action {
 
-	function run($locator) {
+	function index($locator) {
 	//	$this->load()->response()->view(); For now keep it simple like below
 		
 		$content = '
