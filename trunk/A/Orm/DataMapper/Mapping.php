@@ -16,7 +16,8 @@ class A_Orm_DataMapper_Mapping	{
 		$this->setMethod = $setMethod;
 		$this->property = $property;
 		if (is_array ($column))	{
-			list ($this->alias, $this->column) = each ($column);
+			$this->column = current($column);
+			$this->alias = key($column);
 		} else	{
 			$this->column = $column;
 		}
@@ -133,9 +134,11 @@ class A_Orm_DataMapper_Mapping	{
 	}
 
 	public function getValue($array)	{
-		if ($this->column)	{
+		if($this->alias)	{
+			return $array[$this->alias];
+		}elseif ($this->column)	{
 			return $array[$this->column];
-		} elseif ($this->callback)	{
+		}elseif ($this->callback)	{
 			call_user_func_array (array ($this->callback['object'], $this->callback['method']), $this->callback['params']);
 		}
 	}
