@@ -12,17 +12,41 @@ class A_Db_Pdo extends PDO {
 	protected $sequenceext = '_seq';
 	protected $sequencestart = 1;
 	
-	public function __construct($config) {
+	public function __construct($config, $username='', $password='', $attr=array()) {
+		if (is_array($config)) {
+			// config element compatablity
+			if (isset($config['database'])) {
+				$config['dbname'] = $config['database'];
+			}
+			if (isset($config['hostspec'])) {
+				$config['host'] = $config['hostspec'];
+			}
+			if (! $username && isset($config['username'])) {
+				$username = $config['username'];
+			}
+			if (! $password && isset($config['password'])) {
+				$password = $config['password'];
+			}
+			if (isset($config['persistent'])) {
+				$attr[PDO::ATTR_PERSISTENT] = $config['persistent'];
+			}
+			$dsn = "mysql:host=" . $config['host'] . ";" . "dbname=" . $config['dbname'] . (isset($config['port']) ? ";port={$config['port']}" : '');
+		} else {
+			$dsn = $config;
+		}
+		
 		$this->config = $config;
-		if (isset($config['dbname']) && isset($config['username']) && isset($config['password'])) {
-			$dsn = "mysql:dbname={$config['dbname']}" . (isset($config['hostspec']) ? ";host={$config['hostspec']}" : '');
-			parent::__construct($dsn, $config['username'], $config['password']);
+		if ($dsn && $username && $password) {
+#			$attr[PDO::ATTR_STATEMENT_CLASS] = array('A_Db_Pdo_Recordset', array());
+#			$dsn = "mysql:dbname={$config['dbname']}" . (isset($config['host']) ? ";host={$config['host']}" : '');
+			parent::__construct($dsn, $config['username'], $config['password'], $attr);
 		}
 		// have query() return A_Db_Pdo_Recordset
 		$this->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('A_Db_Pdo_Recordset', array()));
 	}
 		
 	public function connect($config=null) {
+		return true;
 	}
 		
 	public function close() {
@@ -113,9 +137,10 @@ class A_Db_Pdo extends PDO {
 
 
 class A_Db_Pdo_Recordset extends PDOStatement {
-	public $errno;
-	public $errmsg;
 	
+	protected function __construct() {
+	}
+		
 	public function isError() {
 		return $this->errorCode();
 	}

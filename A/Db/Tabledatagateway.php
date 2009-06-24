@@ -1,5 +1,4 @@
 <?php
-include_once 'A/Sql/Select.php';
 /**
  * Datasource access using the Table Data Gateway pattern
  *
@@ -13,6 +12,7 @@ class A_Db_Tabledatagateway {
 	protected $errmsg = '';
 	public $sql = '';
 	protected $num_rows = 0;
+	protected $insert = null;
 	
 	public function __construct($db, $table=null, $key=null) {
 		$this->db = $db;
@@ -90,8 +90,39 @@ class A_Db_Tabledatagateway {
 		return $allrows;
 	}
 	
-	public function update($id, $data) {
-		if ($id && $data) {
+	public function update($data, $where='') {
+		if ($data) {
+			if (! $this->update) {
+				include_once 'A/Sql/Update.php';
+				$this->update = new A_Sql_Update($this->table());
+			}
+			$this->update->setDb($this->db)->values($data);
+			if ($where) {
+				if (is_array($where)) {
+					$this->update->where($where);
+				} else {
+					$this->update->where($this->key, $where);
+				}
+			}
+			$this->sql = $this->update->render();
+			return $this->db->query($this->sql);
+		}
+	}
+	
+	public function insert($data) {
+		if ($data) {
+			if (! $this->insert) {
+				include_once 'A/Sql/Insert.php';
+				$this->insert = new A_Sql_Insert($this->table());
+			}
+			$this->sql = $this->insert->setDb($this->db)->values($data)->render();
+			return $this->db->query($this->sql);
+		}
+	}
+	
+/*
+	public function update($data, $where='') {
+		if ($data && $where) {
 			if (isset($data[$this->key])) {
 				unset($data[$this->key]);
 			}
@@ -128,6 +159,7 @@ class A_Db_Tabledatagateway {
 			return $this->db->lastId();
 		}
 	}
+*/
 	
 	public function delete($id) {
 		if ($id) {

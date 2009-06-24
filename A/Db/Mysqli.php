@@ -157,9 +157,9 @@ public function fetchRow ($mode=null) {
 	}
 }
 	
-public function fetchObject ($mode=null) {
+public function fetchObject ($class=null) {
 	if ($this->result) {
-		return $this->result->fetch_object($this->result);
+		return $this->result->fetch_object($this->result, $class);
 	}
 }
 	

@@ -95,19 +95,19 @@ class A_Db_MySQL {
 		
 	public function nextId ($sequence) {
 	    if ($sequence) {
-		    $result = mysql_query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)", $this->link);
+		    $result = $this->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)", $this->link);
 	    	if ($result) {
-		        $id = mysql_insert_id($this->link);
+		        $id = $this->lastId($this->link);
 		        if ($id > 0) {
 		            return $id;
 		        } else {
-				    $result = mysql_query("INSERT $sequence{$this->sequenceext} SET id=1", $this->link);
-			        $id = mysql_insert_id($this->link);
+				    $result = $this->query("INSERT $sequence{$this->sequenceext} SET id=1", $this->link);
+			        $id = $this->lastId($this->link);
 			        if ($id > 0) {
 			            return $id;
 			        }
 		        }
-			} elseif (mysql_errno() == 1146) {		// table does not exist
+			} elseif ($this->isError() == 1146) {		// table does not exist
 				if ($this->createSequence($sequence)) {
 					return $this->sequencestart;
 				}
@@ -119,7 +119,7 @@ class A_Db_MySQL {
 	public function createSequence ($sequence) {
 	    $result = 0;
 	    if ($sequence) {
-		    $result = mysql_query("CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}", $this->link);
+		    $result = $this->query("CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}", $this->link);
 	    }
 	    return($result);
 	}
@@ -197,9 +197,9 @@ class A_Db_MySQL_Recordset extends A_Db_MySQL_Result {
 		}
 	}
 		
-	public function fetchObject ($mode=null) {
+	public function fetchObject ($class=null) {
 		if ($this->result) {
-			return mysql_fetch_object($this->result);
+			return mysql_fetch_object($this->result, $class);
 		}
 	}
 		
