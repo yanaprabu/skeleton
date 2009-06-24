@@ -67,9 +67,18 @@ class A_Orm_DataMapper	{
 		return $params;
 	}
 
-	public function map($property)	{
-		$mapping = new A_Orm_DataMapper_Mapping();
+	public function addMapping($mapping)	{
 		$this->mappings[] = $mapping;
+		return $mapping;
+	}
+
+	public function addJoin($join)	{
+		$this->joins[] = $join;
+		return $join;
+	}
+
+	public function map($property)	{
+		$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
 		if(method_exists($this->class, 'get'.ucfirst($property)) && method_exists ($this->class, 'set'.ucfirst($property)))	{
 			$mapping->setGetMethod('get'.ucfirst($property));
 			$mapping->setSetMethod('set'.ucfirst($property));
@@ -85,28 +94,23 @@ class A_Orm_DataMapper	{
 	}
 
 	public function mapMethods($getMethod, $setMethod)	{
-		$mapping = new A_Orm_DataMapper_Mapping($getMethod, $setMethod, '', '', $this->table);
-		$this->mappings[] = $mapping;
-		return $mapping;
-	}
-
-	public function mapProperty($property)	{
-		$mapping = new A_Orm_DataMapper_Mapping('', '', $property, '', $this->table);
-		$this->mappings[] = $mapping;
-		return $mapping;
+		return $this->addMapping(new A_Orm_DataMapper_Mapping($getMethod, $setMethod, '', '', $this->table));
 	}
 
 	public function mapGeneric($name)	{
-		$mapping = new A_Orm_DataMapper_Mapping('get', 'set', $name, '', $this->table);
-		$this->mappings[] = $mapping;
-		return $mapping;
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('get', 'set', $name, '', $this->table));
+	}
+
+	public function mapProperty($property)	{
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', $property, '', $this->table));
 	}
 
 	public function mapParam()	{
-		$mapping = new A_Orm_DataMapper_Mapping();
-		$mapping->setTable($this->table);
-		$this->mappings[] = $mapping;
-		return $mapping;
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', '', '', $this->table));
+	}
+
+	public function join($table, $type='inner')	{
+		return $this->addJoin($this->table, $table, $type);
 	}
 
 	public function getMappings()	{
