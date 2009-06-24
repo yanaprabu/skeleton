@@ -80,8 +80,7 @@ class A_Orm_DataMapper	{
 		} else	{
 			$mapping->setProperty($property);
 		}
-		$mapping->setColumn($property);
-		$mapping->setTable($this->table);
+		$mapping->toColumn($property, $this->table);
 		return $mapping;
 	}
 
