@@ -72,29 +72,31 @@ class A_Orm_DataMapper	{
 		$this->mappings[] = $mapping;
 		$mapping->setProperty($property);
 		$mapping->setColumn($property);
+		$mapping->setTable($this->table);
 		return $mapping;
 	}
 
 	public function mapMethods($getMethod, $setMethod)	{
-		$mapping = new A_Orm_DataMapper_Mapping($getMethod, $setMethod);
+		$mapping = new A_Orm_DataMapper_Mapping($getMethod, $setMethod, '', '', $this->table);
 		$this->mappings[] = $mapping;
 		return $mapping;
 	}
 
 	public function mapProperty($property)	{
-		$mapping = new A_Orm_DataMapper_Mapping('', '', $property);
+		$mapping = new A_Orm_DataMapper_Mapping('', '', $property, '', $this->table);
 		$this->mappings[] = $mapping;
 		return $mapping;
 	}
 
 	public function mapGeneric($name)	{
-		$mapping = new A_Orm_DataMapper_Mapping('get', 'set', $name);
+		$mapping = new A_Orm_DataMapper_Mapping('get', 'set', $name, '', $this->table);
 		$this->mappings[] = $mapping;
 		return $mapping;
 	}
 
 	public function mapParam()	{
 		$mapping = new A_Orm_DataMapper_Mapping();
+		$mapping->setTable($this->table);
 		$this->mappings[] = $mapping;
 		return $mapping;
 	}
