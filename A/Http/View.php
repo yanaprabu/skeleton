@@ -180,6 +180,9 @@ class A_Http_View {
 	}
  
 	protected function helper($name) {
+		if (! isset($this->helpers[$name])) {
+			$this->helpers[$name] = $this->load()->helper($name);
+		}
 		if (isset($this->helpers[$name])) {
 			return $this->helpers[$name];
 		}
