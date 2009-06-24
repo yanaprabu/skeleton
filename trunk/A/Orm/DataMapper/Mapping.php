@@ -5,18 +5,16 @@ class A_Orm_DataMapper_Mapping	{
 	public $getMethod;
 	public $setMethod;
 	public $property;
-	public $genericName;
 	public $column;
 	public $alias;
 	public $table;
 	public $callback = array();
 	public $key = false;
 
-	public function __construct ($getMethod='', $setMethod='', $property='', $genericName='', $column='', $table='', $key = false, $callback = array())	{
+	public function __construct ($getMethod='', $setMethod='', $property='', $column='', $table='', $key = false, $callback = array())	{
 		$this->getMethod = $getMethod;
 		$this->setMethod = $setMethod;
 		$this->property = $property;
-		$this->genericName = $genericName;
 		if (is_array ($column))	{
 			list ($this->alias, $this->column) = each ($column);
 		} else	{
@@ -51,15 +49,6 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function setProperty($property)	{
 		$this->property = $property;
-		return $this;
-	}
-
-	public function getGenericName()	{
-		return $this->genericName;
-	}
-
-	public function setGenericName($name)	{
-		$this->genericName = $name;
 		return $this;
 	}
 

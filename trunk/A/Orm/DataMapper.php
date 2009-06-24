@@ -76,26 +76,20 @@ class A_Orm_DataMapper	{
 	}
 
 	public function mapMethods($getMethod, $setMethod)	{
-		$mapping = new A_Orm_DataMapper_Mapping();
+		$mapping = new A_Orm_DataMapper_Mapping($getMethod, $setMethod);
 		$this->mappings[] = $mapping;
-		$mapping->setSetMethod ($setMethod);
-		$mapping->setGetMethod ($getMethod);
 		return $mapping;
 	}
 
 	public function mapProperty($property)	{
-		$mapping = new A_Orm_DataMapper_Mapping();
+		$mapping = new A_Orm_DataMapper_Mapping('', '', $property);
 		$this->mappings[] = $mapping;
-		$mapping->setProperty ($property);
 		return $mapping;
 	}
 
 	public function mapGeneric($name)	{
-		$mapping = new A_Orm_DataMapper_Mapping();
+		$mapping = new A_Orm_DataMapper_Mapping('get', 'set', $name);
 		$this->mappings[] = $mapping;
-		$mapping->setSetMethod('set');
-		$mapping->setGetMethod('get');
-		$mapping->setGeneric($name);
 		return $mapping;
 	}
 
