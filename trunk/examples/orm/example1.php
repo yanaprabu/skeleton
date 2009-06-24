@@ -7,6 +7,7 @@ include('UserMapper.php');
 include('DomainObjects.php');
 
 $mapper = new PostMapper($db);
+$post = new Post();
 $post->title = 'New Title';
 $post->body = 'New Body';
 $post->author_id = 1;
