@@ -174,9 +174,9 @@ class A_Db_Postgres_Recordset extends A_Db_Postgres_Result {
 		}
 	}
 		
-	public function fetchObject () {
+	public function fetchObject ($class=null) {
 		if ($this->result) {
-			return pg_fetch_object($this->result);
+			return pg_fetch_object($this->result, null, $class);
 		}
 	}
 		

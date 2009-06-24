@@ -112,9 +112,9 @@ class A_Db_Sqlite_Recordset extends A_Db_Sqlite_Result {
 		}
 	}
 		
-	public function fetchObject () {
+	public function fetchObject ($class=null) {
 		if ($this->result) {
-			return(sqlite_fetch_object($this->result));
+			return(sqlite_fetch_object($this->result, $class));
 		}
 	}
 		
