@@ -70,7 +70,17 @@ class A_Orm_DataMapper	{
 	public function map($property)	{
 		$mapping = new A_Orm_DataMapper_Mapping();
 		$this->mappings[] = $mapping;
-		$mapping->setProperty($property);
+		$class = new ReflectionClass($this->class);
+		if(method_exists($this->class, 'get'.ucfirst($property)) && method_exists ($this->class, 'set'.ucfirst($property)))	{
+			$mapping->setGetMethod('get'.ucfirst($property));
+			$mapping->setSetMethod('set'.ucfirst($property));
+		}elseif(method_exists ($this->class, 'get') && method_exists ($this->class, 'set'))	{
+			$mapping->setGetMethod('get');
+			$mapping->setSetMethod('set');
+			$mapping->setProperty($property);
+		} else	{
+			$mapping->setProperty($property);
+		}
 		$mapping->setColumn($property);
 		$mapping->setTable($this->table);
 		return $mapping;

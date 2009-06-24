@@ -5,15 +5,13 @@ class Post	{
 	public $id = '';
 	public $title = '';
 	public $body = '';
-	
-	public function get($name)	{
-		return isset($this->$name) ? $this->$name : null;
+
+	public function getTitle()	{
+		return $this->title;
 	}
 
-	public function set($name, $value)	{
-		if (isset($this->$name)) {
-			$this->$name = $value;
-		}
+	public function setTitle($title)	{
+		$this->title = $title;
 	}
 
 }
