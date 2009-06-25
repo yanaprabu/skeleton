@@ -121,18 +121,6 @@ class A_Orm_DataMapper_Mapping	{
 		}
 	}
 
-	public function loadArray($object, $array)	{
-		if (method_exists($object, $this->getMethod))	{
-			if ($this->property)	{
-				$params[] = $this->property;
-			}
-			$array[($this->table?$this->table.'.':'').$this->column] = call_user_func_array(array($object, $this->getMethod), $params);
-		} else	{
-			$array[($this->table?$this->table.'.':'').$this->column] = $object->{$this->property};
-		}
-		return $array;
-	}
-
 	public function getValue($array)	{
 		if($this->alias)	{
 			return $array[$this->alias];
@@ -142,5 +130,17 @@ class A_Orm_DataMapper_Mapping	{
 			call_user_func_array (array ($this->callback['object'], $this->callback['method']), $this->callback['params']);
 		}
 	}
+
+	public function getObjectValue($object, $array)	{
+		if (method_exists($object, $this->getMethod))	{
+			if ($this->property)	{
+				$params[] = $this->property;
+			}
+			return array(($this->table?$this->table.'.':'').$this->column => call_user_func_array(array($object, $this->getMethod), $params));
+		} else	{
+			return array(($this->table?$this->table.'.':'').$this->column => $object->{$this->property});
+		}
+	}
+
 
 }

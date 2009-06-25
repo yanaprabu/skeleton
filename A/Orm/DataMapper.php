@@ -144,7 +144,7 @@ class A_Orm_DataMapper	{
 		} else	{
 			foreach ($this->mappings as $mapping)	{
 				if (!$mapping->isKey())	{
-					$values = $mapping->loadArray($object, $values);
+					array_merge ($values, $mapping->getObjectValue($object));
 				}
 			}
 		}
