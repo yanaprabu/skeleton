@@ -7,7 +7,7 @@
 require_once('A/Orm/DataMapper.php');
 require_once('A/Orm/DataMapper/Mapping.php');
 
-class SQLMapper extends A_Orm_DataMapper	{
+class I_Was_Told_To_Call_This_A_Table_Data_Gateway_But_The_Name_Really_Doesnt_Matter_Because_Its_Just_A_Placeholder_For_The_SQL_Functionality_Of_The_ORM extends A_Orm_DataMapper	{
 
 	public function getById($id)	{
 		$stmt = $this->db->prepare('SELECT ' . join(', ', $this->getColumns()) . ' FROM ' . $this->table . ' WHERE id = :id');
