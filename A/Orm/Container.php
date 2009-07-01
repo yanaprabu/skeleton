@@ -36,7 +36,7 @@ class A_Orm_Container	{
 
 	public function forClass($className)	{
 		if (!$this->pendingHandler)	{
-			throw new Exception ('must call use() before calling for()');
+			throw new Exception ('must call setHandler() before calling forClass()');
 		}
 		$this->handlers[$className] = $this->pendingHandler;
 		$this->pendingHandler = '';
