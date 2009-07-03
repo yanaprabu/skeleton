@@ -72,12 +72,17 @@ class A_Db_Postgres {
 		$this->close();
 	}
 		
-	public function query ($sql) {
+	public function query($sql, $bind=array()) {
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-		mysql_select_db($this->dsn['database'], $this->link);
+		if ($bind) {
+			include_once 'A/Sql/Prepare.php';
+			$prepare = new A_Sql_Prepare($sql, $bind);
+			$prepare->setDb($this->db);
+			$sql = $prepare->render();
+		}
 		if (strpos(strtolower($sql), 'select') === 0) {
 			$obj = new A_Db_Postgres_Recordset(pg_query($sql));
 		} else {
@@ -145,7 +150,7 @@ class A_Db_Postgres_Result {
 		
 	public function numRows() {
 		if ($this->result) {
-			return(mysql_affected_rows($this->result));
+			return(pg_affected_rows($this->result));
 		} else {
 			return 0;
 		}
@@ -177,6 +182,12 @@ class A_Db_Postgres_Recordset extends A_Db_Postgres_Result {
 	public function fetchObject ($class=null) {
 		if ($this->result) {
 			return pg_fetch_object($this->result, null, $class);
+		}
+	}
+		
+	public function fetchAll ($mode=null) {
+		if ($this->result) {
+			return pg_fetch_all($this->result);
 		}
 	}
 		

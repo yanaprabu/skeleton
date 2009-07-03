@@ -29,12 +29,17 @@ class A_Db_Sqlite {	protected $dsn = null;	protected $link = null;	protected 
 		} 
 	}
 		
-	public function query ($sql) {
+	public function query($sql, $bind=array()) {
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-
+		if ($bind) {
+			include_once 'A/Sql/Prepare.php';
+			$prepare = new A_Sql_Prepare($sql, $bind);
+			$prepare->setDb($this->db);
+			$sql = $prepare->render();
+		}
 		if (strpos(strtolower($sql), 'select') === 0) {
 			$obj = new A_Db_Sqlite_Recordset(sqlite_query($this->link, $sql));
 		} else {
@@ -115,6 +120,12 @@ class A_Db_Sqlite_Recordset extends A_Db_Sqlite_Result {
 	public function fetchObject ($class=null) {
 		if ($this->result) {
 			return(sqlite_fetch_object($this->result, $class));
+		}
+	}
+		
+	public function fetchAll () {
+		if ($this->result) {
+			return(sqlite_fetch_array($this->result, SQLITE_ASSOC));
 		}
 	}
 		
