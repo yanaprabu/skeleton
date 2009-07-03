@@ -43,10 +43,16 @@ class A_Db_Mysqli extends MySQLi {
 		return $this->select_db($this->dsn['database']);
 	}
 		
-	public function query($sql) {
+	public function query($sql, $bind=array()) {
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
+		}
+		if ($bind) {
+			include_once 'A/Sql/Prepare.php';
+			$prepare = new A_Sql_Prepare($sql, $bind);
+			$prepare->setDb($this->db);
+			$sql = $prepare->render();
 		}
 		if (stripos($sql, 'select') === 0) {
 			$obj = new A_Db_Mysqli_Recordset(parent::query($sql));
@@ -69,34 +75,34 @@ class A_Db_Mysqli extends MySQLi {
 	}
 		
 	public function nextId ($sequence) {
-	    if ($sequence) {
-		    $result = $this->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
-	    	if ($result) {
-		        $id = $this->insert_id();
-		        if ($id > 0) {
-		            return $id;
-		        } else {
-				    $result = $this->query("INSERT $sequence{$this->sequenceext} SET id=1");
-			        $id = $this->insert_id();
-			        if ($id > 0) {
-			            return $id;
-			        }
-		        }
+		if ($sequence) {
+			$result = $this->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
+			if ($result) {
+				$id = $this->insert_id();
+				if ($id > 0) {
+					return $id;
+				} else {
+					$result = $this->query("INSERT $sequence{$this->sequenceext} SET id=1");
+					$id = $this->insert_id();
+					if ($id > 0) {
+						return $id;
+					}
+				}
 			} elseif ($this->errno() == 1146) {		// table does not exist
 				if ($this->createSequence($sequence)) {
 					return $this->sequencestart;
 				}
 			}
-	    }
-	    return 0;
+		}
+		return 0;
 	}
 		
 	public function createSequence ($sequence) {
-	    $result = 0;
-	    if ($sequence) {
-		    $result = $this->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
-	    }
-	    return($result);
+		$result = 0;
+		if ($sequence) {
+			$result = $this->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
+		}
+		return($result);
 	}
 		
 	public function escape($value) {
@@ -160,6 +166,12 @@ public function fetchRow ($mode=null) {
 public function fetchObject ($class=null) {
 	if ($this->result) {
 		return $this->result->fetch_object($this->result, $class);
+	}
+}
+	
+public function fetchAll () {
+	if ($this->result) {
+		return $this->result->fetch_all($this->result);
 	}
 }
 	

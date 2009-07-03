@@ -41,12 +41,17 @@ class A_Db_ADOdblite {
 		} 
 	}
 		
-	public function query ($sql) {
+	public function query($sql, $bind=array()) {
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-
+		if ($bind) {
+			include_once 'A/Sql/Prepare.php';
+			$prepare = new A_Sql_Prepare($sql, $bind);
+			$prepare->setDb($this->db);
+			$sql = $prepare->render();
+		}
 		if (strpos(strtolower($sql), 'select') === 0) {
 			$obj = new A_Db_ADOdblite_Recordset($this->query($sql));
 		} else {
@@ -70,18 +75,18 @@ class A_Db_ADOdblite {
 	}
 		
 	public function nextId ($sequence=null, $startID=null) {
-	    if ($sequence) {
-		    $result = $this->adodb->GenID($seqName, $startID);
-	    }
-	    return 0;
+		if ($sequence) {
+			$result = $this->adodb->GenID($seqName, $startID);
+		}
+		return 0;
 	}
 		
 	public function createSequence ($sequence=null, $startID=null) {
-	    $result = 0;
-	    if ($sequence) {
-		    $result = $this->adodb->CreateSequence($seqName, $startID);
-	    }
-	    return($result);
+		$result = 0;
+		if ($sequence) {
+			$result = $this->adodb->CreateSequence($seqName, $startID);
+		}
+		return($result);
 	}
 		
 	public function start() {
@@ -170,6 +175,17 @@ class A_Db_ADOdblite_Recordset extends A_Db_ADOdblite_Result {
 		if ($this->result) {
 			return $this->FetchNextObject();
 		}
+	}
+		
+	public function fetchAll ($class=null) {
+		$rows = array();
+		if ($this->result) {
+			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+			while ($row = $this->resultFetchRow()) {
+				$rows[] = $row;
+			}
+		}
+		return $rows;
 	}
 		
 	public function numRows() {

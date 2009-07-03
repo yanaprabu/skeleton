@@ -59,7 +59,21 @@ class A_Db_Pdo extends PDO {
 	/*
 	 * public function query() implemented in PDO
 	 */
-		
+	public function query($sql, $bind=array(), $arg3=null, $arg4=null) {
+		if (is_object($sql)) {
+			// convert object to string by executing SQL builder object
+			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
+		}
+		if ($bind && is_array($bind)) {
+			include_once 'A/Sql/Prepare.php';
+			$prepare = new A_Sql_Prepare($sql, $bind);
+			$prepare->setDb($this->db);
+			$sql = $prepare->render();
+			$bind = null;
+		}
+		return parent::query($sql, $bind, $arg3, $arg4);
+	}
+	
 	public function limit($sql, $count, $offset = null) {
 		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
 		return $sql . ' LIMIT ' . $limit;
@@ -158,6 +172,10 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 		
 	/*
 	 * public function fetchObject() implemented in PDOStatement
+	 */
+		
+	/*
+	 * public function fetchAll() implemented in PDOStatement
 	 */
 		
 	public function numRows() {
