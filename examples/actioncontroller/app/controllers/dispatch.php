@@ -51,11 +51,11 @@ class dispatch extends A_Controller_Action_Dispatch {
 		$this->load()->response()->template('', array('foo'=>$value));
 	}
 
-	function preDispatch() {
+	function _preDispatch() {
 		echo "<!--preDispatch called.-->\n";
 	}
 
-	function postDispatch() {
+	function _postDispatch() {
 		echo "<!--postDispatch called.-->\n";
 	}
 
