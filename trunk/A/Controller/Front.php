@@ -39,7 +39,7 @@ class A_Controller_Front {
 	 * name of method for Actions with dipatcher
 	 * @var string
 	 */
-	protected $dispatchMethod = 'dispatch';
+	protected $dispatchMethod = '_dispatch';
 	
 	/**
 	 * Pre-dispatch filters
