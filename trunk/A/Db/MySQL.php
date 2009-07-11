@@ -60,7 +60,7 @@ class A_Db_MySQL {
 		} 
 	}
 		
-	public function disconnect () {
+	public function disconnect() {
 		$this->close();
 	}
 		
