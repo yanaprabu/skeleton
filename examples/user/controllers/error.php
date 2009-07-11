@@ -8,7 +8,6 @@ class error extends A_Controller_Action {
 	function __construct($locator){
 		parent::__construct($locator);
 		$this->usersession = $locator->get('UserSession');
-		$this->response = $locator->get('Response');
 	}
 /*
 	function error($locator) {
@@ -16,13 +15,8 @@ class error extends A_Controller_Action {
 	}
 */	
 	function index($locator) {
-		$request = $locator->get('Request');
-		$response = $locator->get('Response');
-		
 		$page_template = new A_Template_Strreplace('templates/error.html');
 		
-		$response->setContent($page_template->render());
+		$this->response->setContent($page_template->render());
 	}
 }
-
-?>

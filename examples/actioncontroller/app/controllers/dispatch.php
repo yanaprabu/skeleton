@@ -2,13 +2,7 @@
 include_once 'A/Controller/Action/Dispatch.php';
 
 class dispatch extends A_Controller_Action_Dispatch {
-	protected $response;
 
-	function __construct($locator) {
-		parent::__construct($locator);
-		$this->response = $locator->get('Response');
-	}
-	
 	function index($locator) {
 		$content = '
 <html>
@@ -27,10 +21,10 @@ class dispatch extends A_Controller_Action_Dispatch {
 	<br/>
 	<p><a href="../">Return to Examples</a></p>
 ';
-		$model = $this->load()->model();
+		$model = $this->_load()->model();
 		$content .= '<br/>Model Object:<pre>' . print_r($model, 1) . '</pre>';
 
-		$months = $this->load()->model('MonthsModel');
+		$months = $this->_load()->model('MonthsModel');
 		$content .= '<br/>Model Months Object:<pre>' . print_r($months, 1) . '</pre>';
 
 		$content .= '<br/>Action Object:<pre>' . print_r($this, 1) . '</pre>';
@@ -42,13 +36,13 @@ class dispatch extends A_Controller_Action_Dispatch {
 	}
 
 	function foo($locator) {
-		$this->flash()->set('foo', 'This is a flash var.');
-		$this->load()->response()->template('', array('foo'=>'Set flash var.'));
+		$this->_flash()->set('foo', 'This is a flash var.');
+		$this->_load()->response()->template('', array('foo'=>'Set flash var.'));
 	}
 
 	function bar($locator) {
-		$value = $this->flash()->get('foo');
-		$this->load()->response()->template('', array('foo'=>$value));
+		$value = $this->_flash()->get('foo');
+		$this->_load()->response()->template('', array('foo'=>$value));
 	}
 
 	function _preDispatch() {

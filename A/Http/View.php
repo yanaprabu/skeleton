@@ -147,7 +147,7 @@ class A_Http_View {
 		return $this->render();
 	}
 
-	protected function load($scope=null) {
+	protected function _load($scope=null) {
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
@@ -157,7 +157,7 @@ class A_Http_View {
 		return $this->load;
 	}
  
-	protected function flash($name=null, $value=null) {
+	protected function _flash($name=null, $value=null) {
 		if (! isset($this->flash)) {
 			include_once "A/Controller/Helper/Flash.php";
 			$this->flash = new A_Controller_Helper_Flash($this->locator);

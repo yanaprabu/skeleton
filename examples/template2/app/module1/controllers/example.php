@@ -1,20 +1,14 @@
 <?php
 
 class example extends A_Controller_Action {
-	protected $response;
 
-	function __construct($locator) {
-		parent::__construct($locator);
-		$this->response = $locator->get('Response');
-	}
-	
 	function index($locator) {
-		$this->load()->response()->view();
+		$this->_load()->response()->view();
 	}
 
 	function bar($locator) {
-		$model = $this->load()->model();
-		$template = $this->load()->template();
+		$model = $this->_load()->model();
+		$template = $this->_load()->template();
 		$template->set('model', $model);
 		$this->response->setRenderer($template);
 	}

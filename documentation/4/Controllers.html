@@ -60,14 +60,14 @@
 <p>Because Skeleton can dispatch any properly named class, you can create your own base class for groups of controllers. </p>
 
 <h3>3. Inherit A_Controller_Action for basic functionality</h3>
-<p>The basic Skeleton Action Controller provides a forward() and load() methods. The forward() method is for telling the Front Controller to run another controller after returning from the dispatched method. The load() method loads instances of models, views, templates, helpers, etc. objects. </p>
+<p>The basic Skeleton Action Controller provides a _forward() and _load() methods. The _forward() method is for telling the Front Controller to run another controller after returning from the dispatched method. The _load() method loads instances of models, views, templates, helpers, etc. objects. </p>
 
 <h3>4. Inherit A_Controller_Action_Dispatch</h3>
 <p>The Dispatch Action Controller adds pre/post-filter functionality to the base Action Controller. You can implement methods in your Action Controller class that are called </p>
 <ol><li>after __construct() but before the dispatched method is called, or </li>
 	<li>after the dispatched method exits but before returning control to the Front Controller.</li>
 	</ol>
-<p>This controller implements a dispatch() method that is called directly by the Front Controller. The dispatch() method in turn calls any pre-filters first, then the dispatched method and then any post-filters. </p>
+<p>This controller implements a _dispatch() method that is called directly by the Front Controller. The _dispatch() method in turn calls any pre-filters first, then the dispatched method and then any post-filters. </p>
 
 <h3>5. Extend A_Controller_Action or A_Controller_Action_Dispatch</h3>
 <p>You may extend the Skeleton Action Controllers to add additional functionality as a base class. You would do this if you wanted to provide this functionality to more than one of your Action Controllers.</p>

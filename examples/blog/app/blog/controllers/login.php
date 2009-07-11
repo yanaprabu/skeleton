@@ -5,8 +5,6 @@ include_once 'A/Model/Form.php';
 class login extends A_Controller_Action {
 
 	function index($locator) {
-		$request = $locator->get('Request');
-		$response = $locator->get('Response');
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
 #dump($user, 'USER: ');
@@ -26,32 +24,31 @@ class login extends A_Controller_Action {
 		$form->addField($field);
 		
 		// If username and password valid and isPost
-		if($form->isValid($request)){ 
+		if($form->isValid($this->request)){ 
 			
 			// How to translate URL in correct action variable?
-			$model = $this->load('app')->model('users');
+			$model = $this->_load('app')->model('users');
 			$userdata = $model->signin($form->get('userid'), $form->get('password'));
 			if ($userdata) {	// user record matching userid and password found
 				unset($userdata['password']);		// don't save passwords in the session
 				$user->signin($userdata);
-				$response->setRedirect($locator->get('Config')->get('BASE') . 'login/');	// build redirect URL back to this page
+				$this->_redirect($locator->get('Config')->get('BASE') . 'login/');	// build redirect URL back to this page
 			} else {
 				$errmsg = $model->getErrorMsg();
 			}
 		} elseif($form->isSubmitted()){		// submitted form has errors
 			$errmsg =  $form->getErrorMsg(', ');
 		}
-		$template = $this->load()->template();
+		$template = $this->_load()->template();
 		$template->set('errmsg', $errmsg);
 		$template->set('userid', $form->get('userid'));
 		$template->set('user', $user);
 		
-		$response->set('maincontent', $template);
+		$this->response->set('maincontent', $template);
 	}
 
 	
 	function logout($locator) {
-		$response = $locator->get('Response');
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
 		
@@ -59,6 +56,6 @@ class login extends A_Controller_Action {
 		if ($user->isSignedIn()) {	// user record matching userid and password found
 			$user->signout();
 		}
-		$response->setRedirect($locator->get('Config')->get('BASE') . 'login/');	// build redirect URL back to this page
+		$this->_redirect($locator->get('Config')->get('BASE') . 'login/');	// build redirect URL back to this page
 	}
 }

@@ -5,12 +5,9 @@ require_once('A/Html/Form.php');
 class Form3 extends A_Controller_Action {
 	
 	function index($locator) {
-		$model = $this->load()->model('Form');
-		#echo '<pre>' . print_r($this, 1) . '</pre>';
-		//$model->run($locator);
-		$request = $locator->get('Request');
+		$model = $this->_load()->model('Form');
 		
-		if ($model->isValid($request)) {
+		if ($model->isValid($this->request)) {
 			echo 'DONE<br/><br/><a href="../">Return to Examples</a>';
 		} else {
 			if (! $model->isSubmitted()) {

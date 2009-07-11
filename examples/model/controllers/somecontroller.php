@@ -1,5 +1,5 @@
 <?php
-require_once 'A/Controller/Action/Dispatch.php';
+require_once 'A/Controller/Action.php';
 include_once 'A/Model/Form.php';
 require_once 'A/Rule/Set.php';
 require_once 'A/Filter/Set.php';
@@ -12,14 +12,14 @@ require_once 'A/Rule/Inarray.php';
 require_once 'A/Rule/Length.php';
 require_once 'A/Rule/Match.php';
 
-class Somecontroller extends A_Controller_Action_Dispatch {
+class Somecontroller extends A_Controller_Action {
 	
 	function index($locator) {
 		
-		$usersmodel = $this->load()->model('Users');	
-		$view = $this->load()->view('Form');
-		$request = $locator->get('Request');
-		// Instantiate a new form model/controller
+		$usersmodel = $this->_load()->model('Users');	
+		$view = $this->_load()->view('Form');
+
+				// Instantiate a new form model/controller
 		$form = new A_Model_Form();
 		// Hand the Form the fields and rules from the model
 		//	$form->addRule($usersmodel->getRules()); 
@@ -34,7 +34,7 @@ class Somecontroller extends A_Controller_Action_Dispatch {
 		//$form->run($locator);
 			//dump($form);	
 		// ask the form if it is valid. The form checks internally if the model fields are valid?
-		if($form->isValid($request)){
+		if($form->isValid($this->request)){
 			// save
 			$usersmodel->save($form->getSaveValues());	
 			// redirect to user detail page or whatever

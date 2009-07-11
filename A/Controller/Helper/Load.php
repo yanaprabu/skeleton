@@ -186,7 +186,7 @@ class A_Controller_Helper_Load {
 					}
 					break;
 				case 'helper':
-					$this->parent->setHelper($params[0], $obj);
+					$this->parent->_helper($params[0], $obj);
 					break;
 				}
 				 // this is the section for when response() has been called

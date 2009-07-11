@@ -3,7 +3,7 @@
 class admin extends A_Controller_Action {
 
 	function index($locator) {
-	//	$this->load()->response()->view(); For now keep it simple like below
+	//	$this->_load()->response()->view(); For now keep it simple like below
 		
 		$content = '
 <html>
@@ -13,8 +13,7 @@ class admin extends A_Controller_Action {
 </body>
 </html>
 ';
-		$response = $locator->get('Response');
-		$response->setContent($content);
+		$this->response->setContent($content);
 		
 	}
 
