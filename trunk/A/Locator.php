@@ -11,21 +11,21 @@ class A_Locator {
    protected $_dir = array();
    protected $_inject = array();
    protected $_extension = '.php';
-    
+	
 	public function __construct($dir=false) {
-    	if ($dir) {
-    		if (is_array($dir)) {
-    			foreach($dir as $ns => $d) {
-    				$this->setDir($d, $ns);
-    			}
-    		} else {
-    			$this->setDir($dir);
-    		}
-    	}
+		if ($dir) {
+			if (is_array($dir)) {
+				foreach($dir as $ns => $d) {
+					$this->setDir($d, $ns);
+				}
+			} else {
+				$this->setDir($dir);
+			}
+		}
 	}
 
 	public function setDir($dir, $namespace='') {
-    	$this->_dir[$namespace] = rtrim($dir, '/') . '/';
+		$this->_dir[$namespace] = rtrim($dir, '/') . '/';
 		return $this;
 	}
 
@@ -94,16 +94,16 @@ class A_Locator {
 		return $result && class_exists($class, $autoload);
 	}
 
-	public function get($name='', $class='') {
+	public function get($name='', $class='', $baseclass='') {
 
 		$param = null;
-	    if (func_num_args() > 2) {
-		    $param = array_slice(func_get_args(), 2);	// get params after name/clas/dir
-		    // if only one param then pass the param rather than an array of params
-		    if (count($param) == 1) {
-		    	$param = $param[0];
-		    }
-	    }
+		if (func_num_args() > 2) {
+			$param = array_slice(func_get_args(), 2);	// get params after name/clas/dir
+			// if only one param then pass the param rather than an array of params
+			if (count($param) == 1) {
+				$param = $param[0];
+			}
+		}
 		if ($name) {
 			if (isset($this->_obj[$name])) {
 				return $this->_obj[$name];		// return registered object
@@ -111,35 +111,38 @@ class A_Locator {
 #				$this->setDir($this->_reg[$name]->dir);
 #				return $this->newInstance($this->_reg[$name]->class, $this->_reg[$name]->param);
 			} elseif ($class) {
-				$obj = $this->newInstance($class, $param);
+				$obj = $this->newInstance($class, $baseclass, $param);
 				if ($obj) {
 					$this->_obj[$name] = $obj;
 				}
 				return $obj;		// return registered object
 			}
 		} elseif ($class) {
-			return $this->newInstance($class, $param);
+			return $this->newInstance($class, $baseclass, $param);
 		}
 	}
 
-	public function newInstance($class='') {
+	public function newInstance($class='', $baseclass='') {
 		$obj = null;
 		// get dir and clear
 		if ($class) {
 			$param = null;
-		    if (func_num_args() > 1) {
-			    $param = array_slice(func_get_args(), 1);	// get params after $class
-			    // if only one param then pass the param rather than an array of params
-			    if (count($param) == 1) {
-			    	$param = $param[0];
-			    }
-		    }
+			if (! $baseclass) {
+				$baseclass = $class;
+			}
+			if (func_num_args() > 2) {
+				$param = array_slice(func_get_args(), 1);	// get params after $class
+				// if only one param then pass the param rather than an array of params
+				if (count($param) == 1) {
+					$param = $param[0];
+				}
+			}
 
-		    if ($this->loadClass($class)) {
+			if ($this->loadClass($class)) {
 				// do constructor injection here
-				if (isset($this->_inject[$class])) {
+				if (isset($this->_inject[$baseclass])) {
 					$inject = array();
-					foreach ($this->_inject[$class] as $method => $params) {
+					foreach ($this->_inject[$baseclass] as $method => $params) {
 						foreach ($params as $key => $param) {
 							if (is_array($param) && isset($param['A_Locator'])) {
 								switch ($param['A_Locator']) {
