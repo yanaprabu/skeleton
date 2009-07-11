@@ -29,16 +29,25 @@ class A_Locator {
 		return $this;
 	}
 
-/*
-// allow injecting via constructor or setters
+	/**
+	// allow injecting via constructor or setters
 	$inject = array( 
+		// Do: $foo = new Foo('Boo'); $foo->setBar('Bar'); $foo->setBaz('Baz', 'Jazz');
 		'Foo' => array( 
 			'__construct' => array('Boo'), 
 			'setBar' => array('Bar'), 
 			'setBaz' => array('Baz', 'Jazz'),
 			), 
+		// Do: $bar = new Bar($locator->get('Boo')); which in turn will create Foo as specified above
+		'Bar' => array( 
+			'__construct' => array(array('A_Locator'=>'get, 'name'=>'Boo'), 
+			), 
+		// Do: $bar = new Bar($locator->get('', 'Baz')); which in turn will create Foo as specified above
+		'Bar' => array( 
+			'__construct' => array(array('A_Locator'=>'get, 'name'=>'', 'class'=>'Baz'), 
+			), 
 		); 
-*/
+	*/
 	public function register($dl) {
 		if (is_string($dl)) {
 			$params = func_get_params();
@@ -47,8 +56,6 @@ class A_Locator {
 		}
 		if (is_array($dl)) {
 			$this->_inject = array_merge($this->_inject, $dl);
-		} elseif ($dl instanceof A_DL) {
-			$this->_reg[$dl->class] = $dl;
 		}
 		return $this;
 	}
@@ -88,6 +95,7 @@ class A_Locator {
 	}
 
 	public function get($name='', $class='') {
+
 		$param = null;
 	    if (func_num_args() > 2) {
 		    $param = array_slice(func_get_args(), 2);	// get params after name/clas/dir
@@ -99,9 +107,9 @@ class A_Locator {
 		if ($name) {
 			if (isset($this->_obj[$name])) {
 				return $this->_obj[$name];		// return registered object
-			} elseif (isset($this->_reg[$name]->class)) {
-				$this->setDir($this->_reg[$name]->dir);
-				return $this->newInstance($this->_reg[$name]->class, $this->_reg[$name]->param);
+#			} elseif (isset($this->_reg[$name]->class)) {
+#				$this->setDir($this->_reg[$name]->dir);
+#				return $this->newInstance($this->_reg[$name]->class, $this->_reg[$name]->param);
 			} elseif ($class) {
 				$obj = $this->newInstance($class, $param);
 				if ($obj) {
@@ -127,29 +135,28 @@ class A_Locator {
 			    }
 		    }
 
-			if ($this->loadClass($class)) {
+		    if ($this->loadClass($class)) {
 				// do constructor injection here
 				if (isset($this->_inject[$class])) {
 					$inject = array();
 					foreach ($this->_inject[$class] as $method => $params) {
 						foreach ($params as $key => $param) {
-							if (isset($param['type'])) {
-								switch ($param['type']) {
-								// create new object from class
-								case 'class':
-									$inject[$method][$key] = $this->get('', $param['value']);
+							if (is_array($param) && isset($param['A_Locator'])) {
+								switch ($param['A_Locator']) {
+								// get/create new object by name/class using get() 
+								case 'get':
+									$inject[$method][$key] = $this->get($param['name'], $param['class']);
 									break;
 								// get container from locator
-								case 'locator':
-									$container = $this->get($param['name']);
+								case 'container':
+									$container = $this->get($param['name'], $param['class']);
 									if ($container) {
-										$inject[$method][$key] = $container->get($param['value']);
+										$inject[$method][$key] = $container->get($param['key']);
 									}
 									break;
-								// set to value
-								default:
-									$inject[$method][$key] = $param['value'];
 								}
+							} else {
+								$inject[$method][$key] = $param;
 							}
 						}
 					}
