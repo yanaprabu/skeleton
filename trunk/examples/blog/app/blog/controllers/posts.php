@@ -1,26 +1,22 @@
 <?php
 
 class posts extends A_Controller_Action {
-	protected $response;
 
 	function __construct($locator) {
 		parent::__construct($locator);
-		$this->response = $locator->get('Response');
 	}
 	
 	/* Default action: show list of latest */
 	function index($locator) {
-		
-		$request = $locator->get('Request');
-		$action = $request->get('action');
+		$action = $this->request->get('action');
 		
 		// If there's a request for a single post
-		if( $request->has('action') && is_numeric($request->get('action')) ){ 
+		if( $this->request->has('action') && is_numeric($this->request->get('action')) ){ 
 			
 			// How to translate URL in correct action variable?
-			$model = $this->load()->model('postsModel');
+			$model = $this->_load()->model('postsModel');
 			$content = $model->single();
-			$template = $this->load()->template('singlePost');
+			$template = $this->_load()->template('singlePost');
 			$template->set('content', $content);
 			$maincontent = $template->render();
 			
@@ -30,9 +26,9 @@ class posts extends A_Controller_Action {
 		} 
 		else  // show all posts 
 		{
-			$model = $this->load()->model('postsModel');
+			$model = $this->_load()->model('postsModel');
 			$content = $model->listAll();
-			$template = $this->load()->template();
+			$template = $this->_load()->template();
 			$template->set('content', $content);
 			$maincontent = $template->render();		
 
@@ -43,5 +39,4 @@ class posts extends A_Controller_Action {
 				
 	}
 
-	
 }

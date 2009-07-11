@@ -17,7 +17,7 @@ class Form4View extends A_Http_View {
 	}
 	
 	function render() {
-		$layout = $this->load()->template('example_form4');
+		$layout = $this->_load()->template('example_form4');
 		$layout->set('values', $this->values);
 		$layout->set('errmsg', $this->errmsgs);
 		$content = $layout->render();

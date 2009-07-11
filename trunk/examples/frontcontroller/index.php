@@ -19,9 +19,11 @@ $ErrorAction = 'error';
 $Mapper = new A_Controller_Mapper('', $DefaultAction);
 #$Mapper->setParams('action', '');		// add this line to run 0.3.x code 
 #$Mapper->setDefaultMethod('execute');	// add this line to run 0.4.x and 0.3.x code
+#$Mapper->setDefaultMethod('run');		// add this line to run 0.7.x code
 #$Mapper->setDefaultDir('default');		// add this for a default module directory
 
 $Controller = new A_Controller_Front($Mapper, $ErrorAction);
+#$Controller = new A_Controller_Front('', $ErrorAction, $DefaultAction);	// have FC create Mapper
 $Controller->run($Locator);
 
 $Response->out();

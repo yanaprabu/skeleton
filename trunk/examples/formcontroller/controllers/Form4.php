@@ -34,7 +34,7 @@ class Form4 extends A_Controller_Action_Dispatch {
 	
 	function index($locator) {
 		
-		$model = $this->load()->model('Users');
+		$model = $this->_load()->model('Users');
 
 		$form = new A_Model_Form();
 		$form->addField($model->getFields());  
@@ -52,10 +52,10 @@ class Form4 extends A_Controller_Action_Dispatch {
 	//	$form->addRule(new MyRules);
 	//	$form->addFilter(new MyFilters);dump($form);
 		
-		$view = $this->load()->view('Form4');
-		if ($this->getRequest()->isPost()) {
+		$view = $this->_load()->view('Form4');
+		if ($this->request->isPost()) {
 		
-			if ($form->isValid($this->getRequest())) {
+			if ($form->isValid($this->request)) {
 		        try {
 		            $model->save($form);
 		            // redirect to user detail page or whatever

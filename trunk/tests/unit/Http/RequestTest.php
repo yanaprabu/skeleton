@@ -44,7 +44,7 @@ class Http_RequestTest extends UnitTestCase {
 		$this->assertEqual($request->get('bar', $toupper), 'FAR');
 
 		// call_user_func style
-		$this->assertEqual($request->get('bar', array(array($toupper, 'run'))), 'FAR');
+		$this->assertEqual($request->get('bar', array(array($toupper, 'doFilter'))), 'FAR');
 	}
 	
 	function testHttp_RequestGetFilterArray() {

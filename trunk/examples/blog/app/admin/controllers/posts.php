@@ -1,7 +1,6 @@
 <?php
 
 class posts extends A_Controller_Action {
-	protected $response;
 
 	/*
 	 * This function is called only if it exists. Front Controller pre-filter 
@@ -12,9 +11,9 @@ class posts extends A_Controller_Action {
 	}
 	
 	function index($locator) { 
-		$template = $this->load()->template();
+		$template = $this->_load()->template();
 		
-		$locator->get('Response')->set('maincontent', $template->render());
+		$this->response->set('maincontent', $template->render());
 
 	}
 

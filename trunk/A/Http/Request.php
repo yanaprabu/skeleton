@@ -65,7 +65,7 @@ class A_Http_Request {
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 	}
 
-	protected function _get(&$data, $name, $filters=null, $to='') {
+	protected function _get(&$data, $name, $filters=null, $default=null) {
 		if (isset($data[$name])) {
 			if ($filters || $this->filters) {
 				// allow single filter to be passed - convert to array
@@ -82,7 +82,7 @@ class A_Http_Request {
 					foreach ($filters as $filter) {
 						if (is_string($filter)) {
 							if (substr($filter, 0, 1) == '/') {
-								$d[$key] = preg_replace($filter, $to, $d[$key]);
+								$d[$key] = preg_replace($filter, '', $d[$key]);
 							} else {
 								$d[$key] = $filter($d[$key]);
 							}
@@ -101,23 +101,25 @@ class A_Http_Request {
 				}
 			}
 			return $data[$name];
+		} elseif ($default !== null) {
+			return $default;
 		}
 	}
 
-	public function get($name, $filter=null, $to='') {
-		return $this->_get($this->data, $name, $filter, $to);
+	public function get($name, $filter=null, $default=null) {
+		return $this->_get($this->data, $name, $filter, $default);
 	}
 
-	public function getPost($name, $filter=null, $to='') {
-		return $this->_get($_POST, $name, $filter, $to);
+	public function getPost($name, $filter=null, $default=null) {
+		return $this->_get($_POST, $name, $filter, $default);
 	}
 
-	public function getQuery($name, $filter=null, $to='') {
-		return $this->_get($_GET, $name, $filter, $to);
+	public function getQuery($name, $filter=null, $default=null) {
+		return $this->_get($_GET, $name, $filter, $default);
 	}
 
-	public function getCookie($name, $filter=null, $to='') {
-		return $this->_get($_COOKIE, $name, $filter, $to);
+	public function getCookie($name, $filter=null, $default=null) {
+		return $this->_get($_COOKIE, $name, $filter, $default);
 	}
 
 	public function export($filter=null, $pattern=null) {

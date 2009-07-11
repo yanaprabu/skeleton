@@ -59,10 +59,16 @@ class A_Controller_Action {
 	}
 	 
 	/**
-	 * Request getter
-	 * @return A_Request
+	 * Queries request for parameters
+	 *
+	 * @param string $param
+	 * @param mixed $default
+	 * @return mixed
 	 */
-	public function getRequest() {
+	public function _request($param=null, $filter=null, $default=null) {
+		if ($param) {
+			return $this->request->get($param, $filter, $default);
+		}
 		return $this->request;
 	}
 	
@@ -71,7 +77,7 @@ class A_Controller_Action {
 	 *  - Create a new response object if it has not been set
 	 * @return A_Reponse
 	 */
-	public function getResponse() {
+	public function _response() {
 		if(!$this->response) {
 			include_once 'A/Http/Response.php';
 			$this->response = new A_Http_Response();
@@ -81,28 +87,18 @@ class A_Controller_Action {
 	}
 
 	/**
-	 * Queries request for parameters
-	 *
-	 * @param string $param
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function getParam($param,$default = null) {
-		return $this->request->get($param,$default);
-	}
-	
-	/**
 	 * Send redirect headers
 	 *  - Asks response object to send redirect headers
 	 *
 	 * @param string $url
 	 */
-	public function redirect($url) {
-		if (isset($this->resposne)) {
+	public function _redirect($url) {
+		if (isset($this->response)) {
 			$this->response->setRedirect($url);
 		} else {
-			header("Content: $url");
+			header("Location: $url");
 		}
+		return $this;
 	}
 	
 	/**
@@ -114,11 +110,16 @@ class A_Controller_Action {
 	 * @param string $args
 	 * @return array
 	 */
-	protected function forward($dir, $class, $method='', $args=null){
+	public function _forward($dir, $class, $method='', $args=null){
 		return array($dir, $class, $method, $args);
 	}
  
-	protected function load($scope=null) {
+	/**
+	 * create aa A_Controller_Helper_Load obejct and return it for loading functionality
+	 * @param string $scope
+	 * @return array
+	 */
+	public function _load($scope=null) {
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
@@ -128,7 +129,7 @@ class A_Controller_Action {
 		return $this->load;
 	}
  
-	protected function flash($name=null, $value=null) {
+	public function _flash($name=null, $value=null) {
 		if (! isset($this->flash)) {
 			include_once "A/Controller/Helper/Flash.php";
 			$this->flash = new A_Controller_Helper_Flash($this->locator);
@@ -143,14 +144,10 @@ class A_Controller_Action {
 		return $this->flash;
 	}
  
-	public function setHelper($name, $helper) {
-		if ($name) {
+	public function _helper($name, $helper='') {
+		if ($helper) {
 			$this->helpers[$name] = $helper;
 		}
-		return $this;
-	}
- 
-	protected function helper($name) {
 		if (isset($this->helpers[$name])) {
 			return $this->helpers[$name];
 		}
@@ -159,7 +156,7 @@ class A_Controller_Action {
 	/**
 	 * load view object
 	 */
-	public function view($name='', $scope='') {
+	public function _view($name='', $scope='') {
 		if (!$this->view) {
 			$this->view = $this->load($scope)->view($name);
 		}
