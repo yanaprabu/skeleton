@@ -13,7 +13,7 @@ class Config {
 	}
 }
 
-class FooModel {
+class BaseModel {
 	public $db;
 	public $data = array();
 	public function __construct($db=null) {
@@ -24,14 +24,15 @@ class FooModel {
 		echo "CALL FUNCTION set($name)<br/>\n";
 		$this->data[$name] = $value;
 	}
-}
-
-class BarModel extends FooModel {
 	public function setDb($db=null) {
 		echo "CALL FUNCTION setDb()<br/>\n";
 		$this->db = $db;
 	}
 }
+
+class FooModel extends BaseModel {}
+
+class BarModel extends BaseModel {}
 
 // create a config object to show how injected data can come from a registered container
 $ConfigObj = new Config();
@@ -56,9 +57,12 @@ $locator->register(array(
 // register dependencies for classes that will have A_Db_Pdo object injected
 // Note that A_Db_Pdo object is put in Registry with name 'DB' so later call will just get object from Registry
 $locator->register(array( 
+		'BaseModel' => array(	// constructor injection and setter injection of string 
+			'__construct' => array(array('A_Locator'=>'get', 'name'=>'DB', 'class'=>'A_Db_Pdo')), 
+			'set' => array('base', 'Data injected into set(base, )'),
+			), 
 		'FooModel' => array(	// constructor injection and setter injection of string 
 			'__construct' => array(array('A_Locator'=>'get', 'name'=>'DB', 'class'=>'A_Db_Pdo')), 
-			'set' => array('foo', 'Data injected into set(foo, )'),
 			), 
 		'BarModel' => array( 	// setter injection
 			'set' => array('bar', 'Data injected into set(bar, )'),
@@ -69,7 +73,7 @@ $locator->register(array(
 <html>
 <body>
 <?php
-$FooModel = $locator->get('', 'FooModel');
+$FooModel = $locator->get('', 'FooModel', 'BaseModel');
 dump($FooModel, 'FooModel: ');
 
 $BarModel = $locator->get('', 'BarModel');
