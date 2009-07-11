@@ -68,7 +68,7 @@ class A_Db_Postgres {
 		} 
 	}
 		
-	public function disconnect () {
+	public function disconnect() {
 		$this->close();
 	}
 		
@@ -124,15 +124,33 @@ class A_Db_Postgres {
 	    return($result);
 	}
 		
+	public function start() {
+		return mysql_query('BEGIN');
+	}
+
+	public function savepoint($savepoint='') {
+		if ($savepoint) {
+			return mysql_query('SAVEPOINT ' . $savepoint);
+		}
+	}
+
+	public function commit() {
+		return mysql_query('COMMIT');
+	}
+
+	public function rollback($savepoint='') {
+		return mysql_query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
+	}
+
 	public function escape($value) {
 		return pg_escape_string($value);
 	}
 	
-	public function isError () {
+	public function isError() {
 		return pg_last_error($this->link) != '';
 	}
 		
-	public function getMessage () {
+	public function getMessage() {
 		return pg_last_error($this->link);
 	}
 	
@@ -191,7 +209,7 @@ class A_Db_Postgres_Recordset extends A_Db_Postgres_Result {
 		}
 	}
 		
-	public function numRows () {
+	public function numRows() {
 		if ($this->result) {
 			return pg_num_rows($this->result);
 		} else {
@@ -199,7 +217,7 @@ class A_Db_Postgres_Recordset extends A_Db_Postgres_Result {
 		}
 	}
 		
-	public function numCols () {
+	public function numCols() {
 		if ($this->result) {
 			return pg_num_cols($this->result);
 		} else {

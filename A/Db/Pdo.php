@@ -64,14 +64,15 @@ class A_Db_Pdo extends PDO {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-		if ($bind && is_array($bind)) {
-			include_once 'A/Sql/Prepare.php';
-			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this->db);
-			$sql = $prepare->render();
-			$bind = null;
+		if (! $bind) {
+			return parent::query($sql);
+		} elseif (is_array($bind)) {
+			$stmt = $this->prepare($sql);
+			$stmt->execute($bind);
+			return $stmt;
+		} else {
+			return parent::query($sql, $bind, $arg3, $arg4);
 		}
-		return parent::query($sql, $bind, $arg3, $arg4);
 	}
 	
 	public function limit($sql, $count, $offset = null) {

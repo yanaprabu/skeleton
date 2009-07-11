@@ -111,7 +111,7 @@ class A_Db_Sqlite_Recordset extends A_Db_Sqlite_Result {
 		$this->result = $result;
 	}
 	
-	public function fetchRow () {
+	public function fetchRow() {
 		if ($this->result) {
 			return(sqlite_fetch_array($this->result, SQLITE_ASSOC));
 		}
@@ -123,7 +123,7 @@ class A_Db_Sqlite_Recordset extends A_Db_Sqlite_Result {
 		}
 	}
 		
-	public function fetchAll () {
+	public function fetchAll() {
 		if ($this->result) {
 			return(sqlite_fetch_array($this->result, SQLITE_ASSOC));
 		}

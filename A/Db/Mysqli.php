@@ -169,7 +169,7 @@ public function fetchObject ($class=null) {
 	}
 }
 	
-public function fetchAll () {
+public function fetchAll() {
 	if ($this->result) {
 		return $this->result->fetch_all($this->result);
 	}
