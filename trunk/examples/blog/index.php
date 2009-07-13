@@ -17,8 +17,7 @@ function dump($var='', $name='') {
 
 // Basic config data
 $file_path = dirname($_SERVER['SCRIPT_FILENAME']);
-$approot = substr(dirname(__FILE__),strlen($_SERVER['DOCUMENT_ROOT']));
-$url_path = dirname($_SERVER['SCRIPT_NAME']);
+$url_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 if ($url_path == '\\') {
 	$url_path = '';						// fix on Windows
 }
