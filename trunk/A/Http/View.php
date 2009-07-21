@@ -10,6 +10,7 @@ class A_Http_View {
 	protected $data = array();
 	protected $filename = null;
 	protected $filename_type = 'templates';
+	protected $filename_scope = 'module';
 	protected $renderer = null;
 	protected $headers = array();
 	protected $cookies = array();
@@ -21,6 +22,7 @@ class A_Http_View {
 	protected $locator = null;
 	protected $load;
 	protected $flash;
+	protected $paths = array();				// cache array of paths calculated by Mapper
 	protected $helpers = array();
 	
 	public function __construct($locator=null) {
@@ -85,6 +87,15 @@ class A_Http_View {
 		return $this->content;
 	}
 
+	public function setFilename($filename) {
+		$this->filename = $filename;
+		return $this;
+	}
+
+	public function getFilename() {
+		return $this->filename;
+	}
+
 	public function setRenderer($renderer) {
 		$this->renderer = $renderer;
 		return $this;
@@ -123,15 +134,17 @@ class A_Http_View {
 			if ($this->locator) {
 				$mapper = $this->locator->get('Mapper');
 				if ($mapper) {
-					$paths = $mapper->getPaths($this->filename_type);
-					$path = $paths[$this->filename_scope];
+					if (! isset($this->paths[$this->filename_type])) {
+						$this->paths[$this->filename_type] = $mapper->getPaths($this->filename_type);
+					}
+					$path = $this->paths[$this->filename_type][$this->filename_scope];
 				} else {
 					$path = $this->filename_type . '/';
 				}
 			} else {
 				$path = $this->filename_type . '/';
 			}
-			$this->content = $this->_include($path . $filename . '.php');
+			$this->content = $this->_include($path . $this->filename . '.php');
 		} elseif ($this->renderer) {
 			if ($this->data) {
 				foreach ($this->data as $name => $value) {

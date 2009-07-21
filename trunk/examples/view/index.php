@@ -30,6 +30,7 @@ $Controller->run($Locator);
 //$Controller->addPreMethod(array('', 'signin', 'index'));
 //$Controller->run($Locator);
  
+/*
 if (! $Response->hasRenderer()) {
     // create a page renderer and load the outer layout page template
     $Template = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/main.html');
@@ -41,7 +42,7 @@ if (! $Response->hasRenderer()) {
         $Layout_name = 'standardlayout';    // or use the default
     }
     // load the layout for just the content area
-    $Layout = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.html');
+    $Layout = new A_Template_Strreplace($ConfigArray['APP'] . 'templates/layout/' . $Layout_name . '.php');
     // set the two possible columns
     $Layout->set('maincontent', $Response->get('maincontent'));
     $Layout->set('rightcol', $Response->get('rightcol'));
@@ -51,3 +52,4 @@ if (! $Response->hasRenderer()) {
 }
 // send response
 echo $Response->render();
+*/
