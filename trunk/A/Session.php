@@ -18,16 +18,20 @@ class A_Session {
 	}
 	
 	public function initNamespace($namespace=null) {
+		if ($namespace) {
+			$this->namespace = $namespace;
+		}
 		if (session_id() != '') {
 			if ($this->namespace) {
+				if (! isset($_SESSION[$this->namespace])) {
+					$_SESSION[$this->namespace] = array();
+				}
 				$this->_data =& $_SESSION[$this->namespace];
 			} else {
 				$this->_data =& $_SESSION;
 			}
 			$this->isstarted = true;	// already started
 			$this->doExpiration();
-		} else {
-			$this->namespace = $namespace;
 		}
 	}
 	
@@ -69,7 +73,7 @@ class A_Session {
 	
 	public function set($name, $value, $count=0) {
 		if ($name) {
-			$this->start($this->namespace);
+			$this->start();
 			if ($value !== null) {
 				$this->_data[$name] = $value;
 			} else {

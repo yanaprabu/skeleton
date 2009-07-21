@@ -8,6 +8,8 @@
 
 class A_Http_View {
 	protected $data = array();
+	protected $filename = null;
+	protected $filename_type = 'templates';
 	protected $renderer = null;
 	protected $headers = array();
 	protected $cookies = array();
@@ -113,8 +115,24 @@ class A_Http_View {
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
 	
-	public function render() {
-		if ($this->renderer) {
+	public function render($filename='') {
+		if ($filename) {
+			$this->filename = $filename;
+		}
+		if ($this->filename) {
+			if ($this->locator) {
+				$mapper = $this->locator->get('Mapper');
+				if ($mapper) {
+					$paths = $mapper->getPaths($this->filename_type);
+					$path = $paths[$this->filename_scope];
+				} else {
+					$path = $this->filename_type . '/';
+				}
+			} else {
+				$path = $this->filename_type . '/';
+			}
+			$this->content = $this->_include($path . $filename . '.php');
+		} elseif ($this->renderer) {
 			if ($this->data) {
 				foreach ($this->data as $name => $value) {
 					if (is_object($this->data[$name]) && method_exists($this->data[$name], 'render')) {
@@ -133,6 +151,10 @@ class A_Http_View {
 		} else {
 			return $this->escape($this->content);
 		}
+	}
+	
+	protected function _include() {
+		include func_get_arg(0);
 	}
 
 	public function __get($name) {
@@ -182,6 +204,7 @@ class A_Http_View {
 	protected function helper($name) {
 		if (! isset($this->helpers[$name])) {
 			$this->helpers[$name] = $this->load()->helper($name);
+			$this->set($name, $this->helpers[$name]);
 		}
 		if (isset($this->helpers[$name])) {
 			return $this->helpers[$name];

@@ -11,24 +11,24 @@ class A_Template {
 	protected $filename = '';
 	
 	public function __construct($filename='', $data=array()) {
-	    $this->filename = $filename;
-	    if ($data) {
-	    	$this->import($data);
-	    }
+		$this->filename = $filename;
+		if ($data) {
+			$this->import($data);
+		}
 	}
 	
 	public function setTemplate($template) {
-	    $this->template = $template;
+		$this->template = $template;
 		return $this;
 	}
 	
 	public function setFilename($filename) {
-	    $this->filename = $filename;
+		$this->filename = $filename;
 		return $this;
 	}
 	
 	public function clear() {
-	    $this->data = array();
+		$this->data = array();
 		return $this;
 	}
 	
@@ -50,27 +50,27 @@ class A_Template {
 	   	return $str;
 	}
 
-    public function get($name) {
-    	return (isset($this->data[$name]) ? $this->data[$name] : null);
-    }
+	public function get($name) {
+		return (isset($this->data[$name]) ? $this->data[$name] : null);
+	}
 
-    public function set($name, $value) {
+	public function set($name, $value) {
 		if ($value !== null) {
 			$this->data[$name] = $value;
 		} else {
 			unset($this->data[$name]);
 		}
-    	return $this;
-    }
-
-    public function import($data) {
-    	$this->data = array_merge($this->data, $data);
 		return $this;
-    }
+	}
 
-    public function has($name) {
-    	return isset($this->data[$name]);
-    }
+	public function import($data) {
+		$this->data = array_merge($this->data, $data);
+		return $this;
+	}
+
+	public function has($name) {
+		return isset($this->data[$name]);
+	}
 
 	public function __toString() {
 		return $this->render();

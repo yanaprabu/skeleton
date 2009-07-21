@@ -11,7 +11,7 @@ class A_Template_Include extends A_Template {
 	public function render() {
 	    extract($this->data);
 		ob_start();
-	    include($this->filename);
+	    include(func_num_args() ? func_get_arg(0) : $this->filename);
 	    return ob_get_clean();
 	}
 
