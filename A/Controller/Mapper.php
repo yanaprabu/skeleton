@@ -48,7 +48,7 @@ class A_Controller_Mapper
 
 	public function setDir($dir) {
 		if ($dir) {
-			$this->dir = $dir . '/';		// paths have trailing slash
+			$this->dir = rtrim($dir, '/') . '/';		// paths have trailing slash
 		} else {
 			$this->dir = $this->default_dir;
 		}
@@ -157,6 +157,7 @@ class A_Controller_Mapper
 	 * @return string
 	 */
 	public function getPaths($type) {
+		$type = rtrim($type, '/') . '/';		// paths have training space
 		$paths['app'] = $this->base_path;
 		$paths['module'] = $paths['app'] . $this->dir;
 		$paths['controller'] = $paths['module'] . $type . $this->class . '/';
