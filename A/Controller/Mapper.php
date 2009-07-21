@@ -25,16 +25,10 @@ class A_Controller_Mapper
 	protected $class_param = 'controller';
 	protected $method_param = 'action';
 	protected $default_method = 'index';
-	protected $map;
 
 	public function __construct($base_path, $default_action) {
 		$this->setBasePath($base_path);
 		$this->default_action = $default_action;
-	}
-
-	public function setMap($map) {
-		$this->map = $map;
-		return $this;
 	}
 
 	public function setBasePath($path) {
@@ -154,6 +148,22 @@ class A_Controller_Mapper
 	 */
 	public function getMethod() {
 		return $this->method;
+	}
+
+	/**
+	 * return array of paths to MVC type (e.g. controllers, models, views, helpers)
+	 *
+	 * @param string $type
+	 * @return string
+	 */
+	public function getPaths($type) {
+		$paths['app'] = $this->base_path;
+		$paths['module'] = $paths['app'] . $this->dir;
+		$paths['controller'] = $paths['module'] . $type . $this->class . '/';
+		$paths['action'] = $paths['controller'] . ($this->method ? "$this->method/" : '');
+		$paths['app'] .= $type;
+		$paths['module'] .= $type;
+		return $paths;
 	}
 
 	/**

@@ -16,7 +16,7 @@ class A_Controller_Helper_Flash {
 	public function __construct($locator){
 		$this->locator = $locator;
 		if ($locator) {
-			$this->session = $locator->get('Session', 'A_Session', __CLASS__);
+			$this->session = $locator->get('Session', 'A_Session', null, __CLASS__);
 		}
 	}
 	 

@@ -54,15 +54,19 @@ class A_Controller_Helper_Load {
 	 */
 	public function setMapper($mapper){
 		if ($mapper) {
-			$type = '%s';
+#			$type = '%s';
 			$this->action = $mapper->getClass();
 			$this->method = $mapper->getMethod();
+			$this->paths = $mapper->getPaths('%s');	// get paths array with sprintf placeholder
+/*
 			$this->paths['app'] = $mapper->getBasePath();
 			$this->paths['module'] = $this->paths['app'] . $mapper->getDir();
 			$this->paths['controller'] = $this->paths['module'] . $type . $this->action . '/';
 			$this->paths['action'] = $this->paths['controller'] . ($this->method ? "$this->method/" : '');
 			$this->paths['app'] .= $type;
 			$this->paths['module'] .= $type;
+*/
+#dump($this->paths);
 		}
 		return $this;
 	}

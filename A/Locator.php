@@ -60,7 +60,14 @@ class A_Locator {
 		return $this;
 	}
 
-	public function loadClass($class='', $dir='', $autoload=false) {
+	/**
+	 * Load class using PEAR name to path rules. 
+	 *
+	 * @param string $class name
+	 * @param string $dir from which to load class
+	 * @param boolean $autoload triggered when class_exists() check done?
+	 * @return unknown
+	 */public function loadClass($class='', $dir='', $autoload=false) {
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
@@ -94,11 +101,20 @@ class A_Locator {
 		return $result && class_exists($class, $autoload);
 	}
 
+	/**
+	 * Get object from registery by name. If name does not exist and class given then will attempt to load/instatiate
+	 * baseclass is used to lookup DI information, if baseclass is '*' then it will search for info by parent classes/interfaces 
+	 *
+	 * @param string $name
+	 * @param string $class
+	 * @param string $baseclass
+	 * @return unknown
+	 */
 	public function get($name='', $class='', $baseclass='') {
 
 		$param = null;
-		if (func_num_args() > 2) {
-			$param = array_slice(func_get_args(), 2);	// get params after name/clas/dir
+		if (func_num_args() > 3) {
+			$param = array_slice(func_get_args(), 3);	// get params after name/clas/dir
 			// if only one param then pass the param rather than an array of params
 			if (count($param) == 1) {
 				$param = $param[0];
@@ -122,16 +138,20 @@ class A_Locator {
 		}
 	}
 
+	/**
+	 * load class and create instance
+	 *
+	 * @param string $class
+	 * @param string $baseclass is the name to lookup in DI registry, or '*' to search parent classes/interfaces
+	 * @return object instantiated
+	 */
 	public function newInstance($class='', $baseclass='') {
 		$obj = null;
 		// get dir and clear
 		if ($class) {
 			$param = null;
-			if (! $baseclass) {
-				$baseclass = $class;
-			}
 			if (func_num_args() > 2) {
-				$param = array_slice(func_get_args(), 1);	// get params after $class
+				$param = array_slice(func_get_args(), 2);	// get params after $class
 				// if only one param then pass the param rather than an array of params
 				if (count($param) == 1) {
 					$param = $param[0];
@@ -139,6 +159,17 @@ class A_Locator {
 			}
 
 			if ($this->loadClass($class)) {
+				if (! $baseclass) {					// no base class then lookup by class
+					$baseclass = $class;
+				} elseif ($baseclass == '*') {		// wildcard the search for class TODO: use regexp here? 
+					$baseclass = $class;
+					$classes = array_merge(class_parents($class), class_implements($class));
+					foreach ($classes as $c) {
+						if (isset($this->_inject[$c])) {
+							$baseclass = $c;
+						}
+					}
+				}
 				// do constructor injection here
 				if (isset($this->_inject[$baseclass])) {
 					$inject = array();
