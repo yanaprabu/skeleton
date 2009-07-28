@@ -8,9 +8,10 @@
 
 class A_Http_View {
 	protected $data = array();
-	protected $filename = null;
-	protected $filename_type = 'templates';
-	protected $filename_scope = 'module';
+	protected $template = null;
+	protected $template_type = 'templates';
+	protected $template_scope = 'module';
+	protected $template_set = '';
 	protected $renderer = null;
 	protected $headers = array();
 	protected $cookies = array();
@@ -87,13 +88,13 @@ class A_Http_View {
 		return $this->content;
 	}
 
-	public function setFilename($filename) {
-		$this->filename = $filename;
+	public function setTemplate($template) {
+		$this->template = $template;
 		return $this;
 	}
 
-	public function getFilename() {
-		return $this->filename;
+	public function getTemplate() {
+		return $this->template;
 	}
 
 	public function setRenderer($renderer) {
@@ -126,25 +127,39 @@ class A_Http_View {
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
 	
-	public function render($filename='') {
-		if ($filename) {
-			$this->filename = $filename;
-		}
-		if ($this->filename) {
-			if ($this->locator) {
-				$mapper = $this->locator->get('Mapper');
-				if ($mapper) {
-					if (! isset($this->paths[$this->filename_type])) {
-						$this->paths[$this->filename_type] = $mapper->getPaths($this->filename_type);
-					}
-					$path = $this->paths[$this->filename_type][$this->filename_scope];
-				} else {
-					$path = $this->filename_type . '/';
+	public function _getPath($template) {
+		// if Locator set by FC then we can get the Mapper
+		if ($this->locator) {
+			$mapper = $this->locator->get('Mapper');
+			if ($mapper) {
+				// get paths array if not cached
+				if (! isset($this->paths[$this->template_type])) {
+					$this->paths[$this->template_type] = $mapper->getPaths($this->template_type);
 				}
-			} else {
-				$path = $this->filename_type . '/';
+				return $this->paths[$this->template_type][$this->template_scope] . $template . '.php';
 			}
-			$this->content = $this->_include($path . $this->filename . '.php');
+		}
+		return $this->template_type . '/' . $template . '.php';
+	}
+	
+	public function renderSet($name, $template) {
+		$set = $this->template_set;
+		$this->template_set = false;
+		$this->data[$name] = $this->render($template);
+		$this->template_set = $set;
+	}
+	
+	public function render($template='') {
+		if (! $template && $this->template) {
+			$template = $this->template;
+		}
+		if ($template) {
+			if ($this->template_set) {
+				// capture template into content buffer
+				$this->content = $this->_include($this->_getPath($template));
+			} else {
+				return $this->escape_output ? $this->escape($this->_include($this->_getPath($template))) : $this->_include($this->_getPath($template));
+			}
 		} elseif ($this->renderer) {
 			if ($this->data) {
 				foreach ($this->data as $name => $value) {
