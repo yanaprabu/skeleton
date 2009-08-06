@@ -1,6 +1,6 @@
 <?php
-echo $this->render('layout/header');
-echo $this->menu;
+echo $this->partial('layout/header');
+echo $this->partialLoop('menu', 'menuitem', $this->menuitems);
 ?>
 	<ol>
 		<li><a href="?controller=example">Default controller, no action specified.</a></li>
