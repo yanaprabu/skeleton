@@ -12,7 +12,6 @@ class A_Http_View {
 	protected $template_type = 'templates';
 	protected $template_scope = 'module';
 	protected $content = '';				// buffer set manually or by render()
-	protected $content_set = true;			// set content property in render()
 	protected $renderer = null;
 	protected $headers = array();
 	protected $cookies = array();
@@ -142,29 +141,40 @@ class A_Http_View {
 		return $this->template_type . '/' . $template . '.php';
 	}
 	
-	public function renderSet($name, $template) {
-		$this->data[$name] = $this->partial($template);
-	}
-	
 	public function partial($template) {
 		$template = $this->_getPath($template);
 		return $this->escape_output ? $this->escape($this->_include($template)) : $this->_include($template);
 	}
 	
-	public function render($template='', $content_set=true) {
+	public function partialLoop($template, $name, $data=null) {
+		$template = $this->_getPath($template);
+		$str = '';
+		if ($data) {
+			// $name and $data set so each element in $data set to $name
+			foreach ($data as $value) {
+				$this->data[$name] = $value;
+				$str .= $this->_include($template);
+			}
+		} else {
+			// $name but not $data, so $name contains $data. set() to $keys in each element array
+			foreach ($name as $data) {
+				if (is_array($data)) {
+					foreach ($data as $key => $value) {
+						$this->data[$key] = $value;
+					}
+				}
+				$str .= $this->_include($template);
+			}
+		}
+		return $this->escape_output ? $this->escape($str) : $str;
+	}
+	
+	public function render($template='') {
 		if (! $template && $this->template) {
 			$template = $this->template;
 		}
 		if ($template) {
 			$this->content = $this->_include($this->_getPath($template));
-/*
-			if ($content_set) {
-				// capture template into content buffer
-				$this->content = $this->_include($this->_getPath($template));
-			} else {
-				return $this->partial($template);
-			}
-*/
 		} elseif ($this->renderer) {
 			if ($this->data) {
 				foreach ($this->data as $name => $value) {
