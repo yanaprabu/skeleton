@@ -1,5 +1,6 @@
 <?php
-$this->render('layout/header');
+echo $this->render('layout/header');
+echo $this->menu;
 ?>
 	<ol>
 		<li><a href="?controller=example">Default controller, no action specified.</a></li>
@@ -9,5 +10,5 @@ $this->render('layout/header');
 		<li><a href="?module=module1&controller=example&action=bar">Module and controller, specific action specified.</a></li>
 	</ol>
 <?php
-$this->render('layout/footer');
+echo $this->partial('layout/footer');
 ?>
