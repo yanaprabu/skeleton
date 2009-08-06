@@ -143,7 +143,7 @@ class A_Http_View {
 	}
 	
 	public function renderSet($name, $template) {
-		$this->data[$name] = $this->render($template, false);
+		$this->data[$name] = $this->partial($template);
 	}
 	
 	public function partial($template) {
@@ -156,12 +156,15 @@ class A_Http_View {
 			$template = $this->template;
 		}
 		if ($template) {
+			$this->content = $this->_include($this->_getPath($template));
+/*
 			if ($content_set) {
 				// capture template into content buffer
 				$this->content = $this->_include($this->_getPath($template));
 			} else {
 				return $this->partial($template);
 			}
+*/
 		} elseif ($this->renderer) {
 			if ($this->data) {
 				foreach ($this->data as $name => $value) {
