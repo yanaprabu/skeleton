@@ -11,12 +11,12 @@ class A_Http_View {
 	protected $template = null;
 	protected $template_type = 'templates';
 	protected $template_scope = 'module';
-	protected $template_set = '';
+	protected $content = '';				// buffer set manually or by render()
+	protected $content_set = true;			// set content property in render()
 	protected $renderer = null;
 	protected $headers = array();
 	protected $cookies = array();
 	protected $redirect = null;
-	protected $content = '';
 	protected $escape_quote_style = ENT_QUOTES;
 	protected $escape_output = false;
 	protected $character_set = 'UTF-8';
@@ -143,22 +143,24 @@ class A_Http_View {
 	}
 	
 	public function renderSet($name, $template) {
-		$set = $this->template_set;
-		$this->template_set = false;
-		$this->data[$name] = $this->render($template);
-		$this->template_set = $set;
+		$this->data[$name] = $this->render($template, false);
 	}
 	
-	public function render($template='') {
+	public function partial($template) {
+		$template = $this->_getPath($template);
+		return $this->escape_output ? $this->escape($this->_include($template)) : $this->_include($template);
+	}
+	
+	public function render($template='', $content_set=true) {
 		if (! $template && $this->template) {
 			$template = $this->template;
 		}
 		if ($template) {
-			if ($this->template_set) {
+			if ($content_set) {
 				// capture template into content buffer
 				$this->content = $this->_include($this->_getPath($template));
 			} else {
-				return $this->escape_output ? $this->escape($this->_include($this->_getPath($template))) : $this->_include($this->_getPath($template));
+				return $this->partial($template);
 			}
 		} elseif ($this->renderer) {
 			if ($this->data) {
@@ -174,15 +176,13 @@ class A_Http_View {
 				$this->content = $this->renderer->render();
 			}
 		}
-		if (! $this->escape_output) {
-			return $this->content;
-		} else {
-			return $this->escape($this->content);
-		}
+		return $this->escape_output ? $this->escape($this->content) : $this->content;
 	}
 	
 	protected function _include() {
+		ob_start();
 		include func_get_arg(0);
+		return ob_get_clean();
 	}
 
 	public function __get($name) {
