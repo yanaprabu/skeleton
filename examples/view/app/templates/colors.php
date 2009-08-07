@@ -1,0 +1,1 @@
+<span style="border:1px solid black;"><?php echo $this->id . '. ' . $this->color; ?></span>
