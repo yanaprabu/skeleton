@@ -12,5 +12,12 @@ class example extends A_Controller_Action {
 								));	
 		echo $view->render();
 	}
+	
+	function simpletemplate($locator) {
+		$view = $this->_load()->view();
+		$view->set('title', 'This is the title set in the controller');	
+		echo $view->render();
+	}
+	
 }
 
