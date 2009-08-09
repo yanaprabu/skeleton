@@ -1,0 +1,10 @@
+<h1>Template Classes</h1>
+<p>A template class is any class with render() and set() methods. Skeleton provides several simple template classes, plus Adapters to popular template systems. You can wrap any template code you like with a render() and set() method, and use it as a renderer in the Skeleton framework. </p>
+<ul>
+	<li><h3>PHP include templates - A_Template_Include</h3>
+	This template class will include a PHP template return the output as a string.
+	</li>
+	<li><h3>String tag replacement templates - A_Template_Strreplace</h3>
+	This template class will include a HTML template file. Tags in braces in the format {tagname} will be replace with set() values using str_replace(). The result is returned as a string by the render() method.
+	</li>
+</ul>
