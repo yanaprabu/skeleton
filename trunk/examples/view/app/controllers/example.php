@@ -19,5 +19,13 @@ class example extends A_Controller_Action {
 		echo $view->render();
 	}
 	
+	function needsdifferenttemplate($locator) {
+		$view = $this->_load()->view();
+		$view->set('title', 'This is the needsdifferenttemplate title set in the controller');	
+		$view->set('content', 'This is the content set in the action needsdifferenttemplate');
+		$view->setTemplate('differenttemplate');
+		
+		echo $view->render();
+	}
 }
 
