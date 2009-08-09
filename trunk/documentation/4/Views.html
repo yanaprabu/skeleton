@@ -2,13 +2,67 @@
 <p class="devnote">What are Views and what are templates?</p>
 
 <h3>Renderers and Rendering</h3>
-<p>Any class that provides a render() method can act as a renderer. The Response and View use this polymorphism to enable renders to be attached in any arrangement. A number of classes provide a setRenderer() that allows the render to be set at run-time. </p>
+<p>Any class that provides a render() and set() methods can act as a renderer. The Response and View use this polymorphism to enable renders to be attached in any arrangement. A number of classes provide a setRenderer() that allows the render to be set at run-time. </p>
 
 
-<h2>Difference between views and templates</h2>
-
-
+<h2>Difference between Views and templates</h2>
+<p>Both View and template classes have a render() method that returns the output. Views add the ability to:
+<ol>
+	<li>set HTTP headers with the setHeader() method</li>
+	<li>set redirects with the setRedirect() method</li>
+	<li>the renderer used by the render() method can be replaced with any View or template object (or any object with set() and render() methods)</li>
+</ol>
+</p>
 <h2>View functionality</h2>
+<p>The base View class in Skeleton is A_Http_View. There is also a A_Http_Response (that extends A_Http_View) for use as the root View object. It can be used as a View, plus it gathers and outputs HTTP headers in addition to the output. </p>
+<p>The View class has three ways to produce output:</p>
+<ol>
+	<li>
+		<h3>Set the internal content buffer directly</h3>
+		<p>You may set the buffer directly using the setContent() method. The method takes a string that will be returned when render() is called. </p>
+		<pre class="prettyprint lang-php">
+&lt;?php
+include_once 'A/Http/View.php';
 
+$view = new A_Http_View();
+$view->setContent('Hello world!');
+echo $view->render();
+// Output: Hello world!</pre>
+	</li>
+	<li>
+		<h3>Specify a PHP template to be included</h3>
+		<p>You may specify a PHP template using the setTemplate() method. The method takes a string that is the base name of the template requested. For example, calling setTemplate('foo') will load 'templates/foo.php'. Varibles can be made available by calling the set() method. The output of the included PHP template will be returned when render() is called. </p>
+		File: templates/foo.php
+		<pre class="prettyprint lang-php">Hello <?php echo $this->bar; ?>!</pre>
+		<pre class="prettyprint lang-php">
+&lt;?php
+include_once 'A/Http/View.php';
 
+$view = new A_Http_View();
+$view->setTemplate('foo');
+$view->set('bar', 'world');
+echo $view->render();
+// Output: Hello world!</pre>
+	</li>
+		<h3>Give the View a renderer object to render the output</h3>
+		<p>You may give the View an object to render the output using the setrenderer() method. The method takes an object that will has render() and set methods. When the View render method is called, it proxies the call to the renderer's render() method. </p>
+		File: templates/foo.html<pre class="prettyprint lang-php">Hello {bar}!</pre>
+		<pre class="prettyprint lang-php">
+&lt;?php
+include_once 'A/Template/Strreplace.php';
+include_once 'A/Http/View.php';
+
+// create a template object to render the template
+$template = new A_Template_Strreplace('templates/foo.html');
+$template->set('bar', 'world');
+
+$view = new A_Http_View();
+$view->setRenderer($template);		// set the template as the View's renderer
+echo $view->render();				// calls $template->render() and returns output
+// Output: Hello world!</pre>
+	</li>
+</ol>
+<h2>The Response</h2>
+<p>The A_Http_Response class extends A_Http_View class, so it may be used as the root View object if you have a tree of Views/templates. Or it can be used as the only View object in a single View object solution. The Response is different from the View class in that its render() method gathers and outputs HTTP headers in addition to normal output. </p>
 <h2>Templates</h2>
+<p>A template class is any class with render() and set() methods. Skeleton provides several simple template classes, plus Adapters to popular template systems (See section Template Classes). You can wrap any template code you like with a render() and set() method, and use it as a renderer in the Skeleton framework. </p>
