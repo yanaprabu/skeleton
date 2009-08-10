@@ -45,7 +45,7 @@ echo $view->render();
 // Output: Hello world!</pre>
 	</li>
 		<h3>Give the View a renderer object to render the output</h3>
-		<p>You may give the View an object to render the output using the setrenderer() method. The method takes an object that will has render() and set methods. When the View render method is called, it proxies the call to the renderer's render() method. </p>
+		<p>You may give the View an object to render the output using the setRenderer() method. The method takes an object that will have render() and set() methods. When the View render() method is called, it proxies the call to the renderer's render() method. </p>
 		File: templates/foo.html<pre class="prettyprint lang-php">Hello {bar}!</pre>
 		<pre class="prettyprint lang-php">
 &lt;?php
