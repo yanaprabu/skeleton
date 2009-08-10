@@ -11,9 +11,14 @@ echo $this->partialLoop('menu', 'menuitem', $this->menuitems);
 </ul>
 
 
-<p>The content</p>
-
-
+<h3>About this example</h3>
+<p>The goals of this example are:</p>
+<ol>
+	<li>To show the three View modes: <b>setContent()</b>, <b>setTemplate()</b> and <b>setRenderer()</b></li>
+	<li>To show using the various methods of the View, such as <b>partial()</b>, <b>partialLoop()</b>, <b>set()</b>, <b>get()</b>.</li>
+	<li>To show working together with the Response for layouts. So, using the default layout, replacing the default layout, replacing default sidebars, etc.</li>
+	<li>To show setting <b>headers</b> and <b>redirects</b>.</li>
+</ol>
 	
 <?php
 // partial loop with single parameter which is an array of assoc arrays
