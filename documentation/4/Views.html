@@ -33,7 +33,7 @@ echo $view->render();
 		<h3>Specify a PHP template to be included</h3>
 		<p>You may specify a PHP template using the setTemplate() method. The method takes a string that is the base name of the template requested. For example, calling setTemplate('foo') will load 'templates/foo.php'. Varibles can be made available by calling the set() method. The output of the included PHP template will be returned when render() is called. </p>
 		File: templates/foo.php
-		<pre class="prettyprint lang-php">Hello <?php echo $this->bar; ?>!</pre>
+		<pre class="prettyprint lang-php">Hello &lt;?php echo $this->bar; ?&gt;!</pre>
 		<pre class="prettyprint lang-php">
 &lt;?php
 include_once 'A/Http/View.php';
