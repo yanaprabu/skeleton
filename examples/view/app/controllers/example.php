@@ -30,15 +30,17 @@ class example extends A_Controller_Action {
 	
 	function actionsetscontent($locator) {
 		$view = $this->_load()->view();
-		$view->setContent('This is the content set in the action actionsetscontent');	dump($view);
+		//$view = new A_Http_View();
+		$view->setTemplate('');
+		$view->setContent('This is the content set in the action actionsetscontent');	//dump($view);
 		echo $view->render();	
 	}
 	
 	function actionsetsrenderer($locator) {
 		//$view = $this->_load()->view();
 		
-		$template = $this->_load()->template('setsrenderertemplate');
-		$template->set('bar', 'foo');//dump($template);
+		$template = $this->_load()->template('setsrenderertemplate.html');
+		$template->set('content', 'foo');//dump($template);
 		
 		$view = new A_Http_View();
 		$view->setRenderer($template);//dump($view);	
