@@ -19,6 +19,8 @@ echo $this->partialLoop('menu', 'menuitem', $this->menuitems);
 	<li>To show working together with the Response for layouts. So, using the default layout, replacing the default layout, replacing default sidebars, etc.</li>
 	<li>To show setting <b>headers</b> and <b>redirects</b>.</li>
 </ol>
+
+<p>In the menu above are a few different actions showing a couple of things</p>
 	
 <?php
 // partial loop with single parameter which is an array of assoc arrays
