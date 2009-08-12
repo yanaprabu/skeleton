@@ -24,6 +24,7 @@ class A_Http_View {
 	protected $flash;
 	protected $paths = array();				// cache array of paths calculated by Mapper
 	protected $helpers = array();
+	protected $use_local_vars = true;
 	
 	public function __construct($locator=null) {
 		$this->locator = $locator;
@@ -41,6 +42,11 @@ class A_Http_View {
 
 	public function setEscape($escape_output) {
 		$this->escape_output = $escape_output;
+		return $this;
+	}
+
+	public function useLocalVars($use_local_vars) {
+		$this->use_local_vars = $use_local_vars;
 		return $this;
 	}
 
@@ -194,6 +200,7 @@ class A_Http_View {
 	
 	protected function _include() {
 		ob_start();
+		if ($this->use_local_vars) extract($this->data, EXTR_REFS);
 		include func_get_arg(0);
 		return ob_get_clean();
 	}
