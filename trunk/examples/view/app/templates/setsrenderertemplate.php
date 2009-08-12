@@ -10,12 +10,6 @@ echo $this->partialLoop('menu', 'menuitem', $this->menuitems);
 ?>
 </ul>
 
-<h3>This is a different template</h3>
+
+<h3>This is a setsrenderer template</h3>
 <p><?php echo $this->get('content'); ?></p>
-
-
-	
-<?php
-// partial for the footer template
-echo $this->partial('layout/footer');
-?>
