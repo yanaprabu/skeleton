@@ -8,13 +8,9 @@ class home extends A_Controller_Action {
 	
 	function index($locator) {
 		$content = '
-	<html>
-	<body>
-		<h2>Home Page Action</h2>
-	</body>
-	</html>
+	This is the content for the home page.
 	';
-		$this->response->setContent($content);
+		$this->response->set('maincontent', $content);
 	}
 
 }

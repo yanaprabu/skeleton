@@ -18,7 +18,7 @@ class posts extends A_Controller_Action {
 			$content = $model->single();
 			$template = $this->_load()->template('singlePost');
 			$template->set('content', $content);
-			$maincontent = $template->render();
+#			$maincontent = $template->render();
 			
 			$this->response->set('maincontent', $template);
 			$this->response->set('subcontent','This is the subcontent');
