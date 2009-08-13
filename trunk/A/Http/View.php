@@ -10,6 +10,7 @@ class A_Http_View {
 	protected $data = array();
 	protected $template = null;
 	protected $template_type = 'templates';
+	protected $template_path = 'templates';
 	protected $template_scope = 'module';
 	protected $content = '';				// buffer set manually or by render()
 	protected $renderer = null;
@@ -93,8 +94,19 @@ class A_Http_View {
 		return $this->content;
 	}
 
-	public function setTemplate($template) {
+	public function setTemplate($template, $scope='') {
 		$this->template = $template;
+		if ($scope) $this->template_scope = $scope;
+		return $this;
+	}
+
+	public function setTemplateScope($scope) {
+		$this->template_scope = $scope;
+		return $this;
+	}
+
+	public function setTemplatePath($path) {
+		$this->template_path = $path;
 		return $this;
 	}
 
@@ -144,7 +156,7 @@ class A_Http_View {
 				return $this->paths[$this->template_type][$this->template_scope] . $template . '.php';
 			}
 		}
-		return $this->template_type . '/' . $template . '.php';
+		return $this->template_path . '/' . $template . '.php';
 	}
 	
 	public function partial($template) {
@@ -175,10 +187,11 @@ class A_Http_View {
 		return $this->escape_output ? $this->escape($str) : $str;
 	}
 	
-	public function render($template='') {
+	public function render($template='', $scope='') {
 		if (! $template && $this->template) {
 			$template = $this->template;
 		}
+		if ($scope) $this->template_scope = $scope;
 		if ($template) {
 			$this->content = $this->_include($this->_getPath($template));
 		} elseif ($this->renderer) {
