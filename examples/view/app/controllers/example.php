@@ -32,7 +32,7 @@ class example extends A_Controller_Action {
 		$view = $this->_load()->view();
 		//$view = new A_Http_View();
 		$view->setTemplate('');
-		$view->setContent('This is the content set in the action actionsetscontent');	//dump($view);
+		$view->setContent('<p>This is the content set in the action actionsetscontent</p><p>Click the back button to return to the example.</p>');
 		echo $view->render();	
 	}
 	
@@ -40,10 +40,10 @@ class example extends A_Controller_Action {
 		//$view = $this->_load()->view();
 		
 		$template = $this->_load()->template('setsrenderertemplate.html');
-		$template->set('content', 'foo');//dump($template);
+		$template->set('content', 'This is content set in the the action actionsetsrenderer.');
 		
 		$view = new A_Http_View();
-		$view->setRenderer($template);//dump($view);	
+		$view->setRenderer($template);	
 		echo $view->render();	
 	}	
 
