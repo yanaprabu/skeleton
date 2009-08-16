@@ -28,14 +28,15 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Abstract	{
     }
 
     public function getItems($start, $length) {
-    	$counter = 0;
+    	$counter = 1;
         $rows = array();
         $fp = fopen($this->filename, 'r');
         if ($fp) {
-            while (!feof($fp) && $counter < $begin) {
+            while (!feof($fp) && $counter < $start) {
                 fgets($fp, 4096);
                 ++$counter;
             }
+            $end = $start + $length;
             while (!feof($fp) && $counter < $end) {
                 $rows[] = array('line' => fgets($fp, 4096));
                 ++$counter;
@@ -45,5 +46,10 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Abstract	{
         return $rows;
     }
 
+	public function setOrderBy($field, $descending = 0)	{
+	}
+
+	public function constructOrderBy()	{
+	}
 }
 

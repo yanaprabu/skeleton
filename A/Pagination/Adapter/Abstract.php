@@ -25,7 +25,7 @@ abstract class A_Pagination_Adapter_Abstract implements A_Pagination_Adapter_Int
 	public function getNumItems()	{
 	}
 
-	public function setOrderByField ($field, $descending = 0)	{
+	public function setOrderBy ($field, $descending = 0)	{
 		$this->order_field = $field;
 		$this->order_descending = ($descending === 0 ? 0 : 1);
 	}
