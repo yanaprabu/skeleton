@@ -33,8 +33,14 @@ class A_Sql_Join {
 				return;
 			}
 			foreach($argument1 as $column1 => $column2) {
-				$column1 = $this->prependTableAlias($join['table1'], $column1);
-				$column2 = $this->prependTableAlias($join['table2'], $column2);
+				// check if the is a quoted string rather than a column name
+				if (substr($column1, 0, 1) != "'") {
+					$column1 = $this->prependTableAlias($join['table1'], $column1);
+				}
+				// check if the is a quoted string rather than a column name
+				if (substr($column2, 0, 1) != "'") {
+					$column2 = $this->prependTableAlias($join['table2'], $column2);
+				}
 				$this->joins[$joinkey]['on']->addExpression($column1, $column2);
 			}
 		} else {
@@ -47,8 +53,12 @@ class A_Sql_Join {
 				$argument1 = $argument2;
 				$argument2 = $argument3;
 			}
-			$argument1 = $this->prependTableAlias($join['table1'], $argument1);
-			$argument2 = $this->prependTableAlias($join['table2'], $argument2);
+			if (substr($argument1, 0, 1) != "'") {
+				$argument1 = $this->prependTableAlias($join['table1'], $argument1);
+			}
+			if (substr($argument2, 0, 1) != "'") {
+				$argument2 = $this->prependTableAlias($join['table2'], $argument2);
+			}
 			$join['on']->addExpression($logic, $argument1, $argument2);
 		}
 	}
