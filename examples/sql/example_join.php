@@ -19,7 +19,14 @@ $select = new A_Sql_Select();
 echo $select
 	->columns()
 	->from('tablefoo')
-	->join('foo0', 'bar0', 'LEFT')->on('column5', 'column6')
+	->join('foo0', 'bar0', 'LEFT')->on('column5', "column6")
 	->where('foo', 'bar');
 echo "\n<br/>\n";
-	
+
+$select = new A_Sql_Select();
+echo $select
+	->columns()
+	->from('tablefoo')
+	->join('foo0', 'bar0', 'LEFT')->on('column5', "'some value'")
+	->where('foo', 'bar');
+echo "\n<br/>\n";
