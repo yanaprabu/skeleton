@@ -221,8 +221,8 @@ class A_Controller_Mapper
 	 */
 	public function setRoute($route) {
 		$route = $this->buildRoute($route);
-#		$this->setDir($route[0]);
-		$this->dir = $route[0];
+		$this->setDir($route[0]);
+#		$this->dir = $route[0];
 		$this->class = $route[1];
 		$this->method = $route[2];
 		return $this;
