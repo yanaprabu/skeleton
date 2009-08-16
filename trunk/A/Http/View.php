@@ -31,6 +31,10 @@ class A_Http_View {
 		$this->locator = $locator;
 	}
 	
+	public function setLocator($locator) {
+		$this->locator = $locator;
+	}
+	
 	public function setCharacterSet($character_set) {
 		$this->character_set = $character_set;
 		return $this;

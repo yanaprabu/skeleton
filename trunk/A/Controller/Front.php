@@ -146,6 +146,9 @@ class A_Controller_Front {
 			include_once 'A/Http_Request.php';
 			$locator->set('Request', new A_Http_Request());
 		}
+		if ($locator->has('Response')) {
+			$locator->get('Response')->setLocator($locator);
+		}
 		
 		// route passed as 1st param to contstructor, create a mapper
 		if (! is_object($this->mapper)) {
