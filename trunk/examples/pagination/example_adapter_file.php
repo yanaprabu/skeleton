@@ -35,7 +35,6 @@ $view
 // display the data
 echo "<div>{$view->render()}</div>";
 echo '<table border="1">';
-echo '<tr><th>' . $view->link()->order('', 'Row') . '</th><th>' . $view->link()->order('title', 'Title') . '</th><th>' . $view->link()->order('month', 'Month') . '</th></tr>';
 $n = 1;
 foreach ($rows as $value) {
 	echo '<tr>';
