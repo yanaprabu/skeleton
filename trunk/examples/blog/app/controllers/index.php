@@ -1,6 +1,6 @@
 <?php
 
-class home extends A_Controller_Action {
+class index extends A_Controller_Action {
 
 	function __construct($locator) {
 		parent::__construct($locator);
@@ -8,7 +8,7 @@ class home extends A_Controller_Action {
 	
 	function index($locator) {
 		$content = '
-	This is the content for the home page.
+	This is the content for the Application index page.
 	';
 		$this->response->set('maincontent', $content);
 	}

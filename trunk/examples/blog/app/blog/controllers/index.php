@@ -8,8 +8,8 @@ class index extends A_Controller_Action {
 	
 	/* Default action. Shows latest articles */
 	function index($locator) {
-		$this->response->set('maincontent', 'This is the maincontent for the blog index');
-		$this->response->set('subcontent', 'This is the subcontent for the blog index');
+		$this->response->set('maincontent', 'This is the maincontent for the Blog index page. ');
+		$this->response->set('subcontent', 'This is the subcontent for the blog index page. ');
 
 	}
 
