@@ -2,6 +2,7 @@
 /**
  * Class for connecting to SQL databases and performing common database operations.
  *
+ * @package A_Db
  */
 class A_Db_Wrapper_Abstract
 {

@@ -2,6 +2,11 @@
 include_once 'A/User/Session.php';
 include_once 'A/User/Rule/Ingroup.php';
 
+/**
+ * Front Controller pre-filter for group based access control 
+ * 
+ * @package A_User 
+ */
 class A_User_Prefilter_Group {
 	
 	protected $session;

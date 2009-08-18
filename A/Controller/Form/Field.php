@@ -1,6 +1,11 @@
 <?php
 include_once 'A/Html/Form/Field.php';
 
+/**
+ * 
+ * @package A_Controller
+ * @subpackage Form
+ */
 class A_Controller_Form_Field {
 	protected $func_param = null;
 	protected $db = null;

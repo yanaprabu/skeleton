@@ -1,6 +1,10 @@
 <?php
 
-class Join	{
+/**
+ * 
+ * @package A_Orm
+ */
+class A_Orm_DataMapper_Join	{
 
 	public function __construct($table1, $table2, $type='inner')	{
 		$this->table1 = $table1;

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * 
+ * 
+ * @package Misc 
+ */
 class DirectoryBrowser {
 protected $param_path = 'browse_path';
 protected $param_area = 'browse_area';

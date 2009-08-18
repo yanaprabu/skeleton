@@ -5,6 +5,7 @@
  * Provides class loading and instantiation within the application directory
  * 
  * @package A_Controller
+ * @subpackage Helper
  */
 
 class A_Controller_Helper_Load {

@@ -1,5 +1,8 @@
-<?php
+?php
 
+/**
+ * @package A_Pager
+ */
 interface A_Pager_IDataContainer	{
 	
 	public getNumRows();

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Null datasource access class for pager  
+ * 
+ * @package A_Pagination
+ */
 class A_Pagination_Adapter_Null implements A_Pagination_Adapter_Interface	{
 
 	protected $numItems = 0;
