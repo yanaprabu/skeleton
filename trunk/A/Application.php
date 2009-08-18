@@ -2,6 +2,7 @@
 /**
  *  Wrap bootstrap in a class that has configuration settings
  * 
+ * @author John Cartwright
  * @package A 
  */
 

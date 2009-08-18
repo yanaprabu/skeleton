@@ -16,7 +16,7 @@ class A_Delimited_Writer extends A_Delimited_Abstract {
 	
 	/**
 	 * @param row - array of data to be written to line in file
-	 * @type mixed - false for error or length of string written
+	 * @return mixed - false for error or length of string written
 	 */
 	public function write($row) {
 		if (! $this->handle) {
@@ -33,7 +33,7 @@ class A_Delimited_Writer extends A_Delimited_Abstract {
  
 	/**
 	 * @param rows - array of line arrays to be written to file
-	 * @type mixed - false for error or number of lines written
+	 * @return mixed - false for error or number of lines written
 	 */
 	public function save($rows=null) {
 		if (! $rows) {

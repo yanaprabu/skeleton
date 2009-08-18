@@ -23,8 +23,9 @@ class A_Pagination_Core	{
 	protected $orderByDirection = 'asc';
 
 	/**
-	 * @param
-	 * @type
+	 * @param $datasource object
+	 * @param $pageSize integer
+	 * @param $currentPage integer
 	 */
 	public function __construct(A_Pagination_Adapter_Interface $datasource, $pageSize=0, $currentPage=0)	{
 		$this->datasource = $datasource;
@@ -37,16 +38,15 @@ class A_Pagination_Core	{
 	}
 
 	/**
-	 * @param
-	 * @type array - of items
+	 * @return array - of items
 	 */
 	public function getItems()	{
 		return $this->datasource->getItems($this->getFirstItem(), $this->pageSize);
 	}
 
 	/**
-	 * @param
-	 * @type integer - number of total items
+	 * @param $numItems integer number of items in the datasource
+	 * @return $this for fluent interface
 	 */
 	public function setNumItems($numItems)	{
 		$this->numItems = $numItems;
@@ -54,8 +54,7 @@ class A_Pagination_Core	{
 	}
 
 	/**
-	 * @param
-	 * @type integer - number of total items
+	 * @return integer - number of total items
 	 */
 	public function getNumItems()	{
 		if ($this->numItems === false) {
@@ -66,7 +65,7 @@ class A_Pagination_Core	{
 
 	/**
 	 * @param integer - number of last page
-	 * @type
+	 * @return $this for fluent interface
 	 */
 	public function setCurrentPage($page)	{
 		if (($page >= $this->getFirstPage()) && ($page <= $this->getLastPage())) {
@@ -75,6 +74,11 @@ class A_Pagination_Core	{
 		return $this;
 	}
 
+	/**
+	 * @param $offset integer offset from current or passed page number
+	 * @param $page integer allows passed page number instead of property
+	 * @return $this for fluent interface
+	 */
 	public function getPage($offset, $page = false)	{
 		if (!$page) $page = $this->currentPage;
 		$page += $offset;
@@ -84,24 +88,21 @@ class A_Pagination_Core	{
 	}
 
 	/**
-	 * @param
-	 * @type integer - number of current page
+	 * @return integer - number of current page
 	 */
 	public function getCurrentPage()	{
 		return $this->currentPage;
 	}
 
 	/**
-	 * @param
-	 * @type integer - number of last page
+	 * @return integer - number of last page
 	 */
 	public function getFirstPage()	{
 		return 1;
 	}
 
 	/**
-	 * @param
-	 * @type integer - number of last page
+	 * @return integer - number of last page
 	 */
 	public function getLastPage()	{
 		// do we cache this value and only recalculate when getItems()/getNumItems called
@@ -116,7 +117,7 @@ class A_Pagination_Core	{
 	/**
 	 * @param $size - number of pages to offset from center
 	 * @param $page - center of range
-	 * @type array - of sequential page numbers
+	 * @return array - of sequential page numbers
 	 */
 	public function getPageRange($offset=false, $page=false)	{
 		if (!$offset) $offset = $this->rangeSize;
@@ -128,23 +129,21 @@ class A_Pagination_Core	{
 	 * @param $page - page number to check
 	 * @param $start - offset relative to current page
 	 * @param $size - number of pages in range
-	 * @type boolean - true if in range, false if not
+	 * @return boolean - true if in range, false if not
 	 */
 	public function inPageRange ($page, $size=false)	{
 		return in_array ($page, $this->getPageRange ($size));
 	}
 
 	/**
-	 * @param
-	 * @type integer - position of first item on current page
+	 * @return integer - position of first item on current page
 	 */
 	public function getFirstItem()	{
 		return (($this->currentPage - 1) * $this->pageSize) + 1;
 	}
 
 	/**
-	 * @param
-	 * @type integer - position of last item on current page
+	 * @return integer - position of last item on current page
 	 */
 	public function getLastItem()	{
 		$lastItem = $this->getFirstItem() + $this->pageSize - 1;
@@ -156,8 +155,7 @@ class A_Pagination_Core	{
 	}
 
 	/**
-	 * @param
-	 * @type boolean - true if page in range of 1..last page
+	 * @return boolean - true if page in range of 1..last page
 	 */
 	public function isPage($page)	{
 		$page += $this->currentPage;
@@ -170,8 +168,7 @@ class A_Pagination_Core	{
 	}
 
 	/**
-	 * @param
-	 * @type boolean - true if number of pages > 1
+	 * @return boolean - true if number of pages > 1
 	 */
 	public function hasPages()	{
 		return $this->getNumItems() >= $this->pageSize;

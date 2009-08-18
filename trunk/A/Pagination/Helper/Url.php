@@ -16,8 +16,8 @@ class A_Pagination_Helper_Url	{
 	protected $state = array();
 
 	/**
-	 * @param
-	 * @type
+	 * @param $base string domain name and path
+	 * @param $protocol string http or https
 	 */
 	public function __construct ($base = '', $protocol = 'http')	{
 		$this->base = $base;
@@ -25,32 +25,38 @@ class A_Pagination_Helper_Url	{
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param $key string
+	 * @param $value string
+	 * @return $this for fluent interface
 	 */
 	public function set ($key, $value)	{
 		$this->state[$key] = $value;
+		return $this;
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param $base string domain name and path
+	 * @return $this for fluent interface
 	 */
 	public function setBase ($base)	{
 		$this->base = $base;
+		return $this;
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param $protocol string http or https
+	 * @return $this for fluent interface
 	 */
 	public function setProtocol ($protocol)	{
 		$this->protocol = $protocol;
+		return $this;
 	}
 
 	/**
-	 * @param
-	 * @type
+	 * @param $page string specific script name
+	 * @param $params array of name value pairs where keys are name
+	 * @param $ignore array of param names to remove
+	 * @return string full URL
 	 */
 	public function render ($page = false, $params = array(), $ignore = array())	{
 		$params = array_merge ($this->state, $params);
