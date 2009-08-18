@@ -18,7 +18,7 @@ class A_Delimited_Reader extends A_Delimited_Abstract {
 	
 	/**
 	 * @param auto - true to check file before reading to determine delimiter
-	 * @type this - for fluent interface
+	 * @return this - for fluent interface
 	 */
 	public function setAutoConfigure($auto=true) {
 		$this->autoConfigure = $auto;
@@ -26,7 +26,7 @@ class A_Delimited_Reader extends A_Delimited_Abstract {
 	}
 	
 	/**
-	 * @type array of line arrays read
+	 * @return array of line arrays read
 	 */
 	public function read() {
 		if (! $this->handle) {

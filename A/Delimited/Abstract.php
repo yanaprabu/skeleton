@@ -24,7 +24,6 @@ class A_Delimited_Abstract {
 	/**
 	 * @param filename - full path to file to be read
 	 * @param config - optional configuration object
-	 * @type
 	 */
 	public function __construct($filename=null, $config=null) {
 		if ($filename) {
@@ -39,7 +38,7 @@ class A_Delimited_Abstract {
  
 	/**
 	 * @param filename - full path to file to be read
-	 * @type this - for fluent interface
+	 * @return this - for fluent interface
 	 */
 	public function setFilename($filename) {
 		$this->filename = realpath($filename);
@@ -48,7 +47,7 @@ class A_Delimited_Abstract {
 	
 	/**
 	 * @param config - configuration object
-	 * @type this - for fluent interface
+	 * @return this - for fluent interface
 	 */
 	public function setConfig($config) {
 		if (is_array($config)) {
@@ -63,7 +62,7 @@ class A_Delimited_Abstract {
 	
 	/**
 	 * @param filename - full path to file to be read
-	 * @type handle to file opened or false
+	 * @return handle to file opened or false
 	 */
 	protected function open($filename=null) {
 		$this->close();
@@ -77,8 +76,7 @@ class A_Delimited_Abstract {
 	}
 	
 	/**
-	 * @param
-	 * @type
+	 * @return
 	 */
 	public function close() {
 		if ($this->handle && fclose($this->handle)) {
@@ -88,8 +86,7 @@ class A_Delimited_Abstract {
 	}
    
 	/**
-	 * @param
-	 * @type
+	 * @return
 	 */
 	public function rewind() {
 		if ($this->handle) {
@@ -99,8 +96,7 @@ class A_Delimited_Abstract {
 	}
    
 	/**
-	 * @param
-	 * @type
+	 * @return
 	 */
 	public function reset() {
 		$rows = array();
@@ -110,16 +106,20 @@ class A_Delimited_Abstract {
 	}
  
 	/**
-	 * @param
-	 * @type
+	 * @param $item is a reference to the value to unescape
+	 * @param $key not used
+	 * @param $config is a config object
+	 * @return
 	 */
 	protected function _unescape(&$item, $key, $config) {
 		$item = str_replace($config->fieldEscape, '', $item);
 	}
    
 	/**
-	 * @param
-	 * @type
+	 * @param $item is a reference to the value to escape
+	 * @param $key not used
+	 * @param $config is a config object
+	 * @return
 	 */
 	protected function _escape(&$item, $key, $config) {
 		$item = str_replace($config->fieldEnclosure, $config->fieldEscape.$config->fieldEnclosure, $item);

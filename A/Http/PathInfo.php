@@ -1,10 +1,12 @@
 <?php
 /**
- * Parse PATH_INFO and set Request object with values
+ * Parse PATH_INFO based on mapped routes and set the Request object with values
  *
  * @package A_Http
  *
+ */
 
+/*
 This class maps PATH_INFO values onto request vars using an array that describes
 the mappings. The array in in the format of the following example:
 
@@ -35,7 +37,7 @@ of the map, in this map that is '' and 'date'. The [''] array at the level where
 is used for the mapping. The PATH_INFO of "/date/2006/January/1st/" will map to the Request
 as "?controller=date&year=2006&month=January&day=1st" because 'date' matches a key in the map.
 
-*Additional parameters in the PATH_INFO past those defined in the map with be combined in pairs
+Additional parameters in the PATH_INFO past those defined in the map with be combined in pairs
 to request vars. For example, /view/person/Bob/age/42/height/84/ will map the the Reqest as
 "?controller=view&action=person&id=Bob&age=42&height=84". This can be turned off with the
 $map_extra_param_pairs parameter. 
