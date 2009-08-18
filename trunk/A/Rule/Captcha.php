@@ -83,12 +83,17 @@ class A_Rule_Captcha extends A_Rule_Abstract {
 
 }
 
+/**
+ * Generate an image using GD for captcha
+ * 
+ * @package A_Rule
+ */
 class A_Rule_Captcha_Image {
 	protected $captcha;
 	protected $length;
 
-	public function __construct(&$captcha) {
-		$this->captcha =& $captcha;
+	public function __construct($captcha) {
+		$this->captcha = $captcha;
 	}
 	
 	public function out(){

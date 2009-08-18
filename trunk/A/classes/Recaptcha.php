@@ -1,7 +1,7 @@
 <?php
 #require_once('recaptcha/recaptchalib.php');
 
-/*
+/**
  * class acts as both a Rule for Validator and Renderer for View
  * 
  * @package Misc 

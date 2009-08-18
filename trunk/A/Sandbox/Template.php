@@ -9,8 +9,8 @@ class Icebox_Template	{
 	public function __construct ($template, $collection = array(), $callback = null)	{
 		if (file_exists ($template)) $this->template = $template;
 		else throw new Exception ("Template $template doesn't exist");
-		if ($collection instanceof Icebox_Collection) $this->collection = $collection;
-		else $this->collection = new Icebox_Collection ($collection);
+		if ($collection instanceof A_Collection) $this->collection = $collection;
+		else $this->collection = new A_Collection ($collection);
 		$this->callback = $callback;
 	}
 

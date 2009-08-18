@@ -145,6 +145,11 @@ class A_Controller_Input extends A_Controller_Action {
 }
 
 
+/**
+ * Controller class with request filtering and validation
+ *
+ * @package A_Controller
+ */
 class A_Controller_InputParameter {
 	public $name = '';
 	public $value = '';
