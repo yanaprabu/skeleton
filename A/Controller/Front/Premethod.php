@@ -1,13 +1,13 @@
 <?php
-/*
- * Created on Sep 5, 2007
- *
+/**
  * Create object of this class to pass to Front Controller preFilter() method
  * to call the method named $method, if it exists, before action is dispatched.
  * The method may return an array which will be returned to the Front Controller
  * to short circuit dispatch. Or it may return true and then the $change_action 
  * array containing dir/class/method/args is returned. 
  * 
+ * Created on Sep 5, 2007
+ *
  * @package A_Controller
  * @subpackage Front
  */

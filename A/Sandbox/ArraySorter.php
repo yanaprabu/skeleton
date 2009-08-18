@@ -1,6 +1,6 @@
 <?php
 
-class Icebox_Collection_ArraySorter	{
+class A_Collection_ArraySorter	{
 
 	private $key;
 	private $order;

@@ -1,10 +1,10 @@
 <?php
-/*
- * Created on Sep 5, 2007
- *
+/**
  * Create object of this class to pass to Front Controller preFilter() method
  * to set one or more properties in all dispatched Action objects with a given value
  * 
+ * Created on Sep 5, 2007
+ *
  * @package A_Controller
  * @subpackage Front
  */

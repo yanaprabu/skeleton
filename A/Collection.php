@@ -34,11 +34,11 @@ class A_Collection implements Iterator, ArrayAccess	{
 	}
 	
 	function slice ($offset, $length)	{
-		return new Icebox_Collection (array_slice ($this->collection, $offset, $length, true));
+		return new A_Collection (array_slice ($this->collection, $offset, $length, true));
 	}
 	
 	function reverse()	{
-		return new Icebox_Collection (array_reverse ($this->collection, true));
+		return new A_Collection (array_reverse ($this->collection, true));
 	}
 	
 	function has ($key)	{	
@@ -82,9 +82,11 @@ class A_Collection implements Iterator, ArrayAccess	{
 		uasort ($this->collection, array ($sorter, 'compare'));
 	}
 	
+/*
 	function orderBy ($key, $order = 'asc')	{
-		$this->order (new Icebox_Collection_ArraySorter ($key, $order), 'compare'); 
+		$this->order (new A_Collection_ArraySorter ($key, $order), 'compare'); 
 	}
+*/
 	
 	function toString ($glue)	{
 		return $this->join ($glue);
