@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * 
+ * @package A_Orm
+ */
 class A_Orm_Container	{
 
 	protected $db;

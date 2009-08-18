@@ -7,6 +7,9 @@
  * The method may return an array which will be returned to the Front Controller
  * to short circuit dispatch. Or it may return true and then the $change_action 
  * array containing dir/class/method/args is returned. 
+ * 
+ * @package A_Controller
+ * @subpackage Front
  */
 
 class A_Controller_Front_Premethod {

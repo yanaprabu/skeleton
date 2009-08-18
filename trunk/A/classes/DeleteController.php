@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * 
+ * 
+ * @package Misc 
+ */
 class DeleteController {
 	protected $template_file = '';
 	protected $template_block_layout = '';

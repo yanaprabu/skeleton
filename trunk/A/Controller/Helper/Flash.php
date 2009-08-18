@@ -5,6 +5,7 @@
  * special helper provides flash style session variables
  * 
  * @package A_Controller
+ * @subpackage Helper
  */
 
 class A_Controller_Helper_Flash {

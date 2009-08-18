@@ -3,10 +3,9 @@ include_once 'A/Rule/Abstract.php';
 
 /**
  * Rule to check for captcha value
+ * class acts as both a Rule for Validator and Renderer for View
  * 
- * @package A_Rule_Set 
- *
- * class acts as both a Rule for Validaror and Renderer for View
+ * @package A_Rule
  */
 class A_Rule_Captcha extends A_Rule_Abstract {
 	const ERROR = 'A_Rule_Captcha';

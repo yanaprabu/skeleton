@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Standard collection class that has get/set/has, iterator and array access
+ * 
+ * @package A 
+ */
 class A_Collection implements Iterator, ArrayAccess	{
 	
 	protected $collection;

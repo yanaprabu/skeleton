@@ -12,7 +12,7 @@
  * @author Christopher Thompson <arborint@sourceforge.net>
  * @library Skeleton
  * @category [color=red]what goes here?[/color]
- * @package A_DataContainer
+ * @package A
  * @version @package_version@
  */
 class A_DataContainer implements Iterator {

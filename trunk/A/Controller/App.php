@@ -1,11 +1,11 @@
 <?php
 include_once 'A/Controller/Input.php';
+
 /**
  * Application controller class for state/transition based action selection
  *
  * @package A_Controller
  */
-
 class A_Controller_App extends A_Controller_Input {
 	protected $state_name = '';
 	protected $state_name_init = '';
@@ -88,6 +88,11 @@ class A_Controller_App extends A_Controller_Input {
 
 }
 
+/**
+ * Application controller class to hold state and callback
+ *
+ * @package A_Controller
+ */
 class A_Controller_App_State {
 	public $name;
 	public $handler;
@@ -99,6 +104,11 @@ class A_Controller_App_State {
 	
 }
 
+/**
+ * Application controller class to hold transition information
+ *
+ * @package A_Controller
+ */
 class A_Controller_App_Transition {
 	public $fromState;
 	public $toState;

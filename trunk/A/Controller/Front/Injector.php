@@ -4,6 +4,9 @@
  *
  * Create object of this class to pass to Front Controller preFilter() method
  * to set one or more properties in all dispatched Action objects with a given value
+ * 
+ * @package A_Controller
+ * @subpackage Front
  */
 
 class A_Controller_Front_Injector {

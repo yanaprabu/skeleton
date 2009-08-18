@@ -5,6 +5,7 @@ require_once 'A/Db/Wrapper/Abstract';
 /**
  * Class for connecting to MySQL databases and performing common database operations.
  *
+ * @package A_Db
  */
 class A_Db_Wrapper_Mysql extends A_Db_Wrapper_Abstract
 {

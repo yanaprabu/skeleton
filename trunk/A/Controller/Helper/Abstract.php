@@ -5,6 +5,7 @@
  * Abstract class to be extended to create application helper classes
  *
  * @package A_Controller
+ * @subpackage Helper
  */
 
 abstract class A_Controller_Helper_Abstract {

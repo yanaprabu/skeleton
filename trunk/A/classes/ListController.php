@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * 
+ * 
+ * @package Misc 
+ */
 class ListController {
 	protected $template_file = '';
 	protected $template_block_layout = 'listing';

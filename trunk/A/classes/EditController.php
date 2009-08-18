@@ -5,6 +5,11 @@ include_once 'A/Controller/Form.php';
 include_once 'A/Controller/Form/Field.php';
 include_once 'A/Filter/Regexp.php';
 
+/**
+ * 
+ * 
+ * @package Misc 
+ */
 class EditController extends A_Controller_Form {
 	protected $template;
 	protected $template_file = '';
