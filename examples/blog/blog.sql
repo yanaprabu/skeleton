@@ -1,46 +1,67 @@
 
+CREATE TABLE `users` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`firstname` varchar(255) NOT NULL,
+	`lastname` varchar(255) NOT NULL,
+	`username` varchar(255) NOT NULL,
+	`password` varchar(255) NOT NULL,
+	`email` varchar(255) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `posts` (
-  `post_id` INT NOT NULL,   			# PK
-  `post_date` datetime NOT NULL,
-  `post_title` varchar(255) NOT NULL,
-  `post_excerpt` varchar(255) NOT NULL,
-  `post_text` text,
-  `user_id` varchar(255) NOT NULL,  	# FK
-  PRIMARY KEY  (`post_id`)
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`postdate` datetime NOT NULL default '0000-00-00 00:00:00',
+	`permalink` varchar(255) NOT NULL,
+	`title` varchar(255) NOT NULL,
+	`excerpt` varchar(255) NOT NULL,
+	`post` text NOT NULL,
+	`commentsallowed` TINYINT UNSIGNED NOT NULL,
+	`user_id` varchar(255) NOT NULL,
+	PRIMARY KEY  (`post_id`)
+	FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `comments` (
-  `comment_id` INT UNSIGNED NOT NULL,  	# PK
-  `post_id` INT UNSIGNED NOT NULL,  	# FK
-  `comment_permalink` VARCHAR(255) NOT NULL,
-  `comment_author` VARCHAR(255) NOT NULL,
-  `comment_authoremail` VARCHAR(255) NOT NULL,
-  `comment_authorurl` VARCHAR(255),
-  `comment_datetime` datetime NOT NULL,
-  `comment_text` text NOT NULL,
-  PRIMARY KEY  (`comment_id`)
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`permalink` VARCHAR(255) NOT NULL,
+	`author` VARCHAR(255) NOT NULL,
+	`authoremail` VARCHAR(255) NOT NULL,
+	`authorurl` VARCHAR(255) NOT NULL,
+	`postdate` datetime NOT NULL default '0000-00-00 00:00:00',
+	`comment` text NOT NULL,
+	`approved` TINYINT UNSIGNED NOT NULL default '1',
+	`post_id` INT UNSIGNED NOT NULL,
+	PRIMARY KEY  (`id`),
+	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `users` (
-  `user_id` INT UNSIGNED NOT NULL,		# PK
-  `user_firstname` varchar(255) NOT NULL,
-  `user_lastname` varchar(255) NOT NULL,
-  `user_username` varchar(255) NOT NULL,
-  `user_password` varchar(255) NOT NULL,
-  `user_email` varchar(255) NOT NULL,
-  PRIMARY KEY (`user_id`)
+CREATE TABLE `categories` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL,
+	`parent` INT UNSIGNED NOT NULL DEFAULT '0',
+	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-/*
-CREATE TABLE `authors` (
-  `author_id` INT UNSIGNED NOT NULL,
-  `author_firstname` varchar(255) NOT NULL,
-  `author_lastname` varchar(255) NOT NULL,
-  `author_username` varchar(255) NOT NULL,
-  `author_password` varchar(255) NOT NULL,
-  `author_email` varchar(255) NOT NULL,
-  PRIMARY KEY  (`author_id`,`username`)
+CREATE TABLE `category2posts` (
+	`category_id` INT NOT NULL,
+	`post_id` INT NOT NULL,   
+	PRIMARY KEY (`category_id`, `post_id`),  
+	FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`), 
+	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-*/
+
+CREATE TABLE `tags` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL,
+	PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `tags2posts` (
+	`tag_id` INT NOT NULL,
+	`post_id` INT NOT NULL,   
+	PRIMARY KEY (`tag_id`, `post_id`),  
+	FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`), 
+	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
