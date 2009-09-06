@@ -223,7 +223,7 @@ class A_Http_View {
 	}
 
 	public function __get($name) {
-		return $this->get($name);
+		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
 
 	public function __set($name, $value) {
@@ -268,8 +268,11 @@ class A_Http_View {
  
 	protected function helper($name) {
 		if (! isset($this->helpers[$name])) {
-			$this->helpers[$name] = $this->load()->helper($name);
-			$this->set($name, $this->helpers[$name]);
+			$class = 'A_Http_Helper_' . ucfirst($name);
+#			include_once 'A/Http/Helper/' . ucfirst($name) . '.php';
+#			$this->helpers[$name] = new $class($this->locator);
+			$this->helpers[$name] = $this->locator->get('', $class, '', $this->locator);
+#			$this->set($name, $this->helpers[$name]);
 		}
 		if (isset($this->helpers[$name])) {
 			return $this->helpers[$name];
