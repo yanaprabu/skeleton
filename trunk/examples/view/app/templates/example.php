@@ -21,6 +21,7 @@ echo $this->partialLoop('menu', 'menuitem', $this->menuitems);
 </ol>
 
 <p>In the menu above are a few different actions showing a couple of things</p>
+<p><a href="<?php echo $this->helper('url')->render(); ?>">This is a link using the URL Helper.</a></p>
 	
 <?php
 // partial loop with single parameter which is an array of assoc arrays
