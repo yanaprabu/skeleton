@@ -6,9 +6,14 @@
  */
 class A_Orm_DataMapper_Join	{
 
+	public $table1;
+	public $table2;
+	public $column1;
+	public $column2;
+	
 	public function __construct($table1, $table2, $type='inner')	{
 		$this->table1 = $table1;
-		$this->table1 = $table2;
+		$this->table2 = $table2;
 		$type = $type;
 	}
 
