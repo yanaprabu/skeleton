@@ -114,7 +114,7 @@ class A_Orm_DataMapper	{
 	}
 
 	public function join($table, $type='inner')	{
-		return $this->addJoin($this->table, $table, $type);
+		return $this->addJoin(new A_Orm_DataMapper_Join($this->table, $table, $type));
 	}
 
 	public function getMappings()	{
@@ -173,9 +173,9 @@ class A_Orm_DataMapper	{
 		}
 		foreach ($this->mappings as $mapping)	{
 			if ($mapping->getAlias())	{
-				$fields[] = array ($mapping->getAlias() => $mapping->getColumn());
+				$fields[] = array ($mapping->getAlias() => $mapping->getTable().'.'.$mapping->getColumn());
 			} else 	{
-				$fields[] = $mapping->getColumn();
+				$fields[] = $mapping->getTable().'.'.$mapping->getColumn();
 			}
 		}
 		return $fields;

@@ -5,6 +5,8 @@ class Post	{
 	public $id = '';
 	public $title = '';
 	public $body = '';
+	public $author_first_name;
+	public $author_last_name;
 
 	public function getTitle()	{
 		return $this->title;
@@ -12,6 +14,10 @@ class Post	{
 
 	public function setTitle($title)	{
 		$this->title = $title;
+	}
+	
+	public function getAuthor()	{
+		return $this->author_first_name . ' ' . $this->author_last_name;
 	}
 
 }
