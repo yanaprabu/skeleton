@@ -6,20 +6,33 @@
  */
 class A_Orm_DataMapper_Join	{
 
+	public $type;
 	public $table1;
 	public $table2;
 	public $column1;
 	public $column2;
+	public $sql;
 	
-	public function __construct($table1, $table2, $type='inner')	{
+	public function __construct($table1, $table2 = '', $type='INNER')	{
 		$this->table1 = $table1;
 		$this->table2 = $table2;
-		$type = $type;
+		$this->type = $type;
 	}
 
-	public function on($column1, $column2)	{
-		$this->column1 = $column1;
-		$this->column2 = $column2;
+	public function on()	{
+		if (func_num_args() == 1)	{
+			$this->on = func_get_arg(0);
+		} elseif (func_num_args() == 2)	{
+			$this->on = $this->table1 . '.' . func_get_arg(0) . ' = ' . $this->table2 . '.' . func_get_arg(1);
+		}
+	}
+	
+	public function generateSQL()	{
+		return $type . ' JOIN ' . $this->table1  . ' ON ' . $this->on;
 	}
 
+	public function __toString()	{
+		return $this->generateSQL();
+	}
+	
 }

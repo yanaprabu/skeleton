@@ -113,10 +113,26 @@ class A_Orm_DataMapper	{
 		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', '', '', $this->table));
 	}
 
-	public function join($table, $type='inner')	{
-		return $this->addJoin(new A_Orm_DataMapper_Join($this->table, $table, $type));
+	public function join($table)	{
+		return $this->addJoin(new A_Orm_DataMapper_SQLJoin($table));
+	}
+	
+	public function leftJoin($table1, $table2)	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table1, ($table2 ? $table2 : $this->table), 'LEFT'));
+	}
+	
+	public function rightJoin($table1, $table2 = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table1, ($table2 ? $table2 : $this->table), 'RIGHT'));
 	}
 
+	public function innerJoin($table1, $table2 = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table1, ($table2 ? $table2 : $this->table), 'INNER'));
+	}
+	
+	public function outerJoin($table1, $table2 = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table1, ($table2 ? $table2 : $this->table), 'OUTER'));
+	}
+	
 	public function getMappings()	{
 		$mappings = array();
 		foreach ($this->mappings as $mapping)	{
@@ -173,9 +189,9 @@ class A_Orm_DataMapper	{
 		}
 		foreach ($this->mappings as $mapping)	{
 			if ($mapping->getAlias())	{
-				$fields[] = array ($mapping->getAlias() => $mapping->getTable().'.'.$mapping->getColumn());
+				$fields[] = array ($mapping->getAlias() => ($mapping->getTable()?$mapping->getTable().'.':'').$mapping->getColumn());
 			} else 	{
-				$fields[] = $mapping->getTable().'.'.$mapping->getColumn();
+				$fields[] = ($mapping->getTable()?$mapping->getTable().'.':'').$mapping->getColumn();
 			}
 		}
 		return $fields;
