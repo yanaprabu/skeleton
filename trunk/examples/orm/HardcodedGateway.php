@@ -7,14 +7,13 @@
 require_once('A/Orm/DataMapper.php');
 require_once('A/Orm/DataMapper/Mapping.php');
 require_once('A/Orm/DataMapper/Join.php');
+require_once('A/Orm/DataMapper/SQLJoin.php');
 
 class HardcodedGateway extends A_Orm_DataMapper	{
 
 	public function getById($id)	{
-		foreach ($this->joins as $join)	{
-			$joins .= ' INNER JOIN ' . $join->table2 . ' ON ' . $join->table1 . '.' . $join->column1 . ' = ' . $join->table2 . '.' . $join->column2;
-		}
-		$stmt = $this->db->prepare('SELECT ' . join(', ', $this->getColumns()) . ' FROM ' . $this->table . $joins . ' WHERE ' . $this->table . '.id = :id');
+		$stmt = $this->db->prepare('SELECT ' . join(', ', $this->getColumns()) . ' FROM ' . $this->table  . join(' ',$this->joins) . ' WHERE ' . $this->table . '.id = :id');
+		p($stmt);
 		$stmt->bindValue (':id', $id);
 		$stmt->execute();
 		return $this->load($stmt->fetch(PDO::FETCH_ASSOC));

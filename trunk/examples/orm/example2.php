@@ -8,4 +8,4 @@ include('DomainObjects.php');
 
 $mapper = new JoinPostMapper($db);
 $user = $mapper->getById(2);
-echo $user->getAuthor();
+p($user);
