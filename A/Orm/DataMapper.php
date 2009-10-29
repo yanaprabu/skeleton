@@ -34,7 +34,7 @@ class A_Orm_DataMapper	{
 	}
 
 	public function load($array)	{
-		$object = $this->create($this->getParams($array));
+		$object = $this->create($this->getConstructorArguments($array));
 		if (empty ($this->mappings))	{
 			foreach (array_keys ($array) as $column)	{
 				$mapping = $this->map($column);
@@ -61,7 +61,7 @@ class A_Orm_DataMapper	{
 		}
 	}
 
-	public function getParams($array)	{
+	public function getConstructorArguments($array)	{
 		$params = array();
 		foreach ($this->mappings as $mapping)	{
 			if (!$mapping->getProperty() && !$mapping->getSetMethod())	{
@@ -70,7 +70,7 @@ class A_Orm_DataMapper	{
 		}
 		return $params;
 	}
-
+	
 	public function addMapping($mapping)	{
 		$this->mappings[] = $mapping;
 		return $mapping;
@@ -141,60 +141,6 @@ class A_Orm_DataMapper	{
 			}
 		}
 		return $mappings;
-	}
-
-	public function getKey($object)	{
-		$key = array();
-		if (empty ($this->mappings))	{
-			$key['id'] = $object->id;
-		} else	{
-			foreach ($this->mappings as $mapping)	{
-				if ($mapping->isKey())	{
-					$key = $mapping->loadArray($object, $values);
-				}
-			}
-		}
-		return $key;
-	}
-
-	public function getValues($object)	{
-		$values = array();
-		if (empty ($this->mappings))	{
-			$values = get_object_vars($object);
-		} else	{
-			foreach ($this->mappings as $mapping)	{
-				if (!$mapping->isKey())	{
-					$values = $mapping->loadArray($object, $value);
-				}
-			}
-		}
-		return $values ? $values : array();
-	}
-
-	public function getTableNames() {
-		$tables = array();
-		if ($this->table) $tables[] = $this->table;
-		foreach ($this->mappings as $mapping) {
-			if ($mapping->getTable() && !in_array ($mapping->getTable(), $tables)) {
-				$tables[] = $mapping->getTable();
-			}
-		}
-		return $tables;
-	}
-
-	public function getColumns()	{
-		$fields = array();
-		if (empty ($this->mappings))	{
-			return array('*');
-		}
-		foreach ($this->mappings as $mapping)	{
-			if ($mapping->getAlias())	{
-				$fields[] = array ($mapping->getAlias() => ($mapping->getTable()?$mapping->getTable().'.':'').$mapping->getColumn());
-			} else 	{
-				$fields[] = ($mapping->getTable()?$mapping->getTable().'.':'').$mapping->getColumn();
-			}
-		}
-		return $fields;
 	}
 
 }
