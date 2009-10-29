@@ -112,10 +112,6 @@ class A_Orm_DataMapper_Mapping	{
 		$this->setGetMethod($method);
 		return $this;
 	}
-
-/*
- * Should these last three functions be refactored elsewhere? -Cory
- */	
 	
 	public function loadObject($object, $array)	{
 		if (method_exists($object, $this->setMethod))	{
@@ -139,14 +135,14 @@ class A_Orm_DataMapper_Mapping	{
 		}
 	}
 
-	public function loadArray($object, $array = array())	{
+	public function getValueFromObject($object)	{
 		if (method_exists($object, $this->getMethod))	{
 			if ($this->property)	{
 				$params[] = $this->property;
 			}
-			$array[$this->column] = call_user_func_array(array($object, $this->getMethod), $params);
+			$value = call_user_func_array(array($object, $this->getMethod), $params);
 		} else	{
-			$array[$this->column] = $object->{$this->property};
+			$value = $object->{$this->property};
 		}
 		return $array;
 	}

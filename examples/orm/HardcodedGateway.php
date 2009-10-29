@@ -53,22 +53,9 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 	public function update($object)	{
 		foreach ($this->getTableNames() as $table)	{
 			$key = $this->getKey($object, $table);
-			$values = $this->getValues($object, $table);
-			$this->getDatasource($table)->update($values, $key);
+			$data = $this->getData($object, $table);
+			$this->getDatasource($table)->update($data, $key);
 		}
-		/*
-		$keys = array();
-		$values = array();
-		foreach ($this->getValues($object) as $key => $value)	{
-			$keys[] = $key . ' = ?';
-			$values[] = $value;
-		}
-		$pkey = $this->getKey($object);
-		$values[] = current($pkey);
-		
-		$stmt = $this->db->prepare ('UPDATE ' . $this->table . ' SET ' . join(',', $keys) . ' WHERE ' . key($pkey) . ' = ?');
-		$stmt->execute($values);
-		*/
 	}
 
 	public function getDatasource($table, $key = null)	{
@@ -84,28 +71,28 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 		} else	{
 			foreach ($this->mappings as $mapping)	{
 				if ($mapping->isKey() && $mapping->getTable() == $table)	{
-					return $mapping->loadArray($object);
+					return array($mapping->getColumn() => $mapping->getValueFromObject($object));
 				}
 			}
 		}
 	}
 
-	public function getValues($object, $table = '')	{
-		$values = array();
-		if (empty ($this->mappings))	{
-			$values = get_object_vars($object);
+	public function getData($object, $table = '')	{
+		$data = array();
+		if (empty ($this->mappings) && is_array(get_object_vars($object)))	{
+			$data = get_object_vars($object);
 		} else	{
 			foreach ($this->mappings as $mapping)	{
 				if (!$mapping->isKey())	{
 					if (empty($table))	{
-						$values = $mapping->loadArray($object, $values);
+						$data[$mapping->getColumn()] = $mapping->getValueFromObject($object);
 					} elseif ($mapping->getTable() == $table)	{
-						$values = $mapping->loadArray($object, $values);	
+						$data[$mapping->getColumn()] = $mapping->getValueFromObject($object);
 					}
 				}
 			}
 		}
-		return $values ? $values : array();
+		return $data;
 	}
 	
 	public function getTableNames() {
