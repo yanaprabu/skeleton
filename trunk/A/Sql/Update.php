@@ -21,7 +21,9 @@ class A_Sql_Update extends A_Sql_Statement {
 	 */
 	public function __construct($table=null, $bind = array(), $where = array()) {
 		$this -> table($table);
-		$this -> set($bind);
+		if($bind)	{
+			$this -> set($bind);
+		}
 		$this -> where($where);
 	}
 	
@@ -71,8 +73,7 @@ class A_Sql_Update extends A_Sql_Statement {
 		$table = $this->table->render();
 		$joins = ''; //not implemented
 		$set 	 = $this->set->setDb($this->db)->render();
-		$where   = $this->where ? ' '. $this->where->setDb($this->db)->render() : '';
-
+		$where   = $this->where ? ' '. $this->where->setDb($this->db)->render() : '';		
 		return "UPDATE $table $set$joins$where";
 	}
 
