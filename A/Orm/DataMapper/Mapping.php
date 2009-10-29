@@ -113,6 +113,10 @@ class A_Orm_DataMapper_Mapping	{
 		return $this;
 	}
 
+/*
+ * Should these last three functions be refactored elsewhere? -Cory
+ */	
+	
 	public function loadObject($object, $array)	{
 		if (method_exists($object, $this->setMethod))	{
 			if ($this->property)	{
