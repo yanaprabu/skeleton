@@ -94,9 +94,9 @@ class A_Db_Tabledatagateway {
 		if ($data) {
 			if (! $this->update) {
 				include_once 'A/Sql/Update.php';
-				$this->update = new A_Sql_Update($this->table());
+				$this->update = new A_Sql_Update($this->getTable());
 			}
-			$this->update->setDb($this->db)->values($data);
+			$this->update->setDb($this->db)->set($data);
 			if ($where) {
 				if (is_array($where)) {
 					$this->update->where($where);
