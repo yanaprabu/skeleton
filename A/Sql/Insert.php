@@ -20,7 +20,10 @@ class A_Sql_Insert extends A_Sql_Statement {
 	 */
 	public function __construct($table = null, $bind = array()) {
 		$this->table($table);
-		$this->columns($bind);
+		if ($bind)	{
+			$this->columns($bind);	
+		}
+		
 	}
 	
 	public function table($table) {

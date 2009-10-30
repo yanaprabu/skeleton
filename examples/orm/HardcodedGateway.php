@@ -39,22 +39,22 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 	}
 
 	public function insert($object)	{
-		$keys = array();
-		$values = array();
-		foreach ($this->getValues($object) as $key => $value)	{
-			$keys[] = $key . ' = ?';
-			$values[] = $value;
+		foreach ($this->getTableNames() as $table)	{
+			$data = $this->getData($object, $table);
+			$this->getDatasource($table)->insert($data);
+			if($key = $this->getKey($object, $table))	{
+				$key = array(key($key) => $this->db->lastInsertId());
+			}
 		}
-		$stmt = $this->db->prepare ('INSERT INTO ' . $this->table . ' SET ' . join(',', $keys));
-		$stmt->execute($values);
-		// Somehow update $object with ID
 	}
 
 	public function update($object)	{
 		foreach ($this->getTableNames() as $table)	{
 			$key = $this->getKey($object, $table);
-			$data = $this->getData($object, $table);
-			$this->getDatasource($table)->update($data, $key);
+			if ($key)	{
+				$data = $this->getData($object, $table);
+				$this->getDatasource($table)->update($data, $key);
+			}
 		}
 	}
 
