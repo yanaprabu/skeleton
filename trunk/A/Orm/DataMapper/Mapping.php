@@ -13,9 +13,10 @@ class A_Orm_DataMapper_Mapping	{
 	public $alias;
 	public $table;
 	public $callback = array();
+	public $param = false;
 	public $key = false;
 
-	public function __construct ($getMethod='', $setMethod='', $property='', $column='', $table='', $key = false, $callback = array())	{
+	public function __construct ($getMethod='', $setMethod='', $property='', $column='', $table='', $key = false, $callback = array(), $param = false)	{
 		$this->getMethod = $getMethod;
 		$this->setMethod = $setMethod;
 		$this->property = $property;
@@ -28,6 +29,7 @@ class A_Orm_DataMapper_Mapping	{
 		$this->table = $table;
 		$this->key = $key ? true : false;
 		$this->callback = $callback;
+		$this->param = $param ? true : false;
 	}
 
 	public function getSetMethod()	{
@@ -77,7 +79,11 @@ class A_Orm_DataMapper_Mapping	{
 	public function setTable($table)	{
 		$this->table = $table;
 	}
-
+	
+	public function isParam()	{
+		return $this->param ? true : false;
+	}
+	
 	public function toColumn($column, $table = '', $key = false)	{
 		if (is_array ($column))	{
 			$this->column = current ($column);
@@ -85,7 +91,11 @@ class A_Orm_DataMapper_Mapping	{
 		} else	{
 			$this->column = $column;
 		}
-		$this->table = $table;
+		if (strpos($this->column, '.') && empty($table))	{
+			list($this->table, $this->column) = explode('.',$this->column);
+		} elseif (!empty($table))	{
+			$this->table = $table;	
+		}
 		$this->key = $key;
 		return $this;
 	}
@@ -141,7 +151,7 @@ class A_Orm_DataMapper_Mapping	{
 				$params[] = $this->property;
 			}
 			$value = call_user_func_array(array($object, $this->getMethod), $params);
-		} else	{
+		} elseif (property_exists($object, $this->property))	{
 			$value = $object->{$this->property};
 		}
 		return $array;

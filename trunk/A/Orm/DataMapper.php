@@ -64,7 +64,7 @@ class A_Orm_DataMapper	{
 	public function getConstructorArguments($array)	{
 		$params = array();
 		foreach ($this->mappings as $mapping)	{
-			if (!$mapping->getProperty() && !$mapping->getSetMethod())	{
+			if ($mapping->isParam())	{
 				$params[] = $mapping->getValue($array);
 			}
 		}
@@ -81,19 +81,20 @@ class A_Orm_DataMapper	{
 		return $join;
 	}
 
-	public function map($property)	{
+	public function map($column)	{
+		list($table, $column) = $this->getTable($column);
 		$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
-		if(method_exists($this->class, 'get'.ucfirst($property)) && method_exists ($this->class, 'set'.ucfirst($property)))	{
-			$mapping->setGetMethod('get'.ucfirst($property));
-			$mapping->setSetMethod('set'.ucfirst($property));
+		if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
+			$mapping->setGetMethod('get'.ucfirst($column));
+			$mapping->setSetMethod('set'.ucfirst($column));
 		}elseif(method_exists ($this->class, 'get') && method_exists ($this->class, 'set'))	{
 			$mapping->setGetMethod('get');
 			$mapping->setSetMethod('set');
-			$mapping->setProperty($property);
+			$mapping->setProperty($column);
 		} else	{
-			$mapping->setProperty($property);
+			$mapping->setProperty($column);
 		}
-		$mapping->toColumn($property, $this->table);
+		$mapping->toColumn($column, $table);
 		return $mapping;
 	}
 
@@ -101,18 +102,40 @@ class A_Orm_DataMapper	{
 		return $this->addMapping(new A_Orm_DataMapper_Mapping($getMethod, $setMethod, '', '', $this->table));
 	}
 
-	public function mapGeneric($name)	{
-		return $this->addMapping(new A_Orm_DataMapper_Mapping('get', 'set', $name, '', $this->table));
+	public function mapGeneric($column)	{
+		list($table, $column) = $this->getTable($column);
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('get', 'set', $column, '', $table));
 	}
 
-	public function mapProperty($property)	{
-		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', $property, '', $this->table));
+	public function mapProperty($column)	{
+		list($table, $column) = $this->getTable($column);
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', $column, '', $table));
 	}
 
 	public function mapParam()	{
-		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', '', '', $this->table));
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', '', '', $this->table, '', '', true));
+	}
+	
+	public function mapParams()	{
+		foreach (func_get_args() as $column)	{
+			if(strpos($column,':key'))	{
+				$column = str_replace(':key','',$column);
+				$this->mapParam()->toColumn($column)->setKey();
+			} else {
+				$this->mapParam()->toColumn($column);
+			}
+			
+		}
 	}
 
+	protected function getTable($column)	{
+		$table = $this->table;
+		if (strpos($column,'.'))	{
+			list($table, $column) = explode('.',$column);
+		}
+		return array($table, $column);
+	}
+	
 	public function join($table)	{
 		return $this->addJoin(new A_Orm_DataMapper_SQLJoin($table));
 	}
