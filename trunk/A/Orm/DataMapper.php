@@ -33,8 +33,10 @@ class A_Orm_DataMapper	{
 		return $this;
 	}
 
-	public function load($array)	{
-		$object = $this->create($this->getConstructorArguments($array));
+	public function load($array, $object = null)	{
+		if (!$object)	{
+			$object = $this->create($this->getConstructorArguments($array));	
+		}
 		if (empty ($this->mappings))	{
 			foreach (array_keys ($array) as $column)	{
 				$mapping = $this->map($column);

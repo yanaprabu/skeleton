@@ -42,9 +42,7 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 		foreach ($this->getTableNames() as $table)	{
 			$data = $this->getData($object, $table);
 			$this->getDatasource($table)->insert($data);
-			if($key = $this->getKey($object, $table))	{
-				$key = array(key($key) => $this->db->lastInsertId());
-			}
+			// Somehow update $object with $key
 		}
 	}
 

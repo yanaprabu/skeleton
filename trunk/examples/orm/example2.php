@@ -14,5 +14,6 @@ p($user);
 $user->body = 'This is the new body';
 $mapper->update($user);
 $mapper->insert($user);
+p($user);
 $user = $mapper->getById(2);
 p($user);
