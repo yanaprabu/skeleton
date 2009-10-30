@@ -113,7 +113,7 @@ class A_Db_Tabledatagateway {
 		if ($data) {
 			if (! $this->insert) {
 				include_once 'A/Sql/Insert.php';
-				$this->insert = new A_Sql_Insert($this->table());
+				$this->insert = new A_Sql_Insert($this->getTable());
 			}
 			$this->sql = $this->insert->setDb($this->db)->values($data)->render();
 			return $this->db->query($this->sql);
