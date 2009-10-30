@@ -7,6 +7,7 @@ include('UserMapper.php');
 include('DomainObjects.php');
 
 $mapper = new JoinPostMapper($db);
+
 $user = $mapper->getById(2);
 $user->body = 'This is the old body';
 p($user);
