@@ -83,21 +83,31 @@ class A_Orm_DataMapper	{
 		return $join;
 	}
 
-	public function map($column)	{
-		list($table, $column) = $this->getTable($column);
-		$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
-		if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
-			$mapping->setGetMethod('get'.ucfirst($column));
-			$mapping->setSetMethod('set'.ucfirst($column));
-		}elseif(method_exists ($this->class, 'get') && method_exists ($this->class, 'set'))	{
-			$mapping->setGetMethod('get');
-			$mapping->setSetMethod('set');
-			$mapping->setProperty($column);
-		} else	{
-			$mapping->setProperty($column);
+	public function map()	{
+		if (func_num_args() > 0)	{
+			foreach(func_get_args() as $column)	{
+				$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
+				if(strpos($column,':key'))	{
+					$column = str_replace(':key','',$column);
+					$mapping->isKey();
+				}
+				list($table, $column) = $this->getTable($column);
+				if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
+					$mapping->setGetMethod('get'.ucfirst($column));
+					$mapping->setSetMethod('set'.ucfirst($column));
+				}elseif(method_exists ($this->class, 'get') && method_exists ($this->class, 'set'))	{
+					$mapping->setGetMethod('get');
+					$mapping->setSetMethod('set');
+					$mapping->setProperty($column);
+				} else	{
+					$mapping->setProperty($column);
+				}
+				$mapping->toColumn($column, $table);
+			}
 		}
-		$mapping->toColumn($column, $table);
-		return $mapping;
+		if(func_num_args() == 1)	{
+			return $mapping;	
+		}
 	}
 
 	public function mapMethods($getMethod, $setMethod)	{
