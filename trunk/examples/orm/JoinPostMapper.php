@@ -6,7 +6,9 @@ class JoinPostMapper extends HardcodedGateway	{
 
 	public function __construct($db)	{
 		parent::__construct($db, 'Post','posts');
-		$this->mapParams('id:key','title','body','users.first_name','users.last_name');
+		$this->map('id:key','title','body');
+		$this->map('author_first_name')->toColumn('users.first_name');
+		$this->map('author_last_name')->toColumn('users.last_name');
 		$this->innerJoin('users')->on('id','author_id');
 	}
 
