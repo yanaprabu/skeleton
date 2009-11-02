@@ -14,15 +14,21 @@ require_once('A/Sql/Select.php');
 class HardcodedGateway extends A_Orm_DataMapper	{
 	
 	public function getById($id)	{
-		$stmt = $this->db->prepare('SELECT ' . join(', ', $this->getColumns()) . ' FROM ' . $this->table  . join(' ',$this->joins) . ' WHERE ' . $this->table . '.id = :id');
+		$stmt = $this->db->prepare('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences() . ' WHERE ' . $this->table . '.id = :id');
 		$stmt->bindValue (':id', $id);
 		$stmt->execute();
+		if($stmt->errorCode() != '00000')	{
+			p($stmt->errorInfo());
+		}
 		return $this->load($stmt->fetch(PDO::FETCH_ASSOC));
 	}
 
 	public function getAll()	{
-		$stmt = $this->db->prepare('SELECT ' . join(', ', $this->getColumns()) . ' FROM ' . $this->table);
+		$stmt = $this->db->prepare('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences());
 		$stmt->execute();
+		if($stmt->errorCode() != '00000')	{
+			p($stmt->errorInfo());
+		}
 		$posts = array();
 		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $post)	{
 			$posts[$post['id']] = $this->load($post);
@@ -42,7 +48,7 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 		foreach ($this->getTableNames() as $table)	{
 			$data = $this->getData($object, $table);
 			$this->getDatasource($table)->insert($data);
-			// Somehow update $object with $key
+			// Somehow update $object with insert id
 		}
 	}
 
@@ -93,7 +99,7 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 		return $data;
 	}
 	
-	public function getTableNames() {
+	public function getTableNames()	{
 		$tables = array();
 		if ($this->table) $tables[] = $this->table;
 		foreach ($this->mappings as $mapping) {
@@ -103,20 +109,27 @@ class HardcodedGateway extends A_Orm_DataMapper	{
 		}
 		return $tables;
 	}
+	
+	public function getTableReferences() {
+		return join(', ', $this->getTableNames());
+	}
 
-	public function getColumns()	{
+	public function getSelectExpression()	{
 		$fields = array();
 		if (empty ($this->mappings))	{
 			return array('*');
 		}
 		foreach ($this->mappings as $mapping)	{
-			if ($mapping->getAlias())	{
-				$fields[] = array ($mapping->getAlias() => ($mapping->getTable()?$mapping->getTable().'.':'').$mapping->getColumn());
-			} else 	{
-				$fields[] = ($mapping->getTable()?$mapping->getTable().'.':'').$mapping->getColumn();
+			$field = $mapping->getColumn();
+			if($mapping->getTable())	{
+				$field = $mapping->getTable() . '.' . $field;
 			}
+			if($mapping->getAlias())	{
+				$field = $field . ' AS ' . $mapping->getAlias();	
+			}
+			$fields[] = $field;
 		}
-		return $fields;
+		return join(', ', $fields);
 	}
 	
 }

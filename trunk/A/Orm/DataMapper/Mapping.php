@@ -68,6 +68,10 @@ class A_Orm_DataMapper_Mapping	{
 		return $this;
 	}
 
+	public function setAlias($alias)	{
+		$this->alias = $alias;
+	}
+	
 	public function getAlias()	{
 		return $this->alias;
 	}
