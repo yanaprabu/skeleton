@@ -87,11 +87,13 @@ class A_Orm_DataMapper	{
 		if (func_num_args() > 0)	{
 			foreach(func_get_args() as $column)	{
 				$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
-				if(strpos($column,':key'))	{
-					$column = str_replace(':key','',$column);
+				if($this->parseColumnForKey(&$column))	{
 					$mapping->isKey();
 				}
-				list($table, $column) = $this->getTable($column);
+				if($alias = $this->parseColumnForAlias(&$column))	{
+					$mapping->setAlias($alias);
+				}
+				$table = $this->parseColumnForTable(&$column);
 				if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
 					$mapping->setGetMethod('get'.ucfirst($column));
 					$mapping->setSetMethod('set'.ucfirst($column));
@@ -140,12 +142,27 @@ class A_Orm_DataMapper	{
 		}
 	}
 
-	protected function getTable($column)	{
+	protected function parseColumnForTable($column)	{
 		$table = $this->table;
 		if (strpos($column,'.'))	{
 			list($table, $column) = explode('.',$column);
 		}
-		return array($table, $column);
+		return $table;
+	}
+	
+	protected function parseColumnForKey($column)	{
+		if (strpos($column,':key'))	{
+			$column = str_replace(':key','',$column);
+			return true;
+		}
+		return false;
+	}
+	
+	protected function parseColumnForAlias($column)		{
+		if(strpos($column,' AS '))	{
+			list($column, $alias) = explode(' AS ', $column);
+			return $alias;
+		}
 	}
 	
 	public function join($table)	{

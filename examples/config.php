@@ -10,13 +10,15 @@ function dump($var, $name='') {
 }
 
 function d($var, $name='')	{
-	echo $name . '<pre>';
+	echo '<div style="padding: 10px; margin: 10px; background-color: #eee;">';
+	echo '<strong>' . ($name?'var_dump: '.$name:'') . '</strong><pre>';
 	var_dump($var);
-	echo '</pre>';
+	echo '</pre></div>';
 }
 
 function p($var, $name='')	{
-	echo $name . '<pre>';
+	echo '<div style="padding: 10px; margin: 10px; background-color: #eee;">';
+	echo '<strong>' . ($name?'var_dump: '.$name:'') . '</strong><pre>';
 	print_r($var, $true);
-	echo '</pre>';
+	echo '</pre></div>';
 }
