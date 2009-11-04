@@ -2,27 +2,30 @@
 
 <h2>About controllers</h2>
 
-<p>Action Controllers are classes that are loaded, instantiated and run by the Front Controller. They typically are located in a <strong>controllers/</strong> directory. Each file must contain a class with the same name. So the file <strong>controllers/foo.php</strong> should contain a class named <strong>foo</strong>.</p>
+<p>Action Controllers are classes that are loaded, instantiated and run by the Front Controller. The name of the controller is (by default) based on the value of the 'controller' Request parameter. These files are (by default) located in a <strong>controllers/</strong> directory. Each file must contain a class with the same name. So the file <strong>controllers/foobar.php</strong> should contain a class named <strong>foobar</strong>.</p>
+<p>The method called in the Action Controller is (by default) determined by the value of the 'action' Request variable. For example, if the value is 'foo' then the <strong>foo()</strong> method is called. If no method is specified, or the specified method is not found, then (by default) the <b>index()</b> method is called. </p>
 
 <pre class="prettyprint lang-php"><code>class foobar extends A_Controller_Action {
 	public function __construct($locator) {
 		parent::__construct($locator);
 	}
-	public function run($locator) {
+	public function index($locator) {
 	}
 	public function foo($locator) {
 	}
 	public function _bar() {
 	}
 }</code></pre>
+<p>Customization - You can change the default location and naming of controllers with the A_Controller_Mapper. To change the default directory from <strong>controllers/</strong> to another directory name use the setClassDir($dir) method. To change the default controller class naming scheme to another style use the setClassNaming($class_prefix, $class_transform, $class_suffix) method, which takes a prefix and suffix string, plus a transform function for capitalizatino, etc.. </p>
 <p>The constructor and the dispatched method will be passed a Locator object by the Front Controller. This parameter is optional and you may choose to use it or not. </p>  
 
 <h3>The Constructor</h3>
 <p>The constructor is called when the controller class is instantiated in the Front Controller. This method is passed a Locator object by the Front Controller. <strong>IMPORTANT</strong> - if your controller inherits a base class you need to call <strong>parent::__construct($locator)</strong> in the constructor.</p>
 
-<h3>The Default Method - run()</h3>
+<h3>The Default Method - index()</h3>
 <p>If the value of the 'action' Request parameter is null or does not match the name of a method then the default method will be dispatched. That means that mysite.com/foobar/ or mysite.com/foobar/xqz will call the run() method. This method is passed a Locator object by the Front Controller. </p>
 <p>You can change the name of this default method to anything you want using the A_Controller_Mapper::setDefaultMethod(). All the defaults, such as the name of the request parameters, are configurable. </p>
+<p>Customization - You can change the default location and naming of controllers with the A_Controller_Mapper. To change the default method name from <strong>index</strong> to another name use the setClassDir($dir) method. </p>
 
 <h3>Action Methods</h3>
 <p>If the value of the 'action' Request parameter matches the name of a method then it will be dispatched. That means that mysite.com/foobar/foo/ will call the foo() method. This method is passed a Locator object by the Front Controller. </p>
@@ -65,9 +68,9 @@
 <h3>4. Inherit A_Controller_Action_Dispatch</h3>
 <p>The Dispatch Action Controller adds pre/post-filter functionality to the base Action Controller. You can implement methods in your Action Controller class that are called </p>
 <ol><li>after __construct() but before the dispatched method is called, or </li>
-	<li>after the dispatched method exits but before returning control to the Front Controller.</li>
+	<li>after the dispatched method is called but before returning control to the Front Controller.</li>
 	</ol>
-<p>This controller implements a _dispatch() method that is called directly by the Front Controller. The _dispatch() method in turn calls any pre-filters first, then the dispatched method and then any post-filters. </p>
+<p>This controller implements a _dispatch() method that is called directly by the Front Controller. The _dispatch() method first calls the <b>_preDispatch()</b> method, then the dispatched method, and last calls the <b>_postDispatch()</b> method. You can implement your own <b>_preDispatch()</b> and/or <b>_postDispatch()</b> methods to run code before and/or after the dispatched method. </p>
 
 <h3>5. Extend A_Controller_Action or A_Controller_Action_Dispatch</h3>
 <p>You may extend the Skeleton Action Controllers to add additional functionality as a base class. You would do this if you wanted to provide this functionality to more than one of your Action Controllers.</p>
