@@ -117,12 +117,12 @@ class A_Orm_DataMapper	{
 	}
 
 	public function mapGeneric($column)	{
-		list($table, $column) = $this->getTable($column);
+		list($table, $column) = $this->parseColumnForTable($column);
 		return $this->addMapping(new A_Orm_DataMapper_Mapping('get', 'set', $column, '', $table));
 	}
 
 	public function mapProperty($column)	{
-		list($table, $column) = $this->getTable($column);
+		list($table, $column) = $this->parseColumnForTable($column);
 		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', $column, '', $table));
 	}
 
