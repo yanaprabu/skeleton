@@ -84,12 +84,6 @@ class A_Orm_DataMapper_Core	{
 			foreach(func_get_args() as $column)	{
 				$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
 				list($column, $table, $alias, $key) = $this->parseColumn($column);
-				if($alias)	{
-					$mapping->setAlias($alias);
-				}
-				if($key)	{
-					$mapping->isKey();
-				}
 				if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
 					$mapping->setGetMethod('get'.ucfirst($column));
 					$mapping->setSetMethod('set'.ucfirst($column));
@@ -100,7 +94,7 @@ class A_Orm_DataMapper_Core	{
 				} else	{
 					$mapping->setProperty($column);
 				}
-				$mapping->toColumn($column, $table);
+				$mapping->toColumn(array($alias => $column), $table, $key);
 			}
 		}
 		if(func_num_args() == 1)	{
@@ -156,7 +150,7 @@ class A_Orm_DataMapper_Core	{
 		} else {
 			$alias = '';
 		}
-		return array($column, $table, $alias, $key);
+		return array($column, $table, $alias, $key?true:false);
 	}
 	
 	public function getMappings()	{
