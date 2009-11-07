@@ -25,7 +25,9 @@
 		
 		<div id="loginbox">
 			<p>User: <a href="<?php echo $BASE ?>user/login/">login</a> | <a href="<?php echo $BASE ?>user/logout">logout</a>
-				| <a href="<?php echo $BASE ?>user/register/">Register</a> | <a href="<?php echo $BASE ?>user/profile/">Profile</a></p>
+				| <a href="<?php echo $BASE ?>user/register/">Register</a> | <a href="<?php echo $BASE ?>user/profile/">Profile</a>
+	
+			</p>
 		</div>
 	</div>
 	
