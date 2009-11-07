@@ -24,6 +24,7 @@
 
 			<p><input type="submit" name="login" value="Login"/></p>
 		</form>
+		<a href="user/password/">Forgot password?</a>
 	</div>
 <?php } ?>
 

@@ -96,12 +96,17 @@ class user extends A_Controller_Action {
 
 		$errmsg = '';
 		$session->start();
-		
+
+		// If user is not signed in don't show profile page but redirect to login?
+		if (!$user->isSignedIn()) {
+			$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page		
+		}
+				
 		$form = new A_Model_Form();
 		
 		// To show the profile we need the model
 		$model = $this->_load('app')->model('users');
-		
+	
 		// If profile form is posted and is valid
 		if($form->isValid($this->request)){
 			
@@ -114,15 +119,22 @@ class user extends A_Controller_Action {
 	}
 	
 	function password($locator){
+		$session = $locator->get('Session');
+		$user = $locator->get('UserSession');
+
+		$errmsg = '';
+		$session->start();
 		
+		$form = new A_Model_Form();
+		$model = $this->_load('app')->model('users');
 		// If password forgot form is posted and is valid
 		if($form->isValid($this->request)){
 			
 		}
 		// Show password forgot page and form
-		$template = $this->_load()->template();
+		$template = $this->_load()->template('password');
 		$template->set('errmsg', $errmsg);
-		
+		$template->set('user', $user);
 		$this->response->set('maincontent', $template);
 	}
 	
