@@ -1,8 +1,8 @@
 <?php
 
-require_once('HardcodedGateway.php');
+require_once('A/Orm/DataMapper.php');
 
-class JoinPostMapper extends HardcodedGateway	{
+class JoinPostMapper extends A_Orm_Datamapper	{
 
 	public function __construct($db)	{
 		parent::__construct($db, 'Post','posts');
