@@ -82,17 +82,13 @@ class A_Orm_DataMapper_Core	{
 	public function map()	{
 		if (func_num_args() > 0)	{
 			foreach(func_get_args() as $column)	{
-				$mapping = $this->addMapping(new A_Orm_DataMapper_Mapping());
 				list($column, $table, $alias, $key) = $this->parseColumn($column);
 				if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
-					$mapping->setGetMethod('get'.ucfirst($column));
-					$mapping->setSetMethod('set'.ucfirst($column));
+					$mapping = $this->mapMethods('get'.ucfirst($column), 'set'.ucfirst($column))
 				}elseif(method_exists ($this->class, 'get') && method_exists ($this->class, 'set'))	{
-					$mapping->setGetMethod('get');
-					$mapping->setSetMethod('set');
-					$mapping->setProperty($column);
+					$mapping = $this->mapGeneric($column);
 				} else	{
-					$mapping->setProperty($column);
+					$mapping = $this->mapProperty($column);
 				}
 				$mapping->toColumn(array($alias => $column), $table, $key);
 			}
@@ -107,28 +103,25 @@ class A_Orm_DataMapper_Core	{
 	}
 
 	public function mapGeneric($column)	{
-		list($table, $column) = $this->parseColumnForTable($column);
-		return $this->addMapping(new A_Orm_DataMapper_Mapping('get', 'set', $column, '', $table));
+		list($column, $table, $alias, $key) = $this->parseColumn($column);
+		return $this->addMapping(new A_Orm_DataMapper_Mapping('get', 'set', array($alias => $column), '', $table));
 	}
 
 	public function mapProperty($column)	{
-		list($table, $column) = $this->parseColumnForTable($column);
+		list($column, $table, $alias, $key) = $this->parseColumn($column);
 		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', $column, '', $table));
 	}
 
-	public function mapParam()	{
-		return $this->addMapping(new A_Orm_DataMapper_Mapping('', '', '', '', $this->table, '', '', true));
+	public function mapParam($column = '')	{
+		list($column, $table, $alias, $key) = $this->parseColumn($column);
+		$mapping = new A_Orm_DataMapper_Mapping();
+		$mapping->toColumn(array($alias => $column), $table, $key)->setParam();
+		return $this->addMapping($mapping);
 	}
 	
 	public function mapParams()	{
 		foreach (func_get_args() as $column)	{
-			if(strpos($column,':key'))	{
-				$column = str_replace(':key','',$column);
-				$this->mapParam()->toColumn($column)->setKey();
-			} else {
-				$this->mapParam()->toColumn($column);
-			}
-			
+			$this->mapParam($column)			
 		}
 	}
 
