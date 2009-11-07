@@ -35,10 +35,21 @@ strong { color:#444; }
 
 /* Layout */
 #container { width:960px;margin:0 auto; }
-#header { padding:20px;background:#eee;}
-#content { padding:20px; }
+#header { margin:0 0 20px;padding:20px;background:#eee;}
+#content { width:600px;float:left;margin:0 0 20px 20px;padding:0;min-height:300px; }
+#subcontent { width:300px;float:right;margin:0 20px 20px  0;padding:0; }
+
+/* Forms */
+form {}
+form p { margin:0 0 5px; }
+label { display:block; }
+input {}
+input[type=text] { width:150px; }
 
 
 #mainnav {}
 #mainnav li { display:inline;margin:0 10px 0 0; }
 #mainnav li a { padding:3px 6px 0 0; }
+
+#footer { clear:both;background:#eee;padding:10px 0; }
+#footer p { margin:0 20px;color:#777; }
