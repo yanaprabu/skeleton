@@ -8,9 +8,7 @@ require_once('A/Orm/DataMapper/Mapping.php');
 require_once('A/Orm/DataMapper/Join.php');
 require_once('A/Orm/DataMapper/SQLJoin.php');
 require_once('A/Db/Tabledatagateway.php');
-require_once('A/Sql/Select.php');
-include_once('A/Sql/Insert.php');
-include_once('A/Sql/Update.php');
+require_once('A/Sql/Query.php');
 
 /**
  * 
@@ -20,8 +18,7 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 
 	public function __construct($db, $class, $table ='', $params = array())	{
 		parent::__construct($db, $class, $table, $params);
-		$this->insert = new A_Sql_Insert();
-		$this->update = new A_Sql_Update();
+		$this->query = new A_Sql_Query();
 	}
 		
 	public function addJoin($join)	{
@@ -53,17 +50,17 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		if (func_num_args() == 1)	{
 			return $this->findById(func_get_arg(0));
 		} else	{
-			return call_user_func_array(array($this, 'findAll'), func_get_args());
+			$args = func_get_args();
+			return call_user_func_array(array($this, 'findAll'), $args);
 		}
 	}
 	
 	public function findById($id)	{
-		$stmt = $this->db->prepare('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences() . ' WHERE ' . $this->table . '.id = :id');
-		$stmt->bindValue (':id', $id);
-		$stmt->execute();
-		if($stmt->errorCode() != '00000')	{
-			p($stmt->errorInfo());
-		}
+		$sql = $this->query->select()
+			->columns($this->getSelectExpression())
+			->from($this->getTableReferences())
+			->where(array($this->table.'.id',$id));
+		$stmt = $this->db->query($sql);
 		return $this->load($stmt->fetch(PDO::FETCH_ASSOC));
 	}
 
@@ -81,7 +78,7 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	}
 
 	public function save($object)	{
-		if ($user->getId())	{ // should we have a way to get the key column using mappings, rather than assuming getId() here?
+		if ($this->hasBeenPersisted($object))	{
 			$this->update($object);
 		} else {
 			$this->insert($object);
@@ -91,8 +88,7 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	public function insert($object)	{
 		foreach ($this->getTableNames() as $table)	{
 			$data = $this->getData($object, $table);
-			$sql = $this->insert->table($table)->values($data);
-			$this->db->query($sql);
+			$this->db->query($this->query->insert($table)->values($data));
 			$id = $this->db->lastInsertId();
 		}
 	}
@@ -100,22 +96,30 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	public function update($object)	{
 		foreach ($this->getTableNames() as $table)	{
 			$key = $this->getKey($object, $table);
-			if ($key)	{
+			if($key)	{
 				$data = $this->getData($object, $table);
-				$sql = $this->update->table($table)->set($data)->where($key);
-				$this->db->query($sql);	
+				$this->db->query($this->query->update($table)->set($data)->where($key));	
 			}
 		}
 	}
 	
 	public function delete($object)	{
+		foreach ($this->getTableNames() as $table)	{
+			$key = $this->getKey($object, $table);
+			if($key)	{
+				$this->db->query($this->query->delete($table)->where(array('id'=>$key)));
+			}
+		}
 	}
 
-	public function getDatasource($table, $key = null)	{
-		if (!isset($this->gateways[$table]))	{
-			$this->gateways[$table] = new A_Db_TableDataGateway($this->db, $table, $key);
+	/*
+	 * This method needs to use the mappings in order to determine which method/property is indicative of the object having been persisted -Cory
+	 */
+	public function hasBeenPersisted($object)	{
+		if($object->getId())	{
+			return true;
 		}
-		return $this->gateways[$table];
+		return false;
 	}
 
 	public function getKey($object, $table)	{

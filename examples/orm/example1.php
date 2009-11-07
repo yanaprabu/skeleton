@@ -14,14 +14,14 @@ $post->author_id = 1;
 //$mapper->insert($post);
 $post->id = 2;
 $mapper->update($post);
-$post = $mapper->getById(1);
+$post = $mapper->find(1);
 $post->title = 'Updated Title';
 $post->body = 'Updated Body';
 $mapper->update($post);
-$posts = $mapper->getAll();
+$posts = $mapper->find();
 
 $userMapper = new UserMapper($db);
-$user = $userMapper->getById(1);
+$user = $userMapper->find(1);
 p($user);
 
 ?>
