@@ -9,6 +9,8 @@ require_once('A/Orm/DataMapper/Join.php');
 require_once('A/Orm/DataMapper/SQLJoin.php');
 require_once('A/Db/Tabledatagateway.php');
 require_once('A/Sql/Select.php');
+include_once('A/Sql/Insert.php');
+include_once('A/Sql/Update.php');
 
 /**
  * 
@@ -16,6 +18,12 @@ require_once('A/Sql/Select.php');
  */
 class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 
+	public function __construct($db, $class, $table ='', $params = array())	{
+		parent::__construct($db, $class, $table, $params);
+		$this->insert = new A_Sql_Insert();
+		$this->update = new A_Sql_Update();
+	}
+		
 	public function addJoin($join)	{
 		$this->joins[] = $join;
 		return $join;
@@ -41,7 +49,15 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		return $this->addJoin(new A_Orm_DataMapper_Join($table1, ($table2 ? $table2 : $this->table), 'OUTER'));
 	}
 	
-	public function getById($id)	{
+	public function find()	{
+		if (func_num_args() == 1)	{
+			return $this->findById(func_get_arg(0));
+		} else	{
+			return call_user_func_array(array($this, 'findAll'), func_get_args());
+		}
+	}
+	
+	public function findById($id)	{
 		$stmt = $this->db->prepare('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences() . ' WHERE ' . $this->table . '.id = :id');
 		$stmt->bindValue (':id', $id);
 		$stmt->execute();
@@ -51,7 +67,7 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		return $this->load($stmt->fetch(PDO::FETCH_ASSOC));
 	}
 
-	public function getAll()	{
+	public function findAll()	{
 		$stmt = $this->db->prepare('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences());
 		$stmt->execute();
 		if($stmt->errorCode() != '00000')	{
@@ -75,8 +91,9 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	public function insert($object)	{
 		foreach ($this->getTableNames() as $table)	{
 			$data = $this->getData($object, $table);
-			$this->getDatasource($table)->insert($data);
-			// Somehow update $object with insert id
+			$sql = $this->insert->table($table)->values($data);
+			$this->db->query($sql);
+			$id = $this->db->lastInsertId();
 		}
 	}
 
@@ -85,9 +102,13 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 			$key = $this->getKey($object, $table);
 			if ($key)	{
 				$data = $this->getData($object, $table);
-				$this->getDatasource($table)->update($data, $key);
+				$sql = $this->update->table($table)->set($data)->where($key);
+				$this->db->query($sql);	
 			}
 		}
+	}
+	
+	public function delete($object)	{
 	}
 
 	public function getDatasource($table, $key = null)	{
