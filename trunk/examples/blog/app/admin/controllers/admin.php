@@ -60,7 +60,7 @@ class admin extends A_Controller_Action {
 		$content = 'This is the content for the admin section';
 		$subcontent = 'The sidebar of the admin section';
 		
-		$template = $this->_load()->template('admin');
+		$template = $this->_load('application')->template('admin');
 #		$template->set('BASE', 'http://skeleton/examples/blog/' ); // $ConfigArray['BASE']  TODO: Fix this BASE/config mess
 #		$template->set('maincontent', $content);
 #		$template->set('subcontent', $subcontent);
