@@ -7,13 +7,9 @@
 
 class A_Sql_Join {
 	protected $joins = array();
-	protected $joinTypes = array('INNER', 'LEFT', 'RIGHT', 'FULL', 'CROSS', 'NATURAL');
 
-	public function join($table1, $table2, $type) {
+	public function join($table1, $table2, $type = 'INNER') {
 		$type = strtoupper($type);
-		if (!in_array($type, $this->joinTypes)) { //invalid join type
-			return;
-		}
 		$this->joins[] = array('type' => $type, 'table1' => $table1, 'table2' => $table2, 'on' => null); 
 	}
 	
