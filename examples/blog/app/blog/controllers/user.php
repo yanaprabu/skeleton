@@ -5,24 +5,21 @@ include_once 'A/Model/Form.php';
 class user extends A_Controller_Action {
 
 	function login($locator) {
+
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
-#dump($user, 'USER: ');
-		
-		$errmsg = '';
-		
 		$session->start();		// controller and view use session
 		
 		$form = new A_Model_Form();
-
 		$field = new A_Model_Form_Field('userid');
 		$field->addRule(new A_Rule_Notnull('userid', 'User ID required'));
 		$form->addField($field);
-		
 		$field = new A_Model_Form_Field('password');
 		$field->addRule(new A_Rule_Notnull('password', 'Password required'));
 		$form->addField($field);
 		
+		$errmsg = '';
+
 		// If username and password valid and isPost
 		if($form->isValid($this->request)){ 
 			
@@ -39,6 +36,7 @@ class user extends A_Controller_Action {
 		} elseif($form->isSubmitted()){		// submitted form has errors
 			$errmsg =  $form->getErrorMsg(', ');
 		}
+		
 		$template = $this->_load()->template('login');
 		$template->set('errmsg', $errmsg);
 		$template->set('userid', $form->get('userid'));
@@ -48,41 +46,47 @@ class user extends A_Controller_Action {
 	}
 	
 	function logout($locator) {
+		
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
+		$session->start();
 		
-		$session->start();		// controller and view use session
 		if ($user->isSignedIn()) {	// user record matching userid and password found
 			$user->signout();
 		}
+		
 		$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page
 	}
 	
 	function register($locator){
+		
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
-
-		$errmsg = '';
-		$session->start();		// controller and view use session
+		$session->start();	
 
 		$form = new A_Model_Form();
-
 		$field = new A_Model_Form_Field('username');
 		$field->addRule(new A_Rule_Notnull('username', 'username field is required'));
 		$form->addField($field);
-
 		$field = new A_Model_Form_Field('email');
 		$field->addRule(new A_Rule_Notnull('email', 'email field is required'));
 		$form->addField($field);
 
+		$errmsg = '';
+		
 		// If registration is valid
 		if($form->isValid($this->request)){
 			$model = $this->_load('app')->model('users');
-			// do the registration
+			// @todo: do the registration 
+			// - create random password
+			// - insert all data in user model
+			// - send email with pw to use
+			// - redirect to profile page?
 			
 		} elseif($form->isSubmitted()){		// submitted form has errors
 			$errmsg =  $form->getErrorMsg(', ');
 		}
+		
 		// Show registration form
 		$template = $this->_load()->template('register');
 		$template->set('errmsg', $errmsg);
@@ -93,9 +97,9 @@ class user extends A_Controller_Action {
 	function profile($locator){
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
-
-		$errmsg = '';
 		$session->start();
+		
+		$errmsg = '';
 
 		// If user is not signed in don't show profile page but redirect to login?
 		if (!$user->isSignedIn()) {
@@ -103,14 +107,20 @@ class user extends A_Controller_Action {
 		}
 				
 		$form = new A_Model_Form();
+		// @todo: what info do we want
 		
 		// To show the profile we need the model
 		$model = $this->_load('app')->model('users');
-	
+		// @todo: load user data from db
+		
 		// If profile form is posted and is valid
 		if($form->isValid($this->request)){
+			// @todo: save/update profile data
 			
+		} elseif($form->isSubmitted()){		// submitted form has errors
+			$errmsg =  $form->getErrorMsg(', ');
 		}
+		
 		// Show profile page and form
 		$template = $this->_load()->template('profile');
 		$template->set('errmsg', $errmsg);
@@ -119,18 +129,29 @@ class user extends A_Controller_Action {
 	}
 	
 	function password($locator){
+		
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
-
-		$errmsg = '';
 		$session->start();
 		
+		$errmsg = '';
+
 		$form = new A_Model_Form();
+		$field = new A_Model_Form_Field('username');
+		$field->addRule(new A_Rule_Notnull('username', 'username required'));
+		$form->addField($field);
+		// @todo: should we check in db if filled in username even exists
+		
 		$model = $this->_load('app')->model('users');
+		
 		// If password forgot form is posted and is valid
 		if($form->isValid($this->request)){
+			// @todo: retrieve email+password from user model and send email with pw
 			
+		} elseif($form->isSubmitted()){		// submitted form has errors
+			$errmsg =  $form->getErrorMsg(', ');
 		}
+		
 		// Show password forgot page and form
 		$template = $this->_load()->template('password');
 		$template->set('errmsg', $errmsg);
