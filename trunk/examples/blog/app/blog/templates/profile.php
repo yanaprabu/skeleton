@@ -1,5 +1,6 @@
 <div>
 
+	
 	<h1>Profile</h1>
 	
 	<p>Edit your profile below, <strong><?php echo $user->get('fname') . ' ' . $user->get('lname'); ?></strong>.</p>
