@@ -9,6 +9,7 @@ class A_Orm_DataMapper_Core	{
 
 	protected $mappings = array();
 	protected $params = array();
+	protected $joins = array();
 	protected $class;
 	protected $table;
 	
@@ -52,6 +53,17 @@ class A_Orm_DataMapper_Core	{
 		return $object;
 	}
 
+	public function update($array, $object)	{
+		if (empty($this->mappings))	{
+		foreach (array_keys ($array) as $column)	{
+				$mapping = $this->map($column);
+				if ($column == 'id')	{
+					$mapping->setKey();
+				}
+			}
+		}
+	}
+	
 	public function create($params=array())	{
 		if (!class_exists ($this->class))	{
 			throw new Exception ('class ' . $this->class . ' does not exist.');
@@ -84,7 +96,7 @@ class A_Orm_DataMapper_Core	{
 			foreach(func_get_args() as $column)	{
 				list($column, $table, $alias, $key) = $this->parseColumn($column);
 				if(method_exists($this->class, 'get'.ucfirst($column)) && method_exists ($this->class, 'set'.ucfirst($column)))	{
-					$mapping = $this->mapMethods('get'.ucfirst($column), 'set'.ucfirst($column))
+					$mapping = $this->mapMethods('get'.ucfirst($column), 'set'.ucfirst($column));
 				}elseif(method_exists ($this->class, 'get') && method_exists ($this->class, 'set'))	{
 					$mapping = $this->mapGeneric($column);
 				} else	{
@@ -121,7 +133,7 @@ class A_Orm_DataMapper_Core	{
 	
 	public function mapParams()	{
 		foreach (func_get_args() as $column)	{
-			$this->mapParam($column)			
+			$this->mapParam($column);			
 		}
 	}
 

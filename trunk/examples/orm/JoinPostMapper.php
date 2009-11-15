@@ -10,6 +10,7 @@ class JoinPostMapper extends A_Orm_Datamapper	{
 		//$this->map('author_first_name')->toColumn('users.first_name');
 		//$this->map('author_last_name')->toColumn('users.last_name');
 		//$this->innerJoin('users')->on('id','author_id');
+		$this->join('users ON (users.id = posts.author_id');
 	}
 
 }
