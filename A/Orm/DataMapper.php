@@ -26,6 +26,10 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		return $join;
 	}
 	
+	protected function getJoins()	{
+		return $this->joins;
+	}
+	
 	public function join($table)	{
 		return $this->addJoin(new A_Orm_DataMapper_SQLJoin($table));
 	}
@@ -71,7 +75,11 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		$sql = $this->query->select()
 			->columns($this->getSelectExpression())
 			->from($this->getTableReferences())
-			->where(array($this->table.'.id',$id));
+			->where(array($this->table.'.id'=>$id));
+		foreach($this->getJoins() as $join)	{
+			$sql->join($join);
+		}
+		p($sql->render());
 		$stmt = $this->db->query($sql);
 		return $this->load($stmt->fetch(PDO::FETCH_ASSOC));
 	}
