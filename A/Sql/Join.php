@@ -7,10 +7,19 @@
 
 class A_Sql_Join {
 	protected $joins = array();
-
-	public function join($table1, $table2, $type = 'INNER') {
+	protected $tables = array();
+	
+	public function __construct($table1=null, $table2=null, $type='INNER') {
+		if ($table1 && $table2) {
+			$this->join($table1, $table2, $type);
+		} 
+	}
+	
+	public function join($table1, $table2, $type='INNER') {
 		$type = strtoupper($type);
-		$this->joins[] = array('type' => $type, 'table1' => $table1, 'table2' => $table2, 'on' => null); 
+		$this->joins[] = array('type' => $type, 'table1' => $table1, 'table2' => $table2, 'on' => null);
+		$this->tables[$table1] = true; 
+		$this->tables[$table2] = true; 
 	}
 	
 	public function on($argument1, $argument2=null, $argument3=null) {
@@ -63,7 +72,7 @@ class A_Sql_Join {
 		$return = '';
 		foreach ($this->joins as $join) {
 			$on = $join['on'] ? ' ON '. $join['on']->render() : '';
-			$return .= ($return ? ' ' : '') . $join['type'] .' JOIN '. $join['table1'] . $on;
+			$return .= " {$join['type']} JOIN {$join['table1']}$on";
 		}
 		return $return;
 	}
@@ -73,6 +82,11 @@ class A_Sql_Join {
 			return $alias .'.'. $table;
 		}
 		return $table;
+	}
+
+
+	protected function getTables() {
+		return array_keys($this->tables);
 	}
 
 
