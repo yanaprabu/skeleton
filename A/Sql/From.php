@@ -55,6 +55,15 @@ class A_Sql_From {
 	}
 
 	/**
+	 * Add a new join object manually
+	 */
+	public function addJoin($join)	{
+		$this->current_join = $join;
+		$this->joins[] = $join;
+		return $join;
+	}
+	
+	/**
 	 * Create a new join object with provided parameters
 	 */
 	public function join($table1, $table2, $type=null)	{
