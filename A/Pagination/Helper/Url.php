@@ -20,7 +20,7 @@ class A_Pagination_Helper_Url	{
 	 * @param $protocol string http or https
 	 */
 	public function __construct ($base = '', $protocol = 'http')	{
-		$this->base = $base;
+		$this->base = $base ? $base : $_SERVER['SERVER_NAME'];
 		$this->protocol = $protocol;
 	}
 
@@ -62,8 +62,12 @@ class A_Pagination_Helper_Url	{
 		$params = array_merge ($this->state, $params);
 		foreach ($ignore as $key) unset ($params[$key]);
 		$base = $this->base ? $this->protocol . '://' . $this->base . '/' : '';
-		$page = $page ? $page : $_SERVER['SCRIPT_NAME'];
-		$query = count ($params) > 0 ? '?' . http_build_query ($params) : '';
+		$page = $page ? $page : $_SERVER['PHP_SELF'];
+		$query = '';
+		if (count($params) > 0) {
+			$query =  (strpos($page, '?') === false) ? '?' : '&';
+			$query .=  http_build_query($params);
+		}
 		return $base . $page . $query;
 	}
 
