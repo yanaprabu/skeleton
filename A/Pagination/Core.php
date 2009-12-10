@@ -109,6 +109,18 @@ class A_Pagination_Core	{
 		return ceil($this->getNumItems() / $this->pageSize);
 	}
 
+	/**
+	 * Set the number of items returned by getItems()
+	 */
+	public function setPageSize($size)  {
+		$this->pageSize = $size;
+		return $this;
+	}
+
+	/**
+	 * Set the number of page number on each side of the current page number. 
+	 * Total number of page numbers is $size * 2 + 1
+	 */
 	public function setRangeSize($size)  {
 		$this->rangeSize = $size;
 		return $this;
