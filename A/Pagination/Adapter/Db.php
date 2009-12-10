@@ -10,7 +10,7 @@ include_once 'A/Pagination/Adapter/Abstract.php';
 class A_Pagination_Adapter_Db extends A_Pagination_Adapter_Abstract	{
 
 	public function getItems ($start, $length)	{
-		$result = $this->db->limit($this->query . $this->constructOrderBy(), $start, $length);
+		$result = $this->db->limit($this->query . $this->constructOrderBy(), $length, $start);
 		if (!$result->isError() && $result->numItems() > 0)	{
 			$rows = array();
 			while ($row = $result->fetchRow())	{
