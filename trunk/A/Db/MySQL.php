@@ -87,8 +87,7 @@ class A_Db_MySQL {
 	}
 		
 	public function limit($sql, $count, $offset = null) {
-		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
-		return $sql . ' LIMIT ' . $limit;
+		return $sql . ' LIMIT ' . (is_int($offset) && $offset > 0 ? "$offset," : '') . $count;
 	}
 	
 	public function lastId() {
