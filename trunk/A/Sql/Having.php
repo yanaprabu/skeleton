@@ -1,5 +1,5 @@
 <?php
-require_once 'A/Sql/LogicalList.php';
+#require_once 'A/Sql/LogicalList.php';
 /**
  * Generate SQL HAVING clause
  * 

@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Sql/Statement.php';
+#include_once 'A/Sql/Statement.php';
 /**
  * Generate SQL logical expression/equation
  * 

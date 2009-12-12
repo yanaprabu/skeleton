@@ -2,9 +2,9 @@
 
 include('../config.php');
 include('orm_config.php');
-include('PostMapper.php');
-include('UserMapper.php');
-include('DomainObjects.php');
+#include('PostMapper.php');
+#include('UserMapper.php');
+#include('DomainObjects.php');
 
 $mapper = new PostMapper($db);
 $post = new Post();

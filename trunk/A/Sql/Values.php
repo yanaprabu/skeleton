@@ -1,5 +1,5 @@
 <?php
-require_once 'A/Sql/Expression.php';
+#require_once 'A/Sql/Expression.php';
 /**
  * Generate SQL values list
  * 

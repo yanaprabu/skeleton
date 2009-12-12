@@ -10,7 +10,7 @@ class A_Sql_Union extends A_Sql_Statement {
 	
 	public function select($select = null) {	
 		if (!$select) {
-			require_once 'A/Sql/Select.php';
+			#require_once 'A/Sql/Select.php';
 			$select = new A_Sql_Select();
 		}
 		$this->selects[] = $select;
@@ -19,7 +19,7 @@ class A_Sql_Union extends A_Sql_Statement {
 	}
 	
 	public function orderBy($columns) {
-		require_once 'A/Sql/Orderby.php';
+		#require_once 'A/Sql/Orderby.php';
 		$this->orderby = new A_Sql_Orderby($columns);	
 		return $this;
 	}	

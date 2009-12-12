@@ -1,7 +1,7 @@
 <?php
 
-include_once 'A/Db/Pdo.php';
-include_once 'A/Locator.php';
+#include_once 'A/Db/Pdo.php';
+#include_once 'A/Locator.php';
 
 $locator = new A_Locator();
 $locator->register(array( 

@@ -1,5 +1,5 @@
 <?php
-require_once 'A/Sql/Statement.php';
+#require_once 'A/Sql/Statement.php';
 /**
  * Generate SQL SELECT statement
  * 
@@ -42,7 +42,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * It's important both for documentation and auto-complete feature of IDE's
 	 */
 	public function columns() {
-		require_once 'A/Sql/Columns.php';		
+		#require_once 'A/Sql/Columns.php';		
 		$this->pieces['columns'] = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
@@ -65,7 +65,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @question - see my notes on columns()
 	 */
 	public function from() {
-		require_once 'A/Sql/From.php';	
+		#require_once 'A/Sql/From.php';	
 		$this->pieces['tables'] = new A_Sql_From(func_get_args());
 		return $this;
 	}
@@ -83,7 +83,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function where($argument1, $argument2=null, $argument3=null) {
 		if (!$this->pieces['where']) {
-			require_once 'A/Sql/Where.php';		
+			#require_once 'A/Sql/Where.php';		
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
 		}
@@ -101,7 +101,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function orWhere($data, $value=null) {
 		if (!$this->pieces['where']) {
-			require_once 'A/Sql/Where.php';		
+			#require_once 'A/Sql/Where.php';		
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
 		}
@@ -119,7 +119,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */	
 	public function join($table1, $table2, $type='INNER') {
 		if (!$this->pieces['joins']) {
-			require_once 'A/Sql/Join.php';
+			#require_once 'A/Sql/Join.php';
 			$this->pieces['joins'] = new A_Sql_Join();
 		}
 		$this->pieces['joins']->join($table1, $table2, $type);
@@ -220,7 +220,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function having($argument1, $argument2=null, $argument3=null) {
 		if (!$this->pieces['having']) {
-			require_once 'A/Sql/Having.php';
+			#require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
 		}
@@ -238,7 +238,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function orHaving($data, $value=null) {
 		if (!($this->pieces['having'] instanceof A_Sql_Having)) {
-			require_once 'A/Sql/Having.php';
+			#require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
 		}
@@ -253,7 +253,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @return self
 	 */
 	public function groupBy($columns) {
-		require_once 'A/Sql/Groupby.php';
+		#require_once 'A/Sql/Groupby.php';
 		$this->pieces['groupby'] = new A_Sql_Groupby($columns);	
 		return $this;
 	}
@@ -266,7 +266,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @question Same as before
 	 */
 	public function orderBy($columns) {
-		require_once 'A/Sql/Orderby.php';
+		#require_once 'A/Sql/Orderby.php';
 		$this->pieces['orderby'] = new A_Sql_Orderby($columns);	
 		return $this;
 	}
@@ -314,7 +314,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	public function render() {
 		$this->notifyListeners();
 		
-		if (!($this->pieces['tables'] instanceof A_Sql_Table && count($this->pieces['tables']->getTables()))) {
+		if (!($this->pieces['tables'] instanceof A_Sql_From && count($this->pieces['tables']->getTables()))) {
 			return ''; //throw new A_Sql_Exception('No valid table name was supplied');
 		}
 
@@ -330,7 +330,7 @@ class A_Sql_Select extends A_Sql_Statement {
 			$this->replace['['.$name.']'] = strlen($output) ? ' '. $output : $output; //add spacing
 		}
 
-		$sql = "SELECT[columns][tables][joins][having][where][orderby][groupby]";
+		$sql = "SELECT[columns] FROM[tables][joins][having][where][orderby][groupby]";
 		$sql = str_replace(array_keys($this->replace), array_values($this->replace), $sql);
 		
 		if(is_int($this->limit) && $this->limit > 0){ //Limit is handled by DB adapter due to engine differences

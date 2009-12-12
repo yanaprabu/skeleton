@@ -3,12 +3,12 @@
 /*
  * Can we autoload these and save the calls? -Cory
  */
-require_once('A/Orm/DataMapper/Core.php');
-require_once('A/Orm/DataMapper/Mapping.php');
-require_once('A/Orm/DataMapper/Join.php');
-require_once('A/Orm/DataMapper/SQLJoin.php');
-require_once('A/Db/Tabledatagateway.php');
-require_once('A/Sql/Query.php');
+#require_once('A/Orm/DataMapper/Core.php');
+#require_once('A/Orm/DataMapper/Mapping.php');
+#require_once('A/Orm/DataMapper/Join.php');
+#require_once('A/Orm/DataMapper/SQLJoin.php');
+#require_once('A/Db/Tabledatagateway.php');
+#require_once('A/Sql/Query.php');
 
 /**
  * 
@@ -76,12 +76,13 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 			->columns($this->getSelectExpression())
 			->from($this->getTableReferences())
 			->where(array($this->table.'.id'=>$id));
-		foreach($this->getJoins() as $join)	{
-			$sql->join($join);
-		}
-		p($sql->render());
-		$stmt = $this->db->query($sql);
-		return $this->load($stmt->fetch(PDO::FETCH_ASSOC));
+# removed - what does this do?
+#		foreach($this->getJoins() as $join)	{
+#			$sql->join($join);
+#		}
+		$result = $this->db->query($sql);
+		// TODO - Fix so this is not PDO specific
+		return $this->load($result->fetchRow());
 	}
 
 	public function findAll()	{

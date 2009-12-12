@@ -1,6 +1,6 @@
 <?php
 
-require_once('HardcodedGateway.php');
+#require_once('HardcodedGateway.php');
 
 class UserMapper extends HardcodedGateway	{
 

@@ -1,5 +1,5 @@
 <?php
-require_once 'A/Sql/Statement.php';
+#require_once 'A/Sql/Statement.php';
 /**
  * Generate SQL INSERT statement
  * 
@@ -27,8 +27,8 @@ class A_Sql_Insert extends A_Sql_Statement {
 	}
 	
 	public function table($table) {
-		include_once('A/Sql/Table.php');
-		$this->table = new A_Sql_Table($table);
+		#include_once('A/Sql/Table.php');
+		$this->table = new A_Sql_From($table);
 		return $this;
 	}
 
@@ -36,21 +36,21 @@ class A_Sql_Insert extends A_Sql_Statement {
 		if ($data) {
 			$this->columns = null;
 			$this->select = null;		
-			include_once('A/Sql/Values.php');
+			#include_once('A/Sql/Values.php');
 			$this->values = new A_Sql_Values($data, $value);
 		}
 		return $this;
 	}
 	
 	public function columns() {
-		include_once('A/Sql/Columns.php');
+		#include_once('A/Sql/Columns.php');
 		$this->columns = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
 
 	public function select() {
 		if (!$this->select) {
-			include_once('A/Sql/Select.php');
+			#include_once('A/Sql/Select.php');
 			$this->select = new A_Sql_Select();
 		}
 		return $this->select;

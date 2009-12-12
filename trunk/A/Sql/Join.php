@@ -30,7 +30,7 @@ class A_Sql_Join {
 			return;
 		}
 		if (!$this->on) {
-			require_once 'A/Sql/LogicalList.php';						
+			#require_once 'A/Sql/LogicalList.php';						
 			$this->on = new A_Sql_LogicalList();
 			$this->on->setEscape(false);
 		}		

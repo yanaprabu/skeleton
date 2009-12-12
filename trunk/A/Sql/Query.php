@@ -6,10 +6,10 @@
  * @package A_Sql 
  */
 
-include_once('A/Sql/Select.php');
-include_once('A/Sql/Insert.php');
-include_once('A/Sql/Update.php');
-include_once('A/Sql/Delete.php');
+#include_once('A/Sql/Select.php');
+#include_once('A/Sql/Insert.php');
+#include_once('A/Sql/Update.php');
+#include_once('A/Sql/Delete.php');
 
 class A_Sql_Query	{
 	

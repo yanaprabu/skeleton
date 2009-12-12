@@ -1,6 +1,6 @@
 <?php
 
-require_once('A/Orm/DataMapper.php');
+#require_once('A/Orm/DataMapper.php');
 
 class PostMapper extends A_Orm_DataMapper	{
 
