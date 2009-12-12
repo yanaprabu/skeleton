@@ -22,6 +22,10 @@ class A_Locator {
 				$this->setDir($dir);
 			}
 		}
+		// if the location of the framework is not set then get it
+		if (!isset($this->_dir['A'])) {
+			$this->_dir['A'] = dirname(dirname(__FILE__)) . '/';
+		}
 	}
 
 	public function setDir($dir, $namespace='') {
@@ -227,5 +231,8 @@ class A_Locator {
 	public function has($name) {
 		return isset($this->_obj[$name]);
 	}
-
+	
+	public function autoload() {
+	 return spl_autoload_register(array($this, 'loadClass'));
+	}
 }

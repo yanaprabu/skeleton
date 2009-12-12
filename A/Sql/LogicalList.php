@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Sql/Statement.php';
+#include_once 'A/Sql/Statement.php';
 /**
  * Generate SQL AND/OR/NOT list strings
  * 
@@ -24,7 +24,7 @@ class A_Sql_LogicalList extends A_Sql_Statement {
 				$arg2  = $arg3;
 			}
 				
-			include_once('A/Sql/Expression.php');
+			#include_once('A/Sql/Expression.php');
 			$expression = new A_Sql_Expression($arg1, $arg2, $this->escape);
 			$this->escapeListeners[] = $expression;
 			if (count($this->data)) {

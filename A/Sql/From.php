@@ -28,30 +28,35 @@ class A_Sql_From {
 	 *
 	 * @return array
 	 */	
-	public function table($args=null) {
-		if (is_array($args)) {
-			if (isset($args[0]) && is_array($args[0])) {
-				$this->tables = $args[0];
+	public function table($table='') {
+		if ($table) {
+			if (is_array($table)) {
+				$this->table = $table[0];
 			} else {
-				$this->table = $args;
+				$this->table = $table;
 			}
-		} else {
-			$this->table = $args;
 		}
 		return $this;
 	}
 
 	/**
-	 * Return list of columns
+	 * Return list of tables
 	 *
 	 * @return array
 	 */	
 	public function getTables() {
-		if ($this->joins) {
-			return array_merge(array($this->table), array_keys($this->joins));
-		} else {
-			return array($this->table);
+		$tables = array();
+		if ($this->table) {
+			$tables[$this->table] = true;
 		}
+		if ($this->joins) {
+			foreach ($this->joins as $join) {
+				foreach ($join->getTables() as $table) {
+					$tables[$table] = true;
+				}
+			}
+		}
+		return array_keys($tables);
 	}
 
 	/**
@@ -68,7 +73,7 @@ class A_Sql_From {
 	 */
 	public function join($table1, $table2, $type=null)	{
 		if ($table1 && $table2) {
-			require_once 'A/Sql/Join.php';
+			#require_once 'A/Sql/Join.php';
 			$this->current_join = new A_Sql_Join($table1, $table2, $type);
 			$this->joins[] = $this->current_join;
 		}
@@ -113,7 +118,6 @@ class A_Sql_From {
 		}
 		$this->sql = $this->table;
 		foreach ($this->joins as $join) {
-echo "render join<br/>";
 			$this->sql .= $join->render();
 		}
 		return $this->sql;		

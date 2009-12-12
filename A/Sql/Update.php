@@ -1,5 +1,5 @@
 <?php
-require_once 'A/Sql/Statement.php';
+#require_once 'A/Sql/Statement.php';
 /**
  * Generate SQL UPDATE statement
  * 
@@ -28,14 +28,14 @@ class A_Sql_Update extends A_Sql_Statement {
 	}
 	
 	public function table($table) {
-		include_once('A/Sql/Table.php');
-		$this->table = new A_Sql_Table($table);
+		#include_once('A/Sql/Table.php');
+		$this->table = new A_Sql_From($table);
 		return $this;
 	}	
 
 	public function set($data, $value=null) {
 		if (!$this->set) {
-			include_once('A/Sql/Set.php');	
+			#include_once('A/Sql/Set.php');	
 			$this->set = new A_Sql_Set();
 		}
 		$this->set->addExpression($data, $value);
@@ -43,14 +43,14 @@ class A_Sql_Update extends A_Sql_Statement {
 	}
 	
 	public function join($table1, $column1, $table2, $column2) {
-		include_once('A/Sql/Join.php');
+		#include_once('A/Sql/Join.php');
 		$this->joins[$table2] = new A_Sql_Join($table1, $column1, $table2, $column2);
 		return $this;
 	}	
 	
 	public function where($arg1, $arg2=null, $arg3=null) {
 		if (!$this->where) {
-			include_once('A/Sql/Where.php');		
+			#include_once('A/Sql/Where.php');		
 			$this->where = new A_Sql_Where();
 		}
 		$this->where->addExpression($arg1, $arg2, $arg3);
@@ -59,7 +59,7 @@ class A_Sql_Update extends A_Sql_Statement {
 
 	public function orWhere($data, $value=null) {
 		if (!$this->where) {
-			include_once('A/Sql/Where.php');
+			#include_once('A/Sql/Where.php');
 			$this->where = new A_Sql_Where();
 		}
 		$this->where->addExpression('OR', $data, $value);
