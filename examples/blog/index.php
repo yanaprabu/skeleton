@@ -31,8 +31,10 @@ $ConfigArray = array(
 // Configure PHP include path
 set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
 
-// Init autoload
-require_once 'A/functions/a_autoload.php';
+// Init autoload using Locator
+require_once $ConfigArray['LIB'] . 'A/Locator.php';
+$Locator = new A_Locator();
+$Locator->autoload();
 
 // Load application config data
 $ConfigIni = new A_Config_Ini('config/example.ini', 'production');
@@ -57,7 +59,6 @@ $Session = new A_Session();
 $UserSession = new A_User_Session($Session);
 
 // Create registry/loader and add common objects
-$Locator = new A_Locator();
 $Locator->set('Config', $Config);
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
@@ -90,7 +91,7 @@ $PathInfo->run($Request);
 
 // Create mapper with base application path and default action
 $Mapper = new A_Controller_Mapper($Config->get('APP'), array('', 'index', 'index'));
-$Mapper->setDefaultDir('blog');
+#$Mapper->setDefaultDir('blog');
 
 // Create and run FC with error action
 $Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));
