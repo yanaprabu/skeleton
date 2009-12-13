@@ -9,8 +9,8 @@
  * @version @package_version@
  */
 
-include ('A/Pagination/Request.php');
-include ('A/Pagination/View/Standard.php');
+#include_once 'A/Pagination/Request.php';
+#include_once 'A/Pagination/View/Standard.php';
 
 class A_Pagination_Standalone extends A_Pagination_View_Standard	{
 

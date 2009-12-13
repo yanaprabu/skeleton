@@ -5,9 +5,9 @@ include 'A/Db/Activerecord.php';
 
 class Projects extends A_Db_ActiveRecord
 {
-	public function initFields()
+	public function __construct($db=null)
     {
-        $this->fields = array (
+        $this->setColumns(array (
             'projectID',
             'title',
             'name',
@@ -15,17 +15,10 @@ class Projects extends A_Db_ActiveRecord
             'email',
             'password',
             'active'
-        );
-    }
-
-    public function initTable()
-    {
-        $this->table = 'project';
-    }
-
-    public function initPrimary()
-    {
-        $this->primary[] = 'projectID';
+        ));
+        $this->table('project');
+        $this->key('projectID');
+        parent::__construct($db);
     }
 
     public function getFullname()
@@ -34,14 +27,7 @@ class Projects extends A_Db_ActiveRecord
     }
 }
 
-$dbdsn = array(
-'phptype' => "mysql",
-'hostspec' => "localhost",
-'database' => "a_todo",
-'username' => "skeleton",
-'password' => "skeleton"
-); 
-$db = new A_Db_MySQL($dbdsn);
+$db = new A_Db_MySQL($config['db']);
 $db->connect();
 if ($db->isError()) die('ERROR: ' . $db->getMessage());
 

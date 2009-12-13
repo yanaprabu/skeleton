@@ -1,6 +1,6 @@
 <?php
-require_once 'A/Db/MySQL';
-require_once 'A/Db/Wrapper/Abstract';
+#require_once 'A/Db/MySQL';
+#require_once 'A/Db/Wrapper/Abstract';
 
 /**
  * Class for connecting to MySQL databases and performing common database operations.

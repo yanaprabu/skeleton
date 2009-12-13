@@ -93,7 +93,7 @@ class A_Db_Tabledatagateway {
 	public function update($data, $where='') {
 		if ($data) {
 			if (! $this->update) {
-				include_once 'A/Sql/Update.php';
+				#include_once 'A/Sql/Update.php';
 				$this->update = new A_Sql_Update($this->getTable());
 			}
 			$this->update->setDb($this->db)->set($data);
@@ -112,7 +112,7 @@ class A_Db_Tabledatagateway {
 	public function insert($data) {
 		if ($data) {
 			if (! $this->insert) {
-				include_once 'A/Sql/Insert.php';
+				#include_once 'A/Sql/Insert.php';
 				$this->insert = new A_Sql_Insert($this->getTable());
 			}
 			$this->sql = $this->insert->setDb($this->db)->values($data)->render();

@@ -58,7 +58,7 @@ $Session = new A_Session();
 //$Session->start();
 $UserSession = new A_User_Session($Session);
 
-// Create registry/loader and add common objects
+// Add common objects to registry
 $Locator->set('Config', $Config);
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
@@ -91,7 +91,7 @@ $PathInfo->run($Request);
 
 // Create mapper with base application path and default action
 $Mapper = new A_Controller_Mapper($Config->get('APP'), array('', 'index', 'index'));
-#$Mapper->setDefaultDir('blog');
+$Mapper->setDefaultDir('blog');
 
 // Create and run FC with error action
 $Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));

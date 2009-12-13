@@ -1,5 +1,5 @@
 <?php
-#require_once('recaptcha/recaptchalib.php');
+##require_once('recaptcha/recaptchalib.php');
 
 /**
  * class acts as both a Rule for Validator and Renderer for View
@@ -52,8 +52,8 @@ Example:
   <body>
     <form action="" method="post">
 <?php
-require_once('recaptcha/recaptchalib.php');
-require_once('A/classses/Recaptcha.php');
+#require_once('recaptcha/recaptchalib.php');
+#require_once('A/classses/Recaptcha.php');
 
 // Get a key from http://recaptcha.net/api/getkey
 $publickey = "xxx";

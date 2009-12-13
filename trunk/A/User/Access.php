@@ -1,6 +1,6 @@
 <?php
-include_once 'A/Rule/Abstract.php';
-include_once 'A/Validator.php';
+#include_once 'A/Rule/Abstract.php';
+#include_once 'A/Validator.php';
 /**
  * Check if user has access based on supplied rules 
  * 

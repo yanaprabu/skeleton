@@ -9,7 +9,7 @@
  * @version @package_version@
  */
 
-include_once 'A/Pagination/Helper/Url.php';
+#include_once 'A/Pagination/Helper/Url.php';
 
 class A_Pagination_Helper_Link {
 	protected $pager;

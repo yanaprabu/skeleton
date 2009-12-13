@@ -1,5 +1,5 @@
 <?php
-include_once('A/Template/File.php');
+#include_once('A/Template/File.php');
 /**
  * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
  * 

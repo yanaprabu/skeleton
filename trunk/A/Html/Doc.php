@@ -13,12 +13,14 @@ class A_Html_Doc {
 	const XHTML_1_0_TRANSITIONAL = 5;	
 	const XHTML_1_0_FRAMESET = 6;
 	const XHTML_1_1 = 7; 
+	const HTML_5 = 8; 
 	
 	protected $_attr = array(
 					'action' => '',
 					'method' => 'post',
 					); 
 	protected $_title = '';
+	protected $_base = '';
 	protected $_style_links = array();
 	protected $_styles = array();
 	protected $_rss_links = array();
@@ -29,10 +31,11 @@ class A_Html_Doc {
 	protected $_body = '';
 	
 	/*
-	 * name=string, value=string or renderer
-	 */
+	* name=string, value=string or renderer
+	*/
 	public function renderDoctype($doctype=null) {
 		$doctypes = array(
+			self::HTML_5 => '<!DOCTYPE HTML>',
 			self::HTML_4_01_STRICT => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">',
 			self::HTML_4_01_TRANSITIONAL => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -59,8 +62,81 @@ class A_Html_Doc {
 		return $this;
 	}
 
+	public function setBase($url) {
+		$this->_base = $url;
+		return $this;
+	}
+
 	public function getTitle() {
 		return $this->_title;
+	}
+
+	public function addScript($script, $media='all', $label='') {
+		if ($filename) {
+			$this->scripts[] = array('label'=>$label, 'filename'=>'', 'script'=>$script, 'media'=>$media);
+		}
+		return $this;
+	}
+	 
+	/**
+	 * http://www.w3schools.com/tags/tag_link.asp
+	 * @param $filename
+	 * @param $media
+	 * @param $label
+	 * @return unknown_type
+	 */
+	public function addLink($type='stylesheet', $href, $media='all', $label='') {
+		if ($href) {
+			$this->scripts[] = array('rel'=>$type, 'label'=>$label, 'href'=>$href, 'media'=>$media);
+		}
+		return $this;
+	}
+	
+	/**
+	 * 
+http-equiv:
+content-type
+content-style-type
+expires
+refresh
+set-cookie
+
+name:
+author
+description
+keywords
+generator
+revised
+
+scheme:
+format/URI
+	 */
+	public function addMeta($httpequiv, $content, $value='') {
+		if ($content) {
+			$this->meta[] = array('httpequiv'=>$httpequiv, 'content'=>$content, 'value'=>$value);
+		}
+		return $this;
+	}
+	
+	public function ifIE($logic) {
+		if ($logic) {
+			$this->ifIElogic = logic;
+		}
+		return $this;
+	}
+	
+	public function before($label) {
+		if ($label) {
+			$this->beforeLabel= $label;
+		}
+		return $this;
+	}
+	
+	public function after($label) {
+		if ($label) {
+			$this->afterLabel= $label;
+		}
+		return $this;
 	}
 
 	public function renderTitle() {
@@ -104,8 +180,8 @@ class A_Html_Doc {
 	}
 
 	/*
-	 * name=string, value=string or renderer
-	 */
+	* name=string, value=string or renderer
+	*/
 	public function render($attr=array(), $content=null) {
 	}
 

@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Html/Form/Radiocheckbox.php';
+#include_once 'A/Html/Form/Radiocheckbox.php';
 /**
  * Generate HTML form radio button input
  *

@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Http/View.php';
+#include_once 'A/Http/View.php';
 /**
  * HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
  * 
@@ -36,7 +36,14 @@ class A_Http_Response extends A_Http_View {
 	            }
 	            $this->redirect = $protocol . $base . preg_replace('/^[\/\.]*/', '', $this->redirect);
             }
-			header('Location: ' . $this->redirect);
+# astions Google Chrome caching redirects fix
+# header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate"); // HTTP/1.1
+# header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+# header("Location: $url", true, 302);
+# or just
+# header("Location: $url", true, 303);
+            header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate"); // HTTP/1.1
+            header('Location: ' . $this->redirect, true, 303);
         } else {
         	parent::render();
 	        foreach ($this->headers as $field => $params) {

@@ -1,5 +1,5 @@
 <?php
-require_once 'A/DataContainer.php';
+#require_once 'A/DataContainer.php';
 /**
  * Abstract base class for configuration
  *
@@ -35,7 +35,7 @@ abstract class A_Config_Abstract {
    
    public function errorHandler($errno, $errstr, $errfile, $errline) {
       if ($this->_exception) {
-        	include_once 'A/Exception.php';
+        	#include_once 'A/Exception.php';
          throw A_Exception::getInstance($this->_exception, $errstr);
       } else {
          $this->_error = $errno;

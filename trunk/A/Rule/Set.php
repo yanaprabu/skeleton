@@ -111,7 +111,7 @@ class A_Rule_Set {
 				if(strstr($name, '_') === false) {
 				    $name = $this->dir . ucfirst($name);
 				}
-				include_once str_replace('_', '/', $name) . '.php';
+				#include_once str_replace('_', '/', $name) . '.php';
 				$ref = new ReflectionClass($name);
 				$this->chain[$key] = $ref->newInstanceArgs($args);
 				unset($ref);

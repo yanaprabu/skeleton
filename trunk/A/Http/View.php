@@ -25,6 +25,12 @@ class A_Http_View {
 	protected $flash;
 	protected $paths = array();				// cache array of paths calculated by Mapper
 	protected $helpers = array();
+	protected $helperClass = array(
+		'datetime'=>'A_DateTime',
+		'json'=>'A_Json',
+		'pagination'=>'A_Pagination_View_Standard',
+		'url'=>'A_Http_Helper_Url',
+	);
 	protected $use_local_vars = true;
 	
 	public function __construct($locator=null) {
@@ -238,7 +244,7 @@ class A_Http_View {
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
-			include_once "A/Controller/Helper/Load.php";
+			#include_once "A/Controller/Helper/Load.php";
 			$this->load = new A_Controller_Helper_Load($this->locator, $this, $scope);
 		}
 		return $this->load;
@@ -246,7 +252,7 @@ class A_Http_View {
  
 	protected function _flash($name=null, $value=null) {
 		if (! isset($this->flash)) {
-			include_once "A/Controller/Helper/Flash.php";
+			#include_once "A/Controller/Helper/Flash.php";
 			$this->flash = new A_Controller_Helper_Flash($this->locator);
 		}
 		if ($name) {
@@ -266,13 +272,21 @@ class A_Http_View {
 		return $this;
 	}
  
+	public function setHelperClass($name, $class) {
+		if ($name) {
+			$this->helperClass[$name] = $class;
+		}
+		return $this;
+	}
+ 
 	protected function helper($name) {
 		if (! isset($this->helpers[$name])) {
-			$class = 'A_Http_Helper_' . ucfirst($name);
-#			include_once 'A/Http/Helper/' . ucfirst($name) . '.php';
-#			$this->helpers[$name] = new $class($this->locator);
+			if (isset($this->helperClass[$name])) {
+				$class = $this->helperClass[$name];
+			} else {
+				$class = $name;
+			}
 			$this->helpers[$name] = $this->locator->get('', $class, '', $this->locator);
-#			$this->set($name, $this->helpers[$name]);
 		}
 		if (isset($this->helpers[$name])) {
 			return $this->helpers[$name];

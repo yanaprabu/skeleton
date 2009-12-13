@@ -1,5 +1,5 @@
 <?php
-include_once('A/Template.php');
+#include_once('A/Template.php');
 /**
  * Base Template class for templates that are read as files
  * 

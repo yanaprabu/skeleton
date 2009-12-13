@@ -1,7 +1,7 @@
 <?php
-include_once 'A/Controller/Action.php';
-include_once 'A/Filter/Set.php';
-include_once 'A/Rule/Set.php';
+#include_once 'A/Controller/Action.php';
+#include_once 'A/Filter/Set.php';
+#include_once 'A/Rule/Set.php';
 
 /**
  * Controller class with request filtering and validation
@@ -219,7 +219,7 @@ class A_Controller_InputParameter {
 		// string is name of class with underscores in loadable convention
 		if (is_string($this->renderer)){
 			// load locator if not loaded
-			include_once 'A/Locator.php';
+			#include_once 'A/Locator.php';
 			if (A_Locator::loadClass($this->renderer)) {
 				// instantiate render passing the array of parameters
 				$this->renderer = new $this->renderer();

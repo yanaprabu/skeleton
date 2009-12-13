@@ -47,7 +47,7 @@ class A_Db_ADOdblite {
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
 		if ($bind) {
-			include_once 'A/Sql/Prepare.php';
+			#include_once 'A/Sql/Prepare.php';
 			$prepare = new A_Sql_Prepare($sql, $bind);
 			$prepare->setDb($this->db);
 			$sql = $prepare->render();

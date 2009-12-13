@@ -1,6 +1,6 @@
 <?php
-include_once 'A/Controller/Input.php';
-include_once 'A/Pager.php';
+#include_once 'A/Controller/Input.php';
+#include_once 'A/Pager.php';
 /**
  * was intended for pagination support -- not used
  *

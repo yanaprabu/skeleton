@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Html/Tag.php';
+#include_once 'A/Html/Tag.php';
 /**
  * Base class to generate HTML form radio buttons and checkboxes
  *

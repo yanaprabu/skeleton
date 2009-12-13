@@ -78,7 +78,7 @@ class ListController {
 		$template->makeBlocks();
 		
 		
-		include_once 'A/Pager/DB.php';
+		#include_once 'A/Pager/DB.php';
 
 		$sql = 'SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->table . ' WHERE 1';
 		if ($this->search_fields) {
@@ -92,7 +92,7 @@ class ListController {
 #echo "SQL=$sql<br/>";
 		$pagerdb = new A_Pager_DB($sql, $this->db);
 		
-		include_once 'A/Pager.php';
+		#include_once 'A/Pager.php';
 		$pager = new A_Pager($pagerdb);
 		if ($this->order_by) {
 			$pager->setOrderByFields($this->order_by);

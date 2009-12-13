@@ -1,6 +1,6 @@
 <?php
-include_once 'A/Controller/App.php';
-include_once 'A/Rule/Notnull.php';
+#include_once 'A/Controller/App.php';
+#include_once 'A/Rule/Notnull.php';
 /**
  * Controller class for callback style form support
  *
