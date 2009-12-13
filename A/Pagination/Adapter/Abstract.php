@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Pagination/Adapter/Interface.php';
+#include_once 'A/Pagination/Adapter/Interface.php';
 
 /**
  * Datasource access class for pager using ADODB  

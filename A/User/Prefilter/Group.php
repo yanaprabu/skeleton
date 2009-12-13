@@ -1,6 +1,6 @@
 <?php
-include_once 'A/User/Session.php';
-include_once 'A/User/Rule/Ingroup.php';
+#include_once 'A/User/Session.php';
+#include_once 'A/User/Rule/Ingroup.php';
 
 /**
  * Front Controller pre-filter for group based access control 

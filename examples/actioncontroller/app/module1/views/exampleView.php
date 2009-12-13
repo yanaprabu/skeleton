@@ -1,7 +1,7 @@
 <?php
 class exampleView extends A_Http_View {
 
-	public function render() {
+	public function render($template='', $scope='') {
 		$model = $this->_load()->model();
 
 		$template = $this->_load()->template();

@@ -1,5 +1,5 @@
 <?php
-include_once('A/Template/File.php');
+#include_once('A/Template/File.php');
 /**
  * Template class that loads and eval()'s PHP templates. Templates can have blocks.
  * 

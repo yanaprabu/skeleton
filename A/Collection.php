@@ -124,4 +124,4 @@ class A_Collection implements Iterator, ArrayAccess	{
 		return $this->remove ($offset);
 	}
 	
-	}
+}

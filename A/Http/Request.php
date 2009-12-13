@@ -122,6 +122,17 @@ class A_Http_Request {
 		return $this->_get($_COOKIE, $name, $filter, $default);
 	}
 
+	public function getHeader($name, $filter=null, $default=null) {
+        if (isset($_SERVER[$name])) {
+            return $this->_get($_SERVER, $name, $filter, $default);
+        } elseif (function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            if (isset($headers[$name])) {
+                return $this->_get($headers, $name, $filter, $default);
+            }
+        }
+	}
+
 	public function export($filter=null, $pattern=null) {
 		if ($filter || $pattern) {
 			$export = array();

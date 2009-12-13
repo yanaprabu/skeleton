@@ -9,8 +9,8 @@
  * @version @package_version@
  */
 
-include_once 'A/Pagination/Core.php';
-include_once 'A/Pagination/Helper/Url.php';
+#include_once 'A/Pagination/Core.php';
+#include_once 'A/Pagination/Helper/Url.php';
 
 class A_Pagination_Request extends A_Pagination_Core	{
 

@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Controller/Input.php';
+#include_once 'A/Controller/Input.php';
 
 /**
  * Application controller class for state/transition based action selection

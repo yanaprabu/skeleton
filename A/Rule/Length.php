@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Rule/Abstract.php';
+#include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check for strings of a specified length
  * 

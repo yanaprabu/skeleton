@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Rule/Abstract.php';
+#include_once 'A/Rule/Abstract.php';
 /**
  * Rule to check a rule against an array of values 
  * 

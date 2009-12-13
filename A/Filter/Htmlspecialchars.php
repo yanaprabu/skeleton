@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Filter/Abstract.php';
+#include_once 'A/Filter/Abstract.php';
 /**
  * Filter value with htmlspecialchars() function with provided quote style and character set
  * 

@@ -155,7 +155,7 @@ class A_Controller_Helper_Load {
 		        // fix by thinsoldier for NT servers that do not return filename
 				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
 
-				include_once str_replace('_', '/', $this->renderClasses[$ext]) . '.php';
+				#include_once str_replace('_', '/', $this->renderClasses[$ext]) . '.php';
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
 				if (isset($params[1]) && is_array($params[1])) {
@@ -170,7 +170,7 @@ class A_Controller_Helper_Load {
 					$this->errorMsg .=  "Locator->loadClass('$class', '$path') failed. ";
 				}
 			} elseif (file_exists("$path$class.php")) {
-				include_once "$path$class.php";
+				#include_once "$path$class.php";
 				if (class_exists($class)) {
 					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
 				}

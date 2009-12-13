@@ -139,11 +139,11 @@ class A_Controller_Front {
 	public function run($locator = null) {
 		
 		if(! $locator){
-			include_once 'A/Locator.php';
+			#include_once 'A/Locator.php';
 			$locator = new A_Locator();
 		}
 		if (! $locator->has('Request')) {
-			include_once 'A/Http_Request.php';
+			#include_once 'A/Http_Request.php';
 			$locator->set('Request', new A_Http_Request());
 		}
 		if ($locator->has('Response')) {
@@ -152,7 +152,7 @@ class A_Controller_Front {
 		
 		// route passed as 1st param to contstructor, create a mapper
 		if (! is_object($this->mapper)) {
-			include_once 'A/Controller/Mapper.php';
+			#include_once 'A/Controller/Mapper.php';
 			$this->mapper = new A_Controller_Mapper($this->mapper, $this->defaultRoute ? $this->defaultRoute : $this->errorRoute);
 		}
 		$locator->set('Mapper', $this->mapper); // set mapper in registry for mvc loader to use 

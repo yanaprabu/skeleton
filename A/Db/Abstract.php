@@ -38,7 +38,7 @@ abstract class A_Db_Abstract
             if ($config instanceof A_DataContainer) {
                 $config = $config->toArray();
             } else {
-                require_once 'A/Db/Exception.php';
+                #require_once 'A/Db/Exception.php';
                 throw new A_Db_Exception('Adapter parameters must be in an array or a A_Config object');
             }
         }
@@ -55,17 +55,17 @@ abstract class A_Db_Abstract
      */
     protected function _checkRequiredOptions(array $config) {
         if (! array_key_exists('dbname', $config)) {
-            require_once 'A/Db/Exception.php';
+            #require_once 'A/Db/Exception.php';
             throw new A_Db_Exception("Configuration array must have a key for 'dbname' that names the database instance");
         }
 
         if (! array_key_exists('password', $config)) {
-           require_once 'A/Db/Exception.php';
+           #require_once 'A/Db/Exception.php';
            throw new A_Db_Exception("Configuration array must have a key for 'password' for login credentials");
         }
 
         if (! array_key_exists('username', $config)) {
-            require_once 'A/Db/Exception.php';
+            #require_once 'A/Db/Exception.php';
             throw new A_Db_Exception("Configuration array must have a key for 'username' for login credentials");
         }
     }

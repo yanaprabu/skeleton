@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Filter/Abstract.php';
+#include_once 'A/Filter/Abstract.php';
 /**
  * Filter string using specified length
  * 

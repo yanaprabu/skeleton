@@ -43,7 +43,7 @@ class A_Application {
    public function component($component) {
 		if (!isset($this->components[$component])) {
 			if ($this->component('Config')->useExceptions) {
-	         	include_once 'A/Exception.php';
+	         	#include_once 'A/Exception.php';
 	         	throw A_Exception::getInstance($this->exception, 'Component "'. $component .' does not exist in stack"');				
 			}
 			return false;
@@ -57,14 +57,14 @@ class A_Application {
 	}
 
 	public function initMapper($component) {
-		include_once 'A/DL.php';
+		#include_once 'A/DL.php';
 		$config = $this->component('Config');
 		$defaultAction = new A_DL('', $config->defaultController, $config->defaultAction);
 		return new $component($config->applicationPath, $defaultAction);
 	}
 	
 	public function initFront($component) {
-		include_once 'A/DL.php';
+		#include_once 'A/DL.php';
 		$mapper = $this->component('Mapper');
 		$config = $this->component('Config');
 		$defaultAction = new A_DL('', $config->errorController, $config->errorAction);
@@ -75,10 +75,10 @@ class A_Application {
 		$session = new $component('A');
 		$config = $this->component('Config');
 	  	if ($config->sessionHandler == 'database') {
-			#include_once 'A/Session/Handler/Database.php';
+			##include_once 'A/Session/Handler/Database.php';
 			#$session->setHandler(new A_Session_Handler_Database());	  			
 	  	} else {
-  			#include_once 'A/Session/Handler/Filesystem.php';
+  			##include_once 'A/Session/Handler/Filesystem.php';
   			#$session->setHandler(new A_Session_Handler_Filesystem($config->sessionPath));	  		
 	  	}
 	  	return $session;

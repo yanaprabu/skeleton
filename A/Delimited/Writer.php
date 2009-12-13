@@ -9,7 +9,7 @@
  * @version @package_version@
  */
 
-include_once 'A/Delimited/Abstract.php';
+#include_once 'A/Delimited/Abstract.php';
 
 class A_Delimited_Writer extends A_Delimited_Abstract {
 	protected $filemode = 'w';

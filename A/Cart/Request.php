@@ -1,6 +1,6 @@
 <?php
-include_once 'A/Cart/Url.php';
-include_once 'A/Cart/Item.php';
+#include_once 'A/Cart/Url.php';
+#include_once 'A/Cart/Item.php';
 /**
  * Shopping Cart request processing class
  *

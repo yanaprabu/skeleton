@@ -9,6 +9,7 @@ $ConfigArray = array(
     'password' => 'xxxx',
 	),
 
+'LIB' => '../../',
 'APP' => './app/',
 'BASE' => 'http://skeleton/examples/blog/',
 );

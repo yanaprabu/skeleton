@@ -47,7 +47,7 @@ class A_Filter_Set {
 				if(strstr($name, '_') === false) {
 				    $name = $this->dir . ucfirst($name);
 				}
-				include_once str_replace('_', '/', $name) . '.php';
+				#include_once str_replace('_', '/', $name) . '.php';
 				$ref = new ReflectionClass($name);
 				$filter = $ref->newInstanceArgs($filter);
 				$this->chain[$key] = $filter;

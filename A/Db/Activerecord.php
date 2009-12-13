@@ -1,6 +1,6 @@
 <?php
-include_once 'A/DataContainer.php';
-include_once 'A/Sql/Select.php';
+#include_once 'A/DataContainer.php';
+#include_once 'A/Sql/Select.php';
 /**
  * DataSource access using the Active Record pattern 
  *
@@ -59,6 +59,19 @@ class A_Db_Activerecord extends A_DataContainer {
 		return $this->table;
 	}
 	
+	public function key($key=null) {
+		if ($key) {
+			$this->key = $key;
+		} elseif (! $this->key) {
+			$this->key = 'id';
+		}
+		return $this;
+	}
+	
+	public function getKey() {
+		return $this->key;
+	}
+	
 	public function setColumns($columns) {
 		$this->columns = $columns;
 		return $this;
@@ -106,7 +119,7 @@ class A_Db_Activerecord extends A_DataContainer {
 	
 	public function save() {
 		if (! $this->is_loaded) {
-			include_once 'A/Sql/Insert.php';
+			#include_once 'A/Sql/Insert.php';
 			$insert = new A_Sql_Insert();
 			$insert->table($this->table)->values($this->_data);
 			$this->sql = $insert->render();
@@ -114,7 +127,7 @@ class A_Db_Activerecord extends A_DataContainer {
 			$try_update = ! $this->db->isError();
 		}
 		if (isset($this->_data[$this->key]) && ($this->is_loaded || $try_update)) {
-			include_once 'A/Sql/Update.php';
+			#include_once 'A/Sql/Update.php';
 			$update = new A_Sql_Update();
 			$update->table($this->table)->set($this->_data)->where($this->key, $this->_data[$this->key]);
 			$this->sql = $update->render();
@@ -124,7 +137,7 @@ class A_Db_Activerecord extends A_DataContainer {
 	
 	public function delete() {
 		if (isset($this->_data[$this->key]) && $this->is_loaded) {
-			include_once 'A/Sql/Delete.php';
+			#include_once 'A/Sql/Delete.php';
 			$delete = new A_Sql_Delete();
 			$delete->table($this->table)->where($this->key, $this->_data[$this->key]);
 			$this->sql = $delete->render();

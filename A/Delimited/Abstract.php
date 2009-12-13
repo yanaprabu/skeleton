@@ -9,7 +9,7 @@
  * @version @package_version@
  */
 
-include_once 'A/Delimited/Config.php';
+#include_once 'A/Delimited/Config.php';
 
 class A_Delimited_Abstract {
 	protected $maxLineLength = 1000;

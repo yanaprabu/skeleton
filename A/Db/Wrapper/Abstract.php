@@ -96,7 +96,7 @@ class A_Db_Wrapper_Abstract
 		$this->error = 1;
 		$this->errorMsg = $message;
 		if ($this->exceptions) {
-			require_once 'A/Db/Exception.php';
+			#require_once 'A/Db/Exception.php';
 			throw new A_Db_Exception($message);
 		}
 	}

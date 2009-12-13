@@ -1,9 +1,9 @@
 <?php
-include_once 'A/DL.php';
-include_once 'A/Template/Strreplace.php';
-include_once 'A/Controller/Form.php';
-include_once 'A/Controller/Form/Field.php';
-include_once 'A/Filter/Regexp.php';
+#include_once 'A/DL.php';
+#include_once 'A/Template/Strreplace.php';
+#include_once 'A/Controller/Form.php';
+#include_once 'A/Controller/Form/Field.php';
+#include_once 'A/Filter/Regexp.php';
 
 /**
  * 

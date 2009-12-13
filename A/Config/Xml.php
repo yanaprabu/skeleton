@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Config/Abstract.php';
+#include_once 'A/Config/Abstract.php';
 /**
  * Support for reading XML configuration files
  *

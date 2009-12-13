@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Rule/Abstract.php';
+#include_once 'A/Rule/Abstract.php';
 
 /*
  * Check if user's access level is >= required access level

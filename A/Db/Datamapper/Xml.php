@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Db/Datamapper.php';
+#include_once 'A/Db/Datamapper.php';
 
 class A_Db_Datamapper_Xml extends A_Db_Datamapper {
 

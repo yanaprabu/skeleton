@@ -1,6 +1,7 @@
  <?php
 include 'config.php';
 
+/*
 include 'A/Locator.php';
 include 'A/Http/Request.php';
 include 'A/Http/Response.php';
@@ -9,6 +10,12 @@ include 'A/Controller/Mapper.php';
 include 'A/Controller/Action.php';
 
 $Locator = new A_Locator();
+*/
+// Init autoload using Locator
+require_once $ConfigArray['LIB'] . 'A/Locator.php';
+$Locator = new A_Locator();
+$Locator->autoload();
+
 $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);

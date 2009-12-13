@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Controller/Action.php';
+#include_once 'A/Controller/Action.php';
 
 /**
  * Action Controller Dispatch

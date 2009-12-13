@@ -1,5 +1,5 @@
 <?php
-include_once "A/Controller/Helper/Abstract.php";
+#include_once "A/Controller/Helper/Abstract.php";
 
 class fooHelper extends A_Controller_Helper_Abstract {
 	

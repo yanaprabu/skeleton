@@ -1,5 +1,5 @@
 <?php
-include_once('A/Template.php');
+#include_once('A/Template.php');
 /**
  * Template class that includes PHP templates. No block support.
  * 

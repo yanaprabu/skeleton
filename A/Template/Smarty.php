@@ -1,5 +1,5 @@
 <?php
-require_once 'Smarty.class.php';
+#require_once 'Smarty.class.php';
 /**
  * Template class that Adapts Smarty to be used as Skeleton renderer.
  * 
