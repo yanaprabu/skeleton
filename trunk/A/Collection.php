@@ -9,15 +9,15 @@ class A_Collection implements Iterator, ArrayAccess	{
 	
 	protected $collection;
 	
-	function __construct ($collection = array())	{
+	public function __construct ($collection = array())	{
 		$this->collection = $collection;
 	}
 	
-	function get ($key)	{
+	public function get ($key)	{
 		return $this->collection[$key];
 	}
 	
-	function add()	{
+	public function add()	{
 		if (func_num_args() == 1)	{
 			$this->collection[] = func_get_arg (0);
 		} else	{
@@ -25,47 +25,47 @@ class A_Collection implements Iterator, ArrayAccess	{
 		}
 	}
 	
-	function remove ($key)	{
+	public function remove ($key)	{
 		if ($this->has ($key)) unset ($this->collection[$key]);
 	}
 	
-	function count()	{
+	public function count()	{
 		return count ($this->collection);
 	}
 	
-	function slice ($offset, $length)	{
+	public function slice ($offset, $length)	{
 		return new A_Collection (array_slice ($this->collection, $offset, $length, true));
 	}
 	
-	function reverse()	{
+	public function reverse()	{
 		return new A_Collection (array_reverse ($this->collection, true));
 	}
 	
-	function has ($key)	{	
+	public function has ($key)	{	
 		return isset ($this->collection[$key]);
 	}
 	
-	function current()	{
+	public function current()	{
 		return current ($this->collection);
 	}
 	
-	function key()	{
+	public function key()	{
 		return key ($this->collection);
 	}
 	
-	function next()	{
+	public function next()	{
 		next ($this->collection);
 	}
 	
-	function rewind()	{
+	public function rewind()	{
 		reset ($this->collection);
 	}
 	
-	function valid()	{
+	public function valid()	{
 		return current ($this->collection) !== false;
 	}
 	
-	function toArray()	{
+	public function toArray()	{
 		return $this->collection;
 	}
 	
@@ -74,53 +74,53 @@ class A_Collection implements Iterator, ArrayAccess	{
 	 * 
 	 */	 
 	
-	function join ($glue)	{
+	public function join ($glue)	{
 		return join ($glue, $this->collection);
 	}
 	
-	function order ($sorter)	{
+	public function order ($sorter)	{
 		uasort ($this->collection, array ($sorter, 'compare'));
 	}
 	
 /*
-	function orderBy ($key, $order = 'asc')	{
+	public function orderBy ($key, $order = 'asc')	{
 		$this->order (new A_Collection_ArraySorter ($key, $order), 'compare'); 
 	}
 */
 	
-	function toString ($glue)	{
+	public function toString ($glue)	{
 		return $this->join ($glue);
 	}
 	
-	function set ($key, $value)	{
+	public function set ($key, $value)	{
 		return $this->add ($key, $value);
 	}
 	
-	function __get ($key)	{
+	public function __get ($key)	{
 		return $this->get ($key);
 	}
 	
-	function __set ($key, $value)	{
+	public function __set ($key, $value)	{
 		return $this->add ($key, $value);
 	}
 	
-	function __toString()	{
+	public function __toString()	{
 		return $this->toString (',');
 	}
 	
-	function offsetExists ($offset)	{
+	public function offsetExists ($offset)	{
 		return $this->has ($offset);
 	}
 	
-	function offsetGet ($offset)	{
+	public function offsetGet ($offset)	{
 		return $this->get ($offset);
 	}
 	
-	function offsetSet ($offset, $value)	{
+	public function offsetSet ($offset, $value)	{
 		return $this->add ($offset, $value);
 	}
 	
-	function offsetUnset ($offset)	{
+	public function offsetUnset ($offset)	{
 		return $this->remove ($offset);
 	}
 	
