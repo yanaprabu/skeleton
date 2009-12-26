@@ -115,7 +115,7 @@ class A_DataContainer implements Iterator {
 	 * @param string $key, mixed $value
 	 * @return integer
 	 */
-    protected function __set($key, $value=null) {
+    public function __set($key, $value=null) {
         if ($key) {
 	       	$this->_data[$key] = $value;
         }
@@ -128,7 +128,7 @@ class A_DataContainer implements Iterator {
 	 * @param string $key
 	 * @return integer
 	 */
-    protected function __get($key) {
+    public function __get($key) {
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
     }
 
