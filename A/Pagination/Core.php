@@ -4,7 +4,7 @@
  *
  * Core value object to paginate items from a datasource
  *
- * @author Kaufman, Christopher Thompson
+ * @author Cory Kaufman, Christopher Thompson
  * @package A_Pagination
  * @version @package_version@
  */
