@@ -12,7 +12,7 @@ class A_Http_Response extends A_Http_View {
     	parent::__construct($name);
     }
     
-    public function render() {
+    public function render($template='', $scope='') {
         if ($this->headers) {
         	foreach ($this->cookies as $name => $values) {
             	header("$name: " . implode(',', $values));
@@ -45,7 +45,7 @@ class A_Http_Response extends A_Http_View {
             header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate"); // HTTP/1.1
             header('Location: ' . $this->redirect, true, 303);
         } else {
-        	parent::render();
+        	parent::render($template, $scope);
 	        foreach ($this->headers as $field => $params) {
 	            if (! is_null($params)) {
 	                header($field . ': ' . implode(', ', $params));
