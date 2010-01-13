@@ -41,7 +41,7 @@ class A_Model_Form extends A_Model {
 	 * @param $request A Request object
 	 * @return true if not error
 	 */
-	public function isValid($request) {
+	public function isValid($request=null) {
 		  if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
 			$this->is_submitted = true;
 
