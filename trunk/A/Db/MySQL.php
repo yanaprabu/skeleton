@@ -29,6 +29,10 @@ class A_Db_MySQL {
 		}
 		if ($this->link == null) {
 			$host = isset($this->config['host']) ? $this->config['host'] : $this->config['hostspec'];
+			// fix for problem connecting to server with localhost. Windows only?
+			if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
+				$host = '127.0.0.1';
+			}
 			if (isset($this->config['persistent'])) {
 				$this->link = mysql_pconnect($host, $this->config['username'], $this->config['password']);
 			} else {
