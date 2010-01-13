@@ -32,7 +32,7 @@ class A_Delimited_Abstract {
 		if ($config) {
 			$this->config = $config;
 		} elseif (!$this->config) {
-			$this->config = new A_Delimited_config;
+			$this->config = new A_Delimited_Config;
 		}
 	}
  
