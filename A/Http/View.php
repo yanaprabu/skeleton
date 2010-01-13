@@ -155,6 +155,9 @@ class A_Http_View {
 	}
 	
 	public function _getPath($template) {
+		if (substr($template, -4, 4) != '.php') {
+			$template .= '.php';
+		}
 		// if Locator set by FC then we can get the Mapper
 		if ($this->locator) {
 			$mapper = $this->locator->get('Mapper');
@@ -163,10 +166,10 @@ class A_Http_View {
 				if (! isset($this->paths[$this->template_type])) {
 					$this->paths[$this->template_type] = $mapper->getPaths($this->template_type);
 				}
-				return $this->paths[$this->template_type][$this->template_scope] . $template . '.php';
+				return $this->paths[$this->template_type][$this->template_scope] . $template;
 			}
 		}
-		return $this->template_path . '/' . $template . '.php';
+		return $this->template_path . '/' . $template;
 	}
 	
 	public function partial($template) {
