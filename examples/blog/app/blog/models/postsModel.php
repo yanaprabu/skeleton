@@ -37,4 +37,9 @@ class postsModel {
 			);
 	}
 	
+	public function findById($id){}
+	
+	public function findBy(){}
+	
+	
 }
