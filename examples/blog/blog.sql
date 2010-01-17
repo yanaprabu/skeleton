@@ -24,11 +24,10 @@ CREATE TABLE `posts` (
 
 CREATE TABLE `comments` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`permalink` VARCHAR(255) NOT NULL,
 	`author` VARCHAR(255) NOT NULL,
 	`authoremail` VARCHAR(255) NOT NULL,
 	`authorurl` VARCHAR(255) NOT NULL,
-	`postdate` datetime NOT NULL default '0000-00-00 00:00:00',
+	`commentdate` datetime NOT NULL default '0000-00-00 00:00:00',
 	`comment` text NOT NULL,
 	`approved` TINYINT UNSIGNED NOT NULL default '1',
 	`post_id` INT UNSIGNED NOT NULL,
