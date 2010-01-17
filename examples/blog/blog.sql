@@ -7,7 +7,7 @@ CREATE TABLE `users` (
 	`password` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
 	PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `posts` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -20,7 +20,7 @@ CREATE TABLE `posts` (
 	`user_id` varchar(255) NOT NULL,
 	PRIMARY KEY  (`post_id`)
 	FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comments` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -34,14 +34,14 @@ CREATE TABLE `comments` (
 	`post_id` INT UNSIGNED NOT NULL,
 	PRIMARY KEY  (`id`),
 	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `categories` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	`parent` INT UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `category2posts` (
 	`category_id` INT NOT NULL,
@@ -49,13 +49,13 @@ CREATE TABLE `category2posts` (
 	PRIMARY KEY (`category_id`, `post_id`),  
 	FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`), 
 	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tags` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tags2posts` (
 	`tag_id` INT NOT NULL,
@@ -63,5 +63,5 @@ CREATE TABLE `tags2posts` (
 	PRIMARY KEY (`tag_id`, `post_id`),  
 	FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`), 
 	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
