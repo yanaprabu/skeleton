@@ -47,9 +47,11 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `categories2posts` (
-	`categories_id` INT(10) NOT NULL,
-	`posts_id` INT(10) NOT NULL,   
-	PRIMARY KEY (`categories_id`, `posts_id`)
+	`categories_id` INT(10) UNSIGNED NOT NULL,
+	`posts_id` INT(10) UNSIGNED NOT NULL,   
+	PRIMARY KEY (`categories_id`, `posts_id`),  
+	FOREIGN KEY (`categories_id`) REFERENCES `categories` (`id`), 
+	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tags` (
@@ -59,8 +61,9 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tags2posts` (
-	`tags_id` INT(10) NOT NULL,
-	`posts_id` INT(10) NOT NULL,   
-	PRIMARY KEY (`tags_id`, `posts_id`)
+	`tags_id` INT(10) UNSIGNED NOT NULL,
+	`posts_id` INT(10) UNSIGNED NOT NULL,   
+	PRIMARY KEY (`tags_id`, `posts_id`),  
+	FOREIGN KEY (`tags_id`) REFERENCES `tags` (`id`), 
+	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
