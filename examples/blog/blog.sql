@@ -18,10 +18,10 @@ CREATE TABLE `posts` (
 	`excerpt` varchar(255) NOT NULL,
 	`post` text NOT NULL,
 	`comments_allowed` TINYINT UNSIGNED NOT NULL,
-	`user_id` INT(10) UNSIGNED NOT NULL,
+	`users_id` INT(10) UNSIGNED NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
-	PRIMARY KEY  (`post_id`)
-	FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+	PRIMARY KEY  (`id`),
+	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comments` (
@@ -29,14 +29,14 @@ CREATE TABLE `comments` (
 	`author` VARCHAR(255) NOT NULL,
 	`author_email` VARCHAR(255) NOT NULL,
 	`author_url` VARCHAR(255) NOT NULL,
-	`user_id` INT(10) UNSIGNED NOT NULL,
+	`users_id` INT(10) UNSIGNED NOT NULL,
 	`comment_date` datetime NOT NULL default '0000-00-00 00:00:00',
 	`comment` text NOT NULL,
 	`approved` CHAR(1) NOT NULL default '1',
-	`post_id` INT UNSIGNED NOT NULL,
+	`posts_id` INT UNSIGNED NOT NULL,
 	PRIMARY KEY  (`id`),
-	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
-	FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`),
+	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `categories` (
@@ -46,12 +46,10 @@ CREATE TABLE `categories` (
 	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `category2posts` (
-	`category_id` INT(10) NOT NULL,
-	`post_id` INT(10) NOT NULL,   
-	PRIMARY KEY (`category_id`, `post_id`),  
-	FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`), 
-	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
+CREATE TABLE `categories2posts` (
+	`categories_id` INT(10) NOT NULL,
+	`posts_id` INT(10) NOT NULL,   
+	PRIMARY KEY (`categories_id`, `posts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tags` (
@@ -61,10 +59,8 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tags2posts` (
-	`tag_id` INT(10) NOT NULL,
-	`post_id` INT(10) NOT NULL,   
-	PRIMARY KEY (`tag_id`, `post_id`),  
-	FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`), 
-	FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
+	`tags_id` INT(10) NOT NULL,
+	`posts_id` INT(10) NOT NULL,   
+	PRIMARY KEY (`tags_id`, `posts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

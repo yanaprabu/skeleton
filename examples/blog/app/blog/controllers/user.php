@@ -1,6 +1,6 @@
 <?php
-include_once 'A/User/Session.php';
-include_once 'A/Model/Form.php';
+#include_once 'A/User/Session.php';
+#include_once 'A/Model/Form.php';
 
 class user extends A_Controller_Action {
 
