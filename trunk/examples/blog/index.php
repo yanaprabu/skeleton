@@ -29,10 +29,10 @@ $ConfigArray = array(
     );
 
 // Configure PHP include path
-set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
+#set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
 
 // Init autoload using Locator
-require_once $ConfigArray['LIB'] . 'A/Locator.php';
+require $ConfigArray['LIB'] . 'A/Locator.php';
 $Locator = new A_Locator();
 $Locator->autoload();
 
