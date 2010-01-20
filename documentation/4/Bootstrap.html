@@ -7,13 +7,11 @@
 <p>A minimum index.php file is a follows. This file creates the following objects Request and response </p>
 <pre class="prettyprint lang-php">
 &lt;?php
-require_once 'A/Locator.php';
-require_once 'A/Http/Request.php';
-require_once 'A/Http/Response.php';
-require_once 'A/Controller/Front.php';
-require_once 'A/Controller/Mapper.php';
+require '/path/to/A/Locator.php';
 
 $Locator = new A_Locator();
+$Locator->autoload();			// initializing autoloading
+
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();
 
