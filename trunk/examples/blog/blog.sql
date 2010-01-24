@@ -1,4 +1,12 @@
 
+DROP TABLE IF EXISTS `tags2posts`;
+DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `categories2posts`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `posts`;
+DROP TABLE IF EXISTS `users`;
+
 CREATE TABLE `users` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`firstname` varchar(255) NOT NULL,
@@ -9,6 +17,7 @@ CREATE TABLE `users` (
 	`active` char(1) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `posts` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -23,6 +32,7 @@ CREATE TABLE `posts` (
 	PRIMARY KEY  (`id`),
 	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `comments` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -39,12 +49,14 @@ CREATE TABLE `comments` (
 	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `categories` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	`parent` INT UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `categories2posts` (
 	`categories_id` INT(10) UNSIGNED NOT NULL,
@@ -54,11 +66,13 @@ CREATE TABLE `categories2posts` (
 	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `tags` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `tags2posts` (
 	`tags_id` INT(10) UNSIGNED NOT NULL,
