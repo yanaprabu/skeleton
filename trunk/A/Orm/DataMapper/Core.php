@@ -1,8 +1,10 @@
 <?php
-
 /**
- * 
+ * A_Orm_DataMapper_Core
+ *
+ * @author Cory Kaufman, Christopher Thompson
  * @package A_Orm
+ * @version @package_version@
  */
 
 class A_Orm_DataMapper_Core	{

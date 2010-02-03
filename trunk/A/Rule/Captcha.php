@@ -56,20 +56,25 @@ class A_Rule_Captcha extends A_Rule_Abstract {
 		return $this->params['field'];
     }
 
-	public function generateCode($length=0) {
+	public function getSessionKey() {
+		return strlen($this->params['sessionkey']) > 0 ? $this->params['sessionkey'] : __CLASS__;
+	}
+	
+    public function generateCode($length=0) {
 		if ($length > 0) {
 			$this->length = $length;
 		}
-		$this->params['session']->set($this->params['sessionkey'],  substr(str_shuffle($this->charset), 0, $this->length));
+		$code = substr(str_shuffle($this->charset), 0, $this->length);
+		$this->params['session']->set($this->getSessionKey(),  $code);
 		return $this;
 	}
 	
 	public function getCode(){
-		$code = $this->params['session']->get($this->params['sessionkey']);
+		$code = $this->params['session']->get($this->getSessionKey());
 		if ($code == '') {
 			$this->generateCode();
 		}
-		return $this->params['session']->get($this->params['sessionkey']);
+		return $this->params['session']->get($this->getSessionKey());
 	}
 	
     public function render() {
@@ -98,11 +103,17 @@ class A_Rule_Captcha_Image {
 	
 	public function out(){
 		header("Content-type: image/png");
-		$im = imagecreate(75, 25);
+		$width = 75;
+		$height = 25;
+		$num_lines = 10;
+		$im = imagecreate($width, $height);
 		if ($im) {
 			$bg_color = imagecolorallocate($im, 255, 255, 255);
 			imagefill($im, 0, 0, $bg_color);
 			$text_color = imagecolorallocate($im, 0, 0, 0);
+			for( $i=0; $i<$num_lines; $i++ ) {
+				imageline($im, mt_rand(0,$width), mt_rand(0,$height), mt_rand(0,$width), mt_rand(0,$height), $text_color);
+			}
 			imagestring($im, 5, 12, 5,  $this->captcha->getCode(), $text_color);
 			imagepng($im);
 			imagedestroy($im);

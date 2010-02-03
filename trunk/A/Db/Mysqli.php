@@ -191,8 +191,8 @@ public function numCols() {
 	}
 }
 	
-public function __call($method, $arg1=null, $arg2=null) {
-	return call_user_func(array(&$this->result, $method), $arg1, $arg2);
+public function __call($name, $args) {
+	return call_user_func(array($this->result, $name), $args);
 }
 	
 }

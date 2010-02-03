@@ -1,19 +1,14 @@
 <?php
-
-/*
- * Can we autoload these and save the calls? -Cory
- */
-#require_once('A/Orm/DataMapper/Core.php');
-#require_once('A/Orm/DataMapper/Mapping.php');
-#require_once('A/Orm/DataMapper/Join.php');
-#require_once('A/Orm/DataMapper/SQLJoin.php');
-#require_once('A/Db/Tabledatagateway.php');
-#require_once('A/Sql/Query.php');
-
 /**
- * 
+ * A_Orm_DataMapper
+ *
+ * Implementation of Data Mapper pattern
+ *
+ * @author Cory Kaufman, Christopher Thompson
  * @package A_Orm
+ * @version @package_version@
  */
+
 class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 
 	public function __construct($db, $class, $table ='', $params = array())	{

@@ -87,7 +87,7 @@ class A_Http_Request {
 								$d[$key] = $filter($d[$key]);
 							}
 						} elseif (is_object($filter)) {
-							$d[$key] = $filter->run($d[$key]);
+							$d[$key] = $filter->doFilter($d[$key]);
 						} elseif (is_array($filter)) {
 							$d[$key] = call_user_func($filter, $d[$key]);
 						}

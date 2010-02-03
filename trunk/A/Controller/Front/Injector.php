@@ -6,7 +6,7 @@
  * Created on Sep 5, 2007
  *
  * @package A_Controller
- * @subpackage Front
+ * @subpackage A_Controller_Front
  */
 
 class A_Controller_Front_Injector {

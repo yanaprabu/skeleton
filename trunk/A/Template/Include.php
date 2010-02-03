@@ -3,7 +3,7 @@
 /**
  * Template class that includes PHP templates. No block support.
  * 
- * @package A_Template 
+ * @package A_Template
  */
 
 class A_Template_Include extends A_Template {

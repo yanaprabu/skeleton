@@ -9,11 +9,14 @@
  * Created on Sep 5, 2007
  *
  * @package A_Controller
- * @subpackage Front
+ * @subpackage A_Controller_Front
  */
 
 class A_Controller_Front_Premethod {
-
+	protected $method;
+	protected $change_action;
+	protected $locator;
+	
 	public function __construct($method, $change_action, $locator) {
 		$this->method = $method;
 		$this->change_action = $change_action;

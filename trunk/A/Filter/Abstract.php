@@ -135,6 +135,6 @@ echo "doFilter: $value<br/>";
      * 
      * @return ?
      */
-	abstract protected function Filter();
+	abstract protected function filter();
 							
 }

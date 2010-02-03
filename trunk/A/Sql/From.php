@@ -47,7 +47,9 @@ class A_Sql_From {
 	public function getTables() {
 		$tables = array();
 		if ($this->table) {
-			$tables[$this->table] = true;
+			foreach ($this->table as $name) {
+				$tables[$name] = true;
+			}
 		}
 		if ($this->joins) {
 			foreach ($this->joins as $join) {

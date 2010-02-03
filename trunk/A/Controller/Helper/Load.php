@@ -116,12 +116,12 @@ class A_Controller_Helper_Load {
 		return $this;
 	}
 
-	public function __call($type, $params) {
+	public function __call($type, $args) {
 		$obj = null;
 		// is this a defined type of subdirectory
 		if (isset($this->dirs[$type])) {
 			// get class name parameter or use action name or use method name in controller scope for $type/$controller/$action.php
-			$class = isset($params[0]) && $params[0] ? $params[0] : ($this->scope == 'controller' && $this->method ? $this->method : $this->action);
+			$class = isset($args[0]) && $args[0] ? $args[0] : ($this->scope == 'controller' && $this->method ? $this->method : $this->action);
 			if (isset($this->suffix[$type])) {
 				$length = strlen($this->suffix[$type]);
 				// if a suffix is defined and the end of the action name does not contain it -- append it
@@ -139,7 +139,7 @@ class A_Controller_Helper_Load {
 			
 			// helpers take a parent instance as the parameter
 			if ($type == 'helper') {
-				$params[1] = $this->parent;
+				$args[1] = $this->parent;
 			}
 			
 			// templates are a template filename, not a class name -- need to load/create template class
@@ -158,21 +158,21 @@ class A_Controller_Helper_Load {
 				#include_once str_replace('_', '/', $this->renderClasses[$ext]) . '.php';
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
-				if (isset($params[1]) && is_array($params[1])) {
-					foreach ($params[1] as $key => $val) {
+				if (isset($args[1]) && is_array($args[1])) {
+					foreach ($args[1] as $key => $val) {
 						$obj->set($key, $val);
 					}
 				}
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
-					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
+					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
 				} else {
 					$this->errorMsg .=  "Locator->loadClass('$class', '$path') failed. ";
 				}
 			} elseif (file_exists("$path$class.php")) {
 				#include_once "$path$class.php";
 				if (class_exists($class)) {
-					$obj = new $class(isset($params[1]) ? $params[1] : $this->locator);
+					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
 				}
 			} else {
 				$this->errorMsg .=  "Could not load $path$class.php. ";
@@ -183,15 +183,15 @@ class A_Controller_Helper_Load {
 				switch ($type) {
 				case 'template':
 				case 'view':
-					if (isset($params[1]) && is_array($params[1])) {
+					if (isset($args[1]) && is_array($args[1])) {
 						// if 2nd param is array then use it to set template values
-						foreach ($params[1] as $key => $val) {
+						foreach ($args[1] as $key => $val) {
 							$obj->set($key, $val);
 						}
 					}
 					break;
 				case 'helper':
-					$this->parent->_helper($params[0], $obj);
+					$this->parent->_helper($args[0], $obj);
 					break;
 				}
 				 // this is the section for when response() has been called

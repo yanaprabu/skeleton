@@ -29,14 +29,17 @@ class A_Html_Form_Field {
 	}
 
 	public function toTag($tag, $attr=array(), $content=null) {
-		$str = "<$tag";
-		foreach ($attr as $name=>$value) {
-			$str .= " $name=\"$value\"";
-		}
-		if ($content !== null) {
-			$str .= '>' . $content . "</$tag>";
-		} else {
-			$str .= '/>';
+		$str = '';
+		if ($tag) {
+			$str .= '<' . $tag;
+			foreach ($attr as $name=>$value) {
+				$str .= " $name=\"$value\"";
+			}
+			if ($content !== null) {
+				$str .= '>' . $content . "</$tag>";
+			} else {
+				$str .= '/>';
+			}
 		}
 		return $str;
 	}
