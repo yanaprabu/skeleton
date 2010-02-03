@@ -1,5 +1,4 @@
 <?php
-require_once('A/Template/Xml.php');
 
 class Template_XmlTest extends UnitTestCase {
 	

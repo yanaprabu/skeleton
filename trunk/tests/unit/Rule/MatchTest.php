@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Match.php');
 
 class Rule_MatchTest extends UnitTestCase {
 	

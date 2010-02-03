@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Payment/Authorizenet.php');
 
 class Cart_Payment_AuthorizenetTest extends UnitTestCase {
 	

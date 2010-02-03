@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/Datamapper.php');
 
 class Db_DatamapperTest extends UnitTestCase {
 	

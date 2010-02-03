@@ -1,5 +1,4 @@
 <?php
-require_once('A/Pager/MySQL.php');
 
 class Pager_MySQLTest extends UnitTestCase {
 	

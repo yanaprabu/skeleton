@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Notnull.php');
 
 class Rule_NotnullTest extends UnitTestCase {
 	

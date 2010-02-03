@@ -1,6 +1,4 @@
 <?php
-require_once('A/Controller/Front.php');
-require_once('A/Controller/Mapper.php');
 
 class Controller_FrontTest extends UnitTestCase {
 	

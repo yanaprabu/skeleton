@@ -1,5 +1,4 @@
 <?php
-require_once('A/Config/Abstract.php');
 
 class A_Config_AbstractTest extends A_Config_Abstract {
 	

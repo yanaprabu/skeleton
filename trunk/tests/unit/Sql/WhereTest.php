@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Where.php');
 
 class Sql_WhereTest extends UnitTestCase {
 	

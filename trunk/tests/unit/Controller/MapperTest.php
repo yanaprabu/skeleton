@@ -1,5 +1,4 @@
 <?php
-require_once('A/Controller/Mapper.php');
 
 class Controller_MapperTest extends UnitTestCase {
 	

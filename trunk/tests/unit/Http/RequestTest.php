@@ -1,5 +1,4 @@
 <?php
-require_once('A/Http/Request.php');
 
 class Http_RequestTest extends UnitTestCase {
 	
@@ -39,7 +38,6 @@ class Http_RequestTest extends UnitTestCase {
 		$this->assertEqual($request->get('bar', 'strtoupper'), 'FAR');
 
 		// filter object
-		require_once('A/Filter/Toupper.php');
 		$toupper = new A_Filter_Toupper();
 		$this->assertEqual($request->get('bar', $toupper), 'FAR');
 
@@ -74,7 +72,6 @@ class Http_RequestTest extends UnitTestCase {
 		$this->assertEqual($request->setFilters('strtoupper')->get('bar'), 'FAR');
 
 		// filter object
-		require_once('A/Filter/Toupper.php');
 		$toupper = new A_Filter_Toupper();
 		$this->assertEqual($request->setFilters($toupper)->get('bar', $toupper), 'FAR');
 

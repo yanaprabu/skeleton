@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Expression.php');
 
 class Sql_ExpressionTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Columns.php');
 
 class Sql_ColumnsTest extends UnitTestCase {
 	function setUp() {

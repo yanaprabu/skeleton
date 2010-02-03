@@ -1,10 +1,9 @@
 <?php
-require_once('A/Sql/Statement.php');
 
-class MockDb {
+class Sql_Statement_MockDb {
 }
 
-class MockStatement extends A_Sql_Statement {
+class Sql_Statement_MockStatement extends A_Sql_Statement {
 	public function callNotifyListeners() {
 		return $this->notifyListeners();
 	}
@@ -19,8 +18,8 @@ class Sql_StatementTest extends UnitTestCase {
 	}
 	
     function testEmptyStringReturnsEmpty() {
-        $statement = new MockStatement();
-        $db = new MockDb();
+        $statement = new Sql_Statement_MockStatement();
+        $db = new Sql_Statement_MockDb();
         $statement->setDb($db);
         $this->assertEqual($statement->callNotifyListeners(), null);
     }

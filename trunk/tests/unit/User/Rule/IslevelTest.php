@@ -1,5 +1,4 @@
 <?php
-require_once('A/User/Rule/Islevel.php');
 
 class User_Rule_IslevelTest extends UnitTestCase {
 	

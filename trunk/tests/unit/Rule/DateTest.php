@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Date.php');
 
 class Rule_DateTest extends UnitTestCase {
 	

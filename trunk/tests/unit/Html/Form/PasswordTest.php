@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Password.php');
 
 class Html_Form_PasswordTest extends UnitTestCase {
 	

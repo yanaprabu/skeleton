@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Regexp.php');
 
 class Filter_RegexpTest extends UnitTestCase {
 	

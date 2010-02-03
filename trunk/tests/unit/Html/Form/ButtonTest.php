@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Button.php');
 
 class Html_Form_ButtonTest extends UnitTestCase {
 	

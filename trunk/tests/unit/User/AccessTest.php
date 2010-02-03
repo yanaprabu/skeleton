@@ -1,5 +1,4 @@
 <?php
-require_once('A/User/Access.php');
 
 class User_AccessTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Insert.php');
 
 class Sql_InsertTest extends UnitTestCase {
 	

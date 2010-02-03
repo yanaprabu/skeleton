@@ -1,9 +1,4 @@
 <?php
-require_once('A/DataContainer.php');
-require_once('A/Rule/Set.php');
-require_once('A/Rule/Length.php');
-require_once('A/Rule/Notnull.php');
-require_once('A/Rule/Range.php');
 
 class Rule_SetTest extends UnitTestCase {
 	

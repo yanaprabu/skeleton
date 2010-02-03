@@ -1,17 +1,13 @@
 <?php
 
-include ('A/Db/MySQL.php');
-include ('A/Pagination/Adapter/Interface.php');
-include ('A/Pagination/Adapter/Db.php');
-
-Mock::Generate ('A_Db_MySQL', 'MockDb');
-Mock::Generate ('A_Db_MySQL_RecordSet', 'MockResult');
+Mock::Generate ('A_Db_MySQL', 'Pagination_Adapter_MockDb');
+Mock::Generate ('A_Db_MySQL_RecordSet', 'Pagination_Adapter_MockResult');
 
 class Pagination_Adapter_DbTest extends UnitTestCase	{
 
 	public function setUp()	{
-		$this->db = new MockDb();
-		$this->result = new MockResult();
+		$this->db = new Pagination_Adapter_MockDb();
+		$this->result = new Pagination_Adapter_MockResult();
 		$this->db->setReturnValue ('query', $this->result);
 		$this->db->setReturnValue ('limit', $this->result);
 		$this->row = array ('one', 'two', 'three', 'four');

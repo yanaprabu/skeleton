@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Field.php');
 
 class Html_Form_FieldTest extends UnitTestCase {
 	

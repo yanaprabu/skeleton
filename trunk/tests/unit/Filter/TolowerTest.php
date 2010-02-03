@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Tolower.php');
 
 class Filter_TolowerTest extends UnitTestCase {
 	

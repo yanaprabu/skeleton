@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/fieldset.php');
 
 class Html_Form_FieldsetTest extends UnitTestCase {
 	

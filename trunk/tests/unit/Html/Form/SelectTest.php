@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Select.php');
 
 class Html_Form_SelectTest extends UnitTestCase {
 	

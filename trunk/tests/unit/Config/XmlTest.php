@@ -1,5 +1,4 @@
 <?php
-require_once('A/Config/Xml.php');
 
 class Config_XmlTest extends UnitTestCase {
 	

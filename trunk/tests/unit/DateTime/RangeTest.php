@@ -1,9 +1,5 @@
 <?php
 
-require_once('A/DateTime.php');
-require_once('A/DateTime/Range.php');
-require_once('A/DateTime/Duration.php');
-
 Mock::Generate ('A_DateTime');
 Mock::Generate ('A_DateTime_Duration');
 

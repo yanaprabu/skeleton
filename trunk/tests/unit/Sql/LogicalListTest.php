@@ -1,5 +1,4 @@
 <?php
-include_once 'A/Sql/LogicalList.php';
 
 class Sql_LogicalListTest extends UnitTestCase {
 	

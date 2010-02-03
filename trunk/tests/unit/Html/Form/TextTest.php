@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Text.php');
 
 class Html_Form_TextTest extends UnitTestCase {
 	

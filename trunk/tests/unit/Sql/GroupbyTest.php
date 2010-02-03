@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Groupby.php');
 
 class Sql_GroupbyTest extends UnitTestCase {
 	

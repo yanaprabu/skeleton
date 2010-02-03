@@ -1,5 +1,4 @@
 <?php
-require_once('A/Logger/File.php');
 
 class Logger_FileTest extends UnitTestCase {
 	

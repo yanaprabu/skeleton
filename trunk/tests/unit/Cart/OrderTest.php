@@ -1,6 +1,4 @@
 <?php
-require_once('A/Cart/Order.php');
-include_once 'A/Cart/Manager.php';
 
 class Cart_OrderTest extends UnitTestCase {
 	

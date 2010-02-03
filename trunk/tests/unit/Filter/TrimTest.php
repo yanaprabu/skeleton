@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Trim.php');
 
 class Filter_TrimTest extends UnitTestCase {
 	

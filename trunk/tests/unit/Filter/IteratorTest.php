@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Iterator.php');
 
 class TestFilter {
 
@@ -15,16 +14,18 @@ class Filter_IteratorTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testFilter_IteratorNotNull() { /*
+	function testFilter_IteratorNotNull() {
+/*
 		$filter = new TestFilter();
   		$Filter_Iterator = new A_Filter_Iterator($filter);
 		
 		$data = array('foo', 'bar', 'baz');
-		$Filter_Iterator->run($data);
+		$Filter_Iterator->doFilter($data);
 		
 		$result = true;
   		$this->assertTrue($result);
 		$this->assertFalse(!$result);
-                                            */}
+*/
+	}
 	
 }

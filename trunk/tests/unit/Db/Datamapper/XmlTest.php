@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/Datamapper/Xml.php');
 
 class Db_Datamapper_XmlTest extends UnitTestCase {
 	

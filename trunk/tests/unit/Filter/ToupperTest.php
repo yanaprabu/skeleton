@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Toupper.php');
 
 class Filter_ToupperTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Pricing.php');
 
 class Cart_PricingTest extends UnitTestCase {
 	

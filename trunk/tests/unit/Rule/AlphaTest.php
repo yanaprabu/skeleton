@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Alpha.php');
 
 class Rule_AlphaTest extends UnitTestCase {
 	

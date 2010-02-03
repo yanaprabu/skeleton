@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/Postgres.php');
 
 class Db_PostgresTest extends UnitTestCase {
 	

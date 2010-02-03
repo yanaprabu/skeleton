@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Shipping/Ups.php');
 
 class Cart_Shipping_UpsTest extends UnitTestCase {
 	

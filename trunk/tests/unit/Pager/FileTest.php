@@ -1,5 +1,4 @@
 <?php
-require_once('A/Pager/File.php');
 
 class Pager_FileTest extends UnitTestCase {
 	

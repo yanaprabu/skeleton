@@ -1,5 +1,4 @@
 <?php
-require_once('A/Template/Strreplace.php');
 
 class Template_StrreplaceTest extends UnitTestCase {
 	

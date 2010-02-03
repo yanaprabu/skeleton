@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/Activerecord.php');
 
 class Db_ActiverecordTest extends UnitTestCase {
 	

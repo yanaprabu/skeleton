@@ -1,5 +1,4 @@
 <?php
-require_once('A/Pager/Array.php');
 
 class Pager_ArrayTest extends UnitTestCase {
 	

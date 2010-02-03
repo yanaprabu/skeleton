@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Iterator.php');
 
 class Rule_IteratorTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Application.php');
 
 class ApplicationTest extends UnitTestCase {
 	

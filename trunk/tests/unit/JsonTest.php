@@ -1,5 +1,4 @@
 <?php
-require_once('A/Json.php');
 
 class JsonTest extends UnitTestCase {
 	
