@@ -3,7 +3,7 @@
 /**
  * Template class that Adapts Smarty to be used as Skeleton renderer.
  * 
- * @package A_Template 
+ * @package A_Template
  */
 
 class A_Template_Smarty extends Smarty {

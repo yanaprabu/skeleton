@@ -3,7 +3,7 @@
 /**
  * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
  * 
- * @package A_Template 
+ * @package A_Template
  */
 
 class A_Template_Strreplace extends A_Template_File {

@@ -1,8 +1,10 @@
 <?php
-
 /**
+ * A_Collection
+ * 
  * Standard collection class that has get/set/has, iterator and array access
  * 
+ * @author Cory Kaufman
  * @package A 
  */
 class A_Collection implements Iterator, ArrayAccess	{

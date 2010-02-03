@@ -1,9 +1,12 @@
 <?php
-
 /**
- * 
+ * A_Orm_DataMapper_Join
+ *
+ * @author Cory Kaufman
  * @package A_Orm
+ * @version @package_version@
  */
+
 class A_Orm_DataMapper_Join	{
 
 	public $type;

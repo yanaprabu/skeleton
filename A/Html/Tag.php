@@ -85,19 +85,22 @@ class A_Html_Tag {
 			$after = '';
 		}
 
-		$str = "<$tag";
-		foreach ($attr as $name=>$value) {
-			$str .= " $name=\"$value\"";
-		}
-		if ($content === null) {
-			$str .= '/>';
-		} elseif (is_array($content)) {
-			$str .= '>';
-			foreach ($content as $c) {
-				$str .= is_object($c) ? $c->render() : $c;
+		$str = '';
+		if ($tag) {
+			$str = '<' . $tag;
+			foreach ($attr as $name=>$value) {
+				$str .= " $name=\"$value\"";
 			}
-		} else {
-			$str .= '>' . (is_object($content) ? $content->render() : $content) . "</$tag>";
+			if ($content === null) {
+				$str .= '/>';
+			} elseif (is_array($content)) {
+				$str .= '>';
+				foreach ($content as $c) {
+					$str .= is_object($c) ? $c->render() : $c;
+				}
+			} else {
+				$str .= '>' . (is_object($content) ? $content->render() : $content) . "</$tag>";
+			}
 		}
 		return $before.$str.$after;
 	}

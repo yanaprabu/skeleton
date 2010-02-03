@@ -3,7 +3,7 @@
 /**
  * Template class that transforms XML templates with XSL. No blocks.
  * 
- * @package A_Template 
+ * @package A_Template
  */
 
 class A_Template_Xslt extends A_Template {

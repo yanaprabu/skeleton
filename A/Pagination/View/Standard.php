@@ -111,9 +111,9 @@ class A_Pagination_View_Standard	{
 		$this->link()->alwaysShowPreviousNext();
 	}
 
-	public function __call ($method, $params)	{
+	public function __call ($method, $args)	{
 		if (method_exists ($this->pager, $method))	{
-			return call_user_func_array (array ($this->pager, $method), $params);
+			return call_user_func_array (array ($this->pager, $method), $args);
 		}
 	}
 

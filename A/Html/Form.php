@@ -18,11 +18,11 @@ class A_Html_Form {
 	/*
 	 * name=string, value=string or renderer
 	 */
-	public function render($attr=array(), $content=null) {
+	public function render($attr=array(), $content='') {
 		if (isset($this)) {
-			$content = $this->partial($attr);
+			$content .= $this->partial($attr);
 		}
-		
+		$attr = array_merge($this->_attr, $attr);
 		A_Html_Tag::defaultAttr($attr, array('method'=>'post', 'action'=>'', ));
 		return A_Html_Tag::render('form', $attr, $content);
 	}
@@ -33,11 +33,14 @@ class A_Html_Form {
 			$this->setValueFromModel($name, $element['renderer']);
 			$str = '';
 			if (isset($element['label'])) {
-				$str .= $element['label']->render();
+				$str .= is_object($element['label']) ? $element['label']->render() : $element['label'];
 			}
-			$str .= $element['renderer']->render();
+			if (is_object($element['renderer'])) {
+#echo '<pre>' . print_r($element['renderer'], 1) . '</pre>';
+				$str .= $element['renderer']->render();
+			}
 			// if we wrap elements in a tag
-			if ($element['wrapper']) {
+			if (isset($element['wrapper']) && is_object($element['wrapper'])) {
 				$str = $element['wrapper']->render($element['wrapperAttr'], $str);
 			}
 			$out .= $str;
@@ -74,7 +77,7 @@ class A_Html_Form {
 	 * set the URL for <form action="$action" ...>  
 	 */
 	public function setAction($action='') {
-		$this->attr['action'] = $action;
+		$this->_attr['action'] = $action;
 		return $this;
 	}
                              // Optional method to set the Model
@@ -82,7 +85,7 @@ class A_Html_Form {
 	 * set the POST/GET for <form method="$method" ...>  
 	 */
 	public function setMethod($method='post') {
-		$this->attr['method'] = $method;
+		$this->_attr['method'] = $method;
 		return $this;
 	}
 	
@@ -173,7 +176,7 @@ class A_Html_Form {
 		return $this;
 	}
 	
-	protected function setValueFromModel($name, &$element) {
+	protected function setValueFromModel($name, $element) {
 		if (isset($this->model)) {
 			// get value depending on if model is an array or object AND if value is set
 			if (is_array($this->model) && isset($this->model[$name])) {
