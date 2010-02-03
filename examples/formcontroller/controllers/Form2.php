@@ -1,12 +1,12 @@
 <?php
-require_once('A/Filter/Regexp.php');
-require_once('A/Filter/Toupper.php');
-require_once('A/Rule/Notnull.php');
-require_once('A/Rule/Match.php');
-require_once('A/Rule/Range.php');
-require_once('A/Rule/Length.php');
-require_once('A/Model/Form.php');
-require_once('A/Html/Form.php');
+#require_once('A/Filter/Regexp.php');
+#require_once('A/Filter/Toupper.php');
+#require_once('A/Rule/Notnull.php');
+#require_once('A/Rule/Match.php');
+#require_once('A/Rule/Range.php');
+#require_once('A/Rule/Length.php');
+#require_once('A/Model/Form.php');
+#require_once('A/Html/Form.php');
 
 class Form2 {
 

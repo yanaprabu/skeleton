@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
-include 'A/Db/Sqlite.php';
-include 'A/Db/Activerecord.php';
+#include 'A/Db/Sqlite.php';
+#include 'A/Db/Activerecord.php';
 
 class Projects extends A_Db_Activerecord
 {

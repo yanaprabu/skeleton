@@ -1,8 +1,5 @@
 <?php
-
 include 'config.php';
-include 'A/Sql/Select.php';
-include 'A/Db/Mysql.php';
 
 $select = new A_Sql_Select();
 echo $select

@@ -1,12 +1,6 @@
 <?php
 error_reporting(E_ALL);
-require_once('config.php');
-require_once('A/Http/Request.php');
-require_once('A/Rule/Set.php');
-require_once('A/Rule/Alpha.php');
-require_once('A/Rule/Length.php');
-require_once('A/Rule/Match.php');
-require_once('A/Rule/Numeric.php');
+require 'config.php';
 
 $request = new A_Http_Request();
 

@@ -1,9 +1,5 @@
 <?php
 include 'config.php';
-include 'A/Sql/Prepare.php';
-
-#include 'A/Db/MySQL.php';
-#$db = new A_Db_MySQL($configdata);
 
 $prepare = new A_Sql_Prepare("INSERT mytable SET one=?, two='?', three=:three, three=?");
 $prepare->bind("foo's", array(':three'=>'faz'), 'bar', 1);

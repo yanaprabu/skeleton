@@ -10,7 +10,7 @@ function dump($var, $name='') {
 
 // basic config data
 $ConfigArray = array(
-	'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SERVER_NAME']),
+	'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/',
 	'PATH' => dirname($_SERVER['SCRIPT_FILENAME']) . '/',
 	'APP' => dirname($_SERVER['SCRIPT_FILENAME']) . '/application/',
 	'LIB' => dirname($_SERVER['SCRIPT_FILENAME']) . '/library',
@@ -19,10 +19,12 @@ $ConfigArray = array(
 	
 // Error reporting and include path
 error_reporting($ConfigArray['ERROR']);
-set_include_path(dirname(__FILE__) . '/../../' . PATH_SEPARATOR . $ConfigArray['LIB'] . PATH_SEPARATOR  . get_include_path() );
+set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR  . get_include_path() );
 
 // init autoload
-require_once 'A/functions/a_autoload.php';
+require dirname(__FILE__) . '/../../A/autoload.php';
+$Locator = new A_Locator();
+$Locator->autoload();
 
 // create config object from array
 $Config = new A_DataContainer($ConfigArray);
@@ -37,7 +39,6 @@ $Session->start();
 $UserSession = new A_User_Session($Session);
 
 // create registry/loader and add common objects
-$Locator = new A_Locator();
 $Locator->set('Config', $Config);
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);

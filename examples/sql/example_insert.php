@@ -1,9 +1,5 @@
 <?php
 include 'config.php';
-include 'A/Sql/Insert.php';
-
-#include 'A/Db/MySQL.php';
-#$db = new A_Db_MySQL($configdata);
 
 $values = array(
 	array('foo'=>'Boo', 'bar'=>'Ca\'r', 'baz'=>'Caz'),

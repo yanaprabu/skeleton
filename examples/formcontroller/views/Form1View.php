@@ -1,5 +1,5 @@
 <?php
-include 'Template.php';
+#include 'Template.php';
 include 'URL.php';
 
 class Form1View {

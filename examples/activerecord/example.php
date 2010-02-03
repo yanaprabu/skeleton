@@ -1,23 +1,23 @@
 <?php
 include '../config.php';
-include 'A/Db/MySQL.php';
-include 'A/Db/Activerecord.php';
+#include 'A/Db/MySQL.php';
+#include 'A/Db/Activerecord.php';
 
-class Projects extends A_Db_ActiveRecord
+class projects extends A_Db_ActiveRecord
 {
 	public function __construct($db=null)
     {
         $this->setColumns(array (
-            'projectID',
-            'title',
-            'name',
-            'surname',
-            'email',
+            'id',
+            'username',
             'password',
+        	'first_name',
+            'last_name',
+            'email',
             'active'
         ));
-        $this->table('project');
-        $this->key('projectID');
+        $this->table('projects');		// optional in this case because base AR class will use class name as table name
+        $this->key('id');				// optional in this case because 'id' is the default key name
         parent::__construct($db);
     }
 

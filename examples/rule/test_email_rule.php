@@ -1,6 +1,5 @@
 <?php
-require_once('config.php');
-require_once('A/Rule/Email.php');
+require 'config.php';
 
 function testEmail($email)
 {

@@ -25,8 +25,9 @@ class URL {
         }
         switch($this->mode){
             case 1:
-                // only get path afeter query string start
-                $path_info = reset(explode('?', $_SERVER['REQUEST_URI']));
+                // only get path after query string start
+                $uriarray = explode('?', $_SERVER['REQUEST_URI']);
+            	$path_info = reset($uriarray);
                 // chop off the script name
                 $path_info = str_replace($_SERVER['SCRIPT_NAME'], '', $path_info);
                 // if the script name is in the url

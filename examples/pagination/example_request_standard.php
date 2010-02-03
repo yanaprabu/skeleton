@@ -5,9 +5,10 @@
 <body>
 <?php
 include 'config.php';
-include 'Datasource.php';
-include 'A/Pagination/Request.php';
-include 'A/Pagination/View/Standard.php';
+include dirname(__FILE__) . '/../../A/autoload.php';
+#include 'Datasource.php';
+#include 'A/Pagination/Request.php';
+#include 'A/Pagination/View/Standard.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {

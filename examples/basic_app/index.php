@@ -1,17 +1,20 @@
 <?php
 require_once 'config.php';
+require_once $ConfigArray['LIB'] . 'A/Locator.php';
 
-require_once 'A/DataContainer.php';
-require_once 'A/Session.php';
-require_once 'A/Locator.php';
-require_once 'A/Http/Request.php';
-require_once 'A/Http/Response.php';
-require_once 'A/Http/PathInfo.php';
-require_once 'A/Controller/Front.php';
-require_once 'A/Controller/Mapper.php';
-require_once 'A/Template/Strreplace.php';
+#require_once 'A/DataContainer.php';
+#require_once 'A/Session.php';
+#require_once 'A/Locator.php';
+#require_once 'A/Http/Request.php';
+#require_once 'A/Http/Response.php';
+#require_once 'A/Http/PathInfo.php';
+#require_once 'A/Controller/Front.php';
+#require_once 'A/Controller/Mapper.php';
+#require_once 'A/Template/Strreplace.php';
 
 $Locator = new A_Locator();
+$Locator->autoload();		// initialize autoloading
+
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();
 $Session = new A_Session();

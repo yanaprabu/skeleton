@@ -1,6 +1,6 @@
 <?php
-require_once('A/Controller/Action.php');
-require_once('A/Html/Form.php');
+#require_once('A/Controller/Action.php');
+#require_once('A/Html/Form.php');
 
 class Form3 extends A_Controller_Action {
 	

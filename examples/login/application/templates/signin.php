@@ -2,7 +2,7 @@
 <body>
 	<h2>Sign in</h2>
 	<?php if(isset($message)) { echo $message; } ?>
-	<form action="/examples/login/signin/" method="post" id="loginform">
+	<form action="<?php if(isset($BASE)) { echo $BASE; } ?>signin/" method="post" id="loginform">
 		<input type="hidden" name="action" value="signin"/>
 		<input type="hidden" name="op" value="signin"/>
 		<span style="color: red"><?php if(isset($errmsg)) { echo $errmsg; } ?></span>

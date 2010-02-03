@@ -1,7 +1,9 @@
 <?php
-include_once 'config.php';
-include_once 'A/Email.php';
-include_once 'A/Email/Multipart.php';
+#include_once 'config.php';
+#include_once 'A/Email.php';
+#include_once 'A/Email/Multipart.php';
+
+include_once '../../A/autoload.php';
 
 $email = new A_Email();
 $attachment = new A_Email_Multipart();
