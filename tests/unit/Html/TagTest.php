@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Tag.php');
 
 class Html_TagTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Orderby.php');
 
 class Sql_OrderbyTest extends UnitTestCase {
 	

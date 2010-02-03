@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form.php');
 
 class Html_FormTest extends UnitTestCase {
 	
@@ -11,8 +10,9 @@ class Html_FormTest extends UnitTestCase {
 	
 	function testHtml_FormNotNull() {
   		$obj = new A_Html_Form();
+  		$obj->setAction('bar.php');
 		
-		$this->assertEqual($obj->render(array('name'=>'foo')), '<xxx name="foo">foobar</xxx>');
+		$this->assertEqual($obj->render(array('name'=>'foo'), 'content'), '<form action="bar.php" method="post" name="foo">content</form>');
 	}
 	
 }

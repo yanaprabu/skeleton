@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Radiocheckbox.php');
 
 class Html_Form_RadiocheckboxTest extends UnitTestCase {
 	

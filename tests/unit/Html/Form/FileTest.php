@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/File.php');
 
 class Html_Form_FileTest extends UnitTestCase {
 	

@@ -1,6 +1,4 @@
 <?php
-require_once('A/Pager.php');
-require_once('A/Pager/HTMLWriterJump.php');
 
 class Pager_HTMLWriterJumpTest extends UnitTestCase {
 	

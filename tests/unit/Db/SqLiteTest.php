@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/SqLite.php');
 
 class Db_SqLiteTest extends UnitTestCase {
 	

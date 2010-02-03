@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Payment/Pfpro.php');
 
 class Cart_Payment_PfproTest extends UnitTestCase {
 	

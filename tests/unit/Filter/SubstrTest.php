@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Substr.php');
 
 class Filter_SubstrTest extends UnitTestCase {
 	

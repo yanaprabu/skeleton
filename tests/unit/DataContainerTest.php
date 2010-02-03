@@ -1,5 +1,4 @@
 <?php
-require_once('A/DataContainer.php');
 
 class DataContainerExample {
 	protected $value;

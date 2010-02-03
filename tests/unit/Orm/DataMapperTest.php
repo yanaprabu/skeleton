@@ -1,7 +1,5 @@
 <?php
 
-require_once ('A/Orm/DataMapper.php');
-require_once ('A/Orm/DataMapper/Mapping.php');
 class DomainObject{}
 Mock::Generate ('DomainObject','MockDomainObject');
 

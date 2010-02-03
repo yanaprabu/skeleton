@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Set.php');
 
 class Sql_SetTest extends UnitTestCase {
 	

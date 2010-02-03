@@ -1,7 +1,5 @@
 <?php
-/* Do we still need this?
-require_once('A/Db/Describe.php');
-*/
+
 class Db_DescribeTest extends UnitTestCase {
 	
 	function setUp() {

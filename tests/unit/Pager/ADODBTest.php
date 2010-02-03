@@ -1,5 +1,4 @@
 <?php
-require_once('A/Pager/ADODB.php');
 
 class Pager_ADODBTest extends UnitTestCase {
 	

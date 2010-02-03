@@ -1,5 +1,4 @@
 <?php
-require_once('A/Exception.php');
 
 class ExceptionTest extends UnitTestCase {
 	

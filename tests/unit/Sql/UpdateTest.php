@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Update.php');
 
 class Sql_UpdateTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Payment/Payflow.php');
 
 class Cart_Payment_PayflowTest extends UnitTestCase {
 	

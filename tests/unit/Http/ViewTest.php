@@ -1,6 +1,4 @@
 <?php
-require_once('A/Http/View.php');
-require_once('A/Locator.php');
 
 class Http_ViewTest extends UnitTestCase {
 	

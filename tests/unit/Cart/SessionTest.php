@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Session.php');
 
 class Cart_SessionTest extends UnitTestCase {
 	

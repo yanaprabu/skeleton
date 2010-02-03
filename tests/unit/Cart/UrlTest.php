@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Url.php');
 
 class Cart_UrlTest extends UnitTestCase {
 	

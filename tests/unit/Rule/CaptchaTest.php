@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Captcha.php');
 
 class Rule_CaptchaTest extends UnitTestCase {
 	

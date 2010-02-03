@@ -1,5 +1,4 @@
 <?php
-require_once('A/Email.php');
 
 class EmailTest extends UnitTestCase {
 	

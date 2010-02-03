@@ -1,5 +1,4 @@
 <?php
-require_once('A/Template/Xslt.php');
 
 class Template_XsltTest extends UnitTestCase {
 	

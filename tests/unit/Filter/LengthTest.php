@@ -1,5 +1,4 @@
 <?php
-require_once('A/Filter/Length.php');
 
 class Filter_LengthTest extends UnitTestCase {
 	

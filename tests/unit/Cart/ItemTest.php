@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Item.php');
 
 class Cart_ItemTest extends UnitTestCase {
 	

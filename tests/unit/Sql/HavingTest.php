@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Having.php');
 
 class Sql_HavingTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Radio.php');
 
 class Html_Form_RadioTest extends UnitTestCase {
 	

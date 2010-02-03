@@ -1,5 +1,4 @@
 <?php
-require_once('A/Controller/Form.php');
 
 class Controller_FormTest extends UnitTestCase {
 	

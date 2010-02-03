@@ -1,6 +1,4 @@
 <?php
-require_once('A/Filter/Set.php');
-require_once('A/Filter/Tolower.php');
 
 class Filter_SetTest extends UnitTestCase {
 	

@@ -1,7 +1,5 @@
 <?php
 
-include ('A/Pagination/Url.php');
-
 class Pagination_UrlTest extends UnitTestCase	{
 
 	public function setUp()	{

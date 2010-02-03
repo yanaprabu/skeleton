@@ -1,6 +1,4 @@
 <?php
-require_once('A/DataContainer.php');
-require_once('A/Rule/Length.php');
 
 class Rule_LengthTest extends UnitTestCase {
 	

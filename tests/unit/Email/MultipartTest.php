@@ -1,5 +1,4 @@
 <?php
-require_once('A/Email/Multipart.php');
 
 class Email_MultipartTest extends UnitTestCase {
 	

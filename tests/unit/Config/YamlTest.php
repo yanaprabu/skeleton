@@ -1,5 +1,4 @@
 <?php
-require_once('A/Config/Yaml.php');
 
 class Config_YamlTest extends UnitTestCase {
 	

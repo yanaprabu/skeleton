@@ -1,5 +1,4 @@
 <?php
-require_once('A/Session.php');
 
 class SessionTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Select.php');
 
 class Sql_SelectTest extends UnitTestCase {
 	

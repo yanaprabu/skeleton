@@ -1,6 +1,4 @@
 <?php
-require_once('A/DataContainer.php');
-require_once('A/Rule/Range.php');
 
 class Rule_RangeTest extends UnitTestCase {
 	

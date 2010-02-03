@@ -1,5 +1,4 @@
 <?php
-require_once('A/Http/Download.php');
 
 class Http_DownloadTest extends UnitTestCase {
 	

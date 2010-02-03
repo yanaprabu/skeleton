@@ -1,5 +1,4 @@
 <?php
-require_once('A/Template/File.php');
 
 class Template_FileTest extends UnitTestCase {
 	

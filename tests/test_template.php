@@ -1,5 +1,4 @@
 <?php
-require_once('A/yyy.php');
 
 class xxxTest extends UnitTestCase {
 	

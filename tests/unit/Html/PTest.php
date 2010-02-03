@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/P.php');
 
 class Html_PTest extends UnitTestCase {
 	

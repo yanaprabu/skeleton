@@ -1,5 +1,4 @@
 <?php
-require_once('A/Logger.php');
 
 class LoggerTest extends UnitTestCase {
 	

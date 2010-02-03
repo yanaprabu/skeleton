@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Textarea.php');
 
 class Html_Form_TextareaTest extends UnitTestCase {
 	

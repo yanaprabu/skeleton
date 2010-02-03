@@ -1,6 +1,4 @@
 <?php
-require_once('A/Http/UploadForm.php');
-require_once('A/Http/Upload.php');
 
 class Http_UploadFormTest extends UnitTestCase {
 	

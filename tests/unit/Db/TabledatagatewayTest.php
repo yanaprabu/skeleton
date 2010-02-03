@@ -1,7 +1,6 @@
 <?php
-require_once('A/Db/Tabledatagateway.php');
 
-class MockDb {
+class A_Db_Tabledatagateway_MockDb {
 	public $sql = '';
 	
 	public function escape($str) {
@@ -10,7 +9,7 @@ class MockDb {
 	
 	public function query($sql) {
 		$this->sql = $sql;
-		$result = new MockDbResult();
+		$result = new A_Db_Tabledatagateway_MockDbResult();
 		return $result;
 	}
 
@@ -19,7 +18,7 @@ class MockDb {
 	}
 }
 
-class MockDbResult {
+class A_Db_Tabledatagateway_MockDbResult {
 	public $rows = array(
 				0=>array('id'=>'foo','name'=>'bar'),
 				1=>array('id'=>'faz','name'=>'baz'),
@@ -56,7 +55,7 @@ class Db_TabledatagatewayTest extends UnitTestCase {
 	}
 	
 	function testDb_TabledatagatewayTable() {
-  		$db = new MockDb();
+  		$db = new A_Db_Tabledatagateway_MockDb();
 
    		$tdg = new A_Db_Tabledatagateway($db);
   		$this->assertEqual($tdg->getTable(), 'a_db_tabledatagateway');
@@ -73,7 +72,7 @@ class Db_TabledatagatewayTest extends UnitTestCase {
 	}
 	
 	function testDb_TabledatagatewayId() {
-  		$db = new MockDb();
+  		$db = new A_Db_Tabledatagateway_MockDb();
   		
   		$tdg = new Test1($db);
   		$this->assertEqual($tdg->getKey(), 'id');
@@ -87,7 +86,7 @@ class Db_TabledatagatewayTest extends UnitTestCase {
 	}
 	
 	function testDb_TabledatagatewaySelect() {
-  		$db = new MockDb();
+  		$db = new A_Db_Tabledatagateway_MockDb();
   		
   		$tdg = new Test2($db);
   		$result = $tdg->find('bar');

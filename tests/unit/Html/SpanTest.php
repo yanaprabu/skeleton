@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Span.php');
 
 class Html_SpanTest extends UnitTestCase {
 	

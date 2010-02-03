@@ -1,6 +1,4 @@
 <?php
-require_once('A/DataContainer.php');
-require_once('A/Pager.php');
 
 class PagerTest extends UnitTestCase {
 	

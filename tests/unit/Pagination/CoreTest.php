@@ -1,9 +1,6 @@
 <?php
-require_once('A/DataContainer.php');
-require_once('A/Pagination.php');
-require_once('A/Pagination/Adapter/Interface.php');
 
-class DatasourceMock implements A_Pagination_Adapter_Interface {
+class Pagination_Core_DatasourceMock implements A_Pagination_Adapter_Interface {
 	protected $items = array(
 							array('id'=>1, 'name'=>'One', 'color'=>'blue'),
 							array('id'=>2, 'name'=>'Two', 'color'=>'red'),
@@ -22,6 +19,10 @@ class DatasourceMock implements A_Pagination_Adapter_Interface {
 	public function getNumItems() {
 		return count($this->items);
 	}
+
+	public function setOrderBy($field, $descending=false) {
+	}
+
 }
 
 class Pagination_CoreTest extends UnitTestCase {
@@ -33,7 +34,7 @@ class Pagination_CoreTest extends UnitTestCase {
 	}
 
 	function testPaginationgetFirstPage() {
- 		$datasource = new DatasourceMock();
+ 		$datasource = new Pagination_Core_DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
 
 		$result = true;
@@ -46,7 +47,7 @@ class Pagination_CoreTest extends UnitTestCase {
 	}
 
 	function testPaginationSecondPage() {
- 		$datasource = new DatasourceMock();
+ 		$datasource = new Pagination_Core_DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
 		$pager->setCurrentPage(2);
 
@@ -60,13 +61,13 @@ class Pagination_CoreTest extends UnitTestCase {
 	}
 
 	public function testGetParamNameSetsKeyIfNotSet()	{
-		$datasource = new DatasourceMock();
+		$datasource = new Pagination_Core_DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
 		$this->assertEqual ($pager->getParamName ('abc123'), 'abc123');
 	}
 
 	public function testSetParamName()	{
-		$datasource = new DatasourceMock();
+		$datasource = new Pagination_Core_DatasourceMock();
 		$pager = new A_Pagination($datasource, 5);
 		$pager->setParamName ('abc123', 'page');
 		$this->assertEqual ($pager->getParamName ('abc123'), 'page');

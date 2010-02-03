@@ -1,7 +1,4 @@
 <?php
-require_once('A/Controller/Action.php');
-require_once('A/Locator.php');
-require_once('A/Controller/Mapper.php');
 
 class Controller_ActionTest extends UnitTestCase {
 	

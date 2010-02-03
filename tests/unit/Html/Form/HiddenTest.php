@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Hidden.php');
 
 class Html_Form_HiddenTest extends UnitTestCase {
 	

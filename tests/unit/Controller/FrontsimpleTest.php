@@ -1,5 +1,4 @@
 <?php
-require_once('A/Controller/Frontsimple.php');
 
 class Controller_FrontsimpleTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Table.php');
 
 class Sql_TableTest extends UnitTestCase {
 	

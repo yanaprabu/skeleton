@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Join.php');
 
 class Sql_JoinTest extends UnitTestCase {
 	

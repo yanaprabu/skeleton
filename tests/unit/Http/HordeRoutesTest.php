@@ -1,5 +1,4 @@
 <?php
-#require_once('A/Http/HordeRoutes.php');
 
 class Http_HordeRoutesTest extends UnitTestCase {
 	

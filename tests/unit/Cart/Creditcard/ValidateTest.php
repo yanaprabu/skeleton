@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Creditcard/Validate.php');
 
 class Cart_Creditcard_ValidateTest extends UnitTestCase {
 	

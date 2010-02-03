@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Label.php');
 
 class Html_Form_LabelTest extends UnitTestCase {
 	

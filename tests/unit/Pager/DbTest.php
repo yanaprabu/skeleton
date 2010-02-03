@@ -1,5 +1,4 @@
 <?php
-require_once('A/Pager/DB.php');
 
 class Pager_DbTest extends UnitTestCase {
 	

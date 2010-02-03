@@ -1,19 +1,17 @@
 <?php
 
-require_once ('A/Orm/DataMapper/Mapping.php');
-
-class Object	{
+class Orm_DataMapper_Mapping_Object	{
 	public $item;
 	function setItem($item){}
 	function set(){}
 	function get(){}
 }
-Mock::Generate('Object', 'MockObject');
+Mock::Generate('Orm_DataMapper_Mapping_Object', 'Orm_DataMapper_Mapping_MockObject');
 
 class Orm_DataMapper_Mapping_Test extends UnitTestCase	{
 
 	public function setUp()	{
-		$this->object = new MockObject();
+		$this->object = new Orm_DataMapper_Mapping_MockObject();
 		$this->setMethod = 'setDescription';
 		$this->getMethod = 'getDescription';
 		$this->property = 'description';

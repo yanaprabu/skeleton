@@ -17,7 +17,7 @@ function show_test_in_dir($base_dir, $dir) {
 			$classname = 'A_' . substr($filename, 0, strlen($filename)-$length_ext);
 			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$classname</a></li>\n";
 		} elseif (! in_array($filename, array('.', '..'))) {
-			echo "<li>$filename\n";
+			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$filename</a>\n";
 			show_test_in_dir($base_dir, "$dir$filename/");
 			echo "</li>\n";
 		}

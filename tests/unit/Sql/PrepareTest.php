@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Prepare.php');
 
 class Sql_PrepareTest extends UnitTestCase {
 	

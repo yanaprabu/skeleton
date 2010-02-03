@@ -1,10 +1,5 @@
 <?php
 
-require_once('A/DateTime.php');
-require_once('A/DateTime/Range.php');
-require_once('A/DateTime/Duration.php');
-
-
 class DurationTest extends UnitTestCase	{
 
 	function setUp()	{

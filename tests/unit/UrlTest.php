@@ -1,5 +1,4 @@
 <?php
-require_once('A/Url.php');
 
 class UrlTest extends UnitTestCase {
 	

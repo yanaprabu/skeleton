@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/ADOdblite.php');
 
 class Db_ADOdbliteTest extends UnitTestCase {
 	

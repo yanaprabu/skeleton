@@ -1,10 +1,5 @@
 <?php
 
-include ('A/Sandbox/Template.php');
-include ('A/Sandbox/Paginator.php');
-include ('A/Sandbox/Collection.php');
-include ('A/Sandbox/PaginationHelper.php');
-
 Mock::Generate ('Template');
 Mock::Generate ('Paginator');
 Mock::Generate ('Collection');

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Email.php');
 
 class Rule_EmailTest extends UnitTestCase {
 	

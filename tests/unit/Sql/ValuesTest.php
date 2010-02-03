@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Values.php');
 
 class Sql_ValuesTest extends UnitTestCase {
 	

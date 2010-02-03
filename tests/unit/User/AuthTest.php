@@ -1,7 +1,4 @@
 <?php
-require_once('A/Session.php');
-require_once('A/User/Session.php');
-require_once('A/User/Auth.php');
 
 class User_AuthTest extends UnitTestCase {
 	

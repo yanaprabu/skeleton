@@ -1,7 +1,4 @@
 <?php
-require_once('A/DataContainer.php');
-require_once('A/Model.php');
-require_once('A/Filter/Regexp.php');
 
 class ModelTest extends UnitTestCase {
 	

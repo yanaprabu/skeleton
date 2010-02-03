@@ -1,5 +1,4 @@
 <?php
-require_once('A/Cart/Shipping/Fedex.php');
 
 class Cart_Shipping_FedexTest extends UnitTestCase {
 	

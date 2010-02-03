@@ -1,5 +1,4 @@
 <?php
-require_once('A/Rule/Numeric.php');
 
 class Rule_NumericTest extends UnitTestCase {
 	

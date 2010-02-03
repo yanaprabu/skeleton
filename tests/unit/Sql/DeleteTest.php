@@ -1,5 +1,4 @@
 <?php
-require_once('A/Sql/Delete.php');
 
 class Sql_DeleteTest extends UnitTestCase {
 	

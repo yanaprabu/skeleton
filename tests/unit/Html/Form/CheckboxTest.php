@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Checkbox.php');
 
 class Html_Form_CheckboxTest extends UnitTestCase {
 	

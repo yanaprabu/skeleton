@@ -1,6 +1,4 @@
 <?php
-require_once('A/Locator.php');
-require_once('A/DL.php');
 
 class DLTest extends UnitTestCase {
 	

@@ -1,5 +1,4 @@
 <?php
-require_once('A/Db/Mysqli.php');
 
 class Db_MysqliTest extends UnitTestCase {
 	

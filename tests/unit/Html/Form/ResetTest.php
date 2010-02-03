@@ -1,5 +1,4 @@
 <?php
-require_once('A/Html/Form/Reset.php');
 
 class Html_Form_ResetTest extends UnitTestCase {
 	

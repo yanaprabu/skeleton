@@ -1,5 +1,4 @@
 <?php
-require_once('A/User/Rule/Ingroup.php');
 
 class User_Rule_IngroupTest extends UnitTestCase {
 	
