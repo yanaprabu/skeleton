@@ -5,18 +5,13 @@ ini_set('display_errors', 1);
 ini_set('log_errors', 'Off');
 
 include 'config.php';
+include dirname(__FILE__) . '/../../A/Locator.php';
 
-include 'A/Locator.php';
-include 'A/Http/Request.php';
-include 'A/Http/Response.php';
-include 'A/Controller/Front.php';
-include 'A/Controller/Mapper.php';
-include 'A/Controller/Action.php';
-include 'A/Template/Strreplace.php';
+$Locator = new A_Locator();
+$Locator->autoload();
 
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();
-$Locator = new A_Locator();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
  

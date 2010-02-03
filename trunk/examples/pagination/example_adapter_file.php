@@ -5,9 +5,10 @@
 <body>
 <?php
 include 'config.php';
-include 'A/Pagination/Request.php';
-include 'A/Pagination/View/Standard.php';
-include 'A/Pagination/Adapter/File.php';
+include dirname(__FILE__) . '/../../A/autoload.php';
+#include 'A/Pagination/Request.php';
+#include 'A/Pagination/View/Standard.php';
+#include 'A/Pagination/Adapter/File.php';
 
 // create a data object that has the interface needed by the Pager object
 $datasource = new A_Pagination_Adapter_File('constitution.txt');

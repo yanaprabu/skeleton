@@ -3,17 +3,21 @@
 // Hangman game example ported from WACT hangman example and refactored to
 // follow MVC pattern.
 
-include_once 'config.php';
+require 'config.php';
+require dirname(__FILE__) . '/../../A/Locator.php';
 
-include_once 'A/Locator.php';
-include_once 'A/Http/Request.php';
-include_once 'A/Http/Response.php';
-include_once 'A/Template/Strreplace.php';
-include_once 'A/Rule/Abstract.php';
-include_once 'A/Rule/Notnull.php';
-include_once 'A/Filter/Regexp.php';
-include_once 'A/Controller/Input.php';
-include_once 'A/Controller/App.php';
+#include_once 'A/Http/Request.php';
+#include_once 'A/Http/Response.php';
+#include_once 'A/Template/Strreplace.php';
+#include_once 'A/Rule/Abstract.php';
+#include_once 'A/Rule/Notnull.php';
+#include_once 'A/Filter/Regexp.php';
+#include_once 'A/Controller/Input.php';
+#include_once 'A/Controller/App.php';
+
+// create Registry/Loader and initialize autoloading
+$Locator = new A_Locator();
+$Locator->autoload();
 
 //-----------------------------------------------------------------------------
 
@@ -250,7 +254,7 @@ class Hangman extends A_Controller_App {
 }
 
 //-----------------------------------------------------------------------------
-$Locator = new A_Locator();
+
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();
 $Locator->set('Request', $Request);
@@ -258,5 +262,3 @@ $Locator->set('Response', $Response);
 $controller = new Hangman($Locator, 'start');
 $controller->run($Locator);
 echo $Response->render($Locator);
-
-?>

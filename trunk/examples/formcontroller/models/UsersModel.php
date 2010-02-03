@@ -1,8 +1,8 @@
 <?php
-require_once 'A/Rule/Length.php';
-require_once 'A/Rule/Alpha.php';
-require_once 'A/Rule/Alnum.php';
-require_once 'A/Rule/Email.php';
+#require_once 'A/Rule/Length.php';
+#require_once 'A/Rule/Alpha.php';
+#require_once 'A/Rule/Alnum.php';
+#require_once 'A/Rule/Email.php';
 
 class UsersModel {
 	

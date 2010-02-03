@@ -5,10 +5,11 @@
 <body>
 <?php
 include 'config.php';
-include 'Datasource.php';
-include 'A/Pagination/Request.php';
-include 'A/Pagination/Helper/Link.php';
-include 'A/Pagination/Helper/Order.php';
+include dirname(__FILE__) . '/../../A/autoload.php';
+#include 'Datasource.php';
+#include 'A/Pagination/Request.php';
+#include 'A/Pagination/Helper/Link.php';
+#include 'A/Pagination/Helper/Order.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {

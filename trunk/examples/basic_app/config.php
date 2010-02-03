@@ -9,15 +9,16 @@ $ConfigArray = array(
     'password' => 'xxxx',
 	),
 
+'LIB' => '../../',
 'APP' => './app/',
 'BASE' => 'http://www.mydomain.com/',
 );
 
 ini_set('error_reporting', E_ALL);
-ini_set('include_path', ini_get('include_path') . 
-	PATH_SEPARATOR . $ConfigArray['APP'] .
-	PATH_SEPARATOR . '../../'			// this only needed for these examples
-	);
+#ini_set('include_path', ini_get('include_path') . 
+#	PATH_SEPARATOR . $ConfigArray['APP'] .
+#	PATH_SEPARATOR . '../../'			// this only needed for these examples
+#	);
 
 function dump($var, $name='') {
 	if (is_array($var) || is_object($var)) {

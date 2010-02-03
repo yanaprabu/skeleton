@@ -1,7 +1,5 @@
 <?php
-
 include 'config.php';
-include 'A/Sql/Select.php';
 
 $select = new A_Sql_Select();
 $select->columns('foobar as bleh, foo.bar')

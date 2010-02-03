@@ -1,7 +1,8 @@
 <?php
-include_once 'config.php';
-include_once 'A/DataContainer.php';
-include_once 'A/Html/Form.php';
+include 'config.php';
+include '../../A/autoload.php';
+#include_once 'A/DataContainer.php';
+#include_once 'A/Html/Form.php';
 
 echo '<html>
 <body>

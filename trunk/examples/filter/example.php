@@ -1,21 +1,19 @@
 <?php
-error_reporting(E_ALL);
-
 require_once('config.php');
-require_once('A/Http/Request.php');
-require_once('A/Filter/Set.php');
-require_once('A/Filter/Alnum.php');
-require_once('A/Filter/Alpha.php');
-require_once('A/Filter/Digit.php');
-require_once('A/Filter/Htmlentities.php');
-require_once('A/Filter/Htmlspecialchars.php');
-require_once('A/Filter/Length.php');
-require_once('A/Filter/Regexp.php');
-require_once('A/Filter/Smartquotes.php');
-require_once('A/Filter/Substr.php');
-require_once('A/Filter/Toupper.php');
-require_once('A/Filter/Tolower.php');
-require_once('A/Filter/Trim.php');
+#require_once('A/Http/Request.php');
+#require_once('A/Filter/Set.php');
+#require_once('A/Filter/Alnum.php');
+#require_once('A/Filter/Alpha.php');
+#require_once('A/Filter/Digit.php');
+#require_once('A/Filter/Htmlentities.php');
+#require_once('A/Filter/Htmlspecialchars.php');
+#require_once('A/Filter/Length.php');
+#require_once('A/Filter/Regexp.php');
+#require_once('A/Filter/Smartquotes.php');
+#require_once('A/Filter/Substr.php');
+#require_once('A/Filter/Toupper.php');
+#require_once('A/Filter/Tolower.php');
+#require_once('A/Filter/Trim.php');
 
 $request = new A_Http_Request();
 

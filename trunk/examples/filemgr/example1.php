@@ -1,6 +1,6 @@
 <?php
 ini_set('error_reporting', E_ALL);
-include '../../A/Http/Request.php';
+include '../../A/autoload.php';
 include '../../A/classes/DirectoryBrowser.php';
 
 $basedir = $_SERVER['DOCUMENT_ROOT'];

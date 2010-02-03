@@ -1,8 +1,5 @@
 <?php
-
 include 'config.php';
-include 'A/Db/Mysql.php';
-include 'A/Sql/From.php';
 
 $from = new A_Sql_From();
 echo $from

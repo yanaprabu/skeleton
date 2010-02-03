@@ -1,6 +1,6 @@
 <?php
 include('../config.php');
-include_once 'A/Locator.php';
+#include_once 'A/Locator.php';
 
 // classes for use demonstrating DI functionality of A_Locator
 class Config {

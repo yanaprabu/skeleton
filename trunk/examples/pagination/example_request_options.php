@@ -5,8 +5,9 @@
 <body>
 <?php
 include 'config.php';
-include 'Datasource.php';
-include 'A/Pagination/Request.php';
+include dirname(__FILE__) . '/../../A/autoload.php';
+#include 'Datasource.php';
+#include 'A/Pagination/Request.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -21,7 +22,7 @@ $datasource = new Datasource($myarray);
 $pager = new A_Pagination_Request($datasource);
 $pager->setRangeSize(3)->process();
 
-include 'A/Pagination/View/Standard.php';
+#include 'A/Pagination/View/Standard.php';
 
 $view1 = new A_Pagination_View_Standard($pager);
 

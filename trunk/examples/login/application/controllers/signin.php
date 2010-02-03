@@ -7,6 +7,7 @@ class signin extends A_Controller_Action {
 		$usersmodel = $this->_load()->model('Users');
 		$form = new A_Model_Form();
 		$form->addField($usersmodel->getFields());
+		$base = $locator->get('Config')->get('BASE');
 		
 		// If the user is signed in:
 		if ( $usersession->isSignedIn() ) {
@@ -14,25 +15,24 @@ class signin extends A_Controller_Action {
 			if($request->get('op') == 'signout') {
 				$usersession->signout();
 				$this->_flash('Message', 'You are now signed out');
-				$url = 'http://skeletontest/examples/login/';
-				$this->response->setRedirect($url);
+				$this->response->setRedirect($base);
 				// For now I do a redirect but you can also do:
 				//$layout = $this->_load()->template('signin.tpl');
 				//$layout->set('message', 'you are now signed out');
 			} else {
 				// else just show the logout form
-				$layout = $this->_load()->template('signout.tpl');
+				$layout = $this->_load()->template('signout');
+				$layout->set('BASE', $base);	
 				$layout->set('message', 'Please sign out');	
 				$this->response->setRenderer($layout);
 			}
 			
-		} 
-		else 
-		{
+		} else {
+		
 		// If not Signed in and user wants to sign in
-			$layout = $this->_load()->template('signin.tpl');
+			$layout = $this->_load()->template('signin');
 			
-			if ($request->get('op') == 'signin') { 
+			if ($this->_request('op') == 'signin') { 
 				if($form->isValid($this->request)) {	
 					if ($row = $usersmodel->findAuthorized($form->get('username'), $form->get('password'))) { 
 
@@ -48,8 +48,9 @@ class signin extends A_Controller_Action {
 			
 			$layout->set('errmsg', 'Please fill in correct username and password');
 			$layout->set('errmsg', $form->getErrorMsg(' ,'));
+			$layout->set('BASE', $base);	
 			$layout->set('username', $form->get('username'));
-			$this->response->setRenderer($layout);
+			$this->_response()->setRenderer($layout);
 		}
 		
 	}

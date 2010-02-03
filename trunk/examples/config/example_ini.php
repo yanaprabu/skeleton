@@ -2,7 +2,7 @@
 <p>This example shows using error handler or exceptions. Edit file names to show loading of INI files.</p>
 <?php
 include 'config.php';
-include 'A/Config/Ini.php';
+include '../../A/autoload.php';
 
 $config = new A_Config_Ini('example1.ini', '');
 $data = $config->loadFile();

@@ -1,5 +1,4 @@
 <?php
-include_once 'A/Http/View.php';
 
 class exampleView extends A_Http_View {
 	public function __construct($locator) {

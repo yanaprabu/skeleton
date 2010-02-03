@@ -1,8 +1,6 @@
 <?php
 include 'config.php';
-include 'A/Session.php';
-include 'A/Http/Request.php';
-include 'A/Rule/Captcha.php';
+include '../../A/autoload.php';
 ?>
 <html>
 <head>
@@ -14,7 +12,7 @@ $session = new A_Session();
 $session->start();
 $request = new A_Http_Request();
 
-$captcha = new A_Rule_Captcha('captcha', 'Captcha error.', null, $session, null);
+$captcha = new A_Rule_Captcha('captcha', 'Captcha error.', null, $session);
 
 # was there a reCAPTCHA response?
 if (! $captcha->isValid($request)) {
@@ -31,3 +29,6 @@ echo $captcha->render();
     </form>
 </body>
 </html>
+<?php
+dump($session, 'SESSSION: ');
+?>
