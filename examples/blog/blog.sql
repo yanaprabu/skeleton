@@ -7,6 +7,12 @@ DROP TABLE IF EXISTS `comments`;
 DROP TABLE IF EXISTS `posts`;
 DROP TABLE IF EXISTS `users`;
 
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `users`
+--
+
 CREATE TABLE `users` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`firstname` varchar(255) NOT NULL,
@@ -18,6 +24,18 @@ CREATE TABLE `users` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 
+-- Dumping data for table `users`
+-- 
+
+INSERT INTO `users` VALUES (1, 'matt', '', 'matt', 'pass', 'matt@mail.com', '1');
+INSERT INTO `users` VALUES (2, 'chris', '', 'chris', 'pass', 'chris@mail.com', '1');
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `posts`
+--
 
 CREATE TABLE `posts` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -25,7 +43,7 @@ CREATE TABLE `posts` (
 	`permalink` varchar(255) NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`excerpt` varchar(255) NOT NULL,
-	`post` text NOT NULL,
+	`content` text NOT NULL,
 	`comments_allowed` TINYINT UNSIGNED NOT NULL,
 	`users_id` INT(10) UNSIGNED NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
@@ -33,6 +51,20 @@ CREATE TABLE `posts` (
 	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 
+-- Dumping data for table `posts`
+-- 
+
+INSERT INTO `posts` VALUES (1, '2010-01-24 00:00:00', 'my-first-post', 'My first post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 0, 1, '1');
+INSERT INTO `posts` VALUES (2, '2010-01-21 00:00:00', 'the-second-post', 'The second post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 1, 2, '1');
+
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `comments`
+--
 
 CREATE TABLE `comments` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -49,6 +81,16 @@ CREATE TABLE `comments` (
 	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 
+-- Dumping data for table `comments`
+--
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `categories`
+--
 
 CREATE TABLE `categories` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -57,6 +99,18 @@ CREATE TABLE `categories` (
 	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 
+-- Dumping data for table `categories`
+-- 
+
+INSERT INTO `categories` VALUES (1, 'php', 0);
+INSERT INTO `categories` VALUES (2, 'mysql', 0);
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `categories2posts`
+--
 
 CREATE TABLE `categories2posts` (
 	`categories_id` INT(10) UNSIGNED NOT NULL,
@@ -66,6 +120,16 @@ CREATE TABLE `categories2posts` (
 	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 
+-- Dumping data for table `categories2posts`
+--
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `tags`
+--
 
 CREATE TABLE `tags` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -73,6 +137,18 @@ CREATE TABLE `tags` (
 	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 
+-- Dumping data for table `tags`
+-- 
+
+INSERT INTO `tags` VALUES (1, 'php');
+INSERT INTO `tags` VALUES (2, 'sql');
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `tags2posts`
+--
 
 CREATE TABLE `tags2posts` (
 	`tags_id` INT(10) UNSIGNED NOT NULL,
@@ -81,3 +157,8 @@ CREATE TABLE `tags2posts` (
 	FOREIGN KEY (`tags_id`) REFERENCES `tags` (`id`), 
 	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 
+-- Dumping data for table `tags2posts`
+--
+

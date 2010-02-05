@@ -58,12 +58,22 @@ $Session = new A_Session();
 //$Session->start();
 $UserSession = new A_User_Session($Session);
 
+// Dbh
+$dbconfig = array(
+	'database'=>$Config->get('database'),
+	'hostspec'=>$Config->get('hostspec'),
+	'username'=>$Config->get('username'),
+	'password'=>$Config->get('password')
+	);
+$Db = new A_Db_Pdo($dbconfig) or die ('Error: could not connect to DB');
+	
 // Add common objects to registry
 $Locator->set('Config', $Config);
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 $Locator->set('Session', $Session);
 $Locator->set('UserSession', $UserSession);
+$Locator->set('Db', $Db);
 
 // Create router and have it modify request
 $map = array(

@@ -1,28 +1,35 @@
 <?php
 
 class postsModel {
+	
+	public $date = '';
 	public $permalink = '';
 	public $title = '';
-	public $date = '';
+	public $excerpt = '';
 	public $content = '';
+	public $author = null;
+	public $comments = null;
 	
+	protected $dbh = null;
+	
+	public function __construct($db){
+		$this->dbh = $db;
+	}
+		
 	function listAll(){
-		return array(
-			0 => array(
-				'permalink' => 'posts/1/',
-				'title' => 'First title here!',
-				'date' => '01-01-08',
-				'content' => 'Hello world this is your first post',
-				'excerpt' => 'Hello world this is the summery odf the first article',
-				),
-			1 => array(
-				'permalink' => 'posts/2/',
-				'title' => 'The second title',
-				'date' => '02-01-08',
-				'content' => 'Hello world this is your second post',
-				'excerpt' => 'Hello world this is the summery of the second article',
-				),
-			);
+		$sql = "SELECT 
+					`post_date`,`permalink`,`title`,`excerpt`,`content` 
+				FROM 
+					`posts`
+				WHERE
+				 	`active` = 1
+				";
+		$posts = $this->dbh->query($sql);
+		$rows = array();
+		while($row = $posts->fetchRow()){
+			$rows[] = $row;
+		}
+		return $rows;
 	}
 	
 	function single(){
