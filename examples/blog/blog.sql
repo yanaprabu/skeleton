@@ -77,14 +77,18 @@ CREATE TABLE `comments` (
 	`approved` CHAR(1) NOT NULL default '1',
 	`posts_id` INT UNSIGNED NOT NULL,
 	PRIMARY KEY  (`id`),
-	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`),
-	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
+	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `comments`
 --
 
+INSERT INTO `comments` 
+(`id`,`author`,`author_email`,`author_url`,`users_id`,`comment_date`,`comment`,`approved` ,`posts_id`)
+VALUES 
+(NULL , 'Matt', 'matt@mail.com', 'mysite.com', '', '2010-02-02 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1'),
+(NULL , 'Mike', 'mike@mail.com', 'mikewebsite.com', '', '2010-02-04 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1')
 
 -- --------------------------------------------------------
 

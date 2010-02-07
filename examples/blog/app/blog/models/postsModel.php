@@ -19,17 +19,16 @@ class postsModel {
 	function listAll(){
 		$sql = "SELECT 
 					p.`id` as 'post_id', p.`post_date`, p.`permalink`, p.`title`, p.`excerpt`, p.`content`,
-					c.`author`, c.`author_email`, c.`author_url`, c.`comment_date`,
+					COUNT(c.`id`) as 'nocomms',
 					u.`username`
 				FROM 
 					`posts` p
-				LEFT JOIN `comments` c ON c.`posts_id` = p.`id`
 				LEFT JOIN `users` u ON u.`id` = p.`users_id`
+				LEFT JOIN `comments` c ON c.`posts_id` = p.`id` 
 				WHERE
 				 	p.`active` = 1
-			
+				GROUP BY p.`id`
 				";
-
 		$posts = $this->dbh->query($sql);
 		$rows = array();
 		while($row = $posts->fetchRow()){
@@ -41,16 +40,18 @@ class postsModel {
 	function single($id){
 		$sql = "SELECT 
 					p.`id` as 'post_id', p.`post_date`, p.`permalink`, p.`title`, p.`excerpt`, p.`content`,
-					c.`author`, c.`author_email`, c.`author_url`, c.`comment_date`,
+					COUNT(c.`id`) as 'nocomms',
 					u.`username`
 				FROM 
 					`posts` p
-				LEFT JOIN `comments` c ON c.`posts_id` = p.`id`
+
 				LEFT JOIN `users` u ON u.`id` = p.`users_id`
+				LEFT JOIN `comments` c ON c.`posts_id` = p.`id` 
 				WHERE
 				 	p.`active` = 1
 				AND
 					p.`id` = $id
+				GROUP BY p.`id`
 				";
 
 		$posts = $this->dbh->query($sql);
