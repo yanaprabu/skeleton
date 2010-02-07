@@ -8,6 +8,7 @@
 		echo '<p class="post_meta">On ' .  $article['post_date'] . ' by ' . $article['username'] . '</p>';
 		echo '<p>' .  $article['excerpt'] . '</p>';
 		echo '<p>' .  $article['content'] . '</p>';
+		echo '<p class="comment_meta">' . $article['nocomms'] . ' comments</p>';
 		echo '</div>';
 	} ?>
 

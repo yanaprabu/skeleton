@@ -9,7 +9,8 @@
 		echo '<p>' .  $article['excerpt'] . '</p>';
 		echo '<p>' .  $article['content'] . '</p>';
 		echo '	</div>';
-	} ?>
+	} 
+	?>
 
 	<h3>Leave a reply</h3>
 	<form id="comment_form" action="" method="post">
@@ -35,7 +36,28 @@
 		
 	</form>
 	
-	<div class="comment_list">
-	<h3>Comments for this post:</h3>
-	<p>not yet ;)</p>
+	<div id="comments">
+	<h3><?php echo $content[0]['nocomms']; ?> Comments for this post:</h3>
+	
+	<ul id="comment-list">
+	<?php 
+	if(empty($comments)){
+		echo '<li>No comments now</li>';
+	} 
+	foreach($comments as $comment){
+		echo '<li class="alt item" id="comment-' . $comment['comment_id'] . '">';
+		echo '	<h4 class="vcard">';
+		echo '		<a href="#comment-' . $comment['comment_id'] . '">#</a> ';
+		echo '		<strong><cite>' . $comment['author'] . '</cite> says on ';
+		echo '		<span class="comment-date"> ' . $comment['comment_date']. '</span></strong>';
+		echo '		<span class="gravatar">';
+		echo '			<img src="img/user.png" width="48" height="48" alt="" />';
+		echo '		</span>';
+		echo '	</h4>';
+		echo '	<blockquote><p>' . $comment['comment']. '</p></blockquote>';
+		echo '</li>';
+	}
+	?>
+	</ul>
+	
 	</div>

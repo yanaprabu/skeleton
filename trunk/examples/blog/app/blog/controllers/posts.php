@@ -19,6 +19,10 @@ class posts extends A_Controller_Action {
 			$template = $this->_load()->template('singlePost');
 			$template->set('content', $content);
 			
+			$model = $this->_load()->model('commentsModel', $locator->get('Db'));
+			$comments = $model->findByPost($this->request->get('action'));
+			$template->set('comments', $comments);
+			
 			$this->response->set('maincontent', $template);
 			$this->response->set('subcontent','<p>This is the subcontent.</p>');
 
