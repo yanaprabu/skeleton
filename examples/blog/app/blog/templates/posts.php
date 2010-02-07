@@ -1,13 +1,13 @@
 
 <h3>This is a list of all posts</h3>
 
-<ul>
+
 	<?php foreach($content as $article){
-		echo '<li>';
-		echo '<h4><a href="posts/'. $article['permalink'] . '">' . $article['title'] . '</a></h4>';
-		echo '<p>' .  $article['post_date'] . '</p>';
+		echo '<div class="post">';
+		echo '<h2 class="post_title"><a href="posts/'. $article['post_id'] . '">' . $article['title'] . '</a></h2>';
+		echo '<p class="post_meta">On ' .  $article['post_date'] . ' by ' . $article['username'] . '</p>';
 		echo '<p>' .  $article['excerpt'] . '</p>';
 		echo '<p>' .  $article['content'] . '</p>';
-		echo '</li>';
+		echo '</div>';
 	} ?>
-</ul>
+

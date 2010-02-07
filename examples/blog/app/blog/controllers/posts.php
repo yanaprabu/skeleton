@@ -15,13 +15,12 @@ class posts extends A_Controller_Action {
 			
 			// How to translate URL in correct action variable?
 			$model = $this->_load()->model('postsModel', $locator->get('Db'));
-			$content = $model->single();
+			$content = $model->single($this->request->get('action'));
 			$template = $this->_load()->template('singlePost');
 			$template->set('content', $content);
-#			$maincontent = $template->render();
 			
 			$this->response->set('maincontent', $template);
-			$this->response->set('subcontent','This is the subcontent');
+			$this->response->set('subcontent','<p>This is the subcontent.</p>');
 
 		} 
 		else  // show all posts 
@@ -33,7 +32,7 @@ class posts extends A_Controller_Action {
 			$maincontent = $template->render();		
 
 			$this->response->set('maincontent', $maincontent);
-			$this->response->set('subcontent','This is the subcontent');
+			$this->response->set('subcontent','<p>This is the subcontent.</p>');
 
 		}
 				
