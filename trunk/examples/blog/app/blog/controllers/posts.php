@@ -12,16 +12,28 @@ class posts extends A_Controller_Action {
 		
 		// If there's a request for a single post
 		if( $this->request->has('action') && is_numeric($this->request->get('action')) ){ 
-			
+				
 			// How to translate URL in correct action variable?
 			$model = $this->_load()->model('postsModel', $locator->get('Db'));
 			$content = $model->single($this->request->get('action'));
 			$template = $this->_load()->template('singlePost');
 			$template->set('content', $content);
 			
-			$model = $this->_load()->model('commentsModel', $locator->get('Db'));
-			$comments = $model->findByPost($this->request->get('action'));
+			$commentsmodel = $this->_load()->model('commentsModel', $locator->get('Db'));
+			$comments = $commentsmodel->findByPost($this->request->get('action'));
 			$template->set('comments', $comments);
+			
+			/* When comment form is posted */
+			if ($this->request->isPost()) {
+				if ($commentsmodel->isValid($this->request)) {
+					$result = $commentsmodel->save($this->request);
+					// return succesfull post message
+					
+				} else {
+					// return error message
+					
+				}
+			}
 			
 			$this->response->set('maincontent', $template);
 			$this->response->set('subcontent','<p>This is the subcontent.</p>');

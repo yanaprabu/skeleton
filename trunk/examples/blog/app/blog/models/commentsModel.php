@@ -31,4 +31,12 @@ class commentsModel {
 		return $rows;
 	}
 	
+	public function isValid($request){
+			return true;
+	}
+	
+	public function save($request){
+		return true;
+	}
+	
 }
