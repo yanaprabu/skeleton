@@ -34,22 +34,63 @@ a:hover { color:#000;}
 strong { color:#444; }
 
 /* Layout */
-#container { width:960px;margin:0 auto; }
-#header { margin:0 0 20px;padding:20px;background:#eee;}
-#content { width:600px;float:left;margin:0 0 20px 20px;padding:0;min-height:300px; }
-#subcontent { width:300px;float:right;margin:0 20px 20px  0;padding:0; }
+body { background:#F0F0F0; }
+#container { width:960px;margin:0 auto;padding:20px 0; }
+#header { margin:0 0 20px;padding:20px;background:#fcfcfc; }
+#content { width:600px;float:left;margin:0 0 20px 0px;padding:20px 20px ;min-height:300px;background:#fcfcfc; }
+#subcontent { width:300px;float:right;margin:0 0px 20px  0;padding:20px 0;background:#fcfcfc; }
+#header, #content, #subcontent {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 5px rgba(0,0,0,.3);
+	-moz-box-shadow: 0 1px 5px rgba(0,0,0,.3);
+	box-shadow: 0 1px 5px rgba(0,0,0,.3);
+}
+
+/* Header and nav */
+#header { position:relative; }
+#header h1 { font-size:26px;line-height:26px; }
+#mainnav {  margin:20px 0 0;padding:0;list-style:none; }
+#mainnav li { margin:0 0px;padding:0;display:inline;list-style:none; }
+#mainnav li a { margin:0 10px 0 0px;padding:2px 20px;display:inline-block;color:#333;text-transform:uppercase;
+	font-size:10px;line-height:20px;text-decoration:none;
+	background:#eee;
+	border:1px solid #ddd;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	}
+#mainnav li a:hover { text-decoration:none; }
+#mainnav li#active a { font-weight:bold; }
+
+#loginbox { position:absolute;top:10px;right:20px; }
+
+/* Maincontent */
+.post { margin:0 0 18px; }
+.post_title { font-size:22px;margin:0;font-weight:normal; }
+.post_title a { text-decoration:none; }
+.post_meta { color:#777; }
+.comment_list { margin:0 0 18px; }
+
+/* Subcontent */
+#subcontent h3, #subcontent p { margin-left:10px;margin-right:10px; }
 
 /* Forms */
-form {}
+form { margin:0 0 18px;padding:15px;background:#f2f2f2;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	}
 form p { margin:0 0 5px; }
 label { display:block; }
 input {}
 input[type=text] { width:150px; }
 
 
-#mainnav {}
-#mainnav li { display:inline;margin:0 10px 0 0; }
-#mainnav li a { padding:3px 6px 0 0; }
-
+/* Footer */
 #footer { clear:both;background:#eee;padding:10px 0; }
 #footer p { margin:0 20px;color:#777; }
+
+
+
