@@ -1,11 +1,11 @@
 <?php
-require_once 'A/Rule/Length.php';
-require_once 'A/Rule/Alpha.php';
-require_once 'A/Rule/Alnum.php';
-require_once 'A/Rule/Email.php';
+//require_once 'A/Rule/Length.php';
+//require_once 'A/Rule/Alpha.php';
+//require_once 'A/Rule/Alnum.php';
+//require_once 'A/Rule/Email.php';
 
-require_once 'A/Model.php';
-require_once 'A/Model/Field.php';
+//require_once 'A/Model.php';
+//require_once 'A/Model/Field.php';
 
 class UsersModel extends A_Model {
 	

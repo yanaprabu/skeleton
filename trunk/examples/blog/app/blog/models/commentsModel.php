@@ -1,19 +1,36 @@
 <?php
 
-class commentsModel {
-	
-	public $author = '';
-	public $author_email = '';
-	public $author_url = '';
-	public $comment_date = '';
-	public $comment = '';
-	
+class commentsModel extends A_Model {
+		
 	protected $dbh = null;
 	
 	public function __construct($db){
 		$this->dbh = $db;
+		$this->addField(new A_Model_Field('id'));
+		$this->addField(new A_Model_Field('author'));
+		$this->addField(new A_Model_Field('author_email'));
+		$this->addField(new A_Model_Field('author_url'));
+		$this->addField(new A_Model_Field('users_id')); // FK to users id		
+		$this->addField(new A_Model_Field('comment_date'));
+		$this->addField(new A_Model_Field('comment'));
+		$this->addField(new A_Model_Field('approved'));
+		$this->addField(new A_Model_Field('posts_id')); // FK to posts id
 	}
-		
+
+	public function save(){
+		// if doesn't exist yet create
+		if(!$this->get('id')){
+			// insert new 
+		} else {
+			// update
+		}
+	}
+	
+	public function find($id){}
+	public function findBy($someArgs){}
+	public function delete($id){}
+	
+	
 	function findByPost($id){
 
 		$sql = "SELECT 
@@ -29,14 +46,6 @@ class commentsModel {
 			$rows[] = $row;
 		}
 		return $rows;
-	}
-	
-	public function isValid($request){
-			return true;
-	}
-	
-	public function save($request){
-		return true;
 	}
 	
 }

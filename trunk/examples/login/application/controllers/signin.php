@@ -12,7 +12,7 @@ class signin extends A_Controller_Action {
 		// If the user is signed in:
 		if ( $usersession->isSignedIn() ) {
 			// and wants to sign out
-			if($request->get('op') == 'signout') {
+			if($this->request->get('op') == 'signout') {
 				$usersession->signout();
 				$this->_flash('Message', 'You are now signed out');
 				$this->response->setRedirect($base);
@@ -37,8 +37,8 @@ class signin extends A_Controller_Action {
 					if ($row = $usersmodel->findAuthorized($form->get('username'), $form->get('password'))) { 
 
 						$usersession->signin($form->get('username'));  
-						$this->flash('Message', 'You are now signed in');
-						$url = 'http://skeletontest/examples/login/';
+						$this->_flash('Message', 'You are now signed in');
+						$url = 'http://skeleton/examples/login/';
 						$this->response->setRedirect($url);
 					}	
 				} 
