@@ -36,7 +36,7 @@
 		
 	</form>
 	
-	<div id="comments">
+<div id="comments">
 	<h3><?php echo $content[0]['nocomms']; ?> Comments for this post:</h3>
 	
 	<ul id="comment-list">
@@ -60,4 +60,4 @@
 	?>
 	</ul>
 	
-	</div>
+</div>

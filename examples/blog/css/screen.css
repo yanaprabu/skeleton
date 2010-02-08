@@ -76,6 +76,7 @@ body { background:#F0F0F0;background:#E2E1DE; }
 #comments { border-top:2px solid #666;padding-top:20px; }
 #comment-list { margin:0 0 18px; }
 #comment-list li { border-top: 1px solid #ddd; padding: 20px 0 10px; min-height: 90px; position: relative; }
+#comment-list li:nth-child(even) {  }
 #comment-list h4 { margin-left: 80px;font-size:12px;margin:0 0 8px 80px; }
 #comment-list h4 strong { font-weight:normal; }
 #comment-list h4 strong cite { font-style:normal;font-weight:bold; }

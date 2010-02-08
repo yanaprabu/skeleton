@@ -45,6 +45,7 @@ CREATE TABLE `posts` (
 	`excerpt` varchar(255) NOT NULL,
 	`content` text NOT NULL,
 	`comments_allowed` TINYINT UNSIGNED NOT NULL,
+    `post_type` varchar(20) NOT NULL default 'post',
 	`users_id` INT(10) UNSIGNED NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
 	PRIMARY KEY  (`id`),
@@ -55,8 +56,8 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 -- 
 
-INSERT INTO `posts` VALUES (1, '2010-01-24 00:00:00', 'my-first-post', 'My first post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 0, 1, '1');
-INSERT INTO `posts` VALUES (2, '2010-01-21 00:00:00', 'the-second-post', 'The second post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 1, 2, '1');
+INSERT INTO `posts` VALUES (1, '2010-01-24 00:00:00', 'my-first-post', 'My first post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 0, 'post', 1, '1');
+INSERT INTO `posts` VALUES (2, '2010-01-21 00:00:00', 'the-second-post', 'The second post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 1, 'post', 2, '1');
 
 
 

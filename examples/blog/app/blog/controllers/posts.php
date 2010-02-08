@@ -14,8 +14,8 @@ class posts extends A_Controller_Action {
 		if( $this->request->has('action') && is_numeric($this->request->get('action')) ){ 
 				
 			// How to translate URL in correct action variable?
-			$model = $this->_load()->model('postsModel', $locator->get('Db'));
-			$content = $model->single($this->request->get('action'));
+			$postmodel = $this->_load()->model('postsModel', $locator->get('Db'));
+			$content = $postmodel->find($this->request->get('action'));
 			$template = $this->_load()->template('singlePost');
 			$template->set('content', $content);
 			
