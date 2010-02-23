@@ -7,15 +7,30 @@
 
 class A_Logger {
 	protected $buffer = '';
-	protected $writer = null;
+	protected $writers = array();
 	protected $errmsg = '';
 	
-	public function __construct($writer) {
+	public function __construct($writers=array()) {
+		if ($writers) {
+			if (is_array($writers)) {
+				foreach($writers as $writer) {
+					$this->addWriter($writer);
+				}
+			} else {
+				$this->addWriter($writers);
+			}
+		}
+	}
+	
+	public function getErrorMsg() {
+		return $this->errmsg;
+	}
+	
+	public function addWriter($writer) {
 		if (is_string($writer)) {
-			if (!class_exists('A_Logger_File')) include 'A/Logger/File.php';
-			$this->writer = new A_Logger_File($writer);
+			$this->writers[] = new A_Logger_File($writer);
 		} elseif (is_object($writer)) {
-			$this->writer = $writer;
+			$this->writers[] = $writer;
 		}
 	}
 	
@@ -24,12 +39,14 @@ class A_Logger {
 	}
 	
 	public function write($message='') {
-		if ($this->writer) {
+		if ($this->writers) {
 			if ($message) {
 				$this->buffer .= "$message\n";
 			}
-			$this->writer->write($this->buffer);
-			$this->errmsg .= $this->writer->errmsg;
+			foreach ($this->writers as $writer) {	
+				$writer->write($this->buffer);
+				$this->errmsg .= $writer->getErrorMsg();
+			}
 		} else {
 			$this->errmsg .= "No log writer. ";
 		}

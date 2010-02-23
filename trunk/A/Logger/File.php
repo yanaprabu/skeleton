@@ -6,10 +6,23 @@
  */
 
 class A_Logger_File {
-protected $errmsg = '';
+	protected $filename = '';
+	protected $errmsg = '';
 
 	public function __construct($filename) {
 		$this->filename = $filename;
+	}
+	
+	public function setFilename($filename) {
+		return $this->filename = $filename;
+	}
+	
+	public function getFilename() {
+		return $this->filename;
+	}
+	
+	public function getErrorMsg() {
+		return $this->errmsg;
 	}
 	
 	public function write($buffer='') {
