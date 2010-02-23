@@ -3,7 +3,7 @@ $ConfigArray = array(
 // Site specific settings
 'DBDSN' => array(
     'phptype' => 'mysql',
-    'hostspec' => 'localhost',
+    'hostspec' => '127.0.0.1',
     'database' => 'xxxx',
     'username' => 'xxxx',
     'password' => 'xxxx',
