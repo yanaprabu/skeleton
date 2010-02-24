@@ -153,7 +153,7 @@ class A_Db_Pdo extends PDO {
 
 class A_Db_Pdo_Recordset extends PDOStatement {
 	
-	public function __construct() {
+	protected function __construct() {
 	}
 		
 	public function isError() {
