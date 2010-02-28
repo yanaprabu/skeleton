@@ -1,16 +1,4 @@
 <?php
-require_once 'A/Controller/Action.php';
-include_once 'A/Model/Form.php';
-require_once 'A/Rule/Set.php';
-require_once 'A/Filter/Set.php';
-require_once 'A/Html/Form.php';
-require_once 'A/Filter/Alnum.php';
-require_once 'A/Filter/Digit.php';
-require_once 'A/Filter/Trim.php';
-require_once 'A/Rule/Digit.php';
-require_once 'A/Rule/Inarray.php';
-require_once 'A/Rule/Length.php';
-require_once 'A/Rule/Match.php';
 
 class Somecontroller extends A_Controller_Action {
 	

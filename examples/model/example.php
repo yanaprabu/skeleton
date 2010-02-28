@@ -1,13 +1,12 @@
 <?php
-require_once('config.php');
-require_once('A/Locator.php');
-require_once('A/Http/Request.php');
-require_once('A/Http/Response.php');
-require_once('controllers/somecontroller.php');
-
-error_reporting(E_ALL);
+require 'config.php';
+require dirname(__FILE__) . '/../../A/Locator.php';
 
 $Locator = new A_Locator();
+$Locator->autoload();
+
+require_once dirname(__FILE__) . '/controllers/somecontroller.php';
+
 $Response = new A_Http_Response();
 $Locator->set('Request', new A_Http_Request());
 $Locator->set('Response', $Response);
