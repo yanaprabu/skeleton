@@ -38,7 +38,7 @@ class signin extends A_Controller_Input {
 					$user = new UserTableGateway();
 					if ($row = $user->findAuthorized($username->value, $password->value)) {
 						$usersession->merge($row);
-						$usersession->signin($username->value, $password->value);
+						$usersession->login($username->value, $password->value);
 					}
 				} else {
 					$errmsg = 'Errors: ' . implode(', ', $this->getErrorMsgs());

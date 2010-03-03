@@ -32,6 +32,7 @@ class A_Sql_From {
 		if ($table) {
 			if (is_array($table)) {
 				$this->table = $table[0];
+				// add other table names in array as JOINs?
 			} else {
 				$this->table = $table;
 			}
@@ -47,9 +48,7 @@ class A_Sql_From {
 	public function getTables() {
 		$tables = array();
 		if ($this->table) {
-			foreach ($this->table as $name) {
-				$tables[$name] = true;
-			}
+			$tables[$this->table] = true;
 		}
 		if ($this->joins) {
 			foreach ($this->joins as $join) {

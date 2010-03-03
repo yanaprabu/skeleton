@@ -1,6 +1,6 @@
 <h1>Access Control</h1>
 
-<p>For Access Control the class A_User_Session is used. The A_User_Session class has signin() and signout() methods to store user data in the session to indicate that the user has been authenticated. </p>
+<p>For Access Control the class A_User_Session is used. The A_User_Session class has login() and logout() methods to store user data in the session to indicate that the user has been authenticated. </p>
 <h2>Basic access control</h2>
 <p>There are rules provided to do simple level and group access control. The basic way to check if a user is signed-in is:</p>
 <pre class="prettyprint lang-php">
@@ -15,7 +15,7 @@ class admin {
 			// access allowed
 		} else {
 			// return action to Front Controller to forward
-			return array('', 'signin', 'index');
+			return array('', 'login', 'index');
 		}
 	}
 	

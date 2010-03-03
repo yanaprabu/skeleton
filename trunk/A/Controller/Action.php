@@ -49,6 +49,8 @@ class A_Controller_Action {
 	
 	/**
 	 * constructor called by the Front Controller
+	 * note: called A_Controller_Action and not __construct to avoid Strict warning. 
+	 *       If child implements __construct() the this method ignored
 	 */
 	public function __construct($locator=null){
 	    if ($locator) {

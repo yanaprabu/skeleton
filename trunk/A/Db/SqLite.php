@@ -79,8 +79,15 @@ class A_Db_Sqlite {	protected $dsn = null;	protected $link = null;	protected 
 		return sqlite_last_error($this->link);
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return sqlite_error_string(sqlite_last_error($this->link));
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 }
@@ -96,8 +103,15 @@ class A_Db_Sqlite_Result {	protected $result;	public $errno;	public $errmsg;
 		return $this->errno;
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->errmsg;
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 }

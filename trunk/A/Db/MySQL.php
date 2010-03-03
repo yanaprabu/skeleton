@@ -159,10 +159,17 @@ class A_Db_MySQL {
 		return mysql_errno($this->link);
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return mysql_error($this->link);
 	}
 		
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
+	
 }
 	
 	
@@ -187,8 +194,15 @@ class A_Db_MySQL_Result {
 		return $this->errno;
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->errmsg;
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 }

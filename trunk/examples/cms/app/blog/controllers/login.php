@@ -28,10 +28,10 @@ class login extends A_Controller_Action {
 			
 			// How to translate URL in correct action variable?
 			$model = $this->_load('app')->model('users');
-			$userdata = $model->signin($form->get('userid'), $form->get('password'));
+			$userdata = $model->login($form->get('userid'), $form->get('password'));
 			if ($userdata) {	// user record matching userid and password found
 				unset($userdata['password']);		// don't save passwords in the session
-				$user->signin($userdata);
+				$user->login($userdata);
 				$this->_redirect($locator->get('Config')->get('BASE') . 'login/');	// build redirect URL back to this page
 			} else {
 				$errmsg = $model->getErrorMsg();

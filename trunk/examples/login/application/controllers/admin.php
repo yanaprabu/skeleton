@@ -9,7 +9,7 @@ class admin extends A_Controller_Action {
 <html>
 <body>
 	<h2>Admin Page Action</h2>
-	<p><a href="/examples/login/">home</a> | <a href="signin/">sign in</a></p>
+	<p><a href="/examples/login/">home</a> | <a href="login/">log-in</a></p>
 </body>
 </html>
 ';

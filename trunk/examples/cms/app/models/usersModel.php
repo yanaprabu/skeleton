@@ -36,7 +36,7 @@ class usersModel {
 		return array();
 	}
 	
-	function signin($userid, $password) {
+	function login($userid, $password) {
 
 		$this->errmsg = '';
 		if ($this->data) {

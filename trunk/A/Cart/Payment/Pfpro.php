@@ -156,11 +156,18 @@ class A_Cart_Payment_Pfpro
 		return true;
 	}
 	
-	public function getMessage() {
+	public function getErrorMsg() {
 		if ($this->response) {
 			return $this->response['RESPMSG'];
 		}
 		return 'Could not connect to credit card processor. ';
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 	public function getResult() {

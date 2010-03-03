@@ -29,7 +29,7 @@ class A_User_Session {
 		}
 	}
 	
-	public function signout() {
+	public function logout() {
 		if ($this->namespace) {
 			$this->session->start();
 			unset ($_SESSION[$this->namespace]);
@@ -37,12 +37,26 @@ class A_User_Session {
 		}
 	}
 	
-	public function signin($data=array()) {
+	public function login($data=array()) {
 		if ($this->namespace) {
 			$this->session->start();
 			$_SESSION[$this->namespace]['auth'] = true;
 			$this->merge($data);
 		}
+	}
+	
+	/**
+	 * depricated name for logout()
+	 */
+	public function signout() {
+		$this->login($data);
+	}
+	
+	/**
+	 * depricated name for login()
+	 */
+	public function signin($data=array()) {
+		$this->login($data);
 	}
 	
 	public function get($key='') {

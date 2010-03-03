@@ -4,8 +4,7 @@ class usersModel extends A_Model {
 	
 	protected $dbh = null;
 	
-	public function __construct($db){
-		$this->dbh = $db;
+	public function __construct($locator){
 		$this->addField(new A_Model_Field('id'));
 		$this->addField(new A_Model_Field('firstname'));
 		$this->addField(new A_Model_Field('lastname'));
@@ -13,7 +12,23 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('password'));
 		$this->addField(new A_Model_Field('email'));
 		$this->addField(new A_Model_Field('active'));
-	}
+
+		$this->addRule(new A_Rule_Numeric('id', 'invalid ID'), 'id');
+		$this->addRule(new A_Rule_Length(5, 15, 'username', 'name must 5 to 25 characters'), 'username'); 
+		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\_\@\.]', 'username', 'invalid username'), 'username'); 
+		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'invalid firstname'), 'firstname'); 
+		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'lastname', 'invalid firstname'), 'lastname'); 
+		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\_\@\.]', 'password', 'invalid username'), 'password'); 
+		$this->addRule(new A_Rule_Email('email', 'This is not a valid email'), 'email');
+		$this->addRule(new A_Rule_Regexp('[^01]', 'active', 'active'), 'active');
+
+		// create a Gateway style datasource for the Model
+		$db = $locator->get('Db');
+		$db->connect();
+		$this->datasource = new A_Db_Tabledatagateway($db, 'users', 'id');
+		// set the field names for the Gateway to fetch
+		$this->datasource->columns($this->getFieldNames());
+		}
 	
 	public function save(){
 		// if doesn't exist yet create
@@ -24,7 +39,6 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	public function find($id){}
 	public function findBy($someArgs){}
 	public function delete($id){}
 
@@ -55,39 +69,28 @@ class usersModel extends A_Model {
 	}
 	
 	function find($id){
-		$this->errmsg = '';
-		foreach ($this->data as $row) {
-			if ($row['id'] == $id) {
-				return $row; 
-			}
-		}
-		return array();
+		$rows = $this->datasource->find(array('id'=>$id));
+		return $rows;
 	}
 	
-	function signin($userid, $password) {
-
+	function login($userid, $password) {
 		$this->errmsg = '';
-		if ($this->data) {
-			foreach ($this->data as $row) {
-				if ($row['userid'] == $userid) {
-					if ($row['password'] == $password) {
-						return $row;
-					} else {
-						$this->errmsg = 'password does not match.';
-					}
-					break;
+		$rows = $this->datasource->find(array('username'=>$userid, 'active'=>1));
+		if (isset($rows[0])) {
+			
+			if ($rows[0]['username'] == $userid) {
+				if ($rows[0]['password'] == $password) {
+					return $rows[0];
 				} else {
-					$this->errmsg = 'userid not found.';
+					$this->errmsg = 'password does not match.';
 				}
+			} else {
+				$this->errmsg = 'userid not found.';
 			}
 		} else {
-			$this->errmsg = 'no user data not found.';
+			$this->errmsg = $this->datasource->getErrorMsg();
 		}
 		return array();
-	}
-	
-	function getErrorMsg(){
-		return $this->errmsg;
 	}
 	
 }

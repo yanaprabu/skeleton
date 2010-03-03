@@ -2,11 +2,11 @@
 
 class index extends A_Controller_Action {
 
-	function __construct($locator) {
+	public function __construct($locator=null){
 		parent::__construct($locator);
 	}
 	
-	function index($locator) {
+	public function index($locator=null) {
 		$content = '
 	This is the content for the Application index page.
 	';

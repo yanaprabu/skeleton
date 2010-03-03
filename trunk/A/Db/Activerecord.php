@@ -107,7 +107,7 @@ class A_Db_Activerecord extends A_DataContainer {
 		$this->sql = $this->select->render();
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
-			$this->errmsg = $result->getMessage();
+			$this->errmsg = $result->getErrorMsg();
 			$this->is_loaded = false;
 		} else {
 			$this->_data = $result->fetchRow();
@@ -117,7 +117,10 @@ class A_Db_Activerecord extends A_DataContainer {
 		return $this->errmsg;
 	}
 	
-	public function save() {
+	public function save($data=array()) {
+		if ($data) {
+			$this->_data = $data;
+		}
 		if (! $this->is_loaded) {
 			#include_once 'A/Sql/Insert.php';
 			$insert = new A_Sql_Insert();

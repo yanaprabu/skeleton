@@ -150,8 +150,15 @@ class A_Db_Postgres {
 		return pg_last_error($this->link) != '';
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return pg_last_error($this->link);
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 }
@@ -178,8 +185,15 @@ class A_Db_Postgres_Result {
 		return $this->errno;
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->errmsg;
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 }
