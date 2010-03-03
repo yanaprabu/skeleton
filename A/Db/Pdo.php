@@ -138,17 +138,25 @@ class A_Db_Pdo extends PDO {
 	}
 	
 	public function isError() {
-		return $this->errorCode();
+		$code = $this->errorCode();
+		return $code == '00000' ? 0 : $code;		// PDO success value
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		// get error array
 		$errorInfo = $this->errorInfo();
 		// return the message only
 		return $errorInfo[2];
 	}
 	
-} // end DAO class
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
+	
+}
 
 
 class A_Db_Pdo_Recordset extends PDOStatement {
@@ -157,16 +165,24 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 	}
 		
 	public function isError() {
-		return $this->errorCode();
+		$code = $this->errorCode();
+		return $code == '00000' ? 0 : $code;		// PDO success value
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		// get error array
 		$errorInfo = $this->errorInfo();
 		// return the message only
 		return $errorInfo[2];
 	}
 
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
+	
 	public function fetchRow() {
 		return $this->fetch(PDO::FETCH_ASSOC);
 	}

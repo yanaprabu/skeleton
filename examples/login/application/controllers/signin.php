@@ -1,6 +1,6 @@
 <?php
 
-class signin extends A_Controller_Action {
+class login extends A_Controller_Action {
 
 	function index($locator) {
 		$usersession = $locator->get('UserSession');
@@ -36,7 +36,7 @@ class signin extends A_Controller_Action {
 				if($form->isValid($this->request)) {	
 					if ($row = $usersmodel->findAuthorized($form->get('username'), $form->get('password'))) { 
 
-						$usersession->signin($form->get('username'));  
+						$usersession->login($form->get('username'));  
 						$this->_flash('Message', 'You are now signed in');
 						$url = 'http://skeleton/examples/login/';
 						$this->response->setRedirect($url);

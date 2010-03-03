@@ -246,7 +246,7 @@ class A_Cart_Payment_Authorizenet
 		return false;
 	}
 	
-	public function getMessage() {
+	public function getErrorMsg() {
 		if ($this->response) {
 			if ($this->response[0] == 1) {
 				return '';
@@ -255,6 +255,13 @@ class A_Cart_Payment_Authorizenet
 			}
 		}
 		return 'Could not connect to credit card processor. ';
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 	public function getResult() {

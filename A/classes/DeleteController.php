@@ -30,7 +30,7 @@ class DeleteController {
 		$template->makeBlocks();
 		
 		if ($this->db->isError()) {
-			echo $this->db->getMessage() . '<br/>';
+			echo $this->db->getErrorMsg() . '<br/>';
 		}
 
 		if ($row) {

@@ -113,11 +113,18 @@ class A_Db_Mysqli extends MySQLi {
 		return $this->errno;
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->error;
 	}
 	
-} // end DAO class
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
+	
+}
 
 
 class A_Db_Mysqli_Result {
@@ -142,10 +149,17 @@ class A_Db_Mysqli_Result {
 		return $this->errno;
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->errmsg;
 	}
 
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
+	
 }
 
 

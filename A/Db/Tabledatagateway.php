@@ -86,6 +86,8 @@ class A_Db_Tabledatagateway {
 				$allrows[] = $row;
 			}
 			$this->num_rows = count($allrows);
+		} else {
+			$this->errmsg = $result->getErrorMsg();
 		}
 		return $allrows;
 	}
@@ -117,6 +119,17 @@ class A_Db_Tabledatagateway {
 			}
 			$this->sql = $this->insert->setDb($this->db)->values($data)->render();
 			return $this->db->query($this->sql);
+		}
+	}
+	
+	public function save($data) {
+		if ($data) {
+			if (isset($data[$this->key]) && $data[$this->key]) {
+				#include_once 'A/Sql/Insert.php';
+				$this->update($data, $data[$this->key]);
+			} else {
+				$this->insert($data);
+			}
 		}
 	}
 	
@@ -177,7 +190,7 @@ class A_Db_Tabledatagateway {
 	}
 	
 	public function getErrorMsg() {
-		return $this->db->getMessage() . $this->errmsg;
+		return $this->db->getErrorMsg() . $this->errmsg;
 	}
 	
 	

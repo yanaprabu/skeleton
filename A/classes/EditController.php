@@ -168,7 +168,7 @@ class EditController extends A_Controller_Form {
 		if ($this->id) {
 			$result = $this->db->query("SELECT * FROM {$this->table} WHERE {$this->table_key}='{$this->id}'");
 			if ($this->db->isError()) {
-				$this->errmsg = $this->db->getMessage();
+				$this->errmsg = $this->db->getErrorMsg();
 			} else {
 				$row = $result->fetchRow();
 			}
@@ -242,7 +242,7 @@ class EditController extends A_Controller_Form {
 		}
 		$this->db->query($sql);
 		if ($this->db->isError()) {
-			$this->errmsg = $this->db->getMessage();
+			$this->errmsg = $this->db->getErrorMsg();
 		} else {
 #			$session->set($this->session_var, $data);
 #			$session->close();
@@ -270,7 +270,7 @@ class EditController extends A_Controller_Form {
 		if ($id) {
 			$result = $this->db->query('SELECT ' . implode(',', array_keys($this->fields)) . " FROM {$this->table} WHERE {$this->table_key}='$id'");
 			if ($this->db->isError()) {
-				$this->errmsg = $this->db->getMessage();
+				$this->errmsg = $this->db->getErrorMsg();
 #echo("{$this->errmsg}<br/>");
 			} else {
 				$row = $result->fetchRow();

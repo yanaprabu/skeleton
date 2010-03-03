@@ -221,8 +221,15 @@ class A_Cart_Payment_Payflow
 		return 'Could not connect to credit card processor. ';
 	}
 	
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->errmsg;
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 	public function getInformation() {

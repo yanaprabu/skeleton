@@ -9,7 +9,7 @@
  */
 
 class A_Model {
-	protected $relations = array();
+	protected $datasource = null;	// should be an array() of datasources?
 	protected $fields = array();
 	protected $filters = array();
 	protected $rules = array();
@@ -225,6 +225,13 @@ class A_Model {
 
 	public function getValues() {
 		return $this->getFieldVarArray('value');
+	}
+	
+	public function save() {
+		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
+			$this->datasource->save($this->getFieldVarArray('value'));
+			// error messages and return value?
+		}
 	}
 	
 }

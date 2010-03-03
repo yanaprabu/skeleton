@@ -7,7 +7,7 @@
  */
 
 class A_User_Auth extends A_User_Access
-{	protected $db;	protected $table = 'user';	protected $sequence = 'user';	protected $userid_func = null;	protected $password_func = null;	protected $success_url = '';				// set to redirect on successful signin	protected $crypt_func = 'md5';	protected $no_password = false;				// set to true for userid only signin
+{	protected $db;	protected $table = 'user';	protected $sequence = 'user';	protected $userid_func = null;	protected $password_func = null;	protected $success_url = '';				// set to redirect on successful login	protected $crypt_func = 'md5';	protected $no_password = false;				// set to true for userid only login
 	
 	public function setDB ($db)
 	{
@@ -57,7 +57,15 @@ class A_User_Auth extends A_User_Access
 		return $this;
 	}
 	
+	/**
+	 * depricated name for login()
+	 */
 	public function signin ($userid, $password)
+	{
+		$this->login ($userid, $password);
+	}
+	
+	public function login ($userid, $password)
 	{
 		$this->error = 0;
 		if (function_exists($this->userid_func)) {
@@ -298,7 +306,7 @@ class A_User_Auth extends A_User_Access
 		return($this->error);
 	}
 	
-	public function getMessage ($error=0)
+	public function getErrorMsg($error=0)
 	{
 		$msg = array (
 			0 => '',
@@ -322,9 +330,12 @@ class A_User_Auth extends A_User_Access
 		}
 	}
 	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
 	public function errmsg ($error=0)
 	{
-		return($this->getMessage($error));
+		return($this->getErrorMsg($error));
 	}
 
 } // class A_User_Auth

@@ -115,10 +115,17 @@ class A_Db_ADOdblite {
 		return $this->adodb->ErrorNo();
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->adodb->ErrorMsg();
 	}
 
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
+	
 	public function __call($name, $args) {
 		return call_user_func_array(array($this->adodb, $name), $args);
 	}
@@ -147,8 +154,15 @@ class A_Db_ADOdblite_Result {
 		return $this->errno;
 	}
 		
-	public function getMessage() {
+	public function getErrorMsg() {
 		return $this->errmsg;
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
 	}
 	
 	public function __call($name, $args) {

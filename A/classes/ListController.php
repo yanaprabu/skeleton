@@ -103,7 +103,7 @@ class ListController {
 
 		$rows = $pager->getRows();
 		if ($pagerdb->db->isError()) {
-			echo $pagerdb->db->getMessage() . '<br/>';
+			echo $pagerdb->db->getErrorMsg() . '<br/>';
 		}
 
 		if ($rows) {

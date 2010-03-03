@@ -9,6 +9,7 @@ class user extends A_Controller_Action {
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
 		$session->start();		// controller and view use session
+		$session->set('foo', 'bar');
 		
 		$form = new A_Model_Form();
 		$field = new A_Model_Form_Field('userid');
@@ -22,16 +23,19 @@ class user extends A_Controller_Action {
 
 		// If username and password valid and isPost
 		if($form->isValid($this->request)){ 
+#echo "form->isValid<br/>";
 			
 			// How to translate URL in correct action variable?
 			$model = $this->_load('app')->model('users');
-			$userdata = $model->signin($form->get('userid'), $form->get('password'));
+			$userdata = $model->login($form->get('userid'), $form->get('password'));
+dump($userdata, 'userdata: ');
+
 			if ($userdata) {	// user record matching userid and password found
 				unset($userdata['password']);		// don't save passwords in the session
-				$user->signin($userdata);
+				$user->login($userdata);
 				$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page
 			} else {
-				$errmsg = $model->getErrorMsg();
+				$errmsg = $model->getErrorMsg(', ');
 			}
 		} elseif($form->isSubmitted()){		// submitted form has errors
 			$errmsg =  $form->getErrorMsg(', ');
@@ -41,6 +45,7 @@ class user extends A_Controller_Action {
 		$template->set('errmsg', $errmsg);
 		$template->set('userid', $form->get('userid'));
 		$template->set('user', $user);
+dump($user);
 		
 		$this->response->set('maincontent', $template);
 	}
