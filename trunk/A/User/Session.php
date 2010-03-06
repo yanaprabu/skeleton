@@ -49,7 +49,7 @@ class A_User_Session {
 	 * depricated name for logout()
 	 */
 	public function signout() {
-		$this->login($data);
+		$this->logout();
 	}
 	
 	/**

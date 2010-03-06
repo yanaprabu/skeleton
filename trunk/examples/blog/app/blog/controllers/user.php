@@ -57,7 +57,7 @@ dump($user);
 		$session->start();
 		
 		if ($user->isSignedIn()) {	// user record matching userid and password found
-			$user->signout();
+			$user->logout();
 		}
 		
 		$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page
