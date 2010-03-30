@@ -14,6 +14,7 @@ class A_Orm_DataMapper_Core	{
 	protected $joins = array();
 	protected $class;
 	protected $table;
+	protected $identityMap;
 	
 	public function __construct($db, $class, $table='', $params=array()) {
 	     $this->db = $db;
@@ -171,4 +172,22 @@ class A_Orm_DataMapper_Core	{
 	}
 	
 	
+	/**
+	 * Get object from Identity Map object (if exists)
+	 */
+	public function get($key) {
+		if (isset($this->identityMap)) {
+			return $this->identityMap->get($key);
+		}
+	}
+
+	/**
+	 * Set object in Identity Map object (if exists)
+	 */
+	public function set($key, $object) {
+		if (isset($this->identityMap)) {
+			return $this->identityMap->get($key, $object);
+		}
+	}
+
 }
