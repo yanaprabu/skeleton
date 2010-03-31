@@ -34,7 +34,7 @@ class A_Sql_From {
 				$this->table = array_shift($table);
 				if (count($table) > 0)	{
 					foreach ($table as $join_table)	{
-						$this->join($this->table, $join_table,'INNER')
+						$this->join($join_table, $this->table, 'INNER');
 					}
 				}
 			} else {
