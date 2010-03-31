@@ -3,6 +3,13 @@ include 'config.php';
 
 $from = new A_Sql_From();
 echo $from
+	->table(array('table1','table2','table3'))
+	->render();
+echo "\n<br/>\n";
+dump($from);
+
+$from = new A_Sql_From();
+echo $from
 	->table('table1')
 	->join('table2')
 	->on('column5', 'column6')
