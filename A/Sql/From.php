@@ -31,8 +31,12 @@ class A_Sql_From {
 	public function table($table='') {
 		if ($table) {
 			if (is_array($table)) {
-				$this->table = $table[0];
-				// add other table names in array as JOINs?
+				$this->table = array_shift($table);
+				if (count($table) > 0)	{
+					foreach ($table as $join_table)	{
+						$this->join($this->table, $join_table,'INNER')
+					}
+				}
 			} else {
 				$this->table = $table;
 			}
@@ -59,21 +63,16 @@ class A_Sql_From {
 		}
 		return array_keys($tables);
 	}
-
-	/**
-	 * Add a new join object manually
-	 */
-	public function addJoin($join)	{
-		$this->current_join = $join;
-		$this->joins[] = $join;
-		return $join;
-	}
 	
 	/**
 	 * Create a new join object with provided parameters
 	 */
 	public function join($table1, $table2=null, $type=null)	{
-		if ($table1) {
+		$args = func_get_args();
+		if (count($args) == 1 && is_object($args[0]))	{
+			$this->current_join = $args[0];
+			$this->joins[] = $this->current_join;
+		}else{
 			if ($type === null) {
 				// 2nd param is join type
 				if (in_array($table2, array('INNER', 'OUTER', 'LEFT', 'RIGHT', 'NATURAL', 'CROSS', 'LEFT OUTER', 'RIGHT OUTER', 'FULL OUTER', ))) {
