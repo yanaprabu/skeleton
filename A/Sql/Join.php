@@ -11,15 +11,14 @@ class A_Sql_Join {
 	protected $table2 = '';
 	protected $on = null;
 	
-	public function __construct($table1=null, $table2=null, $type='INNER') {
+	public function __construct($table1=null, $table2=null, $type=null) {
 		if ($table1 && $table2) {
 			$this->join($table1, $table2, $type);
 		} 
 	}
 	
-	public function join($table1, $table2, $type='INNER') {
-		$type = strtoupper($type);
-		$this->type = $type;
+	public function join($table1, $table2, $type=null) {
+		$this->type = ($type !== null) ? strtoupper($type) : 'INNER';
 		$this->table1 = $table1;
 		$this->table2 = $table2;
 		$this->on = null;

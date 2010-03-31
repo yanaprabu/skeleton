@@ -72,8 +72,19 @@ class A_Sql_From {
 	/**
 	 * Create a new join object with provided parameters
 	 */
-	public function join($table1, $table2, $type=null)	{
-		if ($table1 && $table2) {
+	public function join($table1, $table2=null, $type=null)	{
+		if ($table1) {
+			if ($type === null) {
+				// 2nd param is join type
+				if (in_array($table2, array('INNER', 'OUTER', 'LEFT', 'RIGHT', 'NATURAL', 'CROSS', 'LEFT OUTER', 'RIGHT OUTER', 'FULL OUTER', ))) {
+					$type = $table2;
+					$table2 = $this->table;
+				}
+			}
+			// no 2nd param so use base table
+			if ($table2 === null) {
+				$table2 = $this->table;
+			}
 			#require_once 'A/Sql/Join.php';
 			$this->current_join = new A_Sql_Join($table1, $table2, $type);
 			$this->joins[] = $this->current_join;
