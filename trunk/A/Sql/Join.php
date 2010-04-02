@@ -10,6 +10,7 @@ class A_Sql_Join {
 	protected $table_right = '';
 	protected $table_left = '';
 	protected $on = null;
+	protected $on_expression = null;
 	
 	public function __construct($table_right=null, $table_left=null, $type=null) {
 		if ($table_right) {
@@ -20,8 +21,15 @@ class A_Sql_Join {
 	public function join($table_right, $table_left, $type=null) {
 		$this->type = ($type !== null) ? strtoupper($type) : 'INNER';
 		$this->table_right = $table_right;
-		$this->table_left = $table_left;
 		$this->on = null;
+		// is there a full ON expression in 2nd param
+		if (strpos('=', $table_left) === false) {
+			$this->on_expression = null;
+			$this->table_left = $table_left;
+		} else {
+			$this->on_expression = $table_left;
+			$this->table_left = '';
+		}
 		return $this;
 	}
 	
@@ -34,16 +42,17 @@ class A_Sql_Join {
 			$this->on = new A_Sql_LogicalList();
 			$this->on->setEscape(false);
 		}		
+		$this->on_expression = null;
 		if (is_array($argument1)) {
 			if (!count($argument1)) {  //empty array of expressions was passed
 				return;
 			}
 			foreach($argument1 as $column1 => $column2) {
-				// check if the is a quoted string rather than a column name
+				// check if is a quoted string rather than a column name
 				if (substr($column1, 0, 1) != "'") {
 					$column1 = $this->prependTableAlias($this->table_right, $column1);
 				}
-				// check if the is a quoted string rather than a column name
+				// check if is a quoted string rather than a column name
 				if (substr($column2, 0, 1) != "'") {
 					$column2 = $this->prependTableAlias($this->table_left, $column2);
 				}
@@ -73,7 +82,13 @@ class A_Sql_Join {
 	public function render() {
 		$return = '';
 		if ($this->table_right) {
-			$on = $this->on ? ' ON '. $this->on->render() : '';
+			$on = '';
+			// render ON if object or use literal experession
+			if ($this->on) {
+				$on = ' ON '. $this->on->render();
+			} elseif ($this->on_expression) {
+				$on = ' ON '. $this->on_expression;
+			}
 			$type = $this->type ? ' '. $this->type : '';
 			$return .= "$type JOIN {$this->table_right}$on";
 		}
