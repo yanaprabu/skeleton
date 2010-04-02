@@ -20,11 +20,11 @@ class A_Sql_Update extends A_Sql_Statement {
 	 * @param array $where Where statement
 	 */
 	public function __construct($table=null, $bind = array(), $where = array()) {
-		$this -> table($table);
+		$this->table($table);
 		if($bind)	{
-			$this -> set($bind);
+			$this->set($bind);
 		}
-		$this -> where($where);
+		$this->where($where);
 	}
 	
 	public function table($table) {
@@ -49,11 +49,13 @@ class A_Sql_Update extends A_Sql_Statement {
 	}	
 	
 	public function where($arg1, $arg2=null, $arg3=null) {
-		if (!$this->where) {
-			#include_once('A/Sql/Where.php');		
-			$this->where = new A_Sql_Where();
+		if ($arg1) {
+			if (!$this->where) {
+				#include_once('A/Sql/Where.php');		
+				$this->where = new A_Sql_Where();
+			}
+			$this->where->addExpression($arg1, $arg2, $arg3);
 		}
-		$this->where->addExpression($arg1, $arg2, $arg3);
 		return $this;		
 	}
 
@@ -73,8 +75,8 @@ class A_Sql_Update extends A_Sql_Statement {
 		$table = $this->table->render();
 		$joins = ''; //not implemented
 		$set 	 = $this->set->setDb($this->db)->render();
-		$where   = $this->where ? ' '. $this->where->setDb($this->db)->render() : '';		
-		return "UPDATE $table $set$joins$where";
+		$where   = $this->where ? $this->where->setDb($this->db)->render() : '';		
+		return "UPDATE $table$set$joins$where";
 	}
 
 	public function __toString() {

@@ -28,14 +28,14 @@ class Sql_SelectTest extends UnitTestCase {
 							->columns('foo', 'bar')
 							->from('foobar')
 							->where('baz', 'faz')
-							->render(), "SELECT foo, bar FROM foobar WHERE (baz='faz')");
+							->render(), "SELECT foo, bar FROM foobar WHERE (baz = 'faz')");
 
 		$Sql_Select = new A_Sql_Select();
 		$this->assertEqual($Sql_Select
 							->columns('foo', 'bar')
 							->from('foobar')
-							->where(array('baz LIKE '=>'faz', 'start=NOW()'))
-							->render(), "SELECT foo, bar FROM foobar WHERE (baz LIKE 'faz' AND start=NOW())");
+							->where(array('baz LIKE '=>'faz', 'start = NOW()'))
+							->render(), "SELECT foo, bar FROM foobar WHERE (baz LIKE 'faz' AND start = NOW())");
 	}
 	
 	function testSql_SelectJoins() {
@@ -44,8 +44,9 @@ class Sql_SelectTest extends UnitTestCase {
 		$this->assertEqual($Sql_Select
 							->columns('foo', 'bar')
 							->from('foobar')
-							->join('foobar', 'id', 'barfoo', 'foobar_id')
-							->render(), "SELECT foo, bar FROM foobar JOIN barfoo ON foobar.id=barfoo.foobar_id");
+							->join('barfoo', 'foobar', 'LEFT')
+							->on('foobar_id', 'id')
+							->render(), "SELECT foo, bar FROM foobar LEFT JOIN barfoo ON (barfoo.foobar_id = foobar.id)");
 
 	}
 	

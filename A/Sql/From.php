@@ -28,7 +28,7 @@ class A_Sql_From {
 	 *
 	 * @return array
 	 */	
-	public function table($table='') {
+	public function table($table='' /* OR $table_array */) {
 		if ($table) {
 			if (is_array($table)) {
 				$this->table = array_shift($table);
@@ -67,25 +67,30 @@ class A_Sql_From {
 	/**
 	 * Create a new join object with provided parameters
 	 */
-	public function join($table1, $table2=null, $type=null)	{
+	public function join($table_right, $table_left=null, $type=null)	{
+/*
 		$args = func_get_args();
 		if (count($args) == 1 && is_object($args[0]))	{
 			$this->current_join = $args[0];
 			$this->joins[] = $this->current_join;
-		}else{
+*/
+		if (is_object($table_right))	{
+			$this->current_join = $table_right;
+			$this->joins[] = $this->current_join;
+		} else {
 			if ($type === null) {
 				// 2nd param is join type
-				if (in_array($table2, array('INNER', 'OUTER', 'LEFT', 'RIGHT', 'NATURAL', 'CROSS', 'LEFT OUTER', 'RIGHT OUTER', 'FULL OUTER', ))) {
-					$type = $table2;
-					$table2 = $this->table;
+				if (in_array($table_left, array('INNER', 'OUTER', 'LEFT', 'RIGHT', 'NATURAL', 'CROSS', 'LEFT OUTER', 'RIGHT OUTER', 'FULL OUTER', ))) {
+					$type = $table_left;
+					$table_left = $this->table;
 				}
 			}
 			// no 2nd param so use base table
-			if ($table2 === null) {
-				$table2 = $this->table;
+			if ($table_left === null) {
+				$table_left = $this->table;
 			}
 			#require_once 'A/Sql/Join.php';
-			$this->current_join = new A_Sql_Join($table1, $table2, $type);
+			$this->current_join = new A_Sql_Join($table_right, $table_left, $type);
 			$this->joins[] = $this->current_join;
 		}
 		return $this;

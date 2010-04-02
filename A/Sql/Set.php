@@ -17,13 +17,15 @@ class A_Sql_Set extends A_Sql_Statement
 	public function render() {
 		$this->notifyListeners();
 		
-		$sets = array();
-		if (count($this->data)) {
-			foreach ($this->data as $data) {
-				$sets[] = $data->render(',');
-			}
-		}	
-		$set = implode(', ', $sets);
-		return 'SET '. $set;
+		if ($this->data) {
+			$sets = array();
+			if (count($this->data)) {
+				foreach ($this->data as $data) {
+					$sets[] = $data->render(',');
+				}
+			}	
+			$set = implode(', ', $sets);
+			return ' SET '. $set;
+		}
 	}
 }

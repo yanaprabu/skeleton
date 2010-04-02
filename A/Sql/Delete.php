@@ -49,27 +49,24 @@ class A_Sql_Delete extends A_Sql_Statement{
 	}
 
 	public function where($arg1, $arg2=null, $arg3=null) {
-		if (!$this->where) {
-			#include_once('A/Sql/Where.php');		
-			$this->where = new A_Sql_Where();
+		if ($arg1) {
+			if (!$this->where) {
+				$this->where = new A_Sql_Where();
+			}
+			$this->where->addExpression($arg1, $arg2, $arg3);
 		}
-		$this->where->addExpression($arg1, $arg2, $arg3);
 		return $this;		
 	}
 
 	public function orWhere($data, $value=null) {
-		if (!$this->where) {
-			#include_once('A/Sql/Where.php');
-			$this->where = new A_Sql_Where();
-		}
-		$this->where->addExpression('OR', $data, $value);
+		$this->where('OR', $data, $value);
 		return $this;		
 	}
 	
 	function render() {
 		if ($this->table) {
 			$table = $this->table->render();
-			$where = $this->where ? ' '. $this->where->setDb($this->db)->render() : '';
+			$where = $this->where ? $this->where->setDb($this->db)->render() : '';
 			return "DELETE FROM $table$where";
 		}
 	}

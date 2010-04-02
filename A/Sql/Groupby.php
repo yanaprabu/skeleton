@@ -11,7 +11,7 @@ class A_Sql_Groupby extends A_Sql_Columns {
 	
 	public function render() {
 		if ($this->columns) {
-			return 'GROUP BY '. parent::render();
+			return ' GROUP BY '. parent::render();
 		}
 	}
 }

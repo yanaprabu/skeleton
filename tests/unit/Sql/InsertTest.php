@@ -37,7 +37,7 @@ class Sql_InsertTest extends UnitTestCase {
 		$Sql_Insert->table('foobar')
 					->columns(array('foo', 'bar'))
 					->select()->columns('fox','box')->from('barfoo')->where('id!=', 42);
-  		$this->assertEqual($Sql_Insert->render(), "INSERT INTO foobar (foo, bar) SELECT fox, box FROM barfoo WHERE (id!='42')");
+  		$this->assertEqual($Sql_Insert->render(), "INSERT INTO foobar (foo, bar) SELECT fox, box FROM barfoo WHERE (id!= 42)");
 
 	}
 	
