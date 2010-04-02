@@ -62,11 +62,14 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * Set select statement FROM clause
 	 * 
 	 * @return self
+	 * @param mixed $table_name OR $table_array OR $from_object
 	 * @question - see my notes on columns()
 	 */
-	public function from() {
-		#require_once 'A/Sql/From.php';	
-		$this->pieces['tables'] = new A_Sql_From(func_get_args());
+	public function from(/* $table_name OR $table_array OR $from_object */) {
+		$args = func_get_args();
+		if ($args) {
+			$this->pieces['tables'] = is_object($args[0]) ? $args[0] : new A_Sql_From($args);
+		}
 		return $this;
 	}
 	
@@ -327,10 +330,13 @@ class A_Sql_Select extends A_Sql_Statement {
 			if (method_exists($piece, 'render')) {
 				$output = $piece->render();
 			}
-			$this->replace['['.$name.']'] = strlen($output) ? ' '. $output : $output; //add spacing
+#$output = str_replace(' ', '_', $output);
+			$this->replace['['.$name.']'] = $output;
+#echo "<pre>PIECE $name: =$output=</pre>\n";
+#			$this->replace['['.$name.']'] = strlen($output) ? ' '. $output : $output; //add spacing
 		}
 
-		$sql = "SELECT[columns] FROM[tables][joins][having][where][orderby][groupby]";
+		$sql = "SELECT [columns] FROM [tables][joins][having][where][orderby][groupby]";
 		$sql = str_replace(array_keys($this->replace), array_values($this->replace), $sql);
 		
 		if(is_int($this->limit) && $this->limit > 0){ //Limit is handled by DB adapter due to engine differences

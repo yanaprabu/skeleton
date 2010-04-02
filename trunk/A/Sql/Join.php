@@ -7,25 +7,26 @@
 
 class A_Sql_Join {
 	protected $type = '';
-	protected $table1 = '';
-	protected $table2 = '';
+	protected $table_right = '';
+	protected $table_left = '';
 	protected $on = null;
 	
-	public function __construct($table1=null, $table2=null, $type=null) {
-		if ($table1 && $table2) {
-			$this->join($table1, $table2, $type);
+	public function __construct($table_right=null, $table_left=null, $type=null) {
+		if ($table_right) {
+			$this->join($table_right, $table_left, $type);
 		} 
 	}
 	
-	public function join($table1, $table2, $type=null) {
+	public function join($table_right, $table_left, $type=null) {
 		$this->type = ($type !== null) ? strtoupper($type) : 'INNER';
-		$this->table1 = $table1;
-		$this->table2 = $table2;
+		$this->table_right = $table_right;
+		$this->table_left = $table_left;
 		$this->on = null;
+		return $this;
 	}
 	
 	public function on($argument1, $argument2=null, $argument3=null) {
-		if (! $this->table1) { //no join has been set yet
+		if (! $this->table_right) { //no join has been set yet
 			return;
 		}
 		if (!$this->on) {
@@ -40,11 +41,11 @@ class A_Sql_Join {
 			foreach($argument1 as $column1 => $column2) {
 				// check if the is a quoted string rather than a column name
 				if (substr($column1, 0, 1) != "'") {
-					$column1 = $this->prependTableAlias($this->table1, $column1);
+					$column1 = $this->prependTableAlias($this->table_right, $column1);
 				}
 				// check if the is a quoted string rather than a column name
 				if (substr($column2, 0, 1) != "'") {
-					$column2 = $this->prependTableAlias($this->table2, $column2);
+					$column2 = $this->prependTableAlias($this->table_left, $column2);
 				}
 				$this->on->addExpression($column1, $column2);
 			}
@@ -59,21 +60,22 @@ class A_Sql_Join {
 				$argument2 = $argument3;
 			}
 			if (substr($argument1, 0, 1) != "'") {
-				$argument1 = $this->prependTableAlias($this->table1, $argument1);
+				$argument1 = $this->prependTableAlias($this->table_right, $argument1);
 			}
 			if (substr($argument2, 0, 1) != "'") {
-				$argument2 = $this->prependTableAlias($this->table2, $argument2);
+				$argument2 = $this->prependTableAlias($this->table_left, $argument2);
 			}
 			$this->on->addExpression($logic, $argument1, $argument2);
 		}
+		return $this;
 	}
 
 	public function render() {
 		$return = '';
-		if ($this->table1) {
+		if ($this->table_right) {
 			$on = $this->on ? ' ON '. $this->on->render() : '';
 			$type = $this->type ? ' '. $this->type : '';
-			$return .= "$type JOIN {$this->table1}$on";
+			$return .= "$type JOIN {$this->table_right}$on";
 		}
 		return $return;
 	}
@@ -88,10 +90,10 @@ class A_Sql_Join {
 
 	protected function getTables() {
 		$tables = array();
-		if ($table1) {
-			$tables[] = $this->table1;
-			if ($table2) {
-				$tables[] = $this->table2;
+		if ($this->table_right) {
+			$tables[] = $this->table_right;
+			if ($this->table_left) {
+				$tables[] = $this->table_left;
 			}
 		}
 		return $tables;

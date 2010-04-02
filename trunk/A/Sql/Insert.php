@@ -18,7 +18,7 @@ class A_Sql_Insert extends A_Sql_Statement {
 	 * @param string $table Table name
 	 * @param array $bind Column-value pairs
 	 */
-	public function __construct($table = null, $bind = array()) {
+	public function __construct($table=null, $bind=array()) {
 		$this->table($table);
 		if ($bind)	{
 			$this->columns($bind);	
@@ -59,15 +59,13 @@ class A_Sql_Insert extends A_Sql_Statement {
 	public function render($db=null) {
 		$columns = array();
 		if ($this->table) {
-			if (!$this->values) {
-				if (!$this->columns || !$this->select) { 
-					return;
-				}
-				$this->values = new A_Sql_Values($this->columns->render(), $this->select->setDb($this->db)->render());
-			}
-			$values = $this->values->render();
 			$table = $this->table->render();
-			return "INSERT INTO $table $values";
+			if ($this->values) {
+				$insert = "INSERT INTO $table " . $this->values->render();
+			} elseif ($this->columns && $this->select) {
+				$insert = "INSERT INTO $table (" . $this->columns->render() . ') ' . $this->select->setDb($this->db)->render();
+			}
+			return $insert;
 		}
 	}
 

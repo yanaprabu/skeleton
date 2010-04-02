@@ -15,16 +15,16 @@ class Sql_GroupbyTest extends UnitTestCase {
  
     function testSingleStringParameterColumn() {
         $groupby = new A_Sql_Groupby('bar');
-        $this->assertEqual($groupby->render(), 'GROUP BY bar');
+        $this->assertEqual($groupby->render(), ' GROUP BY bar');
     }   
  
     function testMultipleStringParameterColumns() {
         $groupby = new A_Sql_Groupby('foo', 'bar', 'fee');
-        $this->assertEqual($groupby->render(), 'GROUP BY foo, bar, fee');
+        $this->assertEqual($groupby->render(), ' GROUP BY foo, bar, fee');
     }       
     
     function testSingleArrayOfParameterColumns() {
         $groupby = new A_Sql_Groupby(array('foo', 'bar'));
-        $this->assertEqual($groupby->render(), 'GROUP BY foo, bar');
+        $this->assertEqual($groupby->render(), ' GROUP BY foo, bar');
     }   
 }
