@@ -58,6 +58,10 @@ class Sql_FromTest extends UnitTestCase {
 		$Sql_From = new A_Sql_From();
 		$Sql_From->table('foo')->join('bar', 'baz')->on('foo_id', 'id');
 		$this->assertEqual($Sql_From->render(), "foo INNER JOIN bar ON (bar.foo_id = baz.id)");
+		
+		$Sql_From = new A_Sql_From();
+		$Sql_From->table('foo')->join(new A_Sql_Join('bar', 'baz', 'LEFT'))->on('foo_id', 'id');
+		$this->assertEqual($Sql_From->render(), "foo LEFT JOIN bar ON (bar.foo_id = baz.id)");
 	}
 	
 }
