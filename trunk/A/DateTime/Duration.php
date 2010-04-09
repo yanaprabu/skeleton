@@ -60,11 +60,11 @@ class A_DateTime_Duration {
 			if($partName[strlen($partName) - 1] != 's') {
 				$partName .= 's';
 			}
-			if(in_array($partName,$this -> partNames)) {
+			if(in_array($partName,$this->partNames)) {
 				$parts[$partName] = $num;
 			}
 		}
-		$this -> config($parts);
+		$this->config($parts);
 		return $parts;
 	}
 	
@@ -74,8 +74,8 @@ class A_DateTime_Duration {
 	 *         values omitted from the array will be set to zero
 	 */
 	public function config ($parts)	{
-		foreach($this -> partNames as $part) {
-			$this -> $part = isset($parts[$part]) ? $parts[$part] : 0;
+		foreach($this->partNames as $part) {
+			$this->$part = isset($parts[$part]) ? $parts[$part] : 0;
 		}
 	}
 	
@@ -99,8 +99,8 @@ class A_DateTime_Duration {
 	 */
 	public function toString()	{
 		$string = array();
-		foreach($this -> partNames as $part) {
-			$value = $this -> $part;
+		foreach($this->partNames as $part) {
+			$value = $this->$part;
 			$string[] = $this->positive ? $value : ((0 - $value) . ' ' . $part);
 		}
 		return implode(', ', $string);  
