@@ -1,4 +1,22 @@
 <?php
+/**
+ *
+ *  * Browse directories
+    * Search files
+    * Upload files
+    * View files
+    * Edit files
+    * Rename files
+    * Delete files
+    * Download files
+    * Define root directory, user cannot 'break out' of it
+    * Sorting up and down, by name, size, type and modification date
+    * Move files (cut/copy/paste functionality)
+    * Create and delete folders
+    * Create text files
+    * User Interface supports language packs. You can easily create your own. Available languages in the download: english and german.
+
+ */
 ini_set('error_reporting', E_ALL);
 include '../../A/autoload.php';
 include '../../A/classes/DirectoryBrowser.php';

@@ -45,8 +45,12 @@ class A_User_Prefilter_Group {
 
 	function run($controller) {
 		if (method_exists($controller, $this->method)) {
-			$this->session->start();
-			$user = new A_User_Session($this->session);
+			if (is_a($this->session, 'A_User_Session')) {
+				$user = $this->session;
+			} else {
+				$this->session->start();
+				$user = new A_User_Session($this->session);
+			}
 			$groups = $controller->{$this->method}();
 			$access = new A_User_Rule_Ingroup($groups, 'Access Denied.');
 			if ($this->field) {

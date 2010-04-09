@@ -1,4 +1,4 @@
-<?php if ($user->isSignedIn()) { ?>
+<?php if ($user->isLoggedIn()) { ?>
 
 <h1>Logout</h1>
 

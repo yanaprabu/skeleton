@@ -44,7 +44,7 @@ class A_User_Rule_Ingroup extends A_Rule_Abstract {
 			return true;
 		}
 		$allow = false;
-		if ($this->container->isSignedIn()) {
+		if ($this->container->isLoggedIn()) {
 	
 			if ($this->groups) {
 				$usergroups = $this->container->get($this->field);

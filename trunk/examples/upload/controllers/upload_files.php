@@ -42,7 +42,7 @@ class upload_files {
 		
 			$upload->setReplace(false);		// if destination file exists delete before moving new file
 			$upload->setMinFilesize(1);		// set min size of file with this value
-			$upload->setMaxFilesize(1000);		// cap size of file with this value, zero no cap
+			$upload->setMaxFilesize(100000);		// cap size of file with this value, zero no cap
 			$upload->setAllowedTypes(array());		// set array of allowed file MIME types
 		
 			for ($i=0; $i<$nfiles; $i++) {

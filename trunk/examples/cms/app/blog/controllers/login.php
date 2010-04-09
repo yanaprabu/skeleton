@@ -53,7 +53,7 @@ class login extends A_Controller_Action {
 		$user = $locator->get('UserSession');
 		
 		$session->start();		// controller and view use session
-		if ($user->isSignedIn()) {	// user record matching userid and password found
+		if ($user->isLoggedIn()) {	// user record matching userid and password found
 			$user->signout();
 		}
 		$this->_redirect($locator->get('Config')->get('BASE') . 'login/');	// build redirect URL back to this page

@@ -16,12 +16,26 @@ class A_User_Session {
 		$this->namespace = $namespace;
 	}
 
+	public function setSession($session) {
+		$this->session = $session;
+		return $this;
+	}
+
+	public function getSession() {
+		return $this->session;
+	}
+
 	public function setNamespace($namespace) {
 		$this->namespace = $namespace;
 		return $this;
 	}
 
-	public function isSignedIn() {
+	public function getNamespace() {
+		return $this->namespace;
+	}
+
+	public function isLoggedIn() {
+		$this->session->start();
 		if ($this->namespace && isset($_SESSION[$this->namespace]['auth']) ) {
 			return true;
 		} else {
@@ -43,6 +57,13 @@ class A_User_Session {
 			$_SESSION[$this->namespace]['auth'] = true;
 			$this->merge($data);
 		}
+	}
+	
+	/**
+	 * depricated name for isLoggedIn()
+	 */
+	public function isSignedIn() {
+		return $this->isLoggedIn();
 	}
 	
 	/**

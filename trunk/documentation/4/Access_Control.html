@@ -11,7 +11,7 @@ class admin {
 	
 	function index($locator) {
 		$usersession = A_User_Session();
-		if ($usersession->isSignedIn()) {
+		if ($usersession->isLoggedIn()) {
 			// access allowed
 		} else {
 			// return action to Front Controller to forward
@@ -46,7 +46,7 @@ class admin {
 	
 	function denyAccess($locator) {
 		$usersession = $locator->get('UserSession');
-		if (! $usersession->isSignedIn()) {
+		if (! $usersession->isLoggedIn()) {
 			return true;
 
 // or to forward to a controller different from the registered one
