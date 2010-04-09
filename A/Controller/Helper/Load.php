@@ -24,6 +24,7 @@ class A_Controller_Helper_Load {
 								'php' => 'A_Template_Include',
 								'html' => 'A_Template_Strreplace',
 								'txt' => 'A_Template_Strreplace',
+								'js' => 'A_Template_Strreplace',
 								);
 	protected $renderClass = 'A_Template_Include';
 	protected $renderExtension = 'php';
