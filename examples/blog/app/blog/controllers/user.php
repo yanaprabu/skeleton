@@ -56,7 +56,7 @@ dump($user);
 		$user = $locator->get('UserSession');
 		$session->start();
 		
-		if ($user->isSignedIn()) {	// user record matching userid and password found
+		if ($user->isLoggedIn()) {	// user record matching userid and password found
 			$user->logout();
 		}
 		
@@ -107,7 +107,7 @@ dump($user);
 		$errmsg = '';
 
 		// If user is not signed in don't show profile page but redirect to login?
-		if (!$user->isSignedIn()) {
+		if (!$user->isLoggedIn()) {
 			$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page		
 		}
 				

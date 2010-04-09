@@ -32,15 +32,15 @@ class admin extends A_Controller_Action {
 		//$Session->start();
 		//$UserSession = $this->locator->get('UserSession');
 		
-	//	$UserSession->addRule(new A_User_Rule_Issignedin());
+	//	$UserSession->addRule(new A_User_Rule_Isloggedin());
 	//	$UserSession->addRule(new A_User_Rule_Ingroup('admin'));
-		if($UserSession->isSignedIn()) {
+		if($UserSession->isLoggedIn()) {
 			// do somthint
 		} else {
 			echo 'user is not signed in';
 		}
 	
-	//	if($UserSession->isSignedIn()){
+	//	if($UserSession->isLoggedIn()){
 	//		echo 'user is signed in';
 	//	} else {
 	//		echo 'user is not signed in';
@@ -49,7 +49,7 @@ class admin extends A_Controller_Action {
 
 	function denyAccess($locator) {
 
-		if (! $this->usersession->isSignedIn()) {  
+		if (! $this->usersession->isLoggedIn()) {  
 
 		//	return $this->forward('','login','');
 			$this->response->setRedirect('/'); 

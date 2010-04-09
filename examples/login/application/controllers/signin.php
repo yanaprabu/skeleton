@@ -10,7 +10,7 @@ class login extends A_Controller_Action {
 		$base = $locator->get('Config')->get('BASE');
 		
 		// If the user is signed in:
-		if ( $usersession->isSignedIn() ) {
+		if ( $usersession->isLoggedIn() ) {
 			// and wants to sign out
 			if($this->request->get('op') == 'signout') {
 				$usersession->signout();

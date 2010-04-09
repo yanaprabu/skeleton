@@ -1,6 +1,6 @@
 <div>
 
-<?php if ($user->isSignedIn()) { ?>
+<?php if ($user->isLoggedIn()) { ?>
 	<h1>Logout</h1>
 	<div>
 		<p>You are logged-in as <?php echo $user->get('fname') . ' ' . $user->get('lname'); ?></p>

@@ -8,7 +8,7 @@ class AccessCheck {
 
 	function run($controller) {
      	// now rule objects are only created if denyAccess() exists
-     	$this->user->addRule(new A_User_Rule_Issignedin());
+     	$this->user->addRule(new A_User_Rule_Isloggedin());
      	$this->user->addRule(new A_User_Rule_Ingroup('admin'));
      	// check if access check fails
      	if(! $this->user->isValid()) { 

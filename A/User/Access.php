@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Rule/Abstract.php';
-#include_once 'A/Validator.php';
 /**
  * Check if user has access based on supplied rules 
  * 
@@ -21,24 +19,4 @@ class A_User_Access extends A_Validator {
 			$request->set('action', $this->errorMsg[0]);	// get first error as action
 		}
 	}
-}
-
-
-/*
- * Check if user's access level is >= required access level
- */
-class A_User_Rule_Issignedin extends A_Rule_Abstract {
-	
-	public function __construct ($errorMsg) {
-		$this->errorMsg = $errorMsg;
-	}
-	
-	public function isValid() {
-		$user = $this->getValue();
-		if ($user) {
-			return $user->isSignedIn();
-		}
-		return false;
-	}
-
 }

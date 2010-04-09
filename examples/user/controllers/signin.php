@@ -19,7 +19,7 @@ class signin extends A_Controller_Input {
 		
 		$errmsg = '';
 		$usernamestr = '';
-		if (! $usersession->isSignedIn()) {
+		if (! $usersession->isLoggedIn()) {
 			if ($request->get('op') == 'signin') {
 				$username = new A_Controller_InputParameter('username');
 				$username->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9]/', ''));
@@ -46,7 +46,7 @@ class signin extends A_Controller_Input {
 				}
 			}
 		}
-		if ($usersession->isSignedIn()) {
+		if ($usersession->isLoggedIn()) {
 			$page_template = new Template_Strreplace('templates/signout.html');
 		} else {
 			$page_template = new Template_Strreplace('templates/signin.html');

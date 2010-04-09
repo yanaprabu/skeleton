@@ -20,7 +20,7 @@ class A_User_Rule_Islevel extends A_Rule_Abstract {
 	
 	public function validate() {
 		$allow = false;
-		if ($this->container->isSignedIn()) {
+		if ($this->container->isLoggedIn()) {
 			$userlevel = $this->container->get($this->field);
 			if ($userlevel >= $this->level) {
 				$allow = true;

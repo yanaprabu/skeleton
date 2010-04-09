@@ -1,6 +1,6 @@
 <div>
 
-<?php if ($user->isSignedIn()) { ?>
+<?php if ($user->isLoggedIn()) { ?>
 
 	<h1>Register</h1>
 	<div>
