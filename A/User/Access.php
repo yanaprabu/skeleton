@@ -5,7 +5,7 @@
  * @package A_User 
  */
 
-class A_User_Access extends A_Validator {
+class A_User_Access extends A_Rule_Set {
 	protected $user;
 	
 	public function __construct($user) {
@@ -13,8 +13,7 @@ class A_User_Access extends A_Validator {
 	}
 
 	public function run($locator) {
-		$this->validate($this->user);
-		if ($this->isError()) {
+		if (!$this->isValid($this->user)) { 
 			$request = $locator->get('Request');
 			$request->set('action', $this->errorMsg[0]);	// get first error as action
 		}
