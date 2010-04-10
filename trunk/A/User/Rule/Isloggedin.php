@@ -10,8 +10,8 @@ class A_User_Rule_Isloggedin extends A_Rule_Abstract {
 	public function __construct ($errorMsg) {
 		$this->errorMsg = $errorMsg;
 	}
-	
-	public function isValid() {
+
+	public function validate() { 
 		$user = $this->getValue();
 		if ($user) {
 			return $user->isLoggedIn();
