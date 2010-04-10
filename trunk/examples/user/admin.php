@@ -12,24 +12,15 @@ function dump2($var, $name='') {
 error_reporting(E_ALL);
 require_once 'config.php';
 
-require_once 'A/Session.php';
-require_once 'A/Locator.php';
-require_once 'A/Http/Request.php';
-require_once 'A/Http/Response.php';
-require_once 'A/Controller/Front.php';
-require_once 'A/Controller/Mapper.php';
-require_once 'A/User/Session.php';
-require_once 'A/User/Access.php';
-require_once 'A/User/Rule/Ingroup.php';
-require_once 'A/User/Rule/Islevel.php';
-
-$Session = new A_Session();
+// Init autoload using Locator
+require  'A/Locator.php';
 $Locator = new A_Locator();
+$Locator->autoload();
 $Request = new A_Http_Request();
 $Response = new A_Http_Response();
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
-
+$Session = new A_Session();
 $Session->start();
 
 $UserSession = new A_User_Session($Session);
