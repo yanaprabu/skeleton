@@ -19,11 +19,14 @@ class A_User_Access {
 
 	public function run($locator) {
 		foreach ($this->rules as $rule) {
+echo 'RULE: <pre>' . print_r($rule, 1) . '</pre>';
 			if (!$rule->isValid($this->user)) { 
 				$request = $locator->get('Request');
 				// A_User_Rule_* use the Rule's errorMsg to hold the forward
-				if ($request && isset($this->errorMsg[0])) {
-					$request->set('controller', $this->errorMsg[0]);
+				$errorMsg = $rule->getErrorMsg();
+dump($errorMsg, 'FORWARD/ERRORMSG: ');
+				if ($request && isset($errorMsg[0])) {
+					$request->set('controller', $errorMsg[0]);
 				}
 			}
 		}
