@@ -31,7 +31,7 @@ $Locator->set('UserSession', $UserSession);
 #$rule = new A_Rule_UserIsLevel(15);
 
 $UserAccess = new A_User_Access($UserSession);
-$UserAccess->addRule(new A_User_Rule_Isloggedin('signin'));
+$UserAccess->addRule(new A_User_Rule_Isloggedin('', 'signin'));
 #$UserAccess->addRule(new A_User_Rule_Ingroup(array('manager'), 'error'));
 $UserAccess->run($Locator);
 
@@ -46,4 +46,5 @@ $Controller->run($Locator);
 echo "<pre>Session:\n" . print_r($_SESSION, 1) . '</pre>';
 dump($Response);
 $Response->out();
+print_r($_SESSION);
 

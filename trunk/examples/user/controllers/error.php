@@ -1,5 +1,5 @@
 <?php
-include_once 'A_Template.php';
+#include_once 'A_Template.php';
 
 class error extends A_Controller_Action {
 	protected $content;
