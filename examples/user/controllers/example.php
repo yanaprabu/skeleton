@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Template/Strreplace.php';
+#include_once 'A/Template/Strreplace.php';
 
 class example {
 	protected $content;
