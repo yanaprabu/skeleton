@@ -5,14 +5,14 @@
 
 include_once 'UserTableGateway.php';
 
-class signin extends A_Controller_Input {
+class login {
 	protected $usersession;
 
-	function __construct($locator) {
-		parent::__construct($locator);
-	}
+#	public function __construct($locator) {
+#	}
 	
-	function index($locator) {
+	public function index($locator) {
+echo "index()<br/>";
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		$usersession = $locator->get('UserSession');
@@ -20,42 +20,58 @@ class signin extends A_Controller_Input {
 		$errmsg = '';
 		$usernamestr = '';
 		if (! $usersession->isLoggedIn()) {
-			if ($request->get('op') == 'signin') {
-				$username = new A_Controller_InputParameter('username');
+			if ($request->get('op') == 'login') {
+				$form = new A_Model_Form();
+				
+				$username = new A_Model_Form_Field('username');
 				$username->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9]/', ''));
 				$username->addFilter(new A_Filter_ToLower());
 				$username->addRule(new A_Rule_Notnull('username', 'Username required'));
 				$username->addRule(new A_Rule_Length(4, 20, 'username', 'Username must be 4 characters long'));
-				$this->addParameter($username);
+				$form->addField($username);
 				
-				$password = new A_Controller_InputParameter('password');
+				$password = new A_Model_Form_Field('password');
 				$password->addFilter(new A_Filter_Regexp('/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\-\_\=\+]/', ''));
 				$password->addRule(new A_Rule_Notnull('password', 'Password required'));
 				$password->addRule(new A_Rule_Length(4, 20, 'password', 'Password must be 4 characters long'));
-				$this->addParameter($password);
+				$form->addField($password);
 			
-				if ($this->processRequest($request)) {
+				if ($form->isValid($request)) {
 					$user = new UserTableGateway();
 					if ($row = $user->findAuthorized($username->value, $password->value)) {
 						$usersession->merge($row);
 						$usersession->login($username->value, $password->value);
 					}
 				} else {
-					$errmsg = 'Errors: ' . implode(', ', $this->getErrorMsgs());
+					$errmsg = 'Errors: ' . $form->getErrorMsg(', ');
 					$usernamestr = $username->value;
 				}
 			}
 		}
 		if ($usersession->isLoggedIn()) {
-			$page_template = new Template_Strreplace('templates/signout.html');
+			$page_template = new A_Template_Strreplace('templates/logout.html');
 		} else {
-			$page_template = new Template_Strreplace('templates/signin.html');
+			$page_template = new A_Template_Strreplace('templates/login.html');
 			$page_template->set('errmsg', $errmsg);
 			$page_template->set('username', $usernamestr);
 		}
 		$response->setContent($page_template->render());
 	}
 
-}
+	public function logout($locator) {
+echo "logout()<br/>";
+		$response = $locator->get('Response');
+		$usersession = $locator->get('UserSession');
+		
+		$errmsg = '';
+		$usernamestr = '';
+		if ($usersession->isLoggedIn()) {
+			$usersession->logout();
+		}
+		$page_template = new A_Template_Strreplace('templates/login.html');
+		$page_template->set('errmsg', $errmsg);
+		$page_template->set('username', $usernamestr);
+		$response->setContent($page_template->render());
+	}
 
-?>
+}
