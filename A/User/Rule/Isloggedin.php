@@ -5,20 +5,30 @@
  * @package A_User 
  */
 
-class A_User_Rule_Isloggedin extends A_Rule_Abstract {
+class A_User_Rule_Isloggedin {
+	protected $forward;
+	protected $errorMsg = '';
 	
-#	public function __construct ($errorMsg) {
-#		$this->errorMsg = $errorMsg;
-#	}
+	public function __construct ($forward) {
+		$this->forward = $forward;
+	}
 
-	public function validate() { 
-#		$this->params['errorMsg'] = $this->params['field'];
-		$user = $this->container;
+	public function isValid($user) { 
 dump($user, 'A_User_Rule_Isloggedin');
-		if ($user) {
-			return $user->isLoggedIn();
+		if ($user && $user->isLoggedIn()) {
+			$this->errorMsg = '';
+			return true;
 		}
+		$this->errorMsg = $this->forward;
 		return false;
 	}
 
+    /**
+     * Gets the error message that is to be returned if isValid fails
+     * 
+     * @return string that contains forward
+     */
+	public function getErrorMsg() {
+		return $this->errorMsg;
+	}
 }
