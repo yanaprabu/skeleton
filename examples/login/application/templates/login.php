@@ -1,10 +1,11 @@
 <html>
 <body>
 	<h2>Sign in</h2>
+	<p>User admin/admin to log-in.</p>
 	<?php if(isset($message)) { echo $message; } ?>
-	<form action="<?php if(isset($BASE)) { echo $BASE; } ?>signin/" method="post" id="loginform">
-		<input type="hidden" name="action" value="signin"/>
-		<input type="hidden" name="op" value="signin"/>
+	<form action="<?php if(isset($BASE)) { echo $BASE; } ?>login/" method="post" id="loginform">
+		<input type="hidden" name="action" value="login"/>
+		<input type="hidden" name="op" value="login"/>
 		<span style="color: red"><?php if(isset($errmsg)) { echo $errmsg; } ?></span>
 		<fieldset>
 			<div>

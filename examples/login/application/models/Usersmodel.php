@@ -48,7 +48,7 @@ class UsersModel extends A_Model {
 	
 	public function findByUsername($username){
 		if($username === 'admin') {
-			$result = array('username' => 'admin', 'password' => 'secret');
+			$result = array('username' => 'admin', 'password' => 'admin');
 			return $result;
 		} else {
 			return FALSE;

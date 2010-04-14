@@ -20,12 +20,12 @@ class A_User_Access {
 	public function run($locator) {
 		foreach ($this->rules as $rule) {
 			if (!$rule->isValid($this->user)) { 
-echo 'RULE NOT VALID<br/>';
+#echo 'RULE NOT VALID<br/>';
 				$request = $locator->get('Request');
 				// A_User_Rule_* use the Rule's errorMsg to hold the forward
 				$errorMsg = $rule->getErrorMsg();
-echo 'ERRMSG='.print_r($errorMsg, 1).'<br/>';
-				dump($errorMsg, 'FORWARD/ERRORMSG: ');
+#echo 'ERRMSG='.print_r($errorMsg, 1).'<br/>';
+#dump($errorMsg, 'FORWARD/ERRORMSG: ');
 				if ($request && isset($errorMsg)) {
 					if (is_string($errorMsg)) {
 						$request->set('controller', $errorMsg);

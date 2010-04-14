@@ -1,32 +1,56 @@
 <?php
-#include_once 'A/Rule/Abstract.php';
-
-/*
+/**
  * Check if user's access level is >= required access level
+ * 
+ * @package A_User 
  */
-class A_User_Rule_Islevel extends A_Rule_Abstract {
+
+class A_User_Rule_Islevel {
 	protected $level;
+	protected $field;
+	protected $forward;
+	protected $errorMsg = '';
 	
-	// parameter that is usually errormsg is the action
-	public function __construct ($level, $errorMsg) {
+	public function __construct ($level, $forward=array(), $field='access') {
 		$this->level = $level;
-		$this->errorMsg = $errorMsg;
+		$this->forward = $forward;
+		$this->field = $field;
 	}
-	
+
 	public function setLevel($level) {
 		$this->level = $level;
 		return $this;
 	}
 	
-	public function validate() {
-		$allow = false;
-		if ($this->container->isLoggedIn()) {
-			$userlevel = $this->container->get($this->field);
+	public function setForward($forward) {
+		$this->forward = $forward;
+		return $this;
+	}
+	
+	public function setField($field) {
+		$this->field = $field;
+		return $this;
+	}
+	
+	public function isValid($user) { 
+		if ($user && $user->isLoggedIn()) {
+			$userlevel = $user->get($this->field);
 			if ($userlevel >= $this->level) {
-				$allow = true;
+				$this->errorMsg = '';
+				return true;
 			}
 		}
-		return $allow;
+		$this->errorMsg = $this->forward;
+		return false;
+	}
+
+	/**
+	 * Gets the error message that is to be returned if isValid fails
+	 * 
+	 * @return string that contains forward
+	 */
+	public function getErrorMsg() {
+		return $this->errorMsg;
 	}
 
 }
