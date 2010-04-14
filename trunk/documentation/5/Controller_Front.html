@@ -1,11 +1,15 @@
 <h1>A_Controller_Front</h1>
 
-<p>..</p>
+<h2>Pre and Post Filters</h2>
 
-<h2>A_Controller_Front_premethod</h2>
+<p>The pre-filters can do a number of things, such as DI and Access Control. </p>
+
+<p>Pre and post filters are registered with the Front Controller using the <i>addPreFilter($filter)</i> and <i>addPostFilter($filter)</i> methods. The filters are objects with a <i>run($controller)</i> method that is passed the instance of the current Controller before or after it is despatched. </p>
+
+<p>Pre and post filters <i>run($controller)</i> methods can return three types of values to control dispatching and forwarding. Returning null causes the dispatch loop to work normally and the dispatched Controller is run. Returning <i>false</i> stops any further dispatching. Returning a forward array (e.g. <i>array('module', 'controller', 'action')</i>) will cause the specified Controller to be dispatched. </p>
 
 <h3>Using prefilters for Access Control</h3>
 
-<p>The pre-filters can do a number of things, such as DI. But in the Access Control use case they really are a rule based forward. If access is allowed then nothing is returned; if access is denied then a forward (dir/class/method array) is returned and the requested Action is not dispatched. The Front Controller loops and runs the forward. You can either have the Action Controller method return the forward or have the pre-filter return the forward. The more powerful way is to have the pre-filter be a class of its own. It does the check to see if the method exists, call the method if it does, then determine if a forward is necessary. And it does not have to be a method; it could check a property if you wanted to (but it would be public).</p>
+<p>For Access Control, prefilters are really a rule based forward. If access is allowed then nothing is returned. If access is denied then a forward (dir/class/method array) is returned and the requested Action is not dispatched. The Front Controller loops and runs the forward. You can either have the Action Controller method return the forward or have the pre-filter return the forward. The more powerful way is to have the pre-filter be a class of its own. It does the check to see if the method exists, call the method if it does, then determine if a forward is necessary. And it does not have to be a method; it could check a property if you wanted to (but it would be public).</p>
 
 <p>The key to these Access Control pre-filters is that they check if the method exists. So you only add code to the Controllers that you want to have Access Control. Compare that to a DI style pre-filter which usually checks for a specific class type and does the injection based on it knowledge of that class.</p>

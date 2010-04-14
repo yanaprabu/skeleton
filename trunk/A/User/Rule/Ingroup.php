@@ -1,22 +1,37 @@
 <?php
-#include_once 'A/Rule/Abstract.php';
 
-/*
+/**
  * Checks if the group(s) passed to the constructor are group(s) that the user 
  * is a member of. 
+ * 
  * $group can be an array or string of comma separated group names
  * if $group is a string, it is split into an array on $this->delimiter
  * special case: if null group (array('')) is passed allow access
+ * 
+ * @package A_User 
  */
-class A_User_Rule_Ingroup extends A_Rule_Abstract {
+class A_User_Rule_Ingroup {
 	protected $groups;
-	protected $field = 'access';
-	protected $delimiter = '|';
-	protected $params = array(
-							'groups' => '', 
-							'errorMsg' => '', 
-							'optional' => false
-							);
+	protected $forward;
+	protected $field;
+	protected $delimiter;
+	
+	public function __construct ($level, $forward=array(), $field='access', $delimiter='|') {
+		$this->level = $level;
+		$this->forward = $forward;
+		$this->field = $field;
+		$this->delimiter = $delimiter;
+	}
+
+							public function setGroups($groups) {
+		$this->groups = $groups;
+		return $this;
+	}
+	
+	public function setForward($forward) {
+		$this->forward = $forward;
+		return $this;
+	}
 	
 	public function setField($field) {
 		$this->field = $field;
@@ -28,26 +43,20 @@ class A_User_Rule_Ingroup extends A_Rule_Abstract {
 		return $this;
 	}
 	
-	public function setGroups($groups) {
-		$this->params['groups'] = $groups;
-		return $this;
-	}
-	
-	public function validate() {
-		if (is_string($this->params['groups'])) {
-			$this->groups = explode ($this->delimiter, $this->params['groups']);
+	public function isValid($user) {
+		if (is_string($this->groups)) {
+			$this->groups = explode ($this->delimiter, $this->groups);
 		} else {
-			$this->groups = $this->params['groups'];
+			$this->groups = $this->groups;
 		}
 		// special case: if null group is passed allow access
 		if ($this->groups && ($this->groups[0] == '')) {
 			return true;
 		}
-		$allow = false;
-		if ($this->container->isLoggedIn()) {
+		if ($user && $user->isLoggedIn()) {
 	
 			if ($this->groups) {
-				$usergroups = $this->container->get($this->field);
+				$usergroups = $user->get($this->field);
 				if ($usergroups) {
 					// split if not an array
 					if (! is_array($usergroups) ) {
@@ -57,13 +66,24 @@ class A_User_Rule_Ingroup extends A_Rule_Abstract {
 					$usergroups = array();
 				}
 				if (array_intersect ($this->groups, $usergroups) )  {
-					$allow = true;
+					return true;
 				}
 			} else {
-				$allow = true;
+				return true;
 			}
 		}
-		return $allow;
+		$this->errorMsg = $this->forward;
+		return false;
+	}
+
+
+	/**
+	 * Gets the error message that is to be returned if isValid fails
+	 * 
+	 * @return string that contains forward
+	 */
+	public function getErrorMsg() {
+		return $this->errorMsg;
 	}
 
 }

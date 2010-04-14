@@ -13,8 +13,12 @@ class A_User_Rule_Isloggedin {
 		$this->forward = $forward;
 	}
 
+	public function setForward($forward) {
+		$this->forward = $forward;
+		return $this;
+	}
+	
 	public function isValid($user) { 
-dump($user, 'A_User_Rule_Isloggedin');
 		if ($user && $user->isLoggedIn()) {
 			$this->errorMsg = '';
 			return true;
@@ -31,4 +35,5 @@ dump($user, 'A_User_Rule_Isloggedin');
 	public function getErrorMsg() {
 		return $this->errorMsg;
 	}
+
 }
