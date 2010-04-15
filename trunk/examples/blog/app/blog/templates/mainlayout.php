@@ -37,7 +37,7 @@
 	
 	<?php if (isset($subcontent)) echo "<div id=\"subcontent\">\n$subcontent\n</div>"; ?>
 	
-	<div id="footer"><p>&copy; 2009</p></div>
+	<div id="footer"><p>Copyright &copy; 2010</p></div>
 
 </div>
 </body>

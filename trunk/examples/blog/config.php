@@ -1,12 +1,12 @@
 <?php
 $ConfigArray = array(
 // Site specific settings
-'DBDSN' => array(
+'DB' => array(
     'phptype' => 'mysql',
     'hostspec' => '127.0.0.1',
-    'database' => 'xxxx',
-    'username' => 'xxxx',
-    'password' => 'xxxx',
+    'database' => 'skeleton',
+    'username' => 'skeleton',
+    'password' => 'skeleton',
 	),
 
 'LIB' => '../../',
