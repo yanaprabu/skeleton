@@ -28,14 +28,13 @@ class user extends A_Controller_Action {
 			// How to translate URL in correct action variable?
 			$model = $this->_load('app')->model('users');
 			$userdata = $model->login($form->get('userid'), $form->get('password'));
-dump($userdata, 'userdata: ');
 
 			if ($userdata) {	// user record matching userid and password found
 				unset($userdata['password']);		// don't save passwords in the session
 				$user->login($userdata);
 				$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page
 			} else {
-				$errmsg = $model->getErrorMsg(', ');
+				$errmsg = $model->loginErrorMsg();
 			}
 		} elseif($form->isSubmitted()){		// submitted form has errors
 			$errmsg =  $form->getErrorMsg(', ');
@@ -45,7 +44,6 @@ dump($userdata, 'userdata: ');
 		$template->set('errmsg', $errmsg);
 		$template->set('userid', $form->get('userid'));
 		$template->set('user', $user);
-dump($user);
 		
 		$this->response->set('maincontent', $template);
 	}

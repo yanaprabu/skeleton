@@ -28,9 +28,6 @@ $ConfigArray = array(
     'LIB' => $file_path . '/../../',     // will be $file_path . '/library'
     );
 
-// Configure PHP include path
-#set_include_path($ConfigArray['LIB'] . PATH_SEPARATOR . get_include_path());
-
 // Init autoload using Locator
 require $ConfigArray['LIB'] . 'A/Locator.php';
 $Locator = new A_Locator();
@@ -42,6 +39,9 @@ $Config = $ConfigIni->loadFile();
 
 // import base config array into config object
 $Config->import($ConfigArray);
+
+// set error reporting from config
+ini_set('error_reporting', $Config->get('ERROR'));
 
 // Create HTTP Request object
 $Request = new A_Http_Request();
@@ -59,12 +59,7 @@ $Session = new A_Session();
 $UserSession = new A_User_Session($Session);
 
 // Dbh
-$dbconfig = array(
-	'database'=>$Config->get('database'),
-	'hostspec'=>$Config->get('hostspec'),
-	'username'=>$Config->get('username'),
-	'password'=>$Config->get('password')
-	);
+$dbconfig = $Config->get('DB');
 $Db = new A_Db_Pdo($dbconfig) or die ('Error: could not connect to DB');
 	
 // Add common objects to registry

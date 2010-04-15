@@ -28,7 +28,7 @@ class usersModel extends A_Model {
 		$this->datasource = new A_Db_Tabledatagateway($db, 'users', 'id');
 		// set the field names for the Gateway to fetch
 		$this->datasource->columns($this->getFieldNames());
-		}
+	}
 	
 	public function save(){
 		// if doesn't exist yet create
@@ -42,30 +42,17 @@ class usersModel extends A_Model {
 	public function findBy($someArgs){}
 	public function delete($id){}
 
-
-	public $data = array(
-			array(
-				'id' => 1,
-				'userid' => 'user1',
-				'password' => 'user1',
-				'access' => 'post',
-				'fname' => 'Test',
-				'lname' => 'One',
-				),
-			array(
-				'id' => 2,
-				'userid' => 'user2',
-				'password' => 'user2',
-				'access' => 'post|admin',
-				'fname' => 'Test',
-				'lname' => 'Two',
-				),
-			);
 	protected $errmsg = '';
 	
 	function findAll(){
 		$this->errmsg = '';
-		return $this->data; 
+		$rows = $this->datasource->find(array('active'=>1));
+		if (isset($rows[0])) {
+			return $rows;
+		} else {
+			$this->errmsg = $this->datasource->getErrorMsg();
+		}
+		return array();
 	}
 	
 	function find($id){
@@ -82,15 +69,19 @@ class usersModel extends A_Model {
 				if ($rows[0]['password'] == $password) {
 					return $rows[0];
 				} else {
-					$this->errmsg = 'password does not match.';
+					$this->errmsg = 'Password does not match. ';
 				}
 			} else {
-				$this->errmsg = 'userid not found.';
+				$this->errmsg = 'User ID not found.';
 			}
 		} else {
 			$this->errmsg = $this->datasource->getErrorMsg();
 		}
 		return array();
+	}
+	
+	function loginErrorMsg() {
+		return $this->errmsg;
 	}
 	
 }
