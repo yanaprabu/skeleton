@@ -60,10 +60,11 @@ $UserSession = new A_User_Session($Session);
 
 // Dbh
 $dbconfig = array(
-		'database'=>$Config->get('database'),
-		'hostspec'=>$Config->get('hostspec'),
-		'username'=>$Config->get('username'),
-		'password'=>$Config->get('password')
+		'phptype'  => $Config->get('phptype'),
+		'database' => $Config->get('database'),
+		'hostspec' => $Config->get('hostspec'),
+		'username' => $Config->get('username'),
+		'password' => $Config->get('password')
 		);
 $Db = new A_Db_Pdo($dbconfig) or die ('Error: could not connect to DB');
 	
