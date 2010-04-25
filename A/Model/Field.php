@@ -79,9 +79,23 @@ class A_Model_Field {
 		}
 	}
 	
+/*
 	public function setError($value=array()) {
 		$this->errorMsg = array_merge($this->errorMsg, $value);
 		$this->error = true;
+		return $this;
+	}
+*/
+	
+	public function addErrorMsg($value=null) {
+		if ($value) {
+			if (is_array($value)) {
+				$this->errorMsg = array_merge($this->errorMsg, $value);
+			} else {
+				$this->errorMsg[] = $value;
+			}
+			$this->error = true;
+		}
 		return $this;
 	}
 	

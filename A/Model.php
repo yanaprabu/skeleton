@@ -15,6 +15,7 @@ class A_Model {
 	protected $rules = array();
 	protected $excludeRules = array();
 	protected $fieldClass = 'A_Model_Field';
+	protected $errorMsg = array();
 	protected $error = false;
 
 	public function addField($objects){
@@ -153,7 +154,7 @@ class A_Model {
 				$this->error = true; 
 				$errors = $validator->getErrorMsg(); 
 				foreach($errors as $fieldname => $errorarray) { 	
-					$this->fields[$fieldname]->setError($errorarray);
+					$this->addErrorMsg($fieldname, $errorarray);
 				}
 			}
 		
@@ -214,13 +215,21 @@ class A_Model {
 	}
 
 	public function getErrorMsg($separator=null) {
-		$data = array();
+		$data = $this->errorMsg;
 		foreach (array_keys($this->fields) as $field) {
 			if ($this->fields[$field]->isError()) {
 				$data[$field] = $this->fields[$field]->getErrorMsg($separator);
 			}
 		}
 		return $separator === null ? $data : implode($separator, $data);
+	}
+
+	public function addErrorMsg($name, $errmsg) {
+		if(isset($this->fields[$name])){
+			$this->fields[$name]->addErrorMsg($errmsg);
+		} else {
+			$this->errorMsg[$name] = $errmsg;
+		}
 	}
 
 	public function getValues() {
