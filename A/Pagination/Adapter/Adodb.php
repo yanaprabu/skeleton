@@ -24,7 +24,8 @@ class A_Pagination_Adapter_Adodb {
     }
 
     public function getItems($start, $length) {
-        $rs = $this->db->SelectLimit($this->query, $length, $start-1);	// pager is 1 based, LIMIT is 0 based
+		$start = $start > 0 ? --$start : 0;				// pager is 1 based, LIMIT is 0 based
+        $rs = $this->db->SelectLimit($this->query, $length, $start);
         $rows = $rs->GetArray();
         return $rows;
     }

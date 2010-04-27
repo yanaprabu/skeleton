@@ -19,10 +19,10 @@ abstract class A_Pagination_Adapter_Abstract implements A_Pagination_Adapter_Int
 		$this->query = $query;
 	}
 
-	public function getItems ($start, $length)	{
+	public function getNumItems()	{
 	}
 
-	public function getNumItems()	{
+	public function getItems ($start, $length)	{
 	}
 
 	public function setOrderBy ($field, $descending = 0)	{
