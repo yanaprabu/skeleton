@@ -94,6 +94,29 @@ class A_Controller_Front {
 	}
 	
 	/**
+	 * Get mapper object, create if does not exist
+	 * 
+	 * @return array
+	 */
+	public function getMapper() {
+		// if directory passed as 1st param to contstructor, create a mapper
+		if (! is_object($this->mapper)) {
+			$this->mapper = new A_Controller_Mapper($this->mapper, $this->defaultRoute ? $this->defaultRoute : $this->errorRoute);
+		}
+		return $this->mapper;
+	}
+	
+	/**
+	 * Get mapper object
+	 * 
+	 * @return array
+	 */
+	public function setMapper($mapper) {
+		return $this->mapper = $mapper;
+		return $this;
+	}
+	
+	/**
 	 * Add a post-dispatch filter
 	 *
 	 * @param string $name
@@ -150,24 +173,20 @@ class A_Controller_Front {
 			$locator->get('Response')->setLocator($locator);
 		}
 		
-		// route passed as 1st param to contstructor, create a mapper
-		if (! is_object($this->mapper)) {
-			#include_once 'A/Controller/Mapper.php';
-			$this->mapper = new A_Controller_Mapper($this->mapper, $this->defaultRoute ? $this->defaultRoute : $this->errorRoute);
-		}
-		$locator->set('Mapper', $this->mapper); // set mapper in registry for mvc loader to use 
+		$mapper = $this->getMapper();
+		$locator->set('Mapper', $mapper); // set mapper in registry for mvc loader to use 
 		$this->locator = $locator;
 		
-		$route = $this->mapper->getRoute($locator->get('Request'));
+		$route = $mapper->getRoute($locator->get('Request'));
 		$error_route = $this->errorRoute;
 		
 		$n = -1;
 		while ($route) {
-			$this->mapper->setRoute($route); // set dir/class/method
+			$mapper->setRoute($route); // set dir/class/method
 			++$n;
-			$class  = $this->mapper->getFormattedClass();
-			$method = $this->mapper->getFormattedMethod();
-			$dir = $this->mapper->getPath();
+			$class  = $mapper->getFormattedClass();
+			$method = $mapper->getFormattedMethod();
+			$dir = $mapper->getPath();
 			$this->routeHistory[] = $route;	// save history of routes
 			$route = null;
 			$result = $locator->loadClass($class, $dir);
@@ -189,7 +208,7 @@ class A_Controller_Front {
 					$route = $controller->{$this->dispatchMethod}($locator, $method);
 				} else {
 					if (! method_exists($controller, $method)) {
-						$method = $this->mapper->getDefaultMethod();
+						$method = $mapper->getDefaultMethod();
 					}
 					if (method_exists($controller, $method)) {
 						$route = $controller->{$method}($locator);
