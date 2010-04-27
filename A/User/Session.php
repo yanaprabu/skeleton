@@ -39,12 +39,11 @@ class A_User_Session {
 		if (!isset($this->_data)) {
 			$this->_data =& $this->_session->getRef($this->_namespace);
 		}
-dump($this->_data, 'START: ');
 	}
 
 	public function isLoggedIn() {
 		$this->start();
-		if ($this->_namespace && isset($this->_data['auth']) ) {
+		if ($this->_data && isset($this->_data['auth']) ) {
 			return true;
 		} else {
 			return false;
@@ -52,10 +51,8 @@ dump($this->_data, 'START: ');
 	}
 	
 	public function logout() {
-		if ($this->_namespace) {
-			$this->start();
-			unset($this->_data);
-#			session_unregister ($this->_namespace);
+		if ($this->_data) {
+			$this->_session->set($this->_namespace, null);	// unset all data
 		}
 	}
 	
