@@ -23,7 +23,7 @@ class posts extends A_Controller_Action {
 		$template = $this->_load()->template();
 		
 		// create a data object that has the interface needed by the Pager object
-		$datasource = new A_Pagination_Adapter_Db($db, "SELECT * FROM posts WHERE users_id=" . $usersession->get('id'));
+		$datasource = new A_Pagination_Adapter_Db($db, "SELECT * FROM posts WHERE post_type='post'");
 		 
 		// create a request processor to set pager from GET parameters
 		$pager = new A_Pagination_Request($datasource);
