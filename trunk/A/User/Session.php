@@ -6,37 +6,45 @@
  */
 
 class A_User_Session {
-	protected $data = array();
-	protected $session;
-	protected $namespace;
+	protected $_data;
+	protected $_session;
+	protected $_namespace;
 	
 	
 	public function __construct($session, $namespace='A_User_Session') {
-		$this->session = $session;
-		$this->namespace = $namespace;
+		$this->_session = $session;
+		$this->_namespace = $namespace;
 	}
 
 	public function setSession($session) {
-		$this->session = $session;
+		$this->_session = $session;
 		return $this;
 	}
 
 	public function getSession() {
-		return $this->session;
+		return $this->_session;
 	}
 
 	public function setNamespace($namespace) {
-		$this->namespace = $namespace;
+		$this->_namespace = $namespace;
 		return $this;
 	}
 
 	public function getNamespace() {
-		return $this->namespace;
+		return $this->_namespace;
+	}
+
+	public function start() {
+		$this->_session->start();
+		if (!isset($this->_data)) {
+			$this->_data =& $this->_session->getRef($this->_namespace);
+		}
+dump($this->_data, 'START: ');
 	}
 
 	public function isLoggedIn() {
-		$this->session->start();
-		if ($this->namespace && isset($_SESSION[$this->namespace]['auth']) ) {
+		$this->start();
+		if ($this->_namespace && isset($this->_data['auth']) ) {
 			return true;
 		} else {
 			return false;
@@ -44,17 +52,17 @@ class A_User_Session {
 	}
 	
 	public function logout() {
-		if ($this->namespace) {
-			$this->session->start();
-			unset ($_SESSION[$this->namespace]);
-#			session_unregister ($this->namespace);
+		if ($this->_namespace) {
+			$this->start();
+			unset($this->_data);
+#			session_unregister ($this->_namespace);
 		}
 	}
 	
 	public function login($data=array()) {
-		if ($this->namespace) {
-			$this->session->start();
-			$_SESSION[$this->namespace]['auth'] = true;
+		if ($this->_namespace) {
+			$this->start();
+			$this->_data['auth'] = true;
 			$this->merge($data);
 		}
 	}
@@ -81,44 +89,52 @@ class A_User_Session {
 	}
 	
 	public function get($key='') {
-		$this->session->start();
-		if ($this->namespace && isset($_SESSION[$this->namespace]['data'] ) ) {
+		$this->start();
+		if ($this->_namespace && isset($this->_data['data'] ) ) {
 			if ($key) {
-				if (isset($_SESSION[$this->namespace]['data'][$key]) ) {
-					return $_SESSION[$this->namespace]['data'][$key];
+				if (isset($this->_data['data'][$key]) ) {
+					return $this->_data['data'][$key];
 				}
 			} else {
-				return $_SESSION[$this->namespace]['data'];
+				return $this->_data['data'];
 			}
 		}
 	}
 	
 	public function set($key, $value) {
-		if ($key && $this->namespace) {
-			$this->session->start();
+		if ($key && $this->_namespace) {
+			$this->start();
 			if ($value !== null) {
-				$_SESSION[$this->namespace]['data'][$key] = $value;
+				$this->_data['data'][$key] = $value;
 			} else {
-				unset($_SESSION[$this->namespace]['data'][$key]);
+				unset($this->_data['data'][$key]);
 			}
 		}
 		return $this;
 	}
 	
+	public function __get($name) {
+		return $this->get($name);
+	}
+
+	public function __set($name, $value) {
+		return $this->set($name, $value);
+	}
+
 	public function merge($data) {
-		if (is_array($data) && $this->namespace) {
-			$this->session->start();
-			if (isset($_SESSION[$this->namespace]['data']) && is_array($_SESSION[$this->namespace]['data'])) {
-				$_SESSION[$this->namespace]['data'] = array_merge($_SESSION[$this->namespace]['data'], $data);
+		if (is_array($data) && $this->_namespace) {
+			$this->start();
+			if (isset($this->_data['data']) && is_array($this->_data['data'])) {
+				$this->_data['data'] = array_merge($this->_data['data'], $data);
 			} else {
-				$_SESSION[$this->namespace]['data'] = $data;
+				$this->_data['data'] = $data;
 			}
 		}
 		return $this;
 	}
 	
 	public function close() {
-		$this->session->close();
+		$this->_session->close();
 		//session_write_close();
 	}
 
