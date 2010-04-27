@@ -27,10 +27,8 @@ class A_Session {
 					$_SESSION[$this->_namespace] = array();
 				}
 				$this->_data =& $_SESSION[$this->_namespace];
-echo "USING NAMESPACE<br/>";
 			} else {
 				$this->_data =& $_SESSION;
-echo "NO NAMESPACE<br/>";
 			}
 			$this->_isstarted = true;	// already started
 			$this->doExpiration();
