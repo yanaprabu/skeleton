@@ -25,6 +25,7 @@ class A_Pagination_Adapter_Mysql extends A_Pagination_Adapter_Abstract	{
     }
 
     public function getItems($start, $length) {
+        $start -= 1;	// pager is 1 based, LIMIT is 0 based
         $query = $this->query . " LIMIT {$length} OFFSET {$start}";
         $rs = mysql_query($query, $this->db);
 
