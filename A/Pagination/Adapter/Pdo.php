@@ -10,8 +10,9 @@
 class A_Pagination_Adapter_Pdo extends A_Pagination_Adapter_Abstract	{
 
 	public function getItems ($start, $length)	{
+        $start -= 1;	// pager is 1 based, LIMIT is 0 based
         $query = $this->query . $this->constructOrderBy() . " LIMIT :length OFFSET :start";
-		$stmt = $db->prepare($query);
+		$stmt = $this->db->prepare($query);
 	    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
 	    $stmt->bindParam(':length', $length, PDO::PARAM_INT);
 	    $stmt->execute();

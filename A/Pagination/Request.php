@@ -22,7 +22,14 @@ class A_Pagination_Request extends A_Pagination_Core	{
 		$this->session = $session;
 	}
 
-	public function process()	{
+	public function process($request=null, $session=null)	{
+		if ($request !== null) {
+			$this->request = $request;
+		}
+		if ($session !== null) {
+			$this->session = $session;
+		}
+
 		if ($numItems = $this->get('num_items')) {
 			$this->setNumItems(intval($numItems));
 		}
@@ -39,11 +46,11 @@ class A_Pagination_Request extends A_Pagination_Core	{
 	public function get($param, $default='')	{
 		$name = $this->getParamName($param);
 		// Is get() the standard interface for a request object?
-		if ($this->request != null)	{
-			if ($this->request->get($name)) return $this->request->get($name);
+		if (isset($this->request))	{
+			if ($this->request->has($name)) return $this->request->get($name);
 		}
-		if ($this->session != null)	{
-			if ($this->session->get($name)) return $this->session->get($name);
+		if (isset($this->session))	{
+			if ($this->session->has($name)) return $this->session->get($name);
 		}
 		return isset($_GET[$name]) ? $_GET[$name] : $default;
 	}
