@@ -1,7 +1,7 @@
 <h1>Pagination</h1>
 
-<h2>Executive Summary</h2>
-<p>We made these classes first and foremost to make it drop-dead easy to paginate data. Our goal was not to make a one size fits all solution, but rather to provide a layered range of solutions in which developers can pick and choose to tailor the classes to their needs.</p>
+<h2>Summary</h2>
+<p>The main goal of these classes is to make it easy to paginate data. However, this is not monolithic or one size fits all solution. The pagination module provides a layered range of solutions in which developers can pick and choose to tailor the classes to their needs.</p>
 
 <h2>Specific Goals</h2>
 <ul>
@@ -10,7 +10,7 @@
     <li>Take care of the messy details of pagination: url generation, maintaining state, dealing with the request.</li>
 </ul>
 <h2>Basics</h2>
-<p>The base object in this pagination system is a Value Object that holds the values for the list and does the necessary calculations. This class can be used alone, but you are required to initialize it.</p>
+<p>The base object in this pagination system is a Value Object that holds the values for the list and does the necessary calculations. This class can be used alone, but if you do, you are required to initialize it manually.</p>
 
 <pre class="prettyprint lang-php"><code>$pager = new A_Pagination_Core($datasource);
 $pager-&gt;setCurrentPage(intval($_GET['mypagevar']));
@@ -18,7 +18,7 @@ $pager-&gt;setNumItems(intval($_GET['mycountvar']));
 </code></pre>
 
 
-<p>This component also provides a class that extends the Core class and initializes itself from the request so you don't have to. This class adds a process() method that will initialize the object for you:</p>
+<p>This component also provides a class that extends the Core class and initializes itself from the HTTP Request so you don't have to initialize it manually. This class adds a process() method that will initialize the object for you:</p>
 
 <pre class="prettyprint lang-php"><code>$pager = new A_Pagination_Request($datasource);
 $pager-&gt;process(); 
@@ -44,6 +44,7 @@ $pager-&gt;process();
 </code></pre>
 
 
+<h2>Layered Design</h2>
 <p>This component is not monolithic. There are several levels of classes that use a Core object and provide support for rendering output. The lowest level of output support uses page numbers from a Core object and builds URLs. Using this class you can have complete control of your template:</p>
 
 <pre class="prettyprint lang-php"><code>$url = new A_Pagination_Helper_Url($pager);
@@ -96,8 +97,8 @@ echo $view-&gt;render(); </code></pre>
 <h2>DataGrid</h2>
 <p>For the most automated use case, we will be providing a DataGrid that takes care of all HTML once the core classes have been finalized.</p>
 
-<h2>Levels</h2>
-<p>We are trying to build a layered solution that allows people to pick the level they want to deal with. That is the reason why this component is build with a bunch of small, single purpose classes (besides that being a good practice ). So the levels are:</p>
+<h2>Levels of Functionality</h2>
+<p>We are trying to build a layered solution that allows people to pick the level they want to deal with. That is the reason why this component is build with a bunch of small, single purpose classes (besides that being a good practice ). So the levels, from lowest to highest, are:</p>
 
 <h3>Page Numbers</h3>
 
