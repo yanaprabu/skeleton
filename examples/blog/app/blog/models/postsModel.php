@@ -55,7 +55,7 @@ class postsModel extends A_Model {
 	public function delete($id){}
 
 
-	function listAll(){
+	public function listAll(){
 		$sql = "SELECT 
 					p.`id` as 'post_id', p.`post_date`, p.`permalink`, p.`title`, p.`excerpt`, p.`content`,
 					COUNT(c.`id`) as 'nocomms',
@@ -75,8 +75,5 @@ class postsModel extends A_Model {
 		}
 		return $rows;
 	}
-	
-
-
 	
 }
