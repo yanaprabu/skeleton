@@ -18,4 +18,5 @@ $Controller = new A_Controller_Front($Mapper, $ErrorAction);
 $Controller->run($Locator);
 
 $Response->out();
-?>
+
+#dump($Request);
