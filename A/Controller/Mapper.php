@@ -190,9 +190,9 @@ class A_Controller_Mapper
 	}
 
 	/**
-	 * 
+	 * Take a route array (or string or object) and set properties
 	 */
-	public function buildRoute($route) {
+	public function setRoute($route) {
 		if (! is_array($route)) {
 			if (is_string($route)) {
 				$route = explode('/', $route);
@@ -201,28 +201,19 @@ class A_Controller_Mapper
 			elseif (is_object($route)) {
 				$route = array($route->dir, $route->class, $route->method);
 			}
-			switch (count($route)) {
-			case 2:							// "class/method"
-				array_unshift($route, '');
-				break;
-			case 1:							// "class"
-				array_unshift($route, '');
-				$route[2] = $this->default_method;
-				break;
-			case 0:
-				$route = array('', '', '');
-			}
 		}
-		return $route;
-	}
-
-	/**
-	 * 
-	 */
-	public function setRoute($route) {
-		$route = $this->buildRoute($route);
+		switch (count($route)) {
+		case 2:							// "class/method"
+			array_unshift($route, '');
+			break;
+		case 1:							// "class"
+			array_unshift($route, '');
+			$route[2] = $this->default_method;
+			break;
+		case 0:
+			$route = array('', '', '');
+		}
 		$this->setDir($route[0]);
-#		$this->dir = $route[0];
 		$this->class = $route[1];
 		$this->method = $route[2];
 		return $this;
