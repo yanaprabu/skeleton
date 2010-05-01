@@ -20,7 +20,7 @@ class posts extends A_Controller_Action {
 		$usersession = $locator->get('UserSession');
 		$db = $locator->get('Db');
 		
-		$template = $this->_load()->template();
+		$template = $this->_load('controller')->template('listing');
 		
 		// create a data object that has the interface needed by the Pager object
 		$datasource = new A_Pagination_Adapter_Db($db, "SELECT * FROM posts WHERE post_type='post'");
@@ -44,7 +44,7 @@ class posts extends A_Controller_Action {
 	}
 
 	function edit($locator) { 
-		$template = $this->_load()->template();
+		$template = $this->_load('controller')->template();
 		
 		$this->response->set('maincontent', $template->render());
 
