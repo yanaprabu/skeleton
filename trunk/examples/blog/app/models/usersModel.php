@@ -85,39 +85,43 @@ class usersModel extends A_Model {
 	}
 
 	function register($request){ 
-		
+		$username = $request->get('username');
+		$email = $request->get('email');
+		$password = $request->get('password');
+		$passwordagain = $request->get('passwordagain');
 		/*
 		Registration pages
-		    * - Show Registration form
-		    * - Registration form submitted; user already has another account with the same email address
-		    * - Registration form submitted; username not available
-		    * - Registration form submitted; account created; activation email sent
-		    * - Registration form submitted; username/email combination already exists, but with different password
-		    * - Registration form submitted; username/email combination already exists; password is correct
-		    * - Registration form submitted; account already exists but is not yet activated
+		* S0 - Show Registration form
+		* S1 - Registration form submitted; user already has another account with the same email address
+		* S2 - Registration form submitted; username not available
+		* S3 - Registration form submitted; account created; activation email sent
+		* S4 - Registration form submitted; username/email combination already exists, but with different password
+		* S5 - Registration form submitted; username/email combination already exists; password is correct
+		* S6 - Registration form submitted; account already exists but is not yet activated
 		*/
 
-		$data = array();
 		//Check if any field is empty
-		if (empty($data['username']) || empty($data['email']) || empty($data['password']) || empty($data['passwordagain'])) {
+		if (empty($username) || empty($email) || empty($password) || empty($passwordagain)) {
 			// Return error missing field
-			
+			$this->addErrorMsg('missing a field there');
 		}
 		// Check if the passwords match
-     	if (isset($data['password']) && isset($data['passwordagain']) && $data['password'] != $data['passwordagain']){
+     	if (isset($password) && isset($passwordagain) && $password != $passwordagain){
 			// Return error passwords do not match
-			
+			$this->addErrorMsg('Passwords don\'t match');
 		}
 
 		// Check if the username is available
-		if($this->usernameAvailable($data['username'])){ 
-			if($this->emailExists($data['email'])){ 
+		if($this->usernameAvailable($username)){ 
+			if($this->emailExists($email)){ 
+				// S1 - user already has another account with the same email address
 				// The email adress is already in the db
 				// User doesn't know he already has an account
 				// or he tries to register again
 				// Show message + registration form + link to sign in form + link to send new password
 				
 			} else {
+				// S3 - Registration form submitted; account created; activation email sent
 				// Create account
 				
 				// Send activation email
@@ -129,25 +133,29 @@ class usersModel extends A_Model {
 		// Username is not available / already in database
 		} else {
 			// Check if thise username belongs to the posted email
-			if($this->usernameHasEmail($data['username'], $data['email'])){
+			if($this->usernameHasEmail($username, $email)){
 				// Check if account has been activated?
-				if($this->accountActivated($data['username'], $data['email'])){
+				if($this->accountActivated($username, $email)){
 					// The account has been activated already. In that case check if password is correct
-					if($this->passwordCorrect($data['username'], $data['password'])){
+					if($this->passwordCorrect($username, $password)){
+						// S5 - username/email combination already exists; password is correct
 						// Login the user and redirect to success page
-						$this->login($data['username'], $data['password']);
+						$this->login($username, $password);
 						
 					} else {
+						// S4 - username/email combination already exists, but with different password
 						// User has an activated account but forgot his password
 						// show message + signin form + forgot password link
 						
 					}
 				} else {
+					// S6 - Registration form submitted; account already exists but is not yet activated
 					// account is not yet activated
 					// Show message user has to activate account + show link to resend activation email
 					
 				}
 			} else {
+				// S2 - Registration form submitted; username not available
 				// Explanation: another user already taken that username: return error status
 				// Show message username already taken + registration form
 
