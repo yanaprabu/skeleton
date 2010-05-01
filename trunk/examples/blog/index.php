@@ -101,16 +101,19 @@ $PathInfo = new A_Http_PathInfo($map);
 $PathInfo->run($Request); 
 
 // Create mapper with base application path and default action
-$Mapper = new A_Controller_Mapper($Config->get('APP'), array('', 'index', 'index'));
-$Mapper->setDefaultDir('blog');
+#$Mapper = new A_Controller_Mapper($Config->get('APP'), array('', 'index', 'index'));
+#$Mapper->setDefaultDir('blog');
 
+$Controller = new A_Controller_Front($Config->get('APP'), array('', 'error', 'index'));
+$Controller->getMapper()->setDefaultDir('blog');
 // Create and run FC with error action
-$Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));
-$Controller->addPreFilter(new A_User_Prefilter_Group($Session));
+#$Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));
+$Controller->addPreFilter(new A_User_Prefilter_Group($Session, array('blog','user','login')));
 $Controller->run($Locator);
 
 // Finally, display
 echo $Response->render();
 
+dump($_SESSION, '_SESSION: ');
 dump();
 echo '<div style="clear:both;"><b>Included files:</b><pre>' . implode(get_included_files(), "\n") . '</pre></div>';
