@@ -106,12 +106,12 @@
 	if($errorstatus === 'E2'){ ?>
 		<div class="info">
 			<h2>Did you know you already have an account?</h2>
-			<p>Just to let you know: you already have an account with this email address, with username <strong><?php echo $user->get('username'); ?></strong>.</p>
+			<p>Just to let you know: you already have an account with this email address, with username <strong><?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?></strong>.</p>
 			<p>If you are trying to create another account, please <strong>submit the form below</strong> with a <strong>different email adress</strong><br />
 			or<br />
-			<strong><a href="user/login/">Sign In to your <?php echo $user->get('username'); ?> account</a></strong>.</p>
-			<p class="footnote">Forgot the password for <?php echo $user->get('username'); ?>'s account? 
-				We can <a href="user/sendnewpassword/?user=<?php echo $user->get('username'); ?>">send you a new password</a>.</p>
+			<strong><a href="user/login/">Sign In to your <?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?> account</a></strong>.</p>
+			<p class="footnote">Forgot the password for <?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>'s account? 
+				We can <a href="user/sendnewpassword/?user=<?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>">send you a new password</a>.</p>
 		</div>
 		<!--  show form with values prefilled -->
 		<form action="user/register/" method="post">
@@ -149,13 +149,13 @@
 	} else if ($errorstatus === 'E3') { ?>
 		<div class="fail">
 			<h2>Registration failed: Username not available</h2>
-			<p>We're sorry, but the username "<?php echo $user->get('username'); ?>" has already been chosen by another user.<br />Please choose a different username.</p>
+			<p>We're sorry, but the username "<?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>" has already been chosen by another user.<br />Please choose a different username.</p>
 		</div>
 		<!-- Show form with error on username -->
 		<form action="user/register/" method="post">
 			<div>
 				<label for="username">Username</label>
-				<input id="username" name="username" value="<?php echo $user->get('username'); ?>" type="text" class="error" />
+				<input id="username" name="username" value="" type="text" class="error" />
 				<span 	class="errormsg">&laquo;Please choose a different username</span>	
 			</div>
 			<div>
