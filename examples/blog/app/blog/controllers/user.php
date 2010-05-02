@@ -66,32 +66,27 @@ class user extends A_Controller_Action {
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
 		$session->start();	
-
-		$form = new A_Model_Form();
-		$field = new A_Model_Form_Field('username');
-		$field->addRule(new A_Rule_Notnull('username', 'username field is required'));
-		$form->addField($field);
-		$field = new A_Model_Form_Field('email');
-		$field->addRule(new A_Rule_Notnull('email', 'email field is required'));
-		$form->addField($field);
-
+		// Set the default status for the view
+		$errorstatus = 'S0';
 		$errmsg = '';
 		
-		// If registration is valid
-		if($form->isValid($this->request)){
+		if($this->request->isPost()){
 			$model = $this->_load('app')->model('users');
-			// @todo: do the registration 
-			// - create random password
-			// - insert all data in user model
-			// - send email with pw to use
-			// - redirect to profile page?
+			$result = $model->register($this->request);
+			if($result === true){
+				// Registration succesful
+				
 			
-		} elseif($form->isSubmitted()){		// submitted form has errors
-			$errmsg =  $form->getErrorMsg(', ');
+			} else {
+				// Return the reistration status to the view
+				$errorstatus = $result;
+				$errmsg = $model->getErrorMsg();
+			}
 		}
 		
 		// Show registration form
 		$template = $this->_load()->template('register');
+		$template->set('errorstatus', $errorstatus);
 		$template->set('errmsg', $errmsg);
 		$template->set('user', $user);
 		$this->response->set('maincontent', $template);

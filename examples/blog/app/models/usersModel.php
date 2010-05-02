@@ -14,12 +14,12 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('active'));
 
 		$this->addRule(new A_Rule_Numeric('id', 'invalid ID'), 'id');
-		$this->addRule(new A_Rule_Length(5, 15, 'username', 'name must 5 to 25 characters'), 'username'); 
-		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\_\@\.]', 'username', 'invalid username'), 'username'); 
-		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'invalid firstname'), 'firstname'); 
-		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'lastname', 'invalid firstname'), 'lastname'); 
-		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\_\@\.]', 'password', 'invalid username'), 'password'); 
-		$this->addRule(new A_Rule_Email('email', 'This is not a valid email'), 'email');
+		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'The firstname is not valid'), 'firstname'); 
+		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'lastname', 'The lastname is not valid'), 'lastname'); 
+		$this->addRule(new A_Rule_Length(5, 15, 'username', 'The username must be between 5 to 25 characters'), 'username'); 
+		$this->addRule(new A_Rule_Regexp('/^[A-Za-z0-9]+$/D', 'username', 'The username is not valid'), 'username');		
+		$this->addRule(new A_Rule_Regexp('/[0-9a-zA-Z\-\_\@\.]+/', 'password', 'The password is not valid'), 'password'); 
+		$this->addRule(new A_Rule_Email('email', 'This is not a valid email adress'), 'email');
 		$this->addRule(new A_Rule_Regexp('[^01]', 'active', 'active'), 'active');
 
 		// create a Gateway style datasource for the Model
@@ -85,48 +85,58 @@ class usersModel extends A_Model {
 	}
 
 	function register($request){ 
+	
+		/*
+		* Registration process overview
+		* S0 - Show Registration form
+		* E1 - Registration form submitted; missing fields or unvalid values
+		* E2 - Registration form submitted; user already has another account with the same email address
+		* E3 - Registration form submitted; username not available
+		* E4 - Registration form submitted; account created; activation email sent
+		* E5 - Registration form submitted; username/email combination already exists, but with different password
+		* E6 - Registration form submitted; username/email combination already exists; password is correct
+		* E7 - Registration form submitted; account already exists but is not yet activated
+		*/
+
+		// Basic validation
+		
+		// Check if the passwords match
+		$this->addRule(new A_Rule_Match('password', 'passwordagain', 'Fields password and passwordagain do not match'));
+		// Check if the terms of service checkbox has been checked
+		$this->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
+		// Exclude some fields not needed in the validation of the model
+		$this->excludeRules(array('id','firstname','lastname','active'));
+		// If the values are not valid return the E1 code
+		if(!$this->isValid($request)){
+			return 'E1';
+		}
+		
+		// Further validation of registration attempt
+		
+		// Get the field values for local use
 		$username = $request->get('username');
 		$email = $request->get('email');
 		$password = $request->get('password');
 		$passwordagain = $request->get('passwordagain');
-		/*
-		Registration pages
-		* S0 - Show Registration form
-		* S1 - Registration form submitted; user already has another account with the same email address
-		* S2 - Registration form submitted; username not available
-		* S3 - Registration form submitted; account created; activation email sent
-		* S4 - Registration form submitted; username/email combination already exists, but with different password
-		* S5 - Registration form submitted; username/email combination already exists; password is correct
-		* S6 - Registration form submitted; account already exists but is not yet activated
-		*/
-
-		//Check if any field is empty
-		if (empty($username) || empty($email) || empty($password) || empty($passwordagain)) {
-			// Return error missing field
-			$this->addErrorMsg('missing a field there');
-		}
-		// Check if the passwords match
-     	if (isset($password) && isset($passwordagain) && $password != $passwordagain){
-			// Return error passwords do not match
-			$this->addErrorMsg('Passwords don\'t match');
-		}
-
+		$tos = $request->get('tos');
+		
 		// Check if the username is available
 		if($this->usernameAvailable($username)){ 
 			if($this->emailExists($email)){ 
-				// S1 - user already has another account with the same email address
+				// E2 - user already has another account with the same email address
 				// The email adress is already in the db
 				// User doesn't know he already has an account
 				// or he tries to register again
 				// Show message + registration form + link to sign in form + link to send new password
-				
+				return 'E2';
 			} else {
-				// S3 - Registration form submitted; account created; activation email sent
+				// E4 - Registration form submitted; account created; activation email sent
 				// Create account
 				
 				// Send activation email
 				
 				// Show message succesful registration
+				return 'E4';
 				
 			}
 			
@@ -138,37 +148,47 @@ class usersModel extends A_Model {
 				if($this->accountActivated($username, $email)){
 					// The account has been activated already. In that case check if password is correct
 					if($this->passwordCorrect($username, $password)){
-						// S5 - username/email combination already exists; password is correct
+						// E6 - username/email combination already exists; password is correct
 						// Login the user and redirect to success page
 						$this->login($username, $password);
-						
+						return 'E6';
 					} else {
-						// S4 - username/email combination already exists, but with different password
+						// E5 - username/email combination already exists, but with different password
 						// User has an activated account but forgot his password
 						// show message + signin form + forgot password link
-						
+						return 'E5';
 					}
 				} else {
-					// S6 - Registration form submitted; account already exists but is not yet activated
+					// E7 - Registration form submitted; account already exists but is not yet activated
 					// account is not yet activated
 					// Show message user has to activate account + show link to resend activation email
-					
+					return 'E7';
 				}
 			} else {
-				// S2 - Registration form submitted; username not available
+				// E3 - Registration form submitted; username not available
 				// Explanation: another user already taken that username: return error status
 				// Show message username already taken + registration form
-
+				return 'E3';
 			}
 			
 		}
 		
 	}
 	
-	protected function usernameAvailable($username){}
-	protected function emailExists($email){}
-	protected function usernameHasEmail($username, $email){}
-	protected function accountActivated($username, $email){}
-	protected function passwordCorrect($username, $password){}
+	protected function usernameAvailable($username){
+		return true;
+	}
+	protected function emailExists($email){
+		return false;
+	}
+	protected function usernameHasEmail($username, $email){
+		return false;
+	}
+	protected function accountActivated($username, $email){
+		return true;
+	}
+	protected function passwordCorrect($username, $password){
+		return true;
+	}
 	
 }
