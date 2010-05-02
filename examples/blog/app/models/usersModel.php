@@ -129,36 +129,35 @@ class usersModel extends A_Model {
 				// or he tries to register again
 				// Show message + registration form + link to sign in form + link to send new password
 				return 'E2';
-			} else {
+			} else { 
 				// E4 - Registration form submitted; account created; activation email sent
 				// Create account
-				
+					// @todo: create account
 				// Send activation email
-				
+					// @todo: send activation email
 				// Show message succesful registration
 				return 'E4';
-				
 			}
 			
 		// Username is not available / already in database
-		} else {
-			// Check if thise username belongs to the posted email
-			if($this->usernameHasEmail($username, $email)){
+		} else { 
+			// Check if this username belongs to the posted email
+			if($this->usernameHasEmail($username, $email)){ 
 				// Check if account has been activated?
-				if($this->accountActivated($username, $email)){
+				if($this->accountActivated($username, $email)){ 
 					// The account has been activated already. In that case check if password is correct
-					if($this->passwordCorrect($username, $password)){
+					if($this->passwordCorrect($username, $password)){ 
 						// E6 - username/email combination already exists; password is correct
-						// Login the user and redirect to success page
+						// Login the user and redirect (?) to success page or tell user he has been logged in
 						$this->login($username, $password);
 						return 'E6';
-					} else {
+					} else { 
 						// E5 - username/email combination already exists, but with different password
 						// User has an activated account but forgot his password
 						// show message + signin form + forgot password link
 						return 'E5';
 					}
-				} else {
+				} else { 
 					// E7 - Registration form submitted; account already exists but is not yet activated
 					// account is not yet activated
 					// Show message user has to activate account + show link to resend activation email
@@ -170,25 +169,52 @@ class usersModel extends A_Model {
 				// Show message username already taken + registration form
 				return 'E3';
 			}
-			
 		}
-		
 	}
 	
-	protected function usernameAvailable($username){
-		return true;
+	protected function usernameAvailable($username){ 
+		$rows = $this->datasource->find(array('username'=>$username));
+		if(!empty($rows)){
+			return false;
+		} else {
+			return true;
+		}
 	}
-	protected function emailExists($email){
-		return false;
+	
+	protected function emailExists($email){ 
+		$rows = $this->datasource->find(array('email'=>$email));
+		if(!empty($rows)){
+			return true;
+		} else {
+			return false;
+		}
 	}
-	protected function usernameHasEmail($username, $email){
-		return false;
+	
+	protected function usernameHasEmail($username, $email){ 
+		$rows = $this->datasource->find(array('username'=>$username ,'email'=>$email));
+		if(!empty($rows)){
+			return true;
+		} else {
+			return false;
+		}
 	}
-	protected function accountActivated($username, $email){
-		return true;
+	
+	protected function accountActivated($username, $email){ 
+		$rows = $this->datasource->find(array('username'=>$username ,'active'=>1));
+		if(!empty($rows)){
+			return true;
+		} else {
+			return false;
+		}
 	}
+	
 	protected function passwordCorrect($username, $password){
-		return true;
+		$rows = $this->datasource->find(array('username'=>$username ,'password'=>$password));
+		if(!empty($rows)){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
