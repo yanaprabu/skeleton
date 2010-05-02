@@ -4,7 +4,7 @@
 
 	<h1>Register</h1>
 	<div>
-		<p>You are already logged-in as <?php echo $user->get('fname') . ' ' . $user->get('lname'); ?>!</p>
+		<p>You are already logged-in as <?php echo $user->get('firstname') . ' ' . $user->get('lastname'); ?>!</p>
 	</div>
 
 <?php } else { ?>
@@ -14,12 +14,13 @@
 	Registration pages
 
 	    * S0 - Show Registration form
-	    * S1 - Registration form submitted; user already has another account with the same email address
-	    * S2 - Registration form submitted; username not available
-	    * S3 - Registration form submitted; account created; activation email sent
-	    * S4 - Registration form submitted; username/email combination already exists, but with different password
-	    * S5 - Registration form submitted; username/email combination already exists; password is correct
-	    * S6 - Registration form submitted; account already exists but is not yet activated
+		* E1 - Registration form submitted; missing fields or unvalid values
+		* E2 - Registration form submitted; user already has another account with the same email address
+		* E3 - Registration form submitted; username not available
+		* E4 - Registration form submitted; account created; activation email sent
+		* E5 - Registration form submitted; username/email combination already exists, but with different password
+		* E6 - Registration form submitted; username/email combination already exists; password is correct
+		* E7 - Registration form submitted; account already exists but is not yet activated
 	
 	*/
 	
@@ -29,22 +30,67 @@
 		<form action="user/register/" method="post">
 			<div>
 				<label for="username">Username</label>
-				<input type="text" name="username" id="username" value="" size="20"/>
+				<input type="text" name="username" id="username" value="<?php if(isset($_POST['username'])) { echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); } ?>" size="20"/>
 			</div>
 			<div>
 				<label for="email">Email adress</label>
-				<input type="email" name="email" id="email" value="" size="20"/>
+				<input type="email" name="email" id="email" value="<?php if(isset($_POST['email'])) { echo htmlentities($_POST['email'], ENT_QUOTES, 'UTF-8'); } ?>" size="20"/>
 			</div>
 			<div>
 				<label for="password">Password</label>
-				<input id="password" name="password" value="" type="password" />
+				<input id="password" name="password" value="<?php if(isset($_POST['password'])) { echo htmlentities($_POST['password'], ENT_QUOTES, 'UTF-8'); } ?>" type="password" />
 			</div>
 			<div>
 				<label for="passwordagain">Repeat password</label>
-				<input id="passwordagain" name="passwordagain" value="" type="password" />
+				<input id="passwordagain" name="passwordagain" value="<?php if(isset($_POST['passwordagain'])) { echo htmlentities($_POST['passwordagain'], ENT_QUOTES, 'UTF-8'); } ?>" type="password" />
 			</div>
 			<div>
-				<input type="checkbox" id="tos" name="tos" class="checkbox">
+				<input type="checkbox" id="tos" name="tos" value="agree" class="checkbox" <?php if(isset($_POST['tos']) && $_POST['tos'] == 'agree') { echo 'checked="checked"'; } ?> >
+				<label for="tos" class="checkbox">I agree with the </label><a href="#">Terms of Service</a>
+			</div>
+			<div>
+				<input type="submit" value="Create my account" class="button" />
+				<span class="secondary"> or 
+				<a href="#">cancel</a></span>
+			</div>
+		</form>
+	<?php } ?>
+	
+	<?php
+	// E1 Default status: no errors. Show registration form
+	if($errorstatus === 'E1') { ?>
+		<h3>Register</h3>
+		<p>Please correct the following errors: </p><?php 
+		if(is_array($errmsg)){
+			echo '<ul class="warning">';
+			foreach($errmsg as $v){
+				foreach($v as $value){
+					echo '<li>' . $value . '</li>';
+				}
+			}
+			echo '</ul>';
+		}
+
+		?>
+		<form action="user/register/" method="post">
+			<div>
+				<label for="username">Username</label>
+				<input type="text" name="username" id="username" value="<?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>" size="20"/>
+			</div>
+			<div>
+				<label for="email">Email adress</label>
+				<input type="email" name="email" id="email" value="<?php echo htmlentities($_POST['email'], ENT_QUOTES, 'UTF-8'); ?>" size="20"/>
+			</div>
+			<div>
+				<label for="password">Password</label>
+				<input id="password" name="password" value="<?php echo htmlentities($_POST['password'], ENT_QUOTES, 'UTF-8'); ?>" type="password" />
+			</div>
+			<div>
+				<label for="passwordagain">Repeat password</label>
+				<input id="passwordagain" name="passwordagain" value="<?php echo htmlentities($_POST['passwordagain'], ENT_QUOTES, 'UTF-8'); ?>" type="password" />
+			</div>
+			<div>
+				<input type="checkbox" id="tos" name="tos" value="agree" class="checkbox" <?php if(isset($_POST['tos']) && $_POST['tos'] == 'agree') { echo 'checked="checked"'; } ?>>
 				<label for="tos" class="checkbox">I agree with the </label><a href="#">Terms of Service</a>
 			</div>
 			<div>
@@ -57,7 +103,7 @@
 	
 	<?php
 	// If the registered email already has an account
-	if($errorstatus === 'S1'){ ?>
+	if($errorstatus === 'E2'){ ?>
 		<div class="info">
 			<h2>Did you know you already have an account?</h2>
 			<p>Just to let you know: you already have an account with this email address, with username <strong><?php echo $user->get('username'); ?></strong>.</p>
@@ -86,7 +132,8 @@
 				<input id="passwordagain" name="passwordagain" value="<?php echo htmlentities($_POST['passwordagain'], ENT_QUOTES, 'UTF-8'); ?>" type="password" />
 			</div>
 			<div>
-				<input type="checkbox" id="tos" name="tos"><label for="tos">I agree with the </label><a href="#">Terms of Service</a>
+				<input type="checkbox" id="tos" name="tos" value="agree" class="checkbox" <?php if(isset($_POST['tos']) && $_POST['tos'] == 'agree') { echo 'checked="checked"'; } ?>>
+				<label for="tos">I agree with the </label><a href="#">Terms of Service</a>
 			</div>
 			<div>
 				<input type="submit" value="Create my other account" /><span class="secondary"> or 
@@ -99,7 +146,7 @@
 		
 	<?php
 	// If username not available/allowed/already taken
-	} else if ($errorstatus === 'S2') { ?>
+	} else if ($errorstatus === 'E3') { ?>
 		<div class="fail">
 			<h2>Registration failed: Username not available</h2>
 			<p>We're sorry, but the username "<?php echo $user->get('username'); ?>" has already been chosen by another user.<br />Please choose a different username.</p>
@@ -124,7 +171,8 @@
 				<input id="passwordagain" name="passwordagain" value="<?php echo htmlentities($_POST['passwordagain'], ENT_QUOTES, 'UTF-8'); ?>" type="password" />
 			</div>
 			<div>
-				<input type="checkbox" id="tos" name="tos"><label for="tos">I agree with the </label><a href="#">Terms of Service</a>
+				<input type="checkbox" id="tos" name="tos" value="agree" class="checkbox" <?php if(isset($_POST['tos']) && $_POST['tos'] == 'agree') { echo 'checked="checked"'; } ?>>
+				<label for="tos">I agree with the </label><a href="#">Terms of Service</a>
 			</div>
 			<div>
 				<input type="submit" value="Create my account" /><span class="secondary"> or <a href="#">cancel</a></span>
@@ -136,7 +184,7 @@
 
 	<?php	
 	// Account created; activation email sent
-	} else if($errorstatus === 'S3') {  ?>
+	} else if($errorstatus === 'E4') {  ?>
 		<div class="info">
 			<h2>Account created; please check your email</h2>
 			<p>Your account has been created, but you'll have to activate it before you can use it.</p>
@@ -146,7 +194,7 @@
 
 	<?php
 	// Username/email combination already exists, but with different password	
-	} else if($errorstatus === 'S4') { ?>
+	} else if($errorstatus === 'E5') { ?>
 		<div class="info">
 			<h2>Account already exists with different password</h2>
 			<p>You already have an account with this username and emailaddress, but with a different password.<br />
@@ -168,7 +216,7 @@
 
 	<?php
 	// Username/email combination already exists; password is correct
-	} else if ($errorstatus === 'S5') { ?>
+	} else if ($errorstatus === 'E6') { ?>
 		<div class="info">
 			<h2>You already have this account; you are now Signed In</h2>
 			<p>You tried to register a new account, but you've already created it before (with this exact same information). You are 
@@ -177,7 +225,7 @@
 
 	<?php
 	// Account already exists but is not yet activated	
-	} else if ($errorstatus === 'S6') { ?>
+	} else if ($errorstatus === 'E7') { ?>
 		<div class="info">
 			<h2>You already created this account. Please activate it.</h2>
 			<p>You have already created this account before, but you have not yet activated it. You need to activate 
