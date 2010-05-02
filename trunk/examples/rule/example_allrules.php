@@ -35,7 +35,7 @@ $validator->addRule('A_Rule_Numeric', 'numeric', 'Fill in a number for numeric')
 // Range:
 $validator->addRule('A_Rule_Range', 10, 20, 'range', 'Please pick no between 10 and 20');
 //Regexp:
-$validator->addRule('A_Rule_Regexp', '/^[a-z0-9]+$/', 'regexp', 'Fill in a correct format for regexp');
+$validator->addRule('A_Rule_Regexp', '/^[a-z0-9]+$/D', 'regexp', 'Fill in a correct format for regexp');
 
 
 if ($validator->isValid($request)) {
