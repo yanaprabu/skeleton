@@ -130,24 +130,6 @@ class A_Db_MySQL extends A_Db_Abstract {
 		return($result);
 	}
 		
-	public function start() {
-		return $this->query('START');
-	}
-
-	public function savepoint($savepoint='') {
-		if ($savepoint) {
-			return $this->query('SAVEPOINT ' . $savepoint);
-		}
-	}
-
-	public function commit() {
-		return $this->query('COMMIT');
-	}
-
-	public function rollback($savepoint='') {
-		return $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
-	}
-
 	public function escape($value) {
 		$link = $this->connectBySql('SELECT');
 		return mysql_real_escape_string($value, $link);

@@ -31,6 +31,8 @@ abstract class A_Db_Abstract {
 
 	protected $_sql = array();
 	
+	protected $_transaction_level = 0;
+	
 	/**
 	 * Constructor.
 	 *
@@ -201,24 +203,51 @@ abstract class A_Db_Abstract {
 	 */
 	abstract public function limit($sql, $count, $offset='');
 	
-	public function start() {
-		return $this->query('START');
+	public function start($connection_name='') {
+		if ($this->_transaction_level < 1) {
+			$connection = $this->getConnection($connection_name);
+			$result = $connection->query('START');
+			$this->_transaction_level = 0;
+		} else {
+			$result = false;
+		}
+		++$this->_transaction_level;
+		return $result;
 	}
 
-	public function savepoint($savepoint='') {
+	public function savepoint($savepoint='', $connection_name='') {
 		if ($savepoint) {
-			return $this->query('SAVEPOINT ' . $savepoint);
+			$connection = $this->getConnection($connection_name);
+			return $connection->query('SAVEPOINT ' . $savepoint);
 		}
 	}
 
-	public function commit() {
-		return $this->query('COMMIT');
+	public function commit($connection_name='') {
+		--$this->_transaction_level;
+		if ($this->_transaction_level == 0) {
+			$connection = $this->getConnection($connection_name);
+			$result = $connection->query('COMMIT');
+		} else {
+			$result = false;
+		}
+		return $result;
 	}
 
-	public function rollback($savepoint='') {
-		return $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
+	public function rollback($savepoint='', $connection_name='') {
+		--$this->_transaction_level;
+		if ($this->_transaction_level == 0) {
+			$connection = $this->getConnection($connection_name);
+			$result = $connection->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
+		} else {
+			$result = false;
+		}
+		return $result;
 	}
 
+	public function getTransactionLevel() {
+		return $this->_transaction_level;
+	}
+		
 	public function escape($value) {}
 
 	public function isError() {

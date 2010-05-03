@@ -186,13 +186,11 @@ class A_Db_Pdo extends A_Db_Abstract {
 	}
 	
 	public function beginTransaction($connection_name='') {
-		$connection = $this->getConnection($connection_name);
-		return $connection->beginTransaction();
+		return parent::start($connection_name);
 	}
 	
 	public function commit($connection_name='') {
-		$connection = $this->getConnection($connection_name);
-		return $connection->commit($attribute);
+		return parent::commit($connection_name);
 	}
 	
 	public function errorCode($connection_name='') {
