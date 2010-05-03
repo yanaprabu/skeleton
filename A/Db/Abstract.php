@@ -205,8 +205,7 @@ abstract class A_Db_Abstract {
 	
 	public function start($connection_name='') {
 		if ($this->_transaction_level < 1) {
-			$connection = $this->getConnection($connection_name);
-			$result = $connection->query('START');
+			$result = $this->query('START');
 			$this->_transaction_level = 0;
 		} else {
 			$result = false;
