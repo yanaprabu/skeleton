@@ -89,16 +89,15 @@ class A_Db_Postgres {
 			$obj = new A_Db_Postgres_Result(pg_query($sql));
 		}
 		$obj->errmsg = pg_last_error($this->link);
-		$obj->errno = $obj->errmsg != '';
+		$obj->error = $obj->errmsg != '';
 		return $obj;
 	}
 		
-	public function limit($sql, $count, $offset = null) {
-		$sql .= ' LIMIT ' . $count;
-        if (is_int($offset) && $offset > 0) {
-            $sql .= ' OFFSET ' . $offset;
-        }
-		return $sql;
+	public function limit($sql, $count, $offset='') {
+		if ($offset) {
+			$count = "$count OFFSET $offset";
+		} 
+		return "$sql LIMIT $count";
 	}
 		
 	public function nextId ($sequence) {
@@ -166,7 +165,7 @@ class A_Db_Postgres {
 
 class A_Db_Postgres_Result {
 	protected $result;
-	public $errno;
+	public $error;
 	public $errmsg;
 	
 	public function __construct($result=null) {
@@ -182,7 +181,7 @@ class A_Db_Postgres_Result {
 	}
 		
 	public function isError() {
-		return $this->errno;
+		return $this->error;
 	}
 		
 	public function getErrorMsg() {

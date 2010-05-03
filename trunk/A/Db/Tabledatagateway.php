@@ -49,20 +49,11 @@ class A_Db_Tabledatagateway {
 		return $this;
 	}
 	
-	public function where() {
-		$args = func_get_args();
-		// allow one param that is array of args
-		if (is_array($args[0])) {
-			$args = $args[0];
-		}
-		$nargs = count($args);
-#print_r($args);
-#echo "nargs=$nargs</br>";
-		if ($nargs == 1) {
-			// find match for key
-			$this->select->where($this->key . '=', $args[0]);
+	public function where($arg1=null, $arg2=null, $arg3=null) {
+		if (isset($arg1)) {
+			$this->select->where($arg1, $arg2, $arg3);
 		} else {
-			$this->select->where($args[0], $args[1], isset($args[2]) ? $args[2] : null);
+			$this->select->where();				// no args - clear where
 		}
 		return $this;
 	}
@@ -70,9 +61,16 @@ class A_Db_Tabledatagateway {
 	public function find() {
 		$allrows = array();
 
+		$this->select->where();			// clear where clause
+
 		$args = func_get_args();
 		// if params then where condition passed
 		if (count($args)) {
+			if (is_array($args[0])) {
+				$args = $args[0];
+			} elseif (! isset($args[1])) {	// single scalar param is key search
+				$args = array($this->key => $args[0]);
+			}
 			$this->where($args);
 		}
 

@@ -4,234 +4,285 @@
  *
  * @package A_Db
  */
-abstract class A_Db_Abstract
-{
+abstract class A_Db_Abstract {
 
-    /**
-     * User-provided configuration
-     * @var array
-     */
-    protected $_config = array();
+	protected $_connection;								// 
 
-    /**
-     * Database connection
-     * @var object|resource|null
-     */
-    protected $_connection = null;
+	protected $_config;									// 
 
-    /**
-     * Constructor.
-     *
-     * $config is an array of key/value pairs or an instance of A_DataContainer
-     * containing configuration options.  These options are common to most adapters:
-     *
-     * dbname         => (string) The name of the database to user
-     * username       => (string) Connect to the database as this username.
-     * password       => (string) Password associated with the username.
-     * host           => (string) What host to connect to, defaults to localhost
-     *
-     * @param  array|A_Config $config
-     * @throws A_Db_Exception
-     */
-    public function __construct($config) {
-        if (!is_array($config)) {
-            if ($config instanceof A_DataContainer) {
-                $config = $config->toArray();
-            } else {
-                #require_once 'A/Db/Exception.php';
-                throw new A_Db_Exception('Adapter parameters must be in an array or a A_Config object');
-            }
-        }
+	protected $_config_class = 'A_Db_Config_Single';	// 
 
-        $this->_checkRequiredOptions($config);
-        $this->_config  = $config; 
-    }
+	/**
+	 * convert connnect keys based on this table
+	 * @var array
+	 */
+	protected $_config_aliases = array(
+									'database'=>'dbname', 
+									'hostname'=>'host',
+									);
 
-    /**
-     * Check for config options that are mandatory, throw exceptions if any are missing.
-     *
-     * @param array $config
-     * @throws A_Db_Exception
-     */
-    protected function _checkRequiredOptions(array $config) {
-        if (! array_key_exists('dbname', $config)) {
-            #require_once 'A/Db/Exception.php';
-            throw new A_Db_Exception("Configuration array must have a key for 'dbname' that names the database instance");
-        }
+	protected $_exception = '';							// A_Db_Exception
 
-        if (! array_key_exists('password', $config)) {
-           #require_once 'A/Db/Exception.php';
-           throw new A_Db_Exception("Configuration array must have a key for 'password' for login credentials");
-        }
+	protected $_recordset_class;
+	protected $_result_class;
+	
+	protected $error = 0;
+	protected $errmsg = '';
 
-        if (! array_key_exists('username', $config)) {
-            #require_once 'A/Db/Exception.php';
-            throw new A_Db_Exception("Configuration array must have a key for 'username' for login credentials");
-        }
-    }
+	protected $_sql = array();
+	
+	/**
+	 * Constructor.
+	 *
+	 * $config is an array of key/value pairs or an instance of A_DataContainer
+	 * containing configuration options.  These options are common to most adapters:
+	 *
+	 * dbname		 => (string) The name of the database to user
+	 * username	   => (string) Connect to the database as this username.
+	 * password	   => (string) Password associated with the username.
+	 * host		   => (string) What host to connect to, defaults to localhost
+	 *
+	 * @param  array|A_Config $config
+	 * @throws A_Db_Exception
+	 */
+	public function __construct($config=array()) {
+		if ($config) {
+			$this->config($config); 
+		}
+	}
 
-    /**
-     * Returns the underlying database connection object or resource.
-     * If not presently connected, this initiates the connection.
-     *
-     * @return object|resource|null
-     */
-    public function getConnection() {
-        $this->_connect();
-        return $this->_connection;
-    }
+	/**
+	 *
+	 */
+	public function config($config) {
+		if (isset($this->_config)) {
+			$this->_config->config($config);
+		} else {
+			if (isset($config['exception'])) {
+				$this->setException($config['exception']);				
+			}
+			$config_class = isset($config['config_class']) ? $config['config_class'] : $this->_config_class;
+#if (isset($config['config_class'])) echo "Setting config class from config data - A_Db_Abstract::config() config_class=$config_class<br/>";
+			$this->_config = new $config_class ($config);
+		}
+		return $this;
+	}
 
-    /**
-     * Returns the configuration variables in this adapter.
-     *
-     * @return array
-     */
-    public function getConfig(){
-        return $this->_config;
-    }
+	/**
+	 *
+	 */
+	public function setConfigClass($class) {
+		$this->_config_class = $class;
+		return $this;
+	}
 
-    /**
-     * Prepares and executes an SQL statement with bound data.
-     *
-     * @param  mixed  $sql The SQL statement 
-     * @return A_Sql_Statement
-     */
-    public function query($sql) {
-        // connect to the database if needed
-        $this->_connect();
-		return $this -> _query($sql);
-    }
+	/**
+	 *
+	 */
+	public function setConfigObject($config) {
+		// check base type or interface here?
+		$this->_config = $config;
+		$this->_config_class = get_class($config);
+		return $this;
+	}
 
-    /**
-     * Inserts a table row with specified data.
-     *
-     * @param mixed $table The table to insert data into.
-     * @param array $bind Column-value pairs.
-     * @return int The number of affected rows.
-     */
-    public function insert($table, array $bind) {
-        $insert = new A_Sql_Insert($table,$bind);
-        return $this -> query($insert -> render());
-    }
+	/**
+	 *
+	 */
+	public function setResultClasses($result_class, $recordset_class) {
+		if ($result_class) {
+			$this->_result_class = $result_class;
+		}
+		if ($recordset_class) {
+			$this->_recordset_class = $recordset_class;
+		}
+		return $this;
+	}
 
-    /**
-     * Updates table rows with specified data based on a WHERE clause.
-     *
-     * @param  mixed        $table The table to update.
-     * @param  array        $bind  Column-value pairs.
-     * @param  mixed        $where UPDATE WHERE clause(s).
-     * @return int          The number of affected rows.
-     */
-    public function update($table, array $bind, $where = array()) {
-        $update = new A_Sql_Update($table,$bind,$where);
-        return $this -> query($update -> render());
-    }
+	/**
+	 *
+	 */
+	public function getConfig($sql='') {
+		if (isset($this->_config)) {
+			return $this->_config->getConfigBySql($sql);
+		}
+	}
 
-    /**
-     * Deletes table rows based on a WHERE clause.
-     *
-     * @param  mixed        $table The table to update.
-     * @param  mixed        $where DELETE WHERE clause(s).
-     * @return int          The number of affected rows.
-     */
-    public function delete($table, $where = '') {
-        $delete = new A_Sql_Delete($table,$where);
-        return $this -> query($delete -> render());
-    }
+	public function setException($class) {
+		if ($class === true) {
+			$this->_exception = 'A_Db_Exception';
+		} else {
+			$this->_exception = $class;
+		}
+	}	
 
-    /**
-     * Creates and returns a new A_Sql_Select object for this adapter.
-     *
-     * @return A_Sql_Select
-     */
-    public function select() {
-        return new A_Sql_Select($this);
-    }
+	public function _errorHandler($errno, $errmsg) {
+		$this->_errmsg .= $errmsg;
+		if ($this->_exception) {
+			throw A_Exception::getInstance($this->_exception, $errmsg);
+		}
+	}	
 
-    /**
-     * Escape a raw string.
-     *
-     * @param string $value     Raw string
-     * @return string           Quoted string
-     */
-    protected function _escape($value) {
-        if (is_int($value) || is_float($value)) {
-            return $value;
-        }
-        return addcslashes($value, "\000\n\r\\'\"\032");
-    }
+	public function _getErrorMsg() {
+		return $this->_errmsg;
+	}
 
-    /**
-     * Safely escape a value for an SQL statement.
-     *
-     * If an array is passed as the value, the array values are escaped
-     * and then returned as a comma-separated string.
-     *
-     * @return mixed An SQL-safe escaped value (or string of separated values).
-     */
-    public function escape($value) {
-        if ($value instanceof A_Sql_Expression) {
-            return $value->__toString();
-        }
+	public function getSql() {
+		return $this->_sql;
+	}
 
-        if (is_array($value)) {
-            foreach ($value as &$val) {
-                $val = $this->escape($val);
-            }
-            return implode(', ', $value);
-        }
+	/**
+	 * Connect to database based on SQL. Tracks and uses existing connections. 
+	 */
+	public function connect($name='') {
+		if (isset($this->_config)) {
+			$config = $this->_config->getConfig($name);
+			if (isset($config['name']) && $config['data']) {
+				if (!isset($this->_connection[$config['name']])) {
+					$this->_connection[$config['name']] = $this->_connect($config['data']);
+				}
+				return $this->_connection[$config['name']];
+			} else {
+				$this->_errorHandler(0, "No connection config data for '{$config['name']}'. ");
+			}
+		} else {
+			$this->_errorHandler(0, "No config data. ");
+		}
+	}
 
-        return $this->_escape($value);
-    }
-    
-    /**
-     * Abstract Methods
-     */
+	/**
+	 * Supplied my child class - must connect as specified by $config
+	 */
+	abstract protected function _connect($config);
 
-    /**
-     * Returns the column descriptions for a table.
-     *
-     * @param string $tableName
-     * @param string $schemaName (optional)
-     * @return array
-     */
-    abstract public function describeTable($tableName, $schemaName = null);
+	/**
+	 * Connect to database based on SQL. Tracks and uses existing connections. 
+	 */
+	public function connectBySql($sql='') {
+		$name = $this->_config->getConfigName($sql);
+		return $this->connect($name);
+	}
 
-    /**
-     * Creates a connection to the database.
-     * @return void
-     */
-    abstract protected function _connect();
+	/*
+	 * Closes all or named connection (if close supported by extension)
+	 */
+	public function close($name='') {
+		if ($name) {
+			if (is_string($name)) {
+				$names = array($name);
+			} elseif (is_array($name)) {
+				$names = $name;
+			} 
+		} elseif (isset($this->_connection)) {			// connections and no name given
+			$names = array_keys($this->_connection);	// close all
+		} else {
+			$names = array();
+		}
+		foreach ($names as $name) { 
+			if (isset($this->_connection[$name])) {
+				$this->_close($this->_connection[$name]);
+				unset($this->_connection[$name]);
+			}
+		}
+	}
+		
+	public function disconnect() {
+		$this->close();
+	}
+		
+	/**
+	 * Supplied my child class - must close connection if supported by extension
+	 * passes back what _connect() returns for connection
+	 */
+	abstract protected function _close($name);
+	
+	/**
+	 * Adds limit syntax to SQL statement
+	 */
+	abstract public function limit($sql, $count, $offset='');
+	
+	public function start() {
+		return $this->query('START');
+	}
 
-    /**
-     * Force the connection to close.
-     * @return void
-     */
-    abstract public function closeConnection();
+	public function savepoint($savepoint='') {
+		if ($savepoint) {
+			return $this->query('SAVEPOINT ' . $savepoint);
+		}
+	}
 
-    /**
-     * Execute an SQL statement
-     *
-     * @param mixed $sql The SQL statement
-     */
-    abstract public function _query($sql);
+	public function commit() {
+		return $this->query('COMMIT');
+	}
 
-    /**
-     * Gets the last ID generated automatically by an IDENTITY/AUTOINCREMENT column.
-     *
-     * @param string $tableName   OPTIONAL Name of table.
-     * @param string $primaryKey  OPTIONAL Name of primary key column.
-     * @return string
-     */
-    abstract public function lastInsertId($tableName = null, $primaryKey = null);
-    
-    /**
-     * Adds an adapter-specific LIMIT clause to the SELECT statement.
-     *
-     * @param mixed $sql
-     * @param integer $count
-     * @param integer $offset
-     * @return string
-     */
-    abstract public function limit($sql, $count, $offset = 0);
+	public function rollback($savepoint='') {
+		return $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
+	}
+
+	public function escape($value) {}
+
+	public function isError() {
+		return $this->error;
+	}
+		
+	public function getErrorMsg() {
+		return $this->errmsg;
+	}
+		
+}
+
+
+/**
+ * This is the default connnection configuration class. 
+ * This class can be replaceable with a class that provides other connection functionality, like master/slave support. 
+ * See A_Db_Config_* for other options. 
+ */
+class A_Db_Config_Single {
+	/**
+	 * User-provided configuration data
+	 * @var array
+	 */
+	protected $_config = array();
+	
+	/**
+	 *
+	 * @param  array|A_Config $config
+	 * @throws A_Db_Exception
+	 */
+	public function __construct($config=array()) {
+		if ($config) {
+			$this->config($config); 
+		}
+	}
+
+	/**
+	 * Set config array directly. Containers are converted to an array.
+	 */
+	public function config($config) {
+		if (is_object($config) && method_exists($config, 'toArray')) {
+			$config = $config->toArray();
+		}
+		if (is_array($config)) {
+			$this->_config  = $config; 
+		}			
+	}
+
+	/**
+	 * Method called by connect() to get config data
+	 */
+	public function getConfig($sql='') {
+		if (isset($this->_config)) {
+			return array('name'=>'', 'data'=>$this->_config);
+		} else {
+			return array('name'=>'', 'data'=>array());
+		}
+	}
+
+	/**
+	 * Method called by query(), etc. to get config data
+	 */
+	public function getConfigName($sql='') {
+		return '';
+	}
+
 }
