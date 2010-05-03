@@ -194,7 +194,7 @@ abstract class A_Db_Abstract {
 	 * Supplied my child class - must close connection if supported by extension
 	 * passes back what _connect() returns for connection
 	 */
-	abstract protected function _close($name);
+	abstract protected function _close($name='');
 	
 	/**
 	 * Adds limit syntax to SQL statement
