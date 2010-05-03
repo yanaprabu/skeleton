@@ -60,14 +60,16 @@ class A_Db_Mysqli extends MySQLi {
 			$obj = new A_Db_Mysqli_Result(parent::query($sql));
 			$obj->affected_rows = $this->affected_rows;
 		}
-		$obj->errno = $this->errno;
+		$obj->error = $this->error;
 		$obj->errmsg = $this->error;
 		return $obj;
 	}
 		
-	public function limit($sql, $count, $offset = null) {
-		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
-		return $sql . ' LIMIT ' . $limit;
+	public function limit($sql, $count, $offset='') {
+		if ($offset) {
+			$count = "$count OFFSET $offset";
+		} 
+		return "$sql LIMIT $count";
 	}
 		
 	public function lastId() {
@@ -88,7 +90,7 @@ class A_Db_Mysqli extends MySQLi {
 						return $id;
 					}
 				}
-			} elseif ($this->errno() == 1146) {		// table does not exist
+			} elseif ($this->error() == 1146) {		// table does not exist
 				if ($this->createSequence($sequence)) {
 					return $this->sequencestart;
 				}
@@ -110,7 +112,7 @@ class A_Db_Mysqli extends MySQLi {
 	}
 	
 	public function isError() {
-		return $this->errno;
+		return $this->error;
 	}
 		
 	public function getErrorMsg() {
@@ -130,7 +132,7 @@ class A_Db_Mysqli extends MySQLi {
 class A_Db_Mysqli_Result {
 	protected $result;
 	protected $affected_rows;
-	public $errno;
+	public $error;
 	public $errmsg;
 	
 	public function __construct($result=null) {
@@ -146,7 +148,7 @@ class A_Db_Mysqli_Result {
 	}
 		
 	public function isError() {
-		return $this->errno;
+		return $this->error;
 	}
 		
 	public function getErrorMsg() {

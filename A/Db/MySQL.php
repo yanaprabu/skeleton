@@ -10,64 +10,50 @@
  * 'password'
  * 'database'
  */
-class A_Db_MySQL {
-	protected $config = null;
-	protected $link = null;
-	protected $limit = '';
-	protected $orderby = '';
-	protected $sequenceext = '_seq';
-	protected $sequencestart = 1;
+class A_Db_MySQL extends A_Db_Abstract {
+	protected $_sequence_ext = '_seq';
+	protected $_sequence_start = 1;
+	protected $_recordset_class = 'A_Db_MySQL_Recordset';
+	protected $_result_class = 'A_Db_MySQL_Result';
 	
-	public function __construct($config=null) {
-		$this->config = $config;
-	}
-		
-	public function connect ($config=null) {
+	protected function _connect ($config) {
 		$result = false;
-		if ($config) {
-			$this->config = $config;
+		$host = isset($config['host']) ? $config['host'] : $config['hostspec'];
+		// fix for problem connecting to server with localhost. Windows only?
+		if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
+			$host = '127.0.0.1';
 		}
-		if ($this->link == null) {
-			$host = isset($this->config['host']) ? $this->config['host'] : $this->config['hostspec'];
-			// fix for problem connecting to server with localhost. Windows only?
-			if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
-				$host = '127.0.0.1';
-			}
-			if (isset($this->config['persistent'])) {
-				$this->link = mysql_pconnect($host, $this->config['username'], $this->config['password']);
-			} else {
-				$this->link = mysql_connect($host, $this->config['username'], $this->config['password']);
-			}
-			if ($this->link) {
-				if (isset($this->config['database'])) {
-					$result = mysql_select_db($this->config['database'], $this->link);
-				} else {
-					$result = true;
-				}
-			}
+		if (isset($config['persistent'])) {
+			$link = mysql_pconnect($host, $config['username'], $config['password']);
+		} else {
+			$link = mysql_connect($host, $config['username'], $config['password']);
 		}
-		return $result;
+		if ($link && isset($config['database'])) {
+			mysql_select_db($config['database'], $link);
+		}
+		$this->error = mysql_errno($link);
+		$this->errmsg = mysql_error($link);
+		return $link;
 	}
 		
 	public function selectDb($database='') {
-		if ($this->link) {
+		$link = $this->connectBySql('SELECT');
+		if ($link) {
 			if (! $database) {
 				$database = $this->dsn['database'];
 			}
-			$result = mysql_select_db($database, $this->link);
+			$result = mysql_select_db($database, $link);
+			$this->error = mysql_errno($link);
+			$this->errmsg = mysql_error($link);
 		}
 	}
 		
-	public function close() {
-		if ($this->link) {
-			mysql_close($this->link);
-		} 
+	protected function _close($name) {
+		if (isset($this->_connection[$name])) {
+			mysql_close($this->_connection[$name]);
+		}
 	}
-		
-	public function disconnect() {
-		$this->close();
-	}
-		
+	
 	public function query($sql, $bind=array()) {
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
@@ -76,27 +62,37 @@ class A_Db_MySQL {
 		if ($bind) {
 			#include_once 'A/Sql/Prepare.php';
 			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this->db);
+			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
-		mysql_select_db($this->config['database'], $this->link);
-		if (strpos(strtolower($sql), 'select') === 0) {
-			$obj = new A_Db_MySQL_Recordset(mysql_query($sql));
+		$link = $this->connectBySql($sql);
+		if ($link) {
+			$result = mysql_query($sql, $link);
+			$this->_sql[] = $sql;			// save history
+			$this->error = mysql_errno($link);
+			$this->errmsg = mysql_error($link);
+			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+				$obj = new $this->_recordset_class($result, $link, $this->error, $this->errmsg);
+			} else {
+				$obj = new $this->_result_class($result, $link, $this->error, $this->errmsg);
+			}
+			return $obj;
 		} else {
-			$obj = new A_Db_MySQL_Result(mysql_query($sql));
+			$this->_errorHandler(0, 'No connection. ');
 		}
-		$obj->errno = mysql_errno($this->link);
-		$obj->errmsg = mysql_error($this->link);
-		return $obj;
 	}
 		
-	public function limit($sql, $count, $offset = null) {
-		return $sql . ' LIMIT ' . (is_int($offset) && $offset > 0 ? "$offset," : '') . $count;
+	public function limit($sql, $count, $offset='') {
+		if ($offset) {
+			$count = "$count OFFSET $offset";
+		} 
+		return "$sql LIMIT $count";
 	}
-	
+		
 	public function lastId() {
-		if ($this->link) {
-			return(mysql_insert_id($this->link));
+		$link = $this->connectBySql('INSERT');
+		if ($link) {
+			return(mysql_insert_id($link));
 		} else {
 			return 0;
 		}
@@ -104,21 +100,22 @@ class A_Db_MySQL {
 		
 	public function nextId ($sequence) {
 		if ($sequence) {
-			$result = $this->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)", $this->link);
+			$link = $this->connectBySql('UPDATE');
+			$result = $this->query("UPDATE $sequence{$this->_sequence_ext} SET id=LAST_INSERT_ID(id+1)", $link);
 			if ($result) {
-				$id = $this->lastId($this->link);
+				$id = $this->lastId($link);
 				if ($id > 0) {
 					return $id;
 				} else {
-					$result = $this->query("INSERT $sequence{$this->sequenceext} SET id=1", $this->link);
-					$id = $this->lastId($this->link);
+					$result = $this->query("INSERT $sequence{$this->_sequence_ext} SET id=1", $link);
+					$id = $this->lastId($link);
 					if ($id > 0) {
 						return $id;
 					}
 				}
 			} elseif ($this->isError() == 1146) {		// table does not exist
 				if ($this->createSequence($sequence)) {
-					return $this->sequencestart;
+					return $this->_sequence_start;
 				}
 			}
 		}
@@ -128,41 +125,34 @@ class A_Db_MySQL {
 	public function createSequence ($sequence) {
 		$result = 0;
 		if ($sequence) {
-			$result = $this->query("CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}", $this->link);
+			$result = $this->query("CREATE TABLE $sequence{$this->_sequence_ext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->_sequence_start}", $link);
 		}
 		return($result);
 	}
 		
 	public function start() {
-		return mysql_query('START');
+		return $this->query('START');
 	}
 
 	public function savepoint($savepoint='') {
 		if ($savepoint) {
-			return mysql_query('SAVEPOINT ' . $savepoint);
+			return $this->query('SAVEPOINT ' . $savepoint);
 		}
 	}
 
 	public function commit() {
-		return mysql_query('COMMIT');
+		return $this->query('COMMIT');
 	}
 
 	public function rollback($savepoint='') {
-		return mysql_query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
+		return $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
 	}
 
 	public function escape($value) {
-		return mysql_real_escape_string($value, $this->link);
+		$link = $this->connectBySql('SELECT');
+		return mysql_real_escape_string($value, $link);
 	}
 
-	public function isError() {
-		return mysql_errno($this->link);
-	}
-		
-	public function getErrorMsg() {
-		return mysql_error($this->link);
-	}
-		
 	/**
 	 * depricated name for getErrorMsg()
 	 */
@@ -175,23 +165,27 @@ class A_Db_MySQL {
 	
 class A_Db_MySQL_Result {
 	protected $result;
-	public $errno;
-	public $errmsg;
+	protected $link;
+	protected $error;
+	protected $errmsg;
 	
-	public function __construct($result=null) {
+	public function __construct($result, $link, $error, $errmsg) {
 		$this->result = $result;
+		$this->link = $link;
+		$this->error = $error;
+		$this->errmsg = $errmsg;
 	}
 		
 	public function numRows() {
-		if ($this->result) {
-			return(mysql_affected_rows($this->result));
+		if ($this->link) {
+			return(mysql_affected_rows($this->link));
 		} else {
 			return 0;
 		}
 	}
 		
 	public function isError() {
-		return $this->errno;
+		return $this->error;
 	}
 		
 	public function getErrorMsg() {
@@ -210,10 +204,6 @@ class A_Db_MySQL_Result {
 	
 class A_Db_MySQL_Recordset extends A_Db_MySQL_Result {
 	
-	public function __construct($result=null) {
-		$this->result = $result;
-	}
-		
 	public function fetchRow ($mode=null) {
 		if ($this->result) {
 			return mysql_fetch_assoc($this->result);

@@ -4,16 +4,49 @@
  * 
  * @package A_Db 
  */
+/*
+    * PDO::__construct — Creates a PDO instance representing a connection to a database
+    * PDO::getAttribute — Retrieve a database connection attribute
+    * PDO::getAvailableDrivers — Return an array of available PDO drivers
+    * PDO::setAttribute — Set an attribute
+    * PDO::prepare — Prepares a statement for execution and returns a statement object
+    * PDO::exec — Execute an SQL statement and return the number of affected rows
+    * PDO::query — Executes an SQL statement, returning a result set as a PDOStatement object
+    * PDO::quote — Quotes a string for use in a query.
+    * PDO::lastInsertId — Returns the ID of the last inserted row or sequence value
+    * PDO::beginTransaction  — Initiates a transaction
+    * PDO::commit — Commits a transaction
+    * PDO::rollBack — Rolls back a transaction
+    * PDO::errorCode — Fetch the SQLSTATE associated with the last operation on the database handle
+    * PDO::errorInfo — Fetch extended error information associated with the last operation on the database handle
+*/
 
-class A_Db_Pdo extends PDO {
+class A_Db_Pdo extends A_Db_Abstract {
 
 	protected $dsn = null;
+	protected $_connection = null;
 	protected $connected = false;
-	protected $sequenceext = '_seq';
-	protected $sequencestart = 1;
 	
 	public function __construct($config, $username='', $password='', $attr=array()) {
+		if ($username) {
+			$config['username'] = $username;
+		}
+		if ($password) {
+			$config['password'] = $password;
+		}
+		if ($attr) {
+			$config['attr'] = $attr;
+		}
+		parent::__construct($config);
+	}
+
+	public function _connect($config) {
 		if (is_array($config)) {
+			if (!isset($config['phptype'])) {
+				$this->error = 1;
+				$this->errmsg = "config['phptype'] not set. ";
+				return;
+			}
 			// config element compatablity
 			if (isset($config['database'])) {
 				$config['dbname'] = $config['database'];
@@ -21,39 +54,38 @@ class A_Db_Pdo extends PDO {
 			if (isset($config['hostspec'])) {
 				$config['host'] = $config['hostspec'];
 			}
-			if (! $username && isset($config['username'])) {
-				$username = $config['username'];
-			}
-			if (! $password && isset($config['password'])) {
-				$password = $config['password'];
+			// init attributes array in not in config
+			if (!isset($config['attr'])) {
+				$config['attr'] = array();
 			}
 			if (isset($config['persistent'])) {
-				$attr[PDO::ATTR_PERSISTENT] = $config['persistent'];
+				$config['attr'][PDO::ATTR_PERSISTENT] = $config['persistent'];
 			}
-			$dsn = "mysql:host=" . $config['host'] . ";" . "dbname=" . $config['dbname'] . (isset($config['port']) ? ";port={$config['port']}" : '');
+			$dsn = $config['phptype'] . ":host=" . $config['host'] . ";" . "dbname=" . $config['dbname'] . (isset($config['port']) ? ";port={$config['port']}" : '');
 		} else {
 			$dsn = $config;
 		}
 		
-		$this->config = $config;
-		if ($dsn && $username && $password) {
-#			$attr[PDO::ATTR_STATEMENT_CLASS] = array('A_Db_Pdo_Recordset', array());
-#			$dsn = "mysql:dbname={$config['dbname']}" . (isset($config['host']) ? ";host={$config['host']}" : '');
-			parent::__construct($dsn, $config['username'], $config['password'], $attr);
+		$connection = null;
+		if ($dsn && $config['username'] && $config['password']) {
+			$connection = new PDO($dsn, $config['username'], $config['password'], $config['attr']);
+			// have query() return A_Db_Pdo_Recordset
+			$connection->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('A_Db_Pdo_Recordset', array()));
+		} else {
+			$this->_errorHandler(0, "No DSN, username or password to create PDO object. ");
 		}
-		// have query() return A_Db_Pdo_Recordset
-		$this->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('A_Db_Pdo_Recordset', array()));
+		return $connection;
 	}
 		
-	public function connect($config=null) {
-		return true;
-	}
-		
-	public function close() {
+	public function _close($name='') {
+		if (isset($this->_connection[$name])) {
+			unset($this->_connection[$name]);
+		}
 	}
 		
 	public function selectDb($database) {
 		$this->query("USE $database");
+		return $this;
 	}
 		
 	/*
@@ -64,89 +96,48 @@ class A_Db_Pdo extends PDO {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
-		if (! $bind) {
-			return parent::query($sql);
-		} elseif (is_array($bind)) {
-			$stmt = $this->prepare($sql);
-			$stmt->execute($bind);
-			return $stmt;
+		$connection = $this->connectBySql($sql);
+		if ($connection) {
+			if (! $bind) {
+				$result = $connection->query($sql);
+			} elseif (is_array($bind)) {
+				$result = $connection->prepare($sql);
+			} else {
+				$result = $connection->query($sql, $bind, $arg3, $arg4);
+			}
+			$this->_sql[] = $sql;			// save history
+			$this->_setError($connection);
+			if (!$result) {
+				$result = new A_Db_Pdo_Result($this->error, $this->errmsg);
+			}
+			return $result;
 		} else {
-			return parent::query($sql, $bind, $arg3, $arg4);
+			$this->_errorHandler(0, 'No connection for query. ');
 		}
 	}
 	
-	public function limit($sql, $count, $offset = null) {
-		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
-		return $sql . ' LIMIT ' . $limit;
+	public function limit($sql, $count, $offset='') {
+		if ($offset) {
+			$count = "$count OFFSET $offset";
+		} 
+		return "$sql LIMIT $count";
 	}
 		
 	public function lastId() {
-		return $this->lastInsertId();
+		$connection = $this->connectBySql('INSERT');
+		return $connection->lastInsertId();
 	}
 		
-	public function nextId ($sequence) {
-	    if ($sequence) {
-		    $result = $this->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
-	    	if ($result) {
-		        $id = $this->insert_id();
-		        if ($id > 0) {
-		            return $id;
-		        } else {
-				    $result = $this->query("INSERT $sequence{$this->sequenceext} SET id=1");
-			        $id = $this->insert_id();
-			        if ($id > 0) {
-			            return $id;
-			        }
-		        }
-			} elseif ($this->errno() == 1146) {		// table does not exist
-				if ($this->createSequence($sequence)) {
-					return $this->sequencestart;
-				}
-			}
-	    }
-	    return 0;
-	}
-		
-	public function createSequence ($sequence) {
-	    $result = 0;
-	    if ($sequence) {
-		    $result = $this->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
-	    }
-	    return($result);
-	}
-		
-	public function start() {
-		return $this->query('START');
-	}
-
-	public function savepoint($savepoint='') {
-		if ($savepoint) {
-			return $this->query('SAVEPOINT ' . $savepoint);
-		}
-	}
-
-	public function commit() {
-		return $this->query('COMMIT');
-	}
-
-	public function rollback($savepoint='') {
-		return $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
-	}
-
 	public function escape($value) {
-		return trim($this->quote($value), "\"'");
+		$connection = $this->connectBySql();
+		return trim($connection->quote($value), "\"'");
 	}
 	
-	public function isError() {
-		$code = $this->errorCode();
-		return $code == '00000' ? 0 : $code;		// PDO success value
-	}
-		
-	public function getErrorMsg() {
+	protected function _setError($connection) {
 		// get error array
-		$errorInfo = $this->errorInfo();
-		// return the message only
-		return $errorInfo[2];
+		$errorInfo = $connection->errorInfo();
+		$this->error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
+		$this->errmsg = $errorInfo[2];
 	}
 	
 	/**
@@ -154,6 +145,74 @@ class A_Db_Pdo extends PDO {
 	 */
 	public function getMessage() {
 		return $this->getErrorMsg();
+	}
+	
+	/**
+	 * compatablility methods
+	 */
+	public function getAttribute($attribute, $connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->getAttribute($attribute);
+	}
+	
+	public function getAvailableDrivers($connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->getAvailableDrivers();
+	}
+	
+	public function setAttribute($attribute, $value, $connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->setAttribute($attribute, $value);
+	}
+	
+	public function prepare($sql, $connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->setAttribute($sql);
+	}
+	
+	public function exec($sql, $connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->getAttribute($sql);
+	}
+	
+	public function quote($value, $connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return trim($connection->quote($value), "\"'");
+	}
+	
+	public function lastInsertId($connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->lastInsertId();
+	}
+	
+	public function beginTransaction($connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->beginTransaction();
+	}
+	
+	public function commit($connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->commit($attribute);
+	}
+	
+	public function errorCode($connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->errorCode();
+	}
+	
+	public function errorInfo($connection_name='') {
+		$connection = $this->getConnection($connection_name);
+		return $connection->errorInfo();
+	}
+	
+	public function __sleep() {
+		$connection = $this->getConnection($connection_name);
+		return $connection->__sleep();
+	}
+	
+	public function __wakeup() {
+		$connection = $this->getConnection($connection_name);
+		return $connection->__wakeup();
 	}
 	
 }
@@ -201,6 +260,46 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 		
 	public function numCols() {
 		return $this->columnCount();
+	}
+	
+}
+
+
+class A_Db_Pdo_Result {
+	protected $error;
+	protected $errmsg;
+	
+	public function __construct($error, $errmsg) {
+		$this->error = $error;
+		$this->errmsg = $errmsg;
+	}
+		
+	public function isError() {
+		return $this->error;
+	}
+		
+	public function getErrorMsg() {
+		return $this->errmsg;
+	}
+
+	public function fetchRow() {
+		return array();
+	}
+		
+	public function fetchObject() {
+		return array();
+	}
+		
+	public function fetchAll() {
+		return array();
+	}
+		
+	public function numRows() {
+		return 0;
+	}
+		
+	public function numCols() {
+		return 0;
 	}
 	
 }
