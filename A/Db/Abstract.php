@@ -217,16 +217,14 @@ abstract class A_Db_Abstract {
 
 	public function savepoint($savepoint='', $connection_name='') {
 		if ($savepoint) {
-			$connection = $this->getConnection($connection_name);
-			return $connection->query('SAVEPOINT ' . $savepoint);
+			return $this->query('SAVEPOINT ' . $savepoint);
 		}
 	}
 
 	public function commit($connection_name='') {
 		--$this->_transaction_level;
 		if ($this->_transaction_level == 0) {
-			$connection = $this->getConnection($connection_name);
-			$result = $connection->query('COMMIT');
+			$result = $this->query('COMMIT');
 		} else {
 			$result = false;
 		}
@@ -236,8 +234,7 @@ abstract class A_Db_Abstract {
 	public function rollback($savepoint='', $connection_name='') {
 		--$this->_transaction_level;
 		if ($this->_transaction_level == 0) {
-			$connection = $this->getConnection($connection_name);
-			$result = $connection->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
+			$result = $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
 		} else {
 			$result = false;
 		}
