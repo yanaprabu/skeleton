@@ -223,7 +223,7 @@ class A_Controller_Mapper
 	 * 
 	 */
 	public function getRoute($request) {
-		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/', '/[^a-zA-Z0-9\_\-]/');
+		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/D', '/[^a-zA-Z0-9\_\-]/');
 		$this->dir = preg_replace($regex, array(''), $request->get($this->dir_param));
 		if ($this->dir) {
 			$this->dir .= '/';		// paths have trailing slash
