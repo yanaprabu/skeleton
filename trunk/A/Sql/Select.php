@@ -79,18 +79,23 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * Succesive where invocations are added by AND
 	 *
 	 * @see A_Sql_Where for argument description (But you won't find anything...)
-	 * @param mixed $argument1
-	 * @param mixed $argument2
-	 * @param mixed $argument3
+	 * @param mixed $arg1
+	 * @param mixed $arg2
+	 * @param mixed $arg3
 	 * @return self
 	 */
-	public function where($argument1, $argument2=null, $argument3=null) {
+	public function where($arg1=null, $arg2=null, $arg3=null) {
 		if (!$this->pieces['where']) {
 			#require_once 'A/Sql/Where.php';		
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
 		}
-		$this->pieces['where']->addExpression($argument1, $argument2, $argument3);
+		if (isset($arg1)) {
+			$this->pieces['where']->addExpression($arg1, $arg2, $arg3);
+		} else {
+			// no arg clears the where clause
+			$this->pieces['where']->clear();
+		}
 		return $this;		
 	}
     
@@ -199,15 +204,15 @@ class A_Sql_Select extends A_Sql_Statement {
 	/**
 	 * Set select statement JOIN clause
 	 *
-	 * @param mixed $argument1
-	 * @param mixed $argument1
+	 * @param mixed $arg1
+	 * @param mixed $arg1
 	 * @return self
 	 */		
-	public function on($argument1, $argument2=null, $argument3=null) {
+	public function on($arg1, $arg2=null, $arg3=null) {
 		if (!$this->pieces['joins']) {
 			return $this;
 		}
-		$this->pieces['joins']->on($argument1, $argument2, $argument3);
+		$this->pieces['joins']->on($arg1, $arg2, $arg3);
 		return $this;
 	}
 	
@@ -215,19 +220,19 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * Set select statement HAVING clause
 	 *
 	 * Succesive having invocations are added by AND
-	 * @param unknown_type $argument1
-	 * @param unknown_type $argument2
-	 * @param unknown_type $argument3
+	 * @param unknown_type $arg1
+	 * @param unknown_type $arg2
+	 * @param unknown_type $arg3
 	 * @return self
 	 * @question Please elaborate on the arguments
 	 */
-	public function having($argument1, $argument2=null, $argument3=null) {
+	public function having($arg1, $arg2=null, $arg3=null) {
 		if (!$this->pieces['having']) {
 			#require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
 		}
-		$this->pieces['having']->addExpression($argument1, $argument2, $argument3);
+		$this->pieces['having']->addExpression($arg1, $arg2, $arg3);
 		return $this;		
 	}
 	
