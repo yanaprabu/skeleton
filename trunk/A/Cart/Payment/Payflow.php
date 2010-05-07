@@ -22,7 +22,7 @@ class A_Cart_Payment_Payflow
 	protected $response = null;
 	protected $fraud = 'NO';
 	protected $infomsg = '';
-	protected $errmsg = '';
+	protected $errorMsg = '';
 	
 	public function __construct($user='', $passwd='', $partner='', $mode=A_Cart_Payment_Payflow::SERVER_LIVE)
 	{
@@ -222,7 +222,7 @@ class A_Cart_Payment_Payflow
 	}
 	
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**
@@ -332,14 +332,14 @@ class A_Cart_Payment_Payflow
 			$this->checkResponse();
 	    } else {
 	    	$this->response['RESULT'] = -1;
-			$this->errmsg = 'Connection Error.  Please contact Customer Support.';  // Generic error for all results not captured below.
+			$this->errorMsg = 'Connection Error.  Please contact Customer Support.';  // Generic error for all results not captured below.
 		}
 	}	 
 	
 	protected function checkResponse() {
 	
 		$result_code = $this->response['RESULT']; // get the result code to validate.
-		$this->errmsg = 'General Error.  Please contact Customer Support.';  // Generic error for all results not captured below.
+		$this->errorMsg = 'General Error.  Please contact Customer Support.';  // Generic error for all results not captured below.
 	
 		// Part of accepting credit cards or PayPal is to determine what your business rules are.  Basically, what risk are you
 		// willing to take, especially with credit cards.  The code below gives you an idea of how to check the results returned
@@ -362,11 +362,11 @@ class A_Cart_Payment_Payflow
 			// due to invalid account information or ip restriction on the account.  You can verify ip restriction by logging 
 			// into Manager.  See Service Settings >> Allowed IP Addresses.  Lastly it could be you forgot the path "/transaction"
 			// on the URL.
-	        $this->errmsg = "Account configuration issue.  Please verify your login credentials."; 
+	        $this->errorMsg = "Account configuration issue.  Please verify your login credentials."; 
 
 		} elseif ($result_code== 0) {
 			// Example of a message you might want to display with an approved transaction.
-	        $this->errmsg = '';
+	        $this->errorMsg = '';
 	        $this->infomsg = "Your transaction was approved. ";
 			// Even though the transaction was approved, you still might want to check for AVS or CVV2(CSC) prior to
 			// accepting the order.  Do realize that credit cards are approved (charged) regardless of the AVS/CVV2 results.
@@ -388,7 +388,7 @@ class A_Cart_Payment_Payflow
 				// could display message that information is incorrect and redirect user 
 				// to re-enter STREET and ZIP information.  However, there should be some sort of
 				// 3 strikes your out check.
-				$this->errmsg = "Your billing (street) information does not match. Please re-enter."; 
+				$this->errorMsg = "Your billing (street) information does not match. Please re-enter."; 
 				// Here you might want to put in code to flag or void the transaction depending on your needs.
             }
 			if (isset($this->response['AVSZIP']) && ($this->response['AVSZIP'] != "Y")) {
@@ -396,7 +396,7 @@ class A_Cart_Payment_Payflow
 				// could display message that information is incorrect and redirect user 
 				// to re-enter STREET and ZIP information.  However, there should be some sort of
 				// 3 strikes your out check.
-				$this->errmsg = "Your billing (zip) information does not match. Please re-enter."; 
+				$this->errorMsg = "Your billing (zip) information does not match. Please re-enter."; 
 				// Here you might want to put in code to flag or void the transaction depending on your needs.
             }
 			if (isset($this->response['CVV2MATCH']) && ($this->response['CVV2MATCH'] != "Y")) {
@@ -404,18 +404,18 @@ class A_Cart_Payment_Payflow
 				   // could display message that information is incorrect.  Normally, to prevent
 				   // fraud you would not want to tell a customer that the 3/4 digit number on
 				   // the credit card was invalid.
-				$this->errmsg = "Your billing (cvv2) information does not match. Please re-enter."; 
+				$this->errorMsg = "Your billing (cvv2) information does not match. Please re-enter."; 
 				// Here you might want to put in code to flag or void the transaction depending on your needs.
             }
 		} elseif ($result_code == 12) {
 	        // Hard decline from bank.
-	        $this->errmsg = "Your transaction was declined."; 
+	        $this->errorMsg = "Your transaction was declined."; 
 		} else if ($result_code == 13) {  
 	        // Voice authorization required.
-	        $this->errmsg = "Your Transaction is pending. Contact Customer Service to complete your order."; 
+	        $this->errorMsg = "Your Transaction is pending. Contact Customer Service to complete your order."; 
 		} else if ($result_code == 23 || $result_code == 24) {
 	        // Issue with credit card number or expiration date.
-	        $this->errmsg = "Invalid credit card information. Please re-enter."; 
+	        $this->errorMsg = "Invalid credit card information. Please re-enter."; 
 		}
 	
 	    // Using the Fraud Protection Service.
@@ -427,21 +427,21 @@ class A_Cart_Payment_Payflow
 				// Website Payments Pro Payflow Edition - Fraud Protection Services User's Guide.
 	
 				// 125 = Fraud Filters set to Decline. 
-	            $this->errmsg = "Your Transaction has been declined. Contact Customer Service to place your order."; 
+	            $this->errorMsg = "Your Transaction has been declined. Contact Customer Service to place your order."; 
 			} elseif ($result_code == 126) {
 				// One of more filters were triggered.  Here you would check the fraud message returned if you 
 				// want to validate data.  For example, you might have 3 filters set, but you'll allow 2 out of the 
 				// 3 to consider this a valid transaction.  You would then send the request to the server to modify the
 				// status of the transaction.  This outside the scope of this sample.  Refer to the Fraud Developer's Guide.
-	            $this->errmsg = "Your Transaction is Under Review. We will notify you via e-mail if accepted.";
+	            $this->errorMsg = "Your Transaction is Under Review. We will notify you via e-mail if accepted.";
 			} elseif ($result_code == 127) {
 				// 127 = Issue with fraud service.  Manually, approve?
-	            $this->errmsg = "Your Transaction is Under Review. We will notify you via e-mail if accepted."; 
+	            $this->errorMsg = "Your Transaction is Under Review. We will notify you via e-mail if accepted."; 
 			}
 		} 
 	    if(isset($this->response['DUPLICATE'])) {
 			$this->response['RESULT'] = -1;
-			$this->errmsg = 'This is a duplicate of your previous order. ';
+			$this->errorMsg = 'This is a duplicate of your previous order. ';
 		} elseif (isset($this->response['PPREF']) && ($this->response['PENDINGREASON']=='echeck')) {
 			// PayPal transaction
 			$this->infomsg = 'The payment is pending because it was made by an eCheck that has not yet cleared.';

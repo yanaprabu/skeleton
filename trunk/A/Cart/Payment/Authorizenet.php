@@ -18,7 +18,7 @@ class A_Cart_Payment_Authorizenet
 	const SERVER_NONE = 3;
 	const TRXTYPE_SALE = 'S';
 	const TRXTYPE_AUTHORIZATION = 'A';
-	protected $server;	protected $serverlist;	protected $servermode;	protected $delimiter = '|';	protected $transaction;	protected $response = array();	// split on delimiters	protected $response_raw = '';	protected $errmsg;
+	protected $server;	protected $serverlist;	protected $servermode;	protected $delimiter = '|';	protected $transaction;	protected $response = array();	// split on delimiters	protected $response_raw = '';	protected $errorMsg;
 	
 	public function __construct($user='', $passwd='', $partner='', $mode=self::SERVER_LIVE)
 	{

@@ -9,7 +9,7 @@ class A_Template_Xml {
 	protected $data = array();
 	protected $depth = -1;
 	protected $filename = '';
-	protected $errmsg = '';
+	protected $errorMsg = '';
 
 	public function __construct($filename='') {
 		$this->filename = $filename;
@@ -19,7 +19,7 @@ class A_Template_Xml {
 			xml_set_element_handler($this->xml_parser, "_startElement", "_endElement");
 			xml_set_character_data_handler($this->xml_parser, "_characterData");
 		} else {
-			$this->errmsg = 'Error creating xml_parser';
+			$this->errorMsg = 'Error creating xml_parser';
 		}
 	}
 
@@ -49,7 +49,7 @@ class A_Template_Xml {
 			if ($fp) {
 				while ($data = fread($fp, 4096)) {
 				   if (! xml_parse($this->xml_parser, $data, feof($fp))) {
-				       $this->errmsg = sprintf("XML error: %s at line %d", 
+				       $this->errorMsg = sprintf("XML error: %s at line %d", 
 				           xml_error_string(xml_get_error_code($this->xml_parser)), 
 				           xml_get_current_line_number($this->xml_parser));
 						break;
@@ -57,10 +57,10 @@ class A_Template_Xml {
 				}
 				fclose($fp);
 			} else {
-				$this->errmsg = "Error reading RSS data.";
+				$this->errorMsg = "Error reading RSS data.";
 			}
 		} else {
-			$this->errmsg = "No xml_parser";
+			$this->errorMsg = "No xml_parser";
 		}
 	}
 

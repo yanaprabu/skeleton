@@ -118,9 +118,9 @@ public function getPrice ()
     $request .= "&";
     $request .= "49_residential=$ResCom";
 
-    $fp = fsockopen($domain, 80, $error, $errmsg, 30);
+    $fp = fsockopen($domain, 80, $error, $errorMsg, 30);
     if(!$fp) {
-        $cost = "$errmsg ($error)";
+        $cost = "$errorMsg ($error)";
     } else {
         fputs($fp, "GET $request HTTP/1.0\n\n");
         while(!feof($fp)) {

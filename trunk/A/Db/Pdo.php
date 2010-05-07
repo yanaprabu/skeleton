@@ -44,7 +44,7 @@ class A_Db_Pdo extends A_Db_Abstract {
 		if (is_array($config)) {
 			if (!isset($config['phptype'])) {
 				$this->error = 1;
-				$this->errmsg = "config['phptype'] not set. ";
+				$this->errorMsg = "config['phptype'] not set. ";
 				return;
 			}
 			// config element compatablity
@@ -108,7 +108,7 @@ class A_Db_Pdo extends A_Db_Abstract {
 			$this->_sql[] = $sql;			// save history
 			$this->_setError($connection);
 			if (!$result) {
-				$result = new A_Db_Pdo_Result($this->error, $this->errmsg);
+				$result = new A_Db_Pdo_Result($this->error, $this->errorMsg);
 			}
 			return $result;
 		} else {
@@ -137,7 +137,7 @@ class A_Db_Pdo extends A_Db_Abstract {
 		// get error array
 		$errorInfo = $connection->errorInfo();
 		$this->error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
-		$this->errmsg = $errorInfo[2];
+		$this->errorMsg = $errorInfo[2];
 	}
 	
 	/**
@@ -265,11 +265,11 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 
 class A_Db_Pdo_Result {
 	protected $error;
-	protected $errmsg;
+	protected $errorMsg;
 	
-	public function __construct($error, $errmsg) {
+	public function __construct($error, $errorMsg) {
 		$this->error = $error;
-		$this->errmsg = $errmsg;
+		$this->errorMsg = $errorMsg;
 	}
 		
 	public function isError() {
@@ -277,7 +277,7 @@ class A_Db_Pdo_Result {
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 
 	public function fetchRow() {

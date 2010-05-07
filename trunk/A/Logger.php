@@ -8,7 +8,7 @@
 class A_Logger {
 	protected $buffer = '';
 	protected $writers = array();
-	protected $errmsg = '';
+	protected $errorMsg = '';
 	
 	public function __construct($writers=array()) {
 		if ($writers) {
@@ -23,7 +23,7 @@ class A_Logger {
 	}
 	
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	public function addWriter($writer) {
@@ -45,10 +45,10 @@ class A_Logger {
 			}
 			foreach ($this->writers as $writer) {	
 				$writer->write($this->buffer);
-				$this->errmsg .= $writer->getErrorMsg();
+				$this->errorMsg .= $writer->getErrorMsg();
 			}
 		} else {
-			$this->errmsg .= "No log writer. ";
+			$this->errorMsg .= "No log writer. ";
 		}
 	}
 }

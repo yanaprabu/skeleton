@@ -61,7 +61,7 @@ class A_Db_Mysqli extends MySQLi {
 			$obj->affected_rows = $this->affected_rows;
 		}
 		$obj->error = $this->error;
-		$obj->errmsg = $this->error;
+		$obj->errorMsg = $this->error;
 		return $obj;
 	}
 		
@@ -133,7 +133,7 @@ class A_Db_Mysqli_Result {
 	protected $result;
 	protected $affected_rows;
 	public $error;
-	public $errmsg;
+	public $errorMsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;
@@ -152,7 +152,7 @@ class A_Db_Mysqli_Result {
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 
 	/**

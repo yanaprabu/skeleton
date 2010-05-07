@@ -13,7 +13,7 @@ define('A_CART_PAYMENT_PFPRO_TRXTYPE_AUTHORIZATION', 'A');
 
 
 class A_Cart_Payment_Pfpro
-{	protected $certpath = '/usr/local/verisign/payflowpro/linux/certs/';	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $response = null;	protected $errmsg;
+{	protected $certpath = '/usr/local/verisign/payflowpro/linux/certs/';	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $response = null;	protected $errorMsg;
 	
 	public function __construct($user='', $passwd='', $partner='', $mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE)
 	{

@@ -1,8 +1,6 @@
 <?php
-#include_once 'A/Pagination/Adapter/Abstract.php';
-
 /**
- * Datasource access class for pager using ADODB  
+ * Datasource access class for pager using PDO  
  * 
  * @package A_Pagination 
  */

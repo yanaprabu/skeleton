@@ -6,7 +6,7 @@
  */
 
 class A_Http_Download
-{protected $mime_type = 'text/none';protected $encoding = 'none';protected $content_length = 0;protected $source_file = '';protected $target_file = '';protected $errmsg = '';
+{protected $mime_type = 'text/none';protected $encoding = 'none';protected $content_length = 0;protected $source_file = '';protected $target_file = '';protected $errorMsg = '';
 
 /*
  * Set the mime type of the file to be downloaded to be specified in the header
@@ -110,23 +110,23 @@ header("Pragma: public");    //    Stop old IEs saving the download script by mi
 			if ($this->source_file) {
 				header('Content-Length: ' . @filesize($this->source_file));
 				if (@readfile($this->source_file) === false) {
-					$this->errmsg = 'Error reading file ' . $this->source_file . '. ';
+					$this->errorMsg = 'Error reading file ' . $this->source_file . '. ';
 				}
 			} elseif ($this->content_length > 0){
 				header('Content-Length: ' . $this->content_length);
 			}
 		} else {
-			$this->errmsg = 'No MIME type. ';
+			$this->errorMsg = 'No MIME type. ';
 		}
 	} else {
-		$this->errmsg = 'Headers sent. ';
+		$this->errorMsg = 'Headers sent. ';
 	}
-	return $this->errmsg;
+	return $this->errorMsg;
 }
 
 public function isError ()
 {
-	return $this->errmsg;
+	return $this->errorMsg;
 }
 
 

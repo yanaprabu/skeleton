@@ -117,7 +117,7 @@ class A_Controller_Form_Field {
 			if (! $val) {
 				$res = $this->db->query($sql);
 				if ($this->db->isError() ) {
-					$this->errmsg .= $this->db->getErrorMsg() . '. ';
+					$this->errorMsg .= $this->db->getErrorMsg() . '. ';
 				}
 				unset ($val);
 				unset ($txt);

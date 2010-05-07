@@ -32,7 +32,7 @@ class A_Db_MySQL extends A_Db_Abstract {
 			mysql_select_db($config['database'], $link);
 		}
 		$this->error = mysql_errno($link);
-		$this->errmsg = mysql_error($link);
+		$this->errorMsg = mysql_error($link);
 		return $link;
 	}
 		
@@ -44,11 +44,11 @@ class A_Db_MySQL extends A_Db_Abstract {
 			}
 			$result = mysql_select_db($database, $link);
 			$this->error = mysql_errno($link);
-			$this->errmsg = mysql_error($link);
+			$this->errorMsg = mysql_error($link);
 		}
 	}
 		
-	protected function _close($name) {
+	protected function _close($name='') {
 		if (isset($this->_connection[$name])) {
 			mysql_close($this->_connection[$name]);
 		}
@@ -70,11 +70,11 @@ class A_Db_MySQL extends A_Db_Abstract {
 			$result = mysql_query($sql, $link);
 			$this->_sql[] = $sql;			// save history
 			$this->error = mysql_errno($link);
-			$this->errmsg = mysql_error($link);
+			$this->errorMsg = mysql_error($link);
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$obj = new $this->_recordset_class($result, $link, $this->error, $this->errmsg);
+				$obj = new $this->_recordset_class($result, $link, $this->error, $this->errorMsg);
 			} else {
-				$obj = new $this->_result_class($result, $link, $this->error, $this->errmsg);
+				$obj = new $this->_result_class($result, $link, $this->error, $this->errorMsg);
 			}
 			return $obj;
 		} else {
@@ -149,13 +149,13 @@ class A_Db_MySQL_Result {
 	protected $result;
 	protected $link;
 	protected $error;
-	protected $errmsg;
+	protected $errorMsg;
 	
-	public function __construct($result, $link, $error, $errmsg) {
+	public function __construct($result, $link, $error, $errorMsg) {
 		$this->result = $result;
 		$this->link = $link;
 		$this->error = $error;
-		$this->errmsg = $errmsg;
+		$this->errorMsg = $errorMsg;
 	}
 		
 	public function numRows() {
@@ -171,7 +171,7 @@ class A_Db_MySQL_Result {
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**
