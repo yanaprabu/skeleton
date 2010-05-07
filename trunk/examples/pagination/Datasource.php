@@ -1,8 +1,6 @@
 <?php
-#include_once 'A/Pagination/Adapter/Interface.php';
-
 /**
- * Datasource access class for Pager using array
+ * Example Datasource
  *
  * @package A_Pager
  */

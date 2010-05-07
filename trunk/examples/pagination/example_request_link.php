@@ -6,9 +6,6 @@
 <?php
 include 'config.php';
 include dirname(__FILE__) . '/../../A/autoload.php';
-#include 'Datasource.php';
-#include 'A/Pagination/Request.php';
-#include 'A/Pagination/Helper/Link.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -33,8 +30,8 @@ $rows = $pager->getItems();
 
 // create links using helper directly
 $links = '';
-$links .= $link->first('First');
 $links .= $link->previous('Previous');
+$links .= $link->first();
 $links .= $link->range();
 $links .= $link->last();
 $links .= $link->next('Next');

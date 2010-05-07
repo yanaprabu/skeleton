@@ -6,7 +6,7 @@
  * @package A_Template
  */
 
-class A_Template_Include extends A_Template {
+class A_Template_Include extends A_Template_Abstract {
 
 	public function partial($template) {
 		return $this->render(dirname($this->filename) . "/$template.php");

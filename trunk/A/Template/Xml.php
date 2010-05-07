@@ -5,7 +5,7 @@
  * @package A_Template
  */
 
-class A_Template_Xml {
+class A_Template_Xml extends A_Template_Abstract {
 	protected $data = array();
 	protected $depth = -1;
 	protected $filename = '';

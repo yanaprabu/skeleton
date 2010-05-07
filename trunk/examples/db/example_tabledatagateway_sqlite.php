@@ -7,7 +7,7 @@ class Projects extends A_Db_Tabledatagateway
 {
 }
 
-$db = new A_Db_Sqlite($ConfigArray['DBDSN']);
+$db = new A_Db_Sqlite3($ConfigArray['DBDSN_SQLITE']);
 $db->connect();
 if ($db->isError()) die('ERROR: ' . $db->getMessage());
 

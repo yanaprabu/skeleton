@@ -6,10 +6,6 @@
 <?php
 include 'config.php';
 include dirname(__FILE__) . '/../../A/autoload.php';
-#include 'Datasource.php';
-#include 'A/Pagination/Request.php';
-#include 'A/Pagination/Helper/Link.php';
-#include 'A/Pagination/Helper/Order.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -40,8 +36,8 @@ $links = '';
 $links .= $link->first('First');
 $links .= $link->previous('Previous');
 $links .= $link->range();
-$links .= $link->last();
 $links .= $link->next('Next');
+$links .= $link->last('Last');
 
 // display the data
 echo "<div>$links</div>";
