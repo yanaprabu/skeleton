@@ -137,7 +137,9 @@ class A_Db_Pdo extends A_Db_Abstract {
 		// get error array
 		$errorInfo = $connection->errorInfo();
 		$this->error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
-		$this->errorMsg = $errorInfo[2];
+		if(isset($errorInfo[2])){
+			$this->errmsg = $errorInfo[2];			
+		}
 	}
 	
 	/**
