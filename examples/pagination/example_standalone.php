@@ -6,8 +6,6 @@
 <?php
 include 'config.php';
 include dirname(__FILE__) . '/../../A/autoload.php';
-#include 'Datasource.php';
-#include 'A/Pagination/Standalone.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -26,8 +24,8 @@ $rows = $pager->getItems();
 
 // display the paging links ... should this go in a template?
 $links = '';
-$links .= $pager->link()->first('First');
 $links .= $pager->link()->previous('Previous');
+$links .= $pager->link()->first();
 $links .= $pager->link()->range();
 $links .= $pager->link()->last();
 $links .= $pager->link()->next('Next');

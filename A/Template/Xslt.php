@@ -6,7 +6,7 @@
  * @package A_Template
  */
 
-class A_Template_Xslt extends A_Template {
+class A_Template_Xslt extends A_Template_Abstract {
 	protected $filenamexml = '';
 
 	public function __construct($filenamexsl='', $data=array()) {

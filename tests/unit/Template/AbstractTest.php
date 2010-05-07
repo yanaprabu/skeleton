@@ -1,5 +1,9 @@
 <?php
 
+class Template extends A_Template_Abstract {
+
+}
+
 class TemplateTest extends UnitTestCase {
 	
 	function setUp() {
@@ -9,7 +13,7 @@ class TemplateTest extends UnitTestCase {
 	}
 	
 	function testTemplateNotNull() {
-  		$Template = new A_Template();
+  		$Template = new Template();
 		
 		$result = true;
   		$this->assertTrue($result);

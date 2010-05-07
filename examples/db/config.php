@@ -1,16 +1,13 @@
 <?php
 
 $ConfigArray = array(
-/*
 'DBDSN' => array(
-	'phptype' => "mysql",
 	'hostspec' => "localhost",
-	'database' => "a_todo",
+	'database' => "skeleton",
 	'username' => "skeleton",
 	'password' => "skeleton",
 	),
-*/
-'DBDSN' => array(
+'DBDSN_SQLITE' => array(
 	'filename'=>'database.sqlite',
 	'mode'=>0666
 	),
@@ -23,4 +20,3 @@ include dirname(__FILE__) . '/../../A/autoload.php';
 function dump($var, $name='') {
 	echo $name . '<pre>' . print_r($var, 1) . '</pre>';
 }
-?>

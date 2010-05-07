@@ -6,8 +6,6 @@
 <?php
 include 'config.php';
 include dirname(__FILE__) . '/../../A/autoload.php';
-#include 'Datasource.php';
-#include 'A/Pagination/Request.php';
 
 // initialize an array for testing
 for ($i=0; $i<=750; ++$i) {
@@ -28,7 +26,7 @@ $url->set('order_by', $pager->getOrderBy());
 
 $rows = $pager->getItems();
 
-// display the paging links ... should this go in a template?
+// display the paging links ... should this goes in a template?
 $links = array();
 if ($pager->isPage(-1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage(-1))) . "\">Previous</a>";
 if (!$pager->inPageRange($pager->getFirstPage())) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getFirstPage())) . "\">1</a> ... ";
@@ -44,8 +42,9 @@ foreach ($pager->getPageRange() as $page) {
 if (!$pager->inPageRange($pager->getLastPage())) $links[] = " ... <a href=\"" . $url->render(false, array ('page' => $pager->getLastPage())) . "\">" . $pager->getLastPage() . "</a>";
 if ($pager->isPage(+1)) $links[] = "<a href=\"" . $url->render(false, array ('page' => $pager->getPage (+1))) . "\">Next</a>";
 
+// not the template part
 echo '<div>';
-echo implode(' ', $links); // eventually $pager->render() -- or $links->render()?
+echo implode(' ', $links); // build links manually
 echo '</div>';
 
 // display the data

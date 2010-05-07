@@ -1,13 +1,13 @@
 <?php
 include 'config.php';
-include 'A/Db/Sqlite.php';
-include 'A/Db/Tabledatagateway.php';
+#include 'A/Db/Sqlite.php';
+#include 'A/Db/Tabledatagateway.php';
 
 class Projects extends A_Db_Tabledatagateway
 {
 }
 
-$db = new A_Db_Sqlite($ConfigArray['DBDSN']);
+$db = new A_Db_Sqlite3($ConfigArray['DBDSN']);
 $db->connect();
 
 $sql = "CREATE TABLE clients (

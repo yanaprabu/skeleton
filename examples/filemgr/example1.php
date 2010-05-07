@@ -19,12 +19,12 @@
  */
 ini_set('error_reporting', E_ALL);
 include '../../A/autoload.php';
-include '../../A/classes/DirectoryBrowser.php';
+#include '../../A/classes/DirectoryBrowser.php';
 
 $basedir = $_SERVER['DOCUMENT_ROOT'];
 $maxlength = 20;
 
-$browser = new DirectoryBrowser(new A_Http_Request(), $basedir);
+$browser = new A_File_Browser(new A_Http_Request(), $basedir);
 
 $browser->readDir();
 $html = '';

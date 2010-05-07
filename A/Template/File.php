@@ -6,7 +6,7 @@
  * @package A_Template
  */
 
-class A_Template_File extends A_Template {
+class A_Template_File extends A_Template_Abstract {
 	protected $blocks = array();
 	protected $blockprefix = '<!--{';
 	protected $blocksuffix = '}-->';
