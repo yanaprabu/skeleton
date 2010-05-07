@@ -13,7 +13,7 @@ class A_Db_Activerecord extends A_DataContainer {
 	protected $table;
 	protected $key = 'id';
 	protected $select;
-	protected $errmsg = '';
+	protected $errorMsg = '';
 	protected $columns = '*';
 	public $sql = '';
 	protected $num_rows = 0;
@@ -107,14 +107,14 @@ class A_Db_Activerecord extends A_DataContainer {
 		$this->sql = $this->select->render();
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
-			$this->errmsg = $result->getErrorMsg();
+			$this->errorMsg = $result->getErrorMsg();
 			$this->is_loaded = false;
 		} else {
 			$this->_data = $result->fetchRow();
 			$this->num_rows = count($this->_data);
 			$this->is_loaded = true;
 		}
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	public function save($data=array()) {

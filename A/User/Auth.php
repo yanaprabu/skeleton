@@ -333,7 +333,7 @@ class A_User_Auth extends A_User_Access
 	/**
 	 * depricated name for getErrorMsg()
 	 */
-	public function errmsg ($error=0)
+	public function errorMsg ($error=0)
 	{
 		return($this->getErrorMsg($error));
 	}

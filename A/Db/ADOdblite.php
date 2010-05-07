@@ -58,7 +58,7 @@ class A_Db_ADOdblite {
 			$obj = new A_Db_ADOdblite_Result($this->query($sql));
 		}
 		$obj->error = $this->adodb->ErrorNo();
-		$obj->errmsg = $this->adodb->ErrorMsg();
+		$obj->errorMsg = $this->adodb->ErrorMsg();
 		return $obj;
 	}
 		
@@ -136,7 +136,7 @@ class A_Db_ADOdblite {
 class A_Db_ADOdblite_Result {
 	protected $result;
 	public $error;
-	public $errmsg;
+	public $errorMsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;
@@ -155,7 +155,7 @@ class A_Db_ADOdblite_Result {
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**

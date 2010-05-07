@@ -22,7 +22,7 @@ class EditController extends A_Controller_Form {
 	protected $db = null;
 	protected $table = '';
 	protected $table_key = '';
-	protected $errmsg = '';
+	protected $errorMsg = '';
 	
 	public function __construct($db) {
 		$this->db = $db;
@@ -168,7 +168,7 @@ class EditController extends A_Controller_Form {
 		if ($this->id) {
 			$result = $this->db->query("SELECT * FROM {$this->table} WHERE {$this->table_key}='{$this->id}'");
 			if ($this->db->isError()) {
-				$this->errmsg = $this->db->getErrorMsg();
+				$this->errorMsg = $this->db->getErrorMsg();
 			} else {
 				$row = $result->fetchRow();
 			}
@@ -197,13 +197,13 @@ class EditController extends A_Controller_Form {
 #echo "submit<br/>";
 		$config = $locator->get('Config');
 
-		$errmsgs = $this->getErrorMsgs();
-		foreach ($errmsgs as $key => $val) {
+		$errorMsgs = $this->getErrorMsgs();
+		foreach ($errorMsgs as $key => $val) {
 			if (! $val) {
-				unset($errmsgs[$key]);
+				unset($errorMsgs[$key]);
 			}
 		}
-		$this->errmsg = implode(', ', $errmsgs);
+		$this->errorMsg = implode(', ', $errorMsgs);
 		foreach (array_keys($this->params) as $name) {
 			$field = $this->getParameter($name);
 			$html = $this->fieldToHTML($field->type, $field->value);
@@ -242,7 +242,7 @@ class EditController extends A_Controller_Form {
 		}
 		$this->db->query($sql);
 		if ($this->db->isError()) {
-			$this->errmsg = $this->db->getErrorMsg();
+			$this->errorMsg = $this->db->getErrorMsg();
 		} else {
 #			$session->set($this->session_var, $data);
 #			$session->close();
@@ -270,8 +270,8 @@ class EditController extends A_Controller_Form {
 		if ($id) {
 			$result = $this->db->query('SELECT ' . implode(',', array_keys($this->fields)) . " FROM {$this->table} WHERE {$this->table_key}='$id'");
 			if ($this->db->isError()) {
-				$this->errmsg = $this->db->getErrorMsg();
-#echo("{$this->errmsg}<br/>");
+				$this->errorMsg = $this->db->getErrorMsg();
+#echo("{$this->errorMsg}<br/>");
 			} else {
 				$row = $result->fetchRow();
 dump($row, 'ROW: ');
@@ -285,7 +285,7 @@ dump($row, 'ROW: ');
 		} else {
 			$template->set('pagerlinks', '');
 		}
-		$template->set('errmsg', $this->errmsg);
+		$template->set('errorMsg', $this->errorMsg);
 		return $template->render($this->template_block_layout);
 */
 		if ($this->template_file) {
@@ -294,7 +294,7 @@ dump($row, 'ROW: ');
 			$this->template->setTemplate($this->template_text);
 		}
 		$this->template->makeBlocks();
-		$this->template->set('errmsg', $this->errmsg ? 'Errors: '.$this->errmsg : '');
+		$this->template->set('errorMsg', $this->errorMsg ? 'Errors: '.$this->errorMsg : '');
 		$this->template->set('hidden', $this->hidden);
 		$this->template->set('action', $this->base_url);
 

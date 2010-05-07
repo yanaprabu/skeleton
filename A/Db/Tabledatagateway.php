@@ -9,7 +9,7 @@ class A_Db_Tabledatagateway {
 	protected $table = '';
 	protected $key = 'id';
 	protected $columns = '*';
-	protected $errmsg = '';
+	protected $errorMsg = '';
 	public $sql = '';
 	protected $num_rows = 0;
 	protected $insert = null;
@@ -85,7 +85,7 @@ class A_Db_Tabledatagateway {
 			}
 			$this->num_rows = count($allrows);
 		} else {
-			$this->errmsg = $result->getErrorMsg();
+			$this->errorMsg = $result->getErrorMsg();
 		}
 		return $allrows;
 	}
@@ -184,11 +184,11 @@ class A_Db_Tabledatagateway {
 	}
 	
 	public function isError() {
-		return $this->db->isError() || ($this->errmsg != '');
+		return $this->db->isError() || ($this->errorMsg != '');
 	}
 	
 	public function getErrorMsg() {
-		return $this->db->getErrorMsg() . $this->errmsg;
+		return $this->db->getErrorMsg() . $this->errorMsg;
 	}
 	
 	

@@ -46,7 +46,7 @@ class A_Db_Sqlite3 {	protected $dsn = null;	protected $link = null;	protected
 			$obj = new A_Db_sqlite3_Result($this->link, sqlite3_query($this->link, $sql));
 		}
 		$obj->error = sqlite3_last_error($this->link);
-		$obj->errmsg = sqlite3_error_string($obj->error);
+		$obj->errorMsg = sqlite3_error_string($obj->error);
 		return $obj;
 	}
 		
@@ -93,7 +93,7 @@ class A_Db_Sqlite3 {	protected $dsn = null;	protected $link = null;	protected
 }
 
 
-class A_Db_Sqlite3_Result {	protected $result;	public $error;	public $errmsg;
+class A_Db_Sqlite3_Result {	protected $result;	public $error;	public $errorMsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;
@@ -104,7 +104,7 @@ class A_Db_Sqlite3_Result {	protected $result;	public $error;	public $errmsg;
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**

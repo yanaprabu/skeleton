@@ -178,7 +178,7 @@ class A_Http_Upload {	const NOT_UPLOAD_FILE = 1001;
 	
 	public function getFileErrorMsg($n=0, $param='') {
 		$error = $this->getFileOption('error', $n, $param);
-		$errmsg = array(
+		$errorMsg = array(
 			UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the maximum size allowed. ', 
 			UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the maximum size allowed in the form. ', 
 			UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded. ', 
@@ -191,7 +191,7 @@ class A_Http_Upload {	const NOT_UPLOAD_FILE = 1001;
 			self::ERR_FILE_MOVE => 'Permission denied. ',
 			self::ERR_FILE_TYPE => 'File type not allowed. ',
 			);
-		return isset($errmsg[$error]) ? $errmsg[$error] : '';
+		return isset($errorMsg[$error]) ? $errorMsg[$error] : '';
 	}
 	
 	public function isUploadedFile($n=0, $param='') {

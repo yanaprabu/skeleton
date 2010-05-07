@@ -224,11 +224,11 @@ class A_Model {
 		return $separator === null ? $data : implode($separator, $data);
 	}
 
-	public function addErrorMsg($name, $errmsg) {
+	public function addErrorMsg($name, $errorMsg) {
 		if(isset($this->fields[$name])){
-			$this->fields[$name]->addErrorMsg($errmsg);
+			$this->fields[$name]->addErrorMsg($errorMsg);
 		} else {
-			$this->errorMsg[$name] = $errmsg;
+			$this->errorMsg[$name] = $errorMsg;
 		}
 	}
 

@@ -7,7 +7,7 @@
 
 class A_Logger_File {
 	protected $filename = '';
-	protected $errmsg = '';
+	protected $errorMsg = '';
 
 	public function __construct($filename) {
 		$this->filename = $filename;
@@ -22,7 +22,7 @@ class A_Logger_File {
 	}
 	
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	public function write($buffer='') {
@@ -31,12 +31,12 @@ class A_Logger_File {
 			if ($fp) {
 				flock($fp, LOCK_EX);
 				if (fwrite($fp, $buffer) === false) {
-					$this->errmsg .= "Error writing to {$this->filename}. ";
+					$this->errorMsg .= "Error writing to {$this->filename}. ";
 				}
 				flock($fp, LOCK_UN);
 				fclose($fp);
 			} else {
-				$this->errmsg .= "Error opening {$this->filename}. ";
+				$this->errorMsg .= "Error opening {$this->filename}. ";
 			}
 		}
 	}

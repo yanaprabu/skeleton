@@ -11,7 +11,7 @@ class A_DateTime_Timezone {
 	
 	protected $reference;
 	protected $target;
-	protected $errmsg;
+	protected $errorMsg;
 	
 	/*
 	 * Configuration at instatiation with timezone string or null for PHP default timezone
@@ -23,7 +23,7 @@ class A_DateTime_Timezone {
 	    try {
 			$this->reference = new DateTimeZone($name);
 		} catch(Exception $e) {
-			$this->errmsg = $e->getMessage();
+			$this->errorMsg = $e->getMessage();
 		}
 	}
 	
@@ -55,7 +55,7 @@ class A_DateTime_Timezone {
 	    try {
 			$this->target = new DateTimeZone($name);
 		} catch(Exception $e) {
-			$this->errmsg = $e->getMessage();
+			$this->errorMsg = $e->getMessage();
 		}
 	}
 

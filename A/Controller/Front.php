@@ -69,7 +69,7 @@ class A_Controller_Front {
 	 * Error indicator
 	 * @var int
 	 */
-	protected $errmsg = self::NO_ERROR;
+	protected $errorMsg = self::NO_ERROR;
 	
 	/**
 	 * Class constructor
@@ -141,7 +141,7 @@ class A_Controller_Front {
 	 * @return boolean
 	 */
 	public function isError() {
-		return $this->errmsg != ''; 
+		return $this->errorMsg != ''; 
 	}
 	
 	/**
@@ -150,7 +150,7 @@ class A_Controller_Front {
 	 * @return boolean
 	 */
 	public function getErrorMsg() {
-		return $this->errmsg; 
+		return $this->errorMsg; 
 	}
 	
 	/**
@@ -213,7 +213,7 @@ class A_Controller_Front {
 					if (method_exists($controller, $method)) {
 						$route = $controller->{$method}($locator);
 					} else {
-						$this->errmsg = self::NO_METHOD;		// no known method to dispatch
+						$this->errorMsg = self::NO_METHOD;		// no known method to dispatch
 					}
 				}
 	
@@ -228,10 +228,10 @@ class A_Controller_Front {
 				$route = $error_route;
 				$error_route = null;
 			} elseif ($n == 0) {
-				$this->errmsg = self::NO_CLASS;			// cannot load class and not error route 
+				$this->errorMsg = self::NO_CLASS;			// cannot load class and not error route 
 			}
 		}
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**

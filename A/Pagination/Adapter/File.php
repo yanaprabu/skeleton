@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Pagination/Adapter/Abstract.php';
-
 /**
  * Datasource access class for paging through lines in a file  
  * 

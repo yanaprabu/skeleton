@@ -5,7 +5,7 @@
  * @package A_Email 
  */
 
-class A_Email {	protected $connection;	protected $subject = '';	protected $message = '';	protected $headers = '';	protected $extra_headers = '';	protected $to;	protected $from='';	protected $replyto='';	protected $cc = '';	protected $bcc = '';	protected $errmsg = '';	protected $mailer;
+class A_Email {	protected $connection;	protected $subject = '';	protected $message = '';	protected $headers = '';	protected $extra_headers = '';	protected $to;	protected $from='';	protected $replyto='';	protected $cc = '';	protected $bcc = '';	protected $errorMsg = '';	protected $mailer;
 	
 	
 	/**
@@ -72,14 +72,14 @@ class A_Email {	protected $connection;	protected $subject = '';	protected $me
 		if($this->to && $this->from && $this->message){
 			$this->buildHeaders();
 			if ($this->connection->send($this->to, $this->subject, $this->message, $this->headers) == false) {
-				$this->errmsg = $this->connection->getErrorMsg();
+				$this->errorMsg = $this->connection->getErrorMsg();
 			} else {
-				$this->errmsg = '';
+				$this->errorMsg = '';
 			}
 		} else {
-			$this->errmsg = 'No to, from, or message. ';
+			$this->errorMsg = 'No to, from, or message. ';
 		}
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**

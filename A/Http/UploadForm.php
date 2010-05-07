@@ -23,11 +23,15 @@ $code
 // --></script>";
 }
 
-public function formOpen($action='', $method='') {
+public function formOpen($action='', $method='', $attr=array()) {
 	if ($method == '') {
 		$method = 'post';
 	}
-	$str = "<form enctype=\"multipart/form-data\" action=\"$action\" method=\"$method\">\n";
+	$attr_str = '';
+	foreach ($attr as $name => $value) {
+		$attr_str .= " $name=\"$value\"";
+	}
+	$str = "<form enctype=\"multipart/form-data\" action=\"$action\" method=\"$method\"$attr_str>\n";
 	if (is_array($this->hidden) ) {
 		foreach ($this->hidden as $name => $value) {
 			$str .= "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";

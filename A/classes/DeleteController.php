@@ -11,7 +11,7 @@ class DeleteController {
 	protected $base_url = '';
 	protected $fields = array();
 	protected $db = null;
-	protected $errmsg = '';
+	protected $errorMsg = '';
 	
 	public function __construct($db) {
 		$this->db = $db;

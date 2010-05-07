@@ -1,8 +1,6 @@
 <?php
-#include_once 'A/Pagination/Adapter/Interface.php';
-
 /**
- * Datasource access class for pager using ADODB  
+ * Abstract class for pager datasource adapters  
  * 
  * @package A_Pagination 
  */

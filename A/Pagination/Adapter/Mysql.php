@@ -1,8 +1,6 @@
 <?php
-#include_once 'A/Pagination/Adapter/Abstract.php';
-
 /**
- * Datasource access class for pager using Skeleton database connection  
+ * Datasource access class for pager using the mysql extension  
  * 
  * @package A_Pagination 
  */

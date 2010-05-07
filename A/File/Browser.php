@@ -2,9 +2,9 @@
 /**
  * 
  * 
- * @package Misc 
+ * @package A_File 
  */
-class DirectoryBrowser {
+class A_File_Browser {
 protected $param_path = 'browse_path';
 protected $param_area = 'browse_area';
 protected $base_path;

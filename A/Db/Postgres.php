@@ -88,8 +88,8 @@ class A_Db_Postgres {
 		} else {
 			$obj = new A_Db_Postgres_Result(pg_query($sql));
 		}
-		$obj->errmsg = pg_last_error($this->link);
-		$obj->error = $obj->errmsg != '';
+		$obj->errorMsg = pg_last_error($this->link);
+		$obj->error = $obj->errorMsg != '';
 		return $obj;
 	}
 		
@@ -166,7 +166,7 @@ class A_Db_Postgres {
 class A_Db_Postgres_Result {
 	protected $result;
 	public $error;
-	public $errmsg;
+	public $errorMsg;
 	
 	public function __construct($result=null) {
 		$this->result = $result;
@@ -185,7 +185,7 @@ class A_Db_Postgres_Result {
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 	
 	/**

@@ -27,7 +27,7 @@ abstract class A_Db_Abstract {
 	protected $_result_class;
 	
 	protected $error = 0;
-	protected $errmsg = '';
+	protected $errorMsg = '';
 
 	protected $_sql = array();
 	
@@ -118,15 +118,15 @@ abstract class A_Db_Abstract {
 		}
 	}	
 
-	public function _errorHandler($errno, $errmsg) {
-		$this->_errmsg .= $errmsg;
+	public function _errorHandler($errno, $errorMsg) {
+		$this->_errorMsg .= $errorMsg;
 		if ($this->_exception) {
-			throw A_Exception::getInstance($this->_exception, $errmsg);
+			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
 	}	
 
 	public function _getErrorMsg() {
-		return $this->_errmsg;
+		return $this->_errorMsg;
 	}
 
 	public function getSql() {
@@ -251,7 +251,7 @@ abstract class A_Db_Abstract {
 	}
 		
 	public function getErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 		
 }
