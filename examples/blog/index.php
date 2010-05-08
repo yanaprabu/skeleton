@@ -46,13 +46,6 @@ ini_set('error_reporting', $Config->get('ERROR'));
 // Create HTTP Request object
 $Request = new A_Http_Request();
 
-// Create HTTP Response object and set default template and valuesS
-$Response = new A_Http_Response();
-$Response->setTemplate('mainlayout', 'module');
-$Response->set('BASE', $ConfigArray['BASE']);
-$Response->set('title', 'Default Title');
-$Response->set('maincontent', 'Default main content.');
-
 // Start Sessions
 $Session = new A_Session();
 //$Session->start();
@@ -68,6 +61,14 @@ $dbconfig = array(
 		);
 $Db = new A_Db_Pdo($dbconfig) or die ('Error: could not connect to DB');
 	
+// Create HTTP Response object and set default template and valuesS
+$Response = new A_Http_Response();
+$Response->setTemplate('mainlayout', 'module');
+$Response->set('BASE', $ConfigArray['BASE']);
+$Response->set('title', 'Default Title');
+$Response->set('maincontent', 'Default main content.');
+$Response->set('user', $UserSession);
+
 // Add common objects to registry
 $Locator->set('Config', $Config);
 $Locator->set('Request', $Request);
