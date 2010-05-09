@@ -68,7 +68,7 @@ class A_Db_Config_Masterslave {
 		if ($name == '') {
 			$name = $this->_sql_to_name[''];						// get default connection name
 		}
-echo "A_Db_Config_Masterslave::getConfig name=$name<br/>";
+#echo "A_Db_Config_Masterslave::getConfig name=$name<br/>";
 		if (isset($this->_config[$name])) {
 			return array('name'=>$name, 'data'=>$this->chooseConfigData($name));
 		} else {
@@ -88,7 +88,7 @@ echo "A_Db_Config_Masterslave::getConfig name=$name<br/>";
 			}
 			if ($pos || strlen($sql)) {
 				$keyword = strtoupper(substr($sql, 0, $pos));
-echo "A_Db_Config_Masterslave::getConfigBySql keyword=$keyword<br/>";
+#echo "A_Db_Config_Masterslave::getConfigBySql keyword=$keyword<br/>";
 				if (isset($this->_sql_to_name[$keyword])) {		// is there a connection name for this SQL keyword?
 					$name = $this->_sql_to_name[$keyword];
 				}

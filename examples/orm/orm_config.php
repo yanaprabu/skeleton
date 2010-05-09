@@ -10,6 +10,6 @@ $locator->register(array(
 			), 
 		)
 	);
-$db = $locator->get('DB', 'A_Db_Pdo') or die ('Error: could not connect to DB');
+#$db = $locator->get('DB', 'A_Db_Pdo') or die ('Error: could not connect to DB');
 $db = new A_Db_Pdo($config['db']) or die ('Error: could not connect to DB');
 

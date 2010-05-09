@@ -47,13 +47,6 @@ class A_Db_Pdo extends A_Db_Abstract {
 				$this->errorMsg = "config['phptype'] not set. ";
 				return;
 			}
-			// config element compatablity
-			if (isset($config['database'])) {
-				$config['dbname'] = $config['database'];
-			}
-			if (isset($config['hostspec'])) {
-				$config['host'] = $config['hostspec'];
-			}
 			// init attributes array in not in config
 			if (!isset($config['attr'])) {
 				$config['attr'] = array();
@@ -61,7 +54,7 @@ class A_Db_Pdo extends A_Db_Abstract {
 			if (isset($config['persistent'])) {
 				$config['attr'][PDO::ATTR_PERSISTENT] = $config['persistent'];
 			}
-			$dsn = $config['phptype'] . ":host=" . $config['host'] . ";" . "dbname=" . $config['dbname'] . (isset($config['port']) ? ";port={$config['port']}" : '');
+			$dsn = $config['phptype'] . ":host=" . $config['host'] . ";" . "dbname=" . $config['database'] . (isset($config['port']) ? ";port={$config['port']}" : '');
 		} else {
 			$dsn = $config;
 		}
@@ -153,37 +146,37 @@ class A_Db_Pdo extends A_Db_Abstract {
 	 * compatablility methods
 	 */
 	public function getAttribute($attribute, $connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->getAttribute($attribute);
 	}
 	
 	public function getAvailableDrivers($connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->getAvailableDrivers();
 	}
 	
 	public function setAttribute($attribute, $value, $connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->setAttribute($attribute, $value);
 	}
 	
-	public function prepare($sql, $connection_name='') {
-		$connection = $this->getConnection($connection_name);
-		return $connection->setAttribute($sql);
+	public function prepare($sql, $driver_options=array(), $connection_name='') {
+		$connection = $this->connect($connection_name);
+		return $connection->prepare($sql, $driver_options);
 	}
 	
 	public function exec($sql, $connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->getAttribute($sql);
 	}
 	
 	public function quote($value, $connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return trim($connection->quote($value), "\"'");
 	}
 	
 	public function lastInsertId($connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->lastInsertId();
 	}
 	
@@ -196,22 +189,22 @@ class A_Db_Pdo extends A_Db_Abstract {
 	}
 	
 	public function errorCode($connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->errorCode();
 	}
 	
 	public function errorInfo($connection_name='') {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->errorInfo();
 	}
 	
 	public function __sleep() {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->__sleep();
 	}
 	
 	public function __wakeup() {
-		$connection = $this->getConnection($connection_name);
+		$connection = $this->connect($connection_name);
 		return $connection->__wakeup();
 	}
 	
