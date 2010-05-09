@@ -8,7 +8,7 @@ class PostMapper extends A_Orm_DataMapper	{
 		parent::__construct($db, 'Post','posts');
 		$this->map('id')->setKey();
 		$this->map('title');
-		$this->map('body');
+		$this->map('content');
 	}
 
 }

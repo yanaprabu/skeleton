@@ -158,6 +158,7 @@ class A_Orm_DataMapper_Mapping	{
 
 	public function getValueFromObject($object)	{
 		if (method_exists($object, $this->getMethod))	{
+			$params = array();
 			if ($this->property)	{
 				$params[] = $this->property;
 			}

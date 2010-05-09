@@ -16,9 +16,10 @@ abstract class A_Db_Abstract {
 	 * convert connnect keys based on this table
 	 * @var array
 	 */
-	protected $_config_aliases = array(
-									'database'=>'dbname', 
-									'hostname'=>'host',
+	protected $_config_alias = array(
+									'dbname' => 'database', 
+									'hostname' => 'host',
+									'hostspec' => 'host',
 									);
 
 	protected $_exception = '';							// A_Db_Exception
@@ -57,6 +58,12 @@ abstract class A_Db_Abstract {
 	 *
 	 */
 	public function config($config) {
+		// config element compatablity
+		foreach ($this->_config_alias as $alias => $name) {
+			if (isset($config[$alias])) {
+				$config[$name] = $config[$alias];
+			}
+		}
 		if (isset($this->_config)) {
 			$this->_config->config($config);
 		} else {
@@ -64,7 +71,6 @@ abstract class A_Db_Abstract {
 				$this->setException($config['exception']);				
 			}
 			$config_class = isset($config['config_class']) ? $config['config_class'] : $this->_config_class;
-#if (isset($config['config_class'])) echo "Setting config class from config data - A_Db_Abstract::config() config_class=$config_class<br/>";
 			$this->_config = new $config_class ($config);
 		}
 		return $this;

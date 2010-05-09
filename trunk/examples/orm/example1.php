@@ -9,14 +9,14 @@ include('orm_config.php');
 $mapper = new PostMapper($db);
 $post = new Post();
 $post->title = 'New Title';
-$post->body = 'New Body';
+$post->content = 'New content...';
 $post->author_id = 1;
 //$mapper->insert($post);
 $post->id = 2;
 $mapper->update($post);
 $post = $mapper->find(1);
 $post->title = 'Updated Title';
-$post->body = 'Updated Body';
+$post->content = 'Updated content...';
 $mapper->update($post);
 $posts = $mapper->find();
 
@@ -28,5 +28,5 @@ p($user);
 
 <?php foreach ($posts as $post): ?>
 <h1><?php echo $post->title; ?></h1>
-<p><?php echo $post->body; ?></p>
+<p><?php echo $post->content; ?></p>
 <?php endforeach; ?>
