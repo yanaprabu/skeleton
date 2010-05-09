@@ -81,13 +81,12 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	}
 
 	public function findAll()	{
-		$stmt = $this->db->prepare('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences());
-		$stmt->execute();
-		if($stmt->errorCode() != '00000')	{
-			p($stmt->errorInfo());
+		$result = $this->db->query('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences());
+		if($result->isError())	{
+			p($result->getErrorMsg());
 		}
 		$posts = array();
-		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $post)	{
+		foreach ($result->fetchAll() as $post)	{
 			$posts[$post['id']] = $this->load($post);
 		}
 		return $posts;
