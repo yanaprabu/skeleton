@@ -2,73 +2,111 @@
 /**
  * A_Collection
  * 
- * Standard collection class that has get/set/has, iterator and array access
+ * Standard _data class that has get/set/has, iterator and array access
  * 
  * @author Cory Kaufman
  * @package A 
  */
 class A_Collection implements Iterator, ArrayAccess	{
 	
-	protected $collection;
+	protected $_data;
 	
-	public function __construct ($collection = array())	{
-		$this->collection = $collection;
+	public function __construct($_data = array())	{
+		$this->_data = $_data;
 	}
 	
-	public function get ($key)	{
-		return $this->collection[$key];
+	/*
+	 * import
+	 * Description goes here about the function
+	 * @access public
+	 * @param array $source, string $node
+	 * @return integer
+	 */
+    public function import($source, $node='') {
+		if ($source) {
+			if ($node) {
+				$source = array($node => $source);
+			}
+			$this->_expand($this, $source);
+		}
+    }
+
+	/*
+	 * _expand
+	 * Description goes here about the function
+	 * @access protected
+	 * @param object $obj, array $data
+	 * @return integer
+	 */
+    protected function _expand($obj, $data) {
+		if (isset($data)) {
+			foreach ($data as $key => $value) {
+				if (is_array($value)) {
+			        if (! isset($obj->_data[$key])) {
+			        	$obj->_data[$key] = new A_Collection();
+			        }
+					$this->_expand($obj->_data[$key], $value);
+				} else {
+		        	$obj->_data[$key] = $value;
+				}
+			}
+		}
+    }
+
+	public function get($key)	{
+		return $this->_data[$key];
 	}
 	
 	public function add()	{
-		if (func_num_args() == 1)	{
-			$this->collection[] = func_get_arg (0);
+		if(func_num_args() == 1)	{
+			$this->_data[] = func_get_arg(0);
 		} else	{
-			$this->collection[func_get_arg (0)] = func_get_arg (1);
+			$this->_data[func_get_arg(0)] = func_get_arg(1);
 		}
 	}
 	
-	public function remove ($key)	{
-		if ($this->has ($key)) unset ($this->collection[$key]);
+	public function remove($key)	{
+		if($this->has($key)) unset($this->_data[$key]);
 	}
 	
 	public function count()	{
-		return count ($this->collection);
+		return count($this->_data);
 	}
 	
-	public function slice ($offset, $length)	{
-		return new A_Collection (array_slice ($this->collection, $offset, $length, true));
+	public function slice($offset, $length)	{
+		return new A_Collection(array_slice($this->_data, $offset, $length, true));
 	}
 	
 	public function reverse()	{
-		return new A_Collection (array_reverse ($this->collection, true));
+		return new A_Collection(array_reverse($this->_data, true));
 	}
 	
-	public function has ($key)	{	
-		return isset ($this->collection[$key]);
+	public function has($key)	{	
+		return isset($this->_data[$key]);
 	}
 	
 	public function current()	{
-		return current ($this->collection);
+		return current($this->_data);
 	}
 	
 	public function key()	{
-		return key ($this->collection);
+		return key($this->_data);
 	}
 	
 	public function next()	{
-		next ($this->collection);
+		next($this->_data);
 	}
 	
 	public function rewind()	{
-		reset ($this->collection);
+		reset($this->_data);
 	}
 	
 	public function valid()	{
-		return current ($this->collection) !== false;
+		return current($this->_data) !== false;
 	}
 	
 	public function toArray()	{
-		return $this->collection;
+		return $this->_data;
 	}
 	
 	/*
@@ -76,54 +114,54 @@ class A_Collection implements Iterator, ArrayAccess	{
 	 * 
 	 */	 
 	
-	public function join ($glue)	{
-		return join ($glue, $this->collection);
+	public function join($glue)	{
+		return join($glue, $this->_data);
 	}
 	
-	public function order ($sorter)	{
-		uasort ($this->collection, array ($sorter, 'compare'));
+	public function order($sorter)	{
+		uasort($this->_data, array($sorter, 'compare'));
 	}
 	
 /*
-	public function orderBy ($key, $order = 'asc')	{
-		$this->order (new A_Collection_ArraySorter ($key, $order), 'compare'); 
+	public function orderBy($key, $order = 'asc')	{
+		$this->order(new A_Collection_ArraySorter($key, $order), 'compare'); 
 	}
 */
 	
-	public function toString ($glue)	{
-		return $this->join ($glue);
+	public function toString($glue)	{
+		return $this->join($glue);
 	}
 	
-	public function set ($key, $value)	{
-		return $this->add ($key, $value);
+	public function set($key, $value)	{
+		$this->_data[$key] = $value;
 	}
 	
-	public function __get ($key)	{
-		return $this->get ($key);
+	public function __get($key)	{
+		return $this->get($key);
 	}
 	
-	public function __set ($key, $value)	{
-		return $this->add ($key, $value);
+	public function __set($key, $value)	{
+		return $this->add($key, $value);
 	}
 	
 	public function __toString()	{
-		return $this->toString (',');
+		return $this->toString(',');
 	}
 	
-	public function offsetExists ($offset)	{
-		return $this->has ($offset);
+	public function offsetExists($offset)	{
+		return $this->has($offset);
 	}
 	
-	public function offsetGet ($offset)	{
-		return $this->get ($offset);
+	public function offsetGet($offset)	{
+		return $this->get($offset);
 	}
 	
-	public function offsetSet ($offset, $value)	{
-		return $this->add ($offset, $value);
+	public function offsetSet($offset, $value)	{
+		return $this->add($offset, $value);
 	}
 	
-	public function offsetUnset ($offset)	{
-		return $this->remove ($offset);
+	public function offsetUnset($offset)	{
+		return $this->remove($offset);
 	}
 	
 }

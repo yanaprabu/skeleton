@@ -18,4 +18,3 @@ try {
     echo 'Caught exception: ',  $e->getMessage(), '<br/>';
 }
 dump($data);
-
