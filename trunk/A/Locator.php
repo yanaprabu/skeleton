@@ -6,11 +6,17 @@
  */
 
 class A_Locator {
-   protected $_obj = array();
-   protected $_reg = array();
-   protected $_dir = array();
-   protected $_inject = array();
-   protected $_extension = '.php';
+	// standard repository object names
+	const CONFIG = 'Config';
+	const MAPPER = 'Mapper';
+	const REQUEST = 'Request';
+	const RESPONSE = 'Response';
+	
+	protected $_obj = array();
+	protected $_reg = array();
+	protected $_dir = array();
+	protected $_inject = array();
+	protected $_extension = '.php';
 	
 	public function __construct($dir=false) {
 		if ($dir) {
@@ -34,23 +40,26 @@ class A_Locator {
 	}
 
 	/**
-	// allow injecting via constructor or setters
-	$inject = array( 
-		// Do: $foo = new Foo('Boo'); $foo->setBar('Bar'); $foo->setBaz('Baz', 'Jazz');
-		'Foo' => array( 
-			'__construct' => array('Boo'), 
-			'setBar' => array('Bar'), 
-			'setBaz' => array('Baz', 'Jazz'),
-			), 
-		// Do: $bar = new Bar($locator->get('Boo')); which in turn will create Foo as specified above
-		'Bar' => array( 
-			'__construct' => array(array('A_Locator'=>'get, 'name'=>'Boo'), 
-			), 
-		// Do: $bar = new Bar($locator->get('', 'Baz')); which in turn will create Foo as specified above
-		'Bar' => array( 
-			'__construct' => array(array('A_Locator'=>'get, 'name'=>'', 'class'=>'Baz'), 
-			), 
-		); 
+	 * Regiser DI information to allow injecting via constructor or setters. 
+	 * Calls to get() will then use this information to inject as specified. 
+	 * 
+	 * Example:
+		$inject = array( 
+			// Do: $foo = new Foo('Boo'); $foo->setBar('Bar'); $foo->setBaz('Baz', 'Jazz');
+			'Foo' => array( 
+				'__construct' => array('Boo'), 
+				'setBar' => array('Bar'), 
+				'setBaz' => array('Baz', 'Jazz'),
+				), 
+			// Do: $bar = new Bar($locator->get('Boo')); which in turn will create Foo as specified above
+			'Bar' => array( 
+				'__construct' => array(array('A_Locator'=>'get, 'name'=>'Boo'), 
+				), 
+			// Do: $bar = new Bar($locator->get('', 'Baz')); which in turn will create Foo as specified above
+			'Bar' => array( 
+				'__construct' => array(array('A_Locator'=>'get, 'name'=>'', 'class'=>'Baz'), 
+				), 
+			); 
 	*/
 	public function register($dl) {
 		if (is_string($dl)) {
