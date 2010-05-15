@@ -61,28 +61,33 @@ class A_Controller_Action {
 	}
 	 
 	/**
-	 * Queries request for parameters
+	 * Get Response object or gets a parameter
 	 *
-	 * @param string $param
+	 * @param string $name
+	 * @param mixed $filter
 	 * @param mixed $default
-	 * @return mixed
+	 * @return A_Http_Request
 	 */
-	public function _request($param=null, $filter=null, $default=null) {
-		if ($param) {
-			return $this->request->get($param, $filter, $default);
+	public function _request($name=null, $filter=null, $default=null) {
+		if ($name) {
+			return $this->request->get($name, $filter, $default);
 		}
 		return $this->request;
 	}
 	
 	/**
-	 * Reponse getter
-	 *  - Create a new response object if it has not been set
-	 * @return A_Reponse
+	 * Get Response object or set a value
+	 * Creates a new response object if it has not been set
+	 * @param string $name
+	 * @param mixed $value
+	 * @return A_Http_Reponse
 	 */
-	public function _response() {
+	public function _response($name=null, $value=null) {
 		if(!$this->response) {
-			#include_once 'A/Http/Response.php';
 			$this->response = new A_Http_Response();
+		}
+		if($name) {
+			$this->response->set($name, $value);
 		}
 		
 		return $this->response;
