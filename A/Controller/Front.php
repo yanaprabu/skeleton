@@ -166,10 +166,10 @@ class A_Controller_Front {
 			$locator = new A_Locator();
 		}
 		if (! $locator->has('Request')) {
-			#include_once 'A/Http_Request.php';
 			$locator->set('Request', new A_Http_Request());
 		}
 		if ($locator->has('Response')) {
+			// make sure that Response has Locator set so it can use loading and DI
 			$locator->get('Response')->setLocator($locator);
 		}
 		

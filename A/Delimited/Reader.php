@@ -14,7 +14,7 @@
 class A_Delimited_Reader extends A_Delimited_Abstract {
 	protected $filemode = 'r';
 	protected $autoConfigure = false;
-	protected $autoConfigured = false;
+	protected $isAutoConfigured = false;
 	
 	/**
 	 * @param auto - true to check file before reading to determine delimiter
@@ -33,7 +33,7 @@ class A_Delimited_Reader extends A_Delimited_Abstract {
 			$this->open();
 		}
 		if ($this->handle) {
-			if ($this->autoConfigure && !$this->autoConfigured) {
+			if ($this->autoConfigure && !$this->isAutoConfigured) {
 				$this->autoConfig();
 			}
 			if ($this->config->fieldNamesInFirstRow && ! $this->fieldNames) {
@@ -85,7 +85,7 @@ class A_Delimited_Reader extends A_Delimited_Abstract {
 				break;
 			}
 		}
-		$this->autoConfigured = true;
+		$this->isAutoConfigured = true;
 		rewind($this->handle);
 	}
    
