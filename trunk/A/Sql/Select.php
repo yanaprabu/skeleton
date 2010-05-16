@@ -67,8 +67,10 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function from(/* $table_name OR $table_array OR $from_object */) {
 		$args = func_get_args();
-		if ($args) {
-			$this->pieces['tables'] = is_object($args[0]) ? $args[0] : new A_Sql_From($args);
+		if (func_num_args() == 1)	{
+			$this->pieces['tables'] = is_object($args[0]) ? $args[0] : new A_Sql_From($args[0]);
+		} else {
+			$this->pieces['tables'] = new A_Sql_From($args);
 		}
 		return $this;
 	}

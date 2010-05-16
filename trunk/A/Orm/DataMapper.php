@@ -68,28 +68,24 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	
 	public function findById($id)	{
 		$sql = $this->query->select()
-			->columns($this->getSelectExpression())
-			->from($this->getTableReferences())
+			->columns($this->getColumns())
+			->from($this->getTables())
 			->where(array($this->table.'.id'=>$id));
-# removed - what does this do?
-#		foreach($this->getJoins() as $join)	{
-#			$sql->join($join);
-#		}
 		$result = $this->db->query($sql);
-		// TODO - Fix so this is not PDO specific
 		return $this->load($result->fetchRow());
 	}
 
 	public function findAll()	{
-		$result = $this->db->query('SELECT ' . $this->getSelectExpression() . ' FROM ' . $this->getTableReferences());
-		if($result->isError())	{
-			p($result->getErrorMsg());
+		$sql = $this->query->select()
+			->columns($this->getColumns())
+			->from($this->getTables());
+		$result = $this->db->query($sql);
+		$items = array();
+		// TODO This section shouldn't rely on $item['id'] being the primary key
+		foreach ($result->fetchAll() as $item)	{
+			$items[$item['id']] = $this->load($post);
 		}
-		$posts = array();
-		foreach ($result->fetchAll() as $post)	{
-			$posts[$post['id']] = $this->load($post);
-		}
-		return $posts;
+		return $items;
 	}
 
 	public function save($object)	{
@@ -101,19 +97,20 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 	}
 
 	public function insert($object)	{
-		foreach ($this->getTableNames() as $table)	{
-			$data = $this->getData($object, $table);
-			$this->db->query($this->query->insert($table)->values($data));
+		foreach ($this->getTables() as $table)	{
+			$sql = $this->query->insert($table)->values($this->getData($object, $table));
+			$this->db->query($sql);
 			$id = $this->db->lastInsertId();
 		}
 	}
 
 	public function update($object)	{
-		foreach ($this->getTableNames() as $table)	{
+		foreach ($this->getTables() as $table)	{
 			$key = $this->getKey($object, $table);
 			if($key)	{
-				$data = $this->getData($object, $table);
-				$this->db->query($this->query->update($table)->set($data)->where($key));	
+				$values = $this->getData($object, $table);
+				$sql = $this->query->update($table)->set($values)->where($key);
+				$this->db->query($sql);
 			}
 		}
 	}
@@ -122,14 +119,12 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		foreach ($this->getTableNames() as $table)	{
 			$key = $this->getKey($object, $table);
 			if($key)	{
-				$this->db->query($this->query->delete($table)->where(array('id'=>$key)));
+				$sql = $this->query->delete($table)->where($key);
+				$this->db->query($sql);
 			}
 		}
 	}
 
-	/*
-	 * This method needs to use the mappings in order to determine which method/property is indicative of the object having been persisted -Cory
-	 */
 	public function hasBeenPersisted($object)	{
 		if($object->getId())	{
 			return true;
@@ -167,7 +162,7 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		return $data;
 	}
 	
-	public function getTableNames()	{
+	public function getTables()	{
 		$tables = array();
 		if ($this->table) $tables[] = $this->table;
 		foreach ($this->mappings as $mapping) {
@@ -177,27 +172,23 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		}
 		return $tables;
 	}
-	
-	public function getTableReferences() {
-		return join(', ', $this->getTableNames());
-	}
 
-	public function getSelectExpression()	{
-		$fields = array();
+	public function getColumns()	{
+		$columns = array();
 		if (empty ($this->mappings))	{
 			return array('*');
 		}
 		foreach ($this->mappings as $mapping)	{
-			$field = $mapping->getColumn();
+			$column = $mapping->getColumn();
 			if($mapping->getTable())	{
-				$field = $mapping->getTable() . '.' . $field;
+				$column = $mapping->getTable() . '.' . $column;
 			}
 			if($mapping->getAlias())	{
-				$field = $field . ' AS ' . $mapping->getAlias();	
+				$column = $column . ' AS ' . $mapping->getAlias();	
 			}
-			$fields[] = $field;
+			$columns[] = $column;
 		}
-		return join(', ', $fields);
+		return $columns;
 	}
 	
 }
