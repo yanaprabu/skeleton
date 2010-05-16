@@ -3,6 +3,7 @@
 /**
  * Lazy load A_Sql_* classes
  * 
+ * @author Cory Kaufman
  * @package A_Sql 
  */
 
