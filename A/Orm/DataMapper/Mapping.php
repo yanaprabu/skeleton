@@ -166,7 +166,7 @@ class A_Orm_DataMapper_Mapping	{
 		} elseif (property_exists($object, $this->property))	{
 			$value = $object->{$this->property};
 		}
-		return $array;
+		return $value;
 	}
 
 
