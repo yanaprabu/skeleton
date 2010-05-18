@@ -16,14 +16,14 @@ class A_User_Rule_Ingroup {
 	protected $field;
 	protected $delimiter;
 	
-	public function __construct ($level, $forward=array(), $field='access', $delimiter='|') {
-		$this->level = $level;
+	public function __construct ($groups, $forward=array(), $field='access', $delimiter='|') {
+		$this->groups = $groups;
 		$this->forward = $forward;
 		$this->field = $field;
 		$this->delimiter = $delimiter;
 	}
 
-							public function setGroups($groups) {
+	public function setGroups($groups) {
 		$this->groups = $groups;
 		return $this;
 	}
