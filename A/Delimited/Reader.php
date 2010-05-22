@@ -12,7 +12,7 @@
 #include_once 'A/Delimited/Abstract.php';
 
 class A_Delimited_Reader extends A_Delimited_Abstract {
-	protected $filemode = 'r';
+	protected $filemode = 'rb';
 	protected $autoConfigure = false;
 	protected $isAutoConfigured = false;
 	
@@ -36,17 +36,17 @@ class A_Delimited_Reader extends A_Delimited_Abstract {
 			if ($this->autoConfigure && !$this->isAutoConfigured) {
 				$this->autoConfig();
 			}
-			if ($this->config->fieldNamesInFirstRow && ! $this->fieldNames) {
-				$this->fieldNames = fgetcsv($this->handle, $this->maxLineLength, $this->config->fieldDelimiter, $this->config->fieldEnclosure);
+			if ($this->_config['field_names_in_first_row'] && ! $this->fieldNames) {
+				$this->fieldNames = fgetcsv($this->handle, $this->maxLineLength, $this->_config['field_delimiter'], $this->_config['field_enclosure']);
 			}
-			$row = fgetcsv($this->handle, $this->maxLineLength, $this->config->fieldDelimiter, $this->config->fieldEnclosure);
+			$row = fgetcsv($this->handle, $this->maxLineLength, $this->_config['field_delimiter'], $this->_config['field_enclosure']);
 #dump($row, "read: fgetcsv: ");
 			if ($row && is_array($row)) {
 				// not a blank line
 				if ($row[0]) {
 					// strip escaping
-					if ($this->config->fieldEscape) {
-						array_walk($row, array($this, '_escape'), $this->config);
+					if ($this->_config['field_escape']) {
+						array_walk($row, array($this, '_escape'), $this->_config);
 					}
 #dump($row, "read: return: ");
 					return $row;
@@ -81,7 +81,7 @@ class A_Delimited_Reader extends A_Delimited_Abstract {
 		$line = fgets($this->handle, $this->maxLineLength);
 		foreach (array("\t", ',', ';') as $delimiter) {
 			if (substr_count($line, $delimiter)) {
-				$this->config->fieldDelimiter = $delimiter;
+				$this->_config['field_delimiter'] = $delimiter;
 				break;
 			}
 		}
