@@ -139,7 +139,7 @@ class A_Model {
 					foreach($field->rules as $rule ){
 						// check if set to override rule's optional setting
 						if ($field->optional !== null) {
-							$rule->setOptiona($field->optional);
+							$rule->setOptional($field->optional);
 						} 	
 						$validator->addRule($rule);
 					}
