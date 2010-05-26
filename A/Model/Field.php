@@ -9,7 +9,7 @@ class A_Model_Field {
 	// from Input Controller
 	public $name = '';
 	public $value = '';
-	public $optional = false;
+	public $optional = null;		// null means use rules' settings for optional, true/false means override rules' settings
 	public $filters = null;
 	public $rules = null;
 	public $errorMsg = array();

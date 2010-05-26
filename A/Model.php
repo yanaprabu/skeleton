@@ -136,7 +136,11 @@ class A_Model {
 			// run rules for each field
 			foreach ($this->fields as $field) {   	
 				if (isset($field->rules)) {
-					foreach($field->rules as $rule ){ 	
+					foreach($field->rules as $rule ){
+						// check if set to override rule's optional setting
+						if ($field->optional !== null) {
+							$rule->setOptiona($field->optional);
+						} 	
 						$validator->addRule($rule);
 					}
 				}
