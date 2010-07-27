@@ -12,10 +12,10 @@ class A_Controller_Helper_Load {
 	protected $locator;
 	protected $parent;
 	protected $paths = array('app'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
-	protected $dirs = array('helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', );
+	protected $dirs = array('controller'=>'controllers/', 'helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', 'class'=>'');
 	protected $action = null;
 	protected $method = null;
-	protected $suffix = array('model'=>'Model', 'view'=>'View', 'helper'=>'Helper');
+	protected $suffix = array('controller'=>'', 'model'=>'Model', 'view'=>'View', 'helper'=>'Helper', 'class'=>'', );
 	protected $rendererTypes = array('view', 'template');
 	protected $scope;
 	protected $scopePath;
@@ -94,6 +94,11 @@ class A_Controller_Helper_Load {
 		return $this;
 	}
 	
+	public function setSuffix($name, $suffix){
+		$this->suffix[$name] = $suffix;
+		return $this;
+	}
+	
 	public function getErrorMsg() {	
 		return $this->errorMsg;
 	}
@@ -123,7 +128,11 @@ class A_Controller_Helper_Load {
 		if (isset($this->dirs[$type])) {
 			// get class name parameter or use action name or use method name in controller scope for $type/$controller/$action.php
 			$class = isset($args[0]) && $args[0] ? $args[0] : ($this->scope == 'controller' && $this->method ? $this->method : $this->action);
-			if (isset($this->suffix[$type])) {
+			// had a . in name is extension so remove it
+			$length = strpos($class, '.');
+			if ($length) {
+				$class = substr($class, 0, $length);
+			} elseif (isset($this->suffix[$type])) {
 				$length = strlen($this->suffix[$type]);
 				// if a suffix is defined and the end of the action name does not contain it -- append it
 				if ($length && (substr($class, -$length) != $this->suffix[$type])) {
@@ -151,12 +160,23 @@ class A_Controller_Helper_Load {
 				if ($path_parts['dirname'] != '.') {
 					$path .= trim($path_parts['dirname'], '/') . '/';
 				}
+			}
+			// templates are a template filename, not a class name -- need to load/create template class
+			if ($type == 'class') {
+				// lookup the renderer by extension, if given
+				$path_parts = pathinfo($class);
+				// if dir in name the add to path
+				if ($path_parts['dirname'] != '.') {
+					$path .= trim($path_parts['dirname'], '/') . '/';
+				}
+				$class = $path_parts['basename'];
+			}
+			if ($type == 'template') {
 				// if extension found and it is in array, use it
 				$ext = isset($path_parts['extension']) && isset($this->renderClasses[$path_parts['extension']]) ? $path_parts['extension'] : $this->renderExtension; 
 		        // fix by thinsoldier for NT servers that do not return filename
 				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
 
-				#include_once str_replace('_', '/', $this->renderClasses[$ext]) . '.php';
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
 				if (isset($args[1]) && is_array($args[1])) {
@@ -180,6 +200,10 @@ class A_Controller_Helper_Load {
 			}
 			// initialize object
 			if ($obj) {
+				if (method_exists($obj, 'setLocator') && $this->locator) {
+					// set directly so constructor not needed
+					$obj->setLocator($this->locator);
+				}
 				// template and view need passed values set
 				switch ($type) {
 				case 'template':
