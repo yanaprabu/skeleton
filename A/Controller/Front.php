@@ -84,13 +84,13 @@ class A_Controller_Front {
 	}
 	
 	/**
-	 * Add a pre-dispatch filter
+	 * Generic configuration method
 	 *
-	 * @param string $name
-	 * @param object with run($controller) method
+	 * @param string $config
 	 */
-	public function addPreFilter($filter) {
-   		$this->preFilters[] = $filter;
+	public function config($config=array()) {
+   		$this->config = $config;
+   		return $this;
 	}
 	
 	/**
@@ -114,6 +114,16 @@ class A_Controller_Front {
 	public function setMapper($mapper) {
 		return $this->mapper = $mapper;
 		return $this;
+	}
+	
+	/**
+	 * Add a pre-dispatch filter
+	 *
+	 * @param string $name
+	 * @param object with run($controller) method
+	 */
+	public function addPreFilter($filter) {
+   		$this->preFilters[] = $filter;
 	}
 	
 	/**
