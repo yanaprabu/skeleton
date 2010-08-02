@@ -12,6 +12,7 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('password'));
 		$this->addField(new A_Model_Field('email'));
 		$this->addField(new A_Model_Field('active'));
+		$this->addField(new A_Model_Field('access'));
 
 		$this->addRule(new A_Rule_Numeric('id', 'invalid ID'), 'id');
 		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'The firstname is not valid'), 'firstname'); 
@@ -21,7 +22,8 @@ class usersModel extends A_Model {
 		$this->addRule(new A_Rule_Regexp('/[0-9a-zA-Z\-\_\@\.]+/', 'password', 'The password is not valid'), 'password'); 
 		$this->addRule(new A_Rule_Email('email', 'This is not a valid email adress'), 'email');
 		$this->addRule(new A_Rule_Regexp('[^01]', 'active', 'active'), 'active');
-
+		$this->addRule(new A_Rule_Regexp('/[~0-9a-zA-Z\-\_\|]/', 'access', 'User access'), 'access'); 
+		
 		// create a Gateway style datasource for the Model
 		$db = $locator->get('Db');
 		$db->connect();

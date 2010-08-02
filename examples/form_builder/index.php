@@ -8,9 +8,7 @@ $Response = new A_Http_Response();
 $Response->setTemplate('layout');
 $Locator->set('Response', $Response);
 
-$Front = new A_Controller_Front('', array('', 'error', ''), array('home'));
+$Front = new A_Controller_Front('', array('', 'error', ''), array('builder'));
 $Front->run($Locator);
-#$Controller = new FormBuilder($Locator);
-#$Controller->index($Locator);
 
 echo $Response->render();

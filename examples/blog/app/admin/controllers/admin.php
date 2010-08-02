@@ -13,6 +13,7 @@ class admin extends A_Controller_Action {
 	 * calls it to get required groups for this controller
 	 */
 	public function _requireGroups(){
+echo "admin::_requireGroups()<br/>";
 		return array('post','admin');
 	}
 	

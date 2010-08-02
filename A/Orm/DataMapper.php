@@ -29,32 +29,20 @@ class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 		return $this->addJoin(new A_Orm_DataMapper_SQLJoin($table));
 	}
 	
-	public function leftJoin($table1, $table2 = '')	{
-		if (!$table2)	{
-			$table2 = $this->table;
-		}
-		return $this->addJoin(new A_Orm_DataMapper_Join($table1, $table2, 'LEFT'));
+	public function leftJoin($table, $on = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table, $on, 'LEFT'));
 	}
 	
-	public function rightJoin($table1, $table2 = '')	{
-		if (!$table2)	{
-			$table2 = $this->table;
-		}
-		return $this->addJoin(new A_Orm_DataMapper_Join($table1, $table2, 'RIGHT'));
+	public function rightJoin($table, $on = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table, $on, 'RIGHT'));
 	}
 
-	public function innerJoin($table1, $table2 = '')	{
-		if (!$table2)	{
-			$table2 = $this->table;
-		}
-		return $this->addJoin(new A_Orm_DataMapper_Join($table1, $table2, 'INNER'));
+	public function innerJoin($table, $on = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table, $on, 'INNER'));
 	}
 	
-	public function outerJoin($table1, $table2 = '')	{
-		if (!$table2)	{
-			$table2 = $this->table;
-		}
-		return $this->addJoin(new A_Orm_DataMapper_Join($table1, $table2, 'OUTER'));
+	public function outerJoin($table, $on = '')	{
+		return $this->addJoin(new A_Orm_DataMapper_Join($table, $on, 'OUTER'));
 	}
 	
 	public function find()	{

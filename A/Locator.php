@@ -84,7 +84,7 @@ class A_Locator {
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
-		$file = str_replace(array('_','-'), array('/','_'), $class);
+		$file = str_replace(array('_','\\','-'), array('/','/','_'), $class);
 		$class = str_replace('-', '_', $class);
 		
 		if ($dir) {
