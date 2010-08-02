@@ -32,6 +32,7 @@ class A_Http_View {
 		'url'=>'A_Http_Helper_Url',
 	);
 	protected $use_local_vars = true;
+	protected $errorMsg = array();
 	
 	public function __construct($locator=null) {
 		$this->locator = $locator;
@@ -296,4 +297,18 @@ class A_Http_View {
 		}
 	}
 
+	/**
+	 * get error messages
+	 */
+	public function getErrorMsg($separator="\n") {
+		$errormsg = $this->errorMsg;
+		if ($this->load) {
+			$errormsg = array_merge($errormsg, $this->_load($scope)->getErrorMsg(''));
+		}
+		if ($separator) {
+			$errormsg = implode($separator, $this->errorMsg);
+		}
+		return $errormsg;
+	}
+	
 }

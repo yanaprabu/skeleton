@@ -1,9 +1,9 @@
 <?php
 
-class UserTableGateway {
+class UsersModel {
 	protected $users;
 
-	function UserTableGateway() {
+	function __construct($locator=null) {
 		$this->users = array(
 			'user' => array(
 					'userid' => 'user',

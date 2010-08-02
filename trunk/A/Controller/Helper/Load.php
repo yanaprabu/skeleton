@@ -29,7 +29,7 @@ class A_Controller_Helper_Load {
 	protected $renderClass = 'A_Template_Include';
 	protected $renderExtension = 'php';
 	protected $responseSet = false;
-	protected $errorMsg = '';
+	protected $errorMsg = array();
 	
 	public function __construct($locator, $parent, $scope=null){
 		$this->locator = $locator;
@@ -38,10 +38,10 @@ class A_Controller_Helper_Load {
 			if ($mapper) {
 				$this->setMapper($mapper);
 			} else {
-				$this->errorMsg .=  "No Mapper to provide paths. ";
+				$this->errorMsg[] =  "No Mapper to provide paths. ";
 			}
 		} else {
-			$this->errorMsg .=  "No Locator: Action Controller constructor may not be calling self::__construct($locator). ";
+			$this->errorMsg[] =  "No Locator: Action Controller constructor may not be calling self::__construct($locator). ";
 		}
 		$this->parent = $parent;
 		$this->load($scope);
@@ -99,10 +99,16 @@ class A_Controller_Helper_Load {
 		return $this;
 	}
 	
-	public function getErrorMsg() {	
+	/**
+	 * get error messages
+	 */
+	public function getErrorMsg($separator="\n") {
+		if ($separator) {
+			return implode($separator, $this->errorMsg);
+		}
 		return $this->errorMsg;
 	}
-
+	
 	public function response($name='') {	
 		$this->responseSet = true;
 		$this->responseName = $name;
@@ -146,6 +152,7 @@ class A_Controller_Helper_Load {
 			} else {
 				$path = $this->dirs[$type];		// just in case no scopePath
 			}
+#echo "type=$type, class=$class, path=$path<br/>";
 			
 			// helpers take a parent instance as the parameter
 			if ($type == 'helper') {
@@ -188,7 +195,7 @@ class A_Controller_Helper_Load {
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
 					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
 				} else {
-					$this->errorMsg .=  "Locator->loadClass('$class', '$path') failed. ";
+					$this->errorMsg[] = "\$this->load()->$type(" . (isset($args[0]) ? "'{$args[0]}'" : '') . ") call to Locator->loadClass('$class', '$path') failed. Check scope, path and class name. ";
 				}
 			} elseif (file_exists("$path$class.php")) {
 				#include_once "$path$class.php";
@@ -196,7 +203,7 @@ class A_Controller_Helper_Load {
 					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
 				}
 			} else {
-				$this->errorMsg .=  "Could not load $path$class.php. ";
+				$this->errorMsg[] =  "Could not load $path$class.php. ";
 			}
 			// initialize object
 			if ($obj) {
@@ -239,7 +246,7 @@ class A_Controller_Helper_Load {
 					}
 				}
 			} else {
-				$this->errorMsg .= "Did not create $class object. ";
+				$this->errorMsg[] = "Did not create $class object. ";
 			}
 			//reset scope and response
 			$this->scope = null;

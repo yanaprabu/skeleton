@@ -10,7 +10,7 @@
 
 function a_autoload($class) {
 	$dir = (0 === strpos($class, 'A_')) ? dirname(dirname(__FILE__)) . '/' : '';
-	$path = $dir . str_replace(array('_','-'), array('/','_'), $class) . '.php';
+	$path = $dir . str_replace(array('_','\\','-'), array('/','/','_'), $class) . '.php';
 	require $path;
 }
 

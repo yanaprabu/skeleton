@@ -54,15 +54,23 @@ class A_Collection implements Iterator, ArrayAccess	{
     }
 
 	public function get($key)	{
-		return $this->_data[$key];
+		return isset($this->_data[$key]) ? $this->_data[$key] : null;
 	}
 	
-	public function add()	{
-		if(func_num_args() == 1)	{
-			$this->_data[] = func_get_arg(0);
-		} else	{
-			$this->_data[func_get_arg(0)] = func_get_arg(1);
-		}
+	public function set($key, $value)	{
+		$this->_data[$key] = $value;
+	}
+	
+	public function __get($key)	{
+		return $this->get($key);
+	}
+	
+	public function __set($key, $value)	{
+		return $this->set($key, $value);
+	}
+	
+	public function add($key, $value)	{
+		return $this->set($key, $value);
 	}
 	
 	public function remove($key)	{
@@ -130,18 +138,6 @@ class A_Collection implements Iterator, ArrayAccess	{
 	
 	public function toString($glue)	{
 		return $this->join($glue);
-	}
-	
-	public function set($key, $value)	{
-		$this->_data[$key] = $value;
-	}
-	
-	public function __get($key)	{
-		return $this->get($key);
-	}
-	
-	public function __set($key, $value)	{
-		return $this->add($key, $value);
 	}
 	
 	public function __toString()	{

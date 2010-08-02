@@ -98,6 +98,18 @@ class A_Model {
 		}
 	}
 	
+	function getRules() {
+		return $this->rules;
+	}
+	
+	function getFilters() {
+		return $this->filters;
+	}
+	
+	function getFields() {
+		return $this->fields;
+	}
+	
 	public function getSaveValues() {
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {

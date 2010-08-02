@@ -48,6 +48,12 @@ class A_Controller_Action {
 	protected $helpers = array();
 	
 	/**
+	 * array of helpers
+	 * @var object
+	 */
+	protected $errorMsg = array();
+	
+	/**
 	 * constructor called by the Front Controller
 	 * note: called A_Controller_Action and not __construct to avoid Strict warning. 
 	 *       If child implements __construct() the this method ignored
@@ -168,6 +174,20 @@ class A_Controller_Action {
 			$this->view = $this->load($scope)->view($name);
 		}
 		return $this->view;
+	}
+	
+	/**
+	 * get error messages
+	 */
+	public function getErrorMsg($separator="\n") {
+		$errormsg = $this->errorMsg;
+		if ($this->load) {
+			$errormsg = array_merge($errormsg, $this->load->getErrorMsg(''));	// get load errors as an array
+		}
+		if ($separator) {
+			$errormsg = implode($separator, $errormsg);
+		}
+		return $errormsg;
 	}
 	
 }

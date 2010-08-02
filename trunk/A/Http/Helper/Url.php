@@ -1,10 +1,8 @@
 <?php
-#include 'A/Url.php';
 /**
- * 
+ * View helper for URLs
  */
-#class A_Http_View_Helper_Url extends A_Url {
-class A_Http_Helper_Url {
+class A_Http_Helper_Url extends A_Http_Url {
 	protected $locator;
 	protected $protocol = 'http';
 	protected $module = '';

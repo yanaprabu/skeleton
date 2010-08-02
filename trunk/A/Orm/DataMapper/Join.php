@@ -10,15 +10,13 @@
 class A_Orm_DataMapper_Join	{
 
 	public $type;
-	public $table1;
-	public $table2;
-	public $column1;
-	public $column2;
+	public $table;
+	public $on;
 	public $sql;
 	
-	public function __construct($table1, $table2 = '', $type='INNER')	{
-		$this->table1 = $table1;
-		$this->table2 = $table2;
+	public function __construct($table, $on='', $type='INNER')	{
+		$this->table = $table;
+		$this->on = $on;
 		$this->type = $type;
 	}
 
@@ -26,12 +24,12 @@ class A_Orm_DataMapper_Join	{
 		if (func_num_args() == 1)	{
 			$this->on = func_get_arg(0);
 		} elseif (func_num_args() == 2)	{
-			$this->on = $this->table1 . '.' . func_get_arg(0) . ' = ' . $this->table2 . '.' . func_get_arg(1);
+			$this->on = $this->table . '.' . func_get_arg(0) . ' = ' . $this->on . '.' . func_get_arg(1);
 		}
 	}
 	
 	public function generateSQL()	{
-		return $type . ' JOIN ' . $this->table1  . ' ON ' . $this->on;
+		return $type . ' JOIN ' . $this->table  . ' ON ' . $this->on;
 	}
 
 	public function __toString()	{

@@ -11,6 +11,8 @@ $Response = new A_Http_Response();
 $Session = new A_Session();
 $Session->start();
 $UserSession = new A_User_Session($Session);
+$UserSession->getAuth();
+$UserSession->setTimestamp(time());
 
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);

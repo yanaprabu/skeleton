@@ -12,9 +12,9 @@ echo $template->render();
 
 echo '<h3>Template is HTML file</h3>';
 $template = new A_Template_Strreplace('templates/example1.html');
-$template->set('{one}', 'Hello 1');
-$template->set('{two}', 'Happy 2');
-$template->set('{three}', 'Lucky 3');
+$template->set('one', 'Hello 1');
+$template->set('two', 'Happy 2');
+$template->set('three', 'Lucky 3');
 echo $template->render();
 
 echo '<h3>Template is HTML file with blocks</h3>';

@@ -3,16 +3,13 @@
 #include_once 'A/Rule/Length.php';
 #include_once 'A/Template/Strreplace.php';
 
-include_once 'UserTableGateway.php';
-
-class login {
+class login extends A_Controller_Action {
 	protected $usersession;
 
 #	public function __construct($locator) {
 #	}
 	
 	public function index($locator) {
-echo "index()<br/>";
 		$request = $locator->get('Request');
 		$response = $locator->get('Response');
 		$usersession = $locator->get('UserSession');
@@ -37,7 +34,7 @@ echo "index()<br/>";
 				$form->addField($password);
 			
 				if ($form->isValid($request)) {
-					$user = new UserTableGateway();
+					$user = $this->_load()->model('UsersModel');
 					if ($row = $user->findAuthorized($username->value, $password->value)) {
 						$usersession->merge($row);
 						$usersession->login($username->value, $password->value);

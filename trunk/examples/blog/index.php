@@ -1,14 +1,18 @@
 <?php
 
 // Just for debugging 
-function dump($var='', $name='') {
+function dump($var=null, $name='', $now=false) {
 	static $output = '';
 		
-	if ($var) {
-#	echo '<div style="position:absolute;top:0;right:0;width:900px;background:#fff;border:1px solid #ddd;padding:10px;"';
-		$output .= '<div style="clear:both;background:#fff;border:1px solid #ddd;padding:10px;">';
-		$output .= $name . '<pre>' . print_r($var, 1) . '</pre>';
-		$output .= '</div>';
+	if ($now || func_num_args()) {
+		$str = '<div style="clear:both;background:#fff;border:1px solid #ddd;padding:10px;">';
+		$str .= $name . '<pre>' . print_r($var, 1) . '</pre>';
+		$str .= '</div>';
+		if ($now) {
+			echo $str;
+		} else {
+			$output .= $str;
+		}
 	} else {
 		echo $output;
 	}

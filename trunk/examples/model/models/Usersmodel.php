@@ -22,13 +22,6 @@ class UsersModel extends A_Model {
 
 	}
 
-	function getRules() {
-		return $this->rules;
-	}
-	function getFields() {
-		return $this->fields;
-	}
-	
 	function save($data=array()) {
 		dump($data, 'UserModel::save() data=');
 	}

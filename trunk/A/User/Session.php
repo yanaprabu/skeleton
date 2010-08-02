@@ -118,6 +118,21 @@ class A_User_Session {
 		return $this->set($name, $value);
 	}
 
+	public function __call($name, $args) {
+		$prefix = substr($name, 0, 3);
+		$key = strtolower(substr($name, 3));
+		$this->start();
+		switch ($prefix) {
+		case 'get':
+			return isset($this->_data[$key]) ? $this->_data[$key] : null;
+			break;
+		case 'set':
+			$this->_data[$key] = isset($args[0]) ? $args[0] : null;
+			return $this;
+			break;
+		}
+	}
+
 	public function merge($data) {
 		if (is_array($data) && $this->_namespace) {
 			$this->start();

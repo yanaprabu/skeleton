@@ -66,10 +66,16 @@ class A_Controller_Front {
 	protected $routeHistory = array();	
 	
 	/**
+	 * Stack of dispatched controller
+	 * @var array
+	 */
+	protected $controllerHistory = array();	
+	
+	/**
 	 * Error indicator
 	 * @var int
 	 */
-	protected $errorMsg = self::NO_ERROR;
+	protected $errorMsg = array();
 	
 	/**
 	 * Class constructor
@@ -146,24 +152,6 @@ class A_Controller_Front {
 	}
 	
 	/**
-	 * Check if an error has been raised during dispatching
-	 *
-	 * @return boolean
-	 */
-	public function isError() {
-		return $this->errorMsg != ''; 
-	}
-	
-	/**
-	 * return error message
-	 *
-	 * @return boolean
-	 */
-	public function getErrorMsg() {
-		return $this->errorMsg; 
-	}
-	
-	/**
 	 * Start dispatch process
 	 *
 	 * @param A_Locator $locator
@@ -192,6 +180,7 @@ class A_Controller_Front {
 		
 		$n = -1;
 		while ($route) {
+			$error = self::NO_ERROR;
 			$mapper->setRoute($route); // set dir/class/method
 			++$n;
 			$class  = $mapper->getFormattedClass();
@@ -203,7 +192,8 @@ class A_Controller_Front {
 			if ($result) {
 				$class = str_replace('-', '_', $class);
 				$controller = new $class($locator);
-	
+				$this->controllerHistory[] = $controller;	// save history of controller
+				
 				if ($this->preFilters) {
 					// run pre filtes and check if forward
 					$change_route = $this->runFilters($controller, $this->preFilters);
@@ -223,7 +213,7 @@ class A_Controller_Front {
 					if (method_exists($controller, $method)) {
 						$route = $controller->{$method}($locator);
 					} else {
-						$this->errorMsg = self::NO_METHOD;		// no known method to dispatch
+						$error = self::NO_METHOD . ": $method";		// no known method to dispatch
 					}
 				}
 	
@@ -238,10 +228,13 @@ class A_Controller_Front {
 				$route = $error_route;
 				$error_route = null;
 			} elseif ($n == 0) {
-				$this->errorMsg = self::NO_CLASS;			// cannot load class and not error route 
+				$error = self::NO_CLASS . ": $class";			// cannot load class and not error route 
 			}
+			if ($error) {
+				$this->errorMsg[] = $error;
+			} 
 		}
-		return $this->errorMsg;
+		return $error;
 	}
 	
 	/**
@@ -276,4 +269,32 @@ class A_Controller_Front {
 			}
 		}
 	}
+
+	/**
+	 * Check if an error has been raised during dispatching
+	 *
+	 * @return boolean
+	 */
+	public function isError() {
+		return $this->errorMsg != ''; 
+	}
+	
+	/**
+	 * get error messages as array or if sepearator provided as concatenated string
+	 *
+	 * @return array or string
+	 */
+	public function getErrorMsg($separator="\n") {
+		$errormsg = $this->errorMsg;
+		foreach ($this->controllerHistory as $controller) {
+			if (method_exists($controller, 'getErrorMsg')) {
+				$errormsg = array_merge($errormsg, $controller->getErrorMsg(''));	// get load errors as an array
+			}
+		}
+		if ($separator) {
+			$errormsg = implode($separator, $errormsg);
+		}
+		return $errormsg;
+	}
+	
 }
