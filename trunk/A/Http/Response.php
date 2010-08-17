@@ -8,10 +8,6 @@
 
 class A_Http_Response extends A_Http_View {
 
-    public function __construct($name='') {
-    	parent::__construct($name);
-    }
-    
     public function render($template='', $scope='') {
         if ($this->headers) {
         	foreach ($this->cookies as $name => $values) {
