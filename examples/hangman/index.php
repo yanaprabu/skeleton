@@ -256,9 +256,9 @@ class Hangman extends A_Controller_App {
 //-----------------------------------------------------------------------------
 
 $Request = new A_Http_Request();
-$Response = new A_Http_Response();
+$Response = new A_Http_Response($Locator);
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 $controller = new Hangman($Locator, 'start');
 $controller->run($Locator);
-echo $Response->render($Locator);
+echo $Response->render();
