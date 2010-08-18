@@ -72,7 +72,7 @@ class A_Controller_App extends A_Controller_Input {
 		// clear any error messages on init
 		if ($this->no_init_errors && ($this->state_name_init == $state->name)) {
 			foreach (array_keys($this->params) as $field) {
-				$this->params[$field]->error_msg = array();
+				$this->params[$field]->setError(null);
 			}
 		}
 
