@@ -68,8 +68,13 @@ class A_Controller_Input extends A_Controller_Action {
 			foreach ($param_names as $name) {
 				$this->params[$name]->value = $request->get($name);
 				if (isset($this->params[$name]->rules)) {
-					if (! $validator->validate($request, $this->params[$name]->rules)) {
-						$this->params[$name]->setError($validator->getErrorMsg());
+					$validator->clearRules();
+					$validator->addRule($this->params[$name]->rules);
+					if (! $validator->isValid($request)) {
+						$errorMsgs = $validator->getErrorMsg();
+						if (isset($errorMsgs[$name])) {
+							$this->params[$name]->setError($errorMsgs[$name]);
+						}
 						$this->error = true;
 					}
 				}
@@ -140,99 +145,6 @@ class A_Controller_Input extends A_Controller_Action {
 
 	public function isValid() {
 		return ! $this->error;
-	}
-
-}
-
-
-/**
- * Controller class with request filtering and validation
- *
- * @package A_Controller
- */
-class A_Controller_InputParameter {
-	public $name = '';
-	public $value = '';
-	public $filters = null;
-	public $rules = null;
-	public $error_msg = array();
-	public $renderer = null;
-	public $error = false;
-	
-	public function __construct($name) {
-		$this->name = $name;
-	}
-	
-	public function addFilter($filter) {
-		$this->filters[] = $filter;
-	}
-	
-	public function addRule($rule) {
-		$this->rules[] = $rule;
-	}
-	
-	public function getValue() {
-		return $this->value;
-	}
-	
-	public function setValue($value) {
-		$this->value = $value;
-		return $this;
-	}
-	
-	public function setRenderer($renderer) {
-		$this->renderer = $renderer;
-		return $this;
-	}
-	
-	public function getErrorMsg($separator=null) {
-		if ($separator === null) {
-			return $this->error_msg;
-		} else {
-			if (is_array($this->error_msg)) {
-				return implode($separator, $this->error_msg);
-			}
-		}
-	}
-	
-	public function setError($value='') {
-		$this->error_msg = $value;
-		$this->error = true;
-		return $this;
-	}
-	
-	public function isError() {
-		return $this->error;
-	}
-	
-	public function isValid() {
-		return ! $this->error;
-	}
-
-	public function render() {
-		if (isset($this->type['renderer'])) {
-			if (! isset($this->renderer)){
-				$this->renderer = $this->type['renderer'];
-				unset($this->type['renderer']);
-			}
-		}
-		// string is name of class with underscores in loadable convention
-		if (is_string($this->renderer)){
-			// load locator if not loaded
-			#include_once 'A/Locator.php';
-			if (A_Locator::loadClass($this->renderer)) {
-				// instantiate render passing the array of parameters
-				$this->renderer = new $this->renderer();
-			}
-		}
-		if (isset($this->renderer) && method_exists($this->renderer, 'render')) {
-			// set name and value in array passed to renderer
-			$this->type['name'] = $this->name;
-			$this->type['value'] = $this->value;
-			return $this->renderer->render($this->type);
-		}
-		
-		return $this->value;
 	}
 
 }
