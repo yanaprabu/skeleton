@@ -207,23 +207,23 @@ class Hangman extends A_Controller_App {
         $number_rule = new A_Filter_Regexp('/[^0-9]/');
         $letter_rule = new A_Filter_Regexp('/[^A-Z]/');
         
-        $param = new A_Controller_InputParameter('level');
+        $param = new A_Controller_Input_Field('level');
         $param->addFilter($number_rule);
         $this->addParameter($param);
         
-        $param = new A_Controller_InputParameter('word');
+        $param = new A_Controller_Input_Field('word');
         $param->addFilter($letter_rule);
         $this->addParameter($param);
         
-        $param = new A_Controller_InputParameter('guesses');
+        $param = new A_Controller_Input_Field('guesses');
         $param->addFilter($letter_rule);
         $this->addParameter($param);
         
-        $param = new A_Controller_InputParameter('misses');
+        $param = new A_Controller_Input_Field('misses');
         $param->addFilter($number_rule);
         $this->addParameter($param);
 
-        $letter = new A_Controller_InputParameter('letter');
+        $letter = new A_Controller_Input_Field('letter');
         $letter->addFilter($letter_rule);
         $this->addParameter($letter);
         
@@ -243,8 +243,8 @@ class Hangman extends A_Controller_App {
 		$this->addState(new A_Controller_App_State('win', array(new WinView(), 'render')));
 		$this->addState(new A_Controller_App_State('lose', array(new LoseView(), 'render')));
 
-		$this->addTransition(new A_Controller_App_Transition('start', 'lose', new A_Rule_Notnull('giveup', '')));
 		$this->addTransition(new A_Controller_App_Transition('start', 'game', new A_Rule_Notnull('level', '')));
+		$this->addTransition(new A_Controller_App_Transition('start', 'lose', new A_Rule_Notnull('giveup', '')));
 		$this->addTransition(new A_Controller_App_Transition('game', 'lose', new LoseRule($game)));
 		$this->addTransition(new A_Controller_App_Transition('game', 'win', new WinRule($game)));
 	
