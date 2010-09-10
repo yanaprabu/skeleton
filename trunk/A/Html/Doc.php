@@ -146,7 +146,7 @@ format/URI
 	
 	public function ifIE($logic) {
 		if ($logic) {
-			$this->ifIElogic = logic;
+			$this->ifIElogic = $logic;
 		}
 		return $this;
 	}
