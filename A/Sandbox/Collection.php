@@ -20,7 +20,7 @@ class A_Collection implements Iterator, ArrayAccess	{
 		}
 	}
 	
-	function remove ($key)	{
+	function remove($key)	{
 		if ($this->has ($key)) unset ($this->collection[$key]);
 	}
 	

@@ -23,6 +23,7 @@ class A_Http_View {
 	protected $locator = null;
 	protected $load;
 	protected $flash;
+	protected $mapper_name = 'Mapper';		// name in registry
 	protected $paths = array();				// cache array of paths calculated by Mapper
 	protected $helpers = array();
 	protected $helperClass = array(
@@ -160,8 +161,8 @@ class A_Http_View {
 			$template .= '.php';
 		}
 		// if Locator set by FC then we can get the Mapper
-		if ($this->locator) {
-			$mapper = $this->locator->get('Mapper');
+		if (method_exists($this->locator, 'get')) {
+			$mapper = $this->locator->get($this->mapper_name);
 			if ($mapper) {
 				// get paths array if not cached
 				if (! isset($this->paths[$this->template_type])) {
@@ -238,6 +239,17 @@ class A_Http_View {
 
 	public function __set($name, $value) {
 		return $this->set($name, $value);
+	}
+
+	/**
+	 * Allow calls directly to the renderer object's methods
+	 */
+	public function __call($name, $args) {
+		if (method_exists($this->renderer, $name)) {
+			return call_user_func_array(array($this->renderer, $name), $args);
+		}
+		// elseif $name is a helper then load it
+		// else throw an error or exception
 	}
 
 	public function __toString() {

@@ -11,7 +11,8 @@ class A_Session {
 	protected $_namespace;
 	protected $_regenerate;
 	protected $_isstarted = false;
-	
+	protected $_p3p = '';
+		
 	public function __construct($namespace=null, $regenerate=false) {
 		$this->initNamespace($namespace);
 		$this->_regenerate = $regenerate;
@@ -53,12 +54,20 @@ class A_Session {
 		return $this;
 	}
 	
+	public function setP3P($policy='P3P: CP="CAO PSA OUR"') {
+		$this->_p3p = $policy;
+	}
+
 	public function start() {
 		if (session_id() == '') {
-			if (strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
+			$msie = strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE');
+			if ($msie) {
 				session_cache_limiter('must-revalidate');
 			}
 			session_start();
+			if ($msie && $this->_p3p) {
+				header($this->_p3p);
+			}
 			$this->initNamespace();
 			if ($this->_regenerate) {
 				session_regenerate_id();

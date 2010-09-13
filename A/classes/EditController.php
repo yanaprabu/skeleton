@@ -111,7 +111,7 @@ class EditController extends A_Controller_Form {
 			}
 			if (isset($params['name'])) {
 				$n = $params['name'];
-				$formfield[$n] = new A_Controller_FormParameter($params['name']);
+				$formfield[$n] = new A_Controller_Form_Field($params['name']);
 				// add HTML form field parameters for use later
 				if (isset($params['value'])) {
 					$formfield[$n]->setValue($params['value']);

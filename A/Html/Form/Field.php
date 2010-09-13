@@ -65,7 +65,13 @@ class A_Html_Form_Field {
 	 */
 	public function toHidden($attr) {
 		$attr['type'] = 'hidden';
-		return A_Html_Form_Field::toTag('input', $attr);
+		if (isset($attr['print'])) {
+			$print = $attr['value'];
+			unset($attr['print']);
+		} else {
+			$print = '';
+		}
+		return A_Html_Form_Field::toTag('input', $attr) . $print;
 	}
 
 	/*

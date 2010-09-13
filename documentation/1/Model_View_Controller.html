@@ -1,3 +1,43 @@
 <h1>Model View Controller</h1>
 <p class="devnote">Explain the different layers of a modern MVC app here. What are considered best practices?</p>
 <p class="devnote">Note: not sure what overlap there is with Application Flow. Maybe just start writing down one story and see how it can be broken up</p>
+<p>MVC specifies that the application code is divided in to three sepearte parts -- in two layers. The Model is in a lower Domain layer that should be independent from the other parts. The View and Controller are both in the Presentation layer. The Controllers stay focused just on request processing and program flow. The View is focused on only building the response that is sent back to browser. All the "business" or "domain" code is separated out into a separate, lower Model layer with the goal of keeping it independent from the request/response and program flow code. This scheme has proven to make larger, more complex application easier for multiple programmers to maintain.</p>
+
+<h2>Model</h2>
+
+<h2>View</h2>
+
+<h2>Controller</h2>
+<p>The Front Controller and Action Controller patterns are a commonly used in implementatiing of the Controller part of the Model-View-Controller pattern. A Controller is a specific piece of code that deals with request processing and program flow, and providing support code to deal with those things (e.g., forwards). There are three main kinds of Controllers related to this discussion.</p>
+
+<ol>
+	<li>The Page Controller pattern is what it sounds like you are using right now -- that is what is usually called "simple PHP pages" where each page is a specific entry point for the application. Typically each Page Controller includes common code.</li>
+	<li>The Front Controller pattern is where all requests to the application go through a single entry point (PHP script). The has the advantages of centralizing code that is duplicated in Page Controllers. Usually the Front Controller loads and runs (i.e, dispatches) and Action Controller that contains all the page specific code that is in your Page Controllers, but none of the common code which are provided centrally (by the Front Controller, etc.</li>
+	<li>Action Controllers usually follow the Command pattern. The goal is to have them fairly minimal and just focus on the code related to a specific request. Common code is provided to them and therefore can be refactored in a structured way.</li>
+</ol>
+
+<p>Skeleton implements the Front and Action Controller patterns. The Front Controller class is A_Controller_Front. It is instantiated once in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, defaults in the Configuration. </p>
+
+<p>Action Controllers can be plain PHP classes or they can extend the A_Controller_Action class to provide additional commmon functionality. Or you can use you own base Controller class, since no base class is required. In addition, there is a A_Controller_Action_Dispatch class that provides the additional functionality of pre and post filters.</p>
+
+<p>And Action Controller is implemented by creating a file with the same name as the name used to request it. So a "login" Controller would be implemented as:</p>
+<pre class="prettyprint lang-php">
+&lt;?php
+
+class login {
+	
+	function index($locator) {
+	}
+}
+
+class login extends A_Controller_Action {
+	
+	function index($locator) {
+	}
+}
+
+class login extends MyBaseController {
+	
+	function index($locator) {
+	}
+}</pre>

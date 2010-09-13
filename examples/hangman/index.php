@@ -209,23 +209,23 @@ class Hangman extends A_Controller_App {
         
         $param = new A_Controller_Input_Field('level');
         $param->addFilter($number_rule);
-        $this->addParameter($param);
+        $this->addField($param);
         
         $param = new A_Controller_Input_Field('word');
         $param->addFilter($letter_rule);
-        $this->addParameter($param);
+        $this->addField($param);
         
         $param = new A_Controller_Input_Field('guesses');
         $param->addFilter($letter_rule);
-        $this->addParameter($param);
+        $this->addField($param);
         
         $param = new A_Controller_Input_Field('misses');
         $param->addFilter($number_rule);
-        $this->addParameter($param);
+        $this->addField($param);
 
         $letter = new A_Controller_Input_Field('letter');
         $letter->addFilter($letter_rule);
-        $this->addParameter($letter);
+        $this->addField($letter);
         
 		$this->processRequest($request);
 	
