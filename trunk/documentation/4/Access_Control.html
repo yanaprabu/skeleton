@@ -5,7 +5,6 @@
 <p>There are rules provided to do simple level and group access control. The basic way to check if a user is signed-in is:</p>
 <pre class="prettyprint lang-php">
 &lt;?php
-include_once 'A/User/Session.php';
 
 class admin {
 	
@@ -22,11 +21,11 @@ class admin {
 }
 </pre>
 
-<h2>Access Control using Dependency Injection</h2>
-<p>There is another way to do Access Control using a feature of the Front Controller. First you register a method to be executed before the normally dispatched method. This lets you do Dependency Injection. So in index.php you do:</p>
+<h2>Access Control Using Predefined Controller Method</h2>
+<p>There is another way to do Access Control using a feature of the Front Controller. First you register a Pre-Filter to be executed before the normally dispatched method. You then define this method in your controllers and use its return value to forward if access is denied. So in index.php you do:</p>
 
 <pre class="prettyprint lang-php">
-$FrontController->addPreMethod('denyAccess');
+$FrontController->addPreFilter(new A_Controller_Front_Premethod('_denyAccess', array('', 'signin', ''), $Locator));
 </pre>
 <p>This will run a method named denyAccess($locator) in an action -- if it exists. The method does not have to exist, but will be run if it does. If the action returns true, then the error action passed to Front Controller will be run via a forward. The requested action will not run. The denyAccess() method can also return an array that specifies a different action to forward to. </p>
 
@@ -44,7 +43,7 @@ class admin {
 		$this->userdata = $this->usersession->get();
 	}
 	
-	function denyAccess($locator) {
+	function _denyAccess($locator) {
 		$usersession = $locator->get('UserSession');
 		if (! $usersession->isLoggedIn()) {
 			return true;

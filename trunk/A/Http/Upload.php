@@ -4,6 +4,14 @@
  * 
  * @package A_Http 
  */
+/*
+// todo - add the ability to see max sizes and timeouts
+ * ini_set('max_input_time', 120);  
+ini_set('max_execution_time', 120);  
+
+ini_set('post_max_size', '5M');  
+ini_set('upload_max_filesize', '5M');  
+*/
 define('A_HTTP_UPLOAD_NOT_UPLOAD_FILE', 1001);
 define('A_HTTP_UPLOAD_ERR_MAX_SIZE', 1002);
 define('A_HTTP_UPLOAD_ERR_FILE_EXISTS', 1003);

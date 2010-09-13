@@ -14,7 +14,13 @@ class A_Html_Form_Hidden extends A_Html_Tag {
 	public function render($attr=array()) {
 		parent::mergeAttr($attr);
 		parent::defaultAttr($attr, array('type'=>'hidden', 'value'=>''));
-		return parent::render('input', $attr) . (isset($attr['print']) ? $attr['value'] : '');
+		if (isset($attr['print'])) {
+			$print = $attr['value'];
+			unset($attr['print']);
+		} else {
+			$print = '';
+		}
+		return parent::render('input', $attr) . $print;
 	}
 
 }
