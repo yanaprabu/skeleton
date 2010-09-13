@@ -33,13 +33,13 @@ class A_Controller_Input extends A_Controller_Action {
 		$this->rules[$n]['names'] = $names;
 	}
 	
-	public function addParameter($object) {
+	public function addField($object) {
 		if ($object) {
 			$this->params[$object->name] = $object;
 		}
 	}
 	
-	public function getParameter($name) {
+	public function getField($name) {
 		if (isset($this->params[$name])) {
 			return $this->params[$name];
 		}
@@ -115,7 +115,7 @@ class A_Controller_Input extends A_Controller_Action {
 		return $this;
 	}
 
-	public function getParameterVarArray($var) {
+	public function getFieldVarArray($var) {
 		if ($var) {
 			$data = array();
 			foreach (array_keys($this->params) as $field) {
@@ -136,7 +136,7 @@ class A_Controller_Input extends A_Controller_Action {
 	}
 
 	public function getValues() {
-		return $this->getParameterVarArray('value');
+		return $this->getFieldVarArray('value');
 	}
 	
 	public function isError() {

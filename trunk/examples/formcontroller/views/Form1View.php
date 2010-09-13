@@ -11,10 +11,10 @@ function Form1View () {
 		echo 'Form1View: InitHandler: STATE INIT<br/>';
 		$controller = $locator->get('Controller');
 		
-		$param1 = $controller->getParameter('field1');
-		$param2 = $controller->getParameter('field2');
-		$param3 = $controller->getParameter('field3');
-		$param4 = $controller->getParameter('field4');
+		$param1 = $controller->getField('field1');
+		$param2 = $controller->getField('field2');
+		$param3 = $controller->getField('field3');
+		$param4 = $controller->getField('field4');
 		$param1->setValue('15');
 		$param2->value = 'init';
 		$param3->value = 'init';
@@ -26,10 +26,10 @@ function Form1View () {
 		echo 'Form1View: SubmitHandler: STATE SUBMITTED<br/>';
 		$controller = $locator->get('Controller');
 	
-		$param1 = $controller->getParameter('field1');
-		$param2 = $controller->getParameter('field2');
-		$param3 = $controller->getParameter('field3');
-		$param4 = $controller->getParameter('field4');
+		$param1 = $controller->getField('field1');
+		$param2 = $controller->getField('field2');
+		$param3 = $controller->getField('field3');
+		$param4 = $controller->getField('field4');
 		include 'templates/example_form.php';
 	}
 	

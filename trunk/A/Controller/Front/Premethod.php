@@ -28,7 +28,7 @@ class A_Controller_Front_Premethod {
 		if (method_exists($controller, $this->method)) {
 			// pre-execute method if it exists 
 			$change_action = $controller->{$this->method}($this->locator);
-			if ($change_action && ! is_object($change_action)) {
+			if ($change_action && ! is_array($change_action)) {
 				$change_action = $this->change_action;
 			}
 		}

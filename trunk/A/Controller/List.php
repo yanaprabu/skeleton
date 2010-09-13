@@ -13,13 +13,13 @@ class A_Controller_List extends A_Controller_Input {
 	public function __construct($db) {
 		$this->pager = new A_Pager($db);
 	
-		$this->addParameter($param1 = new InputControllerParameter($this->pager->parampagen));
+		$this->addParameter($param1 = new A_Controller_Input_Field($this->pager->parampagen));
 		$parampagen->addFilter(new FilterRegexp('/[^0-9]/', ''));
 	
-		$this->addParameter($paramrecordcount = new InputControllerParameter($this->pager->paramrecordcount));
+		$this->addParameter($paramrecordcount = new A_Controller_Input_Field($this->pager->paramrecordcount));
 		$paramrecordcount->addFilter(new FilterRegexp('/[^0-9]/', ''));
 	
-		$this->addParameter($paramorderby = new InputControllerParameter($this->pager->paramorderby));
+		$this->addParameter($paramorderby = new A_Controller_Input_Field($this->pager->paramorderby));
 		$paramorderby->addFilter(new FilterRegexp('/[^0-9]/', ''));
 	
 	}
