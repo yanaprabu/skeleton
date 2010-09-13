@@ -99,7 +99,14 @@ class A_Html_Doc {
 
 	public function addScript($script, $media='all', $label='') {
 		if ($filename) {
-			$this->scripts[] = array('label'=>$label, 'filename'=>'', 'script'=>$script, 'media'=>$media);
+			$this->_config['scripts'][] = array('label'=>$label, 'filename'=>'', 'script'=>$script, 'media'=>$media);
+		}
+		return $this;
+	}
+	 
+	public function addScriptLink($url, $media='all', $label='') {
+		if ($filename) {
+			$this->_config['script_links'][] = array('label'=>$label, 'filename'=>$url, 'script'=>'', 'media'=>$media);
 		}
 		return $this;
 	}
@@ -111,9 +118,9 @@ class A_Html_Doc {
 	 * @param $label
 	 * @return unknown_type
 	 */
-	public function addLink($type='stylesheet', $href, $media='all', $label='') {
+	public function addLink($href, $type='stylesheet', $media='all', $label='') {
 		if ($href) {
-			$this->scripts[] = array('rel'=>$type, 'label'=>$label, 'href'=>$href, 'media'=>$media);
+			$this->_config['links'][] = array('rel'=>$type, 'label'=>$label, 'href'=>$href, 'media'=>$media);
 		}
 		return $this;
 	}
@@ -139,7 +146,7 @@ format/URI
 	 */
 	public function addMeta($httpequiv, $content, $value='') {
 		if ($content) {
-			$this->meta[] = array('httpequiv'=>$httpequiv, 'content'=>$content, 'value'=>$value);
+			$this->_config['metadata'][] = array('httpequiv'=>$httpequiv, 'content'=>$content, 'value'=>$value);
 		}
 		return $this;
 	}
@@ -174,28 +181,33 @@ format/URI
 		return "<title>{$this->_config['title']}</title>\n";
 	}
 
-	public function renderStyleLinks() {
+	public function renderLinks() {
 		$str = '';
-		if (is_array($this->_config['style_links'])) {
-			foreach ($this->_config['style_links'] as $style) {
+		if (is_array($this->_config['links'])) {
+			foreach ($this->_config['links'] as $style) {
 				$str .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$style['url']}\" media=\"{$style['media']}\"//>\n";
 			}		
 		}
+		return $str;
 	}
 
 	public function renderStyles() {
 		$str = '';
-		if (is_array($this->_config['style_links'])) {
-			foreach ($this->styles as $style) {
-				$str .= "<style type=\"text/css\" media=\"{$style['media']}/>\n{$style['url']}\n</script>\n";
+		if (is_array($this->_config['styles'])) {
+			foreach ($this->_config['styles'] as $media => $styles) {
+				$str .= "<style type=\"text/css\" media=\"{$media}/>\n";
+				foreach ($styles as $style) {
+					$str .= "$style\n";
+				}
+				$str .= "</script>\n";
 			}
 		}
 	}
 
 	public function renderScriptLinks() {
 		$str = '';
-		if (is_array($this->_config['style_links'])) {
-			foreach ($this->_script_links as $url) {
+		if (is_array($this->_config['script_links'])) {
+			foreach ($this->_config['script_links'] as $url) {
 				$str .= "<script type=\"text/javascript\" src=\"$url\"></script>\n";
 			}
 		}
@@ -203,8 +215,8 @@ format/URI
 
 	public function renderScripts() {
 		$str = '';
-		if (is_array($this->_config['style_links'])) {
-			foreach ($this->_script as $script) {
+		if (is_array($this->_config['scripts'])) {
+			foreach ($this->_config['scripts'] as $script) {
 				$str .= "<script type=\"text/javascript\">\n$script\n</script>\n";
 			}
 		}
@@ -212,8 +224,8 @@ format/URI
 
 	public function renderMetadata() {
 		$str = '';
-		if (is_array($this->_config['style_links'])) {
-			foreach ($this->_metadata() as $name => $content) {
+		if (is_array($this->_config['metadata'])) {
+			foreach ($this->_config['metadata'] as $name => $content) {
 				$str .= "<meta name=\"$name\" content=\"$content\">\n";
 			}
 		}
@@ -233,9 +245,6 @@ format/URI
 		$html .= "</head>\n<body>\n";
 		$html .= "</body>\n</html>\n";
 		return $html;
-	}
-
-	public function __call($type, $args) {
 	}
 
 	public function __toString() {
