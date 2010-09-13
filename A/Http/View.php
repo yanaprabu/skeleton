@@ -135,9 +135,11 @@ class A_Http_View {
 		return isset($this->renderer);
 	}
 
-	public function set($name, $value) {
+	public function set($name, $value, $default=null) {
 		if ($value !== null) {
 			$this->data[$name] = $value;
+		} elseif ($default !== null) {
+			$this->data[$name] = $default;
 		} else {
 			unset($this->data[$name]);
 		}
