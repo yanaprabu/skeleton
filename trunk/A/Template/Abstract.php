@@ -76,9 +76,11 @@ abstract class A_Template_Abstract {
 		return (isset($this->data[$name]) ? $this->data[$name] : null);
 	}
 
-	public function set($name, $value) {
+	public function set($name, $value, $default=null) {
 		if ($value !== null) {
 			$this->data[$name] = $value;
+		} elseif ($default !== null) {
+			$this->data[$name] = $default;
 		} else {
 			unset($this->data[$name]);
 		}

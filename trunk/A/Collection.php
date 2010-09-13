@@ -57,8 +57,15 @@ class A_Collection implements Iterator, ArrayAccess	{
 		return isset($this->_data[$key]) ? $this->_data[$key] : null;
 	}
 	
-	public function set($key, $value)	{
-		$this->_data[$key] = $value;
+	public function set($key, $value, $default=null) {
+		if ($value !== null) {
+			$this->_data[$key] = $value;
+		} elseif ($default !== null) {
+			$this->_data[$key] = $default;
+		} else {
+			unset($this->_data[$key]);
+		}
+		return $this;
 	}
 	
 	public function __get($key)	{

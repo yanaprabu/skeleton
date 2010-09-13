@@ -10,14 +10,14 @@ class A_Template_Strreplace extends A_Template_File {
 	protected $tagprefix = '{';
 	protected $tagsuffix = '}';
 	
-    public function set($field, $value) {
+    public function set($field, $value, $default=null) {
 		if (substr($field, 0, 1) != $this->tagprefix) {
 			$field = $this->tagprefix . $field;
 		}
 		if (substr($field, -1, 1) != $this->tagsuffix) {
 			$field .= $this->tagsuffix;
 		}
-    	parent::set($field, $value);
+    	parent::set($field, $value, $default);
 		return $this;
     }
     

@@ -147,15 +147,17 @@ class A_Http_Request {
 		}
 	}
 
-	public function set($name, $value) {
+	public function set($name, $value, $default=null) {
 		if ($value !== null) {
 			$this->data[$name] = $value;
+		} elseif ($default !== null) {
+			$this->data[$name] = $default;
 		} else {
 			unset($this->data[$name]);
 		}
 		return $this;
 	}
-
+	
 	public function has($name) {
 		return isset($this->data[$name]);
 	}

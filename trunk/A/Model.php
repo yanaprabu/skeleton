@@ -199,17 +199,18 @@ class A_Model {
 		return $data;
 	}
 
-	public function set($name, $value) {
+	public function set($name, $value, $default=null) {
 		if (isset($this->fields[$name])) {
 			if ($value !== null) {
 				$this->fields[$name]->value = $value;
 			} else {
-				unset($this->fields[$name]);
+				$this->fields[$name]->value = $default;
+#				unset($this->fields[$name]);
 			}
 		}
 		return $this;
 	}
-
+	
 	public function get($name) {
 		if (isset($this->fields[$name]->value)) {
 			return $this->fields[$name]->value;

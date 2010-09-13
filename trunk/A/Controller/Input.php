@@ -97,17 +97,19 @@ class A_Controller_Input extends A_Controller_Action {
 		return ! $this->error;
 	}
 	
-	public function set($name, $value) {
+	public function set($name, $value, $default=null) {
 		if (isset($this->params[$name])) {
 			if ($value !== null) {
 				$this->params[$name]->value = $value;
+			} elseif ($default !== null) {
+				$this->params[$name] = $default;
 			} else {
 				unset($this->params[$name]);
 			}
 		}
 		return $this;
 	}
-
+	
 	public function get($name) {
 		if (isset($this->params[$name]->value)) {
 			return $this->params[$name]->value;
