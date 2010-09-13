@@ -24,7 +24,7 @@ class A_Controller_Form extends A_Controller_App {
 		return $this;
 	}
 	
-	public function setSubmitParameterName($name) {
+	public function setSubmitFieldName($name) {
 		if ($name) {
 			$this->submit_param_name = $name;
 		}
