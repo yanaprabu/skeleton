@@ -1,21 +1,39 @@
 <?php
 /**
- * Wrap select, insert, update, delete SQL generators in a single inteface  
- * 
- * @package A_Sql 
+ * SQL interface library
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql
+ *
+ * Wrap select, insert, update, delete SQL generators in a single inteface
+ */
 class A_Sql {
 	protected $connection;
 	protected $select = null;
 	protected $insert = null;
 	protected $update = null;
 	protected $delete = null;
-		
+	
+	/**
+	 * __construct
+	 *
+	 * @param mixed $connection MySQL connection to use
+	 */
 	public function __construct($connection=null) {
 		$this->connection = $connection;
 	}
-		
+	
+	/**
+	 * __call
+	 *
+	 * @param mixed $name ???
+	 * @param mixed $args ???
+	 */	
 	public function __call($name, $args) {
 		switch ($name) {
 			case 'select':
