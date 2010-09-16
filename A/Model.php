@@ -1,13 +1,17 @@
 <?php
-#include_once 'A/Filter/Set.php';
-#include_once 'A/Rule/Set.php';
-#include_once 'A/Model/Field.php';
 /**
- * Base class for Models with filtering and validation 
- * 
- * @package A_Model 
+ * Model.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Model
+ *
+ * Base class for Models with filtering and validation
+ */
 class A_Model {
 	protected $datasource = null;	// should be an array() of datasources?
 	protected $fields = array();

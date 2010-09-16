@@ -1,10 +1,17 @@
 <?php
 /**
- * Instantiation of exception objects 
- * 
- * @package A 
+ * Exception.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Exception
+ *
+ * Instantiation of exception objects 
+ */
 class A_Exception {
 
 	public function getInstance($class_or_obj, $message) {

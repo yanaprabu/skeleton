@@ -1,6 +1,6 @@
 <?php
 /**
- * A_DataContainer
+ * DataContainer.php
  *
  * standard container to contain scalars and arrays
  *
@@ -12,8 +12,14 @@
  * @author Christopher Thompson <arborint@sourceforge.net>
  * @library Skeleton
  * @category [color=red]what goes here?[/color]
- * @package A
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  * @version @package_version@
+ */
+
+/**
+ * A_DataContainer
  */
 class A_DataContainer implements Iterator {
 	protected $_data = array();

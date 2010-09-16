@@ -1,10 +1,17 @@
 <?php
 /**
- * JSON encoding and decoding 
- * 
- * @package A_Json 
+ * Json.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Json
+ *
+ * Json encoding and decoding
+ */
 class A_Json {
 	protected $encoded = null;  // holds passed or last encoded JSON strings
 	protected $decoded = null;  // holds passed or last decoded PHP object or array
