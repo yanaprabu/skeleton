@@ -30,6 +30,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` VALUES (1, 'matt', '', 'matt', 'pass', 'matt@mail.com', '1');
 INSERT INTO `users` VALUES (2, 'chris', '', 'chris', 'pass', 'chris@mail.com', '1');
+INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', 'pass', 'jonah@mail.com', '1');
 
 -- --------------------------------------------------------
 
