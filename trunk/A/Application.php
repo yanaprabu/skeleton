@@ -1,11 +1,18 @@
 <?php
 /**
- *  Wrap bootstrap in a class that has configuration settings
- * 
+ * Application.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  * @author John Cartwright
- * @package A 
  */
 
+/**
+ * A_Application
+ *
+ *  Wrap bootstrap in a class that has configuration settings
+ */
 class A_Application {
 	protected $exception;
 	protected $includePath = '';

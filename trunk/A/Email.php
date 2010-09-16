@@ -1,11 +1,30 @@
 <?php
 /**
- * Basic simple and multipart email functionality 
- * 
- * @package A_Email 
+ * Email.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
-class A_Email {	protected $connection;	protected $subject = '';	protected $message = '';	protected $headers = '';	protected $extra_headers = '';	protected $to;	protected $from='';	protected $replyto='';	protected $cc = '';	protected $bcc = '';	protected $errorMsg = '';	protected $mailer;
+/**
+ * A_Email
+ *
+ * Basic simple and multipart email functionality
+ */
+class A_Email {
+	protected $connection;
+	protected $subject = '';
+	protected $message = '';
+	protected $headers = '';
+	protected $extra_headers = '';
+	protected $to;
+	protected $from='';
+	protected $replyto='';
+	protected $cc = '';
+	protected $bcc = '';
+	protected $errorMsg = '';
+	protected $mailer;
 	
 	
 	/**

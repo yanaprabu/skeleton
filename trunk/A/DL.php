@@ -1,10 +1,17 @@
 <?php
 /**
- * Encapsulate a path, class and method in an object 
- * 
- * @package A 
+ * DL.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_DL
+ *
+ * Encapsulate a path, class, and method into an objectZ
+ */
 class A_DL {
 	public $dir = '';
 	public $class = '';

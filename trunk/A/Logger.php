@@ -1,10 +1,17 @@
 <?php
 /**
- * Log to file or provided writer object
- * 
- * @package A_Logger 
+ * Logger.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Logger
+ *
+ * Log to file or provided writer object
+ */
 class A_Logger {
 	protected $buffer = '';
 	protected $writers = array();

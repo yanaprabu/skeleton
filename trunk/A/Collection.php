@@ -1,11 +1,17 @@
 <?php
 /**
+ * Collection.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman
+ */
+
+/**
  * A_Collection
  * 
  * Standard _data class that has get/set/has, iterator and array access
- * 
- * @author Cory Kaufman
- * @package A 
  */
 class A_Collection implements Iterator, ArrayAccess	{
 	

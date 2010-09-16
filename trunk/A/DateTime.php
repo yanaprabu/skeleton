@@ -1,6 +1,21 @@
 <?php
 /**
- * Date & time functionality 
+ * DateTime.php
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author Eran Galt, Cory Kaufman, Christopher Thompson, Cliff Ingham
+ */
+
+/**
+ * A_DateTime
+ *
+ * Date and time functionality
+ */
+
+
+/* FUNCTIONS IN CLASS
  *
 DateTime class methods:
 DateTime::__construct  ([ string $time  [, DateTimeZone $timezone  ]] )
@@ -24,8 +39,6 @@ DateTimeZone::listIdentifiers()
 date_sub  ( DateTime $object  , DateRange $range  )
 
  *
- * @package A_Datetime
- * @author Eran Galt, Cory Kaufman, Christopher Thompson, Cliff Ingham
  */
 
 class A_DateTime extends DateTime {
