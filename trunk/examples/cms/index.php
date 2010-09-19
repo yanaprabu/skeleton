@@ -37,8 +37,8 @@ $Locator = new A_Locator();
 $Locator->autoload();
 
 // Load application config data
-$ConfigIni = new A_Config_Ini('config/example.ini', 'production');
-$Config = $ConfigIni->loadFile();
+$Config = new A_Config_Ini('config/example.ini', 'production');
+$Config->loadFile();
 
 // import base config array into config object
 $Config->import($ConfigArray);

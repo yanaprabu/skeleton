@@ -3,6 +3,6 @@ include 'config.php';
 include '../../A/autoload.php';
 
 $config = new A_Config_Xml('example1.xml');
-$data = $config->loadFile();
+$config->loadFile();
 
-dump($data);
+dump($config);

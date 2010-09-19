@@ -16,7 +16,7 @@ abstract class A_Config_Abstract extends A_Collection {
 	/**
 	 *
 	 */
-	public function __construct($filename, $section='', $exception=false) {
+	public function __construct($filename, $section='', $exception=null) {
 		$this->_filename = $filename;
 		$this->_section = $section;
 		$this->_exception = $exception;
@@ -33,7 +33,21 @@ abstract class A_Config_Abstract extends A_Collection {
 	/**
 	 *
 	 */
-	public function loadFile() {
+	public function setException($exception=null) {
+		$this->_exception = $exception;
+		return $this;
+	}
+
+	/**
+	 *
+	 */
+	public function loadFile($filename='', $section='') {
+		if ($filename) {
+			$this->_filename = $filename;
+		}
+		if ($section) {
+			$this->_section = $section;
+		}
 		set_error_handler(array($this, 'errorHandler'));
 		$data = $this->_loadFile();
 		restore_error_handler();

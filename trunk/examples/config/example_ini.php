@@ -5,16 +5,16 @@ include 'config.php';
 include '../../A/autoload.php';
 
 $config = new A_Config_Ini('example1.ini', '');
-$data = $config->loadFile();
-if ($data === false) {
+$config->loadFile();
+if ($config->isError()) {
 	echo "Error found: loading file<br/>";
 }
-dump($data);
+dump($config);
 
 $config = new A_Config_Ini('example1.ini', '', new Exception('Ini file error.'));
 try {
-	$data = $config->loadFile();
+	$config->loadFile();
 } catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), '<br/>';
 }
-dump($data);
+dump($config);
