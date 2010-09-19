@@ -1,3 +1,132 @@
 <h1>Configuration</h1>
 
-<p class="devnote">Which way to configure an app are there? How do they work? Give examples.</p>
+<p>Configuration files allow you to change the way the framework and your application behave.</p>
+<p class="devnote">Is this accurate?</p>
+
+<p>There are several options for application configuration, and this document will cover those.</p>
+
+<h2>PHP Configuration</h2>
+
+<p>This solution allows you to create a normal PHP file that declares a special multi-dimensional array containing the configuration required by the framework.</p>
+
+<h3>Example PHP Config</h3>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+$ConfigArray = array(
+'DBDSN' => array(
+    'phptype' => 'mysql',
+    'hostspec' => 'localhost',
+    'database' => 'xxxx',
+    'username' => 'xxxx',
+    'password' => 'xxxx',
+	),
+
+'LIB' => '../../',
+'APP' => './app/',
+'BASE' => 'http://www.mydomain.com/',
+);
+?&gt;
+</pre>
+
+<p>This file must be passed to a new A_Config_Php instance like so.</p>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+// ...
+$Config = new A_Config_Php();
+$Config->loadFile('path/to/config/file.php');
+// ...
+?&gt;
+</pre>
+
+<p>Remember, this file is imported with include(), so you can put other configuration related PHP here also.  But wait, there's more: you can also put custom settings into the main config array that can be read from the A_Config_Php object by your application.</p>
+
+<h2>INI Configuration</h2>
+
+<p>INI gives you a very neat, standardized configuration solution.  INI is basicly a text file specifically formatted to be parsed for data.</p>
+
+<h3>Example INI Config</h3>
+
+<pre class="prettyprint lang-ini">
+[production]
+phptype = mysql
+hostspec = 127.0.0.1
+database = skeleton
+username = skeleton
+password = skeleton
+ERROR = E_ALL
+
+[development]
+one = 4
+two = 5
+three = 6
+ERROR = E_ALL|E_STRICT
+</pre>
+
+<p>This file must be passed to a new A_Config_Ini object.  The syntax is the same as PHP.  This method can use custom option parameters.</p>
+<p class="devnote">Should this be documented further?</p>
+
+<h2>XML Configuration</h2>
+
+<p class="devnote">Needs explanation paragraph</p>
+
+<h3>Example XML config file.</h3>
+
+<pre class="prettyprint lang-xml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xml&gt;
+	&lt;a0&gt;North by Northwest&lt;/a0&gt;
+	&lt;Casablanca&gt;
+		&lt;b0&gt;Jane Doe&lt;/b0&gt;
+		&lt;b1&gt;77&lt;/b1&gt;
+	&lt;/Casablanca&gt;
+	&lt;Notorious&gt;
+		&lt;name&gt;Jane Doe&lt;/name&gt;
+		&lt;age&gt;77&lt;/age&gt;
+	&lt;/Notorious&gt;
+	&lt;name&gt;John Smith&lt;/name&gt;
+	&lt;age&gt;33&lt;/age&gt;
+	&lt;a1&gt;milk&lt;/a1&gt;
+	&lt;a2&gt;pumpkin pie&lt;/a2&gt;
+	&lt;a3&gt;eggs&lt;/a3&gt;
+	&lt;a4&gt;juice&lt;/a4&gt;
+	&lt;color&gt;Lemon yellow&lt;/color&gt;
+	&lt;size&gt;100&lt;/size&gt;
+&lt;/xml&gt;
+</pre>
+
+<p>The XML file must be passed to a new A_Config_Xml instance just like PHP.</p>
+
+<h2>YAML Configuration</h2>
+
+<p class="devnote">Needs explanation paragraph</p>
+
+<h3>Example YAML Configuration</h3>
+
+<pre class="prettyprint lang-yaml">
+--- # Favorite movies, conventional  block format uses a dash to begin a new item in list 
+- North by Northwest
+-
+	- Jane Jones
+	- 44
+
+Casablanca :
+	- Jane Doe
+	- 77
+Notorious : 
+	name: John Doe
+	age: 66
+
+--- # Block
+name: John Smith
+age: 33
+
+--- # Shopping list, optional inline format is delimited by comma+space and enclosed in brackets.
+[milk, pumpkin pie, eggs, juice]
+
+--- # Inline
+{color: "Lemon yellow", size: 100}
+</pre>
+
+<p>Again, this must be passed to a new A_Config_Yaml instance just like the other configuration objects.</p>
