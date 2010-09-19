@@ -16,7 +16,7 @@ abstract class A_Config_Abstract extends A_Collection {
 	/**
 	 *
 	 */
-	public function __construct($filename, $section='', $exception=null) {
+	public function __construct($filename='', $section='', $exception=null) {
 		$this->_filename = $filename;
 		$this->_section = $section;
 		$this->_exception = $exception;
