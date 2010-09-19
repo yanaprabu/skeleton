@@ -6,10 +6,9 @@
  * @package A_Config
  */
 
-abstract class A_Config_Abstract {
+abstract class A_Config_Abstract extends A_Collection {
 	protected $_filename;
 	protected $_section;
-	protected $_collectionClass = 'A_Config_Collection';
 	protected $_exception;
 	protected $_error = 0;
 	protected $_errorMsg = '';
@@ -45,8 +44,8 @@ abstract class A_Config_Abstract {
 		|| ($this->_section && !isset($data[$this->_section]))) {
 			return false;
 		}
-	
-		return new $this->_collectionClass ($this->_section ? $data[$this->_section] : $data);
+		$this->_data = ($this->_section ? $data[$this->_section] : $data);
+		return $this;
 	}
 	
 	/**
@@ -72,5 +71,15 @@ abstract class A_Config_Abstract {
 	 */
 	public function getErrorMsg() {
 		return $this->_errorMsg;
+	}
+	/**
+	 * Pass configuration data registered by class name to an object's config() method
+	 */
+	
+	protected function configure($obj) {
+		$class = get_class($obj);
+		if (($class !== false) && $this->has($class) && method_exists($obj, 'config')) {
+			$obj->config($this->get($class));
+		}
 	}
 }

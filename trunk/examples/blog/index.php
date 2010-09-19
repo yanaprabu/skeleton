@@ -17,7 +17,6 @@ function dump($var=null, $name='', $now=false) {
 		echo $output;
 	}
 }
-	
 
 // Basic config data
 $file_path = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -38,8 +37,8 @@ $Locator = new A_Locator();
 $Locator->autoload();
 
 // Load application config data
-$ConfigIni = new A_Config_Ini('config/example.ini', 'production');
-$Config = $ConfigIni->loadFile();
+$Config = new A_Config_Ini('config/example.ini', 'production');
+$Config->loadFile();
 
 // import base config array into config object
 $Config->import($ConfigArray);
