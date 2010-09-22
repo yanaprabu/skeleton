@@ -9,7 +9,7 @@
  * 'mode'
  */
 
-class A_Db_Sqlite3 {	protected $dsn = null;	protected $link = null;	protected $sequenceext = '_seq';	protected $sequencestart = 1;
+class A_Db_Sqlite3 extends A_Db_Abstract {	protected $dsn = null;	protected $link = null;	protected $sequenceext = '_seq';	protected $sequencestart = 1;
 	
 	public function __construct($dsn=null) {
 		if ($dsn && isset($dsn['autoconnect'])) {
