@@ -5,26 +5,27 @@
  * @package A_Db 
  */
 
-class A_Db_Mysqli extends MySQLi {
+class A_Db_Mysqli extends A_Db_Abstract {
 
 	protected $dsn = null;
 	protected $connected = false;
 	protected $sequenceext = '_seq';
 	protected $sequencestart = 1;
+	protected $mysqli = null;
 	
 	public function __construct($dsn=null) {
 		$this->dsn = $dsn;
 	}
 		
-	public function connect ($dsn=null) {
+	public function _connect($dsn=null) {
 		$result = false;
 		if ($dsn) {
 			$this->dsn = $dsn;
 		}
 		if (! $this->connected) {
-			parent::connect($this->dsn['hostspec'], $this->dsn['username'], $this->dsn['password']);
+			$this->mysqli = new MySQLi($this->dsn['hostspec'], $this->dsn['username'], $this->dsn['password']);
 			if (isset($this->dsn['database'])) {
-				$result = $this->select_db($this->dsn['database'], $this->link);
+				$result = $this->mysqli->select_db($this->dsn['database'], $this->link);
 			} else {
 				$result = true;
 			}
@@ -32,15 +33,15 @@ class A_Db_Mysqli extends MySQLi {
 		return $result;
 	}
 		
-	public function disconnect() {
+	public function _close($s='') {
 		if ($db->connected) {
-			$this->close();
+			$this->mysqli->close();
 		} 
 	}
 		
 	public function selectDb($database) {
 		$this->dsn['database'] = $database;
-		return $this->select_db($this->dsn['database']);
+		return $this->mysqli->select_db($this->dsn['database']);
 	}
 		
 	public function query($sql, $bind=array()) {
@@ -55,13 +56,13 @@ class A_Db_Mysqli extends MySQLi {
 			$sql = $prepare->render();
 		}
 		if (stripos($sql, 'select') === 0) {
-			$obj = new A_Db_Mysqli_Recordset(parent::query($sql));
+			$obj = new A_Db_Mysqli_Recordset($this->mysqli->query($sql));
 		} else {
-			$obj = new A_Db_Mysqli_Result(parent::query($sql));
-			$obj->affected_rows = $this->affected_rows;
+			$obj = new A_Db_Mysqli_Result($this->mysqli->query($sql));
+			$obj->affected_rows = $this->mysqli->affected_rows;
 		}
-		$obj->error = $this->error;
-		$obj->errorMsg = $this->error;
+		$obj->error = $this->mysqli->error;
+		$obj->errorMsg = $this->mysqli->error;
 		return $obj;
 	}
 		
@@ -73,19 +74,19 @@ class A_Db_Mysqli extends MySQLi {
 	}
 		
 	public function lastId() {
-		return $this->insert_id();
+		return $this->mysqli->insert_id();
 	}
 		
 	public function nextId ($sequence) {
 		if ($sequence) {
-			$result = $this->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
+			$result = $this->mysqli->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
 			if ($result) {
-				$id = $this->insert_id();
+				$id = $this->mysqli->insert_id();
 				if ($id > 0) {
 					return $id;
 				} else {
-					$result = $this->query("INSERT $sequence{$this->sequenceext} SET id=1");
-					$id = $this->insert_id();
+					$result = $this->mysqli->query("INSERT $sequence{$this->sequenceext} SET id=1");
+					$id = $this->mysqli->insert_id();
 					if ($id > 0) {
 						return $id;
 					}
@@ -102,21 +103,21 @@ class A_Db_Mysqli extends MySQLi {
 	public function createSequence ($sequence) {
 		$result = 0;
 		if ($sequence) {
-			$result = $this->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
+			$result = $this->mysqli->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
 		}
 		return($result);
 	}
 		
 	public function escape($value) {
-		return $this->escape_string($this->link, $value);
+		return $this->mysqli->escape_string($this->link, $value);
 	}
 	
 	public function isError() {
-		return $this->error;
+		return $this->mysqli->error;
 	}
 		
 	public function getErrorMsg() {
-		return $this->error;
+		return $this->mysqli->error;
 	}
 	
 	/**
@@ -126,6 +127,18 @@ class A_Db_Mysqli extends MySQLi {
 		return $this->getErrorMsg();
 	}
 	
+	/**
+	 * __call
+	 * 
+	 * Magic function __call, redirects to instance of MySQLi
+	 * 
+	 * @param string $function Function to call
+	 * @param array $args Arguments to pass to $function
+	 */
+	function __call($function, $args)
+	{
+		return call_user_func_array(array($this->mysqli, $function), $args);
+	}
 }
 
 
