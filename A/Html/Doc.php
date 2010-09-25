@@ -19,24 +19,15 @@ class A_Html_Doc {
 					'doctype' => '',
 					'title' => '',
 					'base' => '',
-					'style_links' => '',
-					'rss_links' => '',
-					'script_links' => '',
-					'metadata' => '',
-					'body_attr' => '',
-					); 
-	protected $_config_is_string = array(
-					'title' => 1,
-					'doctype' => 1,
-					'base' => 1,
-					);
-	protected $_style_links = array();
-	protected $_styles = array();
-	protected $_rss_links = array();
-	protected $_script_links = array();
-	protected $_scripts = array();
-	protected $_metadata = array();
-	protected $_body_attr = array();
+					'meta' => array(),
+					'links' => array(),
+					'style_links' => array(),
+					'stylesheets' => array(),
+					'styles' => array('all'),
+					'script_links' => array(),
+					'scripts' => array(),
+					'body_attrs' => array(),
+	); 
 	protected $_body = '';
 	
 	/*
@@ -57,28 +48,20 @@ class A_Html_Doc {
 			$doctype = $this->_config['doctype'];
 		}
 		if (! isset($doctypes[$doctype])) {
-			$doctype = self::HTML_4_01_TRANSITIONAL;
+			$doctype = self::HTML_4_01_TRANSITIONAL;		// should this be HTML_5?
 		}
 		return $doctypes[$doctype] . "\n";
 	}
 	
-	public function __call($name, $value) {
-		$mode = substr($name, 0, 3);
-		$name = substr($name, 3);
-		switch ($mode) {
-		case 'set':
-			if (isset($this->_config[$name])) {
-				if (!isset($this->_config_is_string[$name]) && !is_array($value)) {
-					break;
-				}
+	public function set($name, $value) {
+		if (isset($this->_config[$name])) {
+			if (is_array($this->_config[$name])) {
+				$this->_config[$name][] = $value;
+			} else {
 				$this->_config[$name] = $value;
 			}
-		break;
-		case 'get':
-			if (isset($this->_config[$name])) {
-				return $this->_config[$name];
-			}
-			break;
+		} elseif ($name == 'content') {
+			$this->_body = $value;
 		}
 		return $this;
 	}
@@ -88,43 +71,19 @@ class A_Html_Doc {
 		return $this;
 	}
 
+	public function getTitle() {
+		return $this->_config['title'];
+	}
+
 	public function setBase($url) {
 		$this->_config['base'] = $url;
 		return $this;
 	}
 
-	public function getTitle() {
-		return $this->_config['title'];
+	public function getBase() {
+		return $this->_config['base'];
 	}
 
-	public function addScript($script, $media='all', $label='') {
-		if ($filename) {
-			$this->_config['scripts'][] = array('label'=>$label, 'filename'=>'', 'script'=>$script, 'media'=>$media);
-		}
-		return $this;
-	}
-	 
-	public function addScriptLink($url, $media='all', $label='') {
-		if ($filename) {
-			$this->_config['script_links'][] = array('label'=>$label, 'filename'=>$url, 'script'=>'', 'media'=>$media);
-		}
-		return $this;
-	}
-	 
-	/**
-	 * http://www.w3schools.com/tags/tag_link.asp
-	 * @param $filename
-	 * @param $media
-	 * @param $label
-	 * @return unknown_type
-	 */
-	public function addLink($href, $type='stylesheet', $media='all', $label='') {
-		if ($href) {
-			$this->_config['links'][] = array('rel'=>$type, 'label'=>$label, 'href'=>$href, 'media'=>$media);
-		}
-		return $this;
-	}
-	
 	/**
 	 * 
 http-equiv:
@@ -144,13 +103,125 @@ revised
 scheme:
 format/URI
 	 */
-	public function addMeta($httpequiv, $content, $value='') {
-		if ($content) {
-			$this->_config['metadata'][] = array('httpequiv'=>$httpequiv, 'content'=>$content, 'value'=>$value);
+	public function removeMeta($attr, $type) {
+		if ($attr && $type) {
+			foreach ($this->_config['meta'] as $key => $data) {
+				if (($data['attr'] == $attr) && ($data['type'] == $type)) {
+					unset($this->_config['meta'][$key]);
+				}
+			}
 		}
 		return $this;
 	}
 	
+	public function addMetaHttpEquiv($type, $content, $scheme='') {
+		if ($type && ($content != '')) {
+			$this->_config['meta'][] = array('attr'=>'http-equiv', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>'');
+		} elseif ($type) {
+			$this->removeMeta('http-equiv', $type);
+		}
+		return $this;
+	}
+	
+	public function addMetaName($type, $content, $scheme='', $lang='') {
+		if ($type && ($content != '')) {
+			$this->_config['meta'][] = array('attr'=>'name', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>$lang);
+		} elseif ($type) {
+			$this->removeMeta('name', $type);
+		}
+		return $this;
+	}
+	
+	/**
+	 * @param $rel
+	 * @param $href
+	 * @param $type
+	 * @param $media
+	 * @return $this
+	 */
+	public function addLinkRel($rel, $href, $type='', $media='all') {
+		if ($rel && $href) {
+			$this->addLink('rel', $rel, $href, $type, $media);
+		}
+		return $this;
+	}
+	
+	/**
+	 * @param $rel
+	 * @param $href
+	 * @param $type
+	 * @param $media
+	 * @return $this
+	 */
+	public function addLinkRev($rel, $href, $type='', $media='all') {
+		if ($rel && $href) {
+			$this->addLink('rev', $rel, $href, $type, $media);
+		}
+		return $this;
+	}
+	
+	public function addLink($attr, $rel, $href, $type='', $media='all') {
+		if ($attr && $rel && $href) {
+			$this->_config['links'][] = array('attr'=>$attr, 'rel'=>$rel, 'href'=>$href, 'type'=>$type, 'media'=>$media);
+		}
+		return $this;
+	}
+	
+	public function addStyle($style, $media='all') {
+		if ($style) {
+			$this->_config['styles'][$media][] = $style;
+		}
+		return $this;
+	}
+	 
+	public function addStylesheet($sheet, $media='all') {
+		if ($sheet) {
+			$this->_config['stylesheets'][] = array('sheet'=>$sheet, 'media'=>$media);
+		}
+		return $this;
+	}
+	 
+	public function addStyleLink($url, $media='all') {
+		if ($url) {
+			$this->_config['style_links'][] = array('href'=>$url, 'media'=>$media);
+		}
+		return $this;
+	}
+	 
+	public function addScript($script, $type='text/javascript') {
+		if ($script) {
+			$this->_config['scripts'][] = array('script'=>$script, 'type'=>$type);
+		}
+		return $this;
+	}
+	 
+	public function addScriptLink($url, $type='text/javascript') {
+		if ($url) {
+			$this->_config['script_links'][] = array('src'=>$url, 'type'=>$type, );
+		}
+		return $this;
+	}
+	 
+	public function setBodyAttr($attr, $value) {
+		$this->_config['body_attrs'][$attr] = $value;
+		return $this;
+	}
+
+	public function setBody($body) {
+		return $this->_body = $body;
+	}
+
+	/**
+	 * Compatability with Response/View
+	 */
+	public function setContent($body) {
+		return $this->_body = $body;
+	}
+
+	public function setRenderer($body) {
+		return $this->_body = $body;
+	}
+
 	public function ifIE($logic) {
 		if ($logic) {
 			$this->ifIElogic = $logic;
@@ -177,16 +248,45 @@ format/URI
 	 */
 	
 	public function renderTitle() {
+		return $this->_config['title'] ? "<title>{$this->_config['title']}</title>\n" : '';
+	}
+
+	public function renderBase() {
+		return $this->_config['base'] ? "<base href=\"{$this->_config['base']}\"/>\n" : '';
+	}
+
+	public function renderMeta() {
 		$str = '';
-		return "<title>{$this->_config['title']}</title>\n";
+		if (is_array($this->_config['meta'])) {
+			foreach ($this->_config['meta'] as $key => $data) {
+				$scheme = $data['scheme'] ? " scheme=\"{$data['scheme']}\"" : '';
+				$str .= "<meta {$data['attr']}=\"{$data['type']}\" content=\"{$data['content']}\"$scheme/>\n";
+			}
+		}
+		return $str;
 	}
 
 	public function renderLinks() {
 		$str = '';
-		if (is_array($this->_config['links'])) {
-			foreach ($this->_config['links'] as $style) {
-				$str .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$style['url']}\" media=\"{$style['media']}\"//>\n";
-			}		
+		foreach ($this->_config['links'] as $link) {
+			$str .= "<link {$link['attr']}=\"{$link['rel']}\" href=\"{$link['href']}\" type=\"{$link['type']}\" title=\"{$link['title']}\" media=\"{$link['media']}\"/>\n";
+		}
+		return $str;
+	}
+
+	public function renderStyleLinks() {
+		$str = '';
+		foreach ($this->_config['style_links'] as $style) {
+			$str .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$style['href']}\" media=\"{$style['media']}\"/>\n";
+		}
+		return $str;
+	}
+
+	public function renderStylesheets() {
+		$str = '';
+		foreach ($this->_config['stylesheets'] as $data) {
+			$media = $data['media'] ? " media=\"{$data['media']}\"" : '';
+			$str .= "<style type=\"text/css\"$media/>\n{$data['sheet']}\n</style>\n";
 		}
 		return $str;
 	}
@@ -195,45 +295,48 @@ format/URI
 		$str = '';
 		if (is_array($this->_config['styles'])) {
 			foreach ($this->_config['styles'] as $media => $styles) {
-				$str .= "<style type=\"text/css\" media=\"{$media}/>\n";
-				foreach ($styles as $style) {
-					$str .= "$style\n";
+				if (is_array($this->_config['styles'][$media])) {
+					$str .= "<style type=\"text/css\" media=\"{$media}\"/>\n";
+					foreach ($styles as $style) {
+						$str .= "$style\n";
+					}
+					$str .= "</style>\n";
 				}
-				$str .= "</script>\n";
-			}
-		}
-	}
-
-	public function renderScriptLinks() {
-		$str = '';
-		if (is_array($this->_config['script_links'])) {
-			foreach ($this->_config['script_links'] as $url) {
-				$str .= "<script type=\"text/javascript\" src=\"$url\"></script>\n";
-			}
-		}
-	}
-
-	public function renderScripts() {
-		$str = '';
-		if (is_array($this->_config['scripts'])) {
-			foreach ($this->_config['scripts'] as $script) {
-				$str .= "<script type=\"text/javascript\">\n$script\n</script>\n";
-			}
-		}
-	}
-
-	public function renderMetadata() {
-		$str = '';
-		if (is_array($this->_config['metadata'])) {
-			foreach ($this->_config['metadata'] as $name => $content) {
-				$str .= "<meta name=\"$name\" content=\"$content\">\n";
 			}
 		}
 		return $str;
 	}
 
-	public function renderBase($base=null) {
-		return "<base href=\"{$this->_config['base']}\"/>\n";
+	public function renderScriptLinks() {
+		$str = '';
+		foreach ($this->_config['script_links'] as $data) {
+			$str .= "<script type=\"{$data['type']}\" src=\"{$data['src']}\"></script>\n";
+		}
+		return $str;
+	}
+
+	public function renderScripts() {
+		$str = '';
+		foreach ($this->_config['scripts'] as $data) {
+			$str .= "<script type=\"{$data['type']}\">\n{$data['script']}\n</script>\n";
+		}
+		return $str;
+	}
+
+	public function renderBodyAttrs() {
+		$str = '';
+		foreach ($this->_config['body_attrs'] as $key => $value) {
+			$str .= " $key=\"$value\"";
+		}
+		return $str;
+	}
+
+	public function renderBody() {
+		if (is_object($this->_body) && method_exists($this->_body, 'render')) {
+			return $this->_body->render();
+		} else {
+			return $this->_body;
+		}
 	}
 
 	/*
@@ -242,7 +345,19 @@ format/URI
 	public function render($attr=array(), $content=null) {
 		$html = $this->renderDoctype();
 		$html .= "<html>\n<head>\n";
-		$html .= "</head>\n<body>\n";
+		$html .= $this->renderTitle();
+		$html .= $this->renderBase();
+		$html .= $this->renderMeta();
+		$html .= $this->renderLinks();
+		$html .= $this->renderStyleLinks();
+		$html .= $this->renderStylesheets();
+		$html .= $this->renderStyles();
+		$html .= $this->renderScriptLinks();
+		$html .= $this->renderScripts();
+		$html .= "</head";
+		$html .= $this->renderBodyAttrs();
+		$html .= ">\n<body>\n";
+		$html .= $this->renderBody();
 		$html .= "</body>\n</html>\n";
 		return $html;
 	}
