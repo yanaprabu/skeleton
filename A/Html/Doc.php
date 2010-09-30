@@ -60,7 +60,7 @@ class A_Html_Doc {
 			} else {
 				$this->_config[$name] = $value;
 			}
-		} elseif ($name == 'content') {
+		} elseif ($name == 'content') {					// how do we make this compatable with A_Http_Response usage?
 			$this->_body = $value;
 		}
 		return $this;
@@ -84,6 +84,13 @@ class A_Html_Doc {
 		return $this->_config['base'];
 	}
 
+	public function _addConfig($name, $data) {
+		if ($name && $data) {
+			$this->_config[$name][] = $data;
+		}
+		return $this;
+	}
+	
 	/**
 	 * 
 http-equiv:
@@ -116,7 +123,7 @@ format/URI
 	
 	public function addMetaHttpEquiv($type, $content, $scheme='') {
 		if ($type && ($content != '')) {
-			$this->_config['meta'][] = array('attr'=>'http-equiv', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>'');
+			$this->_addConfig('meta', array('attr'=>'http-equiv', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>''));
 		} elseif ($type) {
 			$this->removeMeta('http-equiv', $type);
 		}
@@ -125,7 +132,7 @@ format/URI
 	
 	public function addMetaName($type, $content, $scheme='', $lang='') {
 		if ($type && ($content != '')) {
-			$this->_config['meta'][] = array('attr'=>'name', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>$lang);
+			$this->_addConfig('meta', array('attr'=>'name', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>$lang));
 		} elseif ($type) {
 			$this->removeMeta('name', $type);
 		}
@@ -162,7 +169,7 @@ format/URI
 	
 	public function addLink($attr, $rel, $href, $type='', $media='all') {
 		if ($attr && $rel && $href) {
-			$this->_config['links'][] = array('attr'=>$attr, 'rel'=>$rel, 'href'=>$href, 'type'=>$type, 'media'=>$media);
+			$this->_addConfig('links', array('attr'=>$attr, 'rel'=>$rel, 'href'=>$href, 'type'=>$type, 'media'=>$media));
 		}
 		return $this;
 	}
@@ -176,28 +183,28 @@ format/URI
 	 
 	public function addStylesheet($sheet, $media='all') {
 		if ($sheet) {
-			$this->_config['stylesheets'][] = array('sheet'=>$sheet, 'media'=>$media);
+			$this->_addConfig('stylesheets', array('sheet'=>$sheet, 'media'=>$media));
 		}
 		return $this;
 	}
 	 
 	public function addStyleLink($url, $media='all') {
 		if ($url) {
-			$this->_config['style_links'][] = array('href'=>$url, 'media'=>$media);
+			$this->_addConfig('style_links', array('href'=>$url, 'media'=>$media));
 		}
 		return $this;
 	}
 	 
 	public function addScript($script, $type='text/javascript') {
 		if ($script) {
-			$this->_config['scripts'][] = array('script'=>$script, 'type'=>$type);
+			$this->_addConfig('scripts', array('script'=>$script, 'type'=>$type));
 		}
 		return $this;
 	}
 	 
 	public function addScriptLink($url, $type='text/javascript') {
 		if ($url) {
-			$this->_config['script_links'][] = array('src'=>$url, 'type'=>$type, );
+			$this->_addConfig('script_links', array('src'=>$url, 'type'=>$type));
 		}
 		return $this;
 	}
