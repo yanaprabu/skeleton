@@ -124,7 +124,12 @@ format/URI
 	public function addMetaHttpEquiv($type, $content, $scheme='') {
 		if ($type && ($content != '')) {
 			$this->_addConfig('meta', array('attr'=>'http-equiv', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>''));
-		} elseif ($type) {
+		}
+		return $this;
+	}
+	
+	public function removeMetaHttpEquiv($type) {
+		if ($type) {
 			$this->removeMeta('http-equiv', $type);
 		}
 		return $this;
@@ -133,8 +138,20 @@ format/URI
 	public function addMetaName($type, $content, $scheme='', $lang='') {
 		if ($type && ($content != '')) {
 			$this->_addConfig('meta', array('attr'=>'name', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>$lang));
-		} elseif ($type) {
+		}
+		return $this;
+	}
+	
+	public function removeMetaName($type) {
+		if ($type) {
 			$this->removeMeta('name', $type);
+		}
+		return $this;
+	}
+	
+	public function addLink($attr, $rel, $href, $type='', $media='all') {
+		if ($attr && $rel && $href) {
+			$this->_addConfig('links', array('attr'=>$attr, 'rel'=>$rel, 'href'=>$href, 'type'=>$type, 'media'=>$media));
 		}
 		return $this;
 	}
@@ -163,13 +180,6 @@ format/URI
 	public function addLinkRev($rel, $href, $type='', $media='all') {
 		if ($rel && $href) {
 			$this->addLink('rev', $rel, $href, $type, $media);
-		}
-		return $this;
-	}
-	
-	public function addLink($attr, $rel, $href, $type='', $media='all') {
-		if ($attr && $rel && $href) {
-			$this->_addConfig('links', array('attr'=>$attr, 'rel'=>$rel, 'href'=>$href, 'type'=>$type, 'media'=>$media));
 		}
 		return $this;
 	}
