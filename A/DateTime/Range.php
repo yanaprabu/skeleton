@@ -71,13 +71,30 @@ class A_DateTime_Range {
 	 * The inclusive parameter determines whether the start and end dates are included in the Range
 	 */
 	public function contains ($datetime, $inclusive = false)	{
-		if ($inclusive)	{
-			return $datetime->getTimestamp() >= $this->before->getTimestamp() && $datetime->getTimestamp() <= $this->after->getTimestamp();
-		} else {
-			return $datetime->getTimestamp() > $this->before->getTimestamp() && $datetime->getTimestamp() < $this->after->getTimestamp();
+		if ($datetime instanceof A_DateTime) {
+			if ($inclusive)	{
+				return $datetime->getTimestamp() >= $this->start->getTimestamp() && $datetime->getTimestamp() <= $this->end->getTimestamp();
+			} else {
+				return $datetime->getTimestamp() > $this->start->getTimestamp() && $datetime->getTimestamp() < $this->end->getTimestamp();
+			}
 		}
 	}
 	
+/*
+	 * Return true|false whether a given Range object intersects with the current one
+	 */
+	public function intersects ($range)	{
+		if (
+				!$range 
+				|| ($this->end->getTimestamp() < $range->getStart()->getTimestamp()) 
+				|| ($range->getEnd()->getTimestamp() < $this->start->getTimestamp())
+			) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/*
 	 * Return Range string in strtotime() style
 	 * format: DATE_ISO8601/DATE_ISO8601 
