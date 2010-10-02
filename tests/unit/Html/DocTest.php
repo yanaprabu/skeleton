@@ -47,9 +47,24 @@ class Html_DocTest extends UnitTestCase {
 		$this->assertEqual($Html_Doc->render(), $expect);
 
 		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF8\"/>\n</head>\n<body>\n</body>\n</html>\n";
-		$Html_Doc->addMetaHttpEquiv('Cache-Control', '');	// remove 
+		$Html_Doc->removeMetaHttpEquiv('Cache-Control');	// remove 
+		$this->assertEqual($Html_Doc->render(), $expect);
+	}
+
+	function testHtml_DocMetaName() {
+		$Html_Doc = new A_Html_Doc();
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta name=\"copyright\" content=\"1776\"/>\n</head>\n<body>\n</body>\n</html>\n";
+		$Html_Doc->addMetaName('copyright', '1776');
 		$this->assertEqual($Html_Doc->render(), $expect);
 
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta name=\"copyright\" content=\"1776\"/>\n<meta name=\"keywords\" content=\"foo, bar, baz\"/>\n</head>\n<body>\n</body>\n</html>\n";
+		$Html_Doc->addMetaName('keywords', 'foo, bar, baz');
+		$this->assertEqual($Html_Doc->render(), $expect);
+
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta name=\"keywords\" content=\"foo, bar, baz\"/>\n</head>\n<body>\n</body>\n</html>\n";
+		$Html_Doc->removeMetaName('copyright');	// remove 
+		$this->assertEqual($Html_Doc->render(), $expect);
 	}
 
 	function testHtml_DocStyles() {
