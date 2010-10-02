@@ -23,7 +23,7 @@ class A_Html_Doc {
 					'links' => array(),
 					'style_links' => array(),
 					'stylesheets' => array(),
-					'styles' => array('all'),
+					'styles' => array(),
 					'script_links' => array(),
 					'scripts' => array(),
 					'body_attrs' => array(),
@@ -186,7 +186,7 @@ format/URI
 	
 	public function addStyle($style, $media='all') {
 		if ($style) {
-			$this->_config['styles'][$media][] = $style;
+			$this->_addConfig('styles', array('style'=>$style, 'media'=>$media));
 		}
 		return $this;
 	}
@@ -309,17 +309,15 @@ format/URI
 	}
 
 	public function renderStyles() {
+		// gather styles for each media type
+		$stylemedia = array();
+		foreach ($this->_config['styles'] as $style) {
+			$stylemedia[$style['media']] .= "{$style['style']}\n";
+		}
+		// generate stylesheet for each media type
 		$str = '';
-		if (is_array($this->_config['styles'])) {
-			foreach ($this->_config['styles'] as $media => $styles) {
-				if (is_array($this->_config['styles'][$media])) {
-					$str .= "<style type=\"text/css\" media=\"{$media}\"/>\n";
-					foreach ($styles as $style) {
-						$str .= "$style\n";
-					}
-					$str .= "</style>\n";
-				}
-			}
+		foreach ($stylemedia as $media => $styles) {
+			$str .= "<style type=\"text/css\" media=\"{$media}\"/>\n$styles</style>\n";
 		}
 		return $str;
 	}
