@@ -157,6 +157,21 @@ format/URI
 	}
 	
 	/**
+	 * removeLink()
+	 * Remove link elements from the head object
+	 * @param string $attr
+	 * @param string $rel The link element type defined upon creation
+	 */
+	public function removeLink($attr, $rel) {
+		foreach ($this->_config['links'] as $key => $data) {
+			if (($data['attr'] == $attr) && ($data['rel'] == $rel)) {
+				unset($this->_config['links'][$key]);
+			}
+		}
+		return $this;
+	}
+	
+	/**
 	 * @param $rel
 	 * @param $href
 	 * @param $type
@@ -171,6 +186,17 @@ format/URI
 	}
 	
 	/**
+	 * removeLinkRel()
+	 * Remove link elements from the head object that have a rel attribute.
+	 * This method provides specific data to removeLink()
+	 * @param string $type The type of the link element defined upon creation.
+	 */
+	public function removeLinkRel($rel) {
+		$this->removeLink('rel', $rel);
+		return $this;
+	}
+	
+	/**
 	 * @param $rel
 	 * @param $href
 	 * @param $type
@@ -181,6 +207,17 @@ format/URI
 		if ($rel && $href) {
 			$this->addLink('rev', $rel, $href, $type, $media);
 		}
+		return $this;
+	}
+	
+	/**
+	 * removeLinkRev()
+	 * Removes link elements from the head object that have a rev attribute.
+	 * This method provides specific data to removeLink()
+	 * @param string $type The type of the link element defined upon creation.
+	 */
+	public function removeLinkRev($rel) {
+		$this->removeLink('rev', $rel);
 		return $this;
 	}
 	
