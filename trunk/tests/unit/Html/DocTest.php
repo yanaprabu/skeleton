@@ -140,4 +140,20 @@ class Html_DocTest extends UnitTestCase {
 		$this->assertEqual($Html_Doc->render(), $expect);
 	}
 	
+	function testHtml_DocBodyAttributes() {
+		$Html_Doc = new A_Html_Doc();
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n</head>\n<body style=\"font-family:arial;\">\n</body>\n</html>\n";
+		$Html_Doc->setBodyAttr('style', 'font-family:arial;');
+		$this->assertEqual($Html_Doc->render(), $expect);
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n</head>\n<body style=\"font-family:arial;\" width=\"200px\">\n</body>\n</html>\n";
+		$Html_Doc->setBodyAttr('width', '200px');
+		$this->assertEqual($Html_Doc->render(), $expect);
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n</head>\n<body width=\"200px\">\n</body>\n</html>\n";
+		$Html_Doc->removeBodyAttr('style');
+		$this->assertEqual($Html_Doc->render(), $expect);
+	}
+	
 }

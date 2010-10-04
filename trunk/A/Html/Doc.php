@@ -88,6 +88,8 @@ class A_Html_Doc {
 		if ($name && $data) {
 			$this->_config[$name][] = $data;
 		}
+		$this->beforeLabel = null;
+		$this->afterLabel = null;
 		return $this;
 	}
 	
@@ -260,6 +262,18 @@ format/URI
 		$this->_config['body_attrs'][$attr] = $value;
 		return $this;
 	}
+	
+	/**
+	 * removeBodyAttr()
+	 * Remove an attribute assigned to the body element with setBodyAttr()
+	 * @param mixed $attr The attribute to remove
+	 */
+	public function removeBodyAttr($attr) {
+		if (isset($this->_config['body_attrs'][$attr])) {
+			unset($this->_config['body_attrs'][$attr]);
+		}
+		return $this;
+	}
 
 	public function setBody($body) {
 		return $this->_body = $body;
@@ -406,9 +420,9 @@ format/URI
 		$html .= $this->renderStyles();
 		$html .= $this->renderScriptLinks();
 		$html .= $this->renderScripts();
-		$html .= "</head";
+		$html .= "</head>\n<body";
 		$html .= $this->renderBodyAttrs();
-		$html .= ">\n<body>\n";
+		$html .= ">\n";
 		$html .= $this->renderBody();
 		$html .= "</body>\n</html>\n";
 		return $html;
