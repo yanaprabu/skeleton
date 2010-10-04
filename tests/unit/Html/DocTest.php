@@ -123,12 +123,20 @@ class Html_DocTest extends UnitTestCase {
 	function testHtml_DocSLinks() {
 		$Html_Doc = new A_Html_Doc();
 		
-		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<link rel=\"Alternate\" href=\"http://foo.com\" type=\"\" title=\"\" media=\"all\"/>\n<link rev=\"Copyright\" href=\"http://bar.com\" type=\"\" title=\"\" media=\"all\"/>\n</head>\n<body>\n</body>\n</html>\n";
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<link rel=\"Alternate\" href=\"http://foo.com\" type=\"\" title=\"\" media=\"all\"/>\n</head>\n<body>\n</body>\n</html>\n";
 		$Html_Doc->addLinkRel('Alternate', 'http://foo.com');
+		$this->assertEqual($Html_Doc->render(), $expect);
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<link rel=\"Alternate\" href=\"http://foo.com\" type=\"\" title=\"\" media=\"all\"/>\n<link rev=\"Copyright\" href=\"http://bar.com\" type=\"\" title=\"\" media=\"all\"/>\n</head>\n<body>\n</body>\n</html>\n";
 		$Html_Doc->addLinkRev('Copyright', 'http://bar.com');
+		$this->assertEqual($Html_Doc->render(), $expect);
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<link rel=\"Alternate\" href=\"http://foo.com\" type=\"\" title=\"\" media=\"all\"/>\n<link rev=\"Copyright\" href=\"http://bar.com\" type=\"\" title=\"\" media=\"all\"/>\n<link rev=\"parent\" href=\"http://foobar.com\" type=\"\" title=\"\" media=\"all\"/>\n</head>\n<body>\n</body>\n</html>\n";
 		$Html_Doc->addLinkRev('parent', 'http://foobar.com');
+		$this->assertEqual($Html_Doc->render(), $expect);
+		
+		$expect = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n\"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<link rel=\"Alternate\" href=\"http://foo.com\" type=\"\" title=\"\" media=\"all\"/>\n<link rev=\"Copyright\" href=\"http://bar.com\" type=\"\" title=\"\" media=\"all\"/>\n</head>\n<body>\n</body>\n</html>\n";
 		$Html_Doc->removeLinkRev('parent');
-echo $Html_Doc->renderLinks();
 		$this->assertEqual($Html_Doc->render(), $expect);
 	}
 	
