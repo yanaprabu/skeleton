@@ -1,10 +1,18 @@
 <?php
 /**
- * Genreate URLs 
- * 
- * @package A 
+ * Generate URLs
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Http_Url
+ *
+ * This class provides various functions with which to create, manipulate, and
+ * read URLs
+ */
 class A_Http_Url {
    protected $action_param = '';
 	

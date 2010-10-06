@@ -1,6 +1,16 @@
 <?php
 /**
- * View helper for URLs
+ * URL View Helper
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Http_Helper_Url
+ *
+ * A helper class for handling the url
  */
 class A_Http_Helper_Url extends A_Http_Url {
 	protected $locator;

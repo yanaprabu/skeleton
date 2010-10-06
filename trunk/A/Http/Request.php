@@ -1,10 +1,17 @@
 <?php
 /**
- * Encapsulate the HTTP request in a class to access information and values
- * 
- * @package A_Http 
+ * Http Request
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Http_Request
+ *
+ * Encapsulate the HTTP request in a class to access information and values
+ */
 class A_Http_Request {
 	public $data = array();
 	protected $method = false;
