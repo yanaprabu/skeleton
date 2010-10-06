@@ -1,12 +1,25 @@
 <?php
 /**
- * Support for downloading data with different MIME types and settings
- * 
- * @package A_Http 
+ * Http Downloading
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Http_Download
+ *
+ * Support for downloading data with different MIME types and settings
+ */
 class A_Http_Download
-{protected $mime_type = 'text/none';protected $encoding = 'none';protected $content_length = 0;protected $source_file = '';protected $target_file = '';protected $errorMsg = '';
+{
+protected $mime_type = 'text/none';
+protected $encoding = 'none';
+protected $content_length = 0;
+protected $source_file = '';
+protected $target_file = '';
+protected $errorMsg = '';
 
 /*
  * Set the mime type of the file to be downloaded to be specified in the header

@@ -1,11 +1,18 @@
 <?php
 /**
- * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects,
- * character encoding, quoting, escaping, and content. 
- * 
- * @package A_Http 
+ * Base MVC View class
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Http_View
+ *
+ * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects,
+ * character encoding, quoting, escaping, and content. 
+ */
 class A_Http_View {
 	protected $data = array();
 	protected $template = null;

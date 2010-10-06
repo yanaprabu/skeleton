@@ -1,11 +1,17 @@
 <?php
-#include_once 'A/Http/View.php';
 /**
- * HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
- * 
- * @package A_Http 
+ * Http Response
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Http_Response
+ *
+ * HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
+ */
 class A_Http_Response extends A_Http_View {
 
     public function render($template='', $scope='') {

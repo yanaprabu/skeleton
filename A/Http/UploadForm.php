@@ -1,11 +1,20 @@
 <?php
 /**
- * Support for generating HTML upload forms
- * 
- * @package A_Http 
+ * File Upload Forms
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
-class A_Http_UploadForm {protected $upload;protected $hidden = array();
+/**
+ * A_Http_UploadForm
+ *
+ * Support for file upload forms
+ */
+class A_Http_UploadForm {
+protected $upload;
+protected $hidden = array();
 
 public function __construct($upload) {
 	$this->upload = $upload;

@@ -1,8 +1,16 @@
 <?php
 /**
- * Support for HTTP file upload 
- * 
- * @package A_Http 
+ * Support for HTML file upload
+ *
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Http_Upload
+ *
+ * Support for HTTP file upload
  */
 /*
 // todo - add the ability to see max sizes and timeouts
@@ -19,15 +27,28 @@ define('A_HTTP_UPLOAD_ERR_FILE_UNLINK', 1004);
 define('A_HTTP_UPLOAD_ERR_FILE_MOVE', 1005);
 define('A_HTTP_UPLOAD_ERR_FILE_TYPE', 1006);
 
-class A_Http_Upload {	const NOT_UPLOAD_FILE = 1001;
+class A_Http_Upload {
+	const NOT_UPLOAD_FILE = 1001;
 	const ERR_MAX_SIZE = 1002;
 	const ERR_FILE_EXISTS = 1003;
 	const ERR_FILE_UNLINK = 1004;
 	const ERR_FILE_MOVE = 1005;
 	const ERR_FILE_TYPE = 1006;
-	public $file_param = 'file';		// form/http parameter name for file(s)	public $submit_param = 'upload';	// form/http parameter name for the submit button	public $path_param = 'path';		// form/http parameter name for path relative to dir	protected $base_path = '/tmp';				// destination directory for uploaded file, or array of dirs will shows a select box, see formSelectPath()	protected $file_mode = 0777;			// mode to create new directories and files	protected $filename_regexp_pattern = array('/[^a-zA-Z0-9_\-\.]/');	protected $filename_regexp_replace = array('_');
-		protected $replace = true;			// if destination file exists, delete and the upload	protected $min_size = 1;			// set minimum size of files, 0 to allow zero size files	protected $max_size = 0;			// cap size of file with this value	protected $allowed_types = array();
-		public $paths = array();	public $labels = array();		// text labels for form select in formSelectPath(), one matching text label for each path in dir array
+	public $file_param = 'file';		// form/http parameter name for file(s)
+	public $submit_param = 'upload';	// form/http parameter name for the submit button
+	public $path_param = 'path';		// form/http parameter name for path relative to dir
+	protected $base_path = '/tmp';				// destination directory for uploaded file, or array of dirs will shows a select box, see formSelectPath()
+	protected $file_mode = 0777;			// mode to create new directories and files
+	protected $filename_regexp_pattern = array('/[^a-zA-Z0-9_\-\.]/');
+	protected $filename_regexp_replace = array('_');
+	
+	protected $replace = true;			// if destination file exists, delete and the upload
+	protected $min_size = 1;			// set minimum size of files, 0 to allow zero size files
+	protected $max_size = 0;			// cap size of file with this value
+	protected $allowed_types = array();
+	
+	public $paths = array();
+	public $labels = array();		// text labels for form select in formSelectPath(), one matching text label for each path in dir array
 	
 	
 	public function __construct() {
@@ -263,6 +284,7 @@ class A_Http_Upload {	const NOT_UPLOAD_FILE = 1001;
 					return false;
 				}
 			} else {
+
 				$this->setFileOption(self::ERR_FILE_EXISTS, 'error', $n, $param);
 				return false;
 			}

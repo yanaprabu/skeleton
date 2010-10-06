@@ -1,18 +1,17 @@
 <?php
-/*
-#require_once 'Horde/Routes/Mapper.php';
-#require_once 'Horde/Routes/Exception.php';
-#require_once 'Horde/Routes/Route.php';
-#require_once 'Horde/Routes/Util.php';
-*/
 /**
- * Wrap the Horde Routes in Intercepting Filter style class for use with Request object
+ * Http Horde Routes
  *
- * @package A_Http
+ * @package  A
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
-/*
-*/
+/**
+ * A_Http_HordeRoutes
+ *
+ * Wrap the Horde Routes in Intercepting Filter style class for use with Request object
+ */
 class A_Http_HordeRoutes {
 	protected $path;
 	protected $mapper;
