@@ -5,13 +5,18 @@
 
 These parameters must be met before committing to the trunk.
 
+=== Unit Tests ===
+
   * If new code was created, unit tests must be created for that code.
   * All unit tests pertaining to the changed code must be tested, and passed.
+
+=== PHPDoc Headers/Comments ===
+
   * Valid PHPDoc file headers must be created for any new code.
   * Valid PHPDoc file headers must be created for any code changed that did not already have them.
   * PHPDoc file headers must be updated to reflect any changes made.
   * Valid PHPDoc comments must be created for any new or edited classes, methods, or public class variables.
 
-All these conditions must be met *before* committing.
+=== Syntax Standards ===
 
 At this point, the PEAR Codesniffer standard to check against has not been yet decided.  Until then, check with Zend, and ignore any line length or tab errors.
