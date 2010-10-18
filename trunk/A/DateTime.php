@@ -281,6 +281,13 @@ class A_DateTime extends DateTime {
 	}
 	
 	/**
+	 * check if date/time of another objects is before the date/time of this object
+	 */
+	public function isBeforeOrEqual($date)	{
+		return $this->getTimestamp() <= $date->getTimestamp();
+	}
+	
+	/**
 	 * check if date/time of another objects is after the date/time of this object
 	 */
 	public function isAfter($date, $inclusive=false)	{
@@ -291,12 +298,29 @@ class A_DateTime extends DateTime {
 		}
 	}
 
+	/**
+	 * check if date/time of another objects is after the date/time of this object
+	 */
+	public function isAfterOrEqual($date)	{
+		return $this->getTimestamp() >= $date->getTimestamp();
+	}
+
+	/**
+	 * check if this date/time a range
+	 */
 	public function isWithin (A_DateTime_Range $range, $inclusive = false)	{
 		if ($inclusive)	{
 			return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
 		} else {
 			return $this->getTimestamp() > $range->getStart() && $this->getTimestamp() < $range->getEnd();
 		}
+	}
+	
+	/**
+	 * check if this date/time a range or equal to the end dates
+	 */
+	public function isWithinOrEqual(A_DateTime_Range $range)	{
+		return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
 	}
 	
 	/**
