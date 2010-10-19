@@ -45,8 +45,7 @@ class posts extends A_Controller_Action {
 
 	function edit($locator) { 
 		$template = $this->_load('controller')->template();
-		$posts = $this->_load('action')->model('posts');
-echo "ERROR: " . $this->getErrorMsg() . "<br/>";
+		$posts = $this->_load('app')->model('posts', $locator->get('Db'));
 		
 		$form = new A_Model_Form();
 		// Hand the Form the fields and rules from the model
@@ -66,11 +65,18 @@ echo "ERROR: " . $this->getErrorMsg() . "<br/>";
 			// save
 			$usersmodel->save($form->getSaveValues());	
 			// redirect to user detail page or whatever
-		} else { 
-			// show errors if submitted
-			$view->setErrorMsg($form->getErrorMsg());
+		} elseif (! $this->_request()->has('save') && $this->_request()->has('id')) {
+			$id = $this->_request()->has('id');
+			// load data
+			$rows = $posts->find($id);
+			if (isset($rows[0])) {
+				foreach ($rows[0] as $name => $value) {
+					$form->newField($name)->setValue($value);
+				}
+			}
 		}
-		$template->setValues($form->getValues());
+		$template->set('errorMsg', $form->getErrorMsg(', '));
+		$template->import($form->getValues());
 		
 		$this->response->set('maincontent', $template->render());
 

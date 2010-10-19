@@ -115,7 +115,7 @@ class A_Controller_Helper_Load {
 		return $this;
 	}
 
-	public function load($scope=null) {
+	public function load($scope=null, $target=null) {
 		if (is_array($scope)) {
 			$scope = $scope[0];
 		}
@@ -195,7 +195,7 @@ class A_Controller_Helper_Load {
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
 					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
 				} else {
-					$this->errorMsg[] = "\$this->load()->$type(" . (isset($args[0]) ? "'{$args[0]}'" : '') . ") call to Locator->loadClass('$class', '$path') failed. Check scope, path and class name. ";
+					$this->errorMsg[] = "\$this->_load('{$this->scope}')->$type(" . (isset($args[0]) ? "'{$args[0]}'" : '') . ") call to Locator->loadClass('$class', '$path') failed. Check scope, path and class name. ";
 				}
 			} elseif (file_exists("$path$class.php")) {
 				#include_once "$path$class.php";
