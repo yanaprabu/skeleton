@@ -39,4 +39,12 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 		return $this->getErrorMsg();
 	}
 	
+	public function fetchAll() {
+		$this->_data = array();
+		while ($row = $this->fetchRow()) {
+			$this->_data[] = $row;
+		}
+		return $this;
+	}
+		
 }
