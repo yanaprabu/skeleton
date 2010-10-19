@@ -13,8 +13,8 @@
 class A_Db_MySQL extends A_Db_Abstract {
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
-	protected $_recordset_class = 'A_Db_MySQL_Recordset';
-	protected $_result_class = 'A_Db_MySQL_Result';
+	protected $_recordset_class = 'A_Db_Recordset_MySQL';
+	protected $_result_class = 'A_Db_Result';
 	
 	protected function _connect ($config) {
 		$result = false;
@@ -72,9 +72,13 @@ class A_Db_MySQL extends A_Db_Abstract {
 			$this->error = mysql_errno($link);
 			$this->errorMsg = mysql_error($link);
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$obj = new $this->_recordset_class($result, $link, $this->error, $this->errorMsg);
+				$this->_numRows = mysql_num_rows($result);
+				$obj = new $this->_recordset_class($this->_numRows, $this->error, $this->errorMsg);
+				// call RecordSet specific setters
+				$obj->setResult($result);
 			} else {
-				$obj = new $this->_result_class($result, $link, $this->error, $this->errorMsg);
+				$this->_numRows = mysql_affected_rows($link);
+				$obj = new $this->_result_class($this->_numRows, $this->error, $this->errorMsg);
 			}
 			return $obj;
 		} else {
@@ -140,88 +144,6 @@ class A_Db_MySQL extends A_Db_Abstract {
 	 */
 	public function getMessage() {
 		return $this->getErrorMsg();
-	}
-	
-}
-	
-	
-class A_Db_MySQL_Result {
-	protected $result;
-	protected $link;
-	protected $error;
-	protected $errorMsg;
-	
-	public function __construct($result, $link, $error, $errorMsg) {
-		$this->result = $result;
-		$this->link = $link;
-		$this->error = $error;
-		$this->errorMsg = $errorMsg;
-	}
-		
-	public function numRows() {
-		if ($this->link) {
-			return(mysql_affected_rows($this->link));
-		} else {
-			return 0;
-		}
-	}
-		
-	public function isError() {
-		return $this->error;
-	}
-		
-	public function getErrorMsg() {
-		return $this->errorMsg;
-	}
-	
-	/**
-	 * depricated name for getErrorMsg()
-	 */
-	public function getMessage() {
-		return $this->getErrorMsg();
-	}
-	
-}
-	
-	
-class A_Db_MySQL_Recordset extends A_Db_MySQL_Result {
-	
-	public function fetchRow ($mode=null) {
-		if ($this->result) {
-			return mysql_fetch_assoc($this->result);
-		}
-	}
-		
-	public function fetchObject ($class=null) {
-		if ($this->result) {
-			return mysql_fetch_object($this->result, $class);
-		}
-	}
-		
-	public function fetchAll ($class=null) {
-		$rows = array();
-		if ($this->result) {
-			while ($row = mysql_fetch_assoc($this->result)) {
-				$rows[] = $row;
-			}
-		}
-		return $rows;
-	}
-		
-	public function numRows() {
-		if ($this->result) {
-			return mysql_num_rows($this->result);
-		} else {
-			return 0;
-		}
-	}
-		
-	public function numCols() {
-		if ($this->result) {
-			return mysql_num_cols($this->result);
-		} else {
-			return 0;
-		}
 	}
 	
 }
