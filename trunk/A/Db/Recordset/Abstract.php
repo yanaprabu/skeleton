@@ -9,7 +9,34 @@
  * @package A_Db_Recordset
  * @author Jonah Dahlquist <jonah@nucleussystems.com>
  */
-abstract class A_Db_Recordset_Abstract extends A_Collection
-{
+abstract class A_Db_Recordset_Abstract extends A_Collection {
+	protected $numRows;
+	protected $error;
+	protected $errorMsg;
+	
+	public function __construct($numRows, $error, $errorMsg) {
+		$this->numRows = $numRows;
+		$this->error = $error;
+		$this->errorMsg = $errorMsg;
+	}
+		
+	public function numRows() {
+		return $this->numRows;
+	}
+		
+	public function isError() {
+		return $this->error;
+	}
+		
+	public function getErrorMsg() {
+		return $this->errorMsg;
+	}
+	
+	/**
+	 * depricated name for getErrorMsg()
+	 */
+	public function getMessage() {
+		return $this->getErrorMsg();
+	}
 	
 }

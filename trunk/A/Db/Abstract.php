@@ -34,6 +34,8 @@ abstract class A_Db_Abstract {
 	
 	protected $_transaction_level = 0;
 	
+	protected $_numRows = 0;
+	
 	/**
 	 * Constructor.
 	 *
