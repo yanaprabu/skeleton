@@ -21,6 +21,7 @@ CREATE TABLE `users` (
 	`password` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
+	`access` varchar(255),
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -28,9 +29,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 -- 
 
-INSERT INTO `users` VALUES (1, 'matt', '', 'matt', 'pass', 'matt@mail.com', '1');
-INSERT INTO `users` VALUES (2, 'chris', '', 'chris', 'pass', 'chris@mail.com', '1');
-INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', 'pass', 'jonah@mail.com', '1');
+INSERT INTO `users` VALUES (1, 'matt', '', 'matt', 'pass', 'matt@mail.com', '1', 'post|admin');
+INSERT INTO `users` VALUES (2, 'chris', '', 'chris', 'pass', 'chris@mail.com', '1', 'post|admin');
+INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', 'pass', 'jonah@mail.com', '1', 'post|admin');
 
 -- --------------------------------------------------------
 
