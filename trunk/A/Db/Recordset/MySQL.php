@@ -25,16 +25,6 @@ class A_Db_Recordset_MySQL extends A_Db_Recordset_Abstract {
 		}
 	}
 		
-	public function fetchAll ($class=null) {
-		$rows = array();
-		if ($this->result) {
-			while ($row = mysql_fetch_assoc($this->result)) {
-				$rows[] = $row;
-			}
-		}
-		return $rows;
-	}
-		
 	public function numRows() {
 		if ($this->result) {
 			return mysql_num_rows($this->result);
