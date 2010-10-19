@@ -105,7 +105,7 @@ echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
 
 		$rows = $result->fetchAll();
 dump($rows, 'ROWS: ');
-		$diff = array_diff_assoc($rows, array(0=>array('id'=>1,'name'=>'One'),1=>array('id'=>2,'name'=>'Two')));
+		$diff = array_diff_assoc($rows->toArray(), array(0=>array('id'=>1,'name'=>'One'),1=>array('id'=>2,'name'=>'Two')));
 dump($diff, 'DIFF: ');
 		$this->assertTrue($diff == array());
 		
@@ -139,7 +139,7 @@ echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
 
 		$rows = $result->fetchAll();
 dump($rows, 'ROWS: ');
-		$diff = array_diff_assoc($rows, array(0=>array('id'=>1,'name'=>'One'),1=>array('id'=>2,'name'=>'Two')));
+		$diff = array_diff_assoc($rows->toArray(), array(0=>array('id'=>1,'name'=>'One'),1=>array('id'=>2,'name'=>'Two')));
 dump($diff, 'DIFF: ');
 		$this->assertTrue($diff == array());
 		
