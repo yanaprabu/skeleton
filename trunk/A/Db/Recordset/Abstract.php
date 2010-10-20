@@ -46,5 +46,8 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 		}
 		return $this;
 	}
-		
+	
+	public function next() {
+		return $this->fetchRow();
+	}
 }
