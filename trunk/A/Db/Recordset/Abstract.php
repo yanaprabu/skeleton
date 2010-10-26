@@ -15,6 +15,7 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 	protected $errorMsg;
 	protected $fetchCount;
 	protected $gatherMode;
+	protected $result;
 	
 	public function __construct($numRows, $error, $errorMsg) {
 		$this->numRows = $numRows;
