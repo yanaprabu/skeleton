@@ -15,7 +15,7 @@ class A_Db_Recordset_MySQL extends A_Db_Recordset_Abstract
 	/**
 	 * Fetches a row as an associative array from database
 	 */
-	private function _fetch() {
+	protected function _fetch() {
 		return mysql_fetch_assoc($this->result);
 	}
 		
