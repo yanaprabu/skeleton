@@ -12,17 +12,12 @@ class A_Db_Recordset_MySQL extends A_Db_Recordset_Abstract {
 	public function setResult ($result) {
 		$this->result = $result;
 	}
-		
-	public function fetchRow ($mode=null) {
-		if ($this->result) {
-			return mysql_fetch_assoc($this->result);
-		}
-	}
-		
-	public function fetchObject ($class=null) {
-		if ($this->result) {
-			return mysql_fetch_object($this->result, $class);
-		}
+	
+	/**
+	 * Fetches a row as an associative array from database
+	 */
+	private function _fetch() {
+		return mysql_fetch_assoc($this->result);
 	}
 		
 	public function numRows() {
