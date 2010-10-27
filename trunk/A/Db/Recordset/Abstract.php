@@ -2,9 +2,9 @@
 /**
  * Database recordset set (abstract class)
  * 
- * This class extends A_Collection to create a set of results from a sql
- * query.  Specific databases must have result classes that extend this
- * one, creating the methods defined here.
+ * This class implements the Iterator interface to allow iterating over it with
+ * foreach.  Specific databases must have result classes that extend this one,
+ * creating the methods defined here.
  * 
  * @package A_Db_Recordset
  * @author Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
@@ -18,6 +18,8 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	protected $fetchCount = 0;
 	protected $result = null;
 	protected $currentRow = null;
+	
+	const OBJECT = 'stdClass';
 	
 	/**
 	 * Constructor, receives the number of rows, error number, and error message
@@ -36,10 +38,16 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	/**
 	 * Gets and returns a row from the database
 	 */
-	public function fetchRow()
+	public function fetchRow($className = null)
 	{
 		if ($this->valid()) {
-			$row = $this->currentRow;
+			if ($className == self::OBJECT) {
+				$row = (object) $row;
+			} elseif (!empty($className)) {
+				$row = new $className($this->currentRow);
+			} else {
+				$row = $this->currentRow;
+			}
 			$this->loadNextRow();
 			return $row;
 		}
