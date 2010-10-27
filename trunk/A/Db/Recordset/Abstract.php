@@ -9,18 +9,127 @@
  * @package A_Db_Recordset
  * @author Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
  */
-abstract class A_Db_Recordset_Abstract extends A_Collection {
-	protected $numRows;
-	protected $error;
-	protected $errorMsg;
-	protected $fetchCount;
-	protected $gatherMode;
-	protected $result;
-	protected $currentRow;
+abstract class A_Db_Recordset_Abstract implements Iterator
+{
 	
-	const OBJECT = 'stdClass';
+	protected $numRows = 0;
+	protected $error = 0;
+	protected $errorMsg = '';
+	protected $fetchCount = 0;
+	protected $result = null;
+	protected $currentRow = null;
 	
-	public function __construct($numRows, $error, $errorMsg) {
+	/**
+	 * Constructor, receives the number of rows, error number, and error message
+	 * from creator
+	 * @param int $numRows Number of rows returned from query
+	 * @param int $error Error number from database
+	 * @param string $errorMsg The error message from database
+	 */
+	public function __construct($numRows, $error, $errorMsg)
+	{
+		$this->numRows = $numRows;
+		$this->error = $error;
+		$this->errorMsg = $errorMsg;
+	}
+	
+	/**
+	 * Gets and returns a row from the database
+	 */
+	public function fetchRow()
+	{
+		if ($this->valid()) {
+			$row = $this->currentRow;
+			$this->loadNextRow();
+			return $row;
+		}
+	}
+	
+	/**
+	 * Gets the number of rows got in query
+	 */
+	public function numRows()
+	{
+		return $this->numRows;
+	}
+	
+	/**
+	 * Returns if there was an error or not during query
+	 */
+	public function isError()
+	{
+		return (bool) $this->error;
+	}
+	
+	/**
+	 * Returns the error message produced by database
+	 */
+	public function getErrorMsg()
+	{
+		return $this->errorMsg;
+	}
+	
+	/**
+	 * Iterator function, resets the index
+	 */
+	public function rewind()
+	{
+		// nothing to rewind
+	}
+	
+	/**
+	 * Iterator function, gets the current database row
+	 */
+	public function current()
+	{
+		return $this->currentRow;
+	}
+	
+	/**
+	 * Iterator function, gets the current key
+	 */
+	public function key()
+	{
+		return $this->fetchCount;
+	}
+	
+	/**
+	 * Iterator function, moves the index forward
+	 */
+	public function next()
+	{
+		$this->loadNextRow();
+	}
+	
+	/**
+	 * Iterator function, returns true if there are more elements
+	 */
+	public function valid()
+	{
+		return !empty($this->currentRow);
+	}
+	
+	/**
+	 * Loads the next row into memory
+	 */
+	private function loadNextRow()
+	{
+		$this->currentRow = $this->_fetch();
+		$this->fetchCount++;
+	}
+	
+	/**
+	 * Sets the database resource object, and loads first row into memory
+	 * @param mixed $result Resource object
+	 */
+	public function setResult ($result) {
+		$this->result = $result;
+		$this->loadNextRow();
+	}
+	
+}
+	
+	/*public function __construct($numRows, $error, $errorMsg) {
 		$this->numRows = $numRows;
 		$this->error = $error;
 		$this->errorMsg = $errorMsg;
@@ -42,7 +151,7 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 	
 	/**
 	 * depricated name for getErrorMsg()
-	 */
+	 *
 	public function getMessage() {
 		return $this->getErrorMsg();
 	}
@@ -58,7 +167,7 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 	/**
 	 * Turn on Lazy Gather mode
 	 * @param boolean $enable True to enable, false to disable.  Optional, true by default
-	 */
+	 *
 	public function enableGather($enable = true)
 	{
 		$this->gatherMode = (boolean) $enable;
@@ -100,9 +209,10 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 	 * Takes care of Lazy Gather (if enabled) and calls _fetch if necessary
 	 * @param string $className The name of the object to return.  Array returned if null.
 	 * @return mixed The row as the object specified (or as array)
-	 */
+	 *
 	public function fetchRow($className = null)
 	{
+		if (!$this->valid()) {
 		$this->getRow();
 		$row = $this->getCurrentRow($className);
 		print_r($row);
@@ -121,4 +231,4 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 		$this->currentRow = null;
 		return $row;
 	}
-}
+}*/
