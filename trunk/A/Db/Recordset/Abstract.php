@@ -37,6 +37,7 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	
 	/**
 	 * Gets and returns a row from the database
+	 * @param string $className The class of the object to create (optional)
 	 */
 	public function fetchRow($className = null)
 	{
@@ -51,6 +52,19 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 			$this->loadNextRow();
 			return $row;
 		}
+	}
+	
+	/**
+	 * Fetches all rows from the database in the class defined by $className
+	 * @param string $className The class of the object to create (optional)
+	 */
+	public function fetchAll($className = null)
+	{
+		$result = array();
+		while ($row = $this->fetchRow($className)) {
+			$result[] = $row;
+		}
+		return $result;
 	}
 	
 	/**

@@ -210,4 +210,34 @@ dump($diff, 'DIFF: ');
 
 		$Db_MySQL->close();
 	}
+	
+	function testDb_MySQLFetchAll() {
+		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
+		$Db_MySQL->connect();
+
+		$sql = "DELETE FROM test1";
+		$Db_MySQL->query($sql);
+		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+
+		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two')";
+		$Db_MySQL->query($sql);
+		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+
+		$sql = "SELECT id,name FROM test1";
+		$result = $Db_MySQL->query($sql);
+		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		
+		$set = $result->fetchAll();
+		
+		dump($set);
+		$diff = array_diff_assoc($set, array(array('id'=>1,'name'=>'One'), array('id'=>2,'name'=>'Two')));
+		$this->assertTrue($diff == array());
+		
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+
+		$Db_MySQL->close();
+	}
 }
