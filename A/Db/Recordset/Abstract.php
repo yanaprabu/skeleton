@@ -16,6 +16,9 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 	protected $fetchCount;
 	protected $gatherMode;
 	protected $result;
+	protected $currentRow;
+	
+	const OBJECT = 'stdClass';
 	
 	public function __construct($numRows, $error, $errorMsg) {
 		$this->numRows = $numRows;
@@ -52,10 +55,6 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 		return $this;
 	}
 	
-	public function next() {
-		return $this->fetchRow();
-	}
-	
 	/**
 	 * Turn on Lazy Gather mode
 	 * @param boolean $enable True to enable, false to disable.  Optional, true by default
@@ -66,12 +65,20 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 		return $this;
 	}
 	
-	/**
-	 * Takes care of Lazy Gather (if enabled) and calls _fetch if necessary
-	 * @param string $className The name of the object to return.  Array returned if null.
-	 * @return mixed The row as the object specified (or as array)
-	 */
-	public function fetchRow($className = null)
+	public function next() {
+		$this->getRow();
+	}
+	
+	public function current() {
+		return $this->getCurrentRow(null);
+	}
+	
+	public function valid()
+	{
+		return !empty($this->currentRow);
+	}
+	
+	protected function getRow()
 	{
 		if ($this->result) {
 			if (isset($this->_data[$this->fetchCount])) {
@@ -83,12 +90,35 @@ abstract class A_Db_Recordset_Abstract extends A_Collection {
 				}
 				$this->fetchCount++;
 			}
-			if ($className == 'object') {
-				$row = (object) $row;
-			} elseif (!empty($className)) {
-				$row = new $className($row);
-			}
-			return $row;
+			$this->currentRow = $row;
+			return;
 		}
+		$this->currentRow = $this->_fetch();
+	}
+	
+	/**
+	 * Takes care of Lazy Gather (if enabled) and calls _fetch if necessary
+	 * @param string $className The name of the object to return.  Array returned if null.
+	 * @return mixed The row as the object specified (or as array)
+	 */
+	public function fetchRow($className = null)
+	{
+		$this->getRow();
+		$row = $this->getCurrentRow($className);
+		print_r($row);
+		return $row;
+	}
+	
+	protected function getCurrentRow($className)
+	{
+		if ($className == self::OBJECT) {
+			$row = (object) $this->currentRow;
+		} elseif (!empty($className)) {
+			$row = new $className($this->currentRow);
+		} else {
+			$row = $this->currentRow;
+		}
+		$this->currentRow = null;
+		return $row;
 	}
 }
