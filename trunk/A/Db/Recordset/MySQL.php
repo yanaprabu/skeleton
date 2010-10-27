@@ -10,6 +10,7 @@ class A_Db_Recordset_MySQL extends A_Db_Recordset_Abstract
 
 	public function setResult ($result) {
 		$this->result = $result;
+		$this->getRow();
 	}
 	
 	/**

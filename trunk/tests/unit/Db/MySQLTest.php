@@ -84,7 +84,7 @@ CREATE TABLE `skeletontest2`.`test1` (
 	function TearDown() {
 	}
 	
-function testDb_MySQLSingle() {
+/*function testDb_MySQLSingle() {
   		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
 		$Db_MySQL->connect();
 
@@ -147,6 +147,45 @@ dump($diff, 'DIFF: ');
 #		$this->assertFalse(!$result);
 
 		$Db_MySQL->close();
-	}
+	}*/
 	
+	function testDb_MySQLRecordset() {
+		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
+		$Db_MySQL->connect();
+
+		$sql = "DELETE FROM test1";
+		$Db_MySQL->query($sql);
+		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+
+		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two')";
+		$Db_MySQL->query($sql);
+		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+
+		$sql = "SELECT id,name FROM test1";
+		$result = $Db_MySQL->query($sql);
+		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		
+		$result->enableGather(true);
+		
+		foreach ($result as $row) {
+			echo 'GHaaa';
+			dump($row);
+			$diff = array_diff_assoc($row, array('id'=>1,'name'=>'One'));
+			$diff2 = array_diff_assoc($row, array('id'=>2,'name'=>'Two'));
+			$this->assertTrue($diff == array() || $diff2 == array());
+		}
+		
+		foreach ($result as $row) {
+			$diff = array_diff_assoc($row, array('id'=>1,'name'=>'One'));
+			$this->assertTrue($diff == array());
+		}
+		
+		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+#		$this->assertFalse(!$result);
+
+		$Db_MySQL->close();
+	}
 }

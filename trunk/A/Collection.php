@@ -15,7 +15,7 @@
  */
 class A_Collection implements Iterator, ArrayAccess	{
 	
-	protected $_data;
+	protected $_data = array();
 	
 	public function __construct($_data = array())	{
 		$this->_data = $_data;
