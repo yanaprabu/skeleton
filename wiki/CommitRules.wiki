@@ -17,6 +17,12 @@ These parameters must be met before committing to the trunk.
   * PHPDoc file headers must be updated to reflect any changes made.
   * Valid PHPDoc comments must be created for any new or edited classes, methods, or public class variables.
 
+=== Log Message ===
+
+  * Prefix your message with the class/folder your changes apply to enclosed in square brackets.  For example: "_[[A_Db_Recordset_MySQL]] Did something blah blah..._", or "_[[A_Db]] Did something else..._".
+  * Provide a thorough description of what changes were made.  Separate items with new lines.
+  * Avoid committing changes to more than one class at a time, the exception being if the changes depend on each other.
+
 === Syntax Standards ===
 
 At this point, the PEAR Codesniffer standard to check against has not been yet decided.  Until then, check with Zend, and ignore any line length or tab errors.
