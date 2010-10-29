@@ -85,23 +85,23 @@ CREATE TABLE `skeletontest2`.`test1` (
 	}
 	
 /*function testDb_MySQLSingle() {
-  		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
-		$Db_MySQL->connect();
+  		$db = new A_Db_MySQL($this->config['SINGLE']);
+		$db->connect();
 
 		$sql = "DELETE FROM test1";
-		$Db_MySQL->query($sql);
-echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$db->query($sql);
+echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
 		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2,'Two')";
-		$Db_MySQL->query($sql);
-echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$db->query($sql);
+echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
 		$sql = "SELECT id,name FROM test1";
-		$result = $Db_MySQL->query($sql);
-echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$result = $db->query($sql);
+echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
 		$rows = $result->fetchAll();
 dump($rows, 'ROWS: ');
@@ -109,33 +109,33 @@ dump($rows, 'ROWS: ');
 dump($diff, 'DIFF: ');
 		$this->assertTrue($diff == array());
 		
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$this->assertTrue($db->getErrorMsg() == '');
 #		$this->assertFalse(!$result);
 
-		$Db_MySQL->close();
+		$db->close();
 	}
 	
 	function testDb_MySQLMasterSlave() {
-  		$Db_MySQL = new A_Db_MySQL($this->config['MASTER_SLAVE']);
-		$Db_MySQL->connect();
+  		$db = new A_Db_MySQL($this->config['MASTER_SLAVE']);
+		$db->connect();
 
 		// should go to master
 		$sql = "DELETE FROM test1";
-		$Db_MySQL->query($sql);
-echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$db->query($sql);
+echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
 		// should go to master
 		$sql = "INSERT INTO test1 (id,name) VALUES (3,'Three'),(4,'Four')";
-		$Db_MySQL->query($sql);
-echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$db->query($sql);
+echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
 		// should come from slave
 		$sql = "SELECT id,name FROM test1";
-		$result = $Db_MySQL->query($sql);
-echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$result = $db->query($sql);
+echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
 		$rows = $result->fetchAll();
 dump($rows, 'ROWS: ');
@@ -143,101 +143,188 @@ dump($rows, 'ROWS: ');
 dump($diff, 'DIFF: ');
 		$this->assertTrue($diff == array());
 		
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$this->assertTrue($db->getErrorMsg() == '');
 #		$this->assertFalse(!$result);
 
-		$Db_MySQL->close();
+		$db->close();
 	}*/
 	
-	function testDb_MySQLIterator() {
-		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
-		$Db_MySQL->connect();
-
-		$sql = "DELETE FROM test1";
-		$Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
-
-		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two')";
-		$Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
-		
-		$sql = "SELECT id,name FROM test1";
-		$result = $Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
-		
-		foreach ($result as $row) {
-			dump($row);
-			$diff = array_diff_assoc($row, array('id'=>1,'name'=>'One'));
-			$diff2 = array_diff_assoc($row, array('id'=>2,'name'=>'Two'));
-			$this->assertTrue($diff == array() || $diff2 == array());
-		}
-		
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
-
-		$Db_MySQL->close();
-	}
-	
 	function testDb_MySQLFetchRow() {
-		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
-		$Db_MySQL->connect();
+		$db = new A_Db_MySQL($this->config['SINGLE']);
+		$db->connect();
 
 		$sql = "DELETE FROM test1";
-		$Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
-		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two')";
-		$Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
-
-		$sql = "SELECT id,name FROM test1";
-		$result = $Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two'),(3,'Three'),(4, 'Four')";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
 		
+		$sql = "SELECT id,name FROM test1";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+				
+		$expect_rows = array(
+			0 => array('id'=>1,'name'=>'One'),
+			1 => array('id'=>2,'name'=>'Two'),
+			2 => array('id'=>3,'name'=>'Three'),
+			3 => array('id'=>4,'name'=>'Four'),
+			);
+		$i = 0;
 		while ($row = $result->fetchRow()) {
-			dump($row);
-			$diff = array_diff_assoc($row, array('id'=>1,'name'=>'One'));
-			$diff2 = array_diff_assoc($row, array('id'=>2,'name'=>'Two'));
-			$this->assertTrue($diff == array() || $diff2 == array());
+			$diff = array_diff_assoc($row, $expect_rows[$i]);
+			$this->assertTrue($diff == array());
+			++$i;
 		}
 		
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$this->assertTrue($db->getErrorMsg() == '');
 
-		$Db_MySQL->close();
+		$db->close();
 	}
 	
 	function testDb_MySQLFetchAll() {
-		$Db_MySQL = new A_Db_MySQL($this->config['SINGLE']);
-		$Db_MySQL->connect();
+		$db = new A_Db_MySQL($this->config['SINGLE']);
+		$db->connect();
 
 		$sql = "DELETE FROM test1";
-		$Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
 
-		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two')";
-		$Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
-
+		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two'),(3,'Three'),(4, 'Four')";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+		
 		$sql = "SELECT id,name FROM test1";
-		$result = $Db_MySQL->query($sql);
-		echo "SQL=$sql, ERROR=".$Db_MySQL->getErrorMsg()."<br/>\n";
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+				
+		$expect_rows = array(
+			0 => array('id'=>1,'name'=>'One'),
+			1 => array('id'=>2,'name'=>'Two'),
+			2 => array('id'=>3,'name'=>'Three'),
+			3 => array('id'=>4,'name'=>'Four'),
+			);
+		$i = 0;
+		$result->fetchAll();
+		foreach ($result->toArray() as $row) {
+			$diff = array_diff_assoc($row, $expect_rows[$i]);
+			$this->assertTrue($diff == array());
+			++$i;
+		}
 		
-		$set = $result->fetchAll();
-		
-		dump($set);
-		$diff = array_diff_assoc($set, array(array('id'=>1,'name'=>'One'), array('id'=>2,'name'=>'Two')));
-		$this->assertTrue($diff == array());
-		
-		$this->assertTrue($Db_MySQL->getErrorMsg() == '');
+		$this->assertTrue($db->getErrorMsg() == '');
 
-		$Db_MySQL->close();
+		$db->close();
 	}
+
+	function testDb_MySQLIterator() {
+		$db = new A_Db_MySQL($this->config['SINGLE']);
+		$db->connect();
+
+		$sql = "DELETE FROM test1";
+		$db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+
+		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two'),(3,'Three'),(4, 'Four')";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+		
+		$sql = "SELECT id,name FROM test1";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+				
+		$expect_rows = array(
+			0 => array('id'=>1,'name'=>'One'),
+			1 => array('id'=>2,'name'=>'Two'),
+			2 => array('id'=>3,'name'=>'Three'),
+			3 => array('id'=>4,'name'=>'Four'),
+			);
+		$i = 0;
+		foreach ($result as $key => $row) {
+			$diff = array_diff_assoc($row, $expect_rows[$i]);
+			$this->assertTrue($diff == array());
+			++$i;
+		}
+		
+		$this->assertTrue($db->getErrorMsg() == '');
+
+		$db->close();
+	}
+	
+	function testDb_MySQLIteratorGather() {
+		$db = new A_Db_MySQL($this->config['SINGLE']);
+		$db->connect();
+
+		$sql = "DELETE FROM test1";
+		$db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+
+		$sql = "INSERT INTO test1 (id,name) VALUES (1,'One'),(2, 'Two'),(3,'Three'),(4, 'Four')";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+		
+		$sql = "SELECT id,name FROM test1";
+		$result = $db->query($sql);
+#echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
+		$this->assertTrue($db->getErrorMsg() == '');
+		$this->assertTrue($result->numRows() == 4);
+		$this->assertTrue($result->getErrorMsg() == '');
+				
+		$expect_rows = array(
+			0 => array('id'=>1,'name'=>'One'),
+			1 => array('id'=>2,'name'=>'Two'),
+			2 => array('id'=>3,'name'=>'Three'),
+			3 => array('id'=>4,'name'=>'Four'),
+			);
+		$i = 0;
+dump($result, 'RESULT BEFORE 1ST FOREACH: ', 1);
+		$result->enableGather();
+		foreach ($result as $key => $row) {
+dump($row, "ROW $i: $key => ", 1);
+			$diff = array_diff_assoc($row, $expect_rows[$i]);
+			$this->assertTrue($diff == array());
+			++$i;
+		}
+
+		$i = 0;
+dump($result, 'RESULT AFTER 1ST FOREACH: ', 1);
+		foreach ($result as $key => $row) {
+dump($row, "ROW $i: $key => ", 1);
+			$diff = array_diff_assoc($row, $expect_rows[$i]);
+			$this->assertTrue($diff == array());
+			++$i;
+		}
+dump($result, 'RESULT AFTER 2ND FOREACH: ', 1);
+		
+		$this->assertTrue($db->getErrorMsg() == '');
+
+		$db->close();
+	}
+	
 }
