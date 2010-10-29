@@ -11,17 +11,30 @@
  */
 abstract class A_Db_Recordset_Abstract implements Iterator
 {
-	
+	// resource object from database adapter
 	protected $result = null;
+	// number of rows that match query
 	protected $numRows = 0;
+	// error number (0 = no error)
 	protected $error = 0;
+	// error message
 	protected $errorMsg = '';
 
+	// rows fetched from database if gatherMode is on
 	protected $_data = array();
+	// the position of the next row to fetch
 	protected $nextRowNum = 0;
+	// the next row to give to current() if gatherMode is off
 	protected $currentRow = null;
+	// should rows be aggregated as they are fetched?
 	protected $gatherMode = false;
+	// name of class to create when fetching row
+	protected $className = null;
 	
+	/**
+	 * Pass to setClassName() to receive a stdObject
+	 * @var string
+	 */
 	const OBJECT = 'stdClass';
 	
 	/**
@@ -57,6 +70,17 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	}
 	
 	/**
+	 * Sets a class to create a row of
+	 * @param string $className Name of class to set (optional, default null)
+	 * @return this
+	 */
+	public function setClassName($className = null)
+	{
+		$this->className = $className;
+		return $this;
+	}
+	
+	/**
 	 * Gets the number of rows got in query
 	 */
 	public function numRows()
@@ -64,13 +88,22 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 		return $this->numRows;
 	}
 	
-	public function fetchRow($className=null)
+	/**
+	 * Fetches a row from the database, or from the cache if already fetched
+	 */
+	public function fetchRow()
 	{
 		if (isset($this->_data[$this->nextRowNum])) {
 			$row = $this->_data[$this->nextRowNum];
 			++$this->nextRowNum;
 		} else {
-			$row = $this->_fetch();
+			if ($this->className == self::OBJECT) {
+				$row = (object) $this->_fetch();
+			} elseif (!empty($this->className)) {
+				$row = new $this->className($this->_fetch());
+			} else {
+				$row = $this->_fetch();
+			}
 			if ($this->gatherMode) {
 				$this->_data[$this->nextRowNum] = $row;
 			} else {
@@ -81,6 +114,10 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 		return $row;
 	}
 	
+	/**
+	 * Fetches all rows from the database and loads them into memory
+	 * @return this
+	 */
 	public function fetchAll() {
 		$this->_data = array();
 		while ($row = $this->fetchRow()) {
