@@ -9,8 +9,7 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<base href="<?php echo $BASE; ?>" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $BASE ?>css/screen.css" >
-	<title><?php echo $head; ?></title>
-</head>
+<?php echo $head; ?></head>
 <body>
 <div id="container">
 
