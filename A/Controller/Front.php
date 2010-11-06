@@ -227,6 +227,7 @@ class A_Controller_Front {
 			} elseif ($error_route) {
 				$route = $error_route;
 				$error_route = null;
+				$error = self::NO_CLASS . ": $class. Using error route " . implode('/', $route);			// cannot load class and not error route 
 			} elseif ($n == 0) {
 				$error = self::NO_CLASS . ": $class";			// cannot load class and not error route 
 			}
@@ -276,7 +277,7 @@ class A_Controller_Front {
 	 * @return boolean
 	 */
 	public function isError() {
-		return $this->errorMsg != ''; 
+		return $this->errorMsg != array(); 
 	}
 	
 	/**
