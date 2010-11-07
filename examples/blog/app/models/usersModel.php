@@ -17,7 +17,7 @@ class usersModel extends A_Model {
 		$this->addRule(new A_Rule_Numeric('id', 'invalid ID'), 'id');
 		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'The firstname is not valid'), 'firstname'); 
 		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'lastname', 'The lastname is not valid'), 'lastname'); 
-		$this->addRule(new A_Rule_Length(5, 15, 'username', 'The username must be between 5 to 25 characters'), 'username'); 
+		$this->addRule(new A_Rule_Length(3, 15, 'username', 'The username must be between 3 to 25 characters'), 'username'); 
 		$this->addRule(new A_Rule_Regexp('/^[A-Za-z0-9]+$/D', 'username', 'The username is not valid'), 'username');		
 		$this->addRule(new A_Rule_Regexp('/[0-9a-zA-Z\-\_\@\.]+/', 'password', 'The password is not valid'), 'password'); 
 		$this->addRule(new A_Rule_Email('email', 'This is not a valid email adress'), 'email');
@@ -46,7 +46,7 @@ class usersModel extends A_Model {
 
 	protected $errmsg = '';
 	
-	function findAll(){
+	public function findAll(){
 		$this->errmsg = '';
 		$rows = $this->datasource->find(array('active'=>1));
 		if (isset($rows[0])) {
@@ -57,24 +57,24 @@ class usersModel extends A_Model {
 		return array();
 	}
 	
-	function find($id){
+	public function find($id){
 		$rows = $this->datasource->find(array('id'=>$id));
 		return $rows;
 	}
 	
-	function login($userid, $password) {
+	public function login($username, $password) {
 		$this->errmsg = '';
-		$rows = $this->datasource->find(array('username'=>$userid, 'active'=>1));
+		$rows = $this->datasource->find(array('username'=>$username, 'active'=>1));
 		if (isset($rows[0])) {
 			
-			if ($rows[0]['username'] == $userid) {
+			if ($rows[0]['username'] == $username) {
 				if ($rows[0]['password'] == $password) {
 					return $rows[0];
 				} else {
 					$this->errmsg = 'Password does not match. ';
 				}
 			} else {
-				$this->errmsg = 'User ID not found.';
+				$this->errmsg = 'Username not found.';
 			}
 		} else {
 			$this->errmsg = $this->datasource->getErrorMsg();
@@ -82,11 +82,11 @@ class usersModel extends A_Model {
 		return array();
 	}
 	
-	function loginErrorMsg() {
+	public function loginErrorMsg() {
 		return $this->errmsg;
 	}
 
-	function register($request){ 
+	public function register($request){ 
 	
 		/*
 		* Registration process overview
@@ -99,7 +99,10 @@ class usersModel extends A_Model {
 		* E6 - Registration form submitted; username/email combination already exists; password is correct
 		* E7 - Registration form submitted; account already exists but is not yet activated
 		*/
-
+		
+		// Default status, unregistered
+		$regstat = 'S0';
+		
 		// Basic validation
 		
 		// Check if the passwords match
@@ -107,7 +110,8 @@ class usersModel extends A_Model {
 		// Check if the terms of service checkbox has been checked
 		$this->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
 		// Exclude some fields not needed in the validation of the model
-		$this->excludeRules(array('id','firstname','lastname','active'));
+		$this->excludeRules(array('id','firstname','lastname','active','access'));
+		//dump($request);
 		// If the values are not valid return the E1 code
 		if(!$this->isValid($request)){
 			return 'E1';
@@ -123,35 +127,47 @@ class usersModel extends A_Model {
 		$tos = $request->get('tos');
 		
 		// Check if the username is available
-		if($this->usernameAvailable($username)){ 
-			if($this->emailExists($email)){ 
+		if($this->isUsernameAvailable($username)){ 
+			if($this->isEmailAvailable($email)){ 
+				// E4 - Registration form submitted; account created; activation email sent
+				// Create account
+				// @todo: Generate random string for activation
+				$activationkey = 'someuniquerandomstring';
+				$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$password, 'activationkey'=>$activationkey));
+				
+				// Send activation email $this->sendActivationMail($email, $regkey);
+				$subject = 'Activation account';
+				$message = 'Please click the following link to activate your account' . "\n\r";
+				$message .= 'http://skeleton/examples/blog/user/activate?id=' . $activationkey . "\n\r";
+				$message .= 'Thanks.';
+				$from = 'From: skeleton blog';
+				mail($email, $subject, $message, $from);
+				
+				// Show message succesful registration
+				return 'E4';
+			} else { 
 				// E2 - user already has another account with the same email address
 				// The email adress is already in the db
 				// User doesn't know he already has an account
 				// or he tries to register again
 				// Show message + registration form + link to sign in form + link to send new password
 				return 'E2';
-			} else { 
-				// E4 - Registration form submitted; account created; activation email sent
-				// Create account
-					// @todo: create account
-				// Send activation email
-					// @todo: send activation email
-				// Show message succesful registration
-				return 'E4';
 			}
 			
 		// Username is not available / already in database
 		} else { 
 			// Check if this username belongs to the posted email
-			if($this->usernameHasEmail($username, $email)){ 
+			if($this->usernameMatchesEmail($username, $email)){ 
 				// Check if account has been activated?
 				if($this->accountActivated($username, $email)){ 
 					// The account has been activated already. In that case check if password is correct
-					if($this->passwordCorrect($username, $password)){ 
+					if($this->passwordCorrect($username, $password)){ echo 'we try to login';
 						// E6 - username/email combination already exists; password is correct
 						// Login the user and redirect (?) to success page or tell user he has been logged in
-						$this->login($username, $password);
+						$userdata = $this->login($username, $password);//var_dump($res);
+						$user = $locator->get('UserSession');
+						$user->login($userdata);
+						
 						return 'E6';
 					} else { 
 						// E5 - username/email combination already exists, but with different password
@@ -174,8 +190,13 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function usernameAvailable($username){ 
+	protected function isUsernameAvailable($username){ 
+		$this->errmsg = '';
 		$rows = $this->datasource->find(array('username'=>$username));
+		if($this->datasource->isError()){
+			$this->error = true;
+			$this->errmsg = $this->datasource->getErrorMsg();
+		}
 		if(!empty($rows)){
 			return false;
 		} else {
@@ -183,16 +204,17 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function emailExists($email){ 
+	// protected function emailExists($email){ 
+	protected function isEmailAvailable($email){	
 		$rows = $this->datasource->find(array('email'=>$email));
 		if(!empty($rows)){
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
 	}
 	
-	protected function usernameHasEmail($username, $email){ 
+	protected function usernameMatchesEmail($username, $email){ 
 		$rows = $this->datasource->find(array('username'=>$username ,'email'=>$email));
 		if(!empty($rows)){
 			return true;
@@ -201,7 +223,7 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function accountActivated($username, $email){ 
+	protected function accountActivated($username, $email){
 		$rows = $this->datasource->find(array('username'=>$username ,'active'=>1));
 		if(!empty($rows)){
 			return true;
@@ -217,6 +239,36 @@ class usersModel extends A_Model {
 		} else {
 			return false;
 		}
+	}
+	
+	protected function sendActivationMail($email, $key){
+		$subject = 'Activation account';
+		$activationlink = 'http://skeleton/examples/blog/user/activate?id=' . $key;
+		$message = 'Please click the following link to activate your account' . "\n\r";
+		$message .= $activationlink;
+		$from = 'From: skeleton blog';
+		mail($email, $subject, $message, $from);
+	}
+	
+	public function activate($activatelink){
+		// Check if the link contains all necessary info
+		
+			// If not explain problem
+			
+		// Has the account already been activated?
+		
+			// If yes, user might not know. Show login screen
+			
+			// If not, activate account + sign in user + redirect to certain page
+					
+	}
+	
+	public function newPassword($username){
+		// Is this username registered?
+		// If not: user made a typo or user has no account. Show New Password form + message about the error + link to register form
+		
+		// If yes: reset/regenerate password + send email + show signin screen with prefilled username + message
+		
 	}
 	
 }

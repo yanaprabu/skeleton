@@ -22,6 +22,7 @@ CREATE TABLE `users` (
 	`email` varchar(255) NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
 	`access` varchar(255),
+	`activationkey` varchar(32) NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
