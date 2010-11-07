@@ -25,6 +25,7 @@
 		
 		<div id="loginbox">
 			<p><?php if (isset($user) && $user->isLoggedIn()) { ?> 
+					<a href="<?php echo $BASE ?>user/profile">Profile</a> |
 					<a href="<?php echo $BASE ?>user/logout">Logout</a> 
 				<?php } else { ?> 
 					<a href="<?php echo $BASE ?>user/login/">Login</a> |

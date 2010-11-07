@@ -75,8 +75,8 @@ class user extends A_Controller_Action {
 			$result = $model->register($this->request);
 			if($result === 'S4'){
 				// Registration succesful
-				$errmsg = 'You are succesfully registered!';
-			
+				$errmsg = 'You are succesfully registered! Please <a href="' . $locator->get('Config')->get('BASE') . '/user/login">login</a>.';
+
 			} else {
 				// Return the registration status to the view
 				$errorstatus = $result;
@@ -94,7 +94,39 @@ class user extends A_Controller_Action {
 		$this->response->set('maincontent', $template);
 	}
 	
-	public function activate($locator){}
+	public function activate($locator){
+		$errmsg = '';
+		// get the activation key
+		$activationkey = $this->request->get('id');
+		// @todo: do some validation to make sure it's a 32 string
+		
+		$model = $this->_load('app')->model('users');
+		if(!empty($activationkey)){
+			// @Todo: Check if the account already been activated?
+			
+				// If yes, user might not know. Show login screen
+
+				// If not, activate account + sign in user + redirect to certain page		
+			
+			$result = $model->activate($activationkey);
+			if($result){
+				// registration activation succesfull
+				$errmsg = 'Your account is now activated';
+			} else {
+				// something went wrong..
+				$errmsg = 'We could not activate the account.';
+			}
+			
+		} else {
+			// User is on activate page but the activation key is missing. What to show?
+			$errmsg = 'The activation key is missing.';
+		}
+		
+		$template = $this->_load()->template('activate');
+		$template->set('errmsg', $errmsg);
+		$this->response->set('maincontent', $template);
+		
+	}
 	
 	public function password($locator){
 		

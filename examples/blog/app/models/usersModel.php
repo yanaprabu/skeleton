@@ -130,9 +130,8 @@ class usersModel extends A_Model {
 		if($this->isUsernameAvailable($username)){ 
 			if($this->isEmailAvailable($email)){ 
 				// E4 - Registration form submitted; account created; activation email sent
-				// Create account
-				// @todo: Generate random string for activation
-				$activationkey = 'someuniquerandomstring';
+				// Create activationkey  and insert user row for the account
+				$activationkey = md5(uniqid(rand(), true));
 				$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$password, 'activationkey'=>$activationkey));
 				
 				// Send activation email $this->sendActivationMail($email, $regkey);
@@ -164,7 +163,7 @@ class usersModel extends A_Model {
 					if($this->passwordCorrect($username, $password)){ echo 'we try to login';
 						// E6 - username/email combination already exists; password is correct
 						// Login the user and redirect (?) to success page or tell user he has been logged in
-						$userdata = $this->login($username, $password);//var_dump($res);
+						$userdata = $this->login($username, $password);
 						$user = $locator->get('UserSession');
 						$user->login($userdata);
 						
@@ -204,7 +203,6 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	// protected function emailExists($email){ 
 	protected function isEmailAvailable($email){	
 		$rows = $this->datasource->find(array('email'=>$email));
 		if(!empty($rows)){
@@ -241,6 +239,7 @@ class usersModel extends A_Model {
 		}
 	}
 	
+	/* Not used for now
 	protected function sendActivationMail($email, $key){
 		$subject = 'Activation account';
 		$activationlink = 'http://skeleton/examples/blog/user/activate?id=' . $key;
@@ -248,19 +247,22 @@ class usersModel extends A_Model {
 		$message .= $activationlink;
 		$from = 'From: skeleton blog';
 		mail($email, $subject, $message, $from);
-	}
+	}*/
 	
-	public function activate($activatelink){
-		// Check if the link contains all necessary info
-		
-			// If not explain problem
-			
-		// Has the account already been activated?
-		
-			// If yes, user might not know. Show login screen
-			
-			// If not, activate account + sign in user + redirect to certain page
-					
+	public function activate($activationkey){
+		// Is there a row with this activationkey?
+		$rows = $this->datasource->find(array('activationkey'=>$activationkey));
+		// If there is activate the acount
+		if(!empty($rows)){
+			$rows = $this->datasource->update(array('active'=>1), array('activationkey'=>$activationkey));
+			if($rows) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 	
 	public function newPassword($username){

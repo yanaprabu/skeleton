@@ -3,7 +3,7 @@
 <?php if ($user->isLoggedIn()) { ?>
 	<h1>Logout</h1>
 	<div>
-		<p>You are logged-in as <?php echo $user->get('firstname') . ' ' . $user->get('lastname'); ?></p>
+		<p>You are logged-in as <?php echo $user->get('username') . ' ' . $user->get('firstname') . ' ' . $user->get('lastname'); ?></p>
 		<form action="user/logout/" method="post">
 			<p><input type="submit" name="logout" value="Logout"/></p>
 		</form>
