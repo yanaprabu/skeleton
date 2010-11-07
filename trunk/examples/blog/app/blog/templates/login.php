@@ -3,7 +3,7 @@
 <?php if ($user->isLoggedIn()) { ?>
 	<h1>Logout</h1>
 	<div>
-		<p>You are logged-in as <?php echo $user->get('fname') . ' ' . $user->get('lname'); ?></p>
+		<p>You are logged-in as <?php echo $user->get('firstname') . ' ' . $user->get('lastname'); ?></p>
 		<form action="user/logout/" method="post">
 			<p><input type="submit" name="logout" value="Logout"/></p>
 		</form>
@@ -14,8 +14,8 @@
 		<span style="color:red"><?php echo $errmsg; ?></span>
 		<form action="user/login/" method="post">
 			<p>
-				<label>User ID</label>
-				<input type="text" name="userid" value="<?php echo $userid; ?>" size="20"/>
+				<label>Username</label>
+				<input type="text" name="username" value="<?php echo $username; ?>" size="20"/>
 			</p>
 			<p>
 				<label>Password</label>

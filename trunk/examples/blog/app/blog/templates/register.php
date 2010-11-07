@@ -26,7 +26,9 @@
 	
 	// S0 Default status: no errors. Show registration form
 	if($errorstatus === 'S0') { ?>
+		
 		<h3>Register</h3>
+		<p><strong>Status S0</strong></p>
 		<form action="user/register/" method="post">
 			<div>
 				<label for="username">Username</label>
@@ -59,23 +61,16 @@
 	<?php
 	// E1 Default status: no errors. Show registration form
 	if($errorstatus === 'E1') { ?>
+		
 		<h3>Register</h3>
-		<p>Please correct the following errors: </p><?php 
-		if(is_array($errmsg)){
-			echo '<ul class="warning">';
-			foreach($errmsg as $v){
-				foreach($v as $value){
-					echo '<li>' . $value . '</li>';
-				}
-			}
-			echo '</ul>';
-		}
-
-		?>
+		<p><strong>Status E1</strong></p>
+		<p>Please correct the following errors: </p>
+		<?php //dump($model);
+		echo "<ul class=\"warning\">\n<li>" . $model->getErrorMsg("</li>\n<li>") . "</li>\n</ul>\n"; ?>
 		<form action="user/register/" method="post">
 			<div>
 				<label for="username">Username</label>
-				<input type="text" name="username" id="username" value="<?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>" size="20"/>
+				<input type="text" name="username" id="username" value="<?php echo htmlentities($model->get('username'), ENT_QUOTES, 'UTF-8'); ?>" size="20"/>
 			</div>
 			<div>
 				<label for="email">Email adress</label>
@@ -99,13 +94,16 @@
 				<a href="#">cancel</a></span>
 			</div>
 		</form>
+		
 	<?php } ?>
 	
 	<?php
 	// If the registered email already has an account
 	if($errorstatus === 'E2'){ ?>
 		<div class="info">
+			
 			<h2>Did you know you already have an account?</h2>
+			<p><strong>Status E2</strong></p>
 			<p>Just to let you know: you already have an account with this email address, with username <strong><?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?></strong>.</p>
 			<p>If you are trying to create another account, please <strong>submit the form below</strong> with a <strong>different email adress</strong><br />
 			or<br />
@@ -148,7 +146,9 @@
 	// If username not available/allowed/already taken
 	} else if ($errorstatus === 'E3') { ?>
 		<div class="fail">
+			
 			<h2>Registration failed: Username not available</h2>
+			<p><strong>Status E3</strong></p>
 			<p>We're sorry, but the username "<?php echo htmlentities($_POST['username'], ENT_QUOTES, 'UTF-8'); ?>" has already been chosen by another user.<br />Please choose a different username.</p>
 		</div>
 		<!-- Show form with error on username -->
@@ -186,7 +186,9 @@
 	// Account created; activation email sent
 	} else if($errorstatus === 'E4') {  ?>
 		<div class="info">
+			
 			<h2>Account created; please check your email</h2>
+			<p><strong>Status E4</strong></p>
 			<p>Your account has been created, but you'll have to activate it before you can use it.</p>
 			<p>We've just sent an activation email to <?php echo $user->get('email'); ?>. Please <strong>check your email</strong>, 
 				and click on the <strong>activation link</strong> in the email we sent you.</p>
@@ -196,7 +198,9 @@
 	// Username/email combination already exists, but with different password	
 	} else if($errorstatus === 'E5') { ?>
 		<div class="info">
+			
 			<h2>Account already exists with different password</h2>
+			<p><strong>Status E5</strong></p>
 			<p>You already have an account with this username and emailaddress, but with a different password.<br />
 			Please sign in below with the correct password.</p>
 			<p class="footnote">Forgot your password? We can <a href="#">send you a new password</a>.</p>
@@ -212,13 +216,16 @@
 				<input id="password" name="password" value="" type="password" class="error" />
 				<span 	class="errormsg">&laquo;Please use the correct password</span>	
 			</div>
+			<p><input type="submit" name="login" value="Login"/></p>
 		</form>
 
 	<?php
 	// Username/email combination already exists; password is correct
 	} else if ($errorstatus === 'E6') { ?>
 		<div class="info">
+			
 			<h2>You already have this account; you are now Signed In</h2>
+			<p><strong>Status E6</strong></p>
 			<p>You tried to register a new account, but you've already created it before (with this exact same information). You are 
 				now signed in.</p>
 		</div>
@@ -227,7 +234,9 @@
 	// Account already exists but is not yet activated	
 	} else if ($errorstatus === 'E7') { ?>
 		<div class="info">
+			
 			<h2>You already created this account. Please activate it.</h2>
+			<p><strong>Status E7</strong></p>
 			<p>You have already created this account before, but you have not yet activated it. You need to activate 
 				your account before you can use it.</p>
 			<p>Please <strong>activate your account</strong> by clicking on the link in the activation email (we sent you 

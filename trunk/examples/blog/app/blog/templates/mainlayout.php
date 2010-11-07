@@ -24,8 +24,16 @@
 		</ul>
 		
 		<div id="loginbox">
-			<p>User: <a href="<?php echo $BASE ?>user/login/">login</a> | <a href="<?php echo $BASE ?>user/logout">logout</a>
-				| <a href="<?php echo $BASE ?>user/register/">Register</a> | <a href="<?php echo $BASE ?>user/profile/">Profile</a>
+			<p><?php if (isset($user) && $user->isLoggedIn()) { ?> 
+					<a href="<?php echo $BASE ?>user/logout">Logout</a> 
+				<?php } else { ?> 
+					<a href="<?php echo $BASE ?>user/login/">Login</a> |
+					<a href="<?php echo $BASE ?>user/register/">Register</a> | 
+					<a href="<?php echo $BASE ?>user/profile/">Profile</a>
+				<?php } ?>
+			
+		
+				
 	
 			</p>
 		</div>
