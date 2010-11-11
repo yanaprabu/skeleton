@@ -21,6 +21,8 @@ class A_Http_Request {
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
 		if ($this->method == 'POST') {
 			$this->data =& $_POST;
+		} elseif ($this->method == 'PUT') {
+			$this->data = parse_str(file_get_contents('php://input'));
 		} else {
 			$this->data =& $_GET;
 		}
