@@ -44,7 +44,7 @@
 		<ul id="topnav">
 			<li id="t1"><a href="<?php echo $BASE ?>search/">Find A Property</a></li>
 			<li id="t2"><a href="<?php echo $BASE ?>communities/">Communities</a></li>
-			<li id="t3"><a href="<?php echo $BASE ?>bahamas/">About The Bahamas</a></li>
+			<li id="t3"><a href="<?php echo $BASE ?>services/">Services</a></li>
 			<li id="t9"><a href="<?php echo $BASE ?>posts">Articles</a></li>	
 			<li id="t4"><a href="<?php echo $BASE ?>guides/buyers/">Buyer's Guide</a></li>
 			<li id="t5"><a href="<?php echo $BASE ?>guides/sellers/">Seller's Guide</a></li>
@@ -57,8 +57,8 @@
 	
 	<div id="footer">
 		<p>
-		&copy; Copyright <?=date("Y")." Foobar"?>, Nassau, The Bahamas. Information on this site is provided without guarantee. 
-		<a href="sitemap.php">Site Map</a> | <a href="/signup.php?newsletter">Get our Newsletter</a>
+		&copy; Copyright <?=date("Y")." Site Name"?>, Information on this site is provided without guarantee. 
+		<a href="<?php echo $BASE ?>sitemap/">Site Map</a> | <a href="<?php echo $BASE ?>signup/newsletter">Get our Newsletter</a>
 		</p>
 		<a id="footerToTop" href="#header">Top</a>
 	</div>

@@ -41,9 +41,6 @@
 		<?php if (isset($subcontent)) echo "<div id=\"subcontent\">\n$subcontent\n</div>"; ?>
 
 		<? //include('includes/inc_quicksearch.php'); ?>
-		<? //include('includes/inc_socialnetworks.php'); ?>
-		<? //include('includes/inc_loginbox.php'); ?>
-		<? //include('includes/inc_viewByIslandList.php'); ?>
 	</div><!-- close sidebar -->
 	
 &nbsp;
@@ -53,23 +50,23 @@
 	
 	<div id="main-navigation">
 		<ul id="topnav">
-			<li id="t1"><a href="/search_start.php">Find A Property</a></li>
-			<li id="t2"><a href="/communities/">Communities</a></li>
-			<li id="t3"><a href="/bahamas.php">About The Bahamas</a></li>
-			<li id="t9"><a href="/articles.php">Articles</a></li>	
-			<li id="t4"><a href="/buyguide.php">Buyer's Guide</a></li>
-			<li id="t5"><a href="/sellguide.php">Seller's Guide</a></li>
-			<li id="t6"><a href="/about.php">About Us</a></li>
-			<li id="t7"><a href="/contact.php">Contact Us</a></li>
-			<li id="t8"><a href="/index.php">Home</a></li>
+			<li id="t1"><a href="<?php echo $BASE ?>search/">Find A Property</a></li>
+			<li id="t2"><a href="<?php echo $BASE ?>communities/">Communities</a></li>
+			<li id="t3"><a href="<?php echo $BASE ?>services/">Services</a></li>
+			<li id="t9"><a href="<?php echo $BASE ?>posts">Articles</a></li>	
+			<li id="t4"><a href="<?php echo $BASE ?>guides/buyers/">Buyer's Guide</a></li>
+			<li id="t5"><a href="<?php echo $BASE ?>guides/sellers/">Seller's Guide</a></li>
+			<li id="t6"><a href="<?php echo $BASE ?>about/">About Us</a></li>
+			<li id="t7"><a href="<?php echo $BASE ?>contact/">Contact Us</a></li>
+			<li id="t8"><a href="<?php echo $BASE ?>">Home</a></li>
 		</ul>
 	</div>
 	
 	
 	<div id="footer">
 		<p>
-		&copy; Copyright <?=date("Y")." Foobar"?>, Nassau, The Bahamas. Information on this site is provided without guarantee. 
-		<a href="sitemap.php">Site Map</a> | <a href="/signup.php?newsletter">Get our Newsletter</a>
+		&copy; Copyright <?=date("Y")." Site Name"?>, Information on this site is provided without guarantee. 
+		<a href="<?php echo $BASE ?>sitemap/">Site Map</a> | <a href="<?php echo $BASE ?>signup/newsletter">Get our Newsletter</a>
 		</p>
 		<a id="footerToTop" href="#header">Top</a>
 	</div>
