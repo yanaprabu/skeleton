@@ -22,6 +22,10 @@ class Example2 {
 		$this->two = $arg;
 	}
 	
+	function getArgs() {
+		return $this->args;
+	}
+	
 	function getOne() {
 		return $this->one;
 	}

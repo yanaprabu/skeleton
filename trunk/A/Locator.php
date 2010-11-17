@@ -22,6 +22,7 @@ class A_Locator {
 	protected $_obj = array();
 	protected $_reg = array();
 	protected $_dir = array();
+	protected $_dir_regexp = array();
 	protected $_inject = array();
 	protected $_extension = '.php';
 	
@@ -41,8 +42,19 @@ class A_Locator {
 		}
 	}
 
+	/**
+	 * Set a directory to used for class names that:
+	 *      1. namespace '' the dir from which to load when do match is found
+	 *      2. matched first part of PEAR class name 'Foo_*' or namespace '\Foo\'
+	 *      3. match a perl regex like '/^Foo.*$/'
+	 */
 	public function setDir($dir, $namespace='') {
-		$this->_dir[$namespace] = rtrim($dir, '/') . '/';
+		$dir = rtrim($dir, '/') . '/';
+		if (substr($namespace, 0, 1) == '/') {	// perl regexp are in the form '/pattern/'
+			$this->_dir_regexp[$namespace] = $dir;
+		} else {
+			$this->_dir[$namespace] = $dir;
+		}
 		return $this;
 	}
 
@@ -60,7 +72,7 @@ class A_Locator {
 				), 
 			// Do: $bar = new Bar($locator->get('Boo')); which in turn will create Foo as specified above
 			'Bar' => array( 
-				'__construct' => array(array('A_Locator'=>'get, 'name'=>'Boo'), 
+				'__construct' => array(array('A_Locator'=>'get', 'name'=>'Boo'), 
 				), 
 			// Do: $bar = new Bar($locator->get('', 'Baz')); which in turn will create Foo as specified above
 			'Bar' => array( 
@@ -91,8 +103,17 @@ class A_Locator {
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
+
+		$class = ltrim($class, '\\');
+		// convert to dir separators
 		$file = str_replace(array('_','\\','-'), array('/','/','_'), $class);
+		//allow underscores that are not dir separators using dashes
 		$class = str_replace('-', '_', $class);
+		
+		$pos = strripos($class, '\\');
+		if ($pos !== false) {		// namespace found
+			$class = substr($class, $pos + 1);
+		}
 		
 		if ($dir) {
 			$dir = rtrim($dir, '/') . '/';
@@ -109,6 +130,13 @@ class A_Locator {
 			}
 			if (isset($this->_dir[$ns])) {
 				$dir = $this->_dir[$ns];
+			} else {
+				foreach ($this->_dir_regexp as $regexp => $dirstr) {
+					if (preg_match($regexp, $class)) {
+						$dir = $dirstr;
+						break;
+					}
+				}
 			}
 		}
 		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
@@ -249,6 +277,6 @@ class A_Locator {
 	}
 	
 	public function autoload() {
-	 return spl_autoload_register(array($this, 'loadClass'));
+		return spl_autoload_register(array($this, 'loadClass'));
 	}
 }
