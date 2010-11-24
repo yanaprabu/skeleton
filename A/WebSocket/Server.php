@@ -51,11 +51,17 @@ class A_WebSocket_Server
 						$client = new A_WebSocket_Client($resource, $this);
 						$this->clients[$resource] = $client;
 						$this->sockets[] = $resource;
+						if ($this->eventHandler) {
+							$this->eventHandler->onOpen($this->createEventObject(null, $client));
+						}
 					}
 				} else {
 					$client = $this->clients[$socket];
 					$bytes = socket_recv($socket, $data, 4096, 0);
 					if ($bytes === 0) {
+						if ($this->eventHandler) {
+							$this->eventHandler->onClose($this->createEventObject(null, $client));
+						}
 						unset($this->clients[$socket]);
 						$index = array_search($socket, $this->sockets);
 						unset($this->sockets[$index]);
@@ -126,7 +132,7 @@ class A_WebSocket_Server
 	protected function handleData($block, $client)
 	{
 		if ($this->eventHandler) {
-			$this->eventHandler->onMessage((object) array('data' => $block, 'client' => $client, 'server' => $this));
+			$this->eventHandler->onMessage($this->createEventObject($block, $client));
 		} else {
 			$request = new A_WebSocket_Request($block, $server, $client);
 			$this->locator->set('Request', $request);
@@ -134,5 +140,10 @@ class A_WebSocket_Server
 			$front = new A_Controller_Front($path, null, null);
 			$front->run($this->locator);
 		}
+	}
+	
+	protected function createEventObject($data, $client)
+	{
+		return (object) array('data' => $data, 'client' => $client, 'server' => $this);
 	}
 }
