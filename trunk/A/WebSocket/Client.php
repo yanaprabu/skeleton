@@ -10,8 +10,6 @@ class A_WebSocket_Client
 	
 	private $connected = false;
 	
-	private $server;
-	
 	const SOCKET_EOL = "\r\n";
 	
 	const HANDSHAKE_RESPONSE = "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n%s\r\n%s";
@@ -19,10 +17,9 @@ class A_WebSocket_Client
 	/**
 	 * Constructor
 	 */
-	public function __construct($socket, $server)
+	public function __construct($socket)
 	{
 		$this->socket = $socket;
-		$this->server = server;
 	}
 	
 	/**
@@ -37,6 +34,15 @@ class A_WebSocket_Client
 		}
 	}
 	
+	public function send($message)
+	{
+		$success = socket_write($this->socket, chr(0) . $message . chr(255), strlen($message) + 2);
+		if (!$success) {
+			echo 'Error, could not send message';
+			socket_close($this->socket);
+		}
+	}
+	
 	public function connect($data)
 	{
 		// Split up headers
@@ -45,7 +51,7 @@ class A_WebSocket_Client
 		// Make sure request is valid
 		$isValid = preg_match('/^GET (\S+) HTTP\/1.1$/', $requestLines[0], $matches);
 		if (!$isValid) {
-			mylog('Invalid handshake attempt: ' . $requestLines[0]);
+			//mylog('Invalid handshake attempt: ' . $requestLines[0]);
 			socket_close($this->socket);
 			return false;
 		}
