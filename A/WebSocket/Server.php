@@ -20,6 +20,8 @@ class A_WebSocket_Server
 	private $locator;
 	
 	private $path;
+	
+	private $eventHandler;
 	/**
 	 * Constructor
 	 */
@@ -70,6 +72,11 @@ class A_WebSocket_Server
 		}
 	}
 	
+	public function setEventHandler(A_WebSocket_EventHandler $eventHandler)
+	{
+		$this->eventHandler = $eventHandler;
+	}
+	
 	public function getClients()
 	{
 		return $this->clients;
@@ -118,10 +125,14 @@ class A_WebSocket_Server
 	
 	protected function handleData($block, $client)
 	{
-		$request = new A_WebSocket_Request($block, $server, $client);
-		$this->locator->set('Request', $request);
-		
-		$front = new A_Controller_Front($path, null, null);
-		$front->run($this->locator);
+		if ($this->eventHandler) {
+			$this->eventHandler->onMessage((object) array('data' => $block, 'client' => $client, 'server' => $this));
+		} else {
+			$request = new A_WebSocket_Request($block, $server, $client);
+			$this->locator->set('Request', $request);
+			
+			$front = new A_Controller_Front($path, null, null);
+			$front->run($this->locator);
+		}
 	}
 }
