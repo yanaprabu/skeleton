@@ -20,8 +20,8 @@ class A_WebSocket_Request
 	
 	public function get($index)
 	{
-		if (isset($data[$index])) {
-			return $data[$index];
+		if (isset($this->data->$index)) {
+			return $this->data->$index;
 		}
 		return false;
 	}

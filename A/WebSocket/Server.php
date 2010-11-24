@@ -21,14 +21,22 @@ class A_WebSocket_Server
 	
 	private $path;
 	
+	private $host;
+	
+	private $port;
+	
+	private $appPath;
+	
 	private $eventHandler;
 	/**
 	 * Constructor
 	 */
-	public function __construct($locator, $path)
+	public function __construct($locator, $config)
 	{
 		$this->locator = $locator;
-		$this->path = $path;
+		$this->host = $config->get('WEBSOCKET')->get('host');
+		$this->port = $config->get('WEBSOCKET')->get('port');
+		$this->appPath = $config->get('APP');
 	}
 
 	/**
@@ -48,7 +56,7 @@ class A_WebSocket_Server
 						// Socket error
 						continue;
 					} else {
-						$client = new A_WebSocket_Client($resource, $this);
+						$client = new A_WebSocket_Client($resource);
 						$this->clients[$resource] = $client;
 						$this->sockets[] = $resource;
 						if ($this->eventHandler) {
@@ -67,7 +75,7 @@ class A_WebSocket_Server
 						unset($this->sockets[$index]);
 						unset($client);
 					} else {
-						if ($client->isConnected) {
+						if ($client->isConnected()) {
 							$this->parseData($data, $client);
 						} else {
 							$client->connect($data);
@@ -91,13 +99,13 @@ class A_WebSocket_Server
 	protected function prepareMaster()
 	{
 		$this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-		if ($master < 0) {
+		if ($this->master < 0) {
 			die('Could not create socket: ' . socket_strerror($this->master));
 		}
 
 		socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1);
 
-		$res = socket_bind($this->master, $host, $port);
+		$res = socket_bind($this->master, $this->host, $this->port);
 		if ($res < 0) {
 			die('Could not bind socket: ' . socket_strerror($res));
 		}
@@ -134,10 +142,10 @@ class A_WebSocket_Server
 		if ($this->eventHandler) {
 			$this->eventHandler->onMessage($this->createEventObject($block, $client));
 		} else {
-			$request = new A_WebSocket_Request($block, $server, $client);
+			$request = new A_WebSocket_Request($block, $this, $client);
 			$this->locator->set('Request', $request);
 			
-			$front = new A_Controller_Front($path, null, null);
+			$front = new A_Controller_Front($this->appPath, array('', 'main', 'main'), array('', 'main', 'main'));
 			$front->run($this->locator);
 		}
 	}

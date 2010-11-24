@@ -1,5 +1,5 @@
 <?php
-include_once 'A/Config/Abstract.php';
+
 /**
  * Support for reading INI configuration files
  *
