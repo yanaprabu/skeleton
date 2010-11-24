@@ -237,7 +237,9 @@ class A_Http_View {
 	
 	protected function _include() {
 		ob_start();
-		if ($this->use_local_vars) extract($this->data, EXTR_REFS);
+		if ($this->use_local_vars && $this->data) {
+			extract($this->data, EXTR_REFS);
+		}
 		include func_get_arg(0);
 		return ob_get_clean();
 	}

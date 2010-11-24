@@ -24,10 +24,14 @@ $layout->set('block2', $view2);
 $layout->set('content', 'This is the content for the layout. ');
 $layout->setRenderer(new A_Template_Strreplace('templates/layout.html'));
 
+#$doc = new A_Html_Doc(array('doctype'=>'HTML_5'));
 $doc = new A_Html_Doc();
+$doc->setDoctype(A_Html_Doctype::HTML_5);
 $Response->set('layout', $layout);
 $Response->set('title', 'Response Example');
 $Response->set('BASE', 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']));
 $Response->setRenderer($doc);
+
+$Response->set('body', '<h1>This content goes in the body.</h1>');
 
 echo $Response->render();

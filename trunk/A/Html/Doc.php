@@ -61,7 +61,7 @@ class A_Html_Doc {
 			} else {
 				$this->_config[$name] = $value;
 			}
-		} elseif ($name == 'content') {					// how do we make this compatable with A_Http_Response usage?
+		} elseif (($name == 'content') || ($name == 'body')) {		// content is the A_Html_* name, body is the name of the tag
 			$this->_body = $value;
 		}
 		return $this;
