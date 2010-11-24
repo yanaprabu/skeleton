@@ -23,7 +23,7 @@ class A_WebSocket_Server
 	/**
 	 * Constructor
 	 */
-	function __construct($locator, $path)
+	public function __construct($locator, $path)
 	{
 		$this->locator = $locator;
 		$this->path = $path;
@@ -32,7 +32,7 @@ class A_WebSocket_Server
 	/**
 	 * Main server loop
 	 */
-	function run()
+	public function run()
 	{
 		$this->prepareMaster();
 		
@@ -60,7 +60,7 @@ class A_WebSocket_Server
 						unset($client);
 					} else {
 						if ($client->isConnected) {
-							$this->parseData($data);
+							$this->parseData($data, $client);
 						} else {
 							$client->connect($data);
 						}
@@ -68,6 +68,11 @@ class A_WebSocket_Server
 				}
 			}
 		}
+	}
+	
+	public function getClients()
+	{
+		return $this->clients;
 	}
 
 	protected function prepareMaster()
@@ -92,7 +97,7 @@ class A_WebSocket_Server
 		$this->sockets[] = $this->master;
 	}
 	
-	protected function parseData($data)
+	protected function parseData($data, $client)
 	{
 		$firstChar = substr($data, 0, 1);
 		$endIndex = strpos($data, chr(255));
@@ -103,7 +108,7 @@ class A_WebSocket_Server
 			$data = substr($data, $endIndex);
 			
 			// do something with $block
-			$this->handleData($block);
+			$this->handleData($block, $client);
 			
 			// get ready for next loop
 			$firstChar = substr($data, 0, 1);
@@ -111,9 +116,9 @@ class A_WebSocket_Server
 		}
 	}
 	
-	protected function handleData($block)
+	protected function handleData($block, $client)
 	{
-		$request = new A_WebSocket_Request($block);
+		$request = new A_WebSocket_Request($block, $server, $client);
 		$this->locator->set('Request', $request);
 		
 		$front = new A_Controller_Front($path, null, null);
