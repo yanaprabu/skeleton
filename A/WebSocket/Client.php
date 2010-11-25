@@ -10,6 +10,8 @@ class A_WebSocket_Client
 	
 	private $connected = false;
 	
+	private $session;
+	
 	const SOCKET_EOL = "\r\n";
 	
 	const HANDSHAKE_RESPONSE = "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n%s\r\n%s";
@@ -20,6 +22,7 @@ class A_WebSocket_Client
 	public function __construct($socket)
 	{
 		$this->socket = $socket;
+		$this->session = new A_Collection();
 	}
 	
 	/**
@@ -122,5 +125,10 @@ class A_WebSocket_Client
 	public function isConnected()
 	{
 		return $this->connected;
+	}
+	
+	public function session()
+	{
+		return $this->session;
 	}
 }
