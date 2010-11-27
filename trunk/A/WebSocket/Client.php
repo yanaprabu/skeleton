@@ -39,7 +39,9 @@ class A_WebSocket_Client
 	
 	public function send($message)
 	{
-		$success = socket_write($this->socket, chr(0) . $message . chr(255), strlen($message) + 2);
+		$message = json_encode($message);
+		$message = chr(0) . $message . chr(255);
+		$success = socket_write($this->socket, $message, strlen($message));
 		if (!$success) {
 			echo 'Error, could not send message';
 			socket_close($this->socket);

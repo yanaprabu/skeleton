@@ -6,22 +6,25 @@
 class A_WebSocket_Request
 {
 	
-	public $data = array();
+	protected $type;
+	protected $message;
 	protected $method = false;
 	protected $client;
 	
 	public function __construct($data, $server, $client)
 	{
 		$this->method = 'GET';
-		$this->data = json_decode($data);
+		$data = json_decode($data);
+		$this->type = $data->type;
+		$this->message = $data->data;
 		$this->server = $server;
 		$this->client = $client;
 	}
 	
 	public function get($index)
 	{
-		if (isset($this->data->$index)) {
-			return $this->data->$index;
+		if (isset($this->type->$index)) {
+			return $this->type->$index;
 		}
 		return false;
 	}
@@ -34,5 +37,10 @@ class A_WebSocket_Request
 	public function getServer()
 	{
 		return $this->server;
+	}
+	
+	public function getMessage()
+	{
+		return $this->message;
 	}
 }

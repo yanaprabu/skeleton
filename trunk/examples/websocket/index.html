@@ -1,57 +1,150 @@
 <html>
-<head>
-<title>WebSocket</title>
+	<head>
+		<title>WebSocket</title>
 
-<style>
- html,body{font:normal 0.9em arial,helvetica;}
- #log {width:440px; height:200px; border:1px solid #7F9DB9; overflow:auto;}
- #msg {width:330px;}
-</style>
+		<style type="text/css">
 
-<script>
+html,body {
+	font: normal 0.9em arial, helvetica;
+	margin: 0;
+	padding: 0;
+}
+
+#message {
+	width: 100%;
+	background: #FFFFFF;
+	border: solid 1px #AAAAAA;
+}
+
+#users {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 200px;
+	background: #DDDDDD;
+	
+}
+
+#log {
+	position: absolute;
+	left: 200px;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	padding: 50px;
+}
+
+#messages {
+	width: 100%;
+	overflow-y: scroll;
+	height: 100%;
+}
+
+.disconnected {
+	background: #FF0000;
+}
+
+.connected {
+	background
+
+		</style>
+		
+		<script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="jquery.json-2.2.js"></script>
+		<script type="text/javascript" src="jquery.websocket-0.0.1.js"></script>
+
+		<script type="text/javascript">
+
 var socket;
 
-function init(){
-  //var host = "ws://rnystrom.mine.nu:8000/echo";
-  var host = "ws://localhost:9091";
-  try{
-    socket = new WebSocket(host);
-    log('WebSocket - status '+socket.readyState);
-    socket.onopen    = function(msg){ log("Welcome - status "+this.readyState); };
-    socket.onclose   = function(msg){ log("Disconnected - status "+this.readyState); };
-    socket.onmessage = function(msg){ log("Received: "+msg.data); };
-  }
-  catch(ex){ log(ex); }
-  $("msg").focus();
+var socket = $.websocket('ws://localhost:9091', {
+	open: function () {
+		$('#message')
+			.attr('disabled', false)
+			.attr('class', '.connected')
+			.val('');
+		send('name', 'set_name', 'Guest' + Math.floor(Math.random() * 100));
+	},
+	close: function () {
+	},
+	message: function (message) {
+		handleMessage(message);
+	}
+});
+
+var users = [];
+
+var commands = [
+	{
+		command: 'name: ',
+		action: function (message) {
+			send('name', 'set_name', message);
+		}
+	}
+];
+
+function handleMessage(msg) {
+	msg = msg.originalEvent.data;
+	msg = $.evalJSON(msg);
+	if (msg.command == 'user_list') {
+		updateUsersList(msg.data);
+	} else if (msg.command == 'message') {
+		logMessage(msg.data.sender, msg.data.message);
+	}
 }
 
-function send(){
-  var txt,msg;
-  txt = $("msg");
-  msg = txt.value;
-  if(!msg){ alert("Message can not be empty"); return; }
-  txt.value="";
-  txt.focus();
-  try{ socket.send('{"module": "", "controller": "main", "action": "main", "data": "' + msg + '"}'); log('Sent: '+msg); } catch(ex){ log(ex); }
-}
-function quit(){
-  log("Goodbye!");
-  socket.close();
-  socket=null;
+function updateUsersList(list) {
+	$('#users').html('');
+	for (var i = 0; i < list.length; i++) {
+		$('#users').append(list[i] + '<br />');
+	}
 }
 
-// Utilities
-function $(id){ return document.getElementById(id); }
-function log(msg){ $("log").innerHTML+="<br>"+msg; }
-function onkey(event){ if(event.keyCode==13){ send(); } }
-</script>
+function logMessage(sender, message) {
+	$('#messages').prepend('<strong>' + sender + '</strong>: ' + message + '<br />');
+}
 
-</head>
-<body onload="init()">
- <h3>WebSocket v2.00</h3>
- <div id="log"></div>
- <input id="msg" type="textbox" onkeypress="onkey(event)"/>
- <button onclick="send()">Send</button>
- <button onclick="quit()">Quit</button>
-</body>
+function send(controller, action, message, module){
+	if (module == undefined) {
+		module = '';
+	}
+	var type = {
+		module: module,
+		controller: controller,
+		action: action
+	};
+	socket.send(type, message);
+}
+
+function sendMessage() {
+	var content = $('#message').val();
+	$('#message').val('');
+	$('#message').focus();
+	
+	for (var i = 0; i < commands.length; i++) {
+		if (content.substring(0, commands[i].command.length) == commands[i].command) {
+			commands[i].action(content.substring(commands[i].command.length));
+			return;
+		}
+	}
+	
+	if (content.length > 0) {
+		send('main', 'main', content);
+		logMessage('Me', content);
+	}
+}
+
+function onkey(event){ if(event.keyCode==13){ sendMessage(); } }
+
+		</script>
+
+	</head>
+	<body onbeforeunload="socket.close()">
+		<div id="users"></div>
+		<div id="log">
+			<input type="text" name="message" id="message" placeholder="Type message here" onkeypress="onkey(event);" disabled="true" value="Not connected" class="disconnected" />
+			<div id="messages"></div>
+		</div>
+	</body>
 </html>

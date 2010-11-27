@@ -15,7 +15,13 @@ class main extends A_Controller_Action {
 		
 		foreach ($otherClients as $otherClient) {
 			if ($otherClient != $client) {
-				$otherClient->send($request->get('data'));
+				$otherClient->send(array(
+					'command' => 'message',
+					'data' => array(
+						'sender' => $client->session()->get('name'),
+						'message' => $request->getMessage()
+					)
+				));
 			}
 		}
 	}
