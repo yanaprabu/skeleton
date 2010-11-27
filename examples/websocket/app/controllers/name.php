@@ -13,7 +13,7 @@ class name extends A_Controller_Action {
 		$client = $request->getClient();
 		$otherClients = $server->getClients();
 		
-		$client->session()->set('name', $request->get('data'));
+		$client->session()->set('name', $request->getMessage());
 		
 		$names = array();
 		
@@ -22,10 +22,10 @@ class name extends A_Controller_Action {
 		}
 		
 		foreach ($otherClients as $otherClient) {
-			$otherClient->send(json_encode( (object) array(
+			$otherClient->send(array(
 				'command' => 'user_list',
 				'data' => $names
-			)));
+			));
 		}
 	}
 
