@@ -58,18 +58,25 @@ html,body {
 
 var socket;
 
+var name = 'Guest' + Math.floor(Math.random() * 100);
+
 var socket = $.websocket('ws://localhost:9091', {
 	open: function () {
 		$('#message')
 			.attr('disabled', false)
 			.attr('class', '.connected')
 			.val('');
-		send('name', 'set_name', 'Guest' + Math.floor(Math.random() * 100));
+		send('name', 'set_name', name);
 	},
 	close: function () {
 	},
 	message: function (message) {
 		handleMessage(message);
+	},
+	events: {
+		message: function (event) {
+			alert('yo');
+		}
 	}
 });
 
@@ -79,6 +86,7 @@ var commands = [
 	{
 		command: 'name: ',
 		action: function (message) {
+			name = message;
 			send('name', 'set_name', message);
 		}
 	}
@@ -89,8 +97,10 @@ function handleMessage(msg) {
 	msg = $.evalJSON(msg);
 	if (msg.command == 'user_list') {
 		updateUsersList(msg.data);
-	} else if (msg.command == 'message') {
+	} else if (msg.command == 'append_message') {
 		logMessage(msg.data.sender, msg.data.message);
+	} else if (msg.command == 'finalize_message') {
+		$('#message-' + msg.data.sender).attr('id', '');
 	}
 }
 
@@ -102,7 +112,11 @@ function updateUsersList(list) {
 }
 
 function logMessage(sender, message) {
-	$('#messages').prepend('<strong>' + sender + '</strong>: ' + message + '<br />');
+	if ($('#message-' + sender).length) {
+		$('#message-' + sender).html('<strong>' + sender + '</strong>: ' + message);
+	} else {
+		$('#messages').prepend('<div id="message-' + sender + '"><strong>' + sender + '</strong>: ' + message + '</div>');
+	}
 }
 
 function send(controller, action, message, module){
@@ -119,8 +133,6 @@ function send(controller, action, message, module){
 
 function sendMessage() {
 	var content = $('#message').val();
-	$('#message').val('');
-	$('#message').focus();
 	
 	for (var i = 0; i < commands.length; i++) {
 		if (content.substring(0, commands[i].command.length) == commands[i].command) {
@@ -129,21 +141,32 @@ function sendMessage() {
 		}
 	}
 	
-	if (content.length > 0) {
-		send('main', 'main', content);
-		logMessage('Me', content);
-	}
+	send('message', 'append_message', content);
+	logMessage('Me', content);
 }
 
-function onkey(event){ if(event.keyCode==13){ sendMessage(); } }
+function finalizeMessage() {
+	send('message', 'finalize_message', null);
+	$('#message').val('');
+	$('#message').focus();
+	$('#message-Me').attr('id', '');
+}
+
+function onkey(event){
+	if (event.keyCode==13) {
+		finalizeMessage();
+	} else {
+		sendMessage();
+	}
+}
 
 		</script>
 
 	</head>
-	<body onbeforeunload="socket.close()">
+	<body>
 		<div id="users"></div>
 		<div id="log">
-			<input type="text" name="message" id="message" placeholder="Type message here" onkeypress="onkey(event);" disabled="true" value="Not connected" class="disconnected" />
+			<input type="text" name="message" id="message" placeholder="Type message here" onkeyup="onkey(event);" disabled="true" value="Not connected" class="disconnected" />
 			<div id="messages"></div>
 		</div>
 	</body>
