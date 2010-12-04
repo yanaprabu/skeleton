@@ -2,9 +2,35 @@
 
 class usersModel extends A_Model {
 	
+	/*
+	* Registration process overview
+	* S0 - Show Registration form
+	* E1 - Registration form submitted; missing fields or unvalid values
+	* E2 - Registration form submitted; user already has another account with the same email address
+	* E3 - Registration form submitted; username not available
+	* E4 - Registration form submitted; account created; activation email sent
+	* E5 - Registration form submitted; username/email combination already exists, but with different password
+	* E6 - Registration form submitted; username/email combination already exists; password is correct
+	* E7 - Registration form submitted; account already exists but is not yet activated
+	*/
+	
+	const STATUS_BASE					= 'User not registerd';				// previously S0
+	const ERROR_INVALID					= 'Missing or invalid fields';		// previously "E1"
+	const ERROR_EMAIL_UNAVAILABLE 		= 'Email already has an account';	// previously "E2"
+	const ERROR_USERNAME_UNAVAILABLE	= 'Username is taken';				// previously "E3"
+	const ERROR_PASSWORD				= 'Password is incorrect';			// previously "E5"
+	const ERROR_ACOUNT_UNACTIVATED 		= 'Account not activated yet';		// previously "E7"
+	const STATUS_REGISTERED				= 'Registration completed succesfully'; // previously "E4"
+	const STATUS_LOGGED_IN				= 'Account existed, user logged in';	// previously "E6"
+	
+	protected $status = self::STATUS_BASE;
+
+	protected $errmsg = '';
+		
 	protected $dbh = null;
 	
 	public function __construct($locator){
+		
 		$this->addField(new A_Model_Field('id'));
 		$this->addField(new A_Model_Field('firstname'));
 		$this->addField(new A_Model_Field('lastname'));
@@ -32,6 +58,10 @@ class usersModel extends A_Model {
 		$this->datasource->columns($this->getFieldNames());
 	}
 	
+	public function getStatus(){
+		return $this->status;
+	}
+	
 	public function save(){
 		// if doesn't exist yet create
 		if(!$this->get('id')){
@@ -42,9 +72,6 @@ class usersModel extends A_Model {
 	}
 	
 	public function findBy($someArgs){}
-	public function delete($id){}
-
-	protected $errmsg = '';
 	
 	public function findAll(){
 		$this->errmsg = '';
@@ -61,6 +88,8 @@ class usersModel extends A_Model {
 		$rows = $this->datasource->find(array('id'=>$id));
 		return $rows;
 	}
+	
+	public function delete($id){}	
 	
 	public function login($username, $password) {
 		$this->errmsg = '';
@@ -88,48 +117,35 @@ class usersModel extends A_Model {
 
 	public function register($request){ 
 	
-		/*
-		* Registration process overview
-		* S0 - Show Registration form
-		* E1 - Registration form submitted; missing fields or unvalid values
-		* E2 - Registration form submitted; user already has another account with the same email address
-		* E3 - Registration form submitted; username not available
-		* E4 - Registration form submitted; account created; activation email sent
-		* E5 - Registration form submitted; username/email combination already exists, but with different password
-		* E6 - Registration form submitted; username/email combination already exists; password is correct
-		* E7 - Registration form submitted; account already exists but is not yet activated
-		*/
+		$this->status = self::STATUS_BASE;
 		
-		// Default status, unregistered
-		$regstat = 'S0';
-		
-		// Basic validation
-		
+		// Add validation rules		
 		// Check if the passwords match
 		$this->addRule(new A_Rule_Match('password', 'passwordagain', 'Fields password and passwordagain do not match'));
 		// Check if the terms of service checkbox has been checked
 		$this->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
 		// Exclude some fields not needed in the validation of the model
 		$this->excludeRules(array('id','firstname','lastname','active','access'));
-		//dump($request);
-		// If the values are not valid return the E1 code
+
+		// Validate. If the values are not valid return the E1 code
 		if(!$this->isValid($request)){
-			return 'E1';
+			$this->status = self::ERROR_INVALID;
+            return false;
 		}
 		
 		// Further validation of registration attempt
 		
 		// Get the field values for local use
-		$username = $request->get('username');
-		$email = $request->get('email');
-		$password = $request->get('password');
-		$passwordagain = $request->get('passwordagain');
-		$tos = $request->get('tos');
+		$username 		= $request->get('username');
+		$email 			= $request->get('email');
+		$password 		= $request->get('password');
+		$passwordagain 	= $request->get('passwordagain');
+		$tos 			= $request->get('tos');
 		
 		// Check if the username is available
 		if($this->isUsernameAvailable($username)){ 
 			if($this->isEmailAvailable($email)){ 
-				// E4 - Registration form submitted; account created; activation email sent
+				
 				// Create activationkey  and insert user row for the account
 				$activationkey = md5(uniqid(rand(), true));
 				$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$password, 'activationkey'=>$activationkey));
@@ -142,17 +158,20 @@ class usersModel extends A_Model {
 				$from = 'From: skeleton blog';
 				mail($email, $subject, $message, $from);
 				
-				// Show message succesful registration
-				return 'E4';
+				// E4 Registration form submitted; account created; activation email sent
+				$this->status = self::STATUS_REGISTERED;
+	            return true;
+	
 			} else { 
+				
 				// E2 - user already has another account with the same email address
 				// The email adress is already in the db
 				// User doesn't know he already has an account
 				// or he tries to register again
 				// Show message + registration form + link to sign in form + link to send new password
-				return 'E2';
-			}
-			
+				$this->status = self::ERROR_EMAIL_UNAVAILABLE;
+	            return false;
+			}	
 		// Username is not available / already in database
 		} else { 
 			// Check if this username belongs to the posted email
@@ -160,31 +179,32 @@ class usersModel extends A_Model {
 				// Check if account has been activated?
 				if($this->accountActivated($username, $email)){ 
 					// The account has been activated already. In that case check if password is correct
-					if($this->passwordCorrect($username, $password)){ echo 'we try to login';
+					if($this->passwordCorrect($username, $password)){ 
 						// E6 - username/email combination already exists; password is correct
 						// Login the user and redirect (?) to success page or tell user he has been logged in
 						$userdata = $this->login($username, $password);
 						$user = $locator->get('UserSession');
 						$user->login($userdata);
-						
-						return 'E6';
+
+						$this->status = self::LOGGED_IN;
+			            return true;
 					} else { 
 						// E5 - username/email combination already exists, but with different password
-						// User has an activated account but forgot his password
-						// show message + signin form + forgot password link
-						return 'E5';
+						// User has an activated account but forgot his password. show message + signin form + forgot password link
+						$this->status = self::ERROR_PASSWORD;
+			            return false;
 					}
 				} else { 
 					// E7 - Registration form submitted; account already exists but is not yet activated
-					// account is not yet activated
 					// Show message user has to activate account + show link to resend activation email
-					return 'E7';
+					$this->status = self::ERROR_ACOUNT_UNACTIVATED;
+		            return false;
 				}
 			} else {
 				// E3 - Registration form submitted; username not available
-				// Explanation: another user already taken that username: return error status
-				// Show message username already taken + registration form
-				return 'E3';
+				// Another user already taken that username: return error status
+				$this->_error(self::ERROR_USERNAME_UNAVAILABLE);
+	            return false;
 			}
 		}
 	}
