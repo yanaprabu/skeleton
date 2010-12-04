@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
-#include 'A/Db/Sqlite.php';
-#include 'A/Db/Tabledatagateway.php';
+include 'A/Db/Sqlite3.php';
+include 'A/Db/Tabledatagateway.php';
 
 class Projects extends A_Db_Tabledatagateway
 {

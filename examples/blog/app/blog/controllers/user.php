@@ -69,10 +69,10 @@ class user extends A_Controller_Action {
 		// Set the default status for the view
 		$errorstatus = 'S0';
 		$errmsg = '';
-		$model = $this->_load('app')->model('users');
+		$usermodel = $this->_load('app')->model('users');
 		if($this->request->isPost()){
 			
-			$result = $model->register($this->request);
+			$result = $usermodel->register($this->request);
 			if($result === 'S4'){
 				// Registration succesful
 				$errmsg = 'You are succesfully registered! Please <a href="' . $locator->get('Config')->get('BASE') . '/user/login">login</a>.';
@@ -80,7 +80,7 @@ class user extends A_Controller_Action {
 			} else {
 				// Return the registration status to the view
 				$errorstatus = $result;
-				$errmsg = $model->getErrorMsg("</li>\n<li>");
+				$errmsg = $usermodel->getErrorMsg("</li>\n<li>");
 			}
 		}
 		
@@ -89,7 +89,7 @@ class user extends A_Controller_Action {
 		$template->set('errorstatus', $errorstatus);
 		$template->set('errmsg', $errmsg);
 		$template->set('user', $user);
-		$template->set('model', $model);
+		$template->set('usermodel', $usermodel);
 		
 		$this->response->set('maincontent', $template);
 	}
