@@ -183,7 +183,9 @@ class A_Controller_Helper_Load {
 				$ext = isset($path_parts['extension']) && isset($this->renderClasses[$path_parts['extension']]) ? $path_parts['extension'] : $this->renderExtension; 
 		        // fix by thinsoldier for NT servers that do not return filename
 				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
-
+				// add in path separators
+				$class = str_replace(array('_','-'), array('/','_'), $class);
+				
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
 				if (isset($args[1]) && is_array($args[1])) {
