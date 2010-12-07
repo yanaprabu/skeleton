@@ -1,37 +1,44 @@
 <?php
 /**
- * 
+ * A_File_Browser - get list of directories and files in a directory
  * 
  * @package A_File 
  */
+
 class A_File_Browser {
-protected $param_path = 'browse_path';
-protected $param_area = 'browse_area';
-protected $base_path;
-protected $areas;
-protected $rel_path = '';
-protected $rel_area = '';
-protected $entries = array();
-protected $dirs = array();
-protected $files = array();
-protected $entry_n = 0;
-protected $dir_n = 0;
-protected $file_n = 0;
-protected $dir_current_n = 0;
-protected $file_current_n = 0;
-protected $entry_max = 0;
-protected $dir_max = 0;
-protected $file_max = 0;
-protected $request;
-protected $path_separator = ';';
-protected $extra_params = array();
-protected $errorMsg = '';
+	const SORT_NONE = 0;
+	const SORT_CASE_SENSITIVE = 1;
+	const SORT_CASE_INSENSITIVE = 2;
+	
+	protected $param_path = 'browse_path';
+	protected $param_area = 'browse_area';
+	protected $base_path;
+	protected $areas;
+	protected $rel_path = '';
+	protected $rel_area = '';
+	protected $entries = array();
+	protected $dirs = array();
+	protected $files = array();
+	protected $entry_n = 0;
+	protected $dir_n = 0;
+	protected $file_n = 0;
+	protected $dir_current_n = 0;
+	protected $file_current_n = 0;
+	protected $entry_max = 0;
+	protected $dir_max = 0;
+	protected $file_max = 0;
+	protected $sort;
+	protected $request;
+	protected $path_separator = ';';
+	protected $extra_params = array();
+	protected $errorMsg = '';
 
 	public function __construct($request, $base_path='', $default_area='', $areas=array()) {
 		$this->request = $request;
 		$this->base_path = $this->_addTrailingSlash($base_path);
 		$this->areas = $areas;
 		$this->rel_area = $default_area;
+		$this->sort = self::SORT_CASE_INSENSITIVE;
 	}
 	
 	protected function _formatParam($param) {
@@ -100,18 +107,43 @@ protected $errorMsg = '';
 					$dir = $this->rel_path . $filename;
 				}
 				if ($filename != '.') {
-					$this->dirs[$this->dir_max++] = $this->entry_max;
 					$param[$this->param_path] = $dir;
 					$this->entries[$this->entry_max++] = array('type'=>'dir','param'=>$param, 'filename'=>$filename);
 				}
 			} else {
-				$this->files[$this->file_max++] = $this->entry_max;
 				$param[$this->param_path] = $this->rel_path;
 				$this->entries[$this->entry_max++] = array('type'=>'file','param'=>$param, 'filename'=>$filename);
 			}
 			$directory->next();                    
 		}
+		
+		if ($this->sort) {
+			usort($this->entries, array($this, '_entrySort'));
+		}
+		
+		for ($i=0; $i<$this->entry_max; ++$i) {
+			if ($this->entries[$i]['type'] == 'dir') {
+				$this->dirs[$this->dir_max++] = $i;
+			} else {
+				$this->files[$this->file_max++] = $i;
+			}
+		}
+		
 		return $this->entry_max;
+	}
+
+	public function _entrySort($e1, $e2) {
+		if ($this->sort == self::SORT_CASE_SENSITIVE) {
+			$a = $e1['filename'];
+			$b = $e2['filename'];
+		} else {
+			$a = strtolower($e1['filename']);
+			$b = strtolower($e2['filename']);
+		}
+		if ($a == $b) {
+			return 0;
+		}
+		return ($a < $b) ? -1 : 1;
 	}
 
 	public function getBasePath() {
@@ -208,6 +240,11 @@ protected $errorMsg = '';
 
 	public function setExtraParameters($params=array()) {
 		$this->extra_params = $params;
+		return $this;
+	}
+
+	public function setSort($sort) {
+		$this->sort = $sort;
 		return $this;
 	}
 
