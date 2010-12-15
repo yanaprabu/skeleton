@@ -31,7 +31,7 @@ class A_WebSocket_Server
 	/**
 	 * Constructor
 	 */
-	public function __construct($locator, $config)
+	public function __construct($config)
 	{
 		$this->locator = $locator;
 		$this->host = $config->get('WEBSOCKET')->get('host');
@@ -42,31 +42,40 @@ class A_WebSocket_Server
 	/**
 	 * Main server loop
 	 */
-	public function run()
+	public function run($locator)
 	{
-		$this->prepareMaster();
+		$this->locator = $locator;
 		
-		while (true) {
-			$changed_sockets = $this->sockets;
-			socket_select($changed_sockets, $write = NULL, $exceptions = NULL, NULL);
+		$this->prepareMaster();
+		$stopLoop = false;
+		
+		while ($stopLoop == false) {
+			$updated_sockets = $this->sockets;
+			socket_select($updated_sockets, $write = NULL, $exceptions = NULL, NULL);
 				
-			foreach ($changed_sockets as $socket) {
+			foreach ($updated_sockets as $socket) {
 				if ($socket == $this->master) {
-					if (($resource = socket_accept($this->master)) < 0) {
-						// Socket error
-						continue;
-					} else {
+					$resource = socket_accept($socket);
+					if ($resource !== false) {
 						$client = new A_WebSocket_Client($resource);
 						$this->clients[$resource] = $client;
 						$this->sockets[] = $resource;
 						if ($this->eventHandler) {
 							$this->eventHandler->onOpen($this->createEventObject(null, $client));
 						}
+					} else {
+						// socket error
 					}
 				} else {
 					$client = $this->clients[$socket];
 					$bytes = socket_recv($socket, $data, 4096, 0);
-					if ($bytes === 0) {
+					if ($bytes !== 0) {
+						if ($client->isConnected()) {
+							$this->parseData($data, $client);
+						} else {
+							$client->connect($data);
+						}
+					} else {
 						if ($this->eventHandler) {
 							$this->eventHandler->onClose($this->createEventObject(null, $client));
 						}
@@ -74,12 +83,6 @@ class A_WebSocket_Server
 						$index = array_search($socket, $this->sockets);
 						unset($this->sockets[$index]);
 						unset($client);
-					} else {
-						if ($client->isConnected()) {
-							$this->parseData($data, $client);
-						} else {
-							$client->connect($data);
-						}
 					}
 				}
 			}
@@ -100,19 +103,19 @@ class A_WebSocket_Server
 	{
 		$this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		if ($this->master < 0) {
-			die('Could not create socket: ' . socket_strerror($this->master));
+			throw new Exception('Could not create socket: ' . socket_strerror($this->master));
 		}
 
 		socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1);
 
 		$res = socket_bind($this->master, $this->host, $this->port);
 		if ($res < 0) {
-			die('Could not bind socket: ' . socket_strerror($res));
+			throw new Exception('Could not bind socket: ' . socket_strerror($res));
 		}
 
 		$res = socket_listen($this->master, 5);
 		if ($res < 0) {
-			die('Could not listen to socket: ' . socket_strerror($res));
+			throw new Exception('Could not listen to socket: ' . socket_strerror($res));
 		}
 
 		$this->sockets[] = $this->master;

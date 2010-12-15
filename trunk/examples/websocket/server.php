@@ -18,5 +18,5 @@ $Locator->autoload();
 $config = new A_Config_Php();
 $config->import($ConfigArray);
 
-$Server = new A_WebSocket_Server($Locator, $config);
-$Server->run();
+$Server = new A_WebSocket_Server($config);
+$Server->run($Locator);
