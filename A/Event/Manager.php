@@ -33,10 +33,9 @@ class A_Event_Manager
 	 * Add multi-event listener.  This allows one object to listen to multiple
 	 * events.
 	 * 
-	 * @param string $eventName
 	 * @param A_Event_MultiListener $eventMultiListener
 	 */
-	public function addEventMultiListener(string $eventName, A_Event_MultiListener $eventMultiListener)
+	public function addEventMultiListener(A_Event_MultiListener $eventMultiListener)
 	{
 		
 	}
