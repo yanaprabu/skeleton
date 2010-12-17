@@ -23,5 +23,5 @@ interface A_Event_MultiListener
 	 * @param string $eventName
 	 * @param object $eventObject
 	 */
-	public function onEvent($eventName, $eventObject = null);
+	public function onEvent($eventName, $eventObject);
 }

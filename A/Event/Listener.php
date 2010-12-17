@@ -14,5 +14,5 @@ interface A_Event_Listener
 	 * 
 	 * @param object $eventObject
 	 */
-	public function onEvent($eventObject = null);
+	public function onEvent($eventName, $eventObject);
 }
