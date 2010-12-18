@@ -9,19 +9,28 @@
  */
 class A_Event_Manager
 {
-
-	private $_events = array();
+	const ERROR_NO_EVENT = 'No event specified. ';
+	const ERROR_NO_METHOD = 'Listener has no onEvent() method . ';
+	const ERROR_WRONG_TYPE = 'The only types callback, closure and object with onEvent() method supported. ';
 	
-	const TYPE_MULTILISTENER = 0;
-	const TYPE_LISTENER = 1;
-	const TYPE_CALLBACK = 2;
-	const ERROR_WRONGTYPE = 'The only types supported by A_Event_Manager are A_Event_Listener, A_Event_MultiListener, and callback.';
+	protected $_events = array();
+	protected $_exception = '';							// A_Db_Exception
+	protected $_errorMsg = '';
 	
-	public function __construct()
+	public function __construct($exception='')
 	{
-		
+		$this->setException($exception);
 	}
 	
+	public function setException($class)
+	{
+		if ($class === true) {
+			$this->_exception = 'A_Db_Exception';
+		} else {
+			$this->_exception = $class;
+		}
+	}	
+
 	/**
 	 * Add event listener.  After being called, that eventName can be triggered
 	 * with fireEvent.
@@ -29,47 +38,31 @@ class A_Event_Manager
 	 * @param string $eventName
 	 * @param A_Event_Listener $eventListener
 	 */
-	public function addEventListener($eventListener, $eventName = null)
+	public function addEventListener($eventListener, $events = null)
 	{
-		$type = $this->getEventType($eventListener);
+		// if no events passed then check if we can get them from the listener
+		if (!$events && method_exists($eventListener, 'getEvents')) {
+			$events = $eventListener->getEvents();
+		}
 		
-		if ($type == self::TYPE_LISTENER || $type == self::TYPE_CALLBACK) {
-			
-			$this->addOneListener($eventListener, $eventName);
-			
-		} elseif ($type == self::TYPE_MULTILISTENER) {
-			
-			$events = array();
-			
-			if (is_array($eventName)) {
-				$events = $eventName;
-			} else {
-				$events = $eventListener->getEvents();
+		if ($events) {
+			// if single event name passed then convert to array for foreach below
+			if (is_string($events)) {
+				$events = array($events);
 			}
 			
 			foreach ($events as $event) {
-				$this->addOneListener($eventListener, $event);
+				$event = strval($event);
+				
+				if (!isset($this->_events[$event])) {
+					$this->_events[$event] = array();
+				}
+				$this->_events[$event][] = $eventListener;
 			}
 			
 		} else {
-			throw new Exception(self::ERROR_WRONGTYPE);
+			$this->_errorHandler(0, self::ERROR_NO_EVENT);
 		}
-	}
-	
-	/**
-	 * Adds one event listener to one event
-	 * 
-	 * @param mixed $eventListener
-	 * @param string $eventName
-	 */
-	private function addOneListener($eventListener, $eventName)
-	{
-		$eventName = strval($eventName);
-		
-		if (!isset($this->_events[$eventName])) {
-			$this->_events[$eventName] = array();
-		}
-		$this->_events[$eventName][] = $eventListener;
 	}
 	
 	/**
@@ -79,7 +72,10 @@ class A_Event_Manager
 	 */
 	public function killEvent(string $eventName)
 	{
-		unset($this->_events[$eventName]);
+		if (isset($this->_events[$eventName])) {
+			unset($this->_events[$eventName]);
+		}
+		return $this;
 	}
 	
 	/**
@@ -97,6 +93,7 @@ class A_Event_Manager
 				}
 			}
 		}
+		return $this;
 	}
 	
 	/**
@@ -104,40 +101,41 @@ class A_Event_Manager
 	 * the event handler.
 	 * 
 	 * @param string $eventName
-	 * @param object $eventObject
+	 * @param mixed $eventData	any data you want to pass to listeners
 	 */
-	public function fireEvent($eventName, object $eventObject = null)
+	public function fireEvent($eventName, $eventData = null)
 	{
 		if (isset($this->_events[$eventName])) {
 			$event = $this->_events[$eventName];
 			foreach ($event as $listener) {
-				$type = $this->getEventType($listener);
-				if ($type == self::TYPE_CALLBACK) {
-					call_user_func($listener, $eventName, $eventObject);
+
+				if (is_array($listener)) {									// callback array
+					call_user_func($listener, $eventName, $eventData);
+				
+				} elseif (is_object($listener)) {
+					if ($listener instanceof Closure) {						// anonymous function
+						$listener($eventName, $eventData);
+					
+					} elseif (method_exists($listener, 'onEvent')) {												// standard A_Event_Listener
+						$listener->onEvent($eventName, $eventData);
+					} else {
+						$this->_errorHandler(0, self::ERROR_NO_METHOD);
+					}
 				} else {
-					$listener->onEvent($eventName, $eventObject);
+					$this->_errorHandler(0, self::ERROR_WRONG_TYPE);
 				}
 			}
 		}
 	}
 	
-	/**
-	 * Finds out what type an event object is
-	 * 
-	 * @param mixed $event Event to asses
-	 * @access private
-	 */
-	private function getEventType($event)
-	{
-		if (is_callable($event)) {
-			return self::TYPE_CALLBACK;
-		} elseif (is_object($event)) {
-			if ($event instanceOf A_Event_Listener) {
-				return self::TYPE_LISTENER;
-			} elseif ($event instanceOf A_Event_MultiListener) {
-				return self::TYPE_MULTILISTENER;
-			}
+	public function _errorHandler($errno, $errorMsg) {
+		$this->_errorMsg .= $errorMsg;
+		if ($this->_exception) {
+			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
-		return false;
+	}	
+
+	public function getErrorMsg() {
+		return $this->_errorMsg;
 	}
 }

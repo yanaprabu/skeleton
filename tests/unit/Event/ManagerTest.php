@@ -1,39 +1,116 @@
 <?php
 
-class Event_ManagerTest extends UnitTestCase {
-	public function testMain() {
-		$manager = new A_Event_Manager();
-		
-		$manager->addEventListener(new MyEventListener(), 'event1');
-		$manager->addEventListener(new MyEventListener(), 'event1');
-		
-		$manager->addEventListener(new MyEventListener(), 'event2');
-		
-		$manager->addEventListener(new MyEventMultiListener());
-		
-		ob_start();
-		$manager->fireEvent('event3');
-		$manager->fireEvent('event1');
-		$manager->fireEvent('event2');
-		$output = ob_get_contents();
-		ob_end_clean();
-		
-		$this->assertTrue($output == 'multi event3<br />single event1<br />single event1<br />single event2<br />multi event2<br />');
-	}
-}
-
+// listener classes to hold values that can be checked after firing events
 class MyEventListener implements A_Event_Listener {
+	public $name = '';
+	public $eventName = '';
+	public $eventObject = null;
+	
+	public function __construct($name) {
+		$this->name = $name;
+	}
 	public function onEvent($name, $object) {
-		echo 'single ' . $name . '<br />';
+		$this->eventName = $name;
+		$this->eventObject = $object;
+#		echo 'single ' . $name . '<br />';
 		print_r($object);
+	}
+	public function anotherEvent($name, $object) {
+		$this->eventName = "anotherEvent:$name";
+		$this->eventObject = $object;
+#		echo 'single ' . $name . '<br />';
+#		print_r($object);
 	}
 }
 class MyEventMultiListener implements A_Event_MultiListener {
+	public $name = '';
+	public $eventName = '';
+	public $eventObject = null;
+		
+	public function __construct($name) {
+		$this->name = $name;
+	}
 	public function onEvent($name, $object) {
-		echo 'multi ' . $name . '<br />';
-		print_r($object);
+		$this->eventName = $name;
+		$this->eventObject = $object;
+#		echo 'multi ' . $name . '<br />';
+#		print_r($object);
 	}
 	public function getEvents() {
 		return array('event2', 'event3');
 	}
+}
+
+// class to pass to event handlers
+class Event_ManagerTest_ValueObject {
+	public $data = '';
+}
+
+
+class Event_ManagerTest extends UnitTestCase {
+
+	public function testEvents() {
+		$manager = new A_Event_Manager();
+		
+		$listener1 = new MyEventListener('listener1');
+		$manager->addEventListener($listener1, 'event1');		// single event
+		$listener2 = new MyEventListener('listener2');
+		$manager->addEventListener($listener2, 'event2');		// single event
+		
+		$listener3 = new MyEventListener('listener3');
+		$manager->addEventListener($listener3, array('event1', 'event3'));		// multiple events
+		
+		$listener4 = new MyEventMultiListener('listener4');		// internally specifies listening for array('event2', 'event3')
+		$manager->addEventListener($listener4);
+		
+		// intialized state
+		$this->assertTrue($listener1->eventName == '');
+		$this->assertTrue($listener2->eventName == '');
+		$this->assertTrue($listener3->eventName == '');
+		$this->assertTrue($listener4->eventName == '');
+		
+		$manager->fireEvent('event1');
+		$this->assertTrue($listener1->eventName == 'event1');
+		$this->assertTrue($listener2->eventName == '');
+		$this->assertTrue($listener3->eventName == 'event1');
+		$this->assertTrue($listener4->eventName == '');
+		
+		$manager->fireEvent('event2');
+		$this->assertTrue($listener1->eventName == 'event1');
+		$this->assertTrue($listener2->eventName == 'event2');
+		$this->assertTrue($listener3->eventName == 'event1');
+		$this->assertTrue($listener4->eventName == 'event2');
+		
+		$manager->fireEvent('event3');
+		$this->assertTrue($listener1->eventName == 'event1');
+		$this->assertTrue($listener2->eventName == 'event2');
+		$this->assertTrue($listener3->eventName == 'event3');
+		$this->assertTrue($listener4->eventName == 'event3');
+
+	}
+
+	public function testUserFuncParam() {
+		$manager = new A_Event_Manager();
+		
+		$listener1 = new MyEventListener('listener1');
+		$manager->addEventListener(array($listener1, 'anotherEvent'), 'event1');
+		
+		$this->assertTrue($listener1->eventName == '');
+		
+		$manager->fireEvent('event1');
+		$this->assertTrue($listener1->eventName == 'anotherEvent:event1');
+	}
+
+	public function testClosure() {
+		$manager = new A_Event_Manager();
+		
+		// add a closure that sets an object's property
+		$manager->addEventListener(function($name, $object) { $object->data = $name; }, 'event1');
+		
+		// create object and pass to event
+		$object = new Event_ManagerTest_ValueObject();
+		$manager->fireEvent('event1', $object);
+		$this->assertTrue($object->data == 'event1');
+	}
+
 }
