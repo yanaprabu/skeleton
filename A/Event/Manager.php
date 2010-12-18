@@ -22,6 +22,12 @@ class A_Event_Manager
 		$this->setException($exception);
 	}
 	
+	/**
+	 * Set the exception class to use.  If $class is set to true, the default
+	 * is used.
+	 * 
+	 * @param string $class
+	 */
 	public function setException($class)
 	{
 		if ($class === true) {
@@ -29,17 +35,23 @@ class A_Event_Manager
 		} else {
 			$this->_exception = $class;
 		}
+		
+		return $this;
 	}	
 
 	/**
 	 * Add event listener.  After being called, that eventName can be triggered
 	 * with fireEvent.
 	 * 
-	 * @param string $eventName
-	 * @param A_Event_Listener $eventListener
+	 * @param mixed $events
+	 * @param mixed $eventListener
 	 */
-	public function addEventListener($eventListener, $events = null)
+	public function addEventListener($events, $eventListener = null)
 	{
+		if (!$eventListener) {
+			$eventListener = $events;
+			$events = null;
+		}
 		// if no events passed then check if we can get them from the listener
 		if (!$events && method_exists($eventListener, 'getEvents')) {
 			$events = $eventListener->getEvents();
@@ -63,6 +75,8 @@ class A_Event_Manager
 		} else {
 			$this->_errorHandler(0, self::ERROR_NO_EVENT);
 		}
+		
+		return $this;
 	}
 	
 	/**
@@ -70,11 +84,9 @@ class A_Event_Manager
 	 * 
 	 * @param string $eventName
 	 */
-	public function killEvent(string $eventName)
+	public function killEvent($eventName)
 	{
-		if (isset($this->_events[$eventName])) {
-			unset($this->_events[$eventName]);
-		}
+		unset($this->_events[$eventName]);
 		return $this;
 	}
 	
@@ -109,33 +121,46 @@ class A_Event_Manager
 			$event = $this->_events[$eventName];
 			foreach ($event as $listener) {
 
-				if (is_array($listener)) {									// callback array
+				if (is_callable($listener)) {
+					// callback/anonymous function
 					call_user_func($listener, $eventName, $eventData);
 				
 				} elseif (is_object($listener)) {
-					if ($listener instanceof Closure) {						// anonymous function
-						$listener($eventName, $eventData);
-					
-					} elseif (method_exists($listener, 'onEvent')) {												// standard A_Event_Listener
+					// event listener interface
+					if ($listener instanceof A_Event_Listener) {												// standard A_Event_Listener
 						$listener->onEvent($eventName, $eventData);
+					
 					} else {
 						$this->_errorHandler(0, self::ERROR_NO_METHOD);
 					}
+				
 				} else {
 					$this->_errorHandler(0, self::ERROR_WRONG_TYPE);
 				}
 			}
+		} else {
+			$this->_errorHandler(0, self::ERROR_NO_EVENT);
 		}
+		return $this;
 	}
 	
-	public function _errorHandler($errno, $errorMsg) {
+	/**
+	 * Gets any errors accumulated
+	 */
+	public function getErrorMsg() {
+		return $this->_errorMsg;
+	}
+	
+	/**
+	 * Creates and throws an exception of the defined type
+	 * 
+	 * @param int $errno
+	 * @param string $errorMsg
+	 */
+	private function _errorHandler($errno, $errorMsg) {
 		$this->_errorMsg .= $errorMsg;
 		if ($this->_exception) {
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
-	}	
-
-	public function getErrorMsg() {
-		return $this->_errorMsg;
 	}
 }
