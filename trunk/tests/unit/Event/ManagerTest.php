@@ -22,7 +22,7 @@ class MyEventListener implements A_Event_Listener {
 #		print_r($object);
 	}
 }
-class MyEventMultiListener implements A_Event_MultiListener {
+class MyEventMultiListener implements A_Event_Listener {
 	public $name = '';
 	public $eventName = '';
 	public $eventObject = null;
@@ -33,8 +33,6 @@ class MyEventMultiListener implements A_Event_MultiListener {
 	public function onEvent($name, $object) {
 		$this->eventName = $name;
 		$this->eventObject = $object;
-#		echo 'multi ' . $name . '<br />';
-#		print_r($object);
 	}
 	public function getEvents() {
 		return array('event2', 'event3');
@@ -46,19 +44,18 @@ class Event_ManagerTest_ValueObject {
 	public $data = '';
 }
 
-
 class Event_ManagerTest extends UnitTestCase {
 
 	public function testEvents() {
 		$manager = new A_Event_Manager();
 		
 		$listener1 = new MyEventListener('listener1');
-		$manager->addEventListener($listener1, 'event1');		// single event
+		$manager->addEventListener('event1', $listener1);		// single event
 		$listener2 = new MyEventListener('listener2');
-		$manager->addEventListener($listener2, 'event2');		// single event
+		$manager->addEventListener('event2', $listener2);		// single event
 		
 		$listener3 = new MyEventListener('listener3');
-		$manager->addEventListener($listener3, array('event1', 'event3'));		// multiple events
+		$manager->addEventListener(array('event1', 'event3'), $listener3);		// multiple events
 		
 		$listener4 = new MyEventMultiListener('listener4');		// internally specifies listening for array('event2', 'event3')
 		$manager->addEventListener($listener4);
@@ -93,7 +90,7 @@ class Event_ManagerTest extends UnitTestCase {
 		$manager = new A_Event_Manager();
 		
 		$listener1 = new MyEventListener('listener1');
-		$manager->addEventListener(array($listener1, 'anotherEvent'), 'event1');
+		$manager->addEventListener('event1', array($listener1, 'anotherEvent'));
 		
 		$this->assertTrue($listener1->eventName == '');
 		
@@ -105,7 +102,7 @@ class Event_ManagerTest extends UnitTestCase {
 		$manager = new A_Event_Manager();
 		
 		// add a closure that sets an object's property
-		$manager->addEventListener(function($name, $object) { $object->data = $name; }, 'event1');
+		$manager->addEventListener('event1', function($name, $object) { $object->data = $name; });
 		
 		// create object and pass to event
 		$object = new Event_ManagerTest_ValueObject();
