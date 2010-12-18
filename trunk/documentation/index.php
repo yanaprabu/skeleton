@@ -69,10 +69,11 @@ $(document).ready(function(){
 		<li><a class="ajaxlink" href="./?p=Forms">Forms</a></li>
 		<li><a class="ajaxlink" href="./?p=Error_Handling">Error Handling</a></li>
 		<li><a class="ajaxlink" href="./?p=Http_PathInfo">Controller PathInfo</a></li>
+		<li><a class="ajaxlink" href="./?p=Event">Event Handling</a></li>
 		
 	</ol>
 	
-<!--	<h3>Components</h3>
+	<!--<h3>Components</h3>
 	<ol>
 
 		<li><a class="ajaxlink" href="./?p=DataSpace">DataSpace.php</a></li>
