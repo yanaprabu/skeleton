@@ -8,6 +8,7 @@
 </ul>
 <?php
 function show_test_in_dir($base_dir, $dir) {
+	$contains_tests = false;
 	$test_ext = 'Test.php';
 	$length_ext = strlen($test_ext);
 	echo "<ul>\n";
@@ -17,13 +18,17 @@ function show_test_in_dir($base_dir, $dir) {
 		if (substr($filename, -$length_ext) == $test_ext) {									// show test scripts
 			$classname = $baseclassname . substr($filename, 0, strlen($filename)-$length_ext);
 			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$classname</a></li>\n";
+			$contains_tests = true;
 		} elseif (is_dir($testfile) && ! in_array($filename, array('.', '..'))) {			// show only dirs but not ./..
 			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$filename</a>\n";
-			show_test_in_dir($base_dir, "$dir$filename/");
+			if (show_test_in_dir($base_dir, "$dir$filename/")) {
+				$contains_tests = true;
+			}
 			echo "</li>\n";
 		}
 	}
 	echo "</ul>\n";
+	return $contains_tests;
 }
 $base_dir = dirname(__FILE__) . "/unit/";
 show_test_in_dir($base_dir, '');
