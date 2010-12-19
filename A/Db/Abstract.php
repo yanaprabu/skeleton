@@ -22,20 +22,20 @@ abstract class A_Db_Abstract {
 									'hostspec' => 'host',
 									);
 
-	protected $_exception = '';							// A_Db_Exception
-
 	protected $_recordset_class;
 	protected $_result_class;
 	
-	protected $error = 0;
-	protected $errorMsg = '';
-
 	protected $_sql = array();
 	
 	protected $_transaction_level = 0;
 	
 	protected $_numRows = 0;
 	
+	protected $_exception = '';							// A_Db_Exception
+
+	protected $_error = 0;
+	protected $_errorMsg = '';
+
 	/**
 	 * Constructor.
 	 *
@@ -125,17 +125,6 @@ abstract class A_Db_Abstract {
 			$this->_exception = $class;
 		}
 	}	
-
-	public function _errorHandler($errno, $errorMsg) {
-		$this->_errorMsg .= $errorMsg;
-		if ($this->_exception) {
-			throw A_Exception::getInstance($this->_exception, $errorMsg);
-		}
-	}	
-
-	public function _getErrorMsg() {
-		return $this->_errorMsg;
-	}
 
 	public function getSql() {
 		return $this->_sql;
@@ -254,12 +243,20 @@ abstract class A_Db_Abstract {
 		
 	public function escape($value) {}
 
+
+	public function _errorHandler($errno, $errorMsg) {
+		$this->_errorMsg .= $errorMsg;
+		if ($this->_exception) {
+			throw A_Exception::getInstance($this->_exception, $errorMsg);
+		}
+	}	
+
 	public function isError() {
-		return $this->error;
+		return $this->_error;
 	}
 		
 	public function getErrorMsg() {
-		return $this->errorMsg;
+		return $this->_errorMsg;
 	}
 		
 }

@@ -9,7 +9,10 @@
  * 'mode'
  */
 
-class A_Db_Sqlite3 extends A_Db_Abstract {	protected $dsn = null;	protected $link = null;	protected $sequenceext = '_seq';	protected $sequencestart = 1;
+class A_Db_Sqlite3 extends A_Db_Abstract {	protected $dsn = null;	protected $link = null;	protected $_sequence_ext = '_seq';
+	protected $_sequence_start = 1;
+	protected $_recordset_class = 'A_Db_Recordset_Sqlite3';
+	protected $_result_class = 'A_Db_Result';
 	
 	public function __construct($dsn=null) {
 		if ($dsn && isset($dsn['autoconnect'])) {
@@ -40,13 +43,19 @@ class A_Db_Sqlite3 extends A_Db_Abstract {	protected $dsn = null;	protected $l
 			$prepare->setDb($this->db);
 			$sql = $prepare->render();
 		}
-		if (strpos(strtolower($sql), 'select') === 0) {
-			$obj = new A_Db_sqlite3_Recordset(sqlite3_query($this->link, $sql));
-		} else {
-			$obj = new A_Db_sqlite3_Result($this->link, sqlite3_query($this->link, $sql));
-		}
+		$result = sqlite3_query($this->link, $sql);
+		$this->_sql[] = $sql;			// save history
 		$obj->error = sqlite3_last_error($this->link);
 		$obj->errorMsg = sqlite3_error_string($obj->error);
+		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+			$this->_numRows = sqlite3_num_rows($result);
+			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+			// call RecordSet specific setters
+			$obj->setResult($result);
+		} else {
+			$this->_numRows = sqlite3_affected_rows($link);
+			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
+		}
 		return $obj;
 	}
 		
@@ -88,75 +97,6 @@ class A_Db_Sqlite3 extends A_Db_Abstract {	protected $dsn = null;	protected $l
 	 */
 	public function getMessage() {
 		return $this->getErrorMsg();
-	}
-	
-}
-
-
-class A_Db_Sqlite3_Result {	protected $result;	public $error;	public $errorMsg;
-	
-	public function __construct($result=null) {
-		$this->result = $result;
-	}
-		
-	public function isError() {
-		return $this->error;
-	}
-		
-	public function getErrorMsg() {
-		return $this->errorMsg;
-	}
-	
-	/**
-	 * depricated name for getErrorMsg()
-	 */
-	public function getMessage() {
-		return $this->getErrorMsg();
-	}
-	
-}
-
-
-
-
-class A_Db_Sqlite3_Recordset extends A_Db_Sqlite3_Result {
-
-	public function __construct($result=null) {
-		$this->result = $result;
-	}
-	
-	public function fetchRow() {
-		if ($this->result) {
-			return(sqlite3_fetch_array($this->result, sqlite3_ASSOC));
-		}
-	}
-		
-	public function fetchObject ($class=null) {
-		if ($this->result) {
-			return(sqlite3_fetch_object($this->result, $class));
-		}
-	}
-		
-	public function fetchAll() {
-		if ($this->result) {
-			return(sqlite3_fetch_array($this->result, sqlite3_ASSOC));
-		}
-	}
-		
-	public function numRows() {
-		if ($this->result) {
-			return(sqlite3_num_rows($this->result));
-		} else {
-			return 0;
-		}
-	}
-		
-	public function numCols() {
-		if ($this->result) {
-			return(sqlite3_num_cols($this->result));
-		} else {
-			return 0;
-		}
 	}
 	
 }

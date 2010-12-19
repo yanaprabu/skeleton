@@ -8,4 +8,33 @@
 class A_Db_Recordset_Sqlite3 extends A_Db_Recordset_Abstract
 {
 	
+	/**
+	 * Fetches a row as an associative array from database
+	 */
+	protected function _fetch() {
+		return sqlite3_fetch_array($this->result, SQLITE3_ASSOC);
+	}
+		
+	/*
+	 * Returns the number of rows in the recordset 
+	 */
+	public function numRows() {
+		if ($this->result) {
+			return sqlite3_num_rows($this->result);
+		} else {
+			return 0;
+		}
+	}
+		
+	/*
+	 * Returns the number of columns in a row 
+	 */
+	public function numCols() {
+		if ($this->result) {
+			return sqlite3_num_cols($this->result);
+		} else {
+			return 0;
+		}
+	}
+	
 }

@@ -181,11 +181,11 @@ class A_Db_Postgres_Result {
 	}
 		
 	public function isError() {
-		return $this->error;
+		return $this->_error;
 	}
 		
 	public function getErrorMsg() {
-		return $this->errorMsg;
+		return $this->_errorMsg;
 	}
 	
 	/**
