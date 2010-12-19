@@ -16,9 +16,9 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	// number of rows that match query
 	protected $numRows = 0;
 	// error number (0 = no error)
-	protected $error = 0;
+	protected $_error = 0;
 	// error message
-	protected $errorMsg = '';
+	protected $_errorMsg = '';
 
 	// rows fetched from database if gatherMode is on
 	protected $_data = array();
@@ -47,8 +47,8 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	public function __construct($numRows, $error, $errorMsg)
 	{
 		$this->numRows = $numRows;
-		$this->error = $error;
-		$this->errorMsg = $errorMsg;
+		$this->_error = $error;
+		$this->_errorMsg = $errorMsg;
 	}
 	
 	/**
@@ -131,7 +131,7 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	 */
 	public function isError()
 	{
-		return (bool) $this->error;
+		return (bool) $this->_error;
 	}
 	
 	/**
@@ -139,7 +139,7 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	 */
 	public function getErrorMsg()
 	{
-		return $this->errorMsg;
+		return $this->_errorMsg;
 	}
 	
 	/**
@@ -243,7 +243,7 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	 *
 	public function isError()
 	{
-		return (bool) $this->error;
+		return (bool) $this->_error;
 	}
 	
 	**
@@ -251,7 +251,7 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	 *
 	public function getErrorMsg()
 	{
-		return $this->errorMsg;
+		return $this->_errorMsg;
 	}
 	
 	**
@@ -316,8 +316,8 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 /*
 	public function __construct($numRows, $error, $errorMsg) {
 		$this->numRows = $numRows;
-		$this->error = $error;
-		$this->errorMsg = $errorMsg;
+		$this->_error = $error;
+		$this->_errorMsg = $errorMsg;
 		$this->gatherMode = false;
 		$this->nextRowNum = 0;
 	}
@@ -327,11 +327,11 @@ abstract class A_Db_Recordset_Abstract implements Iterator
 	}
 		
 	public function isError() {
-		return $this->error;
+		return $this->_error;
 	}
 		
 	public function getErrorMsg() {
-		return $this->errorMsg;
+		return $this->_errorMsg;
 	}
 	
 	/**

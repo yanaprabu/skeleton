@@ -15,6 +15,9 @@ class A_Db_Recordset_MySQL extends A_Db_Recordset_Abstract
 		return mysql_fetch_assoc($this->result);
 	}
 		
+	/*
+	 * Returns the number of rows in the recordset 
+	 */
 	public function numRows() {
 		if ($this->result) {
 			return mysql_num_rows($this->result);
@@ -23,6 +26,9 @@ class A_Db_Recordset_MySQL extends A_Db_Recordset_Abstract
 		}
 	}
 		
+	/*
+	 * Returns the number of columns in a row 
+	 */
 	public function numCols() {
 		if ($this->result) {
 			return mysql_num_cols($this->result);

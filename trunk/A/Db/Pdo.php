@@ -43,8 +43,8 @@ class A_Db_Pdo extends A_Db_Abstract {
 	public function _connect($config) {
 		if (is_array($config)) {
 			if (!isset($config['phptype'])) {
-				$this->error = 1;
-				$this->errorMsg = "config['phptype'] not set. ";
+				$this->_error = 1;
+				$this->_errorMsg = "config['phptype'] not set. ";
 				return;
 			}
 			// init attributes array in not in config
@@ -101,7 +101,7 @@ class A_Db_Pdo extends A_Db_Abstract {
 			$this->_sql[] = $sql;			// save history
 			$this->_setError($connection);
 			if (!$result) {
-				$result = new A_Db_Pdo_Result($this->error, $this->errorMsg);
+				$result = new A_Db_Pdo_Result($this->_error, $this->_errorMsg);
 			}
 			return $result;
 		} else {
@@ -129,7 +129,7 @@ class A_Db_Pdo extends A_Db_Abstract {
 	protected function _setError($connection) {
 		// get error array
 		$errorInfo = $connection->errorInfo();
-		$this->error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
+		$this->_error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
 		if(isset($errorInfo[2])){
 			$this->errmsg = $errorInfo[2];			
 		}
@@ -217,13 +217,13 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 	}
 		
 	public function isError() {
-		$code = $this->errorCode();
+		$code = $this->_errorCode();
 		return $code == '00000' ? 0 : $code;		// PDO success value
 	}
 		
 	public function getErrorMsg() {
 		// get error array
-		$errorInfo = $this->errorInfo();
+		$errorInfo = $this->_errorInfo();
 		// return the message only
 		return $errorInfo[2];
 	}
@@ -259,20 +259,20 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 
 
 class A_Db_Pdo_Result {
-	protected $error;
-	protected $errorMsg;
+	protected $_error;
+	protected $_errorMsg;
 	
 	public function __construct($error, $errorMsg) {
-		$this->error = $error;
-		$this->errorMsg = $errorMsg;
+		$this->_error = $error;
+		$this->_errorMsg = $errorMsg;
 	}
 		
 	public function isError() {
-		return $this->error;
+		return $this->_error;
 	}
 		
 	public function getErrorMsg() {
-		return $this->errorMsg;
+		return $this->_errorMsg;
 	}
 
 	public function fetchRow() {

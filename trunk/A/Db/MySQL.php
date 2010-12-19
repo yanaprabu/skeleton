@@ -31,8 +31,8 @@ class A_Db_MySQL extends A_Db_Abstract {
 		if ($link && isset($config['database'])) {
 			mysql_select_db($config['database'], $link);
 		}
-		$this->error = mysql_errno($link);
-		$this->errorMsg = mysql_error($link);
+		$this->_error = mysql_errno($link);
+		$this->_errorMsg = mysql_error($link);
 		return $link;
 	}
 		
@@ -43,8 +43,8 @@ class A_Db_MySQL extends A_Db_Abstract {
 				$database = $this->dsn['database'];
 			}
 			$result = mysql_select_db($database, $link);
-			$this->error = mysql_errno($link);
-			$this->errorMsg = mysql_error($link);
+			$this->_error = mysql_errno($link);
+			$this->_errorMsg = mysql_error($link);
 		}
 	}
 		
@@ -69,16 +69,16 @@ class A_Db_MySQL extends A_Db_Abstract {
 		if ($link) {
 			$result = mysql_query($sql, $link);
 			$this->_sql[] = $sql;			// save history
-			$this->error = mysql_errno($link);
-			$this->errorMsg = mysql_error($link);
+			$this->_error = mysql_errno($link);
+			$this->_errorMsg = mysql_error($link);
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
 				$this->_numRows = mysql_num_rows($result);
-				$obj = new $this->_recordset_class($this->_numRows, $this->error, $this->errorMsg);
+				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 				// call RecordSet specific setters
 				$obj->setResult($result);
 			} else {
 				$this->_numRows = mysql_affected_rows($link);
-				$obj = new $this->_result_class($this->_numRows, $this->error, $this->errorMsg);
+				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 			}
 			return $obj;
 		} else {
