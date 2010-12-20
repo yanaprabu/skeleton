@@ -22,7 +22,6 @@ class A_WebSocket_Client
 	public function __construct($socket)
 	{
 		$this->socket = $socket;
-		$this->session = new A_Collection();
 	}
 	
 	/**
@@ -129,8 +128,14 @@ class A_WebSocket_Client
 		return $this->connected;
 	}
 	
-	public function session()
+	public function getSession()
 	{
 		return $this->session;
+	}
+	
+	public function setSession($session)
+	{
+		$this->session = $session;
+		return $this;
 	}
 }

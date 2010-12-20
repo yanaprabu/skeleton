@@ -27,13 +27,12 @@ class A_WebSocket_Server
 	
 	private $appPath;
 	
-	private $eventHandler;
+	private $eventManager;
 	/**
 	 * Constructor
 	 */
 	public function __construct($config)
 	{
-		$this->locator = $locator;
 		$this->host = $config->get('WEBSOCKET')->get('host');
 		$this->port = $config->get('WEBSOCKET')->get('port');
 		$this->appPath = $config->get('APP');
@@ -45,6 +44,11 @@ class A_WebSocket_Server
 	public function run($locator)
 	{
 		$this->locator = $locator;
+		$this->eventManager = $locator->get('EventManager');
+		if (!$this->eventManager) {
+			$this->eventManager = new A_Event_Manager();
+			$this->eventManager->addEventListener(new A_WebSocket_EventListener_FrontController());
+		}
 		
 		$this->prepareMaster();
 		$stopLoop = false;
@@ -60,9 +64,6 @@ class A_WebSocket_Server
 						$client = new A_WebSocket_Client($resource);
 						$this->clients[$resource] = $client;
 						$this->sockets[] = $resource;
-						if ($this->eventHandler) {
-							$this->eventHandler->onOpen($this->createEventObject(null, $client));
-						}
 					} else {
 						// socket error
 					}
@@ -74,11 +75,16 @@ class A_WebSocket_Server
 							$this->parseData($data, $client);
 						} else {
 							$client->connect($data);
+							$this->fireEvent(
+								'onconnect',
+								$client
+							);
 						}
 					} else {
-						if ($this->eventHandler) {
-							$this->eventHandler->onClose($this->createEventObject(null, $client));
-						}
+						$this->fireEvent(
+							'ondisconnect',
+							$client
+						);
 						unset($this->clients[$socket]);
 						$index = array_search($socket, $this->sockets);
 						unset($this->sockets[$index]);
@@ -87,16 +93,6 @@ class A_WebSocket_Server
 				}
 			}
 		}
-	}
-	
-	public function setEventHandler(A_WebSocket_EventHandler $eventHandler)
-	{
-		$this->eventHandler = $eventHandler;
-	}
-	
-	public function getClients()
-	{
-		return $this->clients;
 	}
 
 	protected function prepareMaster()
@@ -132,7 +128,11 @@ class A_WebSocket_Server
 			$data = substr($data, $endIndex);
 			
 			// do something with $block
-			$this->handleData($block, $client);
+			$this->fireEvent(
+				'onmessage',
+				$client,
+				$block
+			);
 			
 			// get ready for next loop
 			$firstChar = substr($data, 0, 1);
@@ -140,17 +140,12 @@ class A_WebSocket_Server
 		}
 	}
 	
-	protected function handleData($block, $client)
+	protected function fireEvent($event, $client, $message = null)
 	{
-		if ($this->eventHandler) {
-			$this->eventHandler->onMessage($this->createEventObject($block, $client));
-		} else {
-			$request = new A_WebSocket_Request($block, $this, $client);
-			$this->locator->set('Request', $request);
-			
-			$front = new A_Controller_Front($this->appPath, array('', 'main', 'main'), array('', 'main', 'main'));
-			$front->run($this->locator);
-		}
+		$this->eventManager->fireEvent(
+			'a.websocket.' . $event,
+			new A_WebSocket_Message($message, $client, $this->clients)
+		);
 	}
 	
 	protected function createEventObject($data, $client)

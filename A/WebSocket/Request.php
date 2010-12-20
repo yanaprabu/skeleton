@@ -5,42 +5,29 @@
  */
 class A_WebSocket_Request
 {
-	
-	protected $type;
-	protected $message;
+
 	protected $method = false;
-	protected $client;
+	protected $data;
 	
-	public function __construct($data, $server, $client)
+	public function __construct($data)
 	{
 		$this->method = 'GET';
-		$data = json_decode($data);
-		$this->type = $data->type;
-		$this->message = $data->data;
-		$this->server = $server;
-		$this->client = $client;
+		$this->data = $data;
 	}
 	
 	public function get($index)
 	{
-		if (isset($this->type->$index)) {
-			return $this->type->$index;
+		$message = $this->data->getMessage();
+		if (isset($message->type->$index)) {
+			return $message->type->$index;
+		} elseif ($index == 'REQUEST_METHOD') {
+			return 'GET';
 		}
 		return false;
 	}
 	
-	public function getClient()
+	public function getData()
 	{
-		return $this->client;
-	}
-	
-	public function getServer()
-	{
-		return $this->server;
-	}
-	
-	public function getMessage()
-	{
-		return $this->message;
+		return $this->data;
 	}
 }

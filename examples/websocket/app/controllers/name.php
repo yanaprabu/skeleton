@@ -7,26 +7,21 @@ class name extends A_Controller_Action {
 	}
 	
 	public function set_name($locator=null) {
-		$request = $locator->get('Request');
+		$request = $locator->get('Request')->getData();
 		
-		$server = $request->getServer();
-		$client = $request->getClient();
-		$otherClients = $server->getClients();
-		
-		$client->session()->set('name', $request->getMessage());
+		$request->getSession()->set('name', $request->getMessage()->data);
 		
 		$names = array();
-		
-		foreach ($otherClients as $otherClient) {
-			$names[] = $otherClient->session()->get('name');
+		foreach ($request->getAllSessions() as $session) {
+			$names[] = $session->get('name');
 		}
 		
-		foreach ($otherClients as $otherClient) {
-			$otherClient->send(array(
+		$request->reply(array(
 				'command' => 'user_list',
 				'data' => $names
-			));
-		}
+			),
+			A_WebSocket_Message::ALL
+		);
 	}
 
 }
