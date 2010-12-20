@@ -7,40 +7,32 @@ class message extends A_Controller_Action {
 	}
 	
 	public function append_message($locator=null) {
-		$request = $locator->get('Request');
+		$request = $locator->get('Request')->getData();
 		
-		$server = $request->getServer();
-		$client = $request->getClient();
-		$otherClients = $server->getClients();
-		
-		foreach ($otherClients as $otherClient) {
-			if ($otherClient != $client) {
-				$otherClient->send(array(
-					'command' => 'append_message',
-					'data' => array(
-						'sender' => $client->session()->get('name'),
-						'message' => $request->getMessage()
-					)
-				));
-			}
-		}
+		$request->reply(
+			array(
+				'command' => 'append_message',
+				'data' => array(
+					'sender' => $request->getSession()->get('name'),
+					'message' => $request->getMessage()->data
+				)
+			),
+			A_WebSocket_Message::OTHERS
+		);
 	}
 	
 	public function finalize_message($locator=null) {
-		$request = $locator->get('Request');
+		$request = $locator->get('Request')->getData();
 		
-		$server = $request->getServer();
-		$client = $request->getClient();
-		$otherClients = $server->getClients();
-		
-		foreach ($otherClients as $otherClient) {
-			$otherClient->send(array(
+		$request->reply(
+			array(
 				'command' => 'finalize_message',
 				'data' => array(
-					'sender' => $client->session()->get('name')
+					'sender' => $request->getSession()->get('name')
 				)
-			));
-		}
+			),
+			A_WebSocket_Message::ALL
+		);
 	}
 
 }
