@@ -17,14 +17,18 @@ class A_User_Rule_Ingroup {
 	protected $delimiter;
 	
 	public function __construct ($groups, $forward=array(), $field='access', $delimiter='|') {
-		$this->groups = $groups;
 		$this->forward = $forward;
 		$this->field = $field;
 		$this->delimiter = $delimiter;
+		$this->setGroups($groups);
 	}
 
 	public function setGroups($groups) {
-		$this->groups = $groups;
+		if (is_string($this->groups)) {
+			$this->groups = explode ($this->delimiter, $groups);
+		} else {
+			$this->groups = $groups;
+		}
 		return $this;
 	}
 	
@@ -43,12 +47,10 @@ class A_User_Rule_Ingroup {
 		return $this;
 	}
 	
+	/**
+	 * TODO: this method needs to set error messages to help debugging
+	 */
 	public function isValid($user) {
-		if (is_string($this->groups)) {
-			$this->groups = explode ($this->delimiter, $this->groups);
-		} else {
-			$this->groups = $this->groups;
-		}
 		// special case: if null group is passed allow access
 		if ($this->groups && ($this->groups[0] == '')) {
 			return true;
