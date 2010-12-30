@@ -62,6 +62,19 @@ class A_Http_Request {
 		return $this;
 	}
 
+	/**
+	 * getProtocol
+	 *
+	 * @return string The protocol of the URL
+	 */
+	public function getProtocol() {
+		if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
+			return 'https';
+		} else {
+			return 'http';
+		}
+	}
+	
 	public function getMethod() {
 		return $this->method;
 	}
