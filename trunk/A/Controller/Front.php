@@ -207,16 +207,18 @@ class A_Controller_Front {
 				if (method_exists($controller, $this->dispatchMethod)) {
 					$route = $controller->{$this->dispatchMethod}($locator, $method);
 				} else {
-					if (! method_exists($controller, $method)) {
-						$method = $mapper->getDefaultMethod();
-					}
 					if (method_exists($controller, $method)) {
 						$route = $controller->{$method}($locator);
 					} else {
-						$error = self::NO_METHOD . ": $method";		// no known method to dispatch
+						$method = $mapper->getDefaultMethod();
+						if (method_exists($controller, $method)) {
+							$route = $controller->{$method}($locator);
+						} else {
+							$error = self::NO_METHOD . ": $method";		// no known method to dispatch
+						}
 					}
 				}
-	
+				
 				if ($this->postFilters) {
 					$change_route = $this->runFilters($controller, $this->postFilters);
 					if ($change_route !== null) {
@@ -227,9 +229,9 @@ class A_Controller_Front {
 			} elseif ($error_route) {
 				$route = $error_route;
 				$error_route = null;
-				$error = self::NO_CLASS . ": $class. Using error route " . implode('/', $route);			// cannot load class and not error route 
+				$error = self::NO_CLASS . ": $class. Using error route: " . (is_array($route) ? implode('/', $route) : $route) . '.';	// cannot load class and not error route 
 			} elseif ($n == 0) {
-				$error = self::NO_CLASS . ": $class";			// cannot load class and not error route 
+				$error = self::NO_CLASS . ": $class.";			// cannot load class and not error route 
 			}
 			if ($error) {
 				$this->errorMsg[] = $error;
