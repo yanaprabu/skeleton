@@ -249,7 +249,12 @@ class A_Model {
 		if(isset($this->fields[$name])){
 			$this->fields[$name]->addErrorMsg($errorMsg);
 		} else {
-			$this->errorMsg[$name] = is_array($errorMsg) ? implode('', $errorMsg) : $errorMsg;
+			// initialize so set for concat below
+			if (!isset($this->errorMsg[$name])) {
+				$this->errorMsg[$name] = '';
+			}
+			// fields implode arrays so do the same for the global error messages
+			$this->errorMsg[$name] .= is_array($errorMsg) ? implode('', $errorMsg) : $errorMsg;
 		}
 	}
 
