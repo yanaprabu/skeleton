@@ -249,7 +249,7 @@ class A_Model {
 		if(isset($this->fields[$name])){
 			$this->fields[$name]->addErrorMsg($errorMsg);
 		} else {
-			$this->errorMsg[$name] = $errorMsg;
+			$this->errorMsg[$name] = is_array($errorMsg) ? implode('', $errorMsg) : $errorMsg;
 		}
 	}
 
