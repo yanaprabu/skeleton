@@ -183,11 +183,17 @@ class A_Http_View {
 		return $this->template_path . '/' . $template;
 	}
 	
-	public function partial($template) {
+	/**
+	 * include PHP template
+	 */
+	public function partial($template, $data=null) {
 		$template = $this->_getPath($template);
-		return $this->escape_output ? $this->escape($this->_include($template)) : $this->_include($template);
+		return $this->escape_output ? $this->escape($this->_include($template, $data)) : $this->_include($template, $data);
 	}
 	
+	/**
+	 * include PHP template for each value in array
+	 */
 	public function partialLoop($template, $name, $data=null) {
 		$template = $this->_getPath($template);
 		$str = '';
@@ -209,6 +215,20 @@ class A_Http_View {
 			}
 		}
 		return $this->escape_output ? $this->escape($str) : $str;
+	}
+	
+	/**
+	 * short for $this->set($name, $this->partial($template, $data))
+	 */
+	public function setPartial($name, $template, $data=null) {
+		return $this->set($name, $this->partial($template, $data));
+	}
+	
+	/**
+	 * short for $this->set($name, $this->partialLoop($template, $data_name, $data))
+	 */
+	public function setPartialLoop($name, $template, $data_name, $data=null) {
+		return $this->set($name, $this->partialLoop($template, $name, $data));
 	}
 	
 	public function render($template='', $scope='') {
@@ -235,13 +255,25 @@ class A_Http_View {
 		return $this->escape_output ? $this->escape($this->content) : $this->content;
 	}
 	
+	/**
+	 * _include($template_path, $data=null)
+	 * include a file
+	 * optional second parameter is data array to be extracted
+	 */
 	protected function _include() {
-		ob_start();
-		if ($this->use_local_vars && $this->data) {
-			extract($this->data, EXTR_REFS);
+		if (func_num_args() > 0) {					// must have at least the template path
+			ob_start();
+			if ($this->use_local_vars && $this->data) {
+				extract($this->data, EXTR_REFS);
+			}
+			if (func_num_args() > 1) {				// extract array of values if passed
+				if (is_array(func_get_arg(1))) {
+					extract(func_get_arg(1));
+				}
+			}
+			include func_get_arg(0);
+			return ob_get_clean();
 		}
-		include func_get_arg(0);
-		return ob_get_clean();
 	}
 
 	public function __get($name) {
