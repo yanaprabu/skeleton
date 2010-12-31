@@ -8,7 +8,12 @@
 
 class A_Template_Include extends A_Template_Abstract {
 
-	public function partial($template) {
+	public function partial($template, $data=null) {
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				$this->data[$key] = $value;
+			}
+		}
 		return $this->render(dirname($this->filename) . "/$template.php");
 	}
 	
@@ -33,6 +38,20 @@ class A_Template_Include extends A_Template_Abstract {
 			}
 		}
 		return $str;
+	}
+	
+	/**
+	 * short for $this->set($name, $this->partial($template, $data))
+	 */
+	public function setPartial($name, $template, $data=null) {
+		return $this->set($name, $this->partial($template, $data));
+	}
+	
+	/**
+	 * short for $this->set($name, $this->partialLoop($template, $data_name, $data))
+	 */
+	public function setPartialLoop($name, $template, $data_name, $data=null) {
+		return $this->set($name, $this->partialLoop($template, $name, $data));
 	}
 	
 	public function render() {
