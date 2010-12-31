@@ -217,13 +217,13 @@ class A_Db_Pdo_Recordset extends PDOStatement {
 	}
 		
 	public function isError() {
-		$code = $this->_errorCode();
+		$code = $this->errorCode();
 		return $code == '00000' ? 0 : $code;		// PDO success value
 	}
 		
 	public function getErrorMsg() {
 		// get error array
-		$errorInfo = $this->_errorInfo();
+		$errorInfo = $this->errorInfo();
 		// return the message only
 		return $errorInfo[2];
 	}
