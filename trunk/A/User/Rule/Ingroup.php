@@ -10,10 +10,8 @@
  * 
  * @package A_User 
  */
-class A_User_Rule_Ingroup {
+class A_User_Rule_Ingroup extends A_User_Rule_Base {
 	protected $groups;
-	protected $forward;
-	protected $field;
 	protected $delimiter;
 	
 	public function __construct ($groups, $forward=array(), $field='access', $delimiter='|') {
@@ -24,21 +22,11 @@ class A_User_Rule_Ingroup {
 	}
 
 	public function setGroups($groups) {
-		if (is_string($this->groups)) {
-			$this->groups = explode ($this->delimiter, $groups);
+		if (is_string($groups)) {
+			$this->groups = explode($this->delimiter, $groups);
 		} else {
 			$this->groups = $groups;
 		}
-		return $this;
-	}
-	
-	public function setForward($forward) {
-		$this->forward = $forward;
-		return $this;
-	}
-	
-	public function setField($field) {
-		$this->field = $field;
 		return $this;
 	}
 	
@@ -50,7 +38,9 @@ class A_User_Rule_Ingroup {
 	/**
 	 * TODO: this method needs to set error messages to help debugging
 	 */
-	public function isValid($user) {
+	public function isValid($user=null) {
+		$user = $this->getUser($user);
+		$this->errorMsg = array();			// reset each time run
 		// special case: if null group is passed allow access
 		if ($this->groups && ($this->groups[0] == '')) {
 			return true;
@@ -76,16 +66,6 @@ class A_User_Rule_Ingroup {
 		}
 		$this->errorMsg = $this->forward;
 		return false;
-	}
-
-
-	/**
-	 * Gets the error message that is to be returned if isValid fails
-	 * 
-	 * @return string that contains forward
-	 */
-	public function getErrorMsg() {
-		return $this->errorMsg;
 	}
 
 }
