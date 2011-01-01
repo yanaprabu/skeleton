@@ -150,8 +150,10 @@ class A_Session {
 			$this->start();
 			if ($value !== null) {
 				$this->_data[$name] = $value;
+			} elseif ($this->_namespace) {
+				unset($_SESSION[$this->_namespace][$name]);
 			} else {
-				unset($this->_data[$name]);
+				unset($_SESSION[$name]);
 			}
 			if ($count > 0) {
 				$this->expire($name, $count);
