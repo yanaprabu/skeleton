@@ -10,23 +10,27 @@ class A_Template_Strreplace extends A_Template_File {
 	protected $tagprefix = '{';
 	protected $tagsuffix = '}';
 	
-    public function set($field, $value, $default=null) {
-		if (substr($field, 0, 1) != $this->tagprefix) {
-			$field = $this->tagprefix . $field;
+	public function set($field, $value) {
+		// field required and value must be a string or an object with __toString()
+		if ($field && (is_string($value) || (is_object($value) && method_exists($value, '__toString')))) {
+			// check that suffix/prefix are on tag and add if necessary
+			if (substr($field, 0, 1) != $this->tagprefix) {
+				$field = $this->tagprefix . $field;
+			}
+			if (substr($field, -1, 1) != $this->tagsuffix) {
+				$field .= $this->tagsuffix;
+			}
+			parent::set($field, $value);
 		}
-		if (substr($field, -1, 1) != $this->tagsuffix) {
-			$field .= $this->tagsuffix;
+		return $this;
+	}
+	
+	public function import($data) {
+		foreach ($data as $key => $value) {
+			$this->set($key, $value);
 		}
-    	parent::set($field, $value, $default);
 		return $this;
-    }
-    
-    public function import($data) {
-    	foreach ($data as $key => $value) {
-    		$this->set($key, $value);
-    	}
-		return $this;
-    }
+	}
 
 	public function render($block='') {
 	   	if ($this->auto_blocks) {
