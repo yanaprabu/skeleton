@@ -12,6 +12,7 @@ class A_Db_Tabledatagateway {
 	protected $errorMsg = '';
 	public $sql = '';
 	protected $num_rows = 0;
+	protected $update = null;
 	protected $insert = null;
 	
 	public function __construct($db, $table=null, $key=null) {
@@ -92,7 +93,7 @@ class A_Db_Tabledatagateway {
 	
 	public function update($data, $where='') {
 		if ($data) {
-			if (! $this->update) {
+			if (! isset($this->update)) {
 				#include_once 'A/Sql/Update.php';
 				$this->update = new A_Sql_Update($this->getTable());
 			}
@@ -111,7 +112,7 @@ class A_Db_Tabledatagateway {
 	
 	public function insert($data) {
 		if ($data) {
-			if (! $this->insert) {
+			if (! isset($this->insert)) {
 				#include_once 'A/Sql/Insert.php';
 				$this->insert = new A_Sql_Insert($this->getTable());
 			}
@@ -130,47 +131,6 @@ class A_Db_Tabledatagateway {
 			}
 		}
 	}
-	
-/*
-	public function update($data, $where='') {
-		if ($data && $where) {
-			if (isset($data[$this->key])) {
-				unset($data[$this->key]);
-			}
-			foreach ($data as $field => $value) {
-				$sets[] = $field . "='" . $this->db->escape($value) . "'";
-			}
-			$this->sql = "UPDATE {$this->table} SET " . implode(',', $sets) . " WHERE {$this->key}='$id'";
-			$this->db->query($this->sql);
-		}
-	}
-	
-	public function insert($data) {
-		if ($data) {
-			// if one row then 1st element is scalar
-			if(! is_array(current($data))) {
-				$cols = array_keys($data);
-				$data = array($data);
-			} else {
-				$cols = array_keys(current($data));
-			}
-			$values = array();
-			foreach ($data as $row) {
-				if (empty($row[$this->key])) {			// remove array element for key unless it contains a value
-					unset($row[$this->key]);
-					unset($cols[$this->key]);
-				}
-				foreach ($row as $key => $value) {
-					$row[$key] = $this->db->escape($value);
-				}
-				$values[] = "('" . implode("','", $row) . "')";
-			}
-			$this->sql = "INSERT INTO {$this->table} (" . implode(',', $cols) . ') VALUES ' . implode(',', $values);
-			$this->db->query($this->sql);
-			return $this->db->lastId();
-		}
-	}
-*/
 	
 	public function delete($id) {
 		if ($id) {
