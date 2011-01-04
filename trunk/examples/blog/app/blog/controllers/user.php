@@ -40,7 +40,7 @@ class user extends A_Controller_Action {
 			$errmsg =  $form->getErrorMsg(', ');
 		}
 		
-		$template = $this->_load()->template('login');
+		$template = $this->_load()->template('user/login');
 		$template->set('errmsg', $errmsg);
 		$template->set('username', $form->get('username'));
 		$template->set('user', $user);
@@ -85,7 +85,7 @@ class user extends A_Controller_Action {
 		}
 		
 		// Show registration form
-		$template = $this->_load()->template('register');
+		$template = $this->_load()->template('user/register');
 		$template->set('errorstatus', $errorstatus);
 		$template->set('errmsg', $errmsg);
 		$template->set('user', $user);
@@ -101,6 +101,9 @@ class user extends A_Controller_Action {
 		// @todo: do some validation to make sure it's a 32 string
 		
 		$model = $this->_load('app')->model('users');
+		
+		$model->activate($activationkey);
+/*
 		if(!empty($activationkey)){
 			// @Todo: Check if the account already been activated?
 			
@@ -121,10 +124,11 @@ class user extends A_Controller_Action {
 			// User is on activate page but the activation key is missing. What to show?
 			$errmsg = 'The activation key is missing.';
 		}
+		$template = $this->_load()->template('user/activate');
+		$template->set('errmsg', $model->getErrorMsg());
+*/
 		
-		$template = $this->_load()->template('activate');
-		$template->set('errmsg', $errmsg);
-		$this->response->set('maincontent', $template);
+		$this->response->setPartial('maincontent', 'user/activate', array('errmsg' => $model->getErrorMsg(' ')));
 		
 	}
 	
@@ -153,7 +157,7 @@ class user extends A_Controller_Action {
 		}
 		
 		// Show password forgot page and form
-		$template = $this->_load()->template('password');
+		$template = $this->_load()->template('user/password');
 		$template->set('errmsg', $errmsg);
 		$template->set('user', $user);
 		$this->response->set('maincontent', $template);
@@ -187,7 +191,7 @@ class user extends A_Controller_Action {
 		}
 		
 		// Show profile page and form
-		$template = $this->_load()->template('profile');
+		$template = $this->_load()->template('user/profile');
 		$template->set('errmsg', $errmsg);
 		$template->set('user', $user);
 		$this->response->set('maincontent', $template);

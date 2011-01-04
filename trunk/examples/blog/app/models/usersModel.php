@@ -74,12 +74,12 @@ class usersModel extends A_Model {
 	public function findBy($someArgs){}
 	
 	public function findAll(){
-		$this->errmsg = '';
+		$this->errorMsg = array();;
 		$rows = $this->datasource->find(array('active'=>1));
 		if (isset($rows[0])) {
 			return $rows;
 		} else {
-			$this->errmsg = $this->datasource->getErrorMsg();
+			$this->errorMsg[] = $this->datasource->getErrorMsg();
 		}
 		return array();
 	}
@@ -92,7 +92,7 @@ class usersModel extends A_Model {
 	public function delete($id){}	
 	
 	public function login($username, $password) {
-		$this->errmsg = '';
+		$this->errorMsg = array();;
 		$rows = $this->datasource->find(array('username'=>$username, 'active'=>1));
 		if (isset($rows[0])) {
 			
@@ -100,13 +100,13 @@ class usersModel extends A_Model {
 				if ($rows[0]['password'] == $password) {
 					return $rows[0];
 				} else {
-					$this->errmsg = 'Password does not match. ';
+					$this->errorMsg[] = 'Password does not match. ';
 				}
 			} else {
-				$this->errmsg = 'Username not found.';
+				$this->errorMsg[] = 'Username not found.';
 			}
 		} else {
-			$this->errmsg = $this->datasource->getErrorMsg();
+			$this->errorMsg[] = $this->datasource->getErrorMsg();
 		}
 		return array();
 	}
@@ -210,11 +210,11 @@ class usersModel extends A_Model {
 	}
 	
 	protected function isUsernameAvailable($username){ 
-		$this->errmsg = '';
+		$this->errorMsg = array();;
 		$rows = $this->datasource->find(array('username'=>$username));
 		if($this->datasource->isError()){
 			$this->error = true;
-			$this->errmsg = $this->datasource->getErrorMsg();
+			$this->errorMsg[] = $this->datasource->getErrorMsg();
 		}
 		if(!empty($rows)){
 			return false;
@@ -270,19 +270,32 @@ class usersModel extends A_Model {
 	}*/
 	
 	public function activate($activationkey){
-		// Is there a row with this activationkey?
-		$rows = $this->datasource->find(array('activationkey'=>$activationkey));
-		// If there is activate the acount
-		if(!empty($rows)){
-			$rows = $this->datasource->update(array('active'=>1), array('activationkey'=>$activationkey));
-			if($rows) {
-				return true;
-			} else {
-				return false;
+		if(!empty($activationkey)){
+			// @Todo: Check if the account already been activated?
+			
+				// If yes, user might not know. Show login screen
+
+				// If not, activate account + sign in user + redirect to certain page		
+			
+			// Is there a row with this activationkey?
+			$rows = $this->datasource->find(array('activationkey'=>$activationkey));
+			// If there is activate the acount
+			if(!empty($rows)){
+				// set to active and remove key
+				$rows = $this->datasource->update(array('active'=>'1', 'activationkey'=>''), array('id'=>$rows[0]['id']));
+				if($rows) {
+					$this->errorMsg[] = 'Your account is now activated. ';
+					return true;
+				}
 			}
+			// something went wrong..
+			$this->errorMsg[] = 'We could not activate the account. ';
+			
 		} else {
-			return false;
+			// User is on activate page but the activation key is missing. What to show?
+			$this->errorMsg[] = 'The activation key is missing. ';
 		}
+		return false;
 	}
 	
 	public function newPassword($username){
