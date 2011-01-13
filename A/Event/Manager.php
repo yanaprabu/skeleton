@@ -117,31 +117,33 @@ class A_Event_Manager
 	 */
 	public function fireEvent($eventName, $eventData = null)
 	{
+		$result = null;
 		if (isset($this->_events[$eventName])) {
-			$event = $this->_events[$eventName];
-			foreach ($event as $listener) {
-
+			foreach ($this->_events[$eventName] as $listener) {
 				if (is_callable($listener)) {
 					// callback/anonymous function
-					call_user_func($listener, $eventName, $eventData);
-				
+					$r = call_user_func($listener, $eventName, $eventData);				
 				} elseif (is_object($listener)) {
 					// event listener interface
-					if ($listener instanceof A_Event_Listener) {												// standard A_Event_Listener
-						$listener->onEvent($eventName, $eventData);
-					
+					if (method_exists($listener, 'onEvent')) {												// standard A_Event_Listener
+						$r = $listener->onEvent($eventName, $eventData);					
 					} else {
 						$this->_errorHandler(0, self::ERROR_NO_METHOD);
-					}
-				
+						$r = null;
+					}				
 				} else {
 					$this->_errorHandler(0, self::ERROR_WRONG_TYPE);
+					$r = null;
+				}
+				// only use result for non-null return values
+				if ($r !== null) {
+					$result = $r;
 				}
 			}
 		} else {
 			$this->_errorHandler(0, self::ERROR_NO_EVENT);
 		}
-		return $this;
+		return $result;
 	}
 	
 	/**

@@ -14,12 +14,14 @@ class MyEventListener implements A_Event_Listener {
 		$this->eventObject = $object;
 #		echo 'single ' . $name . '<br />';
 		print_r($object);
+		return $this->eventName;
 	}
 	public function anotherEvent($name, $object) {
 		$this->eventName = "anotherEvent:$name";
 		$this->eventObject = $object;
 #		echo 'single ' . $name . '<br />';
 #		print_r($object);
+		return $this->eventName;
 	}
 }
 class MyEventMultiListener implements A_Event_Listener {
@@ -33,6 +35,7 @@ class MyEventMultiListener implements A_Event_Listener {
 	public function onEvent($name, $object) {
 		$this->eventName = $name;
 		$this->eventObject = $object;
+		return $this->eventName;
 	}
 	public function getEvents() {
 		return array('event2', 'event3');
@@ -94,20 +97,22 @@ class Event_ManagerTest extends UnitTestCase {
 		
 		$this->assertTrue($listener1->eventName == '');
 		
-		$manager->fireEvent('event1');
+		$result = $manager->fireEvent('event1');
 		$this->assertTrue($listener1->eventName == 'anotherEvent:event1');
+		$this->assertTrue($result == 'anotherEvent:event1');
 	}
 
 	public function testClosure() {
 		$manager = new A_Event_Manager();
 		
 		// add a closure that sets an object's property
-		$manager->addEventListener('event1', function($name, $object) { $object->data = $name; });
+		$manager->addEventListener('event1', function($name, $object) { $object->data = $name; return $name; });
 		
 		// create object and pass to event
 		$object = new Event_ManagerTest_ValueObject();
-		$manager->fireEvent('event1', $object);
+		$result = $manager->fireEvent('event1', $object);
 		$this->assertTrue($object->data == 'event1');
+		$this->assertTrue($result == 'event1');
 	}
 
 }
