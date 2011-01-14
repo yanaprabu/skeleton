@@ -2,29 +2,6 @@
 
 class usersModel extends A_Model {
 	
-	/*
-	* Registration process overview
-	* S0 - Show Registration form
-	* E1 - Registration form submitted; missing fields or unvalid values
-	* E2 - Registration form submitted; user already has another account with the same email address
-	* E3 - Registration form submitted; username not available
-	* E4 - Registration form submitted; account created; activation email sent
-	* E5 - Registration form submitted; username/email combination already exists, but with different password
-	* E6 - Registration form submitted; username/email combination already exists; password is correct
-	* E7 - Registration form submitted; account already exists but is not yet activated
-	*/
-	
-	const STATUS_BASE					= 'User not registerd';				// previously S0
-	const ERROR_INVALID					= 'Missing or invalid fields';		// previously "E1"
-	const ERROR_EMAIL_UNAVAILABLE 		= 'Email already has an account';	// previously "E2"
-	const ERROR_USERNAME_UNAVAILABLE	= 'Username is taken';				// previously "E3"
-	const ERROR_PASSWORD				= 'Password is incorrect';			// previously "E5"
-	const ERROR_ACOUNT_UNACTIVATED 		= 'Account not activated yet';		// previously "E7"
-	const STATUS_REGISTERED				= 'Registration completed succesfully'; // previously "E4"
-	const STATUS_LOGGED_IN				= 'Account existed, user logged in';	// previously "E6"
-	
-	protected $status = self::STATUS_BASE;
-
 	protected $errmsg = '';
 		
 	protected $dbh = null;
@@ -115,101 +92,8 @@ class usersModel extends A_Model {
 		return $this->errmsg;
 	}
 
-	public function register($request){ 
 	
-		$this->status = self::STATUS_BASE;
-		
-		// Add validation rules		
-		// Check if the passwords match
-		$this->addRule(new A_Rule_Match('password', 'passwordagain', 'Fields password and passwordagain do not match'));
-		// Check if the terms of service checkbox has been checked
-		$this->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
-		// Exclude some fields not needed in the validation of the model
-		$this->excludeRules(array('id','firstname','lastname','active','access'));
-
-		// Validate. If the values are not valid return the E1 code
-		if(!$this->isValid($request)){
-			$this->status = self::ERROR_INVALID;
-            return false;
-		}
-		
-		// Further validation of registration attempt
-		
-		// Get the field values for local use
-		$username 		= $request->get('username');
-		$email 			= $request->get('email');
-		$password 		= $request->get('password');
-		$passwordagain 	= $request->get('passwordagain');
-		$tos 			= $request->get('tos');
-		
-		// Check if the username is available
-		if($this->isUsernameAvailable($username)){ 
-			if($this->isEmailAvailable($email)){ 
-				
-				// Create activationkey  and insert user row for the account
-				$activationkey = md5(uniqid(rand(), true));
-				$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$password, 'activationkey'=>$activationkey));
-				
-				// Send activation email $this->sendActivationMail($email, $regkey);
-				$subject = 'Activation account';
-				$message = 'Please click the following link to activate your account' . "\n\r";
-				$message .= 'http://skeleton/examples/blog/user/activate?id=' . $activationkey . "\n\r";
-				$message .= 'Thanks.';
-				$from = 'From: skeleton blog';
-				mail($email, $subject, $message, $from);
-				
-				// E4 Registration form submitted; account created; activation email sent
-				$this->status = self::STATUS_REGISTERED;
-	            return true;
-	
-			} else { 
-				
-				// E2 - user already has another account with the same email address
-				// The email adress is already in the db
-				// User doesn't know he already has an account
-				// or he tries to register again
-				// Show message + registration form + link to sign in form + link to send new password
-				$this->status = self::ERROR_EMAIL_UNAVAILABLE;
-	            return false;
-			}	
-		// Username is not available / already in database
-		} else { 
-			// Check if this username belongs to the posted email
-			if($this->usernameMatchesEmail($username, $email)){ 
-				// Check if account has been activated?
-				if($this->accountActivated($username, $email)){ 
-					// The account has been activated already. In that case check if password is correct
-					if($this->passwordCorrect($username, $password)){ 
-						// E6 - username/email combination already exists; password is correct
-						// Login the user and redirect (?) to success page or tell user he has been logged in
-						$userdata = $this->login($username, $password);
-						$user = $locator->get('UserSession');
-						$user->login($userdata);
-
-						$this->status = self::LOGGED_IN;
-			            return true;
-					} else { 
-						// E5 - username/email combination already exists, but with different password
-						// User has an activated account but forgot his password. show message + signin form + forgot password link
-						$this->status = self::ERROR_PASSWORD;
-			            return false;
-					}
-				} else { 
-					// E7 - Registration form submitted; account already exists but is not yet activated
-					// Show message user has to activate account + show link to resend activation email
-					$this->status = self::ERROR_ACOUNT_UNACTIVATED;
-		            return false;
-				}
-			} else {
-				// E3 - Registration form submitted; username not available
-				// Another user already taken that username: return error status
-				$this->_error(self::ERROR_USERNAME_UNAVAILABLE);
-	            return false;
-			}
-		}
-	}
-	
-	protected function isUsernameAvailable($username){ 
+	public function isUsernameAvailable($username){ 
 		$this->errorMsg = array();;
 		$rows = $this->datasource->find(array('username'=>$username));
 		if($this->datasource->isError()){
@@ -223,7 +107,7 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function isEmailAvailable($email){	
+	public function isEmailAvailable($email){	
 		$rows = $this->datasource->find(array('email'=>$email));
 		if(!empty($rows)){
 			return false;
@@ -232,7 +116,7 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function usernameMatchesEmail($username, $email){ 
+	public function usernameMatchesEmail($username, $email){ 
 		$rows = $this->datasource->find(array('username'=>$username ,'email'=>$email));
 		if(!empty($rows)){
 			return true;
@@ -241,7 +125,7 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function accountActivated($username, $email){
+	public function isAccountActivated($username, $email){
 		$rows = $this->datasource->find(array('username'=>$username ,'active'=>1));
 		if(!empty($rows)){
 			return true;
@@ -250,7 +134,7 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	protected function passwordCorrect($username, $password){
+	public function isPasswordCorrect($username, $password){
 		$rows = $this->datasource->find(array('username'=>$username ,'password'=>$password));
 		if(!empty($rows)){
 			return true;
@@ -259,15 +143,14 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	/* Not used for now
-	protected function sendActivationMail($email, $key){
-		$subject = 'Activation account';
-		$activationlink = 'http://skeleton/examples/blog/user/activate?id=' . $key;
-		$message = 'Please click the following link to activate your account' . "\n\r";
-		$message .= $activationlink;
-		$from = 'From: skeleton blog';
-		mail($email, $subject, $message, $from);
-	}*/
+	public function createActivationkey(){
+		return md5(uniqid(rand(), true));
+	}
+
+	public function insertUser($username, $password, $email, $activationkey){
+		// @Todo insert
+		$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$password, 'activationkey'=>$activationkey));
+	}
 	
 	public function activate($activationkey){
 		if(!empty($activationkey)){
