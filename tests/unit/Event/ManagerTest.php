@@ -99,7 +99,7 @@ class Event_ManagerTest extends UnitTestCase {
 		
 		$result = $manager->fireEvent('event1');
 		$this->assertTrue($listener1->eventName == 'anotherEvent:event1');
-		$this->assertTrue($result == 'anotherEvent:event1');
+		$this->assertTrue($result == array('anotherEvent:event1'));
 	}
 
 	public function testClosure() {
@@ -112,7 +112,30 @@ class Event_ManagerTest extends UnitTestCase {
 		$object = new Event_ManagerTest_ValueObject();
 		$result = $manager->fireEvent('event1', $object);
 		$this->assertTrue($object->data == 'event1');
-		$this->assertTrue($result == 'event1');
+		$this->assertTrue($result == array('event1'));
+	}
+
+	public function testEventsReturnValues() {
+		$manager = new A_Event_Manager();
+		
+		$manager->addEventListener('event1', function($name, $object) { return 'listener1'; });
+		$manager->addEventListener('event1', function($name, $object) { return 'listener2'; });
+		
+		$result = $manager->fireEvent('event1');
+		$this->assertTrue($result == array('listener1', 'listener2'));
+		
+	}
+
+	public function testEventsCancel() {
+		$manager = new A_Event_Manager();
+		
+		$manager->addEventListener('event1', function($name, $object) { return 'listener1'; });
+		$manager->addEventListener('event1', function($name, $object) { return false; });
+		$manager->addEventListener('event1', function($name, $object) { return 'listener3'; });
+		
+		$result = $manager->fireEvent('event1');
+		$this->assertTrue($result == array('listener1'));
+		
 	}
 
 }

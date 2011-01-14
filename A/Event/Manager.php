@@ -14,7 +14,8 @@ class A_Event_Manager
 	const ERROR_WRONG_TYPE = 'The only types callback, closure and object with onEvent() method supported. ';
 	
 	protected $_events = array();
-	protected $_exception = '';							// A_Db_Exception
+	protected $_cancel = false;							// Listeners can return this value to stop chain
+	protected $_exception = '';							// A_Exception
 	protected $_errorMsg = '';
 	
 	public function __construct($exception='')
@@ -36,6 +37,18 @@ class A_Event_Manager
 			$this->_exception = $class;
 		}
 		
+		return $this;
+	}	
+
+	/**
+	 * Set return value that stops the Listener chain
+	 * is used.
+	 * 
+	 * @param string $class
+	 */
+	public function setCancel($cancel)
+	{
+		$this->_cancel = $cancel;
 		return $this;
 	}	
 
@@ -117,8 +130,9 @@ class A_Event_Manager
 	 */
 	public function fireEvent($eventName, $eventData = null)
 	{
-		$result = null;
+		$result = array();
 		if (isset($this->_events[$eventName])) {
+			$i = 0;
 			foreach ($this->_events[$eventName] as $listener) {
 				if (is_callable($listener)) {
 					// callback/anonymous function
@@ -137,8 +151,13 @@ class A_Event_Manager
 				}
 				// only use result for non-null return values
 				if ($r !== null) {
-					$result = $r;
+					if ($r === $this->_cancel) {
+						break;
+					} else {
+						$result[$i] = $r;
+					}
 				}
+				++$i;
 			}
 		} else {
 			$this->_errorHandler(0, self::ERROR_NO_EVENT);
