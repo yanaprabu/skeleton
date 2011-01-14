@@ -8,6 +8,12 @@ class DbAbstractClass extends A_Db_Abstract {
 		$this->connection_set = $config;
 		return $config['database'];
 	}
+	protected function _close($name='') {
+		
+	}
+	public function limit($sql, $count, $offset='') {
+		
+	}
 }
 
 class Db_AbstractTest extends UnitTestCase {

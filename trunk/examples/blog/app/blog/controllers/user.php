@@ -66,32 +66,93 @@ class user extends A_Controller_Action {
 		$session = $locator->get('Session');
 		$user = $locator->get('UserSession');
 		$session->start();	
-		// Set the default status for the view
-		$errorstatus = 'S0';
-		$errmsg = '';
-		$usermodel = $this->_load('app')->model('users');
-		if($this->request->isPost()){
+		$request = $this->request;	
+		$messages = array();
+		
+		if($request->isPost()){
 			
-			$result = $usermodel->register($this->request);
-			if($result === 'S4'){
-				// Registration succesful
-				$errmsg = 'You are succesfully registered! Please <a href="' . $locator->get('Config')->get('BASE') . '/user/login">login</a>.';
+			$usermodel = $this->_load('app')->model('users');
+			$usermodel->addRule(new A_Rule_Match('password', 'passwordagain', 'Fields password and passwordagain do not match'));
+			$usermodel->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
+            // Exclude some fields not needed in the validation of the model
+            $usermodel->excludeRules(array('id','firstname','lastname','active','access'));
 
-			} else {
-				// Return the registration status to the view
-				$errorstatus = $result;
-				$errmsg = $usermodel->getErrorMsg("</li>\n<li>");
+			if(!$usermodel->isValid($request))
+			{
+				$messages[] = $usermodel->getErrorMsg("</li>\n<li>");
+				$this->response->setPartial('maincontent', 'user/register/registerForm', array('messages' => $messages));
+			} 
+			else 
+			{
+				if($usermodel->isUsernameAvailable($request->get('username')))
+				{
+					if($usermodel->isEmailAvailable($request->get('email')))
+					{
+						// Create activation key
+						$actkey = $usermodel->createActivationkey();
+						// Insert user data in db
+						$usermodel->insertUser($request->get('username'), $request->get('password'), $request->get('email'), $actkey);
+						// Send confirmation email
+						$activationlink = $locator->get('Config')->get('BASE') . 'user/activate?id=' . $actkey;
+						$this->mailActivationMessage($request->get('email'), $activationlink);
+						// Get Template SuccesfulRegistration
+						$this->response->setPartial('maincontent', 'user/register/success', array( 'email'=>$request->get('email')));
+					} 
+					else 
+					{
+						// Another account for this email adress exists, get Template email adress already in database
+						$this->response->setPartial('maincontent', 'user/register/emailTakenForm');
+					}
+				} 
+				else 
+				{
+					if($usermodel->usernameMatchesEmail($request->get('username'), $request->get('email')))
+					{ 
+						if($usermodel->isAccountActivated($request->get('username'), $request->get('email')))
+						{
+							if($usermodel->isPasswordCorrect($request->get('username'), $request->get('password')))
+							{
+								// Login the user
+								$usermodel->login($request->get('username'), $request->get('password'));
+								// Get Template you have been logged in
+								$this->response->setPartial('maincontent', 'user/register/signedin');
+							} 
+							else 
+							{
+								// Password was wrong. Get Template LoginForm
+								$this->response->setPartial('maincontent', 'user/register/loginForm');
+							}
+						} 
+						else 
+						{
+							// Get Template AccountNotYetActivated
+							$this->response->setPartial('maincontent', 'user/register/activate');
+						}
+					} 
+					else 
+					{
+						// Get Template username already taken
+						$this->response->setPartial('maincontent', 'user/register/usernameUnavailable',array('username'=> $request->get('username')));
+					}
+				}
 			}
 		}
+		else
+		{
+			// Show registration form
+			$this->response->setPartial('maincontent', 'user/register/registerForm', array('messages' => $messages));
+		}
 		
-		// Show registration form
-		$template = $this->_load()->template('user/register');
-		$template->set('errorstatus', $errorstatus);
-		$template->set('errmsg', $errmsg);
-		$template->set('user', $user);
-		$template->set('usermodel', $usermodel);
-		
-		$this->response->set('maincontent', $template);
+	}
+	
+	private function mailActivationMessage($email, $activationlink){
+		$subject = 'Registration at this app';
+		$message = 'Thanks for registering, ' . "\n\r";
+		$message = 'Please click the following link to activate your account' . "\n\r";
+		$message .= 'Click this: ' . $activationlink . "\n\r"; 
+		$message .= 'Thanks.';
+		$from = 'From: skeleton blog';
+		mail($email, $subject, $message, $from);
 	}
 	
 	public function activate($locator){

@@ -1,6 +1,6 @@
 <?php
 /**
- * Database connectin class using the mysql_ library
+ * Database connection class using the mysql_ library
  *
  * @package A_Db
  * 
