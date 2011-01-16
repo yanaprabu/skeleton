@@ -9,21 +9,18 @@ class Rule_LengthTest extends UnitTestCase {
 	}
 	
 	function testRuleLength() {
-  		$dataspace = new A_DataContainer();
+		$dataspace = new A_DataContainer();
 
-  		$rule = new A_Rule_Length(5, 10, 'test', 'error');
+		$rule = new A_Rule_Length(5, 10, 'test', 'error');
  
-  		$dataspace->set('test', 'TEST123');
- 		$result = $rule->isValid($dataspace);
-		$this->assertTrue($result);
+		$dataspace->set('test', 'TEST123');
+		$this->assertTrue($rule->isValid($dataspace));
 
-  		$dataspace->set('test', 'TEST');
- 		$result = $rule->isValid($dataspace);
-		$this->assertFalse($result);
+		$dataspace->set('test', 'TEST');
+		$this->assertFalse($rule->isValid($dataspace));
 
-  		$dataspace->set('test', 'TEST1234567890');
- 		$result = $rule->isValid($dataspace);
-		$this->assertFalse($result);
+		$dataspace->set('test', 'TEST1234567890');
+		$this->assertFalse($rule->isValid($dataspace));
 	}
 	
 }

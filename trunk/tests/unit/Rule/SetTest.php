@@ -13,24 +13,26 @@ class Rule_SetTest extends UnitTestCase {
 	}
 	
 	function testRule_SetRuleObject() {
-  		$rules = new A_Rule_Set();
-  		//$dataspace = new A_DataContainer();
+		$dataspace = new A_DataContainer();
 
-   		$rule = new A_Rule_Notnull(array('field' => 'test', 'errorMsg' => 'error'));
-  		$rules->addRule($rule);
-  		$result = $rules->isValid(array());
+		$rules = new A_Rule_Set();
+		//$dataspace = new A_DataContainer();
+
+ 		$rule = new A_Rule_Notnull(array('field' => 'test', 'errorMsg' => 'error'));
+		$rules->addRule($rule);
+		$result = $rules->isValid(array());
 		$this->assertFalse($result);
 
-  		$result = $rules->isValid($this->data);
+		$result = $rules->isValid($this->data);
 		$this->assertTrue($result);
 	}
 /*
 	function testRule_SetRuleName() {
-  		$rules = new A_Rule_Set();
-  		$dataspace = new A_DataContainer();
+		$rules = new A_Rule_Set();
+		$dataspace = new A_DataContainer();
 
 		// should load A_Rule_Numeric
-  		$rules->addRule('numeric', 'test', 'not a number');
+		$rules->addRule('numeric', 'test', 'not a number');
 
  		$dataspace->set('test', 'test123');
  		$this->assertFalse($rules->validate($dataspace));

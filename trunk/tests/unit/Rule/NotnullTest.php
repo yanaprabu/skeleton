@@ -9,13 +9,26 @@ class Rule_NotnullTest extends UnitTestCase {
 	}
 	
 	function testRule_NotnullNotNull() {
-  		$field = 'foo';
-  		$errorMsg = 'foo error';
-		$Rule_Notnull = new A_Rule_Notnull($field, $errorMsg);
+		$dataspace = new A_DataContainer();
+
+		$rule = new A_Rule_Notnull('foo', 'foo error');
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+		$this->assertFalse($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', '');		
+		$this->assertFalse($rule->isValid($dataspace));
+
+		$dataspace->set('foo', 0);		
+		$this->assertTrue($rule->isValid($dataspace));
+
+		$dataspace->set('foo', false);		
+		$this->assertTrue($rule->isValid($dataspace));
+
+		$dataspace->set('foo', '0');		
+		$this->assertTrue($rule->isValid($dataspace));
+
+		$dataspace->set('foo', 'foo');		
+		$this->assertTrue($rule->isValid($dataspace));
 	}
 	
 }

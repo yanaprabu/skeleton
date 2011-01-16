@@ -9,15 +9,17 @@ class Rule_CaptchaTest extends UnitTestCase {
 	}
 	
 	function testRule_CaptchaNotNull() {
-  		$field = 'foo';
-  		$errorMsg = 'foo error';
-  		$renderer = '';
-  		$session = null;
-  		$sessionkey = null;
+		$dataspace = new A_DataContainer();
+
+		$field = 'foo';
+		$errorMsg = 'foo error';
+		$renderer = '';
+		$session = null;
+		$sessionkey = null;
 		$Rule_Captcha = new A_Rule_Captcha($field, $errorMsg, $renderer, $session, $sessionkey);
 		
 		$result = true;
-  		$this->assertTrue($result);
+		$this->assertTrue($result);
 		$this->assertFalse(!$result);
 	}
 	

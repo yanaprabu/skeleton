@@ -9,13 +9,21 @@ class Rule_EmailTest extends UnitTestCase {
 	}
 	
 	function testRule_EmailNotNull() {
-  		$field = 'foo';
-  		$errorMsg = 'foo error';
-		$Rule_Email = new A_Rule_Email($field, $errorMsg);
+		$dataspace = new A_DataContainer();
+
+		$rule = new A_Rule_Email('foo', 'foo error');
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+		$this->assertFalse($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', 'test');
+		$this->assertFalse($rule->isValid($dataspace));
+		
+		// should this rule all this kind of valid address by default?
+		$dataspace->set('foo', 'test@test');
+		$this->assertTrue($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', 'test@test.com');
+		$this->assertTrue($rule->isValid($dataspace));
 	}
 	
 }
