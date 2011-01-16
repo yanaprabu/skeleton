@@ -48,8 +48,6 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	public function findBy($someArgs){}
-	
 	public function findAll(){
 		$this->errorMsg = array();;
 		$rows = $this->datasource->find(array('active'=>1));

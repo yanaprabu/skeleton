@@ -17,6 +17,7 @@ class A_Model {
 	protected $fields = array();
 	protected $filters = array();
 	protected $rules = array();
+	protected $includeRules = array();
 	protected $excludeRules = array();
 	protected $fieldClass = 'A_Model_Field';
 	protected $errorMsg = array();
@@ -89,6 +90,11 @@ class A_Model {
 		return $this;
 	}
 	
+	public function includeRules($rules=array()){
+		$this->includeRules = $rules;
+		return $this;
+	}
+	
 	public function newField($name) {
 		if (! isset($this->fields[$name])) {
 			$this->fields[$name] = new $this->fieldClass($name);
@@ -129,6 +135,7 @@ class A_Model {
 		$filterchain = new A_Filter_Set();
 		$validator = new A_Rule_Set();
 		$validator->excludeRules($this->excludeRules);
+		$validator->includeRules($this->includeRules);
 		
 		$this->error = false;
 		$field_names = array_keys($this->fields);
