@@ -149,13 +149,19 @@ class A_Model {
 					$this->fields[$name]->value = $datasource->get($name);
 				}
 			}
-			// run global filters
+			// run global filters on all fields
 			if ($this->filters) {
-				foreach ($field_names as $name) {
-					$this->fields[$name]->value = $filterchain->doFilter($this->fields[$name]->value, $this->filters);
+				foreach ($this->fields as $field) {   	
+					$field->value = $filterchain->doFilter($field->value, $this->filters);
 				}
 			}
-
+			// run field filters
+			foreach ($this->fields as $field) {   	
+				if (isset($field->filters)) {
+					$field->value = $filterchain->doFilter($field->value, $field->filters);
+				}
+			}
+			
 			// run rules for each field
 			foreach ($this->fields as $field) {   	
 				if (isset($field->rules)) {

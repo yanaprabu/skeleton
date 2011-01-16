@@ -9,14 +9,15 @@ class Rule_RegexpTest extends UnitTestCase {
 	}
 	
 	function testRuleRegexp() {
-  		$dataspace = new A_DataContainer();
-  		$rule = new A_Rule_Regexp('/123$/', 'test', 'error');
+		$dataspace = new A_DataContainer();
 
-  		$dataspace->set('test', 'test123');
-  		$result = $rule->isValid($dataspace);
+		$rule = new A_Rule_Regexp('/123$/', 'test', 'error');
+
+		$dataspace->set('test', 'test123');
+		$result = $rule->isValid($dataspace);
 		$this->assertTrue($result);
 		
-  		$dataspace->set('test', 'test234');
+		$dataspace->set('test', 'test234');
  		$result = $rule->isValid($dataspace);
 		$this->assertFalse($result);
 	}

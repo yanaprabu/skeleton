@@ -11,6 +11,6 @@ class A_Rule_Notnull extends A_Rule_Abstract {
 	
 	protected function validate() {
 		$value = $this->getValue();
-		return $value != '';
+		return ($value !== null) && ($value !== '');
 	}
 }

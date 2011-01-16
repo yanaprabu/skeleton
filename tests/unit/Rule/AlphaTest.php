@@ -9,7 +9,9 @@ class Rule_AlphaTest extends UnitTestCase {
 	}
 	
 	function testRule_AlphaNotNull() {
-  		$field = 'foo';
+		$dataspace = new A_DataContainer();
+
+		$field = 'foo';
   		$errorMsg = 'foo error';
   		$Rule_Alpha = new A_Rule_Alpha($field, $errorMsg);
 		

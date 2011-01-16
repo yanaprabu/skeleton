@@ -33,12 +33,39 @@ class A_Filter_Set {
 	}
 	
 	/**
+     * Sets the filterchain to an array of filters
+     * 
+     * @return $this
+     */
+	public function setChain($chain) {
+		if (is_array($chain)) {
+			$this->chain = $chain;
+		}
+		return $this;
+	}
+	
+	/**
+     * Adds an array of filters to the filterchain
+     * 
+     * @return $this
+     */
+	public function addChain($chain) {
+		if (is_array($chain)) {
+			$this->chain = array_merge($this->chain, $chain);
+		}
+		return $this;
+	}
+	
+	/**
      * Returns array with filtered data
      * 
      * @return filtered array
      */
-	public function doFilter($container) {
+	public function doFilter($container, $chain=array()) {
 		$result = array();
+		if ($chain) {
+			$this->chain = is_array($chain) ? $chain : array($chain);
+		}
 		foreach ($this->chain as $key => $filter) {
 		    // class names with params are added as arrays
 		    if (is_array($filter)) {
@@ -55,7 +82,6 @@ class A_Filter_Set {
 		    }
 		    $value = $this->chain[$key]->doFilter($container);
 		    $name = $this->chain[$key]->getName();
-echo "value=$value, name=$name<br/>\n";
 			if (is_array($container)) {
 				$container[$name] = $value;
 			} elseif (is_object($container)) {

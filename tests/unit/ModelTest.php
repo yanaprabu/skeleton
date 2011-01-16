@@ -32,10 +32,10 @@ class ModelTest extends UnitTestCase {
 		$this->assertTrue($model->isValid($datasource));
 		
 		$values = $model->getValues();
-		$this->assertTrue($values['foo'], 'bar');
-		$this->assertTrue($values['bar'], 'BAZ');
+		$this->assertEqual($values['foo'], 'bar');
+		$this->assertEqual($values['bar'], 'BAZ');
 		
-		echo '<pre>' . print_r($model->getValues(), 1) . '</pre>';
+#echo '<pre>' . print_r($values, 1) . '</pre>';
 	}
 	
 	function testModelFilters() {
@@ -51,10 +51,10 @@ class ModelTest extends UnitTestCase {
 		$this->assertTrue($model->isValid($datasource));
 		
 		$values = $model->getValues();
-		$this->assertTrue($values['foo'], 'bar');
-		$this->assertTrue($values['bar'], 'BAZ');
+		$this->assertEqual($values['foo'], 'bar');
+		$this->assertEqual($values['bar'], 'BAZ');
 		
-		echo '<pre>' . print_r($model->getValues(), 1) . '</pre>';
+#echo '<pre>' . print_r($model->getValues(), 1) . '</pre>';
 	}
 	
 	function testModelAddMultipleFilters() {
@@ -69,11 +69,35 @@ class ModelTest extends UnitTestCase {
 		$this->assertTrue($model->isValid($datasource));
 		
 		$values = $model->getValues();
-		$this->assertTrue($values['foo'], 'bar');
-		$this->assertTrue($values['bar'], 'baz');
+		$this->assertEqual($values['foo'], 'bar');
+		$this->assertEqual($values['bar'], 'baz');
 		
-		echo '<pre>' . print_r($model->getValues(), 1) . '</pre>';
-		echo '<pre>' . print_r($model, 1) . '</pre>';
+#echo '<pre>' . print_r($model->getValues(), 1) . '</pre>';
+#echo '<pre>' . print_r($model, 1) . '</pre>';
+	}
+	
+	function testModelCheckRules() {
+		$model = new A_Model();
+		
+		$datasource = new A_DataContainer();
+		$datasource->set('foo', 'barBAR');
+		$datasource->set('bar', 'baz');
+		
+ 		$model->addRule(new A_Rule_Regexp('/[^a-z]/'), array('foo', 'bar'));
+# 		$model->excludeRules(array('foo', 'bar'));
+ 		
+		$this->assertFalse($model->isValid($datasource));
+echo '<pre>' . print_r($model->getErrorMsg(), 1) . '</pre>';
+		
+ 		$model->excludeRules(array('foo'));
+ 		
+		$this->assertTrue($model->isValid($datasource));
+		
+echo '<pre>' . print_r($model->getErrorMsg(), 1) . '</pre>';
+echo '<pre>' . print_r($model->isValid($datasource), 1) . '</pre>';
+	}
+	
+	function testModelCheckExcludeRules() {
 	}
 	
 }

@@ -9,13 +9,26 @@ class Rule_NumericTest extends UnitTestCase {
 	}
 	
 	function testRule_NumericNotNull() {
-  		$field = 'foo';
-  		$errorMsg = 'foo error';
-		$Rule_Numeric = new A_Rule_Numeric($field, $errorMsg);
+		$dataspace = new A_DataContainer();
+
+		$rule = new A_Rule_Numeric('foo', 'foo error');
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
+		$this->assertFalse($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', '');		
+		$this->assertFalse($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', 'foo');		
+		$this->assertFalse($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', '47');		
+		$this->assertTrue($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', 47);		
+		$this->assertTrue($rule->isValid($dataspace));
+		
+		$dataspace->set('foo', 0);		
+		$this->assertTrue($rule->isValid($dataspace));
 	}
 	
 }

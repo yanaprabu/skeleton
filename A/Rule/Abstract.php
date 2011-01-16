@@ -27,7 +27,7 @@ abstract class A_Rule_Abstract {
      *      */
 	public function __construct(/* $field='', $errorMsg='', $optional=false*/) {
 		$params = func_get_args();
-		if (count($params) == 1) {
+		if (count($params) == 1 && is_array($params[0])) {
 			// first param is array of params
 			$this->config($params[0]);
 		} else {
@@ -46,6 +46,9 @@ abstract class A_Rule_Abstract {
      * @return instance of this object (for fluent interface)
      */
 	public function config($params=array()) {
+		if (!is_array($params)) {
+			$params = array($params);
+		}
 		foreach ($params as $key => $value) {
 			$this->params[$key] = $value;
 		}
