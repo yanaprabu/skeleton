@@ -72,11 +72,14 @@ class user extends A_Controller_Action {
 		if($request->isPost()){
 			
 			$usermodel = $this->_load('app')->model('users');
-			$usermodel->addRule(new A_Rule_Match('password', 'passwordagain', 'Fields password and passwordagain do not match'));
+			$usermodel->addRule(new A_Rule_Match('passwordagain', 'password', 'Fields password and passwordagain do not match'));
 			$usermodel->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
-            // Exclude some fields not needed in the validation of the model
-            $usermodel->excludeRules(array('id','firstname','lastname','active','access'));
-
+          	// Exclude some fields not needed in the validation of the model
+         	//   $usermodel->excludeRules(array('id','firstname','lastname','active','access'));
+				
+			// Inlcude only rules for these fields
+			$usermodel->includeRules(array('username', 'password', 'passwordagain', 'email', 'tos'));
+				
 			if(!$usermodel->isValid($request))
 			{
 				$messages[] = $usermodel->getErrorMsg("</li>\n<li>");
@@ -140,7 +143,7 @@ class user extends A_Controller_Action {
 		else
 		{
 			// Show registration form
-			$this->response->setPartial('maincontent', 'user/register/registerForm', array('messages' => $messages));
+			$this->response->setPartial('maincontent', 'user/register/registerForm');
 		}
 		
 	}
