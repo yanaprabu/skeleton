@@ -65,13 +65,21 @@ class A_Model {
 				$fields = array($fields);
 			}
 			// if field names provided then assign rule to multiple fields
+			$field_rule = null;
 			foreach ($fields as $name) {
 				if (! isset($this->fields[$name])) {
 					// if field does not exist the create it
 					$this->fields[$name] = new A_Model_Field($name);
 				}
-				$this->fields[$name]->addRule($rule);
+				if ($field_rule === null) {
+					$field_rule = $rule;		// don't clone 1st rule, use passed object
+				} else {
+					$field_rule = clone $rule;	// clone additional rules so each field gets its own instance
+				}
+				$field_rule->setName($name);
+				$this->fields[$name]->addRule($field_rule);
 			}
+			unset($rule);
 		} else {
 			// assign as global rule(s)
 			if (is_array($rule)) {
@@ -120,6 +128,58 @@ class A_Model {
 		return $this->fields;
 	}
 	
+	public function set($name, $value, $default=null) {
+		if (isset($this->fields[$name])) {
+			if ($value !== null) {
+				$this->fields[$name]->value = $value;
+			} else {
+				$this->fields[$name]->value = $default;
+#				unset($this->fields[$name]);
+			}
+		}
+		return $this;
+	}
+	
+	public function get($name) {
+		if (isset($this->fields[$name]->value)) {
+			return $this->fields[$name]->value;
+		}
+	}
+
+	public function has($name) {
+		return isset($this->fields[$name]);
+	}
+
+	public function getFieldNames() {
+		$data = array();
+		foreach (array_keys($this->fields) as $field) {
+			$data[$field] = $this->fields[$field]->name;
+		}
+		return $data;
+	}
+
+	public function getSourceNames() {
+		$data = array();
+		foreach (array_keys($this->fields) as $field) {
+			$data[$field] = $this->fields[$field]->source_name ? $this->fields[$field]->source_name : $data[$field] = $this->fields[$field]->name;
+		}
+		return $data;
+	}
+
+	public function getFieldVarArray($var) {
+		if ($var) {
+			$data = array();
+			foreach (array_keys($this->fields) as $field) {
+				$data[$field] = $this->fields[$field]->$var;
+			}
+			return $data;
+		}
+	}
+
+	public function getValues() {
+		return $this->getFieldVarArray('value');
+	}
+	
 	public function getSaveValues() {
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {
@@ -138,6 +198,17 @@ class A_Model {
 		$validator->includeRules($this->includeRules);
 		
 		$this->error = false;
+		$this->errorMsg = array();
+
+		if ($this->includeRules) {
+			$rule_names = $this->includeRules;
+		} else {
+			$rule_names = array_keys($this->fields);
+		}
+		if ($this->excludeRules) {
+			$rule_names = array_diff($rule_names, $this->excludeRules);
+		}
+
 		$field_names = array_keys($this->fields);
 		if ($field_names) {
 			if (!$datasource) {
@@ -163,9 +234,12 @@ class A_Model {
 			}
 			
 			// run rules for each field
-			foreach ($this->fields as $field) {   	
-				if (isset($field->rules)) {
-					foreach($field->rules as $rule ){
+			foreach ($this->fields as $name => $field) {
+				// clear errors
+				$field->setErrorMsg();   	
+				// check if there are rules and if included
+				if (isset($field->rules) && in_array($name, $rule_names)) {
+					foreach($field->rules as $rule) {
 						// check if set to override rule's optional setting
 						if ($field->optional !== null) {
 							$rule->setOptional($field->optional);
@@ -177,7 +251,7 @@ class A_Model {
 			
 			// check if there are rules and run those as well
 			if ($this->rules) {
-				foreach ($this->rules as $rule) { 
+				foreach ($this->rules as $name => $srule) { 
 					$validator->addRule($rule);
 				}
 			}			
@@ -187,7 +261,7 @@ class A_Model {
 				$this->error = true; 
 				$errors = $validator->getErrorMsg(); 
 				foreach($errors as $fieldname => $errorarray) { 	
-					$this->addErrorMsg($fieldname, $errorarray);
+					$this->setErrorMsg($fieldname, $errorarray);
 				}
 			}
 		
@@ -196,58 +270,19 @@ class A_Model {
 		return ! $this->error;
 	}
 	
+	
+	public function save() {
+		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
+			$this->datasource->save($this->getFieldVarArray('value'));
+			// error messages and return value?
+		}
+	}
+
+	
 	public function isError() {
 		return $this->error;
 	}
 	
-	public function getFieldNames() {
-		$data = array();
-		foreach (array_keys($this->fields) as $field) {
-			$data[$field] = $this->fields[$field]->name;
-		}
-		return $data;
-	}
-
-	public function getSourceNames() {
-		$data = array();
-		foreach (array_keys($this->fields) as $field) {
-			$data[$field] = $this->fields[$field]->source_name ? $this->fields[$field]->source_name : $data[$field] = $this->fields[$field]->name;
-		}
-		return $data;
-	}
-
-	public function set($name, $value, $default=null) {
-		if (isset($this->fields[$name])) {
-			if ($value !== null) {
-				$this->fields[$name]->value = $value;
-			} else {
-				$this->fields[$name]->value = $default;
-#				unset($this->fields[$name]);
-			}
-		}
-		return $this;
-	}
-	
-	public function get($name) {
-		if (isset($this->fields[$name]->value)) {
-			return $this->fields[$name]->value;
-		}
-	}
-
-	public function has($name) {
-		return isset($this->fields[$name]);
-	}
-
-	public function getFieldVarArray($var) {
-		if ($var) {
-			$data = array();
-			foreach (array_keys($this->fields) as $field) {
-				$data[$field] = $this->fields[$field]->$var;
-			}
-			return $data;
-		}
-	}
-
 	public function getErrorMsg($separator=null) {
 		$data = $this->errorMsg;
 		foreach (array_keys($this->fields) as $field) {
@@ -256,6 +291,14 @@ class A_Model {
 			}
 		}
 		return $separator === null ? $data : implode($separator, $data);
+	}
+
+	public function setErrorMsg($name, $errorMsg) {
+		if (isset($this->fields[$name])) {
+			$this->fields[$name]->setErrorMsg($errorMsg);
+		} else {
+			$this->errorMsg[$name] = $errorMsg;
+		}
 	}
 
 	public function addErrorMsg($name, $errorMsg) {
@@ -271,17 +314,6 @@ class A_Model {
 		}
 	}
 
-	public function getValues() {
-		return $this->getFieldVarArray('value');
-	}
-	
-	public function save() {
-		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
-			$this->datasource->save($this->getFieldVarArray('value'));
-			// error messages and return value?
-		}
-	}
-	
 }
 
 

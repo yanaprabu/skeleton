@@ -83,18 +83,24 @@ class ModelTest extends UnitTestCase {
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'baz');
 		
- 		$model->addRule(new A_Rule_Regexp('/[^a-z]/'), array('foo', 'bar'));
-# 		$model->excludeRules(array('foo', 'bar'));
+ 		$rule = new A_Rule_Regexp('/^[a-z]*$/', '', 'not all lowercase letters. ');
  		
+ 		// add rule to check both fields
+ 		$model->addRule($rule, array('foo', 'bar'));
+# 		$model->excludeRules(array('foo', 'bar')); 		
 		$this->assertFalse($model->isValid($datasource));
-echo '<pre>' . print_r($model->getErrorMsg(), 1) . '</pre>';
-		
- 		$model->excludeRules(array('foo'));
- 		
+
+ 		// only check bar
+ 		$model->excludeRules(array('foo')); 		
 		$this->assertTrue($model->isValid($datasource));
-		
-echo '<pre>' . print_r($model->getErrorMsg(), 1) . '</pre>';
-echo '<pre>' . print_r($model->isValid($datasource), 1) . '</pre>';
+
+ 		// only check foo
+ 		$model->excludeRules(array()); 		
+		$model->includeRules(array('foo')); 		
+		$this->assertFalse($model->isValid($datasource));
+		#dump($model, 'Model: ', 1);
+#echo '<pre>' . print_r($model->getErrorMsg(), 1) . '</pre>';
+#echo '<pre>' . print_r($model->isValid($datasource), 1) . '</pre>';
 	}
 	
 	function testModelCheckExcludeRules() {
