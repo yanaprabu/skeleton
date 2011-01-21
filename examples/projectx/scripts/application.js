@@ -11,8 +11,9 @@
 		// application ID
 		this.id = ("app-" + (new Date()).getTime());
 		
-		// how often to check the URL hash
+		// the setInterval reference for hash change checking
 		this.locationMonitorInterval = null;
+		// the delay inbetween hash change checks
 		this.locationMonitorDelay = 150;
 		
 		// current map location
@@ -39,7 +40,7 @@
 		// TODO find out what this is
 		this.locationEvent = null;
 		
-		// TODO find out what this is
+		// not a real event, only fired by this object (setLocation)
 		$(this).bind("locationchange", this.proxyCallback(this.onLocationChange));
 		
 		// indicates that the application has not started
@@ -125,12 +126,12 @@
 	};
 	
 	/**
-	 * Process location and change it if necessary
+	 * Check location for changes
 	 */
 	Application.prototype.checkLocationForChange = function () {
 
 		// get hash location and clean it
-		var liveLocation = this.normalizeHash( window.location.hash );
+		var liveLocation = this.normalizeHash(window.location.hash);
 			
 		// if location is actually different
 		if (this.currentLocation == null || this.currentLocation != liveLocation){
@@ -267,7 +268,7 @@
 	 *
 	 * @todo find out what this does
 	 */
-	Application.prototype.onLocationChange = function( locationChangeEvent ){
+	Application.prototype.onLocationChange = function (locationChangeEvent) {
 		var self = this;
 		
 		// I am used to determine if the application should continue routing the request.
@@ -438,13 +439,18 @@
 	};
 		
 		
-	// I set the location of the application. I don't do anything explicitly - 
-	// I let the location monitoring handle this change implicitly. You can also
-	// pass through additional parameters that will be added to the location event
-	// that gets triggered.
-	Application.prototype.setLocation = function( location, parameters ){
+	/**
+	 * Direct application to a different hash route.  This function doesn't
+	 * actually do any redirection, it only changes the hash.  The hash change
+	 * monitoring code handles that.
+	 *
+	 * @param location The location to go to
+	 * @param parameters Parameters to be passed to the controller
+	 */
+	Application.prototype.setLocation = function (location, parameters) {
+		
 		// Clearn the location.
-		location = this.normalizeHash( location );
+		location = this.normalizeHash(location);
 	
 		// Create variables to hold the new and old hashes.
 		var oldLocation = this.currentLocation;
@@ -453,13 +459,11 @@
 		// Store the new location.
 		this.currentLocation = location;
 		
-		// Make sure the hash is the same as the location (this way, we don't
-		// get circular logic as the monitor keeps pinging the hash).
-		window.location.hash = ("#/" + location );
+		// Redirect
+		window.location.hash = '#/' + location;
 	
-		// The location has changed - trigger the change event on the application
-		// object so that anyone monitoring it can react.
-		$( this ).trigger({
+		// fire the location change event; the event handler will call the controller
+		$(this).trigger({
 			type: "locationchange",
 			fromLocation: oldLocation,
 			toLocation: newLocation,
@@ -468,13 +472,15 @@
 	};
 	
 	
-	// I turn on the location monitoring.
-	Application.prototype.startLocationMonitor = function(){
+	/**
+	 * Initialize hash change monitoring
+	 */
+	Application.prototype.startLocationMonitor = function () {
 		var self = this;
 		
-		// Create the interval function.
+		// start the interval
 		this.locationMonitorInterval = setInterval(
-			function(){				
+			function () {
 				self.checkLocationForChange();
 			},
 			this.locationMonitorDelay
@@ -482,53 +488,40 @@
 	};
 	
 	
-	// I turn off the location monitoring.
+	/**
+	 * Stop monitoring hash changes
+	 */
 	Application.prototype.stopLocationMonitor = function(){
-		clearInterval( this.locationMonitorInterval );
+		clearInterval(this.locationMonitorInterval);
 	};
 	
-	
-	// ----------------------------------------------------------------------- //
-	// ----------------------------------------------------------------------- //
-	
-	
-	// I am the prototype for the application controllers. This is so they
-	// can leverage some binding magic without the overhead of the implimentation.
-	Application.prototype.Controller = function(){
-		// ...
+	/**
+	 * Abstract Controller class, must be prototyped by all controllers
+	 */
+	Application.prototype.Controller = function () {
 	};
 	
-	
-	// I am the prototype for the Controller prototype.
 	Application.prototype.Controller.prototype = {
 	
-		// I route the given pseudo location to the given controller method.
-		route: function( path, handler ){
-			// Strip of any trailing and leading slashes.
+		// map a route to a controller action
+		route: function (path, handler) {
+			// clean the route
 			path = application.normalizeHash( path );
 		
-			// We will need to extract the parameters into an array - these will be used 
-			// to create the event object when the location changes get routed.
+			// extract variables from route
+			
 			var parameters = [];
 			
-			// Extract the parameters and replace with capturing groups at the same
-			// time (such that when the pattern is tested, we can map the captured
-			// groups to the ordered paramters above.
 			var pattern = path.replace(
 				new RegExp( "(/):([^/]+)", "gi" ),
-				function( $0, $1, $2 ){
-					// Add the named parameter.
-					parameters.push( $2 );
+				function ($0, $1, $2) {
+					parameters.push($2);
 					
-					// Replace with a capturing group. This captured group will be used
-					// to create a named parameter if this route gets matched.
-					return( $1 + "([^/]+)" );
+					return $1 + "([^/]+)";
 				}
-				);
+			);
 			
-			// Now that we have our parameters and our test pattern, we can create our 
-			// route mapping (which will be used by the application to match location 
-			// changes to controllers).
+			// store route and associated action reference
 			application.routeMappings.push({
 				controller: this,
 				parameters: parameters,
@@ -539,20 +532,15 @@
 		
 	};
 	
-	
-	// ----------------------------------------------------------------------- //
-	// ----------------------------------------------------------------------- //
-	
-	
-	// Create a new instance of the application and store it in the window.
+	// create a new instance of the application and store it in the window.
 	window.application = new Application();
 	
-	// When the DOM is ready, run the application.
-	$(function(){
+	// when the DOM is ready, run the application.
+	$(function () {
 		window.application.run();
 	});
 	
 	// Return a new application instance.
-	return( window.application );
+	return(window.application);
 	
-})( jQuery );
+})(jQuery);
