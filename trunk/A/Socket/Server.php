@@ -119,24 +119,17 @@ class A_Socket_Server
 	
 	protected function parseData($data, $client)
 	{
-		$firstChar = substr($data, 0, 1);
-		$endIndex = strpos($data, chr(255));
+		$parser = new A_Socket_Parser_WebSocket($data);
 		
-		while ($firstChar == chr(0) && $endIndex !== false) {
-			// get block and remove from data
-			$block = substr($data, 1, $endIndex - 1);
-			$data = substr($data, $endIndex);
-			
+		$blocks = $parser->parseMessages();
+		
+		foreach ($blocks as $block) {
 			// do something with $block
 			$this->fireEvent(
 				'onmessage',
 				$client,
 				$block
 			);
-			
-			// get ready for next loop
-			$firstChar = substr($data, 0, 1);
-			$index = strpos($data, chr(255));
 		}
 	}
 	
