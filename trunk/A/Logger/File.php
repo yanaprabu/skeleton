@@ -14,7 +14,8 @@ class A_Logger_File {
 	}
 	
 	public function setFilename($filename) {
-		return $this->filename = $filename;
+		$this->filename = $filename;
+		return $this;
 	}
 	
 	public function getFilename() {
@@ -23,6 +24,12 @@ class A_Logger_File {
 	
 	public function getErrorMsg() {
 		return $this->errorMsg;
+	}
+	
+	public function clear() {
+		if ($this->filename && file_exists($this->filename)) {
+ 			unlink($this->filename);
+		}
 	}
 	
 	public function write($buffer='') {
@@ -39,5 +46,6 @@ class A_Logger_File {
 				$this->errorMsg .= "Error opening {$this->filename}. ";
 			}
 		}
+		return $this;
 	}
 }
