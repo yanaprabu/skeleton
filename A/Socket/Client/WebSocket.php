@@ -3,48 +3,16 @@
 /**
  * Client
  */
-class A_WebSocket_Client
+class A_Socket_Client_WebSocket
 {
-	
-	private $socket;
-	
-	private $connected = false;
-	
-	private $session;
-	
+
 	const SOCKET_EOL = "\r\n";
 	
 	const HANDSHAKE_RESPONSE = "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n%s\r\n%s";
 	
-	/**
-	 * Constructor
-	 */
-	public function __construct($socket)
-	{
-		$this->socket = $socket;
-	}
-	
-	/**
-	 * Receive data from socket
-	 */
-	public function readData($data)
-	{
-		if ($this->connected) {
-			$this->handleData($data);
-		} else {
-			$this->connect($data);
-		}
-	}
-	
 	public function send($message)
 	{
-		$message = json_encode($message);
-		$message = chr(0) . $message . chr(255);
-		$success = socket_write($this->socket, $message, strlen($message));
-		if (!$success) {
-			echo 'Error, could not send message';
-			socket_close($this->socket);
-		}
+		$this->send(chr(0) . $message . chr(255));
 	}
 	
 	public function connect($data)
@@ -106,7 +74,7 @@ class A_WebSocket_Client
 		$this->connected = true;
 	}
 	
-	function keyToBytes($key) {
+	private function keyToBytes($key) {
 		$matchNumbers = preg_match_all('/[0-9]/', $key, $number);
 		$matchSpaces = preg_match_all('/ /', $key, $space);
 		if ($matchNumbers && $matchSpaces) {
@@ -116,26 +84,10 @@ class A_WebSocket_Client
 	}
 	
 	// Pack the security keys for handshake response
-	function securityDigest($key1, $key2, $key3) {
+	private function securityDigest($key1, $key2, $key3) {
 		return md5(
 			pack('N', $this->keyToBytes($key1)) .
 			pack('N', $this->keyToBytes($key2)) .
 			$key3, true);
-	}
-	
-	public function isConnected()
-	{
-		return $this->connected;
-	}
-	
-	public function getSession()
-	{
-		return $this->session;
-	}
-	
-	public function setSession($session)
-	{
-		$this->session = $session;
-		return $this;
 	}
 }

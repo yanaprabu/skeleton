@@ -1,6 +1,6 @@
 <?php
 
-class A_WebSocket_Message
+class A_Socket_Message
 {
 
 	const SENDER = 0;
@@ -13,7 +13,7 @@ class A_WebSocket_Message
 	
 	public function __construct($message, $client, $clients)
 	{
-		$this->message = json_decode($message);
+		$this->message = $message;
 		$this->client = $client;
 		$this->clients = $clients;
 	}
@@ -24,6 +24,32 @@ class A_WebSocket_Message
 	}
 	
 	public function reply($data, $recipient = self::SENDER)
+	{
+		$this->_reply($data, $recipient);
+		return $this;
+	}
+	
+	public function getSession()
+	{
+		return $this->client->getSession();
+	}
+	
+	public function setSession($session)
+	{
+		$this->client->setSession($session);
+		return $this;
+	}
+	
+	public function getAllSessions()
+	{
+		$sessions = array();
+		foreach ($this->clients as $client) {
+			$sessions[] = $client->getSession();
+		}
+		return $sessions;
+	}
+	
+	protected function _reply($data, $recipient)
 	{
 		if ($recipient == self::SENDER) {
 			$this->client->send($data);
@@ -48,25 +74,5 @@ class A_WebSocket_Message
 			}
 		}
 		return $this;
-	}
-	
-	public function getSession()
-	{
-		return $this->client->getSession();
-	}
-	
-	public function setSession($session)
-	{
-		$this->client->setSession($session);
-		return $this;
-	}
-	
-	public function getAllSessions()
-	{
-		$sessions = array();
-		foreach ($this->clients as $client) {
-			$sessions[] = $client->getSession();
-		}
-		return $sessions;
 	}
 }

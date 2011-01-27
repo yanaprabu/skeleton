@@ -1,6 +1,6 @@
 <?php
 
-class A_WebSocket_EventListener_FrontController extends A_WebSocket_EventListener_Abstract
+class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abstract
 {
 
 	public function onConnect($data)

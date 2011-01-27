@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This class encapsulates a request from a WebSocket client
+ * This class encapsulates a request from a Socket client
  */
-class A_WebSocket_Request
+class A_Socket_Request
 {
 
 	protected $method = false;
