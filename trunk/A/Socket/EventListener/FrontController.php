@@ -3,6 +3,11 @@
 class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abstract
 {
 
+	public function  __construct($locator)
+	{
+		parent::__construct($locator);
+	}
+	
 	public function onConnect($data)
 	{
 		$data->setSession(new A_Collection());
@@ -15,11 +20,14 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 	
 	public function onMessage($data)
 	{
-		$request = new A_WebSocket_Request($data);
-		$locator = new A_Locator();
-		$locator->set('Request', $request);
+		$Locator = $this->_locator;
+
+		$Config = $Locator->get('Config');
 		
-		$front = new A_Controller_Front(dirname(dirname(dirname(dirname(__FILE__)))) . '/examples/websocket/app', array('', 'main', 'main'), array('', 'main', 'main'));
+		$Request = new A_WebSocket_Request($data);
+		$Locator->set('Request', $Request);
+		
+		$front = new A_Controller_Front($Config->get('APP'), $Config->get('DEFAULT_ACTION'), $Config->get('ERROR_ACTION'));
 		$front->run($locator);
 	}
 }

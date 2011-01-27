@@ -10,32 +10,30 @@
  */
 class A_Socket_Server
 {
-
-	private $master;
 	
-	private $sockets = array();
+	private $_master;
 	
-	private $clients = array();
+	private $_sockets = array();
 	
-	private $locator;
+	private $_clients = array();
 	
-	private $path;
+	private $_locator;
 	
-	private $host;
+	private $_path;
 	
-	private $port;
+	private $_host;
 	
-	private $appPath;
+	private $_port;
 	
-	private $eventManager;
+	private $_appPath;
+	
+	private $_eventManager;
 	/**
 	 * Constructor
 	 */
-	public function __construct($config)
+	public function __construct()
 	{
-		$this->host = $config->get('SOCKET')->get('host');
-		$this->port = $config->get('SOCKET')->get('port');
-		$this->appPath = $config->get('APP');
+		
 	}
 
 	/**
@@ -43,32 +41,54 @@ class A_Socket_Server
 	 */
 	public function run($locator)
 	{
-		$this->locator = $locator;
-		$this->eventManager = $locator->get('EventManager');
-		if (!$this->eventManager) {
-			$this->eventManager = new A_Event_Manager();
-			$this->eventManager->addEventListener(new A_WebSocket_EventListener_FrontController());
+		$socketConfig = $locator->get('Config')->get('SOCKET');
+		
+		$this->_host = $socketConfig->get('host');
+		$this->_port = $socketConfig->get('port');
+
+		$this->_client_class = $socketConfig->get('client-class');
+		if (new $this->_client_class instanceof A_Socket_Client_Abstract) {
+			throw new Exception('A_Socket_Server: the client class is invalid.');
+		}
+
+		$this->_message_class = $socketConfig->get('message-class');
+		if (new $this->_message_class instanceof A_Socket_Message) {
+			throw new Exception('A_Socket_Server: the message class is invalid.');
+		}
+
+		$this->_parser_class = $socketConfig->get('parser-class');
+		if (new $this->_parser_class instanceof A_Socket_Parser) {
+			throw new Exception('A_Socket_Server: the parser class is invalid.');
+		}
+		
+		$this->_locator = $locator;
+		$this->_eventManager = $locator->get('EventManager');
+		
+		if ($locator->get('SocketEventListener') instanceof A_WebSocket_EventListener_Abstract) {
+			$this->_eventManager->addEventListener($locator->get('SocketEventListener'));
+		} else {
+			throw new Exception('A_Socket_Server: the event listener provided is not valid.');
 		}
 		
 		$this->prepareMaster();
 		$stopLoop = false;
 		
 		while ($stopLoop == false) {
-			$updated_sockets = $this->sockets;
+			$updated_sockets = $this->_sockets;
 			socket_select($updated_sockets, $write = NULL, $exceptions = NULL, NULL);
 				
 			foreach ($updated_sockets as $socket) {
-				if ($socket == $this->master) {
+				if ($socket == $this->_master) {
 					$resource = socket_accept($socket);
 					if ($resource !== false) {
 						$client = new A_WebSocket_Client($resource);
-						$this->clients[$resource] = $client;
-						$this->sockets[] = $resource;
+						$this->_clients[$resource] = $client;
+						$this->_sockets[] = $resource;
 					} else {
 						// socket error
 					}
 				} else {
-					$client = $this->clients[$socket];
+					$client = $this->_clients[$socket];
 					$bytes = socket_recv($socket, $data, 4096, 0);
 					if ($bytes !== 0) {
 						if ($client->isConnected()) {
@@ -85,9 +105,9 @@ class A_Socket_Server
 							'ondisconnect',
 							$client
 						);
-						unset($this->clients[$socket]);
-						$index = array_search($socket, $this->sockets);
-						unset($this->sockets[$index]);
+						unset($this->_clients[$socket]);
+						$index = array_search($socket, $this->_sockets);
+						unset($this->_sockets[$index]);
 						unset($client);
 					}
 				}
@@ -97,24 +117,24 @@ class A_Socket_Server
 
 	protected function prepareMaster()
 	{
-		$this->master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-		if ($this->master < 0) {
-			throw new Exception('Could not create socket: ' . socket_strerror($this->master));
+		$this->_master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		if ($this->_master < 0) {
+			throw new Exception('Could not create socket: ' . socket_strerror($this->_master));
 		}
 
-		socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1);
+		socket_set_option($this->_master, SOL_SOCKET, SO_REUSEADDR, 1);
 
-		$res = socket_bind($this->master, $this->host, $this->port);
+		$res = socket_bind($this->_master, $this->host, $this->port);
 		if ($res < 0) {
 			throw new Exception('Could not bind socket: ' . socket_strerror($res));
 		}
 
-		$res = socket_listen($this->master, 5);
+		$res = socket_listen($this->_master, 5);
 		if ($res < 0) {
 			throw new Exception('Could not listen to socket: ' . socket_strerror($res));
 		}
 
-		$this->sockets[] = $this->master;
+		$this->_sockets[] = $this->_master;
 	}
 	
 	protected function parseData($data, $client)
@@ -135,9 +155,9 @@ class A_Socket_Server
 	
 	protected function fireEvent($event, $client, $message = null)
 	{
-		$this->eventManager->fireEvent(
+		$this->_eventManager->fireEvent(
 			'a.socket.' . $event,
-			new A_WebSocket_Message_Json($message, $client, $this->clients)
+			new A_WebSocket_Message_Json($message, $client, $this->_clients)
 		);
 	}
 	

@@ -3,6 +3,12 @@
 abstract class A_Socket_EventListener_Abstract implements A_Event_Listener
 {
 
+	protected $_locator;
+
+	public function  __construct($locator) {
+		$this->_locator = $locator;
+	}
+	
 	public function getEvents()
 	{
 		return array('a.socket.onconnect', 'a.socket.ondisconnect', 'a.socket.onmessage');
