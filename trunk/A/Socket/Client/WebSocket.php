@@ -12,7 +12,7 @@ class A_Socket_Client_WebSocket
 	
 	public function send($message)
 	{
-		$this->send(chr(0) . $message . chr(255));
+		$this->_send(chr(0) . $message . chr(255));
 	}
 	
 	public function connect($data)
