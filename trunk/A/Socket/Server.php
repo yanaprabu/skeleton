@@ -1,14 +1,14 @@
 <?php
 
 /**
- * A_WebSocket_Server
+ * A_Socket_Server
  *
- * This handles connecting with WebSocket clients.  It also receives
+ * This handles connecting with Socket clients.  It also receives
  * JSON data from clients, maps to controller/action, and dispatches.
  *
  * @package A_WebSocket
  */
-class A_WebSocket_Server
+class A_Socket_Server
 {
 
 	private $master;
@@ -33,8 +33,8 @@ class A_WebSocket_Server
 	 */
 	public function __construct($config)
 	{
-		$this->host = $config->get('WEBSOCKET')->get('host');
-		$this->port = $config->get('WEBSOCKET')->get('port');
+		$this->host = $config->get('SOCKET')->get('host');
+		$this->port = $config->get('SOCKET')->get('port');
 		$this->appPath = $config->get('APP');
 	}
 
@@ -143,8 +143,8 @@ class A_WebSocket_Server
 	protected function fireEvent($event, $client, $message = null)
 	{
 		$this->eventManager->fireEvent(
-			'a.websocket.' . $event,
-			new A_WebSocket_Message($message, $client, $this->clients)
+			'a.socket.' . $event,
+			new A_WebSocket_Message_Json($message, $client, $this->clients)
 		);
 	}
 	

@@ -5,7 +5,7 @@
 $ConfigArray = array(
 	'PATH' => dirname(__FILE__) . '/',
 	'APP' => dirname(__FILE__) . '/app',
-	'WEBSOCKET' => array(
+	'SOCKET' => array(
 		'host' => 'localhost',
 		'port' => '9091'
 	)
@@ -18,5 +18,5 @@ $Locator->autoload();
 $config = new A_Config_Php();
 $config->import($ConfigArray);
 
-$Server = new A_WebSocket_Server($config);
+$Server = new A_Socket_Server($config);
 $Server->run($Locator);
