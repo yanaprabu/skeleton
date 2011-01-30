@@ -81,7 +81,7 @@ class A_Socket_Server
 				if ($socket == $this->_master) {
 					$resource = socket_accept($socket);
 					if ($resource !== false) {
-						$client = new A_WebSocket_Client($resource);
+						$client = new $this->_client_class($resource);
 						$this->_clients[$resource] = $client;
 						$this->_sockets[] = $resource;
 					} else {
@@ -139,7 +139,7 @@ class A_Socket_Server
 	
 	protected function parseData($data, $client)
 	{
-		$parser = new A_Socket_Parser_WebSocket($data);
+		$parser = new $this->_parser_class($data);
 		
 		$blocks = $parser->parseMessages();
 		
@@ -157,12 +157,7 @@ class A_Socket_Server
 	{
 		$this->_eventManager->fireEvent(
 			'a.socket.' . $event,
-			new A_WebSocket_Message_Json($message, $client, $this->_clients)
+			new $this->_message_class($message, $client, $this->_clients)
 		);
-	}
-	
-	protected function createEventObject($data, $client)
-	{
-		return (object) array('data' => $data, 'client' => $client, 'server' => $this);
 	}
 }

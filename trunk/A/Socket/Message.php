@@ -48,6 +48,11 @@ class A_Socket_Message
 		}
 		return $sessions;
 	}
+
+	public function getRoute()
+	{
+		return null;
+	}
 	
 	protected function _reply($data, $recipient)
 	{
