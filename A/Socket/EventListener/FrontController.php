@@ -24,7 +24,7 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 
 		$Config = $Locator->get('Config');
 		
-		$Request = new A_WebSocket_Request($data);
+		$Request = new A_Socket_Request($data);
 		$Locator->set('Request', $Request);
 		
 		$front = new A_Controller_Front($Config->get('APP'), $Config->get('DEFAULT_ACTION'), $Config->get('ERROR_ACTION'));
