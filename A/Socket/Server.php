@@ -28,46 +28,37 @@ class A_Socket_Server
 	private $_appPath;
 	
 	private $_eventManager;
+	
 	/**
 	 * Constructor
 	 */
-	public function __construct()
+	public function __construct(A_Socket_EventListener_Abstract $eventListener)
 	{
-		
+		$this->_eventManager = new A_Event_Manager();
+		$this->_eventManager->addEventListener($eventListener);
 	}
 
 	/**
 	 * Main server loop
 	 */
-	public function run($locator)
+	public function run($config)
 	{
-		$socketConfig = $locator->get('Config')->get('SOCKET');
-		
-		$this->_host = $socketConfig->get('host');
-		$this->_port = $socketConfig->get('port');
+		$this->_host = $config->get('host');
+		$this->_port = $config->get('port');
 
-		$this->_client_class = $socketConfig->get('client-class');
+		$this->_client_class = $config->get('client-class');
 		if (new $this->_client_class instanceof A_Socket_Client_Abstract) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 
-		$this->_message_class = $socketConfig->get('message-class');
+		$this->_message_class = $config->get('message-class');
 		if (new $this->_message_class instanceof A_Socket_Message) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 
-		$this->_parser_class = $socketConfig->get('parser-class');
+		$this->_parser_class = $config->get('parser-class');
 		if (new $this->_parser_class instanceof A_Socket_Parser) {
 			throw new Exception('A_Socket_Server: the parser class is invalid.');
-		}
-		
-		$this->_locator = $locator;
-		$this->_eventManager = $locator->get('EventManager');
-		
-		if ($locator->get('SocketEventListener') instanceof A_WebSocket_EventListener_Abstract) {
-			$this->_eventManager->addEventListener($locator->get('SocketEventListener'));
-		} else {
-			throw new Exception('A_Socket_Server: the event listener provided is not valid.');
 		}
 		
 		$this->prepareMaster();

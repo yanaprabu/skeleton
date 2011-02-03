@@ -25,11 +25,5 @@ $Config->import($ConfigArray);
 
 $Locator->set('Config', $Config);
 
-$EventManager = new A_Event_Manager();
-$SocketEventListener = new A_Socket_EventListener_FrontController($Locator);
-
-$Locator->set('EventManager', $EventManager);
-$Locator->set('SocketEventListener', $SocketEventListener);
-
-$Server = new A_Socket_Server();
-$Server->run($Locator);
+$Server = new A_Socket_Server(new A_Socket_EventListener_FrontController($Locator));
+$Server->run($Config->get('SOCKET'));
