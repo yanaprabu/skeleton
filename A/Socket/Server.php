@@ -85,11 +85,12 @@ class A_Socket_Server
 						if ($client->isConnected()) {
 							$this->parseData($data, $client);
 						} else {
-							$client->connect($data);
-							$this->fireEvent(
-								'onconnect',
-								$client
-							);
+							if ($client->connect($data)) {
+								$this->fireEvent(
+									'onconnect',
+									$client
+								);
+							}
 						}
 					} else {
 						$this->fireEvent(
