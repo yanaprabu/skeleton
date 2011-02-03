@@ -17,15 +17,9 @@ class A_Socket_Server
 	
 	private $_clients = array();
 	
-	private $_locator;
-	
-	private $_path;
-	
 	private $_host;
 	
 	private $_port;
-	
-	private $_appPath;
 	
 	private $_eventManager;
 	
