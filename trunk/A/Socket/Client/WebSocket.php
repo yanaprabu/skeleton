@@ -72,6 +72,9 @@ class A_Socket_Client_WebSocket
 		// Write response to socket
 		socket_write($this->socket, $responseString, strlen($responseString));
 		$this->connected = true;
+
+		// indicate success to Server
+		return true;
 	}
 	
 	private function keyToBytes($key) {
