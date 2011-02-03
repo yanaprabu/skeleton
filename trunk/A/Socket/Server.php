@@ -41,22 +41,22 @@ class A_Socket_Server
 	/**
 	 * Main server loop
 	 */
-	public function run($config)
+	public function run($config = array())
 	{
-		$this->_host = $config->get('host');
-		$this->_port = $config->get('port');
+		$this->_host = $config['host'];
+		$this->_port = $config['port'];
 
-		$this->_client_class = $config->get('client-class');
+		$this->_client_class = $config['client-class'];
 		if (new $this->_client_class instanceof A_Socket_Client_Abstract) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 
-		$this->_message_class = $config->get('message-class');
+		$this->_message_class = $config['message-class'];
 		if (new $this->_message_class instanceof A_Socket_Message) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 
-		$this->_parser_class = $config->get('parser-class');
+		$this->_parser_class = $config['parser-class'];
 		if (new $this->_parser_class instanceof A_Socket_Parser) {
 			throw new Exception('A_Socket_Server: the parser class is invalid.');
 		}
