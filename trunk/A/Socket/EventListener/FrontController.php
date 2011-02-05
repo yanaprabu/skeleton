@@ -28,6 +28,6 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 		$Locator->set('Request', $Request);
 		
 		$front = new A_Controller_Front($Config->get('APP'), $Config->get('DEFAULT_ACTION'), $Config->get('ERROR_ACTION'));
-		$front->run($locator);
+		$front->run($Locator);
 	}
 }

@@ -3,7 +3,7 @@
 /**
  * Client
  */
-class A_Socket_Client_WebSocket
+class A_Socket_Client_WebSocket extends A_Socket_Client_Abstract
 {
 
 	const SOCKET_EOL = "\r\n";
