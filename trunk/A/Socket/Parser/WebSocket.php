@@ -1,9 +1,9 @@
 <?php
 
-class A_Socket_Parser_WebSocket extends A_Socket_Parser
+class A_Socket_Parser_WebSocket implements A_Socket_Parser
 {
 
-	public function parseMessages()
+	public function parseMessages($data)
 	{
 		$blocks = array();
 		

@@ -9,8 +9,7 @@ $ConfigArray = array(
 		'host' => 'localhost',
 		'port' => '9091',
 		'client-class' => 'A_Socket_Client_WebSocket',
-		'message-class' => 'A_Socket_Message_Json',
-		'parser-class' => 'A_Socket_Parser_WebSocket'
+		'message-class' => 'A_Socket_Message_Json'
 	),
 	'DEFAULT_ACTION' => array('', 'main', 'main'),
 	'ERROR_ACTION' => array('', 'main', 'main')
@@ -25,5 +24,8 @@ $Config->import($ConfigArray);
 
 $Locator->set('Config', $Config);
 
-$Server = new A_Socket_Server(new A_Socket_EventListener_FrontController($Locator));
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
+$Parser = new A_Socket_Parser_WebSocket();
+
+$Server = new A_Socket_Server($EventListener, $Parser);
 $Server->run($ConfigArray['SOCKET']);
