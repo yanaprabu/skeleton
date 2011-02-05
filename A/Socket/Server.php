@@ -22,14 +22,17 @@ class A_Socket_Server
 	private $_port;
 	
 	private $_eventManager;
+
+	private $_parser;
 	
 	/**
 	 * Constructor
 	 */
-	public function __construct(A_Socket_EventListener_Abstract $eventListener)
+	public function __construct(A_Socket_EventListener_Abstract $eventListener, A_Socket_Parser $parser)
 	{
 		$this->_eventManager = new A_Event_Manager();
 		$this->_eventManager->addEventListener($eventListener);
+		$this->_parser = $parser;
 	}
 
 	/**
@@ -48,11 +51,6 @@ class A_Socket_Server
 		$this->_message_class = $config['message-class'];
 		if (new $this->_message_class instanceof A_Socket_Message) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
-		}
-
-		$this->_parser_class = $config['parser-class'];
-		if (new $this->_parser_class instanceof A_Socket_Parser) {
-			throw new Exception('A_Socket_Server: the parser class is invalid.');
 		}
 		
 		$this->prepareMaster();
