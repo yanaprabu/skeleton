@@ -10,6 +10,9 @@
  */
 class A_Socket_Server
 {
+
+	const BASE_CLIENT = 'A_Socket_Client_Abstract';
+	const BASE_MESSAGE = 'A_Socket_Message';
 	
 	private $_master;
 	
@@ -24,6 +27,10 @@ class A_Socket_Server
 	private $_eventManager;
 
 	private $_parser;
+
+	private $_client_class;
+
+	private $_message_class;
 	
 	/**
 	 * Constructor
@@ -44,12 +51,12 @@ class A_Socket_Server
 		$this->_port = $config['port'];
 
 		$this->_client_class = $config['client-class'];
-		if (new $this->_client_class instanceof A_Socket_Client_Abstract) {
+		if ($this->_client_class != self::BASE_CLIENT && !is_subclass_of($this->_client_class, self::BASE_CLIENT)) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 
 		$this->_message_class = $config['message-class'];
-		if (new $this->_message_class instanceof A_Socket_Message) {
+		if ($this->_message_class != self::BASE_MESSAGE && !is_subclass_of($this->_message_class, self::BASE_MESSAGE)) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 		
@@ -108,7 +115,7 @@ class A_Socket_Server
 
 		socket_set_option($this->_master, SOL_SOCKET, SO_REUSEADDR, 1);
 
-		$res = socket_bind($this->_master, $this->host, $this->port);
+		$res = socket_bind($this->_master, $this->_host, $this->_port);
 		if ($res < 0) {
 			throw new Exception('Could not bind socket: ' . socket_strerror($res));
 		}
@@ -123,9 +130,7 @@ class A_Socket_Server
 	
 	protected function parseData($data, $client)
 	{
-		$parser = new $this->_parser_class($data);
-		
-		$blocks = $parser->parseMessages();
+		$blocks = $this->_parser->parseMessages($data);
 		
 		foreach ($blocks as $block) {
 			// do something with $block

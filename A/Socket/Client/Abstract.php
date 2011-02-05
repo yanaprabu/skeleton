@@ -6,11 +6,11 @@
 class A_Socket_Client_Abstract
 {
 	
-	private $socket;
+	protected $socket;
 	
-	private $connected = false;
+	protected $connected = false;
 	
-	private $session;
+	protected $session;
 	
 	/**
 	 * Constructor

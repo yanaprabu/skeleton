@@ -20,7 +20,7 @@ class name extends A_Controller_Action {
 				'command' => 'user_list',
 				'data' => $names
 			),
-			A_WebSocket_Message::ALL
+			A_Socket_Message::ALL
 		);
 	}
 
