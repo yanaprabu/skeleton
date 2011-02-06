@@ -12,7 +12,7 @@ class A_Socket_Server
 {
 
 	const BASE_CLIENT = 'A_Socket_Client_Abstract';
-	const BASE_MESSAGE = 'A_Socket_Message';
+	const BASE_MESSAGE = 'A_Socket_Message_Abstract';
 	
 	private $_master;
 	
@@ -51,12 +51,12 @@ class A_Socket_Server
 		$this->_port = $config['port'];
 
 		$this->_client_class = $config['client-class'];
-		if ($this->_client_class != self::BASE_CLIENT && !is_subclass_of($this->_client_class, self::BASE_CLIENT)) {
+		if (!is_subclass_of($this->_client_class, self::BASE_CLIENT)) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 
 		$this->_message_class = $config['message-class'];
-		if ($this->_message_class != self::BASE_MESSAGE && !is_subclass_of($this->_message_class, self::BASE_MESSAGE)) {
+		if (!is_subclass_of($this->_message_class, self::BASE_MESSAGE)) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 		

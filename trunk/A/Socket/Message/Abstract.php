@@ -1,6 +1,6 @@
 <?php
 
-class A_Socket_Message
+abstract class A_Socket_Message_Abstract
 {
 
 	const SENDER = 0;
@@ -18,15 +18,13 @@ class A_Socket_Message
 		$this->clients = $clients;
 	}
 	
+	abstract public function reply($data, $recipient = self::SENDER);
+
+	abstract public function getRoute();
+	
 	public function getMessage()
 	{
 		return $this->message;
-	}
-	
-	public function reply($data, $recipient = self::SENDER)
-	{
-		$this->_reply($data, $recipient);
-		return $this;
 	}
 	
 	public function getSession()
@@ -47,11 +45,6 @@ class A_Socket_Message
 			$sessions[] = $client->getSession();
 		}
 		return $sessions;
-	}
-
-	public function getRoute()
-	{
-		return null;
 	}
 	
 	protected function _reply($data, $recipient)

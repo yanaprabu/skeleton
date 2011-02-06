@@ -1,6 +1,6 @@
 <?php
 
-class A_Socket_Message_Json extends A_Socket_Message
+class A_Socket_Message_Json extends A_Socket_Message_Abstract
 {
 	
 	public function __construct($message, $client, $clients)
