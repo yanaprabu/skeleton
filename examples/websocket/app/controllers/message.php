@@ -17,7 +17,7 @@ class message extends A_Controller_Action {
 					'message' => $request->getMessage()->data
 				)
 			),
-			A_Socket_Message::OTHERS
+			A_Socket_Message_Abstract::OTHERS
 		);
 	}
 	
@@ -31,7 +31,7 @@ class message extends A_Controller_Action {
 					'sender' => $request->getSession()->get('name')
 				)
 			),
-			A_Socket_Message::ALL
+			A_Socket_Message_Abstract::ALL
 		);
 	}
 
