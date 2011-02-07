@@ -6,7 +6,7 @@
  * This handles connecting with Socket clients.  It also receives
  * JSON data from clients, maps to controller/action, and dispatches.
  *
- * @package A_WebSocket
+ * @package A_Socket
  */
 class A_Socket_Server
 {
@@ -14,7 +14,7 @@ class A_Socket_Server
 	const BASE_CLIENT = 'A_Socket_Client_Abstract';
 	const BASE_MESSAGE = 'A_Socket_Message_Abstract';
 	
-	private $_master;
+	private $_socket;
 	
 	private $_sockets = array();
 	
@@ -60,7 +60,7 @@ class A_Socket_Server
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 		
-		$this->prepareMaster();
+		$this->initializeSocket();
 		$stopLoop = false;
 		
 		while ($stopLoop == false) {
@@ -68,7 +68,7 @@ class A_Socket_Server
 			socket_select($updated_sockets, $write = NULL, $exceptions = NULL, NULL);
 				
 			foreach ($updated_sockets as $socket) {
-				if ($socket == $this->_master) {
+				if ($socket == $this->_socket) {
 					$resource = socket_accept($socket);
 					if ($resource !== false) {
 						$client = new $this->_client_class($resource);
@@ -106,26 +106,26 @@ class A_Socket_Server
 		}
 	}
 
-	protected function prepareMaster()
+	protected function initializeSocket()
 	{
-		$this->_master = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-		if ($this->_master < 0) {
-			throw new Exception('Could not create socket: ' . socket_strerror($this->_master));
+		$this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		if ($this->_socket === false) {
+			throw new Exception('Could not create socket: ' . socket_strerror(socket_last_error()));
 		}
 
-		socket_set_option($this->_master, SOL_SOCKET, SO_REUSEADDR, 1);
+		socket_set_option($this->_socket, SOL_SOCKET, SO_REUSEADDR, 1);
 
-		$res = socket_bind($this->_master, $this->_host, $this->_port);
-		if ($res < 0) {
-			throw new Exception('Could not bind socket: ' . socket_strerror($res));
+		$success = socket_bind($this->_socket, $this->_host, $this->_port);
+		if ($success === false) {
+			throw new Exception('Could not bind socket: ' . socket_strerror(socket_last_error()));
 		}
 
-		$res = socket_listen($this->_master, 5);
-		if ($res < 0) {
-			throw new Exception('Could not listen to socket: ' . socket_strerror($res));
+		$success = socket_listen($this->_socket, 5);
+		if ($success === false) {
+			throw new Exception('Could not listen to socket: ' . socket_strerror(socket_last_error()));
 		}
 
-		$this->_sockets[] = $this->_master;
+		$this->_sockets[] = $this->_socket;
 	}
 	
 	protected function parseData($data, $client)
