@@ -46,19 +46,23 @@ html,body {
 }
 
 .connected {
-	background
+	background: #00FF00;
+}
 
 		</style>
 		
-		<script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-		<script type="text/javascript" src="jquery.json-2.2.js"></script>
-		<script type="text/javascript" src="jquery.websocket-0.0.1.js"></script>
+		<script type="text/javascript" src="scripts/jquery-1.5.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.websocket-0.0.1.js"></script>
+		<script type="text/javascript" src="scripts/json-2.min.js"></script>
+		<script type="text/javascript" src="scripts/underscore-1.1.4.min.js"></script>
+		<script type="text/javascript" src="scripts/backbone-0.3.3.min.js"></script>h
 
+		<script type="text/javascript" src="scripts/app/client.js"></script>
+		<script type="text/javascript" src="scripts/app/client-collection.js"></script>
+		
 		<script type="text/javascript">
 
 var socket;
-
-var name = 'Guest' + Math.floor(Math.random() * 100);
 
 var socket = $.websocket('ws://localhost:9091', {
 	open: function () {
@@ -66,58 +70,15 @@ var socket = $.websocket('ws://localhost:9091', {
 			.attr('disabled', false)
 			.attr('class', '.connected')
 			.val('');
-		send('name', 'set_name', name);
 	},
 	close: function () {
 	},
 	message: function (message) {
 		handleMessage(message);
-	},
-	events: {
-		message: function (event) {
-			alert('yo');
-		}
 	}
 });
 
 var users = [];
-
-var commands = [
-	{
-		command: 'name: ',
-		action: function (message) {
-			name = message;
-			send('name', 'set_name', message);
-		}
-	}
-];
-
-function handleMessage(msg) {
-	msg = msg.originalEvent.data;
-	msg = $.evalJSON(msg);
-	if (msg.command == 'user_list') {
-		updateUsersList(msg.data);
-	} else if (msg.command == 'append_message') {
-		logMessage(msg.data.sender, msg.data.message);
-	} else if (msg.command == 'finalize_message') {
-		$('#message-' + msg.data.sender).attr('id', '');
-	}
-}
-
-function updateUsersList(list) {
-	$('#users').html('');
-	for (var i = 0; i < list.length; i++) {
-		$('#users').append(list[i] + '<br />');
-	}
-}
-
-function logMessage(sender, message) {
-	if ($('#message-' + sender).length) {
-		$('#message-' + sender).html('<strong>' + sender + '</strong>: ' + message);
-	} else {
-		$('#messages').prepend('<div id="message-' + sender + '"><strong>' + sender + '</strong>: ' + message + '</div>');
-	}
-}
 
 function send(controller, action, message, module){
 	if (module == undefined) {
@@ -130,44 +91,13 @@ function send(controller, action, message, module){
 	};
 	socket.send(type, message);
 }
-
-function sendMessage() {
-	var content = $('#message').val();
-	
-	for (var i = 0; i < commands.length; i++) {
-		if (content.substring(0, commands[i].command.length) == commands[i].command) {
-			commands[i].action(content.substring(commands[i].command.length));
-			return;
-		}
-	}
-	
-	send('message', 'append_message', content);
-	logMessage('Me', content);
-}
-
-function finalizeMessage() {
-	send('message', 'finalize_message', null);
-	$('#message').val('');
-	$('#message').focus();
-	$('#message-Me').attr('id', '');
-}
-
-function onkey(event){
-	if (event.keyCode==13) {
-		finalizeMessage();
-	} else {
-		sendMessage();
-	}
-}
-
 		</script>
 
 	</head>
 	<body>
 		<div id="users"></div>
 		<div id="log">
-			<input type="text" name="message" id="message" placeholder="Type message here" onkeyup="onkey(event);" disabled="true" value="Not connected" class="disconnected" />
-			<div id="messages"></div>
+			
 		</div>
 	</body>
 </html>
