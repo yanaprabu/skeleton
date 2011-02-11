@@ -22,6 +22,9 @@ class LoggerTest extends UnitTestCase {
 		$str = file_get_contents($writer);
 #echo "LOG=<pre>$str</pre>";
 		$this->assertTrue(preg_match('/[0-9\:\-\ ]* - one\n[0-9\:\-\ ]* - two\n/', $str));
+
+		$logger->clear();
+ 		$this->assertFalse(file_exists($writer));
 	}
 	
 	function testLoggerLevel0() {
@@ -59,6 +62,20 @@ class LoggerTest extends UnitTestCase {
 		
 		$logger->log('one', 1);
 		$logger->write();
+		
+  		$this->assertTrue(file_exists($writer));
+		$str = file_get_contents($writer);
+#echo "LOG=<pre>$str</pre>";
+		$this->assertTrue(preg_match('/[0-9\:\-\ ]* - one\n/', $str));
+	}
+	
+	function testLoggerAutoWrite() {
+  		$writer = dirname(__FILE__) . '/Logger/LoggerTest.log';
+  		$logger = new A_Logger($writer);
+		$logger->clear();
+		
+		$logger->log('one');
+		unset($logger);			// destruct should cause write
 		
   		$this->assertTrue(file_exists($writer));
 		$str = file_get_contents($writer);

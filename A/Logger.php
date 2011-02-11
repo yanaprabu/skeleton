@@ -17,6 +17,8 @@ class A_Logger {
 	protected $template = "{datetime} - {message}\n";
 	protected $writers = array();
 	protected $level = 0;		// logging level default to always write
+	protected $autoWrite = true;
+	protected $written = true;	// whether there are messages that have not been written
 	protected $errorMsg = '';
 	
 	/**
@@ -57,7 +59,7 @@ class A_Logger {
 	}
 	
 	/**
-	 * @param $level  - level to write messages
+	 * @param $level  - maximum level at or below which messages will be written to log
 	 */
 	public function setLevel($level) {
 		$this->level = $level;
@@ -65,7 +67,15 @@ class A_Logger {
 	}
 	
 	/**
-	 * Returns whether to log at given level
+	 * @param $autoWrite  - set whether unwritten log messages arewritten on destruct
+	 */
+	public function setAutoWrite($autoWrite) {
+		$this->autoWrite = $autoWrite;
+		return $this;
+	}
+	
+	/**
+	 * Returns whether a given level is less than or equal to the current logging level
 	 * 
 	 * @param $level  - level to log messages
 	 */
@@ -81,6 +91,7 @@ class A_Logger {
 		$this->levels[$this->nMessages] = $level;
 		$this->messages[$this->nMessages] = str_replace(array('{datetime}', '{message}') , array(date('Y-m-d H:i:s'), $message), $this->template);
 		++$this->nMessages;
+		$this->written = false;
 		return $this;
 	}
 	
@@ -111,6 +122,7 @@ class A_Logger {
 				$writer->write($buffer);
 				$this->errorMsg .= $writer->getErrorMsg();
 			}
+			$this->written = true;
 		} else {
 			$this->errorMsg .= "No log writer. ";
 		}
@@ -122,6 +134,15 @@ class A_Logger {
 	 */
 	public function getErrorMsg() {
 		return $this->errorMsg;
+	}
+	
+	/**
+	 * Return current error message
+	 */
+	public function __destruct() {
+		if ($this->autoWrite && !$this->written) {
+			$this->write();
+		}
 	}
 	
 }
