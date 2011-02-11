@@ -94,7 +94,7 @@ class A_Session {
 	 */
 	public function start() {
 		if (session_id() == '') {
-			$msie = strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE');
+			$msie = isset($_SERVER['HTTP_USER_AGENT']) ? strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE') : '';
 			if ($msie) {
 				session_cache_limiter('must-revalidate');
 			}
