@@ -22,9 +22,11 @@ class A_Controller_Helper_Load {
 	protected $responseName = '';
 	protected $renderClasses = array(
 								'php' => 'A_Template_Include',
+								'xml' => 'A_Template_Include',
+								'json' => 'A_Template_Include',
+								'js' => 'A_Template_Include',
 								'html' => 'A_Template_Strreplace',
 								'txt' => 'A_Template_Strreplace',
-								'js' => 'A_Template_Strreplace',
 								);
 	protected $renderClass = 'A_Template_Include';
 	protected $renderExtension = 'php';
@@ -137,8 +139,11 @@ class A_Controller_Helper_Load {
 			// had a . in name is extension so remove it
 			$length = strpos($class, '.');
 			if ($length) {
+				// get extension to use below
+				$ext = substr($class, $length+1);
 				$class = substr($class, 0, $length);
 			} elseif (isset($this->suffix[$type])) {
+				$ext = $type == 'template' ? $this->renderExtension : '.php';
 				$length = strlen($this->suffix[$type]);
 				// if a suffix is defined and the end of the action name does not contain it -- append it
 				if ($length && (substr($class, -$length) != $this->suffix[$type])) {
@@ -179,8 +184,6 @@ class A_Controller_Helper_Load {
 				$class = $path_parts['basename'];
 			}
 			if ($type == 'template') {
-				// if extension found and it is in array, use it
-				$ext = isset($path_parts['extension']) && isset($this->renderClasses[$path_parts['extension']]) ? $path_parts['extension'] : $this->renderExtension; 
 		        // fix by thinsoldier for NT servers that do not return filename
 				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
 				// add in path separators
