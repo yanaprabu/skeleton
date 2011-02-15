@@ -3,7 +3,7 @@
 class A_Socket_Message_Json extends A_Socket_Message_Abstract
 {
 	
-	public function __construct($message, $client, $clients)
+	public function __construct($message, $client = null, $clients = array())
 	{
 		parent::__construct(json_decode($message), $client, $clients);
 	}
@@ -18,8 +18,12 @@ class A_Socket_Message_Json extends A_Socket_Message_Abstract
 	{
 		if (isset($this->message->route)) {
 			return $this->message->route;
-		} elseif (isset($this->message->module, $this->message->controller, $this->message->action)) {
-			return array($this->message->module, $this->message->controller, $this->message->action);
+		} elseif (isset($this->message->type->module, $this->message->type->controller, $this->message->type->action)) {
+			return array(
+				'module' => $this->message->type->module,
+				'controller' => $this->message->type->controller,
+				'action' => $this->message->type->action
+			);
 		} else {
 			return null;
 		}

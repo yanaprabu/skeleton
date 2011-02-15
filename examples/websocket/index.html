@@ -66,15 +66,13 @@ var socket;
 
 var socket = $.websocket('ws://localhost:9091', {
 	open: function () {
-		$('#message')
-			.attr('disabled', false)
-			.attr('class', '.connected')
-			.val('');
+		alert('connected');
 	},
 	close: function () {
+		alert('disconnected');
 	},
 	message: function (message) {
-		handleMessage(message);
+		alert(message);
 	}
 });
 

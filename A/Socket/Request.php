@@ -6,20 +6,21 @@
 class A_Socket_Request
 {
 
-	protected $method = false;
-	protected $data;
+	protected $_method = false;
+	protected $_data;
+	protected $_route;
 	
 	public function __construct($data)
 	{
-		$this->method = 'GET';
-		$this->data = $data;
+		$this->_method = 'GET';
+		$this->_data = $data;
+		$this->_route = $data->getRoute();
 	}
 	
 	public function get($index)
 	{
-		$message = $this->data->getMessage();
-		if (isset($message->type->$index)) {
-			return $message->type->$index;
+		if (is_array($this->_route) && isset($this->_route[$index])) {
+			return $this->_route[$index];
 		} elseif ($index == 'REQUEST_METHOD') {
 			return 'GET';
 		}
@@ -28,6 +29,6 @@ class A_Socket_Request
 	
 	public function getData()
 	{
-		return $this->data;
+		return $this->_data;
 	}
 }
