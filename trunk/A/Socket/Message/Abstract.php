@@ -7,9 +7,9 @@ abstract class A_Socket_Message_Abstract
 	const ALL = 1;
 	const OTHERS = 2;
 	
-	private $message;
-	private $client;
-	private $clients;
+	protected $message;
+	protected $client;
+	protected $clients;
 	
 	public function __construct($message, $client, $clients)
 	{
@@ -72,5 +72,11 @@ abstract class A_Socket_Message_Abstract
 			}
 		}
 		return $this;
+	}
+
+	public function setClients($client, $clients)
+	{
+		$this->client = $client;
+		$this->clients = $clients;
 	}
 }

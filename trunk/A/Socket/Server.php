@@ -13,6 +13,10 @@ class A_Socket_Server
 
 	const BASE_CLIENT = 'A_Socket_Client_Abstract';
 	const BASE_MESSAGE = 'A_Socket_Message_Abstract';
+
+	const EVENT_CONNECT = 'a.socket.onconnect';
+	const EVENT_DISCONNECT = 'a.socket.ondisconnect';
+	const EVENT_MESSAGE = 'a.socket.onmessage';
 	
 	private $_socket;
 	
@@ -35,11 +39,17 @@ class A_Socket_Server
 	/**
 	 * Constructor
 	 */
-	public function __construct(A_Socket_EventListener_Abstract $eventListener, A_Socket_Parser $parser)
+	public function __construct(
+			A_Socket_EventListener_Abstract $eventListener,
+			A_Socket_Parser $parser,
+			A_Socket_Message_Abstract $connectMessage,
+			A_Socket_Message_Abstract $disconnectMessage)
 	{
 		$this->_eventManager = new A_Event_Manager();
 		$this->_eventManager->addEventListener($eventListener);
 		$this->_parser = $parser;
+		$this->_connectMessage = $connectMessage;
+		$this->_disconnectMessage = $disconnectMessage;
 	}
 
 	/**
@@ -86,14 +96,14 @@ class A_Socket_Server
 						} else {
 							if ($client->connect($data)) {
 								$this->fireEvent(
-									'onconnect',
+									self::EVENT_CONNECT,
 									$client
 								);
 							}
 						}
 					} else {
 						$this->fireEvent(
-							'ondisconnect',
+							self::EVENT_DISCONNECT,
 							$client
 						);
 						unset($this->_clients[$socket]);
@@ -135,7 +145,7 @@ class A_Socket_Server
 		foreach ($blocks as $block) {
 			// do something with $block
 			$this->fireEvent(
-				'onmessage',
+				self::EVENT_MESSAGE,
 				$client,
 				$block
 			);
@@ -144,9 +154,20 @@ class A_Socket_Server
 	
 	protected function fireEvent($event, $client, $message = null)
 	{
-		$this->_eventManager->fireEvent(
-			'a.socket.' . $event,
-			new $this->_message_class($message, $client, $this->_clients)
-		);
+		switch ($event) {
+			case self::EVENT_CONNECT:
+				$message = $this->_connectMessage;
+				$message->setClients($client, $this->_clients);
+				break;
+			case self::EVENT_DISCONNECT:
+				$message = $this->_disconnectMessage;
+				$message->setClients($client, $this->_clients);
+				break;
+			case self::EVENT_MESSAGE:
+				$message = new $this->_message_class($message, $client, $this->_clients);
+				break;
+		}
+		
+		$this->_eventManager->fireEvent($event, $message);
 	}
 }
