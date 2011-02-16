@@ -5,7 +5,7 @@
  *
  * Interface for message parser.
  */
-interface A_Socket_Parser
+interface A_Socket_Parser_Interface
 {
 	/**
 	 * Extract message from data stream.  Must return an array of message(s).
