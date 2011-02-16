@@ -95,7 +95,7 @@ class A_Socket_Server
 	 * @param A_Socket_EventListener_Abstract $eventListener event listener object to handle events
 	 * @param A_Socket_Parser $parser parser object to extract messages from read stream
 	 */
-	public function __construct(A_Socket_EventListener_Abstract $eventListener, A_Socket_Parser $parser)
+	public function __construct(A_Socket_EventListener_Abstract $eventListener, A_Socket_Parser_Interface $parser)
 	{
 		$this->eventManager = new A_Event_Manager();
 		$this->eventManager->addEventListener($eventListener);

@@ -3,7 +3,7 @@
 /**
  * Extract messages from WebSocket connection
  */
-class A_Socket_Parser_WebSocket implements A_Socket_Parser
+class A_Socket_Parser_WebSocket implements A_Socket_Parser_Interface
 {
 
 	/**

@@ -54,7 +54,7 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 	 * 
 	 * @param object $data Message
 	 */
-	public function runController($message)
+	protected function runController($message)
 	{
 		$Request = new A_Socket_Request($message);
 		$Locator = $this->locator;
