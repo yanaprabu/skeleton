@@ -1,19 +1,25 @@
 <?php
 
+/**
+ * Handle events from the Server
+ */
 abstract class A_Socket_EventListener_Abstract implements A_Event_Listener
 {
 
-	protected $_locator;
-
-	public function  __construct($locator) {
-		$this->_locator = $locator;
-	}
-	
+	/**
+	 * @return array List of events that this listener handles
+	 */
 	public function getEvents()
 	{
 		return array('a.socket.onconnect', 'a.socket.ondisconnect', 'a.socket.onmessage');
 	}
-	
+
+	/**
+	 * When event is fired
+	 * 
+	 * @param string $eventName Name of event fired
+	 * @param object $eventData Message sent
+	 */
 	public function onEvent($eventName, $eventData)
 	{
 		switch ($eventName) {

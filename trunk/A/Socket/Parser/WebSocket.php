@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * Extract messages from WebSocket connection
+ */
 class A_Socket_Parser_WebSocket implements A_Socket_Parser
 {
 
+	/**
+	 * Parse messages
+	 * @param string $data
+	 * @return array
+	 */
 	public function parseMessages($data)
 	{
 		$blocks = array();
