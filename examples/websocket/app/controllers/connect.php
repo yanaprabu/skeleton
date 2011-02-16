@@ -20,17 +20,18 @@ class connect extends A_Controller_Action
 	{
 		$message = $locator->get('Request')->getData();
 
-		$client = new client();
+		/*$client = new client();
 
 		$message->setSession(new A_Collection);
 
-		$message->getSession()->set('client', $client);
+		$message->getSession()->set('client', $client);*/
 
 		$message->reply(array(
 				'command' => 'new:user',
-				'data' => $client->serialize()
+				'data' => 'hello'//$client->serialize()
 			),
 			A_Socket_Message_Abstract::OTHERS
 		);
+		echo 'Connected!' . PHP_EOL;
 	}
 }
