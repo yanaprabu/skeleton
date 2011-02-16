@@ -27,67 +27,67 @@ class A_Socket_Server
 	 * Holds the main socket listening for connections
 	 * @var resource
 	 */
-	protected $_socket;
+	protected $socket;
 
 	/**
 	 * Holds all connected sockets
 	 * @var array
 	 */
-	protected $_sockets = array();
+	protected $sockets = array();
 	
 	/**
 	 * Holds all connected client objects
 	 * @var array
 	 */
-	protected $_clients = array();
+	protected $clients = array();
 
 	/**
 	 * The host to listen on
 	 * @var string
 	 */
-	protected $_host;
+	protected $host;
 
 	/**
 	 * The port to listen on
 	 * @var integer
 	 */
-	protected $_port;
+	protected $port;
 
 	/**
 	 * Event manager.  Used to fire events on connect, disconnect, and message
 	 * @var A_Event
 	 */
-	protected $_eventManager;
+	protected $eventManager;
 
 	/**
 	 * Parser object to extract messages from read stream
 	 * @var A_Socket_Parser
 	 */
-	protected $_parser;
+	protected $parser;
 
 	/**
 	 * The class name to use when instantiating a new client
 	 * @var string
 	 */
-	protected $_client_class;
+	protected $client_class;
 
 	/**
 	 * The class name to use when instantiating a new message
 	 * @var string
 	 */
-	protected $_message_class;
+	protected $message_class;
 
 	/**
 	 * The message to send when a connection is made
 	 * @var string
 	 */
-	protected $_connectMessage;
+	protected $connectMessage;
 
 	/**
 	 * The message to send when a client disconnects
 	 * @var string
 	 */
-	protected $_disconnectMessage;
+	protected $disconnectMessage;
 	
 	/**
 	 * Constructor.
@@ -97,9 +97,9 @@ class A_Socket_Server
 	 */
 	public function __construct(A_Socket_EventListener_Abstract $eventListener, A_Socket_Parser $parser)
 	{
-		$this->_eventManager = new A_Event_Manager();
-		$this->_eventManager->addEventListener($eventListener);
-		$this->_parser = $parser;
+		$this->eventManager = new A_Event_Manager();
+		$this->eventManager->addEventListener($eventListener);
+		$this->parser = $parser;
 	}
 
 	/**
@@ -109,18 +109,18 @@ class A_Socket_Server
 	 */
 	public function run($config = array())
 	{
-		$this->_host = $config['host'];
-		$this->_port = $config['port'];
-		$this->_connectMessage = $config['message-connect'];
-		$this->_disconnectMessage = $config['message-disconnect'];
+		$this->host = $config['host'];
+		$this->port = $config['port'];
+		$this->connectMessage = $config['message-connect'];
+		$this->disconnectMessage = $config['message-disconnect'];
 
-		$this->_client_class = $config['class-client'];
-		if (!is_subclass_of($this->_client_class, self::BASE_CLIENT)) {
+		$this->client_class = $config['class-client'];
+		if (!is_subclass_of($this->client_class, self::BASE_CLIENT)) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 
-		$this->_message_class = $config['class-message'];
-		if (!is_subclass_of($this->_message_class, self::BASE_MESSAGE)) {
+		$this->message_class = $config['class-message'];
+		if (!is_subclass_of($this->message_class, self::BASE_MESSAGE)) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 		
@@ -128,23 +128,23 @@ class A_Socket_Server
 		$stopLoop = false;
 		
 		while ($stopLoop == false) {
-			$updated_sockets = $this->_sockets;
+			$updated_sockets = $this->sockets;
 			socket_select($updated_sockets, $write = NULL, $exceptions = NULL, NULL);
 				
 			foreach ($updated_sockets as $socket) {
-				if ($socket == $this->_socket) {
+				if ($socket == $this->socket) {
 					// A new connection
 					$resource = socket_accept($socket);
 					if ($resource !== false) {
-						$client = new $this->_client_class($resource);
-						$this->_clients[$resource] = $client;
-						$this->_sockets[] = $resource;
+						$client = new $this->client_class($resource);
+						$this->clients[$resource] = $client;
+						$this->sockets[] = $resource;
 					} else {
 						// socket error
 					}
 				} else {
 					// a new message
-					$client = $this->_clients[$socket];
+					$client = $this->clients[$socket];
 					$bytes = socket_recv($socket, $data, 4096, 0);
 					if ($bytes !== 0) {
 						// message is valid
@@ -155,7 +155,7 @@ class A_Socket_Server
 								$this->fireEvent(
 									self::EVENT_CONNECT,
 									$client,
-									$this->_connectMessage
+									$this->connectMessage
 								);
 							}
 						}
@@ -164,11 +164,11 @@ class A_Socket_Server
 						$this->fireEvent(
 							self::EVENT_DISCONNECT,
 							$client,
-							$this->_disconnectMessage
+							$this->disconnectMessage
 						);
-						unset($this->_clients[$socket]);
-						$index = array_search($socket, $this->_sockets);
-						unset($this->_sockets[$index]);
+						unset($this->clients[$socket]);
+						$index = array_search($socket, $this->sockets);
+						unset($this->sockets[$index]);
 						unset($client);
 					}
 				}
@@ -181,24 +181,24 @@ class A_Socket_Server
 	 */
 	protected function initializeSocket()
 	{
-		$this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-		if ($this->_socket === false) {
+		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		if ($this->socket === false) {
 			throw new Exception('Could not create socket: ' . socket_strerror(socket_last_error()));
 		}
 
-		socket_set_option($this->_socket, SOL_SOCKET, SO_REUSEADDR, 1);
+		socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
 
-		$success = socket_bind($this->_socket, $this->_host, $this->_port);
+		$success = socket_bind($this->socket, $this->host, $this->port);
 		if ($success === false) {
 			throw new Exception('Could not bind socket: ' . socket_strerror(socket_last_error()));
 		}
 
-		$success = socket_listen($this->_socket, 5);
+		$success = socket_listen($this->socket, 5);
 		if ($success === false) {
 			throw new Exception('Could not listen to socket: ' . socket_strerror(socket_last_error()));
 		}
 
-		$this->_sockets[] = $this->_socket;
+		$this->sockets[] = $this->socket;
 	}
 
 	/**
@@ -209,7 +209,7 @@ class A_Socket_Server
 	 */
 	protected function handleData($data, $client)
 	{
-		$blocks = $this->_parser->parseMessages($data);
+		$blocks = $this->parser->parseMessages($data);
 		
 		foreach ($blocks as $block) {
 			// do something with $block
@@ -230,9 +230,9 @@ class A_Socket_Server
 	 */
 	protected function fireEvent($event, $client, $message = null)
 	{
-		$this->_eventManager->fireEvent(
+		$this->eventManager->fireEvent(
 			$event,
-			new $this->_message_class($message, $client, $this->_clients)
+			new $this->message_class($message, $client, $this->clients)
 		);
 	}
 }

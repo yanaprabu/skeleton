@@ -6,15 +6,28 @@
 class A_Socket_Client_WebSocket extends A_Socket_Client_Abstract
 {
 
+	// websocket end of line marker
 	const SOCKET_EOL = "\r\n";
-	
+
+	// validation response template
 	const HANDSHAKE_RESPONSE = "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n%s\r\n%s";
-	
+
+	/**
+	 * Send message to client
+	 * 
+	 * @param string $message Message to send
+	 */
 	public function send($message)
 	{
 		$this->_send(chr(0) . $message . chr(255));
 	}
-	
+
+	/**
+	 * Perform WebSocket rev 76 handshake with client
+	 * 
+	 * @param string $data
+	 * @return boolean
+	 */
 	public function connect($data)
 	{
 		// Split up headers
@@ -86,7 +99,6 @@ class A_Socket_Client_WebSocket extends A_Socket_Client_Abstract
 		return '';
 	}
 	
-	// Pack the security keys for handshake response
 	private function securityDigest($key1, $key2, $key3) {
 		return md5(
 			pack('N', $this->keyToBytes($key1)) .
