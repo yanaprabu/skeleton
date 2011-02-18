@@ -1,4 +1,12 @@
 <?php
+/**
+ * CachedController.php
+ *
+ * @package  A_Socket_EventListener
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ */
 
 /**
  * Description of CachedController

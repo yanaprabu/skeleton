@@ -1,4 +1,12 @@
 <?php
+/**
+ * Abstract.php
+ *
+ * @package  A_Socket_Message
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ */
 
 /**
  * Message object, created by server to hold the data from a connected client.
