@@ -1,4 +1,12 @@
 <?php
+/**
+ * WebSocket.php
+ *
+ * @package  A_Socket_Parser
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ */
 
 /**
  * Extract messages from WebSocket connection
