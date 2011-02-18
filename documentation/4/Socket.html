@@ -1,0 +1,177 @@
+<h1>Socket Server</h1>
+
+<h2>Introduction</h2>
+
+<p>The A_Socket library makes setting up a socket server very easy.  Almost any
+TCP/IP protocol is/can be supported.  Currently it is only capable of a
+WebSocket server.</p>
+
+<h2>Dependencies</h2>
+
+<p>The A_Socket core only currently depends on the
+<a href="?p=Event">A_Event</a> library.</p>
+
+<h2>Setting Up a Server</h2>
+
+<p>Setting up a server very similar in nature to a normal Skeleton boostrap
+file, with only a few differences.  It is contained in a file (by convention
+called "server.php"), run in the terminal.</p>
+
+<pre class="prettyprint lang-bash">
+$ cd /path/to/serverfile/
+$ php server.php
+</pre>
+
+<p>Here is an example server.php file.</p>
+
+<pre class="prettyprint lang-php">
+&lt?php
+
+$ConfigArray = array(
+	'PATH' => dirname(__FILE__) . '/',
+	'APP' => dirname(__FILE__) . '/app',
+	'SOCKET' => array(
+		'host' => 'localhost',
+		'port' => '9091',
+		'class-client' => 'MySocketClient',
+		'class-message' => 'MySocketMessage',
+		'message-connect' => 'connected',
+		'message-disconnect' => 'disconnected'
+	),
+	'DEFAULT_ACTION' => array('', 'main', 'main'),
+	'ERROR_ACTION' => array('', 'main', 'main')
+);
+
+include $ConfigArray['PATH'] . '../../A/Locator.php';
+
+$Locator = new A_Locator();
+$Locator->autoload();
+
+$Config = new A_Config_Php();
+$Config->import($ConfigArray);
+$Locator->set('Config', $Config);
+
+$EventListener = new MySocketEventListener($Locator);
+$Parser = new MySocketParser();
+
+$Server = new A_Socket_Server($EventListener, $Parser);
+$Server->run($ConfigArray['SOCKET']);
+</pre>
+
+<p>That's a bit much to process at once, so lets break it down and evaluate each
+part.  Starting with the config.</p>
+
+<pre class="prettyprint lang-php">
+		'host' => 'localhost',
+		'port' => '9091',
+		'class-client' => 'MySocketClient',
+		'class-message' => 'MySocketMessage',
+		'message-connect' => 'connected',
+		'message-disconnect' => 'disconnected'
+</pre>
+
+<p>First, the host and port to listen on are defined.  After that, we set the
+name of the class we want to use to represent a connected client.  This depends
+on what protocol is being used.  This class must extend
+A_Socket_Client_Abstract, or an exception will be thrown.  A_Socket comes
+preloaded with A_Socket_Client_WebSocket, for the WebSocket protocol.</p>
+
+<p>The 'class-message' option tells the server the name of the class to use
+for the message.  This depends on the format of the messages being passed.  This
+class must extend A_Socket_Message_Abstract, or an exception will be thrown.
+A_Socket comes preloaded with A_Socket_Message_Json, for the JSON format.</p>
+
+<p>Lastly the message to pass when a client connects or disconnects.  This can
+be very useful, as we'll see later.  The string must be in the same format as
+the message class.</p>
+
+<p>The next clump of code looks familiar (if it doesn't, see
+<a href="?p=Boostrap">here</a>), so well skip up to the end.</p>
+
+<pre class="prettyprint lang-php">
+$EventListener = new MySocketEventListener($Locator);
+$Parser = new MySocketParser();
+
+$Server = new A_Socket_Server($EventListener, $Parser);
+$Server->run($ConfigArray['SOCKET']);
+</pre>
+
+<p>The server fires three events during it's life: onConnect, onMessage, and
+onDisconnect.  It must be given a listener to handle these events.  You have the
+option to use your own, or a built-in listener (but note, your own must extend
+A_Socket_EventListener_Abstract, or an exception will be thrown).  A_Socket
+comes preloaded with A_Socket_EventListener-FrontController.  This is a very
+cool handler that delegates to the Skeleton front Controller.</p>
+
+<p>The Parser there is used to extract individual messages from the data stream
+read from the TCP/IP socket.  This object must implement the
+A_Socket_Parser_Interface interface, or an exception will be thrown.  A_Socket
+comes with A_Socket_Parser_WebSocket for the WebSocket protocol.</p>
+
+<p>Finally, the server is created, and the listener/parser passed to it.  Lastly
+we call the run() method, passing along the configuration.  This starts the
+server.</p>
+
+<h2>A WebSocket Server</h2>
+
+<p>Here is an example WebSocket server.php</p>
+
+<pre class="prettyprint lang-php">
+<?php
+
+$ConfigArray = array(
+	'PATH' => dirname(__FILE__) . '/',
+	'APP' => dirname(__FILE__) . '/app',
+	'SOCKET' => array(
+		'host' => 'localhost',
+		'port' => '9091',
+
+		// use the websocket client object
+		'class-client' => 'A_Socket_Client_WebSocket',
+
+		// use the JSON format
+		'class-message' => 'A_Socket_Message_Json',
+
+		// a message for routing to the correct controller for the connect event
+		'message-connect' => '{"type":{"module":"","controller":"user","action":"connect"},"data":null}',
+
+		// a message for routing to the correct controller for the disconnect event
+		'message-disconnect' => '{"type":{"module":"","controller":"user","action":"disconnect"},"data":null}'
+	),
+	'DEFAULT_ACTION' => array('', 'main', 'main'),
+	'ERROR_ACTION' => array('', 'main', 'main')
+);
+
+include $ConfigArray['PATH'] . '../../A/Locator.php';
+$Locator = new A_Locator();
+$Locator->autoload();
+
+$Config = new A_Config_Php();
+$Config->import($ConfigArray);
+
+$Locator->set('Config', $Config);
+
+// FrontController delegates to the Skeleton Framework front Controller
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
+
+// parse messages from data stream in WebSocket protocol
+$Parser = new A_Socket_Parser_WebSocket();
+
+// create and start the server
+$Server = new A_Socket_Server($EventListener, $Parser);
+$Server->run($ConfigArray['SOCKET']);
+</pre>
+
+<h2>Repository Demo</h2>
+
+<p>A working example is available in the
+<a href="http://code.google.com/p/skeleton/source">repository</a> at
+/trunk/examples/websocket/</p>
+
+<h2>Closing</h2>
+
+<p>A_Socket is still in it's early stages, and under riggorous development.  But
+it is very unique, both in the problem it faces and it's approach.  If you have
+any questions please email one of the
+<a href="http://code.google.com/p/skeleton/people/list">developers</a>,
+preferably <a href="http://code.google.com/u/jonahbron.d/">jonahbron.d</a>.
