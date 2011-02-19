@@ -1,5 +1,7 @@
 <h1>Socket Server</h1>
 
+<p><em>Last modified 2/18/2011</em></p>
+
 <h2>Introduction</h2>
 
 <p>The A_Socket library makes setting up a socket server very easy.  Almost any
@@ -112,7 +114,85 @@ comes with A_Socket_Parser_WebSocket for the WebSocket protocol.</p>
 we call the run() method, passing along the configuration.  This starts the
 server.</p>
 
-<h2>A WebSocket Server</h2>
+<h2>Handling Events</h2>
+
+<p>After a server is up and running, you can start thinking about handling
+events (remember, onconnect, onmessage, and ondisconnect).  You do so with a
+class that extends A_Socket_EventListener_Abstract.  This is a simple handler
+example.</p>
+
+<pre class="prettyprint lang-php">
+class MySocketEventListener extends A_Socket_EventListener
+{
+	public function onConnect($message)
+	{
+		echo 'A client connected :)' . PHP_EOL;
+	}
+
+	public function onMessage($message)
+	{
+		echo 'A client sent a message :D' . PHP_EOL;
+	}
+
+	public function onDisconnect($message)
+	{
+		echo 'A client disconnected X(' . PHP_EOL;
+	}
+}
+</pre>
+
+<p>The message is an instance of whatever class you passed to the Server in the
+configuration array.  This object allows access to the session data associated
+with the client (stored in the Client object) via getSession()/setSession(), the
+sessions of all other clients via getAllSessions(), and the ability to respond
+to any clients you choose with reply().  Note, when a client first connects,
+it's session data is null.</p>
+
+<p>The reply() method is very powerful.  The first argument is the message you
+want to send.  This message will be transformed by the Message object to the
+correct format (e.g. with Json, array('name' => 'bob') will be transformed into
+'{"name":"bob"}').</p>
+
+<p>The second argument specifies what clients to send to it.  There are four
+possibilities: A_Socket_Message_Abstract::SENDER (reply only to the client that
+sent the message), A_Socket_Message_Abstract::ALL (reply to all clients),
+A_Socket_Message_Abstract::OTHERS (all <em>but</em> the sender), or a callback.
+If a callback is passed, the Message will iterate through all clients, passing
+the client's session to the callback one by one, and replying only if it returns
+true.</p>
+
+<p>Some example replies:</p>
+
+<pre class="prettyprint lang-php">
+$message->reply(
+	array(
+		'name' => 'bob',
+		'age' => 32
+	),
+	A_Socket_Message_Abstract::OTHERS
+);
+
+$message->reply(
+	array(
+		'yournameis' => 'bob'
+	),
+	// using the PHP 5.3 closure syntax
+	function ($session) {
+		if ($session['firstname'] == 'bob') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+);
+</pre>
+
+<h2>Delegating Events to Skeleton Front Controller</h2>
+
+<p class="devnote">Explain using A_Socket_EventHandler_FrontController to
+delegate events to the front controller.</p>
+
+<h2>Example WebSocket Server</h2>
 
 <p>Here is an example WebSocket server.php</p>
 
@@ -166,7 +246,7 @@ $Server->run($ConfigArray['SOCKET']);
 
 <p>A working example is available in the
 <a href="http://code.google.com/p/skeleton/source">repository</a> at
-/trunk/examples/websocket/</p>
+/trunk/examples/websocket/ .</p>
 
 <h2>Closing</h2>
 
