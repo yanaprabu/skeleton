@@ -54,7 +54,7 @@ interface A_Socket_Client
 	/**
 	 * Get session data associated with client object
 	 *
-	 * @param mixed
+	 * @return mixed
 	 */
 	public function getSession();
 
