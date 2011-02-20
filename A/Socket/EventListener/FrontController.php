@@ -8,7 +8,7 @@
  * @author   Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
-class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abstract
+class A_Socket_EventListener_FrontController implements A_Socket_EventListener
 {
 
 	/**
@@ -32,7 +32,7 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 	 *
 	 * @param object $data Message
 	 */
-	public function onConnect($data)
+	public function onConnect($event, $data)
 	{
 		$this->runController($data);
 	}
@@ -42,7 +42,7 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 	 * 
 	 * @param object $data Message
 	 */
-	public function onDisconnect($data)
+	public function onDisconnect($event, $data)
 	{
 		$this->runController($data);
 	}
@@ -52,7 +52,7 @@ class A_Socket_EventListener_FrontController extends A_Socket_EventListener_Abst
 	 * 
 	 * @param object $data Message
 	 */
-	public function onMessage($data)
+	public function onMessage($event, $data)
 	{
 		$this->runController($data);
 	}
