@@ -2,14 +2,16 @@
 /**
  * WebSocket.php
  *
- * @package  A_Socket_Client
+ * @package  A_Socket
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
  * @author   Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
- * Client
+ * A_Socket_Client_WebSocket
+ *
+ * Variations on the Client object for the WebSocket protocol
  */
 class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 {

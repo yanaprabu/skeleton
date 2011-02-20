@@ -9,6 +9,8 @@
  */
 
 /**
+ * A_Socket_Request
+ * 
  * This class encapsulates a request from a Socket client for passage through
  * the Skeleton Front Controller
  */

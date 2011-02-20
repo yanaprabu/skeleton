@@ -13,16 +13,14 @@
  *
  * This handles connecting with Socket clients.  It also receives
  * JSON data from clients, maps to controller/action, and dispatches.
- *
- * @package A_Socket
  */
 class A_Socket_Server
 {
 
 	// client class interface to check
-	const BASE_CLIENT = 'A_Socket_Client';
+	const INTERFACE_CLIENT = 'A_Socket_Client';
 	// message class interface to check
-	const BASE_MESSAGE = 'A_Socket_Message';
+	const INTERFACE_MESSAGE = 'A_Socket_Message';
 
 	// connect event identifier
 	const EVENT_CONNECT = 'a.socket.onconnect';
@@ -119,12 +117,12 @@ class A_Socket_Server
 		$this->disconnectMessage = $config['message-disconnect'];
 
 		$this->client_class = $config['class-client'];
-		if (!in_array(self::BASE_CLIENT, class_implements($this->client_class))) {
+		if (!in_array(self::INTERFACE_CLIENT, class_implements($this->client_class))) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 
 		$this->message_class = $config['class-message'];
-		if (!in_array(self::BASE_MESSAGE, class_implements($this->message_class))) {
+		if (!in_array(self::INTERFACE_MESSAGE, class_implements($this->message_class))) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 		
