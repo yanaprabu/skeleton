@@ -28,7 +28,5 @@ $Locator->set('Config', $Config);
 
 $EventListener = new A_Socket_EventListener_FrontController($Locator);
 
-$Parser = new A_Socket_Parser_WebSocket();
-
-$Server = new A_Socket_Server($EventListener, $Parser);
+$Server = new A_Socket_Server($EventListener);
 $Server->run($ConfigArray['SOCKET']);

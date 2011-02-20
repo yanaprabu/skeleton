@@ -68,12 +68,6 @@ class A_Socket_Server
 	protected $eventManager;
 
 	/**
-	 * Parser object to extract messages from read stream
-	 * @var A_Socket_Parser
-	 */
-	protected $parser;
-
-	/**
 	 * The class name to use when instantiating a new client
 	 * @var string
 	 */
@@ -103,11 +97,10 @@ class A_Socket_Server
 	 * @param A_Socket_EventListener_Abstract $eventListener event listener object to handle events
 	 * @param A_Socket_Parser $parser parser object to extract messages from read stream
 	 */
-	public function __construct(A_Socket_EventListener_Abstract $eventListener, A_Socket_Parser_Interface $parser)
+	public function __construct(A_Socket_EventListener_Abstract $eventListener)
 	{
 		$this->eventManager = new A_Event_Manager();
 		$this->eventManager->addEventListener($eventListener);
-		$this->parser = $parser;
 	}
 
 	/**
@@ -157,23 +150,19 @@ class A_Socket_Server
 					if ($bytes !== 0) {
 						// message is valid
 						if ($client->isConnected()) {
-							$this->handleData($data, $client);
+							$blocks = $client->receive($data);
+
+							foreach ($blocks as $block) {
+								$this->fireEvent(self::EVENT_MESSAGE, $client, $block);
+							}
 						} else {
 							if ($client->connect($data)) {
-								$this->fireEvent(
-									self::EVENT_CONNECT,
-									$client,
-									$this->connectMessage
-								);
+								$this->fireEvent(self::EVENT_CONNECT, $client, $this->connectMessage);
 							}
 						}
 					} else {
 						// client disconnected
-						$this->fireEvent(
-							self::EVENT_DISCONNECT,
-							$client,
-							$this->disconnectMessage
-						);
+						$this->fireEvent(self::EVENT_DISCONNECT, $client, $this->disconnectMessage);
 						unset($this->clients[$socket]);
 						$index = array_search($socket, $this->sockets);
 						unset($this->sockets[$index]);
@@ -210,33 +199,13 @@ class A_Socket_Server
 	}
 
 	/**
-	 * Take data, parse messages, and fire message event
-	 * 
-	 * @param string $data Message received
-	 * @param object $client Client that sent the message
-	 */
-	protected function handleData($data, $client)
-	{
-		$blocks = $this->parser->parseMessages($data);
-		
-		foreach ($blocks as $block) {
-			// do something with $block
-			$this->fireEvent(
-				self::EVENT_MESSAGE,
-				$client,
-				$block
-			);
-		}
-	}
-
-	/**
 	 * Convenience function for firing events
 	 * 
 	 * @param string $event Event to fire
 	 * @param object $client Client that initiated the event
 	 * @param string $message Message received from client
 	 */
-	protected function fireEvent($event, $client, $message = null)
+	protected function fireEvent($event, $client, $message)
 	{
 		$this->eventManager->fireEvent(
 			$event,

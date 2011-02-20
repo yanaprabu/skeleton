@@ -53,6 +53,14 @@ class A_Socket_Client_Abstract
 	}
 
 	/**
+	 * Extract messages from data stream
+	 *
+	 * @param $data
+	 * @return array
+	 */
+	abstract public function receive($data);
+
+	/**
 	 * Write data to socket
 	 * 
 	 * @param string $message
