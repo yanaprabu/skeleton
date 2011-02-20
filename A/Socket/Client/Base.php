@@ -1,15 +1,17 @@
 <?php
 /**
- * Abstract.php
+ * Base.php
  *
- * @package  A_Socket_Client
+ * @package  A_Socket
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
  * @author   Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
- * Client
+ * A_Socket_Client_Base
+ *
+ * Contains common logic between most client objects
  */
 class A_Socket_Client_Base implements A_Socket_Client
 {

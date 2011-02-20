@@ -1,15 +1,17 @@
 <?php
 /**
- * Abstract.php
+ * Base.php
  *
- * @package  A_Socket_Message
+ * @package  A_Socket
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
  * @author   Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
- * Message object, created by server to hold the data from a connected client.
+ * A_Message_Base
+ *
+ * Common logic between message objects
  */
 class A_Socket_Message_Base implements A_Socket_Message
 {
