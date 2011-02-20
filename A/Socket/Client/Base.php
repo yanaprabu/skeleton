@@ -11,7 +11,7 @@
 /**
  * Client
  */
-abstract class A_Socket_Client_Abstract
+class A_Socket_Client_Base implements A_Socket_Client
 {
 
 	/**
@@ -58,7 +58,10 @@ abstract class A_Socket_Client_Abstract
 	 * @param $data
 	 * @return array
 	 */
-	abstract public function receive($data);
+	public function receive($data)
+	{
+		return array($data);
+	}
 
 	/**
 	 * Write data to socket
