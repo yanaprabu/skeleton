@@ -11,7 +11,7 @@
 /**
  * Hold a JSON message
  */
-class A_Socket_Message_Json extends A_Socket_Message_Abstract
+class A_Socket_Message_Json extends A_Socket_Message_Base
 {
 
 	/**

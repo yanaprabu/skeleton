@@ -30,7 +30,7 @@ class connect extends A_Controller_Action
 				'command' => 'new:user',
 				'data' => 'hello'//$client->serialize()
 			),
-			A_Socket_Message_Abstract::OTHERS
+			A_Socket_Message::OTHERS
 		);
 		echo 'Connected!' . PHP_EOL;
 	}
