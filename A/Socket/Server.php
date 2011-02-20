@@ -22,7 +22,7 @@ class A_Socket_Server
 	// client class interface to check
 	const BASE_CLIENT = 'A_Socket_Client';
 	// message class interface to check
-	const BASE_MESSAGE = 'A_Socket_Message_Abstract';
+	const BASE_MESSAGE = 'A_Socket_Message';
 
 	// connect event identifier
 	const EVENT_CONNECT = 'a.socket.onconnect';
@@ -124,7 +124,7 @@ class A_Socket_Server
 		}
 
 		$this->message_class = $config['class-message'];
-		if (!is_subclass_of($this->message_class, self::BASE_MESSAGE)) {
+		if (!in_array(self::BASE_MESSAGE, class_implements($this->message_class))) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
 		}
 		

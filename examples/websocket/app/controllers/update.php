@@ -19,7 +19,7 @@ class update extends A_Controller_Action {
 				'command' => 'update:user',
 				'data' => $client->serialize
 			),
-			A_Socket_Message_Abstract::OTHERS
+			A_Socket_Message::OTHERS
 		);
 	}
 

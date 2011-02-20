@@ -11,15 +11,8 @@
 /**
  * Message object, created by server to hold the data from a connected client.
  */
-abstract class A_Socket_Message_Abstract
+class A_Socket_Message_Base implements A_Socket_Message
 {
-
-	// Only reply to sender
-	const SENDER = 0;
-	// Reply to all clients
-	const ALL = 1;
-	// Reply to all but the sender
-	const OTHERS = 2;
 
 	/**
 	 * The raw message data
@@ -59,12 +52,19 @@ abstract class A_Socket_Message_Abstract
 	 * @param mixed $data Message to send
 	 * @param integer $recipient Set of clients to reply to
 	 */
-	abstract public function reply($data, $recipient = self::SENDER);
+	public function reply($data, $recipient = self::SENDER)
+	{
+		$this->_reply($data, $recipient);
+		return $this;
+	}
 
 	/**
 	 * Get route data from message
 	 */
-	abstract public function getRoute();
+	public function getRoute()
+	{
+		return null;
+	}
 
 	/**
 	 * Get the actual message data
