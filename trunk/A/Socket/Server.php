@@ -20,7 +20,7 @@ class A_Socket_Server
 {
 
 	// client class interface to check
-	const BASE_CLIENT = 'A_Socket_Client_Abstract';
+	const BASE_CLIENT = 'A_Socket_Client';
 	// message class interface to check
 	const BASE_MESSAGE = 'A_Socket_Message_Abstract';
 
@@ -119,7 +119,7 @@ class A_Socket_Server
 		$this->disconnectMessage = $config['message-disconnect'];
 
 		$this->client_class = $config['class-client'];
-		if (!is_subclass_of($this->client_class, self::BASE_CLIENT)) {
+		if (!in_array(self::BASE_CLIENT, class_implements($this->client_class))) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
 

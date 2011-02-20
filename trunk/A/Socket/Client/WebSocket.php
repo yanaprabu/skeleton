@@ -11,7 +11,7 @@
 /**
  * Client
  */
-class A_Socket_Client_WebSocket extends A_Socket_Client_Abstract
+class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 {
 
 	// websocket end of line marker
