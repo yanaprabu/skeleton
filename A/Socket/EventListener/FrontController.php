@@ -14,7 +14,7 @@
  * Handles events fired by the Server, and delegates to the Skeleton Front
  * Controller.
  */
-class A_Socket_EventListener_FrontController implements A_Socket_EventListener
+class A_Socket_EventListener_FrontController
 {
 
 	/**

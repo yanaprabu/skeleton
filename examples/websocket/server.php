@@ -28,5 +28,10 @@ $Locator->set('Config', $Config);
 
 $EventListener = new A_Socket_EventListener_FrontController($Locator);
 
-$Server = new A_Socket_Server($EventListener);
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, array($EventListener, 'onConnect'));
+$EventManager->addEventListener(A_Socket_Server::EVENT_MESSAGE, array($EventListener, 'onMessage'));
+$EventManager->addEventListener(A_Socket_Server::EVENT_DISCONNECT, array($EventListener, 'onDisconnect'));
+
+$Server = new A_Socket_Server($EventManager);
 $Server->run($ConfigArray['SOCKET']);
