@@ -1,6 +1,6 @@
-<h1>Socket Server</h1>
+<p style="float: right;"><em>Last modified 2011/02/20</em></p>
 
-<p><em>Last modified 2/18/2011</em></p>
+<h1>Socket Server</h1>
 
 <h2>Introduction</h2>
 
@@ -53,10 +53,14 @@ $Config = new A_Config_Php();
 $Config->import($ConfigArray);
 $Locator->set('Config', $Config);
 
-$EventListener = new MySocketEventListener($Locator);
-$Parser = new MySocketParser();
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
 
-$Server = new A_Socket_Server($EventListener, $Parser);
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, function () { echo 'Client connected :)' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_MESSAGE, function () { echo 'Client sent a message :D' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_DISCONNECT, function () { echo 'Client disconnected :(' . PHP_EOL; });
+
+$Server = new A_Socket_Server($EventManager);
 $Server->run($ConfigArray['SOCKET']);
 </pre>
 
@@ -91,55 +95,46 @@ the message class.</p>
 <a href="?p=Boostrap">here</a>), so well skip up to the end.</p>
 
 <pre class="prettyprint lang-php">
-$EventListener = new MySocketEventListener($Locator);
-$Parser = new MySocketParser();
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
 
-$Server = new A_Socket_Server($EventListener, $Parser);
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, function () { echo 'Client connected :)' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_MESSAGE, function () { echo 'Client sent a message :D' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_DISCONNECT, function () { echo 'Client disconnected :(' . PHP_EOL; });
+
+$Server = new A_Socket_Server($EventManager);
 $Server->run($ConfigArray['SOCKET']);
 </pre>
 
-<p>The server fires three events during it's life: onConnect, onMessage, and
-onDisconnect.  It must be given a listener to handle these events.  You have the
-option to use your own, or a built-in listener (but note, your own must extend
-A_Socket_EventListener_Abstract, or an exception will be thrown).  A_Socket
-comes preloaded with A_Socket_EventListener-FrontController.  This is a very
-cool handler that delegates to the Skeleton front Controller.</p>
+<p>The server fires three events during it's life:</p>
 
-<p>The Parser there is used to extract individual messages from the data stream
-read from the TCP/IP socket.  This object must implement the
-A_Socket_Parser_Interface interface, or an exception will be thrown.  A_Socket
-comes with A_Socket_Parser_WebSocket for the WebSocket protocol.</p>
+<ul>
+	<li>onConnect (A_Socket_Server::EVENT_CONNECT): fired when a client
+	connects, and is validated by the handshake defined in the Client object.
+	The data passed with this event is a new Message object containing the
+	default connect message defined in the config.</li>
+
+	<li>onMessage (A_Socket_Server::EVENT_MESSAGE): fired when a client sends a
+	message.  The data passed with this event is a new Message object containing
+	the message received.</li>
+
+	<li>onDisconnect (A_Socket_Server::EVENT_DISCONNECT): fired when a client
+	disconnects from the server and the socket is closed.  The data passed with
+	this event is the default disconnect message defined in the config.</li>
+</ul>
+
+<p>It must be given an instance of A_Event_Manager to fire these
+events.  You can handle the events listed above in any way you like, as is
+allowed by A_Event_Manager.  In this example, we use the PHP 5.3
+<a href="http://php.net/functions.anonymous">closure</a> syntax.  A_Socket comes
+preloaded with A_Socket_EventListener-FrontController.  This is a very cool
+handler that delegates to the Skeleton front Controller.</p>
 
 <p>Finally, the server is created, and the listener/parser passed to it.  Lastly
 we call the run() method, passing along the configuration.  This starts the
 server.</p>
 
-<h2>Handling Events</h2>
-
-<p>After a server is up and running, you can start thinking about handling
-events (remember, onconnect, onmessage, and ondisconnect).  You do so with a
-class that extends A_Socket_EventListener_Abstract.  This is a simple handler
-example.</p>
-
-<pre class="prettyprint lang-php">
-class MySocketEventListener extends A_Socket_EventListener
-{
-	public function onConnect($message)
-	{
-		echo 'A client connected :)' . PHP_EOL;
-	}
-
-	public function onMessage($message)
-	{
-		echo 'A client sent a message :D' . PHP_EOL;
-	}
-
-	public function onDisconnect($message)
-	{
-		echo 'A client disconnected X(' . PHP_EOL;
-	}
-}
-</pre>
+<h2>The Message Object</h2>
 
 <p>The message is an instance of whatever class you passed to the Server in the
 configuration array.  This object allows access to the session data associated
@@ -197,7 +192,7 @@ delegate events to the front controller.</p>
 <p>Here is an example WebSocket server.php</p>
 
 <pre class="prettyprint lang-php">
-<?php
+&lt;?php
 
 $ConfigArray = array(
 	'PATH' => dirname(__FILE__) . '/',
@@ -205,18 +200,10 @@ $ConfigArray = array(
 	'SOCKET' => array(
 		'host' => 'localhost',
 		'port' => '9091',
-
-		// use the websocket client object
 		'class-client' => 'A_Socket_Client_WebSocket',
-
-		// use the JSON format
 		'class-message' => 'A_Socket_Message_Json',
-
-		// a message for routing to the correct controller for the connect event
-		'message-connect' => '{"type":{"module":"","controller":"user","action":"connect"},"data":null}',
-
-		// a message for routing to the correct controller for the disconnect event
-		'message-disconnect' => '{"type":{"module":"","controller":"user","action":"disconnect"},"data":null}'
+		'message-connect' => '{"type":{"module":"","controller":"connect","action":"user"},"data":null}',
+		'message-disconnect' => '{"type":{"module":"","controller":"disconnect","action":"user"},"data":null}'
 	),
 	'DEFAULT_ACTION' => array('', 'main', 'main'),
 	'ERROR_ACTION' => array('', 'main', 'main')
@@ -231,14 +218,14 @@ $Config->import($ConfigArray);
 
 $Locator->set('Config', $Config);
 
-// FrontController delegates to the Skeleton Framework front Controller
 $EventListener = new A_Socket_EventListener_FrontController($Locator);
 
-// parse messages from data stream in WebSocket protocol
-$Parser = new A_Socket_Parser_WebSocket();
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, array($EventListener, 'onConnect'));
+$EventManager->addEventListener(A_Socket_Server::EVENT_MESSAGE, array($EventListener, 'onMessage'));
+$EventManager->addEventListener(A_Socket_Server::EVENT_DISCONNECT, array($EventListener, 'onDisconnect'));
 
-// create and start the server
-$Server = new A_Socket_Server($EventListener, $Parser);
+$Server = new A_Socket_Server($EventManager);
 $Server->run($ConfigArray['SOCKET']);
 </pre>
 
