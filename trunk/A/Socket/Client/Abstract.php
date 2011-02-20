@@ -11,7 +11,7 @@
 /**
  * Client
  */
-class A_Socket_Client_Abstract
+abstract class A_Socket_Client_Abstract
 {
 
 	/**
