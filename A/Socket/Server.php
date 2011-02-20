@@ -61,7 +61,7 @@ class A_Socket_Server
 
 	/**
 	 * Event manager.  Used to fire events on connect, disconnect, and message
-	 * @var A_Event
+	 * @var A_Event_Manager
 	 */
 	protected $eventManager;
 
@@ -92,8 +92,7 @@ class A_Socket_Server
 	/**
 	 * Constructor.
 	 *
-	 * @param A_Socket_EventListener_Abstract $eventListener event listener object to handle events
-	 * @param A_Socket_Parser $parser parser object to extract messages from read stream
+	 * @param A_Event_Manager $eventManager Manager to fire events on
 	 */
 	public function __construct(A_Event_Manager $eventManager)
 	{
