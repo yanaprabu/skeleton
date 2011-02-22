@@ -34,41 +34,23 @@ class A_Socket_EventListener_FrontController
 	}
 
 	/**
-	 * Called when client connects
+	 * Sets the events handled by this object
 	 *
-	 * @param object $data Message
+	 * @return array
 	 */
-	public function onConnect($event, $data)
+	public function getEvents()
 	{
-		$this->runController($data);
+		return array(A_Socket_Server::EVENT_CONNECT, A_Socket_Server::EVENT_MESSAGE, A_Socket_Server::EVENT_DISCONNECT);
 	}
 
 	/**
-	 * Called when client disconnects
+	 * Called when a client connects, sends a message, or disconnects.  Creates
+	 * a new Front Controller and dispatches to the controller.
 	 * 
-	 * @param object $data Message
+	 * @param string $event
+	 * @param A_Socket_Message $data
 	 */
-	public function onDisconnect($event, $data)
-	{
-		$this->runController($data);
-	}
-
-	/**
-	 * Called when client sends a message
-	 * 
-	 * @param object $data Message
-	 */
-	public function onMessage($event, $data)
-	{
-		$this->runController($data);
-	}
-
-	/**
-	 * Creates the front controller, and dispatches to the action
-	 * 
-	 * @param object $data Message
-	 */
-	protected function runController($message)
+	public function onEvent($event, $message)
 	{
 		$Request = new A_Socket_Request($message);
 		$Locator = $this->locator;
