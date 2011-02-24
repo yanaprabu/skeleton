@@ -23,10 +23,10 @@ class ModelTest extends UnitTestCase {
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'bazBAZ');
 		
- 		$foo = $model->newField('foo');
+		$foo = $model->newField('foo');
 		$foo->addFilter(new A_Filter_Regexp('/[^a-z]/'));
 
- 		$bar = $model->newField('bar');
+		$bar = $model->newField('bar');
 		$bar->addFilter(new A_Filter_Regexp('/[^A-Z]/'));
 		
 		$this->assertTrue($model->isValid($datasource));
@@ -45,8 +45,8 @@ class ModelTest extends UnitTestCase {
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'bazBAZ');
 		
- 		$model->addFilter(new A_Filter_Regexp('/[^a-z]/'), array('foo'));
- 		$model->addFilter(new A_Filter_Regexp('/[^A-Z]/'), 'bar');
+		$model->addFilter(new A_Filter_Regexp('/[^a-z]/'), array('foo'));
+		$model->addFilter(new A_Filter_Regexp('/[^A-Z]/'), 'bar');
 		
 		$this->assertTrue($model->isValid($datasource));
 		
@@ -64,7 +64,7 @@ class ModelTest extends UnitTestCase {
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'bazBAZ');
 		
- 		$model->addFilter(new A_Filter_Regexp('/[^a-z]/'), array('foo', 'bar'));
+		$model->addFilter(new A_Filter_Regexp('/[^a-z]/'), array('foo', 'bar'));
 		
 		$this->assertTrue($model->isValid($datasource));
 		
@@ -83,20 +83,20 @@ class ModelTest extends UnitTestCase {
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'baz');
 		
- 		$rule = new A_Rule_Regexp('/^[a-z]*$/', '', 'not all lowercase letters. ');
- 		
- 		// add rule to check both fields
- 		$model->addRule($rule, array('foo', 'bar'));
-# 		$model->excludeRules(array('foo', 'bar')); 		
+		$rule = new A_Rule_Regexp('/^[a-z]*$/', '', 'not all lowercase letters. ');
+		
+		// add rule to check both fields
+		$model->addRule($rule, array('foo', 'bar'));
+#		$model->excludeRules(array('foo', 'bar'));
 		$this->assertFalse($model->isValid($datasource));
 
- 		// only check bar
- 		$model->excludeRules(array('foo')); 		
+		// only check bar
+		$model->excludeRules(array('foo'));
 		$this->assertTrue($model->isValid($datasource));
 
- 		// only check foo
- 		$model->excludeRules(array()); 		
-		$model->includeRules(array('foo')); 		
+		// only check foo
+		$model->excludeRules(array());
+		$model->includeRules(array('foo'));
 		$this->assertFalse($model->isValid($datasource));
 		#dump($model, 'Model: ', 1);
 #echo '<pre>' . print_r($model->getErrorMsg(), 1) . '</pre>';

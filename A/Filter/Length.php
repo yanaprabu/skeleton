@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Length extends A_Filter_Abstract {
+class A_Filter_Length extends A_Filter_Base {
 	protected $length = 0;
 	
 	public function __construct($length) {

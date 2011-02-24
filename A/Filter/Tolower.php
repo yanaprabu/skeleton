@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Tolower extends A_Filter_Abstract {
+class A_Filter_Tolower extends A_Filter_Base {
 
 	public function filter () {
 		return strtolower($this->getValue());

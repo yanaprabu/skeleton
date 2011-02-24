@@ -6,7 +6,7 @@
  * @package A_Config
  */
 
-abstract class A_Config_Abstract extends A_Collection {
+abstract class A_Config_Base extends A_Collection {
 	protected $_filename;
 	protected $_section;
 	protected $_exception;

@@ -12,7 +12,7 @@
  * 'port'
  *  */
 
-class A_Db_Postgres extends A_Db_Abstract {
+class A_Db_Postgres extends A_Db_Base {
 	protected $config = null;
 	protected $link = null;
 	protected $sequenceext = '_seq';

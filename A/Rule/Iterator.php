@@ -6,7 +6,7 @@
  * @package A_Rule_Set 
  */
 
-class A_Rule_Iterator extends A_Rule_Abstract {
+class A_Rule_Iterator extends A_Rule_Base {
 	protected $rule;
 	protected $params = array(
 							'rule' => null, 

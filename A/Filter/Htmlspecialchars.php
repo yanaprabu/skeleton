@@ -5,7 +5,7 @@
  * 
  * @package A_Filter
  */
-class A_Filter_Htmlspecialchars extends A_Filter_Abstract  {
+class A_Filter_Htmlspecialchars extends A_Filter_Base  {
 
 	public $character_set;
 	public $escape_quote_style;

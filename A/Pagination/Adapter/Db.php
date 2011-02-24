@@ -5,7 +5,7 @@
  * @package A_Pagination 
  */
 
-class A_Pagination_Adapter_Db extends A_Pagination_Adapter_Abstract	{
+class A_Pagination_Adapter_Db extends A_Pagination_Adapter_Base	{
 
 	public function getNumItems()	{
 		$sql = preg_replace ('#SELECT\s+(.*?)\s+FROM#i', 'SELECT COUNT(*) AS count FROM', $this->query);

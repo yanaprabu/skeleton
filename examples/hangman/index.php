@@ -166,7 +166,7 @@ class LoseView {
     }
 }
 
-class WinRule extends A_Rule_Abstract {
+class WinRule extends A_Rule_Base {
 
 	function WinRule($game) {
 		$this->game = $game;
@@ -177,7 +177,7 @@ class WinRule extends A_Rule_Abstract {
 	}
 }
 
-class LoseRule extends A_Rule_Abstract {
+class LoseRule extends A_Rule_Base {
 
 	function LoseRule($game) {
 		$this->game = $game;
@@ -188,7 +188,7 @@ class LoseRule extends A_Rule_Abstract {
 	}
 }
 
-class Guess extends A_Rule_Abstract {
+class Guess extends A_Rule_Base {
 
 	function validate() {
 		$value = $this->getValue('level');

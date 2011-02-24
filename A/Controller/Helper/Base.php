@@ -1,6 +1,6 @@
 <?php
 /**
- * A_Controller_Helper_Abstract
+ * A_Controller_Helper_Base
  * 
  * Abstract class to be extended to create application helper classes
  *
@@ -8,7 +8,7 @@
  * @subpackage Helper
  */
 
-abstract class A_Controller_Helper_Abstract {
+abstract class A_Controller_Helper_Base {
 	/**
 	 * calling controller
 	 * @var A_Controller_Action object

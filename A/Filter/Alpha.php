@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Alpha extends A_Filter_Abstract {
+class A_Filter_Alpha extends A_Filter_Base {
 	
 	public function filter () {
 		return preg_replace('/[^[:alpha:]]/', '', $this->getValue());

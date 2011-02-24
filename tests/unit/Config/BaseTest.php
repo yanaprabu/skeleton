@@ -1,10 +1,10 @@
 <?php
 
-class A_Config_AbstractTest extends A_Config_Abstract {
+class A_Config_BaseTest extends A_Config_Base {
 	
 }
 
-class Config_AbstractTest extends UnitTestCase {
+class Config_BaseTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -12,11 +12,11 @@ class Config_AbstractTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testConfig_AbstractNotNull() {
+	function testConfig_BaseNotNull() {
   		$filename='';
   		$section='';
   		$exception=null;
-  		$Config_Abstract = new A_Config_AbstractTest($filename, $section, $exception);
+  		$Config_Base = new A_Config_BaseTest($filename, $section, $exception);
 		
 		$result = true;
   		$this->assertTrue($result);

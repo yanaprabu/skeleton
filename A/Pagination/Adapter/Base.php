@@ -5,7 +5,7 @@
  * @package A_Pagination 
  */
 
-abstract class A_Pagination_Adapter_Abstract implements A_Pagination_Adapter_Interface	{
+abstract class A_Pagination_Adapter_Base implements A_Pagination_Adapter_Interface	{
 
 	protected $db;
 	protected $query;

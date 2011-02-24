@@ -9,7 +9,7 @@
  * @package A_Db_Recordset
  * @author Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
  */
-abstract class A_Db_Recordset_Abstract implements Iterator
+abstract class A_Db_Recordset_Base implements Iterator
 {
 	// resource object from database adapter
 	protected $result = null;
