@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Iterator extends A_Filter_Abstract {
+class A_Filter_Iterator extends A_Filter_Base {
 protected $filter;
 	
     public function __construct($filter) {

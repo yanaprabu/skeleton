@@ -19,10 +19,10 @@ class A_Html_Form_Select extends A_Html_Tag {
 		if (empty($attr['labels'])) {
 			$attr['labels'] = $values;
 		}
-		unset($attr['values']);
+		$this->removeAttr($attr, 'values');
 		$labels = A_Html_Form_Select::_toArray($attr['labels']);
-		unset($attr['labels']);
-		
+		$this->removeAttr($attr, 'labels');
+				
 		if (isset($attr['multiple']) || (count($selected) > 1)) {
 			$attr['name'] .= '[]';
 			$attr['multiple'] = 'multiple';		// multiple sends array

@@ -9,7 +9,7 @@
  * @version @package_version@
  */
 
-class A_Delimited_Writer extends A_Delimited_Abstract {
+class A_Delimited_Writer extends A_Delimited_Base {
 	protected $filemode = 'wb';
 	
 	/**

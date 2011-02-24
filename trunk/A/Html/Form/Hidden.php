@@ -16,7 +16,7 @@ class A_Html_Form_Hidden extends A_Html_Tag {
 		parent::defaultAttr($attr, array('type'=>'hidden', 'value'=>''));
 		if (isset($attr['print'])) {
 			$print = $attr['value'];
-			unset($attr['print']);
+			$this->removeAttr($attr, 'print');
 		} else {
 			$print = '';
 		}

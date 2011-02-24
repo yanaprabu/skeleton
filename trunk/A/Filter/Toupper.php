@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Toupper extends A_Filter_Abstract {
+class A_Filter_Toupper extends A_Filter_Base {
 
 	public function filter () {
 		return strtoupper($this->getValue());

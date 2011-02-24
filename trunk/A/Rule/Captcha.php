@@ -7,7 +7,7 @@
  * 
  * @package A_Rule
  */
-class A_Rule_Captcha extends A_Rule_Abstract {
+class A_Rule_Captcha extends A_Rule_Base {
 	const ERROR = 'A_Rule_Captcha';
 	protected $field;
 	protected $errorMsg;

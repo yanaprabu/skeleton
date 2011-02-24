@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Trim extends A_Filter_Abstract {
+class A_Filter_Trim extends A_Filter_Base {
 	protected $charset = null;
 
 	public function __construct($charset=null) {

@@ -1,12 +1,11 @@
 <?php
-#include_once('A/Template.php');
 /**
  * Template class that includes PHP templates. No block support.
  * 
  * @package A_Template
  */
 
-class A_Template_Include extends A_Template_Abstract {
+class A_Template_Include extends A_Template_Base {
 
 	public function partial($template, $data=null) {
 		if (is_array($data)) {

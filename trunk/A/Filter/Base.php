@@ -5,7 +5,7 @@
  * @package A_Filter
  */
 
-abstract class A_Filter_Abstract {
+abstract class A_Filter_Base {
 
 	protected $container;
 	/*

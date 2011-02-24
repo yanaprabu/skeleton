@@ -5,7 +5,7 @@
  * @package A_Db_Recordset
  * @author Jonah Dahlquist <jonah@nucleussystems.com>
  */
-class A_Db_Recordset_ADOdblite extends A_Db_Recordset_Abstract
+class A_Db_Recordset_ADOdblite extends A_Db_Recordset_Base
 {
 	
 }

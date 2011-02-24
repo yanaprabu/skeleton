@@ -39,11 +39,11 @@ class A_Html_Form_Radiocheckbox extends A_Html_Tag {
 		$value = isset($attr['value']) ? $attr['value'] : array();
 		unset($attr['value']);
 		$values = isset($attr['values']) ? $attr['values'] : array();
-		unset($attr['values']);
+		$this->removeAttr($attr, 'values');
 		$labels = isset($attr['labels']) ? $attr['labels'] : array();
-		unset($attr['labels']);
+		$this->removeAttr($attr, 'labels');
 		$separator = isset($attr['separator']) ? $attr['separator'] :'';
-		unset($attr['separator']);
+		$this->removeAttr($attr, 'separator');
 		$options = array();
 		$n = count($values);
 #echo "n=$n, type=$type<br/>";
@@ -62,7 +62,7 @@ class A_Html_Form_Radiocheckbox extends A_Html_Tag {
 			}
 			$options[$i] .= '>' . (isset($attr['labels'][$i]) ? $attr['labels'][$i] : '');
 */
-				}
+		}
 
 		return implode($separator, $options);
 	}

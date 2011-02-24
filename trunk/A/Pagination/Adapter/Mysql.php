@@ -5,7 +5,7 @@
  * @package A_Pagination 
  */
 
-class A_Pagination_Adapter_Mysql extends A_Pagination_Adapter_Abstract	{
+class A_Pagination_Adapter_Mysql extends A_Pagination_Adapter_Base	{
 	protected $numrows = 0;
 
     public function getNumItems() {

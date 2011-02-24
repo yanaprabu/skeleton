@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Html/Form/Select.php';
 /**
  * Generate HTML form select from database query data
  *
@@ -14,27 +13,47 @@ class A_Html_Form_Selectdb extends A_Html_Form_Select {
 	 * 
 	 * db=object, sql=string, value_col=string, label_cols=array()
 	 * 
+	 * Or provide a callable array to a object/method. Parameters for the method can be provided,
+	 * 
+	 * model=array(object, method), model_params=array(), value_col=string, label_cols=array()
+	 * 
+	 * The interface to A_Html_Form_Select is:
+	 * 
 	 * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
 	 */
 	public function render($attr=array()) {
 		parent::mergeAttr($attr);
-		if (isset($attr['db']) && isset($attr['sql']) && isset($attr['value_col']) && isset($attr['label_cols'])) {
-			$db = $attr['db'];
-			$result = $db->query($attr['sql']);
-			if (! $db->isError()) {
-				while ($row = $result->fetchRow()) {
+		if (isset($attr['value_col']) && isset($attr['label_cols'])) {
+			$rows = array();
+			if (isset($attr['db']) && isset($attr['sql'])) {
+				$db = $attr['db'];
+				$result = $db->query($attr['sql']);
+				if (! $db->isError()) {
+					while ($row = $result->fetchRow()) {
+						$rows[] = $row;
+					}
+				}
+			} elseif (is_array($attr['model'])) {
+				$rows = call_user_func_array($attr['model'], isset($attr['model_params']) ? $attr['model_params'] : array());
+			}
+			if ($rows) {
+				if (is_string($attr['label_cols'])) {
+					$attr['label_cols'] = explode('|', $attr['label_cols']);
+				}
+				foreach ($rows as $row) {
 					$attr['values'][] = $row[$attr['value_col']];
 					$label = '';
 					foreach ($attr['label_cols'] as $col) {
 						$label .= $row[$col] . ' ';
 					}
 					$attr['labels'][] = $label;
-				}
+				}	
 			}
-			unset($attr['db']);
-			unset($attr['sql']);
-			unset($attr['value_col']);
-			unset($attr['label_cols']);
+			$this->removeAttr($attr, 'model');
+			$this->removeAttr($attr, 'db');
+			$this->removeAttr($attr, 'sql');
+			$this->removeAttr($attr, 'value_col');
+			$this->removeAttr($attr, 'label_cols');
 		}
 		
 		return parent::render($attr);

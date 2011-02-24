@@ -6,7 +6,7 @@
  * @package A_Filter 
  */
 
-class A_Filter_Substr extends A_Filter_Abstract {
+class A_Filter_Substr extends A_Filter_Base {
 
 	protected $start = 0;
 

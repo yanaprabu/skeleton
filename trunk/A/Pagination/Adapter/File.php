@@ -5,7 +5,7 @@
  * @package A_Pagination 
  */
 
-class A_Pagination_Adapter_File extends A_Pagination_Adapter_Abstract	{
+class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base	{
 	protected $filename;
 	protected $session = null;
 	

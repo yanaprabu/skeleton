@@ -11,7 +11,7 @@
 
 #include_once 'A/Delimited/Abstract.php';
 
-class A_Delimited_Reader extends A_Delimited_Abstract {
+class A_Delimited_Reader extends A_Delimited_Base {
 	protected $filemode = 'rb';
 	protected $autoConfigure = false;
 	protected $isAutoConfigured = false;

@@ -9,7 +9,7 @@
  * 'mode'
  */
 
-class A_Db_Sqlite3 extends A_Db_Abstract {	protected $dsn = null;	protected $link = null;	protected $_sequence_ext = '_seq';
+class A_Db_Sqlite3 extends A_Db_Base {	protected $dsn = null;	protected $link = null;	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Sqlite3';
 	protected $_result_class = 'A_Db_Result';

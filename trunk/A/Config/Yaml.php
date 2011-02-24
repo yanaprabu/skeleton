@@ -6,7 +6,7 @@
  * @package A_Config
  */
 
-class A_Config_Yaml extends A_Config_Abstract {
+class A_Config_Yaml extends A_Config_Base {
 
 	protected function _loadFile() {
 		$lines = file($this->_filename);;

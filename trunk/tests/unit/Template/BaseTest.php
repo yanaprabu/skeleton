@@ -1,6 +1,6 @@
 <?php
 
-class Template extends A_Template_Abstract {
+class Template extends A_Template_Base {
 
 }
 

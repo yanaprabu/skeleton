@@ -12,7 +12,7 @@
  * 'database'
  */
 
-class A_Db_ADOdblite extends A_Db_Abstract {
+class A_Db_ADOdblite extends A_Db_Base {
 	protected $dsn = null;
 	protected $adodb = null;
 	protected $limit = '';

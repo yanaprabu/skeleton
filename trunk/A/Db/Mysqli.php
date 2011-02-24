@@ -5,7 +5,7 @@
  * @package A_Db 
  */
 
-class A_Db_Mysqli extends A_Db_Abstract
+class A_Db_Mysqli extends A_Db_Base
 {
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;

@@ -1,6 +1,6 @@
 <?php
 /**
- * A_Delimited_Abstract
+ * A_Delimited_Base
  *
  * Abstract base class with common read/write functionality for delimited text files
  *
@@ -11,7 +11,7 @@
 
 #include_once 'A/Delimited/Config.php';
 
-class A_Delimited_Abstract {
+class A_Delimited_Base {
 	protected $maxLineLength = 1000;
 	protected $filename = '';
 	protected $filemode = 'r';

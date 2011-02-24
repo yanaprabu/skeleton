@@ -4,7 +4,7 @@
  *
  * @package A_Db
  */
-abstract class A_Db_Abstract {
+abstract class A_Db_Base {
 
 	protected $_connection;								// 
 

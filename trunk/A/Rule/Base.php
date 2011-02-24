@@ -5,7 +5,7 @@
  * @package A_Rule 
  */
 
-abstract class A_Rule_Abstract {
+abstract class A_Rule_Base {
 
 	protected $container;
 	/*
@@ -113,7 +113,7 @@ abstract class A_Rule_Abstract {
      * Sets the error message that is to be returned if this rule should fail
      * 
      * @param string error message
-     * @return A_Rule_Abstract returns this instance for fluent interface
+     * @return this instance for fluent interface
      */
 	public function setErrorMsg($errorMsg) {
 		$this->params['errorMsg'] = $errorMsg;

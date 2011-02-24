@@ -10,7 +10,7 @@
  * 'password'
  * 'database'
  */
-class A_Db_MySQL extends A_Db_Abstract {
+class A_Db_MySQL extends A_Db_Base {
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_MySQL';

@@ -5,7 +5,7 @@
  * @package A_Tempalte 
  */
 
-abstract class A_Template_Abstract {
+abstract class A_Template_Base {
 	protected $template = '';
 	protected $data = array();
 	protected $filename = '';

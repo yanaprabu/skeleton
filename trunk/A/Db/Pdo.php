@@ -21,7 +21,7 @@
     * PDO::errorInfo — Fetch extended error information associated with the last operation on the database handle
 */
 
-class A_Db_Pdo extends A_Db_Abstract {
+class A_Db_Pdo extends A_Db_Base {
 
 	protected $dsn = null;
 	protected $_connection = null;

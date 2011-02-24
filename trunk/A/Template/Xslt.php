@@ -1,12 +1,11 @@
 <?php
-#include_once 'A/Template.php';
 /**
  * Template class that transforms XML templates with XSL. No blocks.
  * 
  * @package A_Template
  */
 
-class A_Template_Xslt extends A_Template_Abstract {
+class A_Template_Xslt extends A_Template_Base {
 	protected $filenamexml = '';
 
 	public function __construct($filenamexsl='', $data=array()) {
