@@ -11,23 +11,42 @@
 class A_Controller_Helper_Load {
 	protected $locator;
 	protected $parent;
-	protected $paths = array('app'=>'', 'module'=>'', 'controller'=>'', 'action'=>'');
-	protected $dirs = array('controller'=>'controllers/', 'helper'=>'helpers/', 'model'=>'models/', 'view'=>'views/', 'template'=>'templates/', 'class'=>'');
+	protected $paths = array(
+							'app'=>'', 
+							'module'=>'', 
+							'controller'=>'', 
+							'action'=>'',
+							);
+	protected $dirs = array(
+							'controller'=>'controllers/', 
+							'event'=>'events/', 
+							'helper'=>'helpers/', 
+							'model'=>'models/', 
+							'template'=>'templates/', 
+							'view'=>'views/', 
+							'class'=>'',
+							);
 	protected $action = null;
 	protected $method = null;
-	protected $suffix = array('controller'=>'', 'model'=>'Model', 'view'=>'View', 'helper'=>'Helper', 'class'=>'', );
+	protected $suffix = array(
+							'controller'=>'', 
+							'model'=>'Model', 
+							'view'=>'View', 
+							'helper'=>'Helper', 
+							'class'=>'', 
+							);
 	protected $rendererTypes = array('view', 'template');
 	protected $scope;
 	protected $scopePath;
 	protected $responseName = '';
 	protected $renderClasses = array(
-								'php' => 'A_Template_Include',
-								'xml' => 'A_Template_Include',
-								'json' => 'A_Template_Include',
-								'js' => 'A_Template_Include',
-								'html' => 'A_Template_Strreplace',
-								'txt' => 'A_Template_Strreplace',
-								);
+							'php' => 'A_Template_Include',
+							'xml' => 'A_Template_Include',
+							'json' => 'A_Template_Include',
+							'js' => 'A_Template_Include',
+							'html' => 'A_Template_Strreplace',
+							'txt' => 'A_Template_Strreplace',
+							);
 	protected $renderClass = 'A_Template_Include';
 	protected $renderExtension = 'php';
 	protected $responseSet = false;
