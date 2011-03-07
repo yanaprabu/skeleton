@@ -2,7 +2,7 @@
 
 class usersModel extends A_Model {
 	
-	protected $errmsg = '';
+	protected $errorMsg = array();
 		
 	protected $dbh = null;
 	
@@ -13,6 +13,7 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('lastname'));
 		$this->addField(new A_Model_Field('username'));
 		$this->addField(new A_Model_Field('password'));
+		$this->addField(new A_Model_Field('usersalt'));
 		$this->addField(new A_Model_Field('email'));
 		$this->addField(new A_Model_Field('active'));
 		$this->addField(new A_Model_Field('access'));
@@ -66,13 +67,14 @@ class usersModel extends A_Model {
 	
 	public function delete($id){}	
 	
-	public function login($username, $password) {
-		$this->errorMsg = array();;
+	public function login($username, $password, $sitesalt) {
+		$this->errorMsg = array();
+
 		$rows = $this->datasource->find(array('username'=>$username, 'active'=>1));
-		if (isset($rows[0])) {
+		if (isset($rows[0])) { 
 			
-			if ($rows[0]['username'] == $username) {
-				if ($rows[0]['password'] == $password) {
+			if ($rows[0]['username'] == $username) { 
+				if ($rows[0]['password'] == hash('sha512', $rows[0]['usersalt'] . $password . $sitesalt)) {
 					return $rows[0];
 				} else {
 					$this->errorMsg[] = 'Password does not match. ';
@@ -87,7 +89,7 @@ class usersModel extends A_Model {
 	}
 	
 	public function loginErrorMsg() {
-		return $this->errmsg;
+		return $this->errorMsg;
 	}
 
 	
@@ -145,9 +147,10 @@ class usersModel extends A_Model {
 		return md5(uniqid(rand(), true));
 	}
 
-	public function insertUser($username, $password, $email, $activationkey){
+	public function insertUser($username, $password, $email, $activationkey, $usersalt, $sitesalt){
 		// @Todo insert
-		$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$password, 'activationkey'=>$activationkey));
+		$user_hash = hash('sha512', $usersalt . $password . $sitesalt);
+		$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$user_hash, 'usersalt' => $usersalt, 'activationkey'=>$activationkey));
 	}
 	
 	public function activate($activationkey){
