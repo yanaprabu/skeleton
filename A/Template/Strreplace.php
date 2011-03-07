@@ -12,7 +12,7 @@ class A_Template_Strreplace extends A_Template_File {
 	
 	public function set($field, $value) {
 		// field required and value must be a string or an object with __toString()
-		if ($field && (is_string($value) || (is_object($value) && method_exists($value, '__toString')))) {
+		if ($field && (is_scalar($value) || (is_object($value) && method_exists($value, '__toString')))) {
 			// check that suffix/prefix are on tag and add if necessary
 			if (substr($field, 0, 1) != $this->tagprefix) {
 				$field = $this->tagprefix . $field;
