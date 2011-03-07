@@ -29,6 +29,7 @@ $ConfigArray = array(
     'PATH' => $file_path . '/',
     'APP' => $file_path . '/app',
     'LIB' => $file_path . '/../../',     // will be $file_path . '/library'
+	'SITESALT' => 'SoMe_HaRdCoDeD_StRiNg',
     );
 
 // Init autoload using Locator

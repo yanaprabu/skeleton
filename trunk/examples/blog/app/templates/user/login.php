@@ -11,7 +11,15 @@
 <?php } else { ?>
 	<h1>Login</h1>
 	<div>
-		<span style="color:red"><?php echo $errmsg; ?></span>
+		<span style="color:red"><?php 
+		if(isset($errmsg)) { 
+			if(is_array($errmsg)) { 
+				foreach($errmsg as $msg){
+					echo $msg;
+				}
+			}
+		}
+		 ?></span>
 		<form action="user/login/" method="post">
 			<p>
 				<label>Username</label>
