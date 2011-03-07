@@ -155,18 +155,20 @@ class A_Controller_Helper_Load {
 		if (isset($this->dirs[$type])) {
 			// get class name parameter or use action name or use method name in controller scope for $type/$controller/$action.php
 			$class = isset($args[0]) && $args[0] ? $args[0] : ($this->scope == 'controller' && $this->method ? $this->method : $this->action);
-			// had a . in name is extension so remove it
+			// has a . in name is extension so remove for class name and use ext 
 			$length = strpos($class, '.');
 			if ($length) {
 				// get extension to use below
 				$ext = substr($class, $length+1);
 				$class = substr($class, 0, $length);
-			} elseif (isset($this->suffix[$type])) {
+			} else {										// no extension
 				$ext = $type == 'template' ? $this->renderExtension : '.php';
-				$length = strlen($this->suffix[$type]);
-				// if a suffix is defined and the end of the action name does not contain it -- append it
-				if ($length && (substr($class, -$length) != $this->suffix[$type])) {
-					$class .= $this->suffix[$type];
+				if (isset($this->suffix[$type])) {
+					$length = strlen($this->suffix[$type]);
+					// if a suffix is defined and the end of the action name does not contain it -- append it
+					if ($length && (substr($class, -$length) != $this->suffix[$type])) {
+						$class .= $this->suffix[$type];
+					}
 				}
 			}
 			
@@ -176,7 +178,6 @@ class A_Controller_Helper_Load {
 			} else {
 				$path = $this->dirs[$type];		// just in case no scopePath
 			}
-#echo "type=$type, class=$class, path=$path<br/>";
 			
 			// helpers take a parent instance as the parameter
 			if ($type == 'helper') {
