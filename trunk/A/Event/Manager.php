@@ -6,6 +6,7 @@
  * Handles creating, storing, and firing of events.
  * 
  * @author Jonah <jonah[at]nucleussystems[dot]com>
+ * @author Christopher <christopherxthompson[at]gmail[dot]com>
  */
 class A_Event_Manager
 {
@@ -17,6 +18,7 @@ class A_Event_Manager
 	protected $_cancel = false;							// Listeners can return this value to stop chain
 	protected $_exception = '';							// A_Exception
 	protected $_errorMsg = '';
+	protected $_path = './events';
 	
 	public function __construct($exception='')
 	{
@@ -144,10 +146,20 @@ class A_Event_Manager
 					} else {
 						$this->_errorHandler(0, self::ERROR_NO_METHOD);
 						$r = null;
-					}				
+					}
 				} else {
-					$this->_errorHandler(0, self::ERROR_WRONG_TYPE);
-					$r = null;
+					if ($this->loadClass($listener)) {
+						$listener = new $listener();
+						if (method_exists($listener, 'onEvent')) {
+							$r = $listener->onEvent($eventName, $eventData);
+						} else {
+							$this->_errorHandler(0, self::ERROR_NO_METHOD);
+							$r = null;
+						}
+					} else {
+						$this->_errorHandler(0, self::ERROR_WRONG_TYPE);
+						$r = null;
+					}
 				}
 				// only use result for non-null return values
 				if ($r !== null) {
@@ -171,6 +183,16 @@ class A_Event_Manager
 	public function getErrorMsg() {
 		return $this->_errorMsg;
 	}
+
+	/**
+	 * Set path to look in for handler classes
+	 *
+	 * @param string $path Directory to search in
+	 */
+	public function setPath($path)
+	{
+		$this->_path = $path;
+	}
 	
 	/**
 	 * Creates and throws an exception of the defined type
@@ -182,6 +204,23 @@ class A_Event_Manager
 		$this->_errorMsg .= $errorMsg;
 		if ($this->_exception) {
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
+		}
+	}
+	
+	/**
+	 * Loads a class from the path
+	 *
+	 * @param string $class
+	 * @return bool Success or failure
+	 */
+	protected function loadClass($class) {
+		$file = rtrim($this->_path, '/\\') . '/'. $class . '.php';
+		if (file_exists($file)) {
+			echo 'aoeruhaoreuhacoheu';
+			require_once($file);
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
