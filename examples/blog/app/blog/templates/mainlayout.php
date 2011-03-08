@@ -19,7 +19,7 @@
 		
 		<ul id="mainnav">
 			<li><a href="<?php echo $BASE ?>">Home</a></li>
-			<li><a href="<?php echo $BASE ?>posts/">Posts</a></li>
+			<li><a href="<?php echo $BASE ?>blog/posts/">Posts</a></li>
 			<?php if (isset($user) && $user->isLoggedIn()) echo "<li><a href=\"{$BASE}admin/\">Admin</a></li>"; ?>
 		</ul>
 		
