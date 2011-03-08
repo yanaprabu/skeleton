@@ -214,7 +214,7 @@ class A_Event_Manager
 	 * @return bool Success or failure
 	 */
 	protected function loadClass($class) {
-		$file = rtrim($this->_path, '/\\') . '/'. $class . '.php';
+		$file = rtrim($this->_path, '/\\') . '/'. str_replace(array('_','\\','-'), array('/','/','_'), $class) . '.php';
 		if (file_exists($file)) {
 			echo 'aoeruhaoreuhacoheu';
 			require_once($file);
