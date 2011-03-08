@@ -138,4 +138,14 @@ class Event_ManagerTest extends UnitTestCase {
 		
 	}
 
+	public function testLoadHandler() {
+		$manager = new A_Event_Manager();
+
+		$manager->addEventListener('event1', 'Handler');
+		$manager->setPath(__DIR__);
+
+		$result = $manager->fireEvent('event1');
+		$this->assertTrue($result == array('listener1'));
+	}
+
 }
