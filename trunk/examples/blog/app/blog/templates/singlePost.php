@@ -4,7 +4,7 @@
 	
 	<?php foreach($content as $article){
 		echo '<div class="post">';
-		echo '<h2 class="post_title"><a href="'. $article['permalink'] . '">' . $article['title'] . '</a></h2>';
+		echo '<h2 class="post_title"><a href="blog/'. $article['permalink'] . '">' . $article['title'] . '</a></h2>';
 		echo '<p class="post_meta">On ' .  $article['post_date'] . ' by ' . $article['username'] . '</p>';
 		echo '<p>' .  $article['excerpt'] . '</p>';
 		echo '<p>' .  $article['content'] . '</p>';
@@ -13,7 +13,7 @@
 	?>
 
 	<h3>Leave a reply</h3>
-	<form id="comment_form" action="" method="post">
+	<form id="comment_form" action="blog/" method="post">
 		<p>
 			<label>Name</label>
 			<input type="text" name="author" value="" >

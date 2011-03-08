@@ -3,15 +3,15 @@ $ConfigArray = array(
 // Site specific settings
 'DB' => array(
     'phptype' => 'mysql',
-    'hostspec' => '127.0.0.1',
+    'hostspec' => 'localhost',
     'database' => 'skeleton',
     'username' => 'skeleton',
     'password' => 'skeleton',
 	),
 
 'LIB' => '../../',
-'APP' => './app/',
-'BASE' => 'http://skeleton/examples/blog/',
+'APP' => dirname($_SERVER["SCRIPT_FILENAME"]) . '/app/',
+'BASE' => 'http://' . $_SERVER["SERVER_NAME"]. dirname($_SERVER['SCRIPT_NAME']) . '/',
 );
 
 function dump($var=null, $name='', $now=false) {

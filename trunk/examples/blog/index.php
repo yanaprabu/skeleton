@@ -63,13 +63,15 @@ $dbconfig = array(
 		'username' => $Config->get('username'),
 		'password' => $Config->get('password')
 		);
-$Db = new A_Db_Pdo($dbconfig) or die ('Error: could not connect to DB');
-	
+#$Db = new A_Db_Pdo($dbconfig);
+$Db = new A_Db_MySQL($dbconfig);
+		
 // Create HTTP Response object and set default template and valuesS
 $Response = new A_Http_Response();
 $Response->setTemplate('mainlayout', 'module');
 $Response->set('BASE', $ConfigArray['BASE']);
 $Response->set('title', 'Default Title');
+$Response->set('head', '');
 $Response->set('maincontent', 'Default main content.');
 $Response->set('user', $UserSession);
 
@@ -109,8 +111,8 @@ $PathInfo->run($Request);
 #$Mapper = new A_Controller_Mapper($Config->get('APP'), array('', 'index', 'index'));
 #$Mapper->setDefaultDir('blog');
 
-$Controller = new A_Controller_Front($Config->get('APP'), array('', 'error', 'index'));
-$Controller->getMapper()->setDefaultDir('blog');
+$Controller = new A_Controller_Front($Config->get('APP'), array('blog', 'posts', 'index'));
+#$Controller->getMapper()->setDefaultDir('blog');
 // Create and run FC with error action
 #$Controller = new A_Controller_Front($Mapper, array('', 'error', 'index'));
 $Controller->addPreFilter(new A_User_Prefilter_Group($Session, array('blog','user','login')));

@@ -4,7 +4,7 @@
 
 	<?php foreach($content as $article){
 		echo '<div class="post">';
-		echo '<h2 class="post_title"><a href="posts/'. $article['post_id'] . '">' . $article['title'] . '</a></h2>';
+		echo '<h2 class="post_title"><a href="blog/posts/'. $article['post_id'] . '">' . $article['title'] . '</a></h2>';
 		echo '<p class="post_meta">On ' .  $article['post_date'] . ' by ' . $article['username'] . '</p>';
 		echo '<p>' .  $article['excerpt'] . '</p>';
 		echo '<p>' .  $article['content'] . '</p>';

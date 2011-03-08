@@ -31,9 +31,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 -- 
 
-INSERT INTO `users` VALUES (1, 'matt', '', 'matt', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'matt@mail.com', '1', 'post|admin');
-INSERT INTO `users` VALUES (2, 'chris', '', 'chris', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'chris@mail.com', '1', 'post|admin');
-INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'jonah@mail.com', '1', 'post|admin');
+INSERT INTO `users` VALUES (1, 'matt', '', 'matt', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'matt@mail.com', '1', 'post|admin', '');
+INSERT INTO `users` VALUES (2, 'chris', '', 'chris', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'chris@mail.com', '1', 'post|admin', '');
+INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'jonah@mail.com', '1', 'post|admin', '');
 
 -- --------------------------------------------------------
 
@@ -92,8 +92,8 @@ CREATE TABLE `comments` (
 INSERT INTO `comments` 
 (`id`,`author`,`author_email`,`author_url`,`users_id`,`comment_date`,`comment`,`approved` ,`posts_id`)
 VALUES 
-(NULL , 'Matt', 'matt@mail.com', 'mysite.com', '', '2010-02-02 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1'),
-(NULL , 'Mike', 'mike@mail.com', 'mikewebsite.com', '', '2010-02-04 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1');
+(NULL , 'Matt', 'matt@mail.com', 'mysite.com', 0, '2010-02-02 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1'),
+(NULL , 'Mike', 'mike@mail.com', 'mikewebsite.com', 0, '2010-02-04 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1');
 
 -- --------------------------------------------------------
 
