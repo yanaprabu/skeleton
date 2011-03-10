@@ -9,9 +9,14 @@
 
 
 function a_autoload($class) {
+	if (class_exists($class, false)) {
+		return;
+	}
 	$dir = (0 === strpos($class, 'A_')) ? dirname(dirname(__FILE__)) . '/' : '';
 	$path = $dir . str_replace(array('_','\\','-'), array('/','/','_'), $class) . '.php';
-	require $path;
+	if (file_exists($path)) {
+		require $path;
+	}
 }
 
 spl_autoload_register('a_autoload');
