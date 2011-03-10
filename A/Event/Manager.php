@@ -215,7 +215,9 @@ class A_Event_Manager
 	 */
 	protected function loadClass($class) {
 		$file = rtrim($this->_path, '/\\') . '/'. str_replace(array('_','\\','-'), array('/','/','_'), ltrim($class, '\\')) . '.php';
-		if (file_exists($file)) {
+		if (class_exists($class)) {
+			return true;
+		} elseif (file_exists($file)) {
 			require_once($file);
 			return true;
 		} else {
