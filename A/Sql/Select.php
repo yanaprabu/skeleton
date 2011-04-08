@@ -346,7 +346,7 @@ class A_Sql_Select extends A_Sql_Statement {
 		$sql = "SELECT [columns] FROM [tables][joins][having][where][orderby][groupby]";
 		$sql = str_replace(array_keys($this->replace), array_values($this->replace), $sql);
 		
-		if(is_int($this->limit) && $this->limit > 0){ //Limit is handled by DB adapter due to engine differences
+		if (isset($this->db) && is_int($this->limit) && ($this->limit > 0)) { //Limit is handled by DB adapter due to engine differences
 			$sql = $this->db->limit($sql, $this->limit, $this->offset);
 		}
 		

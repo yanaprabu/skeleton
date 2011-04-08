@@ -103,7 +103,7 @@ class A_Sql_Join {
 	}
 
 
-	protected function getTables() {
+	public function getTables() {
 		$tables = array();
 		if ($this->table_right) {
 			$tables[] = $this->table_right;
