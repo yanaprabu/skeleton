@@ -11,7 +11,8 @@ class A_Sql_Expression extends A_Sql_Statement {
 	protected $operators = array('=', '!=', '>', '<', '>=', '<=', '<>', ' IN', ' NOT IN', ' LIKE', ' NOT LIKE');	
 	protected $db;
 	protected $escape = true;
-
+	protected $logic = ' AND ';
+	
 	public function __construct($data, $value=null, $escape=true) {
 		if ($value !== null) {
 			$this->data[$data] = $value;
@@ -21,6 +22,10 @@ class A_Sql_Expression extends A_Sql_Statement {
 		$this->escape = (bool)$escape;
 	}
 		
+	public function setLogic($logic) {
+		$this->logic = ' '.trim($logic).' ';
+	}
+	
 	public function quoteEscape($value) {
 		if (is_numeric($value)) {
 			return $value;
@@ -28,7 +33,6 @@ class A_Sql_Expression extends A_Sql_Statement {
 		$value = $this->db ? $this->db->escape($value) : addslashes($value);
 		return "'" . $value . "'";
 	}
-
 
 	protected function buildExpression($key, $value) {
 		if (is_int($key)) {
@@ -50,12 +54,35 @@ class A_Sql_Expression extends A_Sql_Statement {
 		return $key;
 	}
 	
-	public function render($logic='AND') {
+	public function render($logic='') {
 		if (!is_array($this->data)) {
 			$this->data = array($this->data);
 		}
-		$logic = $logic==',' ? ', ' : ' '.trim($logic).' ';
-		return implode($logic, array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
+		if ($logic) {
+			if ($logic==',') {
+				$logic = ', ';
+			} else {
+				$logic = ' '.trim($logic).' ';
+			}
+		} else {
+			$logic = $this->logic;
+		}
+		$sql = '';
+		$exp = false;
+		foreach ($this->data as $key => $value) {
+			if (is_int($key) && in_array($value, array('AND', 'OR'))) {
+				$sql .= ' '.trim($value).' ';
+				$exp = false;
+			} else {
+				if ($exp) {
+					$sql .= $logic;
+				}
+				$sql .= $this->buildExpression($key, $value);
+				$exp = true;
+			}
+		}
+		return $sql;
+#		return implode($logic, array_map(array($this, 'buildExpression'), array_keys($this->data), array_values($this->data)));
 	}
 
 	public function __toString() {
