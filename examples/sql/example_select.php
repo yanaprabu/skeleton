@@ -5,8 +5,7 @@ $select = new A_Sql_Select();
 $select->columns('foobar as bleh, foo.bar')
 		 ->from(array('foobar', 'foo'))
 		 ->where(array('id >=' => 1, 'foo NOT IN' => array(1,2,3,4,5,6)))
-		 ->orWhere(array('foo > ' => 'bar'))
-		 ->orWhere(array('foo' => 'cheetah'))
+		 ->orWhere(array('foo > ' => 'bar', 'OR', 'foo' => 'cheetah', 'bar' => 'wildebeast'))
 		 ->where('1=1');
 echo "<br>" . $select->render() . '<br/>';
 

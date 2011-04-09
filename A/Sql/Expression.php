@@ -71,8 +71,12 @@ class A_Sql_Expression extends A_Sql_Statement {
 		$exp = false;
 		foreach ($this->data as $key => $value) {
 			if (is_int($key) && in_array($value, array('AND', 'OR'))) {
-				$sql .= ' '.trim($value).' ';
-				$exp = false;
+				if ($exp) {
+					$sql .= ' '.trim($value).' ';
+					$exp = false;
+				} else {
+					echo "IGNORE $value<br/>";
+				}
 			} else {
 				if ($exp) {
 					$sql .= $logic;
