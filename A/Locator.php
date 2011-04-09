@@ -99,7 +99,8 @@ class A_Locator {
 	 * @param string $dir from which to load class
 	 * @param boolean $autoload triggered when class_exists() check done?
 	 * @return unknown
-	 */public function loadClass($class='', $dir='', $autoload=false) {
+	 */
+	public function loadClass($class='', $dir='', $autoload=false) {
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
