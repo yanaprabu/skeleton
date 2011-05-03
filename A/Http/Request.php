@@ -41,7 +41,7 @@ class A_Http_Request {
 	 * @return $this object for fluent interface
 	 */
 	public function allowGetOverPost($allow=true) {
-		return $this->getOverPost = $allow;
+		$this->getOverPost = $allow;
 		return $this;
 	}
 	
