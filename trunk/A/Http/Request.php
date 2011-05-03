@@ -32,8 +32,17 @@ class A_Http_Request {
 		}		
 	}
 
+	/**
+	 * Turn GET over POST mode on/off
+	 * GET over POST mode allows you to receive both POST and GET params on a POST request. 
+	 * Does not apply to GET requests.
+	 * if true then on POST requests, if $_POST[$name] is not set it will return $_GET[$name] 
+	 *
+	 * @return $this object for fluent interface
+	 */
 	public function allowGetOverPost($allow=true) {
 		return $this->getOverPost = $allow;
+		return $this;
 	}
 	
 	public function removeSlashes() {
@@ -134,6 +143,7 @@ class A_Http_Request {
 	}
 
 	public function get($name, $filter=null, $default=null) {
+		// GET over POST mode only checks for $_GET[$name] if method is POST and no $_POST[$name]   
 		if ($this->getOverPost && !isset($this->data[$name]) && $this->method == 'POST') {
 			return $this->_get($_GET, $name, $filter, $default);
 		} else {
