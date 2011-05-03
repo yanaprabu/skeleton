@@ -9,7 +9,7 @@ class Http_RequestTest extends UnitTestCase {
 	}
 	
 	function testHttp_RequestHas() {
-  		$request = new A_Http_Request();
+		$request = new A_Http_Request();
 		$request->data = array('foo'=>'boo', 'bar'=>'far',);
 		
 		$this->assertTrue($request->has('foo'));
@@ -18,7 +18,7 @@ class Http_RequestTest extends UnitTestCase {
 	}
 	
 	function testHttp_RequestGet() {
-  		$request = new A_Http_Request();
+		$request = new A_Http_Request();
 		$request->data = array('foo'=>'boo', 'bar'=>'far',);
 		
 		$this->assertEqual($request->get('foo'), 'boo');
@@ -27,7 +27,7 @@ class Http_RequestTest extends UnitTestCase {
 	}
 	
 	function testHttp_RequestGetFilter() {
-  		$request = new A_Http_Request();
+		$request = new A_Http_Request();
 		$request->data = array('foo'=>'boo', 'bar'=>'far',);
 		
 		// regexp
@@ -46,23 +46,23 @@ class Http_RequestTest extends UnitTestCase {
 	}
 	
 	function testHttp_RequestGetFilterArray() {
-  		$request = new A_Http_Request();
+		$request = new A_Http_Request();
 		$request->data = array('foo'=>'boo', 'bar'=>'far',);
-  		
+		
 		// two filters
 		$this->assertEqual($request->get('bar', array('/[^a-f]/', 'strtoupper')), 'FA');
 	}
 	
 	function testHttp_RequestGetParamArray() {
-  		$request = new A_Http_Request();
+		$request = new A_Http_Request();
 		$request->data = array('foo'=>array('faz'=>'baz', 'bar'=>'far',));
-  		
+		
 		// two filters
 		$this->assertEqual($request->get('foo', 'strtoupper'), array('faz'=>'BAZ', 'bar'=>'FAR',));
 	}
 	
 	function testHttp_RequestGetWithGlobalFilter() {
-  		$request = new A_Http_Request();
+		$request = new A_Http_Request();
 		$request->data = array('foo'=>'boo', 'bar'=>'far',);
 		
 		// regexp
@@ -77,6 +77,37 @@ class Http_RequestTest extends UnitTestCase {
 
 		// call_user_func style
 		$this->assertEqual($request->setFilters(array('/[^a-f]/', $toupper))->get('bar'), 'FA');
-			}
+	}
+	
+	function testHttp_RequestGetOverPost() {
+		foreach ($_GET as $key => $val) {
+			unset($_GET[$key]);
+		}
+		foreach ($_POST as $key => $val) {
+			unset($_POST[$key]);
+		}
+		$_POST['foo'] = 'one';
+		$_GET['bar'] = 'two';
+
+		// try with POST
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$request = new A_Http_Request();
+		
+		// default don't allow GET over POST
+		$this->assertEqual($request->get('foo'), 'one');
+		$this->assertEqual($request->get('bar'), '');
+		$request->allowGetOverPost();
+		$this->assertEqual($request->get('bar'), 'two');
+
+		// try wit GET so we did not break anything
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+		$request = new A_Http_Request();
+		
+		// default don't allow GET over POST
+		$this->assertEqual($request->get('foo'), '');
+		$this->assertEqual($request->get('bar'), 'two');
+		$request->allowGetOverPost();
+		$this->assertEqual($request->get('bar'), 'two');
+	}
 	
 }
