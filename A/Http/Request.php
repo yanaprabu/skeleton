@@ -16,6 +16,7 @@ class A_Http_Request {
 	public $data = array();
 	protected $method = false;
 	protected $filters = array();
+	protected $getOverPost = false;
 	
 	public function __construct() {
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
@@ -31,6 +32,10 @@ class A_Http_Request {
 		}		
 	}
 
+	public function allowGetOverPost($allow=true) {
+		return $this->getOverPost = $allow;
+	}
+	
 	public function removeSlashes() {
 		if (get_magic_quotes_gpc()) { 
 			$input = array(&$_GET, &$_POST, &$_COOKIE, &$_ENV, &$_SERVER); 
@@ -129,7 +134,11 @@ class A_Http_Request {
 	}
 
 	public function get($name, $filter=null, $default=null) {
-		return $this->_get($this->data, $name, $filter, $default);
+		if ($this->getOverPost && !isset($this->data[$name]) && $this->method == 'POST') {
+			return $this->_get($_GET, $name, $filter, $default);
+		} else {
+			return $this->_get($this->data, $name, $filter, $default);
+		}
 	}
 
 	public function getPost($name, $filter=null, $default=null) {
