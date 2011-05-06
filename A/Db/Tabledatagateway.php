@@ -60,8 +60,6 @@ class A_Db_Tabledatagateway {
 	}
 
 	public function find() {
-		$allrows = array();
-
 		$this->select->where();			// clear where clause
 
 		$args = func_get_args();
@@ -81,14 +79,12 @@ class A_Db_Tabledatagateway {
 						->render();
 		$result = $this->db->query($this->sql);
 		if (! $result->isError()) {
-			while ($row = $result->fetchRow()) {
-				$allrows[] = $row;
-			}
-			$this->num_rows = count($allrows);
+			$this->num_rows = $result->numRows();
 		} else {
 			$this->errorMsg = $result->getErrorMsg();
+			$this->num_rows = 0;
 		}
-		return $allrows;
+		return $result;
 	}
 	
 	public function update($data, $where='') {
