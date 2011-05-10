@@ -123,7 +123,6 @@ abstract class A_Db_Recordset_Base implements Iterator
 	public function fetchAll() {
 		$this->_data = array();
 		while ($row = $this->fetchRow()) {
-			echo (bool) $row . "\n";
 			$this->_data[] = $row;
 		}
 		return $this;
