@@ -99,7 +99,8 @@ abstract class A_Db_Recordset_Base implements Iterator
 			++$this->nextRowNum;
 		} else {
 			if ($this->className == self::OBJECT) {
-				$row = (object) $this->_fetch();
+				$row = $this->_fetch();
+				$row = $row ? (object) $row : $row;
 			} elseif (!empty($this->className)) {
 				$row = new $this->className($this->_fetch());
 			} else {
@@ -122,6 +123,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 	public function fetchAll() {
 		$this->_data = array();
 		while ($row = $this->fetchRow()) {
+			echo (bool) $row . "\n";
 			$this->_data[] = $row;
 		}
 		return $this;
