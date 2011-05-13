@@ -24,7 +24,7 @@ class A_Controller_Helper_Load {
 							'model'=>'models/', 
 							'template'=>'templates/', 
 							'view'=>'views/', 
-							'class'=>'',
+							'lib'=>'libs/',
 							);
 	protected $action = null;
 	protected $method = null;
@@ -33,7 +33,7 @@ class A_Controller_Helper_Load {
 							'model'=>'Model', 
 							'view'=>'View', 
 							'helper'=>'Helper', 
-							'class'=>'', 
+							'lib'=>'', 
 							);
 	protected $rendererTypes = array('view', 'template');
 	protected $scope;
