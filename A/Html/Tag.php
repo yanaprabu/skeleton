@@ -20,6 +20,11 @@ class A_Html_Tag {
 			$attr = array_merge($this->_attr, $attr);
 		}
 	}
+
+	public function import($data) {
+		$this->_attr = array_merge($this->_attr, $data);
+		return $this;
+	}
 	
 	public function defaultAttr(&$attr, $defaults=array()) {
 		foreach($defaults as $key => $value) {
