@@ -57,5 +57,9 @@ class A_Model_Form_Field extends A_Model_Field {
 		
 		return $this->value;
 	}
+	
+	public function __toString() {
+		return $this->render();
+	}
 
 }
