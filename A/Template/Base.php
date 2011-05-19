@@ -20,6 +20,8 @@ abstract class A_Template_Base {
 		}
 	}
 	
+	abstract public function render();
+	
 	public function setTemplate($template) {
 		$this->template = $template;
 		return $this;
@@ -98,6 +100,19 @@ abstract class A_Template_Base {
 
 	public function __toString() {
 		return $this->render();
+	}
+	
+	protected function renderedData() {
+		$data = array();
+		foreach ($this->data as $key => $value) {
+			if (is_object($value) && method_exists($value, 'render')) {
+				echo $key;
+				$data[$key] = $value->render();
+			} else {
+				$data[$key] = $value;
+			}
+		}
+		return $data;
 	}
 
 }
