@@ -46,7 +46,8 @@ class A_Model_Form_Field extends A_Model_Field {
 			// set name and value in array passed to renderer
 			$this->type['name'] = $this->name;
 			$this->type['value'] = $this->value;
-			return $this->renderer->render($this->type);
+			$this->renderer->import($this->type);
+			return $this->renderer->render();
 		}
 		
 		// restore type
