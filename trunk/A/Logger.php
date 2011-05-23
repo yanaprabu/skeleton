@@ -12,7 +12,8 @@
  *
  * Log to file or provided writer object
  */
-class A_Logger {
+class A_Logger
+{
 	protected $buffer = '';
 	protected $template = "{datetime} - {message}\n";
 	protected $writers = array();
@@ -25,7 +26,8 @@ class A_Logger {
 	 * @param $writer - filename (will create A_Logger_File($writer)) or array of writer objects
 	 * @param $level  - level to log messages
 	 */
-	public function __construct($writers=array(), $level=0) {
+	public function __construct($writers=array(), $level=0)
+	{
 		if ($writers) {
 			if (is_array($writers)) {
 				foreach($writers as $writer) {
@@ -41,7 +43,8 @@ class A_Logger {
 	/**
 	 * @param $writer - filename (will create A_Logger_File($writer)) or array of writer objects
 	 */
-	public function addWriter($writer) {
+	public function addWriter($writer)
+	{
 		if (is_string($writer)) {
 			$this->writers[] = new A_Logger_File($writer);
 		} elseif (is_object($writer)) {
@@ -53,7 +56,8 @@ class A_Logger {
 	/**
 	 * @param $template - string containing the {datetime} and {message} tags for replacement
 	 */
-	public function setTemplate($template) {
+	public function setTemplate($template)
+	{
 		$this->template = $template;
 		return $this;
 	}
@@ -61,7 +65,8 @@ class A_Logger {
 	/**
 	 * @param $level  - maximum level at or below which messages will be written to log
 	 */
-	public function setLevel($level) {
+	public function setLevel($level)
+	{
 		$this->level = $level;
 		return $this;
 	}
@@ -69,7 +74,8 @@ class A_Logger {
 	/**
 	 * @param $autoWrite  - set whether unwritten log messages arewritten on destruct
 	 */
-	public function setAutoWrite($autoWrite) {
+	public function setAutoWrite($autoWrite)
+	{
 		$this->autoWrite = $autoWrite;
 		return $this;
 	}
@@ -79,7 +85,8 @@ class A_Logger {
 	 * 
 	 * @param $level  - level to log messages
 	 */
-	public function isLoggable($level) {
+	public function isLoggable($level)
+	{
 		return $level <= $this->level;
 	}
 	
@@ -87,7 +94,8 @@ class A_Logger {
 	 * @param $message - string to write to log
 	 * @param $level   - level to log messages
 	 */
-	public function log($message, $level=0) {
+	public function log($message, $level=0)
+	{
 		$this->levels[$this->nMessages] = $level;
 		$this->messages[$this->nMessages] = str_replace(array('{datetime}', '{message}') , array(date('Y-m-d H:i:s'), $message), $this->template);
 		++$this->nMessages;
@@ -98,7 +106,8 @@ class A_Logger {
 	/**
 	 * Remove previous messages from all logs
 	 */
-	public function clear() {
+	public function clear()
+	{
 		foreach ($this->writers as $writer) {
 			$writer->clear();
 		}
@@ -107,7 +116,8 @@ class A_Logger {
 	/**
 	 * @param $message - optional message to log
 	 */
-	public function write($level=null) {
+	public function write($level=null)
+	{
 		if ($this->writers) {
 			if ($level !== null) {
 				$this->level = $level;
@@ -132,18 +142,20 @@ class A_Logger {
 	/**
 	 * Return current error message
 	 */
-	public function getErrorMsg() {
+	public function getErrorMsg()
+	{
 		return $this->errorMsg;
 	}
 	
 	/**
 	 * Return current error message
 	 */
-	public function __destruct() {
+	public function __destruct()
+	{
 		if ($this->autoWrite && !$this->written) {
 			$this->write();
 		}
 	}
-	
+
 }
 
