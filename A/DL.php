@@ -10,23 +10,26 @@
 /**
  * A_DL
  *
- * Encapsulate a path, class, and method into an objectZ
+ * Encapsulate a path, class, and method into an object
  */
-class A_DL {
+class A_DL
+{
 	public $dir = '';
 	public $class = '';
 	public $method = '';
 	public $args = null;
 	public $instance = null;
 
-	public function __construct($dir, $class, $method, $args=null) {
+	public function __construct($dir, $class, $method, $args=null)
+	{
 		$this->dir = $dir;
 		$this->class = $class;
 		$this->method = $method;
 		$this->args = $args;
 	}
 
-	public function run($locator) {
+	public function run($locator)
+	{
 		if ($this->method) {
 			$method = $this->method;
 
@@ -42,9 +45,10 @@ class A_DL {
 
 }
 
-class A_DLInstance extends A_DL {
-
-	public function __construct($object, $method) {
+class A_DLInstance extends A_DL
+{
+	public function __construct($object, $method)
+	{
 		$this->instance = $object;
 		$this->method = $method;
 	}
