@@ -21,7 +21,8 @@
 /**
  * A_DataContainer
  */
-class A_DataContainer implements Iterator {
+class A_DataContainer implements Iterator
+{
 	protected $_data = array();
 
 	/*
@@ -30,11 +31,12 @@ class A_DataContainer implements Iterator {
 	 * @access public
 	 * @param array $source
 	 */
-	public function __construct($source=null) {
+	public function __construct($source=null)
+	{
 		if ($source) {
 			$this->_expand($this, $source);
 		}
-    }
+	}
 
 	/*
 	 * import
@@ -43,14 +45,15 @@ class A_DataContainer implements Iterator {
 	 * @param array $source, string $node
 	 * @return integer
 	 */
-    public function import($source, $node='') {
+	public function import($source, $node='')
+	{
 		if ($source) {
 			if ($node) {
 				$source = array($node => $source);
 			}
 			$this->_expand($this, $source);
 		}
-    }
+	}
 
 	/*
 	 * _expand
@@ -59,7 +62,8 @@ class A_DataContainer implements Iterator {
 	 * @param object $obj, array $data
 	 * @return integer
 	 */
-    protected function _expand($obj, $data) {
+	protected function _expand($obj, $data)
+	{
 		if (isset($data)) {
 			foreach ($data as $key => $value) {
 				if (is_array($value)) {
@@ -72,7 +76,7 @@ class A_DataContainer implements Iterator {
 				}
 			}
 		}
-    }
+	}
 
 	/*
 	 * set
@@ -81,7 +85,8 @@ class A_DataContainer implements Iterator {
 	 * @param string $key, mixed $value
 	 * @return integer
 	 */
-    public function set($key, $value=null) {
+	public function set($key, $value=null)
+	{
         if ($key) {
 			if ($value !== null) {
 				$this->_data[$key] = $value;
@@ -90,7 +95,7 @@ class A_DataContainer implements Iterator {
 			}
         }
         return $this;
-    }
+	}
 
 	/*
 	 * get
@@ -99,9 +104,10 @@ class A_DataContainer implements Iterator {
 	 * @param string $key, string $default
 	 * @return integer
 	 */
-    public function get($key, $default=null) {
-        return isset($this->_data[$key]) ? ($this->_data[$key] instanceof A_DataContainer ? $this->_data[$key]->_data : $this->_data[$key]) : $default;
-    }
+	public function get($key, $default=null)
+	{
+		return isset($this->_data[$key]) ? ($this->_data[$key] instanceof A_DataContainer ? $this->_data[$key]->_data : $this->_data[$key]) : $default;
+	}
 
 	/*
 	 * has
@@ -110,9 +116,10 @@ class A_DataContainer implements Iterator {
 	 * @param string $key
 	 * @return integer
 	 */
-    public function has($key) {
-        return isset($this->_data[$key]);
-    }
+	public function has($key)
+	{
+		return isset($this->_data[$key]);
+	}
 
 	/*
 	 * __set
@@ -121,11 +128,12 @@ class A_DataContainer implements Iterator {
 	 * @param string $key, mixed $value
 	 * @return integer
 	 */
-    public function __set($key, $value=null) {
-        if ($key) {
-	       	$this->_data[$key] = $value;
-        }
-    }
+	public function __set($key, $value=null)
+	{
+		if ($key) {
+			$this->_data[$key] = $value;
+		}
+	}
 
 	/*
 	 * __get
@@ -134,9 +142,10 @@ class A_DataContainer implements Iterator {
 	 * @param string $key
 	 * @return integer
 	 */
-    public function __get($key) {
-        return isset($this->_data[$key]) ? $this->_data[$key] : null;
-    }
+	public function __get($key)
+	{
+		return isset($this->_data[$key]) ? $this->_data[$key] : null;
+	}
 
 	/*
 	 * rewind
@@ -145,9 +154,10 @@ class A_DataContainer implements Iterator {
 	 * @param 
 	 * @return integer
 	 */
-    public function toArray() {
-        return $this->_data;
-    }
+	public function toArray()
+	{
+		return $this->_data;
+	}
 
 	/*
 	 * rewind
@@ -156,9 +166,10 @@ class A_DataContainer implements Iterator {
 	 * @param 
 	 * @return integer
 	 */
-    public function rewind() {
-        reset($this->_data);
-    }
+	public function rewind()
+	{
+		reset($this->_data);
+	}
 
 	/*
 	 * current
@@ -167,9 +178,10 @@ class A_DataContainer implements Iterator {
 	 * @param 
 	 * @return integer
 	 */
-    public function current() {
-        return current($this->_data);
-    }
+	public function current()
+	{
+		return current($this->_data);
+	}
 
 	/*
 	 * key
@@ -178,9 +190,10 @@ class A_DataContainer implements Iterator {
 	 * @param 
 	 * @return integer
 	 */
-    public function key() {
-        return key($this->_data);
-    }
+	public function key()
+	{
+		return key($this->_data);
+	}
 
 	/*
 	 * next
@@ -189,9 +202,10 @@ class A_DataContainer implements Iterator {
 	 * @param 
 	 * @return integer
 	 */
-    public function next() {
-        return next($this->_data);
-    }
+	public function next()
+	{
+		return next($this->_data);
+	}
 
 	/*
 	 * valid
@@ -200,8 +214,10 @@ class A_DataContainer implements Iterator {
 	 * @param 
 	 * @return integer
 	 */
-    public function valid() {
-        return current($this->_data) !== false;
-    }
+	public function valid()
+	{
+		return current($this->_data) !== false;
+	}
+	
 }
 
