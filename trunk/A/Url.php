@@ -13,7 +13,8 @@
  * This class provides various functions with which to create, manipulate, and
  * read URLs
  */
-class A_Url {
+class A_Url
+{
 	protected $action_param = '';
 	
 	/**
@@ -21,7 +22,8 @@ class A_Url {
 	 *
 	 * @param string $action_param
 	 */
-	public function __construct($action_param='') {
+	public function __construct($action_param='')
+	{
 		$this->action_param = $action_param;
 	}
 	
@@ -31,7 +33,8 @@ class A_Url {
 	 * @param string $action_param
 	 * @return A_Url This object instance
 	 */
-	public function setActionParam($action_param) {
+	public function setActionParam($action_param)
+	{
 		$this->action_param = $action_param;
 		return $this;
 	}
@@ -41,7 +44,8 @@ class A_Url {
 	 *
 	 * @return string The current action parameter
 	 */
-	public function getActionParam() {
+	public function getActionParam()
+	{
 		return $this->action_param;
 	}
 	
@@ -50,7 +54,8 @@ class A_Url {
 	 *
 	 * @return string The protocol of the URL
 	 */
-	public function getProtocol() {
+	public function getProtocol()
+	{
 		if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
 			return 'https';
 		} else {
@@ -66,7 +71,8 @@ class A_Url {
 	 * @param string $protocol The protocol for the URL (optional)
 	 * @return string All parameters merged into a valid URL
 	 */
-	public function getBaseUrl ($page='', $server='', $protocol='') {
+	public function getBaseUrl($page='', $server='', $protocol='')
+	{
 		if (! $page) {
 			$page = $_SERVER['SCRIPT_NAME'];
 		}
@@ -86,7 +92,8 @@ class A_Url {
 	 * @param array $params (optional)
 	 * @return string HTTP data in the form of a query
 	 */
-	public function getParams ($params=array()) {
+	public function getParams ($params=array())
+	{
 		if ($params) {
 			if (is_array($params)) {
 /*
@@ -113,7 +120,8 @@ class A_Url {
 	 * @param string $protocol The protocol to put the URL in (optional)
 	 * @return string Valid fully constructed URL
 	 */
-	public function getUrl($params=array(), $page='', $server='', $protocol='') {
+	public function getUrl($params=array(), $page='', $server='', $protocol='')
+	{
 		return $this->getBaseUrl($page, $server, $protocol) . '?' . $this->getParams($params);
 	}
 	
@@ -127,9 +135,10 @@ class A_Url {
 	 * @param string $protocol The protocol to put the URL in (optional)
 	 * @return string Valid fully constructed URL
 	 */
-	public function getCleanUrl($action, $params=array(), $page='', $server='', $protocol='') 	{
+	public function getCleanUrl($action, $params=array(), $page='', $server='', $protocol='')
+	{
 		$params[$this->action_param] = $action;
 		return $this->getUrl($params, $page, $server, $protocol);
 	}
-	
+
 }
