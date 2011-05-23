@@ -36,6 +36,11 @@ class A_Application
 		$this->exception = $exception;
 	}
 	
+	/**
+	 * Execute the controller(s) and render the response.
+	 * 
+	 * @return rendered response
+	 */
 	public function run()
 	{
 		if (!$this->includePath) $this->setPath($_SERVER['DOCUMENT_ROOT']);
@@ -50,6 +55,11 @@ class A_Application
 		return $this->component('Response')->render();           
 	}
 	
+	/**
+	 * Get the specified regisetered component
+	 * 
+	 * @param string $component Component name to get
+	 */
 	public function component($component)
 	{
 		if (!isset($this->components[$component])) {
@@ -61,12 +71,20 @@ class A_Application
 		return $this->components[$component];
 	}
 	
+	/**
+	 * Create and return a new configuration object with the set internal config file path, and loads the config file
+	 * 
+	 * @param string $component Class of configuration object
+	 */
 	public function initConfig($component)
 	{
 		$config = new $component($this->configPath[0], $this->configPath[1]);
 		return $config->loadFile();
 	}
-
+	
+	/**
+	 * 
+	 */
 	public function initMapper($component)
 	{
 		$config = $this->component('Config');
@@ -74,6 +92,11 @@ class A_Application
 		return new $component($config->applicationPath, $defaultAction);
 	}
 	
+	/**
+	 * Create and return a new front controller
+	 * 
+	 * @param string $component Class of front controller
+	 */
 	public function initFront($component)
 	{
 		$mapper = $this->component('Mapper');
@@ -81,7 +104,12 @@ class A_Application
 		$defaultAction = new A_DL('', $config->errorController, $config->errorAction);
 		return new $component($mapper, $defaultAction);
 	}
-
+	
+	/**
+	 * Create and return a new session object
+	 * 
+	 * @param string $component Class of session object
+	 */
 	public function initSession($component)
 	{
 		$session = new $component('A');
@@ -103,6 +131,13 @@ class A_Application
 		return false;
 	}
 	
+	/**
+	 * 
+	 * Enter description here ...
+	 * @param unknown_type $component
+	 * @param unknown_type $object
+	 * @param unknown_type $register
+	 */
 	public function set($component, $object, $register = true)
 	{
 		if (is_string($object)) $this->load($component);
@@ -110,6 +145,11 @@ class A_Application
 		return $this;
 	}
 
+	/**
+	 * Set the include path
+	 * 
+	 * @param string $path
+	 */
 	public function setPath($path)
 	{
 		$this->includePath = $path;
