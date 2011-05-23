@@ -13,11 +13,12 @@
  * 
  * Standard _data class that has get/set/has, iterator and array access
  */
-class A_Collection implements Iterator, ArrayAccess	{
-	
+class A_Collection implements Iterator, ArrayAccess
+{
 	protected $_data = array();
 	
-	public function __construct($_data = array())	{
+	public function __construct($_data = array())
+	{
 		$this->_data = $_data;
 	}
 	
@@ -28,14 +29,15 @@ class A_Collection implements Iterator, ArrayAccess	{
 	 * @param array $source, string $node
 	 * @return integer
 	 */
-    public function import($source, $node='') {
+	public function import($source, $node='')
+	{
 		if ($source) {
 			if ($node) {
 				$source = array($node => $source);
 			}
 			$this->_expand($this, $source);
 		}
-    }
+	}
 
 	/*
 	 * _expand
@@ -44,7 +46,8 @@ class A_Collection implements Iterator, ArrayAccess	{
 	 * @param object $obj, array $data
 	 * @return integer
 	 */
-    protected function _expand($obj, $data) {
+	protected function _expand($obj, $data)
+	{
 		if (isset($data)) {
 			foreach ($data as $key => $value) {
 				if (is_array($value)) {
@@ -57,13 +60,15 @@ class A_Collection implements Iterator, ArrayAccess	{
 				}
 			}
 		}
-    }
+	}
 
-	public function get($key)	{
+	public function get($key)
+	{
 		return isset($this->_data[$key]) ? $this->_data[$key] : null;
 	}
 	
-	public function set($key, $value, $default=null) {
+	public function set($key, $value, $default=null)
+	{
 		if ($value !== null) {
 			$this->_data[$key] = $value;
 		} elseif ($default !== null) {
@@ -74,59 +79,74 @@ class A_Collection implements Iterator, ArrayAccess	{
 		return $this;
 	}
 	
-	public function __get($key)	{
+	public function __get($key)
+	{
 		return $this->get($key);
 	}
 	
-	public function __set($key, $value)	{
+	public function __set($key, $value)
+	{
 		return $this->set($key, $value);
 	}
 	
-	public function add($key, $value)	{
+	public function add($key, $value)
+	{
 		return $this->set($key, $value);
 	}
 	
-	public function remove($key)	{
-		if($this->has($key)) unset($this->_data[$key]);
+	public function remove($key)
+	{
+		if($this->has($key))
+			unset($this->_data[$key]);
 	}
 	
-	public function count()	{
+	public function count()
+	{
 		return count($this->_data);
 	}
 	
-	public function slice($offset, $length)	{
+	public function slice($offset, $length)
+	{
 		return new A_Collection(array_slice($this->_data, $offset, $length, true));
 	}
 	
-	public function reverse()	{
+	public function reverse()
+	{
 		return new A_Collection(array_reverse($this->_data, true));
 	}
 	
-	public function has($key)	{	
+	public function has($key)
+	{	
 		return isset($this->_data[$key]);
 	}
 	
-	public function current()	{
+	public function current()
+	{
 		return current($this->_data);
 	}
 	
-	public function key()	{
+	public function key()
+	{
 		return key($this->_data);
 	}
 	
-	public function next()	{
+	public function next()
+	{
 		next($this->_data);
 	}
 	
-	public function rewind()	{
+	public function rewind()
+	{
 		reset($this->_data);
 	}
 	
-	public function valid()	{
+	public function valid()
+	{
 		return current($this->_data) !== false;
 	}
 	
-	public function toArray()	{
+	public function toArray()
+	{
 		return $this->_data;
 	}
 	
@@ -135,11 +155,13 @@ class A_Collection implements Iterator, ArrayAccess	{
 	 * 
 	 */	 
 	
-	public function join($glue)	{
+	public function join($glue)
+	{
 		return join($glue, $this->_data);
 	}
 	
-	public function order($sorter)	{
+	public function order($sorter)
+	{
 		uasort($this->_data, array($sorter, 'compare'));
 	}
 	
@@ -149,27 +171,33 @@ class A_Collection implements Iterator, ArrayAccess	{
 	}
 */
 	
-	public function toString($glue)	{
+	public function toString($glue)
+	{
 		return $this->join($glue);
 	}
 	
-	public function __toString()	{
+	public function __toString()
+	{
 		return $this->toString(',');
 	}
 	
-	public function offsetExists($offset)	{
+	public function offsetExists($offset)
+	{
 		return $this->has($offset);
 	}
 	
-	public function offsetGet($offset)	{
+	public function offsetGet($offset)
+	{
 		return $this->get($offset);
 	}
 	
-	public function offsetSet($offset, $value)	{
+	public function offsetSet($offset, $value)
+	{
 		return $this->add($offset, $value);
 	}
 	
-	public function offsetUnset($offset)	{
+	public function offsetUnset($offset)
+	{
 		return $this->remove($offset);
 	}
 	
