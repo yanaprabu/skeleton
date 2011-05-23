@@ -12,7 +12,8 @@
  *
  * Basic simple and multipart email functionality
  */
-class A_Email {
+class A_Email
+{
 	protected $connection;
 	protected $subject = '';
 	protected $message = '';
@@ -26,11 +27,11 @@ class A_Email {
 	protected $errorMsg = '';
 	protected $mailer;
 	
-	
 	/**
 	 *  
 	 **/
-	public function __construct($connection=null, $mailer='') {
+	public function __construct($connection=null, $mailer='')
+	{
 		if ($connection == null) {
 			$this->connection = new A_Email_Phpmail();
 		} else {
@@ -39,42 +40,50 @@ class A_Email {
 		$this->mailer = $mailer ? $mailer : 'A_Email_Multipart';
 	}
 	
-	public function setSubject($value) {
+	public function setSubject($value)
+	{
 		$this->subject = $value;
 		return $this;
 	}
 	
-	public function setMessage($value) {
+	public function setMessage($value)
+	{
 		$this->message = $value;
 		return $this;
 	}
 	
-	public function setTo($address, $name='') {
+	public function setTo($address, $name='')
+	{
 		$this->to = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
-	public function setFrom($address, $name='') {
+	public function setFrom($address, $name='')
+	{
 		$this->from = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
-	public function setReplyto($address, $name='') {
+	public function setReplyto($address, $name='')
+	{
 		$this->replyto = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
-	public function setCC($address, $name='') {
+	public function setCC($address, $name='')
+	{
 		$this->cc = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
-	public function setBCC($address, $name='') {
+	public function setBCC($address, $name='')
+	{
 		$this->bcc = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
-	public function addHeaders($value) {
+	public function addHeaders($value)
+	{
 		if (substr($value, -1, 2) == "\r\n") {
 			$value .= "\r\n";
 		}
@@ -82,7 +91,8 @@ class A_Email {
 		return $this;
 	}
 	
-	public function send($from='', $to='', $subject='', $message='') {
+	public function send($from='', $to='', $subject='', $message='')
+	{
 		if ($from) $this->from = $from;
 		if ($to) $this->to = $to;
 		if ($subject) $this->subject = $subject;
@@ -104,7 +114,8 @@ class A_Email {
 	/**
 	 *  build routing part of email address
 	 **/
-	public function buildHeaders() { 
+	public function buildHeaders()
+	{ 
 		$headers = array();
 		if($this->from){
 			$headers[] = 'From: ' . $this->from;
@@ -130,7 +141,8 @@ class A_Email {
 	/**
 	 *  build named email address in form: "Name" <email@email.com>
 	 **/
-	public function addressNamed($address, $name) { 
+	public function addressNamed($address, $name)
+	{ 
 		if(empty($name)){
 			$email = $address; 
 		}else{
@@ -143,7 +155,8 @@ class A_Email {
 	/**
 	 *  
 	 **/
-	public function addressValidateEreg($address) { 
+	public function addressValidateEreg($address)
+	{ 
 		if ($address) {
 			return (ereg ('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+' . '@' . '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.' . '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$', $address) ); 
 		} else {
@@ -153,16 +166,18 @@ class A_Email {
 
 }
 
-
-class A_Email_Phpmail {
+class A_Email_Phpmail
+{
 	protected $error = 0;
 	
-	public function send($to='', $subject='', $message='', $headers='') {
+	public function send($to='', $subject='', $message='', $headers='')
+	{
 		$this->error = mail($to, $subject, $message, $headers);
 		return $this->error;
 	}
 
-	public function getErrorMsg() {
+	public function getErrorMsg()
+	{
 		return $this->error ? "Send error {$this->error} using mail. " : '';
 	}
 
