@@ -15,7 +15,8 @@
  * @package A
  */
 
-class A_Template {
+class A_Template
+{
 	protected $template = '';
 	protected $data = array();
 	protected $filename = '';
@@ -26,7 +27,8 @@ class A_Template {
 	 * @param string $filename Name of the file (optional)
 	 * @param array $data Data to pass (optional)
 	 */
-	public function __construct($filename='', $data=array()) {
+	public function __construct($filename='', $data=array())
+	{
 		$this->filename = $filename;
 		if ($data) {
 			$this->import($data);
@@ -39,7 +41,8 @@ class A_Template {
 	 * @param mixed $template ???
 	 * @return A_Template This object instance
 	 */
-	public function setTemplate($template) {
+	public function setTemplate($template)
+	{
 		$this->template = $template;
 		return $this;
 	}
@@ -50,7 +53,8 @@ class A_Template {
 	 * @param mixed $filename ???
 	 * @return A_Template This object instance
 	 */
-	public function setFilename($filename) {
+	public function setFilename($filename)
+	{
 		$this->filename = $filename;
 		return $this;
 	}
@@ -60,7 +64,8 @@ class A_Template {
 	 *
 	 * @return A_Template This object instance
 	 */
-	public function clear() {
+	public function clear()
+	{
 		$this->data = array();
 		return $this;
 	}
@@ -72,7 +77,8 @@ class A_Template {
 	 * @param string $block ??? (optional)
 	 * @return string ???
 	 */
-	public function renderArray($array, $block='') {
+	public function renderArray($array, $block='')
+	{
 	   	$str = '';
 	   	foreach ($array as $key1 => $value1) {
 	   		if (is_array($value1)) {
@@ -96,7 +102,8 @@ class A_Template {
 	 * @param mixed $name ???
 	 * @return mixed That key stored in $data if it exists
 	 */
-	public function get($name) {
+	public function get($name)
+	{
 		return (isset($this->data[$name]) ? $this->data[$name] : null);
 	}
 	
@@ -107,7 +114,8 @@ class A_Template {
 	 * @param mixed $value Value to insert
 	 * @return A_Template This object instance
 	 */
-	public function set($name, $value) {
+	public function set($name, $value)
+	{
 		if ($value !== null) {
 			$this->data[$name] = $value;
 		} else {
@@ -122,7 +130,8 @@ class A_Template {
 	 * @param mixed $data Data to import
 	 * @return A_Template This object instance
 	 */
-	public function import($data) {
+	public function import($data)
+	{
 		$this->data = array_merge($this->data, $data);
 		return $this;
 	}
@@ -133,7 +142,8 @@ class A_Template {
 	 * @param mixed $name Key to check for existance
 	 * @return boolean True if it is set, otherwise false
 	 */
-	public function has($name) {
+	public function has($name)
+	{
 		return isset($this->data[$name]);
 	}
 	
@@ -142,7 +152,8 @@ class A_Template {
 	 *
 	 * @return string ???
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->render();
 	}
 
