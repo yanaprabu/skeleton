@@ -12,9 +12,10 @@
  *
  * Instantiation of exception objects 
  */
-class A_Exception {
-
-	public function getInstance($class_or_obj, $message) {
+class A_Exception
+{
+	public function getInstance($class_or_obj, $message)
+	{
 		$obj = null;
 		if (is_string($class_or_obj)) {
 			if (! class_exists($class_or_obj)) {
