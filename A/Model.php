@@ -12,7 +12,8 @@
  *
  * Base class for Models with filtering and validation
  */
-class A_Model {
+class A_Model
+{
 	protected $datasource = null;	// should be an array() of datasources?
 	protected $fields = array();
 	protected $filters = array();
@@ -23,7 +24,8 @@ class A_Model {
 	protected $errorMsg = array();
 	protected $error = false;
 
-	public function addField($objects){
+	public function addField($objects)
+	{
         if(is_array($objects)){
             foreach($objects as $object){
                 $this->fields[$object->name] = $object;
@@ -33,7 +35,8 @@ class A_Model {
         }   
     }
 	
-	public function addFilter($filter, $fields=array()) {
+	public function addFilter($filter, $fields=array())
+	{
 		if ($fields) {
 			if (! is_array($fields)) {
 				$fields = array($fields);
@@ -59,7 +62,8 @@ class A_Model {
 		return $this;
 	}
 	
-	public function addRule($rule, $fields=array()) {
+	public function addRule($rule, $fields=array())
+	{
 		if ($fields) {
 			if (! is_array($fields)) {
 				$fields = array($fields);
@@ -93,64 +97,74 @@ class A_Model {
 		return $this;
 	}
 	
-	public function excludeRules($rules=array()) {
+	public function excludeRules($rules=array())
+	{
 		$this->excludeRules = $rules;
 		return $this;
 	}
 	
-	public function includeRules($rules=array()){
+	public function includeRules($rules=array())
+	{
 		$this->includeRules = $rules;
 		return $this;
 	}
 	
-	public function newField($name) {
+	public function newField($name)
+	{
 		if (! isset($this->fields[$name])) {
 			$this->fields[$name] = new $this->fieldClass($name);
 		}
 		return $this->fields[$name];
 	}
 	
-	public function getField($name, $new=true) {
+	public function getField($name, $new=true)
+	{
 		if (isset($this->fields[$name])) {
 			return $this->fields[$name];
 		}
 	}
 	
-	function getRules() {
+	function getRules()
+	{
 		return $this->rules;
 	}
 	
-	function getFilters() {
+	function getFilters()
+	{
 		return $this->filters;
 	}
 	
-	function getFields() {
+	function getFields()
+	{
 		return $this->fields;
 	}
 	
-	public function set($name, $value, $default=null) {
+	public function set($name, $value, $default=null)
+	{
 		if (isset($this->fields[$name])) {
 			if ($value !== null) {
 				$this->fields[$name]->value = $value;
 			} else {
 				$this->fields[$name]->value = $default;
-#				unset($this->fields[$name]);
 			}
 		}
 		return $this;
 	}
 	
-	public function get($name) {
+	public function get($name)
+	{
 		if (isset($this->fields[$name]->value)) {
 			return $this->fields[$name]->value;
 		}
 	}
 
-	public function has($name) {
+	public function has($name)
+	{
 		return isset($this->fields[$name]);
 	}
 
-	public function getFieldNames() {
+	public function getFieldNames()
+	{
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {
 			$data[$field] = $this->fields[$field]->name;
@@ -158,7 +172,8 @@ class A_Model {
 		return $data;
 	}
 
-	public function getSourceNames() {
+	public function getSourceNames()
+	{
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {
 			$data[$field] = $this->fields[$field]->source_name ? $this->fields[$field]->source_name : $data[$field] = $this->fields[$field]->name;
@@ -166,7 +181,8 @@ class A_Model {
 		return $data;
 	}
 
-	public function getFieldVarArray($var) {
+	public function getFieldVarArray($var)
+	{
 		if ($var) {
 			$data = array();
 			foreach (array_keys($this->fields) as $field) {
@@ -176,11 +192,13 @@ class A_Model {
 		}
 	}
 
-	public function getValues() {
+	public function getValues()
+	{
 		return $this->getFieldVarArray('value');
 	}
 	
-	public function getSaveValues() {
+	public function getSaveValues()
+	{
 		$data = array();
 		foreach (array_keys($this->fields) as $field) {
 			if ($this->fields[$field]->save) {
@@ -190,8 +208,8 @@ class A_Model {
 		return $data;
 	}
 
-	public function isValid($datasource=null) {
-
+	public function isValid($datasource=null)
+	{
 		$filterchain = new A_Filter_Set();
 		$validator = new A_Rule_Set();
 		$validator->excludeRules($this->excludeRules);
@@ -266,12 +284,13 @@ class A_Model {
 			}
 		
 		}
-			
+		
 		return ! $this->error;
 	}
 	
 	
-	public function save() {
+	public function save()
+	{
 		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
 			$this->datasource->save($this->getFieldVarArray('value'));
 			// error messages and return value?
@@ -279,11 +298,13 @@ class A_Model {
 	}
 
 	
-	public function isError() {
+	public function isError()
+	{
 		return $this->error;
 	}
 	
-	public function getErrorMsg($separator=null) {
+	public function getErrorMsg($separator=null)
+	{
 		$data = $this->errorMsg;
 		foreach (array_keys($this->fields) as $field) {
 			if ($this->fields[$field]->isError()) {
@@ -293,7 +314,8 @@ class A_Model {
 		return $separator === null ? $data : implode($separator, $data);
 	}
 
-	public function setErrorMsg($name, $errorMsg) {
+	public function setErrorMsg($name, $errorMsg)
+	{
 		if (isset($this->fields[$name])) {
 			$this->fields[$name]->setErrorMsg($errorMsg);
 		} else {
@@ -301,7 +323,8 @@ class A_Model {
 		}
 	}
 
-	public function addErrorMsg($name, $errorMsg) {
+	public function addErrorMsg($name, $errorMsg)
+	{
 		if(isset($this->fields[$name])){
 			$this->fields[$name]->addErrorMsg($errorMsg);
 		} else {
