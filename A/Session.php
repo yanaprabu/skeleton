@@ -12,7 +12,8 @@
  *
  * This class provides various utility functions pertaining to the user session
  */
-class A_Session {
+class A_Session
+{
 	protected $_data = array();
 	protected $_a_namespace = 'A_Session';
 	protected $_namespace;
@@ -26,7 +27,8 @@ class A_Session {
 	 * @param mixed $namespace ??? (optional)
 	 * @param mixed $regenerate ??? (optional)
 	 */
-	public function __construct($namespace=null, $regenerate=false) {
+	public function __construct($namespace=null, $regenerate=false)
+	{
 		$this->initNamespace($namespace);
 		$this->_regenerate = $regenerate;
 	}
@@ -37,7 +39,8 @@ class A_Session {
 	 * @param mixed $namespace ??? (optional)
 	 * @return null
 	 */
-	public function initNamespace($namespace=null) {
+	public function initNamespace($namespace=null)
+	{
 		if ($namespace) {
 			$this->_namespace = $namespace;
 		}
@@ -83,7 +86,8 @@ class A_Session {
 	 *
 	 * @param string $policy ??? (optional)
 	 */
-	public function setP3P($policy='P3P: CP="CAO PSA OUR"') {
+	public function setP3P($policy='P3P: CP="CAO PSA OUR"')
+	{
 		$this->_p3p = $policy;
 	}
 	
@@ -92,7 +96,8 @@ class A_Session {
 	 *
 	 * @return null
 	 */
-	public function start() {
+	public function start()
+	{
 		if (session_id() == '') {
 			$msie = isset($_SERVER['HTTP_USER_AGENT']) ? strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE') : '';
 			if ($msie) {
@@ -115,7 +120,8 @@ class A_Session {
 	 * @param mixed $name ???
 	 * @param mixed $default ??? (optional)
 	 */
-	public function get($name, $default=null) {
+	public function get($name, $default=null)
+	{
 		$this->start();
 		return isset($this->_data[$name]) ? $this->_data[$name] : $default;
 	}
@@ -125,7 +131,8 @@ class A_Session {
 	 *
 	 * @param mixed $name ??? (optional)
 	 */
-	public function & getRef($name=null) {
+	public function & getRef($name=null)
+	{
 		$this->start();
 		if ($name !== null) {
 			if (! isset($this->_data[$name])) {
@@ -145,7 +152,8 @@ class A_Session {
 	 * @param integer $count ??? (optional)
 	 * @return A_Session This object instance
 	 */
-	public function set($name, $value, $count=0) {
+	public function set($name, $value, $count=0)
+	{
 		if ($name) {
 			$this->start();
 			if ($value !== null) {
@@ -168,7 +176,8 @@ class A_Session {
 	 * @param mixed $name ???
 	 * @return boolean True if session contains that data.  False otherwise
 	 */
-	public function has($name) {
+	public function has($name)
+	{
 		$this->start();
 		return isset($this->_data[$name]);
 	}
@@ -179,7 +188,8 @@ class A_Session {
 	 * @param mixed $name ???
 	 * @return mixed The object in the session with the key $name
 	 */
-	public function __get($name) {
+	public function __get($name)
+	{
 		return $this->get($name);
 	}
 	
@@ -190,7 +200,8 @@ class A_Session {
 	 * @param mixed $value ???
 	 * @return boolean True if successful
 	 */
-	public function __set($name, $value) {
+	public function __set($name, $value)
+	{
 		return $this->set($name, $value);
 	}
 	
@@ -200,7 +211,8 @@ class A_Session {
 	 * @param mixed $name The key to set expiration for
 	 * @param mixed $count The expiration to set (optional)
 	 */
-	public function expire($name, $count=0) {
+	public function expire($name, $count=0)
+	{
 		$this->start();
 		$_SESSION[$this->_a_namespace]['expire'][$name] = $count;
 	}
@@ -210,7 +222,8 @@ class A_Session {
 	 *
 	 * @return null
 	 */
-	protected function doExpiration() {
+	protected function doExpiration()
+	{
 		if (isset($_SESSION[$this->_a_namespace]['expire'])) {
 			foreach ($_SESSION[$this->_a_namespace]['expire'] as $name => $value) {
 				if ($value > 0) {
@@ -228,7 +241,8 @@ class A_Session {
 	 *
 	 * @return null
 	 */
-	public function close() {
+	public function close()
+	{
 		session_write_close();
 	}
 	
@@ -237,12 +251,13 @@ class A_Session {
 	 *
 	 * @return null
 	 */
-	public function destroy() {
+	public function destroy()
+	{
 		if ($this->_namespace) {
 			$_SESSION[$this->_namespace] = array();
 		} else {
 			$_SESSION = array();
 		}
 	}
-	
+
 }
