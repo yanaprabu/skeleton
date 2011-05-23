@@ -12,7 +12,8 @@
  *
  * Registry plus Loader
  */
-class A_Locator {
+class A_Locator
+{
 	// standard repository object names
 	const CONFIG = 'Config';
 	const MAPPER = 'Mapper';
@@ -26,7 +27,8 @@ class A_Locator {
 	protected $_inject = array();
 	protected $_extension = '.php';
 	
-	public function __construct($dir=false) {
+	public function __construct($dir=false)
+	{
 		if ($dir) {
 			if (is_array($dir)) {
 				foreach($dir as $ns => $d) {
@@ -48,7 +50,8 @@ class A_Locator {
 	 *      2. matched first part of PEAR class name 'Foo_*' or namespace '\Foo\'
 	 *      3. match a perl regex like '/^Foo.*$/'
 	 */
-	public function setDir($dir, $namespace='') {
+	public function setDir($dir, $namespace='')
+	{
 		$dir = rtrim($dir, '/') . '/';
 		if (substr($namespace, 0, 1) == '/') {	// perl regexp are in the form '/pattern/'
 			$this->_dir_regexp[$namespace] = $dir;
@@ -80,7 +83,8 @@ class A_Locator {
 				), 
 			); 
 	*/
-	public function register($dl) {
+	public function register($dl)
+	{
 		if (is_string($dl)) {
 			$params = func_get_params();
 			array_shift($params);
@@ -100,7 +104,8 @@ class A_Locator {
 	 * @param boolean $autoload triggered when class_exists() check done?
 	 * @return unknown
 	 */
-	public function loadClass($class='', $dir='', $autoload=false) {
+	public function loadClass($class='', $dir='', $autoload=false)
+	{
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
@@ -159,8 +164,8 @@ class A_Locator {
 	 * @param string $baseclass
 	 * @return unknown
 	 */
-	public function get($name='', $class='', $baseclass='') {
-
+	public function get($name='', $class='', $baseclass='')
+	{
 		$param = null;
 		if (func_num_args() > 3) {
 			$param = array_slice(func_get_args(), 3);	// get params after name/clas/dir
@@ -194,7 +199,8 @@ class A_Locator {
 	 * @param string $baseclass is the name to lookup in DI registry, or '*' to search parent classes/interfaces
 	 * @return object instantiated
 	 */
-	public function newInstance($class='', $baseclass='') {
+	public function newInstance($class='', $baseclass='')
+	{
 		$obj = null;
 		// get dir and clear
 		if ($class) {
@@ -264,7 +270,8 @@ class A_Locator {
 		return $obj;
 	}
 
-	public function set($name, $value) {
+	public function set($name, $value)
+	{
 		if ($value !== null) {
 			$this->_obj[$name] = $value;
 		} else {
@@ -273,11 +280,14 @@ class A_Locator {
 		return $this;
 	}
 
-	public function has($name) {
+	public function has($name)
+	{
 		return isset($this->_obj[$name]);
 	}
 	
-	public function autoload() {
+	public function autoload()
+	{
 		return spl_autoload_register(array($this, 'loadClass'));
 	}
+
 }
