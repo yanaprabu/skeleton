@@ -15,6 +15,7 @@
 class A_Email
 {
 	protected $connection;
+	protected $isConnected = false;
 	protected $subject = '';
 	protected $message = '';
 	protected $headers = '';
@@ -37,7 +38,25 @@ class A_Email
 		} else {
 			$this->connection = $connection;
 		}
+		$this->connect();
+		
 		$this->mailer = $mailer ? $mailer : 'A_Email_Multipart';
+	}
+	
+	public function connect()
+	{
+		if (!$this->isConnected && isset($this->connection)) {
+			$this->isConnected = $this->connection->connect();
+		}
+		return $this->isConnected;
+	}
+	
+	public function disconnect()
+	{
+		if (isset($this->connection) && $this->connection->disconnect()) {
+			$this->isConnected = false;
+		}
+		return $this->isConnected;
 	}
 	
 	public function setSubject($value)
@@ -165,4 +184,3 @@ class A_Email
 	} 
 
 }
-
