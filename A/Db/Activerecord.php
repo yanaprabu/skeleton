@@ -7,7 +7,7 @@
  * @package A_Db
  */
 
-class A_Db_Activerecord extends A_DataContainer {
+class A_Db_Activerecord extends A_Collection {
 	protected static $globaldb = null;
 	protected $db = null;
 	protected $table;

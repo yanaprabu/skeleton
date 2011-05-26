@@ -64,9 +64,9 @@ class A_Collection implements Iterator, ArrayAccess
 	 * 
 	 * @param mixed $key
 	 */
-	public function get($key)
+	public function get($key, $default=null)
 	{
-		return isset($this->_data[$key]) ? $this->_data[$key] : null;
+		return isset($this->_data[$key]) ? $this->_data[$key] : $default;
 	}
 	
 	/**
