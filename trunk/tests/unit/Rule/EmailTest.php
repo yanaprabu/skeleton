@@ -9,7 +9,7 @@ class Rule_EmailTest extends UnitTestCase {
 	}
 	
 	function testRule_EmailNotNull() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rule = new A_Rule_Email('foo', 'foo error');
 		

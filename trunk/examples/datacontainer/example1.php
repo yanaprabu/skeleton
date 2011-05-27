@@ -6,7 +6,7 @@ $configdata = array(
 	'APP' => '/path/to/app/',
 	'BASE' => 'http://www.example.com',
 );
-$config = new A_DataContainer($configdata);
+$config = new A_Collection($configdata);
 $config->import(simplexml_load_file("example.xml"), 'xml');
 $config->import(parse_ini_file("example.ini", true), 'ini');
 

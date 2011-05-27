@@ -177,9 +177,6 @@ class A_Locator
 		if ($name) {
 			if (isset($this->_obj[$name])) {
 				return $this->_obj[$name];		// return registered object
-#			} elseif (isset($this->_reg[$name]->class)) {
-#				$this->setDir($this->_reg[$name]->dir);
-#				return $this->newInstance($this->_reg[$name]->class, $this->_reg[$name]->param);
 			} elseif ($class) {
 				$obj = $this->newInstance($class, $baseclass, $param);
 				if ($obj) {

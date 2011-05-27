@@ -10,7 +10,7 @@ class PagerTest extends UnitTestCase {
 	
 	function testPagerNotNull() {
   		$data = array('foo'=>1, 'bar'=>2);
-  		$datasource = new A_DataContainer($data);
+  		$datasource = new A_Collection($data);
   		$Pager = new A_Pager($datasource);
 		
 		$result = true;

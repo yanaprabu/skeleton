@@ -9,7 +9,7 @@ class Rule_LengthTest extends UnitTestCase {
 	}
 	
 	function testRuleLength() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rule = new A_Rule_Length(5, 10, 'test', 'error');
  

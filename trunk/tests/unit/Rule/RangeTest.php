@@ -9,7 +9,7 @@ class Rule_RangeTest extends UnitTestCase {
 	}
 	
 	function testRuleRange() {
-  		$dataspace = new A_DataContainer();
+  		$dataspace = new A_Collection();
 
   		$rule = new A_Rule_Range(5, 10, 'test', 'error');
 

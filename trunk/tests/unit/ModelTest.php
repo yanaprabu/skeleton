@@ -11,7 +11,7 @@ class ModelTest extends UnitTestCase {
 	function testModelNoFields() {
 		$model = new A_Model();
 		
-		$datasource = new A_DataContainer();
+		$datasource = new A_Collection();
 		
 		$this->assertTrue($model->isValid($datasource));
 	}
@@ -19,7 +19,7 @@ class ModelTest extends UnitTestCase {
 	function testModelFieldFilters() {
 		$model = new A_Model();
 		
-		$datasource = new A_DataContainer();
+		$datasource = new A_Collection();
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'bazBAZ');
 		
@@ -41,7 +41,7 @@ class ModelTest extends UnitTestCase {
 	function testModelFilters() {
 		$model = new A_Model();
 		
-		$datasource = new A_DataContainer();
+		$datasource = new A_Collection();
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'bazBAZ');
 		
@@ -60,7 +60,7 @@ class ModelTest extends UnitTestCase {
 	function testModelAddMultipleFilters() {
 		$model = new A_Model();
 		
-		$datasource = new A_DataContainer();
+		$datasource = new A_Collection();
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'bazBAZ');
 		
@@ -79,7 +79,7 @@ class ModelTest extends UnitTestCase {
 	function testModelCheckRules() {
 		$model = new A_Model();
 		
-		$datasource = new A_DataContainer();
+		$datasource = new A_Collection();
 		$datasource->set('foo', 'barBAR');
 		$datasource->set('bar', 'baz');
 		

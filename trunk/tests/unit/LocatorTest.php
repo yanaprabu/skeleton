@@ -35,7 +35,7 @@ class LocatorTest extends UnitTestCase {
 	function testLocatorGetLoadDI() {
 		$locator = new A_Locator();
 
-		$config = new A_DataContainer(array('foo' => 'The value of foo.'));
+		$config = new A_Collection(array('foo' => 'The value of foo.'));
 		$locator->set('Config', $config);
 		
 		// load a class

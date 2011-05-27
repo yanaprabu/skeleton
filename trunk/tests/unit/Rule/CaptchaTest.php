@@ -9,7 +9,7 @@ class Rule_CaptchaTest extends UnitTestCase {
 	}
 	
 	function testRule_CaptchaNotNull() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$field = 'foo';
 		$errorMsg = 'foo error';

@@ -39,7 +39,7 @@ abstract class A_Db_Base {
 	/**
 	 * Constructor.
 	 *
-	 * $config is an array of key/value pairs or an instance of A_DataContainer
+	 * $config is an array of key/value pairs or an instance of A_Collection
 	 * containing configuration options.  These options are common to most adapters:
 	 *
 	 * dbname		 => (string) The name of the database to user
