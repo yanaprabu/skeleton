@@ -26,7 +26,7 @@ class A_Application
 		'Mapper'   => array('A_Controller_Mapper', false), 
 		'Request'  => array('A_Http_Request', true),
 		'Response' => array('A_Http_Response', true),
-		'Template' => array('A_Template', true),
+		'Template' => array('A_Template_Include', true),
 		'Session'  => array('A_Session', true),
 		'Front'    => array('A_Controller_Front', false),
 	);
