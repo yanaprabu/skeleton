@@ -9,7 +9,7 @@ class Rule_MatchTest extends UnitTestCase {
 	}
 	
 	function testRule_MatchMatches() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rule = new A_Rule_Match('foo', 'bar', 'foo error');
 		
@@ -25,7 +25,7 @@ class Rule_MatchTest extends UnitTestCase {
 	}
 	
 	function testRule_MatchParams() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rule = new A_Rule_Match();
 		

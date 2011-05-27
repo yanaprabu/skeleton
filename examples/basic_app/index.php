@@ -19,7 +19,7 @@ $Request = new A_Http_Request();
 $Response = new A_Http_Response();
 $Session = new A_Session();
 
-$Locator->set('Config', new A_DataContainer($ConfigArray));
+$Locator->set('Config', new A_Collection($ConfigArray));
 $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 $Locator->set('Session', $Session);

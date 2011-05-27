@@ -16,7 +16,7 @@ class DataContainerTest extends UnitTestCase {
 	}
 	
 	function testDataContainerSetGet() {
-  		$dataspace = new A_DataContainer();
+  		$dataspace = new A_Collection();
 
    		$dataspace->set('test1', 'abc');
   		$value1 = $dataspace->get('test1');
@@ -26,7 +26,7 @@ class DataContainerTest extends UnitTestCase {
 	
 /*
 	function testDataContainerSetRefGetRef() {
-  		$dataspace = new A_DataContainer();
+  		$dataspace = new A_Collection();
   		$example = new DataContainerExample('abc');
 
 		$dataspace->set('test', $example);
@@ -46,7 +46,7 @@ echo 'DataContainer: Checking PHP5';
 */
 	
 	function testDataContainerHas() {
-  		$dataspace = new A_DataContainer();
+  		$dataspace = new A_Collection();
 
    		$dataspace->set('test1', 'abc');
   		$result = $dataspace->has('test1');

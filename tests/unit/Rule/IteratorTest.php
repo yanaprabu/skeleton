@@ -9,7 +9,7 @@ class Rule_IteratorTest extends UnitTestCase {
 	}
 	
 	function testRule_IteratorNotNull() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$field = 'foo';
 		$rule = null;

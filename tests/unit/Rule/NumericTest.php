@@ -9,7 +9,7 @@ class Rule_NumericTest extends UnitTestCase {
 	}
 	
 	function testRule_NumericNotNull() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rule = new A_Rule_Numeric('foo', 'foo error');
 		

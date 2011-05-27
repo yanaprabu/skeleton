@@ -28,7 +28,7 @@ $form->submit('submit', 'login');
 echo $form->render();
 
 $form->reset();
-$model = new A_DataContainer();
+$model = new A_Collection();
 $model->set('username', 'bar');
 $form->setModel($model);
 echo '<br/>Fluent usage:';

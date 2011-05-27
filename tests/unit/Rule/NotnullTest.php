@@ -9,7 +9,7 @@ class Rule_NotnullTest extends UnitTestCase {
 	}
 	
 	function testRule_NotnullNotNull() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rule = new A_Rule_Notnull('foo', 'foo error');
 		

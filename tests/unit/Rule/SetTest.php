@@ -13,10 +13,10 @@ class Rule_SetTest extends UnitTestCase {
 	}
 	
 	function testRule_SetRuleObject() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$rules = new A_Rule_Set();
-		//$dataspace = new A_DataContainer();
+		//$dataspace = new A_Collection();
 
  		$rule = new A_Rule_Notnull(array('field' => 'test', 'errorMsg' => 'error'));
 		$rules->addRule($rule);
@@ -29,7 +29,7 @@ class Rule_SetTest extends UnitTestCase {
 /*
 	function testRule_SetRuleName() {
 		$rules = new A_Rule_Set();
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		// should load A_Rule_Numeric
 		$rules->addRule('numeric', 'test', 'not a number');

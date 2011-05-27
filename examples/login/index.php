@@ -27,7 +27,7 @@ $Locator = new A_Locator();
 $Locator->autoload();
 
 // create config object from array
-$Config = new A_DataContainer($ConfigArray);
+$Config = new A_Collection($ConfigArray);
 
 // create HTTP objects
 $Request = new A_Http_Request();

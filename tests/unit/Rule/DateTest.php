@@ -9,7 +9,7 @@ class Rule_DateTest extends UnitTestCase {
 	}
 	
 	function testRule_DateNotNull() {
-		$dataspace = new A_DataContainer();
+		$dataspace = new A_Collection();
 
 		$field = 'foo';
 		$errorMsg = 'foo error';
