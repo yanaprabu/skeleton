@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 require_once('config.php');
 require_once('A_Template.php');
 
-$template = new A_TemplateXSLT('collection.xsl');
+$template = new A_Template_Xslt('collection.xsl');
 
 $xml = '<collection>
  <cd>
