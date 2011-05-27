@@ -2,7 +2,9 @@
 /**
  * Datasource access class for Pager using the mysql_* functions 
  * 
- * @package A_Pager 
+ * @package A_Pager
+ * @deprecated replaced by A_Pagination package
+ * @see A_Pagination
  */
 
 class A_Pager_MySQL {
