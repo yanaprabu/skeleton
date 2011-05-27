@@ -22,7 +22,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 */
 	public function __construct($data = array())
 	{
-		$this->_data = $data;
+		$this->_expand($this, $source);
 	}
 	
 	/**
