@@ -3,6 +3,8 @@
  * Datasource access class using A_Db_* object
  *
  * @package A_Pager
+ * @deprecated replaced by A_Pagination package
+ * @see A_Pagination
  */
 
 class A_Pager_DB implements A_Pager_Adapter_Interface {

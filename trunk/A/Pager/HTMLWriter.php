@@ -2,7 +2,9 @@
 /**
  * Generate HTML links for A_Pager 
  * 
- * @package A_Pager 
+ * @package A_Pager
+ * @deprecated replaced by A_Pagination package
+ * @see A_Pagination
  */
 
 class A_Pager_HTMLWriter {

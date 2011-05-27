@@ -5,6 +5,8 @@
  * Generate HTML <select> to go to specific page for A_Pager 
  * 
  * @package A_Pager 
+ * @deprecated replaced by A_Pagination package
+ * @see A_Pagination
  */
 
 class A_Pager_HTMLWriterJump extends A_Pager_HTMLWriter {
