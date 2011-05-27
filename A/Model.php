@@ -287,8 +287,7 @@ class A_Model
 		
 		return ! $this->error;
 	}
-	
-	
+
 	public function save()
 	{
 		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
@@ -297,7 +296,15 @@ class A_Model
 		}
 	}
 
-	
+	protected function _load($scope=null) {
+		if (isset($this->load)) {
+			$this->load->load($scope);
+		} else {
+			$this->load = new A_Model_Helper_Load($this->locator, $this, $scope);
+		}
+		return $this->load;
+	}
+ 
 	public function isError()
 	{
 		return $this->error;
