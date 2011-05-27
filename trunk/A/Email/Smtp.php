@@ -3,6 +3,7 @@
  * A_Email_Smtp
  *
  * Connection using socket connection to SMTP server
+ * 
  *
  * @package  A_Email
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -17,7 +18,7 @@ class A_Email_Smtp
 		'username' => '',
 		'password' => '',
 		'connection_timeout' => 1,		// timeout for fsockconnect() in seconds
-		'stream_timeout' => 1,			// timeout for fputs() in seconds
+		'socket_timeout' => 0,			// timeout for fputs() in seconds ini_get("default_socket_timeout")
 	);
 
 	protected $connection; 
@@ -70,10 +71,12 @@ class A_Email_Smtp
 	/**
 	 * 
 	 */
-	function setStreamTimeout($seconds)
+	function setSocketTimeout($seconds)
 	{
-		$this->config['stream_timeout'] = $seconds;
-		stream_set_timeout($fp, $seconds);
+		$this->config['socket_timeout'] = $seconds;
+		if (isset($this->connection) && ($seconds > 0)) {
+			stream_set_timeout($this->connection, $seconds);			
+		}
 	}
 	
 	/**
@@ -86,6 +89,15 @@ class A_Email_Smtp
 		$this->connection = fsockopen($this->config['server'], $this->config['port'], &$error, &$errmsg, $this->config['connection_timeout']);
 
 		if ($this->connection) {
+// Do we need meta data or blocking?
+//			$this->metaData = stream_get_meta_data($this->connection);
+//			stream_set_blocking($this->connection, $this->config['stream_blocking'])
+			
+			// set timeout if specified once connected
+			if (isset($this->config['socket_timeout'])) {
+				$this->setSocketTimeout($this->config['socket_timeout']);
+			}
+			
 			$errmsg = $this->command('', '220', 'Connection failed. ');			// no command, just get reply
 			
 			if ($errmsg == '') {
@@ -112,12 +124,7 @@ class A_Email_Smtp
 		} else {
 			$errmsg = "Socket connection failed to {$this->config['server']}:{$this->config['port']}. Error $error: $errmsg";
 		}
-		if ($errmsg == '') {
-			// set timeout if specified once connected
-			if (isset($this->config['stream_timeout'])) {
-				$this->setStreamTimeout($this->config['stream_timeout']);
-			}
-		} else {
+		if ($errmsg != '') {
 			$this->errorMsg[] = $errmsg;
 		}
 		return $errmsg == '';
