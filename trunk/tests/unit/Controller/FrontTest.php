@@ -13,7 +13,7 @@ class Controller_FrontTest extends UnitTestCase {
   		$default_action=null;
   		$mapper = new A_Controller_Mapper($base_path, $default_action);
 
-  		$error_action = null; //new A_DL();
+  		$error_action = null;
 		$prefilters = array();
   		$Controller_Front = new A_Controller_Front($mapper, $error_action, $prefilters);
 		

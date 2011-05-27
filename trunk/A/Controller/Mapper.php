@@ -197,10 +197,6 @@ class A_Controller_Mapper
 			if (is_string($route)) {
 				$route = explode('/', $route);
 			}
-			// remove when A_DL is depricated
-			elseif (is_object($route)) {
-				$route = array($route->dir, $route->class, $route->method);
-			}
 		}
 		switch (count($route)) {
 		case 2:							// "class/method"
