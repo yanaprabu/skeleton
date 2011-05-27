@@ -30,7 +30,7 @@ class A_Email
 	
 	/**
 	 *  
-	 **/
+	 */
 	public function __construct($connection=null, $mailer='')
 	{
 		if ($connection == null) {
@@ -43,6 +43,9 @@ class A_Email
 		$this->mailer = $mailer ? $mailer : 'A_Email_Multipart';
 	}
 	
+	/**
+	 *  
+	 */
 	public function connect()
 	{
 		if (!$this->isConnected && isset($this->connection)) {
@@ -51,56 +54,83 @@ class A_Email
 		return $this->isConnected;
 	}
 	
+	/**
+	 *  
+	 */
 	public function disconnect()
 	{
 		if (isset($this->connection) && $this->connection->disconnect()) {
 			$this->isConnected = false;
 		}
-		return $this->isConnected;
+		return ! $this->isConnected;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setSubject($value)
 	{
 		$this->subject = $value;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setMessage($value)
 	{
 		$this->message = $value;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setTo($address, $name='')
 	{
 		$this->to = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setFrom($address, $name='')
 	{
 		$this->from = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setReplyto($address, $name='')
 	{
 		$this->replyto = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setCC($address, $name='')
 	{
 		$this->cc = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function setBCC($address, $name='')
 	{
 		$this->bcc = $name ? $this->addressNamed($address, $name) : $address;
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function addHeaders($value)
 	{
 		if (substr($value, -1, 2) == "\r\n") {
@@ -110,6 +140,9 @@ class A_Email
 		return $this;
 	}
 	
+	/**
+	 *  
+	 */
 	public function send($from='', $to='', $subject='', $message='')
 	{
 		if ($from) $this->from = $from;
@@ -127,7 +160,7 @@ class A_Email
 		} else {
 			$this->errorMsg = 'No to, from, or message. ';
 		}
-		return $this->errorMsg;
+		return $this->errorMsg == '';
 	}
 	
 	/**
@@ -181,6 +214,14 @@ class A_Email
 		} else {
 			return 0;
 		}
+	} 
+
+	/**
+	 *  
+	 **/
+	public function getErrorMsg()
+	{ 
+		return $this->errorMsg;
 	} 
 
 }
