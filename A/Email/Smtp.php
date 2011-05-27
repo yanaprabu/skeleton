@@ -181,6 +181,14 @@ class A_Email_Smtp
 	}
 
 	/**
+	 * returns collected error messages
+	 */
+	public function getErrorMsg($separator="\n")
+	{
+		return $separator ? implode($separator, $this->errorMsg) : $this->errorMsg;
+	}
+
+	/**
 	 * 
 	 */
 	protected function command ($command, $success_code, $errmsg)
