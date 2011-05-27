@@ -88,7 +88,7 @@ class A_Application
 	public function initMapper($component)
 	{
 		$config = $this->component('Config');
-		$defaultAction = new A_DL('', $config->defaultController, $config->defaultAction);
+		$defaultAction = array('', $config->defaultController, $config->defaultAction);
 		return new $component($config->applicationPath, $defaultAction);
 	}
 	
@@ -101,7 +101,7 @@ class A_Application
 	{
 		$mapper = $this->component('Mapper');
 		$config = $this->component('Config');
-		$defaultAction = new A_DL('', $config->errorController, $config->errorAction);
+		$defaultAction = array('', $config->errorController, $config->errorAction);
 		return new $component($mapper, $defaultAction);
 	}
 	
