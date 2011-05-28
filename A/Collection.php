@@ -246,17 +246,6 @@ class A_Collection implements Iterator, ArrayAccess
 	}
 */
 	
-	/**
-	 * Put data into string separated by a delimiter
-	 * 
-	 * @param string $glue
-	 * @return string
-	 */
-	public function toString($glue)
-	{
-		return $this->join($glue);
-	}
-	
 	public function __toString()
 	{
 		return $this->toString(',');
