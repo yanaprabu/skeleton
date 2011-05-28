@@ -97,10 +97,11 @@ class A_Collection implements Iterator, ArrayAccess
 	}
 	
 	/**
-	 * Sets the specified key to a value
+	 * Appends an item to the end of the collection.
 	 * 
-	 * @param mixed $key
-	 * @param mixed $value
+	 * @param mixed $value Value to append to the collection
+	 * @param mixed $ignoreNull Won't add null items if set to true (optional, default false)
+	 * @return self
 	 */
 	public function add($value, $ignoreNull=false)
 	{
