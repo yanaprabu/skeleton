@@ -102,9 +102,12 @@ class A_Collection implements Iterator, ArrayAccess
 	 * @param mixed $key
 	 * @param mixed $value
 	 */
-	public function add($key, $value)
+	public function add($value, $ignoreNull=false)
 	{
-		return $this->set($key, $value);
+		if ($value !== null || !$ignoreNull) {
+			$this->_data[] = $value;
+		}
+		return $this;
 	}
 	
 	/**
@@ -279,7 +282,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 */
 	public function offsetSet($offset, $value)
 	{
-		return $this->add($offset, $value);
+		return $this->set($offset, $value);
 	}
 	
 	/**
