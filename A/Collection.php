@@ -32,12 +32,9 @@ class A_Collection implements Iterator, ArrayAccess
 	 * @param string $node
 	 * @return self
 	 */
-	public function import($source, $node='')
+	public function import($source)
 	{
 		if ($source) {
-			if ($node) {
-				$source = array($node => $source);
-			}
 			$this->_expand($this, $source);
 		}
 		return $this;
