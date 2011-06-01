@@ -1,12 +1,18 @@
 <?php
 /**
- * Date & Time Timezone functionality 
+ * Timezone.php
  *
- *
- * @package A_Datetime
- * @author Eran Galt, Cory Kaufman, Christopher Thompson
+ * @package  A_DateTime
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Eran Galt, Cory Kaufman, Christopher Thompson
  */
-	
+
+/**
+ * A_DateTime_Timezone
+ * 
+ * Date & Time Timezone functionality
+ */
 class A_DateTime_Timezone {
 	
 	protected $reference;

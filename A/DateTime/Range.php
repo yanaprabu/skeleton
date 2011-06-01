@@ -1,12 +1,18 @@
 <?php
 /**
- * Date & Time Range functionality 
+ * Range.php
  *
- *
- * @package A_Datetime
- * @author Eran Galt, Cory Kaufman, Christopher Thompson
+ * @package  A_DateTime
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Eran Galt, Cory Kaufman, Christopher Thompson
  */
 
+/**
+ * A_DateTime_Range
+ * 
+ * Date & Time Range functionality
+ */
 class A_DateTime_Range {
 
 	protected $start;		// A_Datetime object containing start of range
