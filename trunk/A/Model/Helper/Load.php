@@ -1,5 +1,22 @@
 <?php
+/**
+ * Load.php
+ *
+ * @package  A_Model
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
+/**
+ * A_Model_Helper_Load
+ *
+ * Allows easy loading of classes used by Model objects.  An instance of this object can be accessed from a model with the _load() method (inherited from A_Model).  To load an object, call it's type as a method, passing it's name as an argument.  For example, calling $loadInstance->lib('MyLib') will load libs/MyLib.php from the specified scope.  Some types' filenames/classnames must be suffixed with their respective names, as shown below:
+ * 
+ * Event suffix: none
+ * Helper suffix: Helper (e.x. helper('foo') will load myHelper)
+ * Model suffix: Model (e.x. model('foo') will load myModel)
+ * Lib suffix: none
+ */
 class A_Model_Helper_Load
 {
 

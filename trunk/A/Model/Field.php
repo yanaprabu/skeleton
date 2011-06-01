@@ -1,10 +1,17 @@
 <?php
 /**
- * Encapsulate a field/column within a Model 
- * 
- * @package A_Model 
+ * Field.php
+ *
+ * @package  A_Model
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Model_Field
+ *
+ * Represents a field in a model.
+ */
 class A_Model_Field {
 	// from Input Controller
 	public $name = '';
