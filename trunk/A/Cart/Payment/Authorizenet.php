@@ -1,8 +1,10 @@
 <?php
 /**
- * Authorizenet (credit card processsing) class library
- * 
- * @package A_Cart
+ * Authorizenet.php
+ *
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
 define('A_CART_PAYMENT_AUTHORIZENET_SERVER_LIVE', 1);
@@ -11,7 +13,11 @@ define('A_CART_PAYMENT_AUTHORIZENET_SERVER_NONE', 3);
 define('A_CART_PAYMENT_AUTHORIZENET_TRXTYPE_SALE', 'S');
 define('A_CART_PAYMENT_AUTHORIZENET_TRXTYPE_AUTHORIZATION', 'A');
 
-
+/**
+ * A_Cart_Payment_Authorizenet
+ * 
+ * Authorizenet (credit card processsing) class library
+ */
 class A_Cart_Payment_Authorizenet
 {	const SERVER_LIVE = 1;
 	const SERVER_TEST = 2;

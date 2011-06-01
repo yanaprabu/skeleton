@@ -1,8 +1,10 @@
 <?php
 /**
- * PayflowPro pfpro (credit card processsing) class library
+ * Pfpro.php
  *
- * @package A_Cart
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
 define('A_CART_PAYMENT_PFPRO_SERVER_LIVE', 1);
@@ -11,7 +13,11 @@ define('A_CART_PAYMENT_PFPRO_SERVER_NONE', 3);
 define('A_CART_PAYMENT_PFPRO_TRXTYPE_SALE', 'S');
 define('A_CART_PAYMENT_PFPRO_TRXTYPE_AUTHORIZATION', 'A');
 
-
+/**
+ * A_Cart_Payment_Pfpro
+ * 
+ * PayflowPro pfpro (credit card processsing) class library
+ */
 class A_Cart_Payment_Pfpro
 {	protected $certpath = '/usr/local/verisign/payflowpro/linux/certs/';	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $response = null;	protected $errorMsg;
 	

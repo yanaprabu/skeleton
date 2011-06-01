@@ -2,11 +2,18 @@
 #include_once 'A/Cart/Url.php';
 #include_once 'A/Cart/Item.php';
 /**
- * Shopping Cart request processing class
+ * Request.php
  *
- * @package A_Cart
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Cart_Request
+ * 
+ * Shopping Cart request processing class
+ */
 class A_Cart_Request extends A_Cart_Url
 {	protected $newitems = array();
 	

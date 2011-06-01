@@ -1,9 +1,17 @@
 <?php
 #include_once 'A/Config/Abstract.php';
 /**
- * Support for reading YAML configuration files -- very minimal support
+ * Yaml.php
  *
- * @package A_Config
+ * @package  A_Config
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Config_Yaml
+ * 
+ * Support for reading YAML configuration files -- very minimal support
  */
 
 class A_Config_Yaml extends A_Config_Base {

@@ -1,11 +1,17 @@
 <?php
 /**
- * PayPal (credit card processsing) class library
+ * Payflow.php
  *
- * @package A_Cart
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
-
+/**
+ * A_Cart_Payment_Payflow
+ * 
+ * PayPal (credit card processsing) class library
+ */
 class A_Cart_Payment_Payflow
 {
 	const SERVER_LIVE = 1;

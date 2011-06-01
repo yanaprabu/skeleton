@@ -1,8 +1,16 @@
 <?php
 /**
- * Escapsulate a shopping cart item
+ * Item.php
+ *
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Cart_Item
  * 
- * @package A_Cart 
+ * Escapsulate a purchasable item that can be added to the shopping cart
  */
 
 class A_Cart_Item {protected $id;protected $productid;protected $unitprice;protected $quantity;protected $quantityfixed;protected $data;protected $isunique;protected $hastax;protected $hasshipping;

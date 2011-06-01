@@ -1,10 +1,17 @@
 <?php
 /**
- * Get FedEx shipping information via web service
- * 
- * @package A_Cart 
+ * Fedex.php
+ *
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Cart_Shipping_Fedex
+ * 
+ * Get FedEx shipping information via web service API 
+ */
 class A_Cart_Shipping_Fedex
 {protected $shipping_type;protected $postal_from;protected $postal_to;protected $country_to;protected $weight;
 

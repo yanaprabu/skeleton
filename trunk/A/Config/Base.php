@@ -1,11 +1,18 @@
 <?php
 #require_once 'A/DataContainer.php';
 /**
- * Abstract base class for configuration
+ * Base.php
  *
- * @package A_Config
+ * @package  A_Config
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Config_Base
+ * 
+ * Abstract base class for configuration
+ */
 abstract class A_Config_Base extends A_Collection {
 	protected $_filename;
 	protected $_section;

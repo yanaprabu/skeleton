@@ -1,21 +1,27 @@
 <?php
 /**
+ * Ups.php
+ *
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
-UPS Shipping Types:
-
-     GND => Ground
-     3DS => 3 Day Select
-     2DA => 2nd Day Air
-     2DM => 2nd Day Air Early AM
-     1DP => Next Day Air Saver
-     1DA => Next Day Air
-     1DM => Next Day Air Early AM
-     STD => Canada Standard
-     XPR => Worldwide Express
-     XPD => Worldwide Expedited
-     XDM => Worldwide Express Plus
-    
- * @package A_Cart
+/**
+ * A_Cart_Shipping_Ups
+ * 
+ * UPS Shipping Types:
+ * GND => Ground
+ * 3DS => 3 Day Select
+ * 2DA => 2nd Day Air
+ * 2DM => 2nd Day Air Early AM
+ * 1DP => Next Day Air Saver
+ * 1DA => Next Day Air
+ * 1DM => Next Day Air Early AM
+ * STD => Canada Standard
+ * XPR => Worldwide Express
+ * XPD => Worldwide Expedited
+ * XDM => Worldwide Express Plus
  */
 
 class A_Cart_Shipping_UPS
