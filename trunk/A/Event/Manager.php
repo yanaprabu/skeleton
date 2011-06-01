@@ -1,12 +1,17 @@
 <?php
+/**
+ * Manager.php
+ *
+ * @package  A_Event
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah Dahlquist <jonah@nucleussystems.com>, Christopher Thompson <christopherxthompson@gmail.com>
+ */
 
 /**
  * Event Manager
  * 
  * Handles creating, storing, and firing of events.
- * 
- * @author Jonah <jonah[at]nucleussystems[dot]com>
- * @author Christopher <christopherxthompson[at]gmail[dot]com>
  */
 class A_Event_Manager
 {

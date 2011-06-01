@@ -1,11 +1,17 @@
 <?php
+/**
+ * Listener.php
+ *
+ * @package  A_Event
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ */
 
 /**
- * Event Listener object
- * 
+ * A_Event_Listener
+ *
  * Interface for listener objects being passed to Manager
- * 
- * @author Jonah <jonah[at]nucleussystems[dot]com>
  */
 interface A_Event_Listener
 {
