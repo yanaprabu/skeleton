@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Http/View.php';
 /**
  * Response.php
  *

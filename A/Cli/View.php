@@ -218,7 +218,6 @@ class A_Cli_View {
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
-			#include_once "A/Controller/Helper/Load.php";
 			$this->load = new A_Controller_Helper_Load($this->locator, $this, $scope);
 		}
 		return $this->load;
@@ -226,7 +225,6 @@ class A_Cli_View {
  
 	protected function _flash($name=null, $value=null) {
 		if (! isset($this->flash)) {
-			#include_once "A/Controller/Helper/Flash.php";
 			$this->flash = new A_Controller_Helper_Flash($this->locator);
 		}
 		if ($name) {

@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Config/Abstract.php';
 /**
  * Yaml.php
  *
