@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate mime part for inclusion in multipart emails 
- * 
- * @package A_Email 
+ * Multipart.php
+ *
+ * @package  A_Email
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Email_Multipart
+ * 
+ * Generate mime part for inclusion in multipart emails.
+ */
 class A_Email_Multipart
 {protected $parts;protected $headers;protected $boundary;protected $type;protected $non_mime_message;
 
