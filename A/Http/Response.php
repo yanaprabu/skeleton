@@ -1,6 +1,6 @@
 <?php
 /**
- * Http Response
+ * Response.php
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD

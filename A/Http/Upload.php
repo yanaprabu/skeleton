@@ -1,6 +1,6 @@
 <?php
 /**
- * Support for HTML file upload
+ * Upload.php
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD

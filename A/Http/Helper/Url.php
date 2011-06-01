@@ -1,6 +1,6 @@
 <?php
 /**
- * URL View Helper
+ * Url.php
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -10,7 +10,7 @@
 /**
  * A_Http_Helper_Url
  *
- * A helper class for handling the url
+ * A helper class for handling the url.
  */
 class A_Http_Helper_Url extends A_Http_Url {
 	protected $locator;

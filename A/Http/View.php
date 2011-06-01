@@ -1,6 +1,6 @@
 <?php
 /**
- * Base MVC View class
+ * View.php
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -10,8 +10,7 @@
 /**
  * A_Http_View
  *
- * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects,
- * character encoding, quoting, escaping, and content. 
+ * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
  */
 class A_Http_View {
 	protected $data = array();

@@ -1,6 +1,6 @@
 <?php
 /**
- * File Upload Forms
+ * UploadForm
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
