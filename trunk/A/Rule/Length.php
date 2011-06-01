@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
 /**
- * Rule to check for strings of a specified length
- * 
- * @package A_Rule_Set 
+ * Length.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Rule_Length
+ * 
+ * Rule to make sure a string's length is within the range specified.  To create an open-ended range, set min/max as null.
+ */
 class A_Rule_Length extends A_Rule_Base {
 	const ERROR = 'A_Rule_Length';
 #	protected $min;

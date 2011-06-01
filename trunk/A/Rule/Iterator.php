@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
 /**
- * Rule to check a rule against an array of values 
- * 
- * @package A_Rule_Set 
+ * Iterator.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Rule_Iterator
+ * 
+ * Rule to check a rule against an array of values.
+ */
 class A_Rule_Iterator extends A_Rule_Base {
 	protected $rule;
 	protected $params = array(

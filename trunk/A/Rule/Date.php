@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
 /**
- * Rule to check for date value
- * 
- * @package A_Rule_Set 
+ * Date.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Rule_Date
+ * 
+ * Rule to make sure date is in format YYYY-M-D
+ */
 class A_Rule_Date extends A_Rule_Base {
 	const ERROR = 'A_Rule_Date';
 	protected $params = array(

@@ -1,8 +1,16 @@
 <?php
 /**
- * anything that implements this interface can be added to A_Rule_Set
+ * Interface.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Rule_Interface
  * 
- * @package A_Rule
+ * This is the interface for Rule objects.
  */
 interface A_Rule_Interface {
 
