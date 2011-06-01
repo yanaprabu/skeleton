@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Filter/Abstract.php';
 /**
  * Regexp.php
  *
