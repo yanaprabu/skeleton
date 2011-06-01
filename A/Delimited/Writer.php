@@ -1,14 +1,18 @@
 <?php
 /**
- * A_Delimited_Writer
+ * Writer.php
  *
- * Write arrays to a delimited text file
- *
- * @author Christopher Thompson
- * @package A_Delimited
- * @version @package_version@
+ * @package  A_Delimited
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Christopher Thompson
  */
 
+/**
+ * A_Delimited_Writer
+ *
+ * Write arrays to a delimited text file.
+ */
 class A_Delimited_Writer extends A_Delimited_Base {
 	protected $filemode = 'wb';
 	

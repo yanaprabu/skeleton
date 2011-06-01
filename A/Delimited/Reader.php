@@ -1,16 +1,20 @@
 <?php
 /**
- * A_Delimited_Reader
+ * Reader.php
  *
- * Read delimited text file into array of line arrays
- *
- * @author Christopher Thompson
- * @package A_Delimited
- * @version @package_version@
+ * @package  A_Delimited
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Christopher Thompson
  */
 
 #include_once 'A/Delimited/Abstract.php';
 
+/**
+ * A_Delimited_Reader
+ * 
+ * Read delimited text file into array of line arrays
+ */
 class A_Delimited_Reader extends A_Delimited_Base {
 	protected $filemode = 'rb';
 	protected $autoConfigure = false;

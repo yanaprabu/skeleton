@@ -1,16 +1,20 @@
 <?php
 /**
- * A_Delimited_Base
+ * Base.php
  *
- * Abstract base class with common read/write functionality for delimited text files
- *
- * @author Christopher Thompson
- * @package A_Delimited
- * @version @package_version@
+ * @package  A_Delimited
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Christopher Thompson
  */
 
 #include_once 'A/Delimited/Config.php';
 
+/**
+ * A_Delimited_Base
+ * 
+ * Abstract base class with common read/write functionality for delimited text files
+ */
 class A_Delimited_Base {
 	protected $maxLineLength = 1000;
 	protected $filename = '';
