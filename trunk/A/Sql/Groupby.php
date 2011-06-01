@@ -1,5 +1,4 @@
 <?php
-#require_once 'A/Sql/Columns.php';
 /**
  * Groupby.php
  *

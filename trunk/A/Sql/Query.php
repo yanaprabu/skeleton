@@ -8,11 +8,6 @@
  * @author   Cory Kaufman
  */
 
-#include_once('A/Sql/Select.php');
-#include_once('A/Sql/Insert.php');
-#include_once('A/Sql/Update.php');
-#include_once('A/Sql/Delete.php');
-
 /**
  * A_Sql_Query
  */

@@ -94,7 +94,6 @@ class A_Sql_From {
 			if ($table_left === null) {
 				$table_left = $this->table;
 			}
-			#require_once 'A/Sql/Join.php';
 			$this->current_join = new A_Sql_Join($table_right, $table_left, $type);
 			$this->joins[] = $this->current_join;
 		}

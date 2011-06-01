@@ -44,8 +44,7 @@ class A_Sql_Join {
 		if (! $this->table_right) { //no join has been set yet
 			return;
 		}
-		if (!$this->on) {
-			#require_once 'A/Sql/LogicalList.php';						
+		if (!$this->on) {						
 			$this->on = new A_Sql_LogicalList();
 			$this->on->setEscape(false);
 		}		
