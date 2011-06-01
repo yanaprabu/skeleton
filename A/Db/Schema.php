@@ -1,12 +1,14 @@
 <?php
+/**
+ * Schema.php
+ *
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
 /**
  * A_Db_Schema
- *
- * - Requires A_Db_Schema
- * @package A_Db
- * @license    BSD
- * @version    $Id:$
  */
 class A_Db_Schema {
 	protected $db = null;

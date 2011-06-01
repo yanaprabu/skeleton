@@ -1,17 +1,17 @@
 <?php
 /**
- * Database connection class using ADOdb
+ * ADOdblite.php
  *
- * @package A_Db
- * 
- * DSN array contain:
- * 'type'
- * 'hostspec'
- * 'username'
- * 'password'
- * 'database'
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Db_ADOdblite
+ * 
+ * Database connection class using ADOdb.  Configuration array can contain the following indices: type, hostspec, username, password, database.
+ */
 class A_Db_ADOdblite extends A_Db_Base {
 	protected $dsn = null;
 	protected $adodb = null;

@@ -1,8 +1,16 @@
 <?php
 /**
- * Class for connecting to SQL databases and performing common database operations.
+ * Base.php
  *
- * @package A_Db
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Db_Base
+ * 
+ * Abstract class for database wrappers.  Meant to be extended, and abstract methods implemented for database-specific behavior.
  */
 abstract class A_Db_Base {
 

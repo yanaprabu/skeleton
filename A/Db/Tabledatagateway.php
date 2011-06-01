@@ -1,8 +1,16 @@
 <?php
 /**
- * Datasource access using the Table Data Gateway pattern
+ * Tabledatagateway.php
  *
- * @package A_Db
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Db_Tabledatagateway
+ * 
+ * Datasource access using the Table Data Gateway pattern
  */
 class A_Db_Tabledatagateway {
 	protected $db;
