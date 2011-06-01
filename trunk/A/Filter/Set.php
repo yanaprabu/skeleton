@@ -1,10 +1,17 @@
 <?php
 /**
- * Contains multiple filters that are all run  
- * 
- * @package A_Filter 
+ * Set.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Filter_Set
+ * 
+ * Contains multiple filters that are all run. 
+ */
 class A_Filter_Set {
 	
     protected $chain = array();

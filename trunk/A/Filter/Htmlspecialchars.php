@@ -1,9 +1,17 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Filter value with htmlspecialchars() function with provided quote style and character set
+ * Alnum.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Filter_Alnum
  * 
- * @package A_Filter
+ * Filter value with htmlspecialchars() function with provided quote style and character set
  */
 class A_Filter_Htmlspecialchars extends A_Filter_Base  {
 

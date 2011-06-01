@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Filter a string with a regular expression
- * 
- * @package A_Filter 
+ * Regexp.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Filter_Regexp
+ * 
+ * Filter a string with a regular expression (or multiple) by replacement.
+ */
 class A_Filter_Regexp extends A_Filter_Base {
 
 	protected $from = '';

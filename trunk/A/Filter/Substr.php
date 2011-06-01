@@ -1,11 +1,20 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Filter a string extracting a specfied substring
+ * Substr.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Filter_Substr
+ * 
+ * Trim a string to a specified substring
  * 
  * @package A_Filter 
  */
-
 class A_Filter_Substr extends A_Filter_Base {
 
 	protected $start = 0;

@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Filter value with htmlentities() function with provided quote style and character set
- * 
- * @package A_Filter
+ * Htmlentities.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Filter_Htmlentities
+ * 
+ * Filter value with htmlentities() function with provided quote style and character set
+ */
 class A_Filter_Htmlentities extends A_Filter_Base {
 public $character_set;
 public $escape_quote_style;

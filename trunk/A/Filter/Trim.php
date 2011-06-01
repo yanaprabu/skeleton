@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Filter a string with the trim() function
- * 
- * @package A_Filter 
+ * Trim.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Filter_Trim
+ * 
+ * String loading and trailing whitespace with the trim() function.
+ */
 class A_Filter_Trim extends A_Filter_Base {
 	protected $charset = null;
 

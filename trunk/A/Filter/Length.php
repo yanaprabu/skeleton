@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Filter string using specified length
- * 
- * @package A_Filter 
+ * Length.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Filter_Length
+ * 
+ * Trim value to specified length.
+ */
 class A_Filter_Length extends A_Filter_Base {
 	protected $length = 0;
 	
