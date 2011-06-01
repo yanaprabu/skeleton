@@ -1,5 +1,4 @@
 <?php
-#require_once 'A/Sql/Statement.php';
 /**
  * Select.php
  *
@@ -47,8 +46,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @question Why are there no arguments inside the method declaration? 
 	 * It's important both for documentation and auto-complete feature of IDE's
 	 */
-	public function columns() {
-		#require_once 'A/Sql/Columns.php';		
+	public function columns() {	
 		$this->pieces['columns'] = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
@@ -93,8 +91,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @return self
 	 */
 	public function where($arg1=null, $arg2=null, $arg3=null) {
-		if (!$this->pieces['where']) {
-			#require_once 'A/Sql/Where.php';		
+		if (!$this->pieces['where']) {	
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
 		}
@@ -116,8 +113,7 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @question Could someone elaborate on the argumetns?
 	 */
 	public function orWhere($data, $value=null) {
-		if (!$this->pieces['where']) {
-			#require_once 'A/Sql/Where.php';		
+		if (!$this->pieces['where']) {	
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
 		}
@@ -135,7 +131,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */	
 	public function join($table1, $table2, $type='INNER') {
 		if (!$this->pieces['joins']) {
-			#require_once 'A/Sql/Join.php';
 			$this->pieces['joins'] = new A_Sql_Join();
 		}
 		$this->pieces['joins']->join($table1, $table2, $type);
@@ -236,7 +231,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function having($arg1, $arg2=null, $arg3=null) {
 		if (!$this->pieces['having']) {
-			#require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
 		}
@@ -254,7 +248,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	 */
 	public function orHaving($data, $value=null) {
 		if (!($this->pieces['having'] instanceof A_Sql_Having)) {
-			#require_once 'A/Sql/Having.php';
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
 		}
@@ -269,7 +262,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @return self
 	 */
 	public function groupBy($columns) {
-		#require_once 'A/Sql/Groupby.php';
 		$this->pieces['groupby'] = new A_Sql_Groupby($columns);	
 		return $this;
 	}
@@ -282,7 +274,6 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @question Same as before
 	 */
 	public function orderBy($columns) {
-		#require_once 'A/Sql/Orderby.php';
 		$this->pieces['orderby'] = new A_Sql_Orderby($columns);	
 		return $this;
 	}

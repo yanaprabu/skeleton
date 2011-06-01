@@ -7,8 +7,6 @@
  * @link	 http://skeletonframework.com/
  */
 
-#include_once('A/Sql/LogicalList.php');
-
 /**
  * A_Sql_Join_Parameters
  */

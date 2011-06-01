@@ -1,5 +1,4 @@
 <?php
-#require_once 'A/Sql/Statement.php';
 /**
  * Set.php
  *
@@ -16,7 +15,6 @@
 class A_Sql_Set extends A_Sql_Statement
 {
 	public function addExpression($arg1, $arg2) {
-		#require_once 'A/Sql/Expression.php';
 		$this->escapeListeners[] = $expression = new A_Sql_Expression($arg1, $arg2);
 		$this->data[] = $expression;;
 	}
