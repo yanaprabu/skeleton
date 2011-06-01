@@ -1,6 +1,16 @@
 <?php
 #include_once 'A/Db/Datamapper.php';
+/**
+ * Xml.php
+ *
+ * @package  A_Orm
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
+/**
+ * A_Orm_Config_Xml
+ */
 class A_Orm_Datamapper_Xml extends A_Orm_Datamapper {
 	protected $data = array();
 	
