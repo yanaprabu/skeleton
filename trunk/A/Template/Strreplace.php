@@ -1,5 +1,4 @@
 <?php
-#include_once('A/Template/File.php');
 /**
  * Strreplace.php
  *

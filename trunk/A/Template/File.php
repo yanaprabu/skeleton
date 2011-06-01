@@ -1,5 +1,4 @@
 <?php
-#include_once('A/Template.php');
 /**
  * File.php
  *
