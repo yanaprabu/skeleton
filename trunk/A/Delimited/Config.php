@@ -1,12 +1,17 @@
 <?php
 /**
+ * Config.php
+ *
+ * @package  A_Delimited
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Christopher Thompson
+ */
+
+/**
  * A_Delimited_Config
  *
  * Configuration value object for reading/writing delimited text files
- *
- * @author Christopher Thompson
- * @package A_Delimited
- * @version @package_version@
  */
 
 class A_Delimited_Config {
