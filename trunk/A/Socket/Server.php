@@ -11,8 +11,7 @@
 /**
  * A_Socket_Server
  *
- * This handles connecting with Socket clients.  It also receives
- * JSON data from clients, maps to controller/action, and dispatches.
+ * This handles connecting with Socket clients.  It can receive data in any format supported type of Message, and delegates all events to the defined event manager.
  */
 class A_Socket_Server
 {
