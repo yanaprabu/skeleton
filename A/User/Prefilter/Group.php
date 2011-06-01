@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/User/Session.php';
 #include_once 'A/User/Rule/Ingroup.php';
+/**
+ * Group.php
+ *
+ * @package  A_User
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
 /**
- * Front Controller pre-filter for group based access control 
+ * A_User_Prefilter_Group
  * 
- * @package A_User 
+ * Front Controller pre-filter for group based access control.
  */
 class A_User_Prefilter_Group {
 	

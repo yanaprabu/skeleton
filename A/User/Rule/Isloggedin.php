@@ -1,10 +1,17 @@
 <?php
 /**
- * Check if user is logged-in 
- * 
- * @package A_User 
+ * Isloggedin.php
+ *
+ * @package  A_User
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_User_Rule_Isloggedin
+ * 
+ * Check if user is logged-in.
+ */
 class A_User_Rule_Isloggedin extends A_User_Rule_Base {
 	
 	public function __construct ($forward) {
