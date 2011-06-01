@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Controller/Input.php';
-#include_once 'A/Pager.php';
 /**
  * List.php
  *

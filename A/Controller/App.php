@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Controller/Input.php';
 /**
  * App.php
  *

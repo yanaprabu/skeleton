@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Controller/App.php';
-#include_once 'A/Rule/Notnull.php';
 /**
  * Form.php
  *
