@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/User/Session.php';
-#include_once 'A/User/Rule/Ingroup.php';
 /**
  * Group.php
  *
