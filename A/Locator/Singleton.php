@@ -21,7 +21,6 @@ class A_Locator_Singleton {
 
 	function getInstance() {
 		if (! isset($this->_instance)) {
-			#include_once "A/Locator.php";
 			$this->_instance = new A_Locator();
 		}
 		return $this->_instance;
