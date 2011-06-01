@@ -1,6 +1,6 @@
 <?php
 /**
- * Http Path Information
+ * PathInfo
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
