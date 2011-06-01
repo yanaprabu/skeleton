@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Rule/Set.php';
 /**
  * Hasrole.php
  *

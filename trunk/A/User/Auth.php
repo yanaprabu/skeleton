@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/User/Access.php';
 /**
  * Auth.php
  *
