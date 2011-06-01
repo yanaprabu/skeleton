@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/DataContainer.php';
-#include_once 'A/Sql/Select.php';
 /**
  * Activerecord.php
  *
@@ -130,7 +128,6 @@ class A_Db_Activerecord extends A_Collection {
 			$this->_data = $data;
 		}
 		if (! $this->is_loaded) {
-			#include_once 'A/Sql/Insert.php';
 			$insert = new A_Sql_Insert();
 			$insert->table($this->table)->values($this->_data);
 			$this->sql = $insert->render();
@@ -138,7 +135,6 @@ class A_Db_Activerecord extends A_Collection {
 			$try_update = ! $this->db->isError();
 		}
 		if (isset($this->_data[$this->key]) && ($this->is_loaded || $try_update)) {
-			#include_once 'A/Sql/Update.php';
 			$update = new A_Sql_Update();
 			$update->table($this->table)->set($this->_data)->where($this->key, $this->_data[$this->key]);
 			$this->sql = $update->render();
@@ -148,7 +144,6 @@ class A_Db_Activerecord extends A_Collection {
 	
 	public function delete() {
 		if (isset($this->_data[$this->key]) && $this->is_loaded) {
-			#include_once 'A/Sql/Delete.php';
 			$delete = new A_Sql_Delete();
 			$delete->table($this->table)->where($this->key, $this->_data[$this->key]);
 			$this->sql = $delete->render();

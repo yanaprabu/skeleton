@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Db/Datamapper.php';
 /**
  * Xml.php
  *

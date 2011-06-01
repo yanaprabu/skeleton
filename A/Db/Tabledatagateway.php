@@ -98,7 +98,6 @@ class A_Db_Tabledatagateway {
 	public function update($data, $where='') {
 		if ($data) {
 			if (! isset($this->update)) {
-				#include_once 'A/Sql/Update.php';
 				$this->update = new A_Sql_Update($this->getTable());
 			}
 			$this->update->setDb($this->db)->set($data);
@@ -117,7 +116,6 @@ class A_Db_Tabledatagateway {
 	public function insert($data) {
 		if ($data) {
 			if (! isset($this->insert)) {
-				#include_once 'A/Sql/Insert.php';
 				$this->insert = new A_Sql_Insert($this->getTable());
 			}
 			$this->sql = $this->insert->setDb($this->db)->values($data)->render();
@@ -128,7 +126,6 @@ class A_Db_Tabledatagateway {
 	public function save($data) {
 		if ($data) {
 			if (isset($data[$this->key]) && $data[$this->key]) {
-				#include_once 'A/Sql/Insert.php';
 				$this->update($data, $data[$this->key]);
 			} else {
 				$this->insert($data);
