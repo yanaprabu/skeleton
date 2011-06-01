@@ -9,9 +9,9 @@
  */
 
 /**
- * Description of CachedController
- *
- * @author jonah
+ * A_Socket_EventListener_CachedController
+ * 
+ * Stores controllers in memory ahead of time to reduce routing time.
  */
 class A_Socket_EventListener_CachedController
 {
