@@ -2,7 +2,7 @@
 /**
  * Request.php
  *
- * @package  A
+ * @package  A_Http
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
  */
