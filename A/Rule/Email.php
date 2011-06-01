@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
 /**
- * Rule to check for email address
+ * Email.php
  *
- * @package A_Rule_Set
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Rule_Email
+ * 
+ * Rule to check if value is a valid email address, and that the domain exists
+ */
 class A_Rule_Email extends A_Rule_Base {
 	const ERROR = 'A_Rule_Email';
 	

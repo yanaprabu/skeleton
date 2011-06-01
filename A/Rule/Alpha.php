@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
 /**
- * Rule to check for alphabetic values
- * 
- * @package A_Rule_Set 
+ * Alpha.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Rule_Alpha
+ * 
+ * Rule to make sure string only contains alphabetic characters
+ */
 class A_Rule_Alpha extends A_Rule_Base {
 	const ERROR = 'A_Rule_Alpha';
 

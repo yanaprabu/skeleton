@@ -1,11 +1,17 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
+/**
+ * Captcha.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
 /**
- * Rule to check for captcha value
- * class acts as both a Rule for Validator and Renderer for View
+ * A_Rule_Captcha
  * 
- * @package A_Rule
+ * Rule to check for captcha value.  Class acts as both a Rule for Validator and Renderer for View
  */
 class A_Rule_Captcha extends A_Rule_Base {
 	const ERROR = 'A_Rule_Captcha';

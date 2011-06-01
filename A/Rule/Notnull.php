@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Rule/Abstract.php';
 /**
- * Rule to check for a value not being ''
- * 
- * @package A_Rule_Set 
+ * Notnull.php
+ *
+ * @package  A_Rule
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Rule_Notnull
+ * 
+ * Rule to check for a value not being empty, null, or false
+ */
 class A_Rule_Notnull extends A_Rule_Base {
 	const ERROR = 'A_Rule_Notnull';
 	
