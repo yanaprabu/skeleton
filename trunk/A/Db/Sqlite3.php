@@ -41,7 +41,6 @@ class A_Db_Sqlite3 extends A_Db_Base {	protected $dsn = null;	protected $link 
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
 		if ($bind) {
-			#include_once 'A/Sql/Prepare.php';
 			$prepare = new A_Sql_Prepare($sql, $bind);
 			$prepare->setDb($this->db);
 			$sql = $prepare->render();
