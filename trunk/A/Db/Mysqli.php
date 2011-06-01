@@ -1,10 +1,17 @@
 <?php
 /**
- * Basic database connection functionality using the mysqli library
- * 
- * @package A_Db 
+ * Mysqli.php
+ *
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Db_Mysqli
+ * 
+ * Database connection class using the mysqli library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
+ */
 class A_Db_Mysqli extends A_Db_Base
 {
 	protected $_sequence_ext = '_seq';

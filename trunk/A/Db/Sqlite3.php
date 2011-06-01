@@ -1,14 +1,17 @@
 <?php
 /**
- * Database connection class using the SQLite library
+ * Sqlite3.php
  *
- * @package A_Db
- * 
- * DSN array contain:
- * 'filename'
- * 'mode'
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Db_Sqlite3
+ * 
+ * Database connection class using SQLite.  Configuration array can contain the following indices: filename, mode.
+ */
 class A_Db_Sqlite3 extends A_Db_Base {	protected $dsn = null;	protected $link = null;	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Sqlite3';

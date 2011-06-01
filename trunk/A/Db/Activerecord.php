@@ -2,11 +2,19 @@
 #include_once 'A/DataContainer.php';
 #include_once 'A/Sql/Select.php';
 /**
- * DataSource access using the Active Record pattern 
+ * Activerecord.php
  *
- * @package A_Db
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
  */
 
+/**
+ * A_Db_Activerecord
+ * 
+ * DataSource access using the Active Record pattern.
+ */
 class A_Db_Activerecord extends A_Collection {
 	protected static $globaldb = null;
 	protected $db = null;

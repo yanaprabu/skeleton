@@ -1,9 +1,12 @@
 <?php
 /**
- * Adapt PDO to basic database connection functionality
- * 
- * @package A_Db 
+ * Pdo.php
+ *
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
+
 /*
     * PDO::__construct — Creates a PDO instance representing a connection to a database
     * PDO::getAttribute — Retrieve a database connection attribute
@@ -21,6 +24,11 @@
     * PDO::errorInfo — Fetch extended error information associated with the last operation on the database handle
 */
 
+/**
+ * A_Db_Pdo
+ * 
+ * Adapt PDO to basic database connection functionality.  Configuration array can contain the following indices: type, hostspec, username, password, database.
+ */
 class A_Db_Pdo extends A_Db_Base {
 
 	protected $dsn = null;

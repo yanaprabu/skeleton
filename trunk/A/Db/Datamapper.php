@@ -1,10 +1,17 @@
 <?php
 /**
- * Basic functionality to map table columns to object fields
- * 
- * @package A_Db 
+ * Datamapper.php
+ *
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Db_Datamapper
+ * 
+ * Basic functionality to map table columns to object fields
+ */
 class A_Db_Datamapper {
 	protected $db = null;
 	protected $class_name = '';				// class mapped by this mapper

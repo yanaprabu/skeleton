@@ -1,15 +1,5 @@
 <?php
-/**
- * Database connectin class using the mysql_ library
- *
- * @package A_Db
- * 
- * config array contain:
- * 'hostspec'
- * 'username'
- * 'password'
- * 'database'
- */
+
 class A_Db_Result {
 	protected $numRows;
 	protected $error;

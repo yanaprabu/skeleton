@@ -1,8 +1,15 @@
 <?php
 /**
- * Provide
- * @author Christopher Thompson
+ * Masterslave.php
  *
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Christopher Thompson
+ */
+
+/**
+ * A_Db_Config_Masterslave
  */
 class A_Db_Config_Masterslave {
 

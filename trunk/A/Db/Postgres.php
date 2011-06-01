@@ -1,17 +1,17 @@
 <?php
 /**
- * Database connection using the postgres library
+ * Postgres.php
  *
- * @package A_Db
- * 
- * DSN array contain:
- * 'host' or 'hostspec'
- * 'user' or 'username'
- * 'password'
- * 'dbname' or 'database'
- * 'port'
- *  */
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
+/**
+ * A_Db_Postgres
+ * 
+ * Database connection class using Postgres.  Configuration array can contain the following indices: type, hostspec, username, password, database.
+ */
 class A_Db_Postgres extends A_Db_Base {
 	protected $config = null;
 	protected $link = null;

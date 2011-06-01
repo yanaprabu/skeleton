@@ -1,13 +1,19 @@
 <?php
 /**
+ * Base.php
+ *
+ * @package  A_Db
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
+ */
+
+/**
+ * A_Db_Recordset_Base
+ * 
  * Database recordset set (abstract class)
  * 
- * This class implements the Iterator interface to allow iterating over it with
- * foreach.  Specific databases must have result classes that extend this one,
- * creating the methods defined here.
- * 
- * @package A_Db_Recordset
- * @author Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
+ * This class implements the Iterator interface to allow iterating over it with foreach.  Specific databases must have result classes that extend this one, implementing the abstract methods defined here.
  */
 abstract class A_Db_Recordset_Base implements Iterator
 {
