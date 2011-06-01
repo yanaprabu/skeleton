@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate URLs to add items to the shopping cart
- * 
- * @package A_Cart 
+ * Url.php
+ *
+ * @package  A_Cart
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Cart_Url
+ * 
+ * Generate URLs to add items to the shopping cart.  Links created with this class can be placed in a page, and when clicked, will lead to a page to add that item to the cart.
+ */
 class A_Cart_Url
 {protected $cart;
 protected $base_url;
