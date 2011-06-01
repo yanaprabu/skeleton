@@ -1,12 +1,16 @@
 <?php
 /**
- * A_Orm_DataMapper_Mapping
+ * Mapping.php
  *
- * @author Cory Kaufman, Christopher Thompson
- * @package A_Orm
- * @version @package_version@
+ * @package  A_Orm
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman, Christopher Thompson
  */
 
+/**
+ * A_Orm_DataMapper_Mapping
+ */
 class A_Orm_DataMapper_Mapping	{
 
 	public $getMethod;

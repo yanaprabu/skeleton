@@ -1,12 +1,16 @@
 <?php
 /**
- * A_Orm_DataMapper_SQLJoin
+ * SQLJoin.php
  *
- * @author Cory Kaufman
- * @package A_Orm
- * @version @package_version@
+ * @package  A_Orm
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman
  */
 
+/**
+ * A_Orm_DataMapper_SQLJoin
+ */
 class A_Orm_DataMapper_SQLJoin	{
 	
 	public function __construct($sql) {

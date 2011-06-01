@@ -1,14 +1,18 @@
 <?php
 /**
+ * DataMapper.php
+ *
+ * @package  A_Orm
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman, Christopher Thompson
+ */
+
+/**
  * A_Orm_DataMapper
  *
  * Implementation of Data Mapper pattern
- *
- * @author Cory Kaufman, Christopher Thompson
- * @package A_Orm
- * @version @package_version@
  */
-
 class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 
 	public function __construct($db, $class, $table ='', $params = array())	{
