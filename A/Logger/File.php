@@ -1,10 +1,17 @@
 <?php
 /**
- * File writer for the A_Logger class 
- * 
- * @package A_Logger 
+ * File.php
+ *
+ * @package  A_Logger
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Logger_File
+ *
+ * File writer for the A_Logger class.
+ */
 class A_Logger_File {
 	protected $filename = '';
 	protected $errorMsg = '';
