@@ -8,8 +8,6 @@
  * @author   Christopher Thompson
  */
 
-#include_once 'A/Delimited/Config.php';
-
 /**
  * A_Delimited_Base
  * 
