@@ -1,10 +1,17 @@
 <?php
 /**
- * Base class for SQL classes to provide Observer support for escaping 
- * 
- * @package A_Sql 
+ * Statement.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Statement
+ * 
+ * Base class for SQL classes to provide Observer support for escaping 
+ */
 class A_Sql_Statement {
 	protected $db;
 	protected $escapeListeners = array();	

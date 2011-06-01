@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Sql/Statement.php';
 /**
- * Generate SQL logical expression/equation
- * 
- * @package A_Sql 
+ * Expression.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Expression
+ * 
+ * Generate SQL logical expression/equation.
+ */
 class A_Sql_Expression extends A_Sql_Statement {	
 	protected $data = array();
 	protected $operators = array('=', '!=', '>', '<', '>=', '<=', '<>', ' IN', ' NOT IN', ' LIKE', ' NOT LIKE');	

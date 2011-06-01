@@ -1,7 +1,17 @@
 <?php
+/**
+ * Parameters.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
 #include_once('A/Sql/LogicalList.php');
 
+/**
+ * A_Sql_Join_Parameters
+ */
 class A_Sql_Join_Parameters	{
 	
 	protected $table1;

@@ -1,11 +1,16 @@
 <?php
 /**
- * Generate SQL table columns list
- * 
- * @package A_Sql 
+ * Table.php
  *
- * @license    BSD
- * @version    $Id:$
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Sql_Table
+ * 
+ * Generate SQL table columns list
  */
 class A_Sql_Columns {
 	protected $table = '';

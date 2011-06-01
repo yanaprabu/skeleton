@@ -1,10 +1,11 @@
 <?php
-
 /**
- * Lazy load A_Sql_* classes
- * 
- * @author Cory Kaufman
- * @package A_Sql 
+ * Query.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman
  */
 
 #include_once('A/Sql/Select.php');
@@ -12,6 +13,9 @@
 #include_once('A/Sql/Update.php');
 #include_once('A/Sql/Delete.php');
 
+/**
+ * A_Sql_Query
+ */
 class A_Sql_Query	{
 	
 	public function select()	{

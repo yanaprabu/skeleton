@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate SQL joins 
- * 
- * @package A_Sql 
+ * Join.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Join
+ * 
+ * Generate SQL joins
+ */
 class A_Sql_Join {
 	protected $type = '';
 	protected $table_right = '';

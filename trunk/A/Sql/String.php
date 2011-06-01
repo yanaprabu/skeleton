@@ -1,12 +1,18 @@
 <?php
 /**
- * Generate SQL using strings with replaceable tags
+ * String.php
  *
- * @author Cory Kaufman
- * @package A_Sql
- * @version @package_version@
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman
  */
 
+/**
+ * A_Sql_String
+ * 
+ * Generate SQL using strings with replaceable tags
+ */
 class A_Sql_String	{
 	protected $_sql = '';
 	protected $_prefix = ':';

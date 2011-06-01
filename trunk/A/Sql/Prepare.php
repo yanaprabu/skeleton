@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate SQL a prepared statement 
- * 
- * @package A_Sql 
+ * Prepare.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Prepare
+ * 
+ * Generate SQL a prepared statement
+ */
 class A_Sql_Prepare {
 	protected $statement = '';			// SQL template
 	protected $db = null;				// object with escape() method

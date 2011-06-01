@@ -1,11 +1,17 @@
 <?php
 #require_once 'A/Sql/Statement.php';
 /**
- * Generate SQL SELECT statement
+ * Select.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Sql_Select
  * 
- * @package A_Sql 
- * @license    BSD
- * @version    $Id:$
+ * Generate SQL SELECT statement
  */
 class A_Sql_Select extends A_Sql_Statement {
 	

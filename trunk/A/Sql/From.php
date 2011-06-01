@@ -1,11 +1,16 @@
 <?php
 /**
- * Generate SQL from tables/joins list
- * 
- * @package A_Sql 
+ * From.php
  *
- * @license    BSD
- * @version    $Id:$
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Sql_From
+ * 
+ * Generate SQL from tables/joins list
  */
 class A_Sql_From {
 	protected $table = '';

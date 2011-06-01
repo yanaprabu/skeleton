@@ -1,11 +1,18 @@
 <?php
 #require_once 'A/Sql/Statement.php';
 /**
- * Generate SQL UPDATE statement
- * 
- * @package A_Sql 
+ * Update.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Update
+ * 
+ * Generate SQL UPDATE statement
+ */
 class A_Sql_Update extends A_Sql_Statement {
 	protected $table;
 	protected $where;
