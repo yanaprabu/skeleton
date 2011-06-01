@@ -165,7 +165,6 @@ class A_Controller_Front {
 	public function run($locator = null) {
 		
 		if(! $locator){
-			#include_once 'A/Locator.php';
 			$locator = new A_Locator();
 		}
 		if (! $locator->has('Request')) {

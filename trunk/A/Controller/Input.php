@@ -1,7 +1,4 @@
 <?php
-#include_once 'A/Controller/Action.php';
-#include_once 'A/Filter/Set.php';
-#include_once 'A/Rule/Set.php';
 /**
  * Input.php
  *

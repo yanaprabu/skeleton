@@ -7,8 +7,6 @@
  * @link	 http://skeletonframework.com/
  */
 
-#include_once 'A/Controller/Action.php';
-
 /**
  * A_Controller_Action_Dispatch
  * 

@@ -12,7 +12,6 @@
  * 
  * Special helper provides flash style session variables
  */
-
 class A_Controller_Helper_Flash {
 	protected $locator;
 	protected $session;
