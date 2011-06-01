@@ -1,6 +1,16 @@
 <?php
 /**
+ * Info.php
+ *
+ * @package  A_File
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_File_Info
  * 
+ * Get file metadata/attributes
  */
 class A_File_Info {
 	protected $info;
