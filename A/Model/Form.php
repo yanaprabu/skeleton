@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Model.php';
-#include_once 'A/Model/Form/Field.php';
 /**
  * Form.php
  *
