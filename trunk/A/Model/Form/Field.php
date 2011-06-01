@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Model/Field.php';
 /**
  * Field.php
  *
@@ -48,7 +47,6 @@ class A_Model_Form_Field extends A_Model_Field {
 		// string is name of class with underscores in loadable convention
 		if (is_string($this->renderer)){
 			// load locator if not loaded
-			#include_once 'A/Locator.php';
 			if (A_Locator::loadClass($this->renderer)) {
 				// instantiate render passing the array of field
 				$this->renderer = new $this->renderer();
