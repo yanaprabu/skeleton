@@ -1,10 +1,17 @@
 <?php
 /**
- * Template class using XML files as templates 
- * 
- * @package A_Template
+ * Xml.php
+ *
+ * @package  A_Template
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Template_Xml
+ * 
+ * Template class using XML files as templates
+ */
 class A_Template_Xml extends A_Template_Base {
 	protected $data = array();
 	protected $depth = -1;
