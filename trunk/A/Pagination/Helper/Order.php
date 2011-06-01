@@ -1,14 +1,18 @@
 <?php
 /**
- * A_Pagination_View_Order
+ * Order.php
  *
- * Generate orderBy links
- *
- * @author Cory Kaufman, Christopher Thompson
- * @package A_Pagination
- * @version @package_version@
+ * @package  A_Pagination
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman, Christopher Thompson
  */
 
+/**
+ * A_Pagination_Helper_Order
+ * 
+ * Generate orderBy links
+ */
 class A_Pagination_Helper_Order	{
 	protected $pager;
 	protected $url;

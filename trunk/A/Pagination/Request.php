@@ -1,17 +1,21 @@
 <?php
 /**
- * A_Pagination_Request
+ * Request.php
  *
- * Component to initialize the core object from the request
- *
- * @author Cory Kaufman, Christopher Thompson
- * @package A_Pagination
- * @version @package_version@
+ * @package  A_Pagination
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman, Christopher Thompson
  */
 
 #include_once 'A/Pagination/Core.php';
 #include_once 'A/Pagination/Helper/Url.php';
 
+/**
+ * A_Pagination_Request
+ * 
+ * Component to initialize the core object from the request
+ */
 class A_Pagination_Request extends A_Pagination_Core	{
 
 	public function setRequest ($request)	{
