@@ -1,14 +1,18 @@
 <?php
 /**
- * A_Pagination_View_Standard
+ * Standard.php
  *
- * Component to paginate items from a datasource
- *
- * @author Cory Kaufman, Christopher Thompson
- * @package A_Pagination
- * @version @package_version@
+ * @package  A_Pagination
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman, Christopher Thompson
  */
 
+/**
+ * A_Pagination_View_Standard
+ * 
+ * Component to paginate items from a datasource
+ */
 class A_Pagination_View_Standard	{
 
 	protected $links = '';

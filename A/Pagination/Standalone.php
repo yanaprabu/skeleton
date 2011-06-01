@@ -1,17 +1,19 @@
 <?php
 /**
- * A_Pagination_Standalone
+ * Standalone.php
  *
- *
- *
- * @author Cory Kaufman, Christopher Thompson
- * @package A_Pagination
- * @version @package_version@
+ * @package  A_Pagination
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ * @author   Cory Kaufman, Christopher Thompson
  */
 
 #include_once 'A/Pagination/Request.php';
 #include_once 'A/Pagination/View/Standard.php';
 
+/**
+ * A_Pagination_Standalone
+ */
 class A_Pagination_Standalone extends A_Pagination_View_Standard	{
 
 	public function __construct ($adapter, $pageSize = false, $currentPage = false)	{
