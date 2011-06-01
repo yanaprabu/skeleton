@@ -1,13 +1,17 @@
 <?php
-
 /**
- * A_Controller_Form field class with type and rendering
- * 
- * @package A_Controller
- * @subpackage Form
+ * Field.php
+ *
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
-
+/**
+ * A_Controller_Form_Field
+ * 
+ * Field class with type and rendering
+ */
 class A_Controller_Form_Field extends A_Controller_Input_Field {
 	public $type = '';
 	public $addtype = '';

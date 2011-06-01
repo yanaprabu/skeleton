@@ -1,10 +1,17 @@
 <?php
 /**
- * Simple front controller implementation
- * 
- * @package A_Controller
+ * Frontsimple.php
+ *
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Controller_Frontsimple
+ * 
+ * Simple front controller implementation
+ */
 class A_Controller_Frontsimple{
 protected $action_dir;
 protected $default_action;

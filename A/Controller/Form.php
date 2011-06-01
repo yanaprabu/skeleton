@@ -2,12 +2,18 @@
 #include_once 'A/Controller/App.php';
 #include_once 'A/Rule/Notnull.php';
 /**
- * Controller class for callback style form support
+ * Form.php
  *
- * @package A_Controller
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
-
+/**
+ * A_Controller_Form
+ * 
+ * Controller class for callback style form support
+ */
 class A_Controller_Form extends A_Controller_App {
 	protected $state_handlers;
 	protected $state_param = 'A_Controller_App_State';
