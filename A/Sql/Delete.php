@@ -1,13 +1,17 @@
 <?php
 #require_once 'A/Sql/Statement.php';
 /**
- * Class for SQL delete query generation.
+ * Delete.php
  *
- * @category A
- * @package A_Sql
- * @subpackage Delete
- * @license    BSD
- * @version    $Id:$
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Sql_Delete
+ * 
+ * Class for SQL delete query generation.
  */
 class A_Sql_Delete extends A_Sql_Statement{
 	

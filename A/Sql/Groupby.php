@@ -1,11 +1,18 @@
 <?php
 #require_once 'A/Sql/Columns.php';
 /**
- * Generate SQL GROUP BY clause
- * 
- * @package A_Sql 
+ * Groupby.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Groupby
+ * 
+ * Generate SQL GROUP BY clause
+ */
 class A_Sql_Groupby extends A_Sql_Columns {
 	protected $columns;
 	

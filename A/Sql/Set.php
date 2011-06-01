@@ -1,11 +1,18 @@
 <?php
 #require_once 'A/Sql/Statement.php';
 /**
- * Generate SQL SET clause
- * 
- * @package A_Sql 
+ * Set.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_Columns
+ * 
+ * Generate SQL SET clause
+ */
 class A_Sql_Set extends A_Sql_Statement
 {
 	public function addExpression($arg1, $arg2) {

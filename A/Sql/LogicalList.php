@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Sql/Statement.php';
 /**
- * Generate SQL AND/OR/NOT list strings
- * 
- * @package A_Sql 
+ * LogicalList.php
+ *
+ * @package  A_Sql
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Sql_LogicalList
+ * 
+ * Generate SQL AND/OR/NOT list strings.
+ */
 class A_Sql_LogicalList extends A_Sql_Statement {
 	protected $data = array();
 	protected $escape = true;
