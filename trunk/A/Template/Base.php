@@ -1,10 +1,17 @@
 <?php
 /**
- * Base Template class with template and get/set/has functionality  
- * 
- * @package A_Tempalte 
+ * Base.php
+ *
+ * @package  A_Template
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Template_Base
+ * 
+ * Base Template class with template and get/set/has functionality
+ */
 abstract class A_Template_Base {
 	protected $template = '';
 	protected $data = array();

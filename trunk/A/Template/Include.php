@@ -1,10 +1,17 @@
 <?php
 /**
- * Template class that includes PHP templates. No block support.
- * 
- * @package A_Template
+ * Include.php
+ *
+ * @package  A_Template
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Template_Include
+ * 
+ * Template class that includes PHP templates. No block support.
+ */
 class A_Template_Include extends A_Template_Base {
 
 	public function partial($template, $data=null) {

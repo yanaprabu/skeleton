@@ -1,10 +1,17 @@
 <?php
 /**
- * Template class that transforms XML templates with XSL. No blocks.
- * 
- * @package A_Template
+ * Xslt.php
+ *
+ * @package  A_Template
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Template_Xslt
+ * 
+ * Template class that transforms XML templates with XSL. No blocks.
+ */
 class A_Template_Xslt extends A_Template_Base {
 	protected $filenamexml = '';
 

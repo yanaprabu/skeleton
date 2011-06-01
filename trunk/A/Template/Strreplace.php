@@ -1,11 +1,18 @@
 <?php
 #include_once('A/Template/File.php');
 /**
- * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
- * 
- * @package A_Template
+ * Strreplace.php
+ *
+ * @package  A_Template
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Template_Strreplace
+ * 
+ * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
+ */
 class A_Template_Strreplace extends A_Template_File {
 	protected $tagprefix = '{';
 	protected $tagsuffix = '}';
