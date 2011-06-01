@@ -2,13 +2,19 @@
 #include_once 'A/Controller/Action.php';
 #include_once 'A/Filter/Set.php';
 #include_once 'A/Rule/Set.php';
-
 /**
- * Controller class with request filtering and validation
+ * Input.php
  *
- * @package A_Controller
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Controller_Input
+ * 
+ * Controller class with request filtering and validation
+ */
 class A_Controller_Input extends A_Controller_Action {
 	public $params = array();
 	protected $filters = array();	// global filters run on every parameter

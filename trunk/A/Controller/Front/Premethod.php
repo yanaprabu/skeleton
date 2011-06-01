@@ -1,17 +1,17 @@
 <?php
 /**
- * Create object of this class to pass to Front Controller preFilter() method
- * to call the method named $method, if it exists, before action is dispatched.
- * The method may return an array which will be returned to the Front Controller
- * to short circuit dispatch. Or it may return true and then the $change_action 
- * array containing dir/class/method/args is returned. 
- * 
- * Created on Sep 5, 2007
+ * Premethod.php
  *
- * @package A_Controller
- * @subpackage A_Controller_Front
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Controller_Front_Premethod
+ * 
+ * Create object of this class to pass to Front Controller preFilter() method to call the method named $method, if it exists, before action is dispatched.  The method may return an array which will be returned to the Front Controller to short circuit dispatch. Or it may return true and then the $change_action array containing dir/class/method/args is returned.
+ */
 class A_Controller_Front_Premethod {
 	protected $method;
 	protected $change_action;

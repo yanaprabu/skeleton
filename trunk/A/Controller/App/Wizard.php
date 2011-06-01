@@ -1,10 +1,17 @@
 <?php
-/*
-Use A_Controller_App and craete a Rule A_Controller_App_Wizard that keeps track of the current step in the sequence.
+/**
+ * Wizard.php
+ *
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
-Every step should have a array('controller','action') forward defined. There should be a setStep($n, $forward)
-*/
-
+/**
+ * A_Controller_App_Wizard
+ * 
+ * Handles sequences of controller/actions to be used with A_Controller_App.  Define each step with an action/controller pair (array('controller', 'action')) using setStep().
+ */
 class A_Controller_App_Wizard {
 	protected $maxStep = -1;
 	

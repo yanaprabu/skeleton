@@ -1,14 +1,18 @@
 <?php
+/**
+ * Dispatch.php
+ *
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
 #include_once 'A/Controller/Action.php';
 
 /**
- * Action Controller Dispatch
+ * A_Controller_Action_Dispatch
  * 
- * This action controller implementation controls the actual action dispatch process and allows for pre- and post- dispatch hooks to be used
- * 
- * @category Skeleton
- * @package A_Controller
- * @subpackage Action
+ * This action controller implementation controls the actual action dispatch process and allows for pre- and post- dispatch hooks to be used.
  */
 class A_Controller_Action_Dispatch extends A_Controller_Action {
 	

@@ -1,10 +1,15 @@
 <?php
 #include_once 'A/Html/Form/Field.php';
+/**
+ * Field2.php
+ *
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
 /**
- * 
- * @package A_Controller
- * @subpackage Form
+ * A_Controller_Form_Field
  */
 class A_Controller_Form_Field {
 	protected $func_param = null;

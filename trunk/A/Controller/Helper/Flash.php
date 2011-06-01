@@ -1,11 +1,16 @@
 <?php
 /**
+ * Flash.php
+ *
+ * @package  A_Controller
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
  * A_Controller_Helper_Flash
  * 
- * special helper provides flash style session variables
- * 
- * @package A_Controller
- * @subpackage Helper
+ * Special helper provides flash style session variables
  */
 
 class A_Controller_Helper_Flash {
