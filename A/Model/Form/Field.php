@@ -1,6 +1,18 @@
 <?php
 #include_once 'A/Model/Field.php';
+/**
+ * Field.php
+ *
+ * @package  A_Model
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
+/**
+ * A_Model_Form_Field
+ *
+ * An extension of A_Model_Field.  It's purpose is to act as a field object for a A_Model_Form.  This class provides the ability to attach a renderer to it.
+ */
 class A_Model_Form_Field extends A_Model_Field {
 	// from Input Controller
 	public $renderer = null;
