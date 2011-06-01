@@ -1,10 +1,17 @@
 <?php
 /**
- * Datasource access class for pager using the A/Db/* connection classes  
- * 
- * @package A_Pagination 
+ * Db.php
+ *
+ * @package  A_Pagination
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Pagination_Adapter_Db
+ * 
+ * Datasource access class for pager using the A_Db_* connection classes.
+ */
 class A_Pagination_Adapter_Db extends A_Pagination_Adapter_Base	{
 
 	public function getNumItems()	{
