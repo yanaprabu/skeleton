@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Filter/Abstract.php';
 /**
- * Convert smart quotes to standard quotes
- * 
- * @package A_Filter 
+ * Smartquotes.php
+ *
+ * @package  A_Filter
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Filter_Smartquotes
+ * 
+ * Convert smart quotes to standard quotes
+ */
 class A_Filter_Smartquotes extends A_Filter_Base {
 	
 	public function filter () {
