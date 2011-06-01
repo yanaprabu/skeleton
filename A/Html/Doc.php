@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate HTML document
+ * Doc.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Doc
+ * 
+ * Generate HTML document
+ */
 class A_Html_Doc {
 	
 	protected $_config = array(

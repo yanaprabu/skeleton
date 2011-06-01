@@ -1,10 +1,17 @@
 <?php
 /**
- * Generic HTML tag w/attribute functionality
- * 
- * @package A_Html 
+ * Tag.php
+ *
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Tag
+ * 
+ * Generic HTML tag w/attribute functionality
+ */
 class A_Html_Tag {
 	protected $_attr = array();
 	
