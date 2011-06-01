@@ -44,7 +44,6 @@ class A_Pagination_View_Standard	{
 
 	public function order()	{
 		if (! isset($this->helpers['order']))	{
-			#include_once 'A/Pagination/Helper/Order.php';
 			$this->helpers['order'] = new A_Pagination_Helper_Order ($this->pager);
 		}
 		return $this->helpers['order'];
@@ -52,7 +51,6 @@ class A_Pagination_View_Standard	{
 
 	public function link()	{
 		if (! isset($this->helpers['link']))	{
-			#include_once 'A/Pagination/Helper/Link.php';
 			$this->helpers['link'] = new A_Pagination_Helper_Link ($this->pager, $this->url());
 		}
 		return $this->helpers['link'];
@@ -60,7 +58,6 @@ class A_Pagination_View_Standard	{
 
 	public function url()	{
 		if (! isset($this->helpers['url']))	{
-			#include_once 'A/Pagination/Helper/Url.php';
 			$this->helpers['url'] = new A_Pagination_Helper_Url();
 		}
 		return $this->helpers['url'];

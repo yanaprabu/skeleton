@@ -8,8 +8,6 @@
  * @author   Cory Kaufman, Christopher Thompson
  */
 
-#include_once 'A/Pagination/Helper/Url.php';
-
 /**
  * A_Pagination_Helper_Link
  * 
