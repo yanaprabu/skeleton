@@ -1,5 +1,4 @@
 <?php
-#include_once 'A/Html/Form/Radiocheckbox.php';
 /**
  * Checkbox.php
  *

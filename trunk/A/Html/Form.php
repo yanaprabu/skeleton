@@ -106,7 +106,6 @@ class A_Html_Form {
 
 	public function setWrapper($obj, $attr=array()) {
 		if (is_string($obj)) {
-			#include_once str_replace('_', '/', $obj) . '.php';
 			$this->_wrapper = new $obj();
 		} else {
 			$this->_wrapper = $obj;
@@ -126,7 +125,6 @@ class A_Html_Form {
 
 	protected function getHelper($type, $attr=array()) {
 		$class = $this->getHelperClass($type);
-		#include_once str_replace('_', '/', $class) . '.php';
 		if (class_exists($class)) {
 			$element = new $class($attr);
 			return $element;
