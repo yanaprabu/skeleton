@@ -1,10 +1,17 @@
 <?php
 /**
- * A_File_Browser - get list of directories and files in a directory
- * 
- * @package A_File 
+ * Browser.php
+ *
+ * @package  A_File
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_File_Browser
+ * 
+ * Get list of directories and files in a directory.
+ */
 class A_File_Browser {
 	const SORT_NONE = 0;
 	const SORT_CASE_SENSITIVE = 1;
