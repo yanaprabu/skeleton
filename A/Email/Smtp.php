@@ -1,15 +1,17 @@
 <?php
 /**
- * A_Email_Smtp
- *
- * Connection using socket connection to SMTP server
- * 
+ * Smtp.php
  *
  * @package  A_Email
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Email_Smtp
+ *
+ * Connection using socket connection to SMTP server.
+ */
 class A_Email_Smtp
 {
 	protected $config = array(
