@@ -22,7 +22,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 */
 	public function __construct($data = array())
 	{
-		$this->_expand($this, $source);
+		$this->import($data);
 	}
 	
 	/**
@@ -32,10 +32,10 @@ class A_Collection implements Iterator, ArrayAccess
 	 * @param string $node
 	 * @return self
 	 */
-	public function import($source)
+	public function import($data)
 	{
-		if ($source) {
-			$this->_expand($this, $source);
+		if (is_array($data)) {
+			$this->_expand($this, $data);
 		}
 		return $this;
 	}
@@ -147,16 +147,6 @@ class A_Collection implements Iterator, ArrayAccess
 	}
 	
 	/**
-	 * Create a copy of this Collection, reversed
-	 * 
-	 * @return A_Collection
-	 */
-	public function reverse()
-	{
-		return new A_Collection(array_reverse($this->_data, true));
-	}
-	
-	/**
 	 * Check if this Collection contains the specified key
 	 * 
 	 * @param mixed $key
@@ -223,9 +213,17 @@ class A_Collection implements Iterator, ArrayAccess
 	 * @param string $delimiter
 	 * @return string
 	 */
-	public function join($glue)
+	public function join($delimiter)
 	{
-		return implode($delimiter, $this->_data);
+		$data = $this->_data;
+		foreach ($data as &$datum) {
+			if (is_array($datum)) {
+				$datum = implode($delimiter, $datum);
+			} elseif ($datum instanceOf A_Collection) {
+				$datum = $datum->join($delimiter);
+			}
+		}
+		return implode($delimiter, $data);
 	}
 	
 	/**
