@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Html/Tag.php';
 /**
- * Generate HTML form hidden input
+ * Hidden.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Form_Hidden
+ * 
+ * Generate HTML form hidden input
+ */
 class A_Html_Form_Hidden extends A_Html_Tag {
 
 	/*

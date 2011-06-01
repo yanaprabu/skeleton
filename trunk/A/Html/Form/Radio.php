@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Html/Form/Radiocheckbox.php';
 /**
- * Generate HTML form radio button input
+ * Radio.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Form_Radio
+ * 
+ * Generate HTML form radio button input
+ */
 class A_Html_Form_Radio extends A_Html_Form_Radiocheckbox {
 
 	/*

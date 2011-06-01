@@ -1,9 +1,17 @@
 <?php
 #include_once 'A/Html/Tag.php';
 /**
- * Generate HTML form button
+ * Button.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
+/**
+ * A_Html_Form_Button
+ * 
+ * Generate HTML form button
  */
 class A_Html_Form_Button extends A_Html_Tag {
 

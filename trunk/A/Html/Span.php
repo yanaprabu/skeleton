@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Html/Tag.php';
 /**
- * Generate HTML span tag
+ * Span.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Span
+ * 
+ * Generate HTML span tag
+ */
 class A_Html_Span extends A_Html_Tag {
 
 	/*

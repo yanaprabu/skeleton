@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate HTML document
+ * Doctype.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Doctype
+ * 
+ * Generate HTML doctype tag
+ */
 class A_Html_Doctype {
 	const HTML_4_01_STRICT = 1;
 	const HTML_4_01_TRANSITIONAL = 2;

@@ -1,11 +1,18 @@
 <?php
 #include_once 'A/Html/Tag.php';
 /**
- * Generate HTML form textarea input
+ * Textarea.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Form_Textarea
+ * 
+ * Generate HTML form textarea input
+ */
 class A_Html_Form_Textarea extends A_Html_Tag {
 
 	/*

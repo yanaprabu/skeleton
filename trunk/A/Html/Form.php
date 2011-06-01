@@ -1,10 +1,17 @@
 <?php
 /**
- * Generate HTML form with fluent interface for form fields
+ * Form.php
  *
- * @package A_Html
+ * @package  A_Html
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
  */
 
+/**
+ * A_Html_Form
+ * 
+ * Generate HTML form with fluent interface for form fields
+ */
 class A_Html_Form {
 	protected $_attr = array(
 					'action' => '',
