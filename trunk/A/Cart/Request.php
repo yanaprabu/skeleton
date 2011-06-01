@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Cart/Url.php';
-#include_once 'A/Cart/Item.php';
 /**
  * Request.php
  *

@@ -1,6 +1,4 @@
 <?php
-#include_once 'A/Session.php';
-#include_once 'A/Cart/Manager.php';
 /**
  * Session.php
  *
