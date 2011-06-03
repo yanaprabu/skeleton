@@ -1,0 +1,242 @@
+<p style="float: right;"><em>Last modified 2011/02/20</em></p>
+
+<h1>Socket Server</h1>
+
+<h2>Introduction</h2>
+
+<p>The A_Socket library makes setting up a socket server very easy.  Almost any
+TCP/IP protocol is/can be supported.  Currently it is only capable of a
+WebSocket server.</p>
+
+<h2>Dependencies</h2>
+
+<p>The A_Socket core only currently depends on the
+<a href="?p=Event">A_Event</a> library.</p>
+
+<h2>Setting Up a Server</h2>
+
+<p>Setting up a server very similar in nature to a normal Skeleton boostrap
+file, with only a few differences.  It is contained in a file (by convention
+called "server.php"), run in the terminal.</p>
+
+<pre class="prettyprint lang-bash">
+$ cd /path/to/serverfile/
+$ php server.php
+</pre>
+
+<p>Here is an example server.php file.</p>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+
+$ConfigArray = array(
+	'PATH' => dirname(__FILE__) . '/',
+	'APP' => dirname(__FILE__) . '/app',
+	'SOCKET' => array(
+		'host' => 'localhost',
+		'port' => '9091',
+		'class-client' => 'MySocketClient',
+		'class-message' => 'MySocketMessage',
+		'message-connect' => 'connected',
+		'message-disconnect' => 'disconnected'
+	),
+	'DEFAULT_ACTION' => array('', 'main', 'main'),
+	'ERROR_ACTION' => array('', 'main', 'main')
+);
+
+include $ConfigArray['PATH'] . '../../A/Locator.php';
+
+$Locator = new A_Locator();
+$Locator->autoload();
+
+$Config = new A_Config_Php();
+$Config->import($ConfigArray);
+$Locator->set('Config', $Config);
+
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
+
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, function () { echo 'Client connected :)' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_MESSAGE, function () { echo 'Client sent a message :D' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_DISCONNECT, function () { echo 'Client disconnected :(' . PHP_EOL; });
+
+$Server = new A_Socket_Server($EventManager);
+$Server->run($ConfigArray['SOCKET']);
+</pre>
+
+<p>That's a bit much to process at once, so lets break it down and evaluate each
+part.  Starting with the config.</p>
+
+<pre class="prettyprint lang-php">
+		'host' => 'localhost',
+		'port' => '9091',
+		'class-client' => 'MySocketClient',
+		'class-message' => 'MySocketMessage',
+		'message-connect' => 'connected',
+		'message-disconnect' => 'disconnected'
+</pre>
+
+<p>First, the host and port to listen on are defined.  After that, we set the
+name of the class we want to use to represent a connected client.  This depends
+on what protocol is being used.  This class must extend
+A_Socket_Client_Abstract, or an exception will be thrown.  A_Socket comes
+preloaded with A_Socket_Client_WebSocket, for the WebSocket protocol.</p>
+
+<p>The 'class-message' option tells the server the name of the class to use
+for the message.  This depends on the format of the messages being passed.  This
+class must extend A_Socket_Message_Abstract, or an exception will be thrown.
+A_Socket comes preloaded with A_Socket_Message_Json, for the JSON format.</p>
+
+<p>Lastly the message to pass when a client connects or disconnects.  This can
+be very useful, as we'll see later.  The string must be in the same format as
+the message class.</p>
+
+<p>The next clump of code looks familiar (if it doesn't, see
+<a href="?p=Boostrap">here</a>), so well skip up to the end.</p>
+
+<pre class="prettyprint lang-php">
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
+
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, function () { echo 'Client connected :)' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_MESSAGE, function () { echo 'Client sent a message :D' . PHP_EOL; });
+$EventManager->addEventListener(A_Socket_Server::EVENT_DISCONNECT, function () { echo 'Client disconnected :(' . PHP_EOL; });
+
+$Server = new A_Socket_Server($EventManager);
+$Server->run($ConfigArray['SOCKET']);
+</pre>
+
+<p>The server fires three events during it's life:</p>
+
+<ul>
+	<li>onConnect (A_Socket_Server::EVENT_CONNECT): fired when a client
+	connects, and is validated by the handshake defined in the Client object.
+	The data passed with this event is a new Message object containing the
+	default connect message defined in the config.</li>
+
+	<li>onMessage (A_Socket_Server::EVENT_MESSAGE): fired when a client sends a
+	message.  The data passed with this event is a new Message object containing
+	the message received.</li>
+
+	<li>onDisconnect (A_Socket_Server::EVENT_DISCONNECT): fired when a client
+	disconnects from the server and the socket is closed.  The data passed with
+	this event is the default disconnect message defined in the config.</li>
+</ul>
+
+<p>It must be given an instance of A_Event_Manager to fire these
+events.  You can handle the events listed above in any way you like, as is
+allowed by A_Event_Manager.  In this example, we use the PHP 5.3
+<a href="http://php.net/functions.anonymous">closure</a> syntax.  A_Socket comes
+preloaded with A_Socket_EventListener-FrontController.  This is a very cool
+handler that delegates to the Skeleton front Controller.</p>
+
+<p>Finally, the server is created, and the listener/parser passed to it.  Lastly
+we call the run() method, passing along the configuration.  This starts the
+server.</p>
+
+<h2>The Message Object</h2>
+
+<p>The message is an instance of whatever class you passed to the Server in the
+configuration array.  This object allows access to the session data associated
+with the client (stored in the Client object) via getSession()/setSession(), the
+sessions of all other clients via getAllSessions(), and the ability to respond
+to any clients you choose with reply().  Note, when a client first connects,
+it's session data is null.</p>
+
+<p>The reply() method is very powerful.  The first argument is the message you
+want to send.  This message will be transformed by the Message object to the
+correct format (e.g. with Json, array('name' => 'bob') will be transformed into
+'{"name":"bob"}').</p>
+
+<p>The second argument specifies what clients to send to it.  There are four
+possibilities: A_Socket_Message_Abstract::SENDER (reply only to the client that
+sent the message), A_Socket_Message_Abstract::ALL (reply to all clients),
+A_Socket_Message_Abstract::OTHERS (all <em>but</em> the sender), or a callback.
+If a callback is passed, the Message will iterate through all clients, passing
+the client's session to the callback one by one, and replying only if it returns
+true.</p>
+
+<p>Some example replies:</p>
+
+<pre class="prettyprint lang-php">
+$message->reply(
+	array(
+		'name' => 'bob',
+		'age' => 32
+	),
+	A_Socket_Message_Abstract::OTHERS
+);
+
+$message->reply(
+	array(
+		'yournameis' => 'bob'
+	),
+	// using the PHP 5.3 closure syntax
+	function ($session) {
+		if ($session['firstname'] == 'bob') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+);
+</pre>
+
+<h2>Delegating Events to Skeleton Front Controller</h2>
+
+<p class="devnote">Explain using A_Socket_EventHandler_FrontController to
+delegate events to the front controller.</p>
+
+<h2>Example WebSocket Server</h2>
+
+<p>Here is an example WebSocket server.php</p>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+
+$ConfigArray = array(
+	'PATH' => dirname(__FILE__) . '/',
+	'APP' => dirname(__FILE__) . '/app',
+	'SOCKET' => array(
+		'host' => 'localhost',
+		'port' => '9091',
+		'class-client' => 'A_Socket_Client_WebSocket',
+		'class-message' => 'A_Socket_Message_Json',
+		'message-connect' => '{"type":{"module":"","controller":"connect","action":"user"},"data":null}',
+		'message-disconnect' => '{"type":{"module":"","controller":"disconnect","action":"user"},"data":null}'
+	),
+	'DEFAULT_ACTION' => array('', 'main', 'main'),
+	'ERROR_ACTION' => array('', 'main', 'main')
+);
+
+include $ConfigArray['PATH'] . '../../A/Locator.php';
+$Locator = new A_Locator();
+$Locator->autoload();
+
+$Config = new A_Config_Php();
+$Config->import($ConfigArray);
+
+$Locator->set('Config', $Config);
+
+$EventListener = new A_Socket_EventListener_FrontController($Locator);
+
+$EventManager = new A_Event_Manager();
+$EventManager->addEventListener($EventListener);
+
+$Server = new A_Socket_Server($EventManager);
+$Server->run($ConfigArray['SOCKET']);
+</pre>
+
+<h2>Repository Demo</h2>
+
+<p>A working example is available in the
+<a href="http://code.google.com/p/skeleton/source">repository</a> at
+/trunk/examples/websocket/ .</p>
+
+<h2>Closing</h2>
+
+<p>A_Socket is still in it's early stages, and under riggorous development.  But
+it is very unique, both in the problem it faces and it's approach.  If you have
+any questions please email one of the
+<a href="http://code.google.com/p/skeleton/people/list">developers</a>,
+preferably <a href="http://code.google.com/u/jonahbron.d/">jonahbron.d</a>.
