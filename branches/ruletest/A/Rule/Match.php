@@ -22,6 +22,12 @@ class A_Rule_Match extends A_Rule_Base {
 							'errorMsg' => '', 
 							'optional' => false
 							);
+	
+	public function __construct($field, $refField, $errorMsg='', $optional=false)
+	{
+		$this->params['refField'] = $refField;
+		parent::__construct($field, $errorMsg, $optional);
+	}
 							
     protected function validate() {
       return (strcmp($this->getValue(), $this->getValue($this->params['refField'])) == 0);

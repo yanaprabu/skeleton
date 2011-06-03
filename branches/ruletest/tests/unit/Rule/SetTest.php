@@ -18,7 +18,7 @@ class Rule_SetTest extends UnitTestCase {
 		$rules = new A_Rule_Set();
 		//$dataspace = new A_Collection();
 
- 		$rule = new A_Rule_Notnull(array('field' => 'test', 'errorMsg' => 'error'));
+ 		$rule = new A_Rule_Notnull('test', 'error');
 		$rules->addRule($rule);
 		$result = $rules->isValid(array());
 		$this->assertFalse($result);

@@ -15,11 +15,17 @@
 class A_Rule_Inarray extends A_Rule_Base {
 	const ERROR = 'A_Rule_Inarray';
 	protected $params = array(
-							'array' => array(), 
 							'field' => '', 
+							'array' => array(), 
 							'errorMsg' => '', 
 							'optional' => false
 							);
+							
+	public function __construct($field, $array, $errorMsg='', $optional=false)
+	{
+		$this->params['array'] = $array;
+		parent::__construct($field, $errorMsg, $optional);
+	}
 
 	protected function validate() {
 		return in_array($this->getValue(), $this->params['array']);

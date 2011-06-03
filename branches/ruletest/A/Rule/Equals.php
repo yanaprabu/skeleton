@@ -15,13 +15,20 @@
 class A_Rule_Equals extends A_Rule_Base {
 	const ERROR = 'A_Rule_Equals';
 	protected $params = array(
-							'value' => '',
-							'strict' => '',
 							'field' => '', 
+							'strict' => '',
+							'value' => '',
 							'errorMsg' => '', 
 							'optional' => false
 							);
-							
+	
+	public function __construct($field, $strict, $value, $errorMsg='', $optional=false)
+	{
+		$this->params['strict'] = $strict;
+		$this->params['value'] = $value;
+		parent::__construct($field, $errorMsg, $optional);
+	}
+	
     protected function validate() {
       return $this->params['strict'] ? $this->getValue() === $this->params['value'] : $this->getValue() == $this->params['value'];
     }

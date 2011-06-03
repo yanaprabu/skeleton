@@ -14,8 +14,7 @@
  */
 class A_Rule_Length extends A_Rule_Base {
 	const ERROR = 'A_Rule_Length';
-#	protected $min;
-#	protected $max;
+	
 	protected $params = array(
 							'min' => null, 
 							'max' => null, 
@@ -24,14 +23,13 @@ class A_Rule_Length extends A_Rule_Base {
 							'optional' => false
 							);
 	
-/*
-	public function __construct($field, $min, $max, $errorMsg) {
-		$this->field= $field;
-		$this->min = $min;
-		$this->max = $max;
-		$this->errorMsg = $errorMsg;
+
+	public function __construct($min, $max, $field, $errorMsg='', $optional=false) {
+		$this->params['min'] = $min;
+		$this->params['max'] = $max;
+		parent::__construct($field, $errorMsg, $optional);
 	}
-*/
+
 
 	protected function validate() {
 		$length = strlen($this->getValue());

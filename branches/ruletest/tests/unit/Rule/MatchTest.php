@@ -24,21 +24,4 @@ class Rule_MatchTest extends UnitTestCase {
 		$this->assertEqual($rule->getErrorMsg(), 'foo error');
 	}
 	
-	function testRule_MatchParams() {
-		$dataspace = new A_Collection();
-
-		$rule = new A_Rule_Match();
-		
-		$dataspace->set('foo', 'TEST123');
-		$dataspace->set('bar', 'TEST123');		
-		$this->assertTrue($rule->isValid($dataspace));
-		
-		$rule = new A_Rule_Match('foo');
-		
-		$dataspace->set('foo', 'TEST123');
-		$dataspace->set('bar', 'TEST123');		
-		$this->assertFalse($rule->isValid($dataspace));
-		
-	}
-	
 }

@@ -32,19 +32,10 @@ abstract class A_Rule_Base {
      * @param string error message to be returned if validation fails
      * @param boolean whether this rule returns true for null value
      *      */
-	public function __construct(/* $field='', $errorMsg='', $optional=false*/) {
-		$params = func_get_args();
-		if (count($params) == 1 && is_array($params[0])) {
-			// first param is array of params
-			$this->config($params[0]);
-		} else {
-			reset($this->params);
-			foreach ($params as $value) {
-				// set the values in params in order
-				$this->params[key($this->params)] = $value;
-				next($this->params);
-			}
-		}
+	public function __construct($field, $errorMsg='', $optional=false) {
+		$this->params['field'] = $field;
+		$this->params['errorMsg'] = $errorMsg;
+		$this->params['optional'] = $optional;
 	}
     /**
      * Set params property with assoc array

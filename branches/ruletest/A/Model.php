@@ -272,7 +272,7 @@ class A_Model
 				foreach ($this->rules as $name => $srule) { 
 					$validator->addRule($rule);
 				}
-			}			
+			}
 			
 			// if the validator is not valid get its errors
 			if(!$validator->isValid($datasource)){

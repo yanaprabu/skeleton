@@ -29,9 +29,13 @@ class A_Rule_Captcha extends A_Rule_Base {
 							'optional' => false
 							);
 	
-/*
-	public function __construct($field, $errorMsg, $renderer, $session, $sessionkey='') {
-*/
+	public function __construct($field, $renderer, $session, $sessionkey='', $errorMsg='', $optional=false)
+	{
+		$this->params['renderer'] = $renderer;
+		$this->params['session'] = $session;
+		$this->params['sessionKey'] = $sessionKey;
+		parent::__construct($field, $errorMsg, $optional);
+	}
 	
     public function setCharset($value) {
 		return $this->charset = $value;

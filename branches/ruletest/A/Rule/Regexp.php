@@ -21,7 +21,12 @@ class A_Rule_Regexp extends A_Rule_Base {
 							'errorMsg' => '', 
 							'optional' => false
 							);
-							
+	
+	public function __construct($regexp, $field, $errorMsg='', $optional=false)
+	{
+		$this->params['regexp'] = $regexp;
+		parent::__construct($field, $errorMsg, $optional);
+	}
     protected function validate() {
 		return (preg_match($this->params['regexp'], $this->getValue()));
 	}

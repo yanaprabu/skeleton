@@ -21,6 +21,12 @@ class A_Rule_Iterator extends A_Rule_Base {
 							'optional' => false
 							);
 
+	public function __construct($rule, $field, $errorMsg='', $optional=false)
+	{
+		$this->params['rule'] = $rule;
+		parent::__construct($field, $errorMsg, $optional);
+	}
+	
     public function get($name) {
       return $this->value;
     }

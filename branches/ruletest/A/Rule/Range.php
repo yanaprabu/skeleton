@@ -24,6 +24,12 @@ class A_Rule_Range extends A_Rule_Base {
 							'optional' => false
 							);
 	
+	public function __construct($min, $max, $field, $errorMsg='', $optional=false)
+	{
+		$this->params['min'] = $min;
+		$this->params['max'] = $max;
+		parent::__construct($field, $errorMsg, $optional);
+	}
     protected function validate() {
 		$value = $this->getValue();
 
