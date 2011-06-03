@@ -1,0 +1,51 @@
+<h1>Directory Structure</h1>
+
+<p>There is no mandatory directory structure in Skeleton. All directory paths are customizable. However, the framework does have default directory names. There is also a recommended directory structure.</p>
+
+<p>You may set the directories for controllers and modules in the A_Controller_Mapper using:</p>
+<ul>
+	<li><em>setBaseDir()</em> for the path to the application,</li>
+	<li><em>setDefaultDir()</em> for the path to the default module, and </li>
+	<li><em>setClassDir()</em> for the path to the controllers. </li>
+</ul>
+<p>Typically the base dir will be an absolute path and the module and controllers paths will be relative to it.</p>
+
+<h2>Minimal Structure</h2>
+
+<p>Assuming that you are using the Front Controller, in its most basic configuration only a 'controllers' directory is set as a default. 
+</p>
+<pre class="prettyprint"><code>controllers/
+<code/></pre>
+
+<p>If you choose to base your action controller classes on one of the Skeleton Action Controllers and use the _load() functionalty, then 'models', 'views', 'templates' and 'helpers' directories are defaults. So a directory structure for a simple application might be:
+</p> 
+<pre class="prettyprint"><code>controllers/
+helpers/
+models/
+templates/
+views/
+</code></pre>
+
+<h2>Recommended Structures</h2>
+<p>It is recommended that you put all of the application files in a separate directory. This directory should be either outside of your public HTML directory or protected by webserver configuration. Within this application directory you can have one or multiple sets of MVC directories depending on your needs. </p>
+
+<h3>Simple Single Module Application</h3>
+<p>You can specify an application directory to contain all of the MVC directories. The default application directoyr is './'.  You specify this directory using the A_Controller_Mapper call with <strong>$Mapper->setBasePath('/path/to/app');</strong></p>
+<pre><code>/app 
+/app/controllers
+/app/models
+/app/views
+</code></pre>
+
+<h3>Complex Multi-Module Application</h3>
+<p>You can further organize your application ito module directories by adding a 'module' parameter in the Request. Specify a default module directory the mapper with $Mapper->setDefaultDir('default');</p>
+<pre><code>/app
+/app/admin/controller
+/app/admin/model
+/app/admin/view
+/app/blog/controller
+/app/blog/model
+/app/blog/view
+</code></pre>
+
+

@@ -1,0 +1,101 @@
+<html>
+	<head>
+		<title>WebSocket</title>
+
+		<style type="text/css">
+
+html,body {
+	font: normal 0.9em arial, helvetica;
+	margin: 0;
+	padding: 0;
+}
+
+#message {
+	width: 100%;
+	background: #FFFFFF;
+	border: solid 1px #AAAAAA;
+}
+
+#users {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 200px;
+	background: #DDDDDD;
+	
+}
+
+#log {
+	position: absolute;
+	left: 200px;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	padding: 50px;
+}
+
+#messages {
+	width: 100%;
+	overflow-y: scroll;
+	height: 100%;
+}
+
+.disconnected {
+	background: #FF0000;
+}
+
+.connected {
+	background: #00FF00;
+}
+
+		</style>
+		
+		<script type="text/javascript" src="scripts/jquery-1.5.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.websocket-0.0.1.js"></script>
+		<script type="text/javascript" src="scripts/json-2.min.js"></script>
+		<script type="text/javascript" src="scripts/underscore-1.1.4.min.js"></script>
+		<script type="text/javascript" src="scripts/backbone-0.3.3.min.js"></script>h
+
+		<script type="text/javascript" src="scripts/app/client.js"></script>
+		<script type="text/javascript" src="scripts/app/client-collection.js"></script>
+		
+		<script type="text/javascript">
+
+var socket;
+
+var socket = $.websocket('ws://localhost:9091', {
+	open: function () {
+		alert('connected');
+	},
+	close: function () {
+		alert('disconnected');
+	},
+	message: function (message) {
+		alert(message);
+	}
+});
+
+var users = [];
+
+function send(controller, action, message, module){
+	if (module == undefined) {
+		module = '';
+	}
+	var type = {
+		module: module,
+		controller: controller,
+		action: action
+	};
+	socket.send(type, message);
+}
+		</script>
+
+	</head>
+	<body>
+		<div id="users"></div>
+		<div id="log">
+			
+		</div>
+	</body>
+</html>

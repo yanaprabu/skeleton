@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<a0>North by Northwest</a0>
+	<Casablanca>
+		<b0>Jane Doe</b0>
+		<b1>77</b1>
+	</Casablanca>
+	<Notorious> 
+		<name>Jane Doe</name>
+		<age>77</age>
+	</Notorious> 
+	<name>John Smith</name>
+	<age>33</age>
+	<a1>milk</a1>
+	<a2>pumpkin pie</a2>
+	<a3>eggs</a3>
+	<a4>juice</a4>
+	<color>Lemon yellow</color>
+	<size>100</size>
+</xml>

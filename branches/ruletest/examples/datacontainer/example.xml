@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<first_section>
+		<one>1</one>
+		<five>5</five>
+		<animal>BIRD</animal>
+	</first_section>
+	<second_section>
+		<path>/usr/local/bin</path>
+		<url>http://www.example.com/~username</url>
+	</second_section>
+</config>

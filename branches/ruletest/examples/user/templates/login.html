@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Skeleton User Access Example</title>
+</head>
+<body>
+<h2>Log-In</h2>
+<p>This is an example login form using the A_User_* classes. The available accounts are user/user and admin/admin. </p>
+<form action="" method="post">
+<input type="hidden" name="action" value="login"/>
+<input type="hidden" name="op" value="login"/>
+<span style="color: red">{errmsg}</span>
+<table>
+    <tr>
+      <td>Username</td><td><input type="text" name="username" value="{username}" size="20"/></td>
+    </tr>
+    <tr>
+      <td>Password</td><td><input type="password" name="password" value="" size="20"/></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td><td><input type="submit" name="submit" value="Log-In"/></td>
+    </tr>    
+  </table>
+</form>
+<p/>
+<a href="../">Return to Examples</a>
+</body>
+</html>
