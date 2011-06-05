@@ -135,6 +135,18 @@ class A_Collection implements Iterator, ArrayAccess
 	}
 	
 	/**
+	 * Sort this collection (without preserving keys) with a callback function.
+	 * 
+	 * @param callback Function to sort with
+	 * @return self
+	 */
+	public function userSort($callback)
+	{
+		usort($this->_data, $callback);
+		return $this;
+	}
+	
+	/**
 	 * Extract a slice of this Collection into a new Collection
 	 * 
 	 * @param int $offset Offset of slice
