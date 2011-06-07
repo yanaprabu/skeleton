@@ -35,7 +35,7 @@ class A_CollectionTest extends UnitTestCase
 		$return = $collection->userSort(function ($item1, $item2) {
 			return $item1->get('age') - $item2->get('age');
 		});
-		// make sure userSort returns $this
+		// make sure userSort returns it's object
 		$this->assertTrue($return == $collection);
 		
 		$this->assertTrue($collection->get(0)->get('name') == $items[1]['name']);
