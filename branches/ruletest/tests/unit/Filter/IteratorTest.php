@@ -1,31 +1,26 @@
 <?php
-
-class TestFilter {
-
-	function run($data) {
-		return $data . 'X';
-	}
-}
 	
-class Filter_IteratorTest extends UnitTestCase {
-	function setUp() {
-	}
+class Filter_IteratorTest extends UnitTestCase
+{
 	
-	function TearDown() {
-	}
-	
-	function testFilter_IteratorNotNull() {
-/*
-		$filter = new TestFilter();
-  		$Filter_Iterator = new A_Filter_Iterator($filter);
+	function testFilter_IteratorTolowerSingle()
+	{
+		$filter = new A_Filter_Tolower('foo', '');
+		$filterIterator = new A_Filter_Iterator($filter);
 		
-		$data = array('foo', 'bar', 'baz');
-		$Filter_Iterator->doFilter($data);
+		$data = 'FoO';
+		$result = $filterIterator->doFilter($data);
 		
-		$result = true;
-  		$this->assertTrue($result);
-		$this->assertFalse(!$result);
-*/
+		$this->assertEqual('foo', $result);
 	}
 	
+	function testFilter_IteratorTolowerMultiple()
+	{
+		$filter = new A_Filter_Tolower(null, '');
+		$filterIterator = new A_Filter_Iterator($filter);
+		
+		$data = array('fOo', 'BAR', 'baZ');
+		$result = $filterIterator->doFilter($data);
+		$this->assertEqual(array('foo', 'bar', 'baz'), $result);
+	}
 }
