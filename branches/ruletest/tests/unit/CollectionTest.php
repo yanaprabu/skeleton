@@ -2,6 +2,39 @@
 
 class A_CollectionTest extends UnitTestCase
 {
+	public function testConstruct()
+	{
+		$collection = new A_Collection(array('foo' => 'bar', 'baz' => array('foobar' => 'barfoo')));
+		
+		$this->assertEqual($collection->get('foo'), 'bar');
+		$this->assertEqual($collection->get('baz')->get('foobar'), 'barfoo');
+		$this->assertEqual($collection->count(), 2);
+		$this->assertEqual($collection->get('baz')->count(), 1);
+	}
+	
+	public function testImport()
+	{
+		$collection = new A_Collection(array('foo' => 'bar', 'baz' => array('foobar' => 'barfoo'), 'bar' => 'baz'));
+		$collection->import(array('bar' => 'foo', 'baz' => array('foo' => 'bar'), 'barfoo' => 'foo'));
+		
+		$this->assertEqual($collection->get('foo'), 'bar');
+		$this->assertEqual($collection->get('baz')->get('foobar'), 'barfoo');
+		$this->assertEqual($collection->get('baz')->get('foo'), 'bar');
+		$this->assertEqual($collection->get('bar'), 'foo');
+		$this->assertEqual($collection->get('barfoo'), 'foo');
+		$this->assertEqual($collection->count(), 4);
+		$this->assertEqual($collection->get('baz')->count(), 2);
+	}
+	
+	public function testGet()
+	{
+		$collection = $this->createShallowCollection();
+		$collection->set('foo', 'bar');
+		
+		$this->assertEqual($collection->get('foo'), 'bar');
+		$this->assertEqual($collection->get('baz', 'default'), 'default');
+		$this->assertTrue($collection->get('baz') === null);
+	}
 	
 	public function testDeepJoin()
 	{
