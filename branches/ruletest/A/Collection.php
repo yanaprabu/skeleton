@@ -229,7 +229,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 */
 	public function valid()
 	{
-		return current($this->_data) !== false;
+		return key($this->_data) !== null;
 	}
 	
 	/*
