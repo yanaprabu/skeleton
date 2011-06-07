@@ -12,7 +12,7 @@
  * 
  * Abstract base class for filters 
  */
-abstract class A_Filter_Base {
+abstract class A_Filter_Base implements A_Filter_Interface {
 
 	protected $container;
 	/*
