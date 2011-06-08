@@ -274,7 +274,7 @@ class A_Collection implements Iterator, ArrayAccess
 	
 	public function __toString()
 	{
-		return $this->toString(',');
+		return $this->join(',');
 	}
 	
 	public function __get($key)
