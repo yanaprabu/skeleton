@@ -156,6 +156,13 @@ class A_CollectionTest extends UnitTestCase
 		$this->assertEqual($slice->count(), 2);
 		$this->assertEqual($slice->get('baz'), 'foobar');
 		$this->assertEqual($slice->get('barfoo'), 'foobarbaz');
+		
+		$slice = $collection->slice(1);
+		
+		$this->assertEqual($slice->count(), 3);
+		$this->assertEqual($slice->get('baz'), 'foobar');
+		$this->assertEqual($slice->get('barfoo'), 'foobarbaz');
+		$this->assertEqual($slice->get('bazbarfoo'), 'foobazbar');
 	}
 	
 	public function testHas()

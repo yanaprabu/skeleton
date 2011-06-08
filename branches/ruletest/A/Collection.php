@@ -143,7 +143,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 * @param int $length Length of slice
 	 * @return A_Collection
 	 */
-	public function slice($offset, $length)
+	public function slice($offset, $length=null)
 	{
 		return new A_Collection(array_slice($this->_data, $offset, $length, true));
 	}
