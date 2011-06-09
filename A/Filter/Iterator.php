@@ -22,14 +22,15 @@ protected $filter;
     }
 
     public function filter() {
-		if (is_array($this->getValue())) {
+    	$value = $this->container;
+		if (is_array($value)) {
 			$data = array();
-			foreach ($this->getValue() as $key => $value) {
-				$data[$key] = $this->filter->run($value);
+			foreach ($value as $key => $indexValue) {
+				$data[$key] = $this->filter->doFilter($indexValue);
 			}
 			return $data;
 		} else {
-			return $this->filter->run($this->getValue());
+			return $this->filter->doFilter($value);
 		}
     }
 }

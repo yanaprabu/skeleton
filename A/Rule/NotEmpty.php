@@ -1,6 +1,6 @@
 <?php
 /**
- * Notnull.php
+ * NotEmpty.php
  *
  * @package  A_Rule
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -8,15 +8,15 @@
  */
 
 /**
- * A_Rule_Notnull
+ * A_Rule_NotEmpty
  * 
- * Rule to check for a value not being empty or null.
+ * Rule to check for a value not being empty, null, zero, or false.  Uses the empty() method.
  */
-class A_Rule_Notnull extends A_Rule_Base {
-	const ERROR = 'A_Rule_Notnull';
+class A_Rule_NotEmpty extends A_Rule_Base {
+	const ERROR = 'A_Rule_NotEmpty';
 	
 	protected function validate() {
 		$value = $this->getValue();
-		return ($value !== null) && ($value !== '');
+		return !empty($value);
 	}
 }

@@ -86,16 +86,6 @@ class A_Collection implements Iterator, ArrayAccess
 		return $this;
 	}
 	
-	public function __get($key)
-	{
-		return $this->get($key);
-	}
-	
-	public function __set($key, $value)
-	{
-		return $this->set($key, $value);
-	}
-	
 	/**
 	 * Appends an item to the end of the collection.
 	 * 
@@ -135,13 +125,25 @@ class A_Collection implements Iterator, ArrayAccess
 	}
 	
 	/**
+	 * Sort this collection (without preserving keys) with a callback function.
+	 * 
+	 * @param callback Function to sort with
+	 * @return self
+	 */
+	public function userSort($callback)
+	{
+		usort($this->_data, $callback);
+		return $this;
+	}
+	
+	/**
 	 * Extract a slice of this Collection into a new Collection
 	 * 
 	 * @param int $offset Offset of slice
 	 * @param int $length Length of slice
 	 * @return A_Collection
 	 */
-	public function slice($offset, $length)
+	public function slice($offset, $length=null)
 	{
 		return new A_Collection(array_slice($this->_data, $offset, $length, true));
 	}
@@ -156,6 +158,39 @@ class A_Collection implements Iterator, ArrayAccess
 	{	
 		return isset($this->_data[$key]);
 	}
+	
+	/**
+	 * Convert this Collection to a normal array
+	 * 
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return $this->_data;
+	}
+	
+	/**
+	 * Put data into string separated by a delimiter
+	 * 
+	 * @param string $delimiter
+	 * @return string
+	 */
+	public function join($delimiter)
+	{
+		$data = $this->_data;
+		foreach ($data as &$datum) {
+			if (is_array($datum)) {
+				$datum = implode($delimiter, $datum);
+			} elseif ($datum instanceOf A_Collection) {
+				$datum = $datum->join($delimiter);
+			}
+		}
+		return implode($delimiter, $data);
+	}
+	
+	/*
+	 * Iterator methods
+	 */
 	
 	/**
 	 * @see Iterator::current()
@@ -194,60 +229,12 @@ class A_Collection implements Iterator, ArrayAccess
 	 */
 	public function valid()
 	{
-		return current($this->_data) !== false;
+		return key($this->_data) !== null;
 	}
 	
-	/**
-	 * Convert this Collection to a normal array
-	 * 
-	 * @return array
+	/*
+	 * ArrayAccess methods
 	 */
-	public function toArray()
-	{
-		return $this->_data;
-	}
-	
-	/**
-	 * Put data into string separated by a delimiter
-	 * 
-	 * @param string $delimiter
-	 * @return string
-	 */
-	public function join($delimiter)
-	{
-		$data = $this->_data;
-		foreach ($data as &$datum) {
-			if (is_array($datum)) {
-				$datum = implode($delimiter, $datum);
-			} elseif ($datum instanceOf A_Collection) {
-				$datum = $datum->join($delimiter);
-			}
-		}
-		return implode($delimiter, $data);
-	}
-	
-	/**
-	 * Sorts internal data by the specified sorting object.  Sorting object must implement the compare() method, with arguments that reflect the requirements of usort()
-	 * 
-	 * @param object $sorter
-	 * @return self
-	 */
-	public function order($sorter)
-	{
-		uasort($this->_data, array($sorter, 'compare'));
-		return $this;
-	}
-	
-/*
-	public function orderBy($key, $order = 'asc')	{
-		$this->order(new A_Collection_ArraySorter($key, $order), 'compare'); 
-	}
-*/
-	
-	public function __toString()
-	{
-		return $this->toString(',');
-	}
 	
 	/**
 	 * @see ArrayAccess::offsetExists()
@@ -279,6 +266,25 @@ class A_Collection implements Iterator, ArrayAccess
 	public function offsetUnset($offset)
 	{
 		return $this->remove($offset);
+	}
+	
+	/*
+	 * Magic methods
+	 */
+	
+	public function __toString()
+	{
+		return $this->join(',');
+	}
+	
+	public function __get($key)
+	{
+		return $this->get($key);
+	}
+	
+	public function __set($key, $value)
+	{
+		return $this->set($key, $value);
 	}
 	
 }
