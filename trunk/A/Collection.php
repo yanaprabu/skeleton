@@ -5,7 +5,7 @@
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
- * @author   Cory Kaufman
+ * @author   Cory Kaufman, Christopher Thompson, Jonah Dahlquist
  */
 
 /**
@@ -28,8 +28,7 @@ class A_Collection implements Iterator, ArrayAccess
 	/**
 	 * Recursively import data into this Collection, converting sub-arrays into sub-Collections
 	 * 
-	 * @param array $source
-	 * @param string $node
+	 * @param array $data
 	 * @return self
 	 */
 	public function import($data)
@@ -59,7 +58,8 @@ class A_Collection implements Iterator, ArrayAccess
 	/**
 	 * Get value at specified index/key, or null if that key doesn't exist
 	 * 
-	 * @param mixed $key
+	 * @param mixed $key Index of item to get
+	 * @param mixed $default Default value if key does not exist.  Optional, default null.
 	 */
 	public function get($key, $default=null)
 	{
@@ -71,7 +71,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 * 
 	 * @param mixed $key
 	 * @param mixed $value
-	 * @param mixed $default
+	 * @param mixed $default Set as value if $value is strict null.  Optional, default null.
 	 * @return self
 	 */
 	public function set($key, $value, $default=null)
@@ -127,7 +127,7 @@ class A_Collection implements Iterator, ArrayAccess
 	/**
 	 * Sort this collection (without preserving keys) with a callback function.
 	 * 
-	 * @param callback Function to sort with
+	 * @param callback $callback Function to sort with
 	 * @return self
 	 */
 	public function userSort($callback)
@@ -140,7 +140,7 @@ class A_Collection implements Iterator, ArrayAccess
 	 * Extract a slice of this Collection into a new Collection
 	 * 
 	 * @param int $offset Offset of slice
-	 * @param int $length Length of slice
+	 * @param int $length Length of slice (optional, to end of collection if ommitted)
 	 * @return A_Collection
 	 */
 	public function slice($offset, $length=null)
