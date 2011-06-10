@@ -176,11 +176,27 @@ class A_CollectionTest extends UnitTestCase
 	public function testToArray()
 	{
 		$collection = new A_Collection(array('foo' => 'bar', 'baz'));
-		$array = $collection->toArray();
+		$this->assertEqual($collection->toArray(), $collection->toArray(false));
 		
+		$array = $collection->toArray();
 		$this->assertTrue(is_array($array));
 		$this->assertEqual($array['foo'], 'bar');
 		$this->assertEqual($array[0], 'baz');
+		
+		$collection = new A_Collection(array('foo' => 'bar', 'bar' => array('baz' => 'foo')));
+		$this->assertEqual($collection->toArray(), $collection->toArray(false));
+		
+		$array = $collection->toArray();
+		$this->assertTrue(is_array($array));
+		$this->assertEqual($array['foo'], 'bar');
+		$this->assertFalse(is_array($array['bar']));
+		$this->assertEqual($array['bar']->get('baz'), 'foo');
+		
+		$array = $collection->toArray(true);
+		$this->assertTrue(is_array($array));
+		$this->assertEqual($array['foo'], 'bar');
+		$this->assertTrue(is_array($array));
+		$this->assertEqual($array['bar']['baz'], 'foo');
 	}
 	
 	public function testNestedJoin()
