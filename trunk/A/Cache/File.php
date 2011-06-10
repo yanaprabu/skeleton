@@ -1,9 +1,18 @@
 <?php
+/**
+ * File.php
+ *
+ * @package  A_Cache
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
 
 /**
- * 
+ * A_Cache_File 
  */
-class A_Cache_File {
+class A_Cache_File
+{
+	
 	protected $path = '';
 	protected $prefix = 'a_cache---';
 	protected $serialize = false;
@@ -11,9 +20,12 @@ class A_Cache_File {
 	protected $chmod = 0;
 	
 	/**
+	 * Constructor
 	 * 
+	 * @param string $path
 	 */
-	public function __construct($path=null) {
+	public function __construct($path=null)
+	{
 		if ($path) {
 			$this->path = $path;
 		}
@@ -23,49 +35,58 @@ class A_Cache_File {
 	/**
 	 * Save name from cache
 	 *
-	 * @param  string $name
-	 * @return data
+	 * @param string $name
+	 * @param int $timeout
+	 * @return mixed
 	 */
-	public function load($name, $timeout) {
+	public function load($name, $timeout)
+	{
 		return $this->_load($this->path . $this->prefix . $name, $timeout);
 	}
 	
 	/**
 	 * Save name to cache
 	 *
-	 * @param  string $path
-	 * @return true/false
+	 * @param string $path
+	 * @param string $name
+	 * @return bool
 	 */
-	public function save($data, $name) {
+	public function save($data, $name)
+	{
 		return $this->_save($data, $this->path . $this->prefix . $name);
 	}
 	
 	/**
 	 * Remove a name in cache
 	 *
-	 * @param  string $path
-	 * @return true/false
+	 * @param string $path
+	 * @return bool
 	 */
-	public function remove($name) {
+	public function remove($name)
+	{
 		return $this->_remove($this->path . $this->prefix . $name);
 	}
 	
 	/**
 	 * Remove everything in cache
 	 *
-	 * @return true/false
+	 * @return bool
 	 */
-	public function clean() {
+	public function clean()
+	{
 		return $this->_clean();
 	}
 	
 	/**
 	 * Load data from cache file
 	 *
-	 * @param  string $path
-	 * @return true/false
+	 * @param string $path
+	 * @param int $timeout
+	 * @param bool $serialize
+	 * @return mixed
 	 */
-	protected function _load($path, $timeout, $serialize=false) {
+	protected function _load($path, $timeout, $serialize=false)
+	{
 		$hit = $this->rule->isValid($path, $timeout);
 		$result = false;
 		if ($hit && is_file($path)) {
@@ -90,11 +111,13 @@ class A_Cache_File {
 	/**
 	 * write data to cache file
 	 *
-	 * @param  $path
-	 * @param  $data
-	 * @return true/false
+	 * @param string $data
+	 * @param string $path
+	 * @param bool $serialize
+	 * @return bool
 	 */
-	protected function _save($data, $path, $serialize=false) {
+	protected function _save($data, $path, $serialize=false)
+	{
 		$result = false;
 		$fh = @fopen($path, 'ab+');
 		if ($fh) {
@@ -103,7 +126,6 @@ class A_Cache_File {
 				flock($fh, LOCK_UN);
 			}
 			ftruncate($fh, 0);
-echo "WRITE TO CACHE $path, data=$data<br/>";
 			if ($serialize || $this->serialize) {
 				$tmp = fwrite($fh, serialize($data));
 			} else {
@@ -123,22 +145,19 @@ echo "WRITE TO CACHE $path, data=$data<br/>";
 	/**
 	 * write data to cache file
 	 *
-	 * @param  $path
-	 * @param  $data
-	 * @return true/false
+	 * @param string $path
+	 * @return bool
 	 */
-	protected function _remove($path) {
+	protected function _remove($path)
+	{
 		return unlink($path);
 	}
 
 	/**
 	 * write data to cache file
-	 *
-	 * @param  $path
-	 * @param  $data
-	 * @return true/false
 	 */
-	protected function _clean() {
+	protected function _clean()
+	{
 	    foreach(glob("{$this->path}/{$this->prefix}*") as $path) {
 	        unlink($path);
 	    }
@@ -147,14 +166,20 @@ echo "WRITE TO CACHE $path, data=$data<br/>";
 }
 
 
-class A_Cache_File_Mtime {
+class A_Cache_File_Mtime
+{
+	
 	protected $path = '';
 	protected $timeout;
 	
 	/**
+	 * Constructor
 	 * 
+	 * @param string $path
+	 * @param int $timeout
 	 */
-	public function __construct($path=null, $timeout=10) {
+	public function __construct($path=null, $timeout=10)
+	{
 		if ($path) {
 			$this->path = $path;
 		}
@@ -164,10 +189,12 @@ class A_Cache_File_Mtime {
 	/**
 	 * Save name from cache
 	 *
-	 * @param  string $name
-	 * @return data
+	 * @param string $name
+	 * @param int $timeout
+	 * @return bool
 	 */
-	public function isValid($path=null, $timeout=null) {
+	public function isValid($path=null, $timeout=null)
+	{
 		if ($path === null) {
 			$path = $this->path;
 		}
@@ -177,9 +204,9 @@ class A_Cache_File_Mtime {
 		$hit = true;
 		clearstatcache(true, $path);
 		$mtime = filemtime($path);
-		if ($mtime !== false) {		// cache file exists
+		if ($mtime !== false) {
 			$time = time();
-			if ($mtime + $timeout < $time) {
+			if (($mtime + $timeout) < $time) {
 				$hit = false;
 			}
 		}
