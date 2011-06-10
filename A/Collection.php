@@ -162,11 +162,18 @@ class A_Collection implements Iterator, ArrayAccess
 	/**
 	 * Convert this Collection to a normal array
 	 * 
+	 * @param $convertChildren Set to true to recursively convert child collections too (optional, default false).
 	 * @return array
 	 */
-	public function toArray()
+	public function toArray($convertChildren=false)
 	{
-		return $this->_data;
+		$data = $this->_data;
+		if ($convertChildren)
+			foreach ($data as $key => $value)
+				if ($value instanceof A_Collection)
+					$data[$key] = $value->toArray(true);
+		
+		return $data;
 	}
 	
 	/**
