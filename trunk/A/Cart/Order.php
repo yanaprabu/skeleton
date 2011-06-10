@@ -12,19 +12,22 @@
  * 
  * Encapsulate an ecommerce order 
  */
-
 class A_Cart_Order
 {
-	public function __construct($cart) {
+	public function __construct($cart)
+	{
 	}
 
-	public function load($order_number) {
+	public function load($order_number)
+	{
 	}
 
-	public function save() {
+	public function save()
+	{
 	}
 
-	public function cancel() {
+	public function cancel()
+	{
 	}
 
 }
