@@ -36,7 +36,7 @@ class A_Cart_Session
 	public function getInstance($name='cart')
 	{
 		$this->session->start();
-		$data = $this->session->getRef($this->session_name);
+		$data =& $this->session->getRef($this->session_name);
 		if (isset($data[$name])) {
 			$cart = $data[$name];
 		} else {
