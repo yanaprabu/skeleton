@@ -193,14 +193,15 @@ class A_Cart_Request extends A_Cart_Url
 		
 		// 5. SET any values that have been changed
 		if (isset($set) ) {
+			$items = $this->cart->getItems();
 			foreach ($set as $id => $setcmd) {
 				$id = intval($id);
-				if (isset($this->cart->items[$id])) {
+				if (isset($items[$id])) {
 					foreach ($setcmd as $data => $value) {
 						if ($data == 'quantity') {
-							$this->cart->items[$id]->setQuantity(intval($value));
+							$items[$id]->setQuantity(intval($value));
 						} else {
-							$this->cart->items[$id]->setData($data, intval($value));
+							$items[$id]->setData($data, intval($value));
 						}
 					}
 				}

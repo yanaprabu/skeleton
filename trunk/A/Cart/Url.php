@@ -298,7 +298,7 @@ class A_Cart_Url
 	public function cartSetFormHiddenField($id, $data, $value)
 	{
 		if (($id > 0)  && $data && $value) {
-			return "<input type=\"hidden\" name=\"{$this->cmd_pos_set}{$this->cmd_separator}{$id}{$this->cmd_separator}$data\" value=\"$value\">\n";
+			return "<input type=\"hidden\" name=\"{$this->cmd_pos_set}{$this->cmd_separator}{$id}{$this->cmd_separator}$data\" value=\"$value\"/>\n";
 		}
 		return '';
 	}
@@ -316,7 +316,7 @@ class A_Cart_Url
 			if ($size < 1) {
 				$size = 2;
 			}
-			return "<input type=\"text\" name=\"{$this->cmd_pos_data_set}{$this->cmd_separator}{$id}{$this->cmd_separator}$data\" value=\"$value\" size=\"$size\">\n";
+			return "<input type=\"text\" name=\"{$this->cmd_pos_data_set}{$this->cmd_separator}{$id}{$this->cmd_separator}$data\" value=\"$value\" size=\"$size\"/>\n";
 		}
 		return '';
 	}
@@ -388,7 +388,7 @@ class A_Cart_Url
 	public function cartDeleteFromCheckbox($id)
 	{
 		if ($id > 0) {
-			return "<input type=\"checkbox\" name=\"{$this->cmd_pos_del}{$this->cmd_separator}{$id}\" value=\"1\">\n";
+			return "<input type=\"checkbox\" name=\"{$this->cmd_pos_del}{$this->cmd_separator}{$id}{$this->cmd_separator}\" value=\"1\"/>\n";
 		}
 		return 0;
 	}

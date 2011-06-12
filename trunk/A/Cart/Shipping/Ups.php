@@ -124,30 +124,24 @@ public function getPrice ()
     $request .= "&";
     $request .= "49_residential=$ResCom";
 
-    $fp = fsockopen($domain, 80, $error, $errorMsg, 30);
-    if(!$fp) {
-        $cost = "$errorMsg ($error)";
-    } else {
-        fputs($fp, "GET $request HTTP/1.0\n\n");
-        while(!feof($fp)) {
-            $buffer = fgets($fp, 1024);
-            if (substr($buffer, 0, 9) == 'UPSOnLine') {
-            	$result = explode("%", $buffer);
-	            $errcode = substr("$result[0]", -1);
-	            if (in_array ($errcode, array ('3', '4', '5', '6'))) {
-	                $cost = trim ($result[8]);
-	            }
-	            break;
-            }
-        }
-        fclose($fp);
-    }
+	$errcode = '';
+	$url = "http://$domain$request";
+	$buffer = file_get_contents($url);
+	if (substr($buffer, 0, 9) == 'UPSOnLine') {
+		$result = explode("%", $buffer);
+		$errcode = substr("$result[0]", -1);
+		if (in_array ($errcode, array ('3', '4', '5', '6'))) {
+			$cost = trim ($result[8]);
+		}
+	}
 /*
-echo "UPS Shipping:<br>";
-echo "$request<br>";
-echo '<pre>';
-echo $buffer;
-echo '</pre>';
+echo "<!--\n";
+echo "UPS Shipping:\n";
+echo "URL=$url\n";
+echo "BUFFER=$buffer\n";
+echo "COST=$cost\n";
+echo "ERRCODE=$errcode\n";
+echo "-->\n";
 */
 	return $cost;
 }

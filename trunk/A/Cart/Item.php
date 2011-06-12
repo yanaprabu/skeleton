@@ -14,7 +14,7 @@
  */
 class A_Cart_Item
 {	
-	protected $id;	protected $productid;	protected $unitprice;	protected $quantity;	protected $quantityfixed;	protected $data;	protected $isunique;	protected $hastax;	protected $hasshipping;
+	protected $id;	protected $productid;	protected $unitprice = 0;	protected $quantity = 0;	protected $quantityfixed;	protected $data;	protected $isunique;	protected $hastax;	protected $hasshipping;
 	
 	/**
 	 * Constructor
@@ -71,13 +71,13 @@ class A_Cart_Item
 	}
 	
 	/**
-	 * Get item quantity
+	 * Set product ID
 	 * 
 	 * @return int
 	 */
-	public function getQuantity()
+	public function setProductID($productid)
 	{
-		return $this->quantity;
+		return $this->productid = productid;
 	}
 	
 	/**
@@ -118,7 +118,7 @@ class A_Cart_Item
 	 */
 	public function getData($name)
 	{
-		return $this->data[$name];
+		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
 	
 	/**
@@ -150,6 +150,16 @@ class A_Cart_Item
 	public function isUnique()
 	{
 		return $this->isunique;
+	}
+	
+	/**
+	 * Get item quantity
+	 * 
+	 * @return int
+	 */
+	public function getQuantity()
+	{
+		return $this->quantity;
 	}
 	
 	/**
