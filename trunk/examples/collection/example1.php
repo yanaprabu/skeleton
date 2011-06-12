@@ -1,6 +1,5 @@
 <?php
 include 'config.php';
-include 'A/DataContainer.php';
 
 $configdata = array(
 	'APP' => '/path/to/app/',
