@@ -153,7 +153,7 @@ class A_Cart_Request extends A_Cart_Url
 		
 		// 3. Process ADDs. This will add records in the cartitem table. 
 		if (isset($add) ) {
-			unset($this->newitems);
+			$this->newitems = array();
 			foreach ($add as $id => $field) {
 				if ($field[$this->cmd_quantity] > 0) {
 					if ($field['data']) {
