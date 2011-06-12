@@ -33,17 +33,16 @@ class A_Delimited_Base {
 		if ($filename) {
 			$this->setFilename($filename);
 		}
+		$this->_config = array(
+		    'line_delimiter' => "\r\n",
+		    'field_delimiter' => "\t",
+		    'field_enclosure' => "\"",
+		    'field_escape' => "\\",
+		    'field_names_in_first_row' => false,
+		    'write_all_enclosed' => false,
+		);
 		if ($config) {
-			$this->_config = $config;
-		} elseif (!$this->_config) {
-			$this->_config = array(
-			    'line_delimiter' => "\r\n",
-			    'field_delimiter' => "\t",
-			    'field_enclosure' => "\"",
-			    'field_escape' => "\\",
-			    'field_names_in_first_row' => false,
-			    'write_all_enclosed' => false,
-			);
+			$this->config($config);
 		}
 	}
  
@@ -69,12 +68,6 @@ class A_Delimited_Base {
 			foreach ($config as $key => $value) {
 		    	$this->_config[$key] = $value;
 			}
-		} elseif (is_object($config)) {
-		    $this->_config['line_delimiter'] = $config->lineDelimiter;
-		    $this->_config['field_delimiter'] = $config->fieldDelimiter;
-		    $this->_config['field_enclosure'] = $config->fieldEnclosure;
-		    $this->_config['field_escape'] = $config->fieldEscape;
-		    $this->_config['field_names_in_first_row'] = $config->fieldNamesInFirstRow;
 		}
 		return $this;
 	}
