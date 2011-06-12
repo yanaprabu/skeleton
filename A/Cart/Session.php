@@ -14,6 +14,20 @@
  */
 class A_Cart_Session
 {
+	protected $session_name = 'A_Cart';
+	
+	/**
+	 * @param string $name
+	 * @return A_Cart_Manager
+	 */
+	public function __construct($session=null)
+	{
+		if ($session) {
+			$this->session = $session;
+		} else {
+			$this->session = new A_Session();
+		}
+	}
 	
 	/**
 	 * @param string $name
@@ -21,12 +35,14 @@ class A_Cart_Session
 	 */
 	public function getInstance($name='cart')
 	{
-		$session = new A_Session('A_Cart');
-		$session->start();
-		if (! isset($_SESSION['A_Cart'][$name])) {
-			$_SESSION['A_Cart'][$name] = new A_Cart_Manager($name);
+		$this->session->start();
+		$data = $this->session->getRef($this->session_name);
+		if (isset($data[$name])) {
+			$cart = $data[$name];
+		} else {
+			$cart = new A_Cart_Manager($name);
+			$data[$name] = $cart;
 		}
-		$cart = $_SESSION['A_Cart'][$name];
 		return $cart;
 	}
 	
@@ -35,9 +51,8 @@ class A_Cart_Session
 	 */
 	public function destroy($name='cart')
 	{
-		$session = new A_Session('A_Cart');
-		$session->start();
-		unset($_SESSION['A_Cart'][$name]);
+		$this->session->start();
+		$this->session->set($name, null);
 	}
 
 }
