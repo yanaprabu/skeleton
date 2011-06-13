@@ -12,7 +12,7 @@
  * 
  * Database connection class using the mysql_ library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_MySQL extends A_Db_Base {
+class A_Db_MySQL extends A_Db_Adapter {
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_MySQL';

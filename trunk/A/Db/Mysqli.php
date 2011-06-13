@@ -12,7 +12,7 @@
  * 
  * Database connection class using the mysqli library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_Mysqli extends A_Db_Base
+class A_Db_Mysqli extends A_Db_Adapter
 {
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;

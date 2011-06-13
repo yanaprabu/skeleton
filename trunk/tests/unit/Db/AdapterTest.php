@@ -1,10 +1,9 @@
 <?php
 
-class DbBaseClass extends A_Db_Base {
+class DbAdapterClass extends A_Db_Adapter {
 	public $connection_set = array();
 	
 	public function _connect($config=array()) {
-#echo 'DbAbstractClass::_connect: <pre>' . print_r($config, 1) . "</pre>\n";
 		$this->connection_set = $config;
 		return $config['database'];
 	}
@@ -16,7 +15,7 @@ class DbBaseClass extends A_Db_Base {
 	}
 }
 
-class Db_BaseTest extends UnitTestCase {
+class Db_AdapterTest extends UnitTestCase {
 	protected $config;
 	
 	function setUp() {
@@ -97,71 +96,71 @@ class Db_BaseTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testDb_BaseSingleConfig() {
-		$Db_Base = new DbAbstractClass($this->config['SINGLE']);
+	function testDb_AdapterSingleConfig() {
+		$Db_Adapter = new DbAdapterClass($this->config['SINGLE']);
 		
-		$Db_Base->connect();
-		$this->assertTrue($Db_Base->connection_set['database'] == 'single');
-#echo "ERROR for connection name '{$Db_Base->connection_set['database']}': " . $Db_Base->_getErrorMsg() . "<br/>\n";
+		$Db_Adapter->connect();
+		$this->assertTrue($Db_Adapter->connection_set['database'] == 'single');
+#echo "ERROR for connection name '{$Db_Adapter->connection_set['database']}': " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 	}
 	
-	function testDb_BaseMasterSlaveConfig() {
-		$Db_Base = new DbAbstractClass($this->config['MASTER_SLAVE']);
+	function testDb_AdapterMasterSlaveConfig() {
+		$Db_Adapter = new DbAdapterClass($this->config['MASTER_SLAVE']);
 		
-		$Db_Base->connect();
-		$this->assertTrue($Db_Base->connection_set['database'] == 'slave0');
-#echo "ERROR for connection name '{$Db_Base->connection_set['database']}': " . $Db_Base->_getErrorMsg() . "<br/>\n";
+		$Db_Adapter->connect();
+		$this->assertTrue($Db_Adapter->connection_set['database'] == 'slave0');
+#echo "ERROR for connection name '{$Db_Adapter->connection_set['database']}': " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 	}
 	
-	function testDb_BaseMastersSlavesConfig() {
-		$Db_Base = new DbAbstractClass($this->config['MASTERS_SLAVES']);
+	function testDb_AdapterMastersSlavesConfig() {
+		$Db_Adapter = new DbAdapterClass($this->config['MASTERS_SLAVES']);
 		
-		$Db_Base->connect();
-		$Db_Base->connect();
-		$this->assertTrue(in_array($Db_Base->connection_set['database'], array('slave0','slave1','slave2')));
-#echo "ERROR for connection name '{$Db_Base->connection_set['database']}': " . $Db_Base->_getErrorMsg() . "<br/>\n";
+		$Db_Adapter->connect();
+		$Db_Adapter->connect();
+		$this->assertTrue(in_array($Db_Adapter->connection_set['database'], array('slave0','slave1','slave2')));
+#echo "ERROR for connection name '{$Db_Adapter->connection_set['database']}': " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 	}
 		
-	function testDb_BaseSingleGetConfig() {
-		$Db_Base = new DbAbstractClass($this->config['SINGLE']);
+	function testDb_AdapterSingleGetConfig() {
+		$Db_Adapter = new DbAdapterClass($this->config['SINGLE']);
 		
-		$config = $Db_Base->getConfig('SELECT');		// no connnection names for single
+		$config = $Db_Adapter->getConfig('SELECT');		// no connnection names for single
 		$this->assertTrue($config['name'] == '');
-#echo "ERROR for connection name '{$config['name']}': " . $Db_Base->_getErrorMsg() . "<br/>\n";
+#echo "ERROR for connection name '{$config['name']}': " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 		
-		$config = $Db_Base->getConfig('INSERT');
+		$config = $Db_Adapter->getConfig('INSERT');
 		$this->assertTrue($config['name'] == '');			// no connnection names for single
-#echo "ERROR for connection name '{$config['name']}': " . $Db_Base->_getErrorMsg() . "<br/>\n";
+#echo "ERROR for connection name '{$config['name']}': " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 	}
 
-	function testDb_BaseMasterSlaveGetConfig() {
-		$Db_Base = new DbAbstractClass($this->config['MASTER_SLAVE']);
+	function testDb_AdapterMasterSlaveGetConfig() {
+		$Db_Adapter = new DbAdapterClass($this->config['MASTER_SLAVE']);
 		
-		$config = $Db_Base->getConfig('SELECT');
+		$config = $Db_Adapter->getConfig('SELECT');
 		$this->assertTrue($config['name'] == 'slave');
 		$this->assertTrue($config['data']['database'] == 'slave0');
-#echo "ERROR for {$config['name']}: " . $Db_Base->_getErrorMsg() . "<br/>\n";
+#echo "ERROR for {$config['name']}: " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 		
-		$config = $Db_Base->getConfig('INSERT');
+		$config = $Db_Adapter->getConfig('INSERT');
 		$this->assertTrue($config['name'] == 'master');
 		$this->assertTrue($config['data']['database'] == 'master0');
-#echo "ERROR for {$config['name']}: " . $Db_Base->_getErrorMsg() . "<br/>\n";
+#echo "ERROR for {$config['name']}: " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 	}
 	
-	function testDb_BaseMastersSlavesGetConfig() {
-		$Db_Base = new DbAbstractClass($this->config['MASTERS_SLAVES']);
+	function testDb_AdapterMastersSlavesGetConfig() {
+		$Db_Adapter = new DbAdapterClass($this->config['MASTERS_SLAVES']);
 		
-		$config = $Db_Base->getConfig('SELECT');
-echo 'DbAbstractClass::getConfig: <pre>' . print_r($config, 1) . "</pre>\n";
+		$config = $Db_Adapter->getConfig('SELECT');
+echo 'DbAdapterClass::getConfig: <pre>' . print_r($config, 1) . "</pre>\n";
 		$this->assertTrue($config['name'] == 'slave');
 		$this->assertTrue(in_array($config['data']['database'], array('slave0','slave1','slave2')));
-#echo "ERROR for {$config['name']}: " . $Db_Base->_getErrorMsg() . "<br/>\n";
+#echo "ERROR for {$config['name']}: " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 		
-		$config = $Db_Base->getConfig('INSERT');
-echo 'DbAbstractClass::getConfig: <pre>' . print_r($config, 1) . "</pre>\n";
+		$config = $Db_Adapter->getConfig('INSERT');
+echo 'DbAdapterClass::getConfig: <pre>' . print_r($config, 1) . "</pre>\n";
 		$this->assertTrue($config['name'] == 'master');
 		$this->assertTrue(in_array($config['data']['database'], array('master0','master1')));
-#echo "ERROR for {$config['name']}: " . $Db_Base->_getErrorMsg() . "<br/>\n";
+#echo "ERROR for {$config['name']}: " . $Db_Adapter->_getErrorMsg() . "<br/>\n";
 	}
 
 }
