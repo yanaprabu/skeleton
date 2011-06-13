@@ -12,7 +12,7 @@
  * 
  * Database connection class using Postgres.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_Postgres extends A_Db_Base {
+class A_Db_Postgres extends A_Db_Adapter {
 	protected $config = null;
 	protected $link = null;
 	protected $sequenceext = '_seq';

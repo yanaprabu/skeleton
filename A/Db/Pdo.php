@@ -29,7 +29,7 @@
  * 
  * Adapt PDO to basic database connection functionality.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_Pdo extends A_Db_Base {
+class A_Db_Pdo extends A_Db_Adapter {
 
 	protected $dsn = null;
 	protected $_connection = null;

@@ -12,7 +12,7 @@
  * 
  * Database connection class using ADOdb.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_ADOdblite extends A_Db_Base {
+class A_Db_ADOdblite extends A_Db_Adapter {
 	protected $dsn = null;
 	protected $adodb = null;
 	protected $limit = '';
