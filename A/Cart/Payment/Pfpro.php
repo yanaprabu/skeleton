@@ -19,7 +19,8 @@ define('A_CART_PAYMENT_PFPRO_TRXTYPE_AUTHORIZATION', 'A');
  * PayflowPro pfpro (credit card processsing) class library
  */
 class A_Cart_Payment_Pfpro
-{	protected $certpath = '/usr/local/verisign/payflowpro/linux/certs/';	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $response = null;	protected $errorMsg;
+{
+	protected $certpath = '/usr/local/verisign/payflowpro/linux/certs/';	protected $server;	protected $serverlist;	protected $servermode;	protected $transaction;	protected $response = null;	protected $errorMsg;
 	
 	public function __construct($user='', $passwd='', $partner='', $mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE)
 	{
@@ -49,81 +50,94 @@ class A_Cart_Payment_Pfpro
 	
 	}
 	
-	public function setServer($value) {
+	public function setServer($value)
+	{
 		$this->server = $value;
 		return $this;
 	}
 	
-	public function setServerMode($mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE) {
+	public function setServerMode($mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE)
+	{
 		switch ($mode) {
-		case A_CART_PAYMENT_PFPRO_SERVER_TEST:
-			$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_TEST];
-			break;
-		case A_CART_PAYMENT_PFPRO_SERVER_NONE:
-			$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_NONE];
-			break;
-		case A_CART_PAYMENT_PFPRO_SERVER_LIVE:
-		default:
-			$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_LIVE];
+			case A_CART_PAYMENT_PFPRO_SERVER_TEST:
+				$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_TEST];
+				break;
+			case A_CART_PAYMENT_PFPRO_SERVER_NONE:
+				$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_NONE];
+				break;
+			case A_CART_PAYMENT_PFPRO_SERVER_LIVE:
+			default:
+				$this->server = $this->serverlist[A_CART_PAYMENT_PFPRO_SERVER_LIVE];
 		}
 		$this->servermode = $mode;
 		return $this;
 	}
 	
-	public function setUser($value) {
+	public function setUser($value)
+	{
 		$this->transaction['USER'] = $value;
 		return $this;
 	}
 	
-	public function setPassword($value) {
+	public function setPassword($value)
+	{
 		$this->transaction['PWD'] = $value;
 		return $this;
 	}
 	
-	public function setPartner($value) {
+	public function setPartner($value)
+	{
 		$this->transaction['PARTNER'] = $value;
 		return $this;
 	}
 	
-	public function setTransactionType($value) {
+	public function setTransactionType($value)
+	{
 		$this->transaction['TRXTYPE'] = $value;
 		return $this;
 	}
 	
-	public function setAmount($value) {
+	public function setAmount($value)
+	{
 		$this->transaction['AMT'] = $value;
 		return $this;
 	}
 	
-	public function setCardNumber($value) {
+	public function setCardNumber($value)
+	{
 		$this->transaction['ACCT'] = $value;
 		return $this;
 	}
 	
-	public function setExpDate($month, $year) {
-		if (strlen("$year") > 2) {
-			$year = substr("$year", -2);
+	public function setExpDate($month, $year)
+	{
+		if (strlen(strval($year)) > 2) {
+			$year = substr(strval($year), -2);
 		}
 		$this->transaction['EXPDATE'] = sprintf('%02d%02d', $month, $year);
 		return $this;
 	}
 	
-	public function setName($value) {
+	public function setName($value)
+	{
 		$this->transaction['NAME'] = $value;
 		return $this;
 	}
 	
-	public function setStreet($value) {
+	public function setStreet($value)
+	{
 		$this->transaction['STREET'] = $value;
 		return $this;
 	}
 	
-	public function setZip($value) {
+	public function setZip($value)
+	{
 		$this->transaction['ZIP'] = $value;
 		return $this;
 	}
 	
-	public function setComments($comment1='', $comment2='') {
+	public function setComments($comment1='', $comment2='')
+	{
 		if ($comment1) {
 			$this->transaction['COMMENT1'] = $comment1;
 		}
@@ -133,19 +147,21 @@ class A_Cart_Payment_Pfpro
 		return $this;
 	}
 	
-	public function getReference() {
+	public function getReference()
+	{
 		if ($this->response) {
 			return $this->response['PNREF'];
 		}
 		return '';
 	}
 	
-	public function getVersion() {
+	public function getVersion()
+	{
 		return pfpro_version();
 	}
 	
-	public function process() {
-		
+	public function process()
+	{
 		if ($this->servermode == A_CART_PAYMENT_PFPRO_SERVER_NONE) {
 			$this->response['RESULT'] = 0;
 			$this->response['RESPMSG'] = 'Did not connect to credit card processor (A_CART_PAYMENT_PFPRO_SERVER_NONE). ';
@@ -155,14 +171,16 @@ class A_Cart_Payment_Pfpro
 		return $this->response;
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		if ($this->response && ($this->response['RESULT'] == 0)) {
 			return false;
 		}
 		return true;
 	}
 	
-	public function getErrorMsg() {
+	public function getErrorMsg()
+	{
 		if ($this->response) {
 			return $this->response['RESPMSG'];
 		}
@@ -172,19 +190,22 @@ class A_Cart_Payment_Pfpro
 	/**
 	 * depricated name for getErrorMsg()
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
 	
-	public function getResult() {
+	public function getResult()
+	{
 		if ($this->response) {
 			return $this->response['RESULT'];
 		}
 		return -1;
 	}
 	
-	public function close() {
+	public function close()
+	{
 		pfpro_cleanup();
 	}
 
-} // end class A_Cart_Payment_PayflowPro
+}
