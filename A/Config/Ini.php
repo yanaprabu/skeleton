@@ -12,10 +12,13 @@
  * 
  * Support for reading INI configuration files
  */
-class A_Config_Ini extends A_Config_Base {
+class A_Config_Ini extends A_Config_Base
+{
 
-	protected function _loadFile() {
+	protected function _loadFile()
+	{
 		$data = parse_ini_file($this->_filename, true);
 		return $data;
 	}
+
 }

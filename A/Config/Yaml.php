@@ -12,17 +12,18 @@
  * 
  * Support for reading YAML configuration files -- very minimal support
  */
+class A_Config_Yaml extends A_Config_Base
+{
 
-class A_Config_Yaml extends A_Config_Base {
-
-	protected function _loadFile() {
-		$lines = file($this->_filename);;
+	protected function _loadFile()
+	{
+		$lines = file($this->_filename);
 		$data = array();
 		if ($lines) {
 			$indentstack = array(0);			// hold the indent size for each level of indent
 			$datastack = array();
 			$datalastkey = array();				// last key inserted on each level of indent
-			$listnstack = array(0=>-1);			// hold the list index for each level of indent
+			$listnstack = array(0 => -1);			// hold the list index for each level of indent
 			$indentlevel = 0;
 			$datastack[$indentlevel] =& $data;
 			
@@ -31,12 +32,12 @@ class A_Config_Yaml extends A_Config_Base {
 			while ($linen < $nlines) {
 				// skip comments
 				if (substr($lines[$linen], 0, 1) == '#') {
-					++$linen;
+					$linen++;
 					continue;
 				}
 				// skip documents for now
 				if (substr($lines[$linen], 0, 3) == '---') {
-					++$linen;
+					$linen++;
 					continue;
 				}
 				
@@ -45,7 +46,7 @@ class A_Config_Yaml extends A_Config_Base {
 		
 				// skip blank lines
 				if ($line == '') {
-					++$linen;
+					$linen++;
 					continue;
 				}
 		
@@ -62,7 +63,7 @@ class A_Config_Yaml extends A_Config_Base {
 				    } elseif ($indentsize < $indentstack[$indentlevel]) {
 						// going to a lower level of indent
 				    	while (($indentlevel > 0) && ($indentsize > $indentstack[$indentlevel])) {
-				    		--$indentlevel;
+				    		$indentlevel++;
 				    	}
 				    }
 			    } else {
@@ -149,5 +150,5 @@ class A_Config_Yaml extends A_Config_Base {
 		}
 		return $data;
 	}
-	
+
 }
