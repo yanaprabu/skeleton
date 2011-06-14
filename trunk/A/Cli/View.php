@@ -12,7 +12,9 @@
  * 
  * Base MVC View class for a whole or partial CLI response character encoding, quoting, escaping, and content.
  */
-class A_Cli_View {
+class A_Cli_View
+{
+
 	protected $data = array();
 	protected $template = null;
 	protected $template_type = 'templates';
@@ -36,73 +38,88 @@ class A_Cli_View {
 	);
 	protected $use_local_vars = true;
 	
-	public function __construct($locator=null) {
+	public function __construct($locator=null)
+	{
 		$this->locator = $locator;
 	}
 	
-	public function setLocator($locator) {
+	public function setLocator($locator)
+	{
 		$this->locator = $locator;
 	}
 	
-	public function setCharacterSet($character_set) {
+	public function setCharacterSet($character_set)
+	{
 		$this->character_set = $character_set;
 		return $this;
 	}
 
-	public function setQuoteStyle($escape_quote_style) {
+	public function setQuoteStyle($escape_quote_style)
+	{
 		$this->escape_quote_style = $escape_quote_style;
 		return $this;
 	}
 
-	public function setEscape($escape_output) {
+	public function setEscape($escape_output)
+	{
 		$this->escape_output = $escape_output;
 		return $this;
 	}
 
-	public function useLocalVars($use_local_vars) {
+	public function useLocalVars($use_local_vars)
+	{
 		$this->use_local_vars = $use_local_vars;
 		return $this;
 	}
 
-	public function setContent($content) {
+	public function setContent($content)
+	{
 		$this->content = $content;
 		return $this;
 	}
 
-	public function getContent() {
+	public function getContent()
+	{
 		return $this->content;
 	}
 
-	public function setTemplate($template, $scope='') {
+	public function setTemplate($template, $scope='')
+	{
 		$this->template = $template;
 		if ($scope) $this->template_scope = $scope;
 		return $this;
 	}
 
-	public function setTemplateScope($scope) {
+	public function setTemplateScope($scope)
+	{
 		$this->template_scope = $scope;
 		return $this;
 	}
 
-	public function setTemplatePath($path) {
+	public function setTemplatePath($path)
+	{
 		$this->template_path = $path;
 		return $this;
 	}
 
-	public function getTemplate() {
+	public function getTemplate()
+	{
 		return $this->template;
 	}
 
-	public function setRenderer($renderer) {
+	public function setRenderer($renderer)
+	{
 		$this->renderer = $renderer;
 		return $this;
 	}
 
-	public function hasRenderer() {
+	public function hasRenderer()
+	{
 		return isset($this->renderer);
 	}
 
-	public function set($name, $value, $default=null) {
+	public function set($name, $value, $default=null)
+	{
 		if ($value !== null) {
 			$this->data[$name] = $value;
 		} elseif ($default !== null) {
@@ -113,19 +130,23 @@ class A_Cli_View {
 		return $this;
 	}
 	
-	public function get($name) {
+	public function get($name)
+	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
 
-	public function has($name) {
+	public function has($name)
+	{
 		return isset($this->data[$name]);
 	}
 
-	public function escape($content, $escape_quote_style=null) {
+	public function escape($content, $escape_quote_style=null)
+	{
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
 	
-	public function _getPath($template) {
+	public function _getPath($template)
+	{
 		if (substr($template, -4, 4) != '.php') {
 			$template .= '.php';
 		}
@@ -134,7 +155,7 @@ class A_Cli_View {
 			$mapper = $this->locator->get('Mapper');
 			if ($mapper) {
 				// get paths array if not cached
-				if (! isset($this->paths[$this->template_type])) {
+				if (!isset($this->paths[$this->template_type])) {
 					$this->paths[$this->template_type] = $mapper->getPaths($this->template_type);
 				}
 				return $this->paths[$this->template_type][$this->template_scope] . $template;
@@ -143,12 +164,14 @@ class A_Cli_View {
 		return $this->template_path . '/' . $template;
 	}
 	
-	public function partial($template) {
+	public function partial($template)
+	{
 		$template = $this->_getPath($template);
 		return $this->escape_output ? $this->escape($this->_include($template)) : $this->_include($template);
 	}
 	
-	public function partialLoop($template, $name, $data=null) {
+	public function partialLoop($template, $name, $data=null)
+	{
 		$template = $this->_getPath($template);
 		$str = '';
 		if ($data) {
@@ -171,7 +194,8 @@ class A_Cli_View {
 		return $this->escape_output ? $this->escape($str) : $str;
 	}
 	
-	public function render($template='', $scope='') {
+	public function render($template='', $scope='')
+	{
 		if (! $template && $this->template) {
 			$template = $this->template;
 		}
@@ -195,26 +219,32 @@ class A_Cli_View {
 		return $this->escape_output ? $this->escape($this->content) : $this->content;
 	}
 	
-	protected function _include() {
+	protected function _include()
+	{
 		ob_start();
-		if ($this->use_local_vars) extract($this->data, EXTR_REFS);
+		if ($this->use_local_vars)
+			extract($this->data, EXTR_REFS);
 		include func_get_arg(0);
 		return ob_get_clean();
 	}
-
-	public function __get($name) {
+	
+	public function __get($name)
+	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-
-	public function __set($name, $value) {
+	
+	public function __set($name, $value)
+	{
 		return $this->set($name, $value);
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		return $this->render();
 	}
-
-	protected function _load($scope=null) {
+	
+	protected function _load($scope=null)
+	{
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
@@ -222,9 +252,10 @@ class A_Cli_View {
 		}
 		return $this->load;
 	}
- 
-	protected function _flash($name=null, $value=null) {
-		if (! isset($this->flash)) {
+	
+	protected function _flash($name=null, $value=null)
+	{
+		if (!isset($this->flash)) {
 			$this->flash = new A_Controller_Helper_Flash($this->locator);
 		}
 		if ($name) {
@@ -236,23 +267,26 @@ class A_Cli_View {
 		}
 		return $this->flash;
 	}
- 
-	public function setHelper($name, $helper) {
+	
+	public function setHelper($name, $helper)
+	{
 		if ($name) {
 			$this->helpers[$name] = $helper;
 		}
 		return $this;
 	}
- 
-	public function setHelperClass($name, $class) {
+	
+	public function setHelperClass($name, $class)
+	{
 		if ($name) {
 			$this->helperClass[$name] = $class;
 		}
 		return $this;
 	}
- 
-	protected function helper($name) {
-		if (! isset($this->helpers[$name])) {
+	
+	protected function helper($name) 
+	{
+		if (!isset($this->helpers[$name])) {
 			if (isset($this->helperClass[$name])) {
 				$class = $this->helperClass[$name];
 			} else {
