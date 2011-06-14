@@ -14,9 +14,11 @@
  */
 class A_Cart_Payment_Payflow
 {
+
 	const SERVER_LIVE = 1;
 	const SERVER_TEST = 2;
 	const SERVER_NONE = 3;
+	
 	const TRXTYPE_SALE = 'S';
 	const TRXTYPE_AUTHORIZATION = 'A';
 
@@ -46,7 +48,6 @@ class A_Cart_Payment_Payflow
 			'TENDER' => 'C',			// C is Credit card, P is PayPal account
 			'VERBOSITY' => 'MEDIUM',	// LOW is normalized, MEDIUM for processor's raw response
 			'CURRENCY' => 'USD',
-		
 			'INVNUM' => '',
 			'AMT' => 0.0,
 			'ACCT' => '',
@@ -65,127 +66,151 @@ class A_Cart_Payment_Payflow
 			'INVNUM' => '',
 			'ORDERDESC' => '',
 		);
-	
-		$this->setServerMode($mode);
 		
+		$this->setServerMode($mode);
 	}
 	
-	public function setServer($value) {
+	public function setServer($value)
+	{
 		$this->server = $value;
 	}
 	
-	public function setServerMode($mode=A_Cart_Payment_Payflow::SERVER_LIVE) {
+	public function setServerMode($mode=A_Cart_Payment_Payflow::SERVER_LIVE)
+	{
 		switch ($mode) {
-		case self::SERVER_TEST:
-			$this->server = $this->serverlist[self::SERVER_TEST];
-			break;
-		case self::SERVER_NONE:
-			$this->server = $this->serverlist[self::SERVER_NONE];
-			break;
-		case self::SERVER_LIVE:
-		default:
-			$this->server = $this->serverlist[self::SERVER_LIVE];
+			case self::SERVER_TEST:
+				$this->server = $this->serverlist[self::SERVER_TEST];
+				break;
+			case self::SERVER_NONE:
+				$this->server = $this->serverlist[self::SERVER_NONE];
+				break;
+			case self::SERVER_LIVE:
+			default:
+				$this->server = $this->serverlist[self::SERVER_LIVE];
 		}
 		$this->servermode = $mode;
-#echo "setServerMode: server={$this->server}, servermode={$this->servermode}<br/>";
 	}
 	
-	public function setFraud($value) {
-		$this->fraud = ($value === true) || (strtoupper($value)=='YES') ? 'YES' : 'NO';
+	public function setFraud($value)
+	{
+		$this->fraud = ($value === true) || (strtoupper($value) == 'YES') ? 'YES' : 'NO';
 	}
 	
-	public function setUser($value) {
+	public function setUser($value)
+	{
 		$this->transaction['USER'] = $value;
 	}
 	
-	public function setPassword($value) {
+	public function setPassword($value)
+	{
 		$this->transaction['PWD'] = $value;
 	}
 	
-	public function setPartner($value) {
+	public function setPartner($value)
+	{
 		$this->transaction['PARTNER'] = $value;
 	}
 	
-	public function setTransactionType($value) {
+	public function setTransactionType($value)
+	{
 		$this->transaction['TRXTYPE'] = $value;
 	}
 	
-	public function setTransactionID($value) {
+	public function setTransactionID($value)
+	{
 		$this->transactionID = $value;
 	}
 	
-	public function setCurrency($value) {
+	public function setCurrency($value)
+	{
 		$this->transaction['CURRENCY'] = $value;	// USD,GBP
 	}
 	
-	public function setAmount($value) {
+	public function setAmount($value)
+	{
 		$this->transaction['AMT'] = $value;
 	}
 	
-	public function setOrderNumber($value) {
+	public function setOrderNumber($value)
+	{
 		$this->transaction['INVNUM'] = $value;
 	}
 	
-	public function setCardNumber($value) {
+	public function setCardNumber($value)
+	{
 		$this->transaction['ACCT'] = $value;
 	}
 	
-	public function setCardType($value) {
+	public function setCardType($value)
+	{
 		$this->transaction['ACCTTYPE'] = $value;
 	}
 	
-	public function setExpDate($month, $year) {
+	public function setExpDate($month, $year)
+	{
 		if (strlen($year) > 2) {
 			$year = substr($year, -2);
 		}
 		$this->transaction['EXPDATE'] = sprintf('%02d%02d', $month, $year);
 	}
 	
-	public function setCVV2($value) {
+	public function setCVV2($value)
+	{
 		$this->transaction['CVV2'] = $value;
 	}
 	
-	public function setName($value) {
+	public function setName($value)
+	{
 		$this->transaction['NAME'] = $value;
 	}
 	
-	public function setFirstName($value) {
+	public function setFirstName($value)
+	{
 		$this->transaction['FIRSTNAME'] = $value;
 	}
 	
-	public function setLastName($value) {
+	public function setLastName($value)
+	{
 		$this->transaction['LASTNAME'] = $value;
 	}
 	
-	public function setStreet($value) {
+	public function setStreet($value)
+	{
 		$this->transaction['STREET'] = $value;
 	}
 	
-	public function setCity($value) {
+	public function setCity($value)
+	{
 		$this->transaction['CITY'] = $value;
 	}
 	
-	public function setState($value) {
+	public function setState($value)
+	{
 		$this->transaction['STATE'] = $value;
 	}
 	
-	public function setZip($value) {
+	public function setZip($value)
+	{
 		$this->transaction['ZIP'] = $value;
 	}
 	
-	public function setCountry($value) {
+	public function setCountry($value)
+	{
 		$this->transaction['COUNTRY'] = $value;
 	}
 	
-	public function setEmail($value) {
+	public function setEmail($value)
+	{
 		$this->transaction['EMAIL'] = $value;
 	}
 
-	public function setDescription($value) {
+	public function setDescription($value)
+	{
 		$this->transaction['ORDERDESC'] = $value;
 	}
 	
-	public function setComments($comment1='', $comment2='') {
+	public function setComments($comment1='', $comment2='')
+	{
 		if ($comment1) {
 			$this->transaction['COMMENT1'] = $comment1;
 		}
@@ -194,10 +219,11 @@ class A_Cart_Payment_Payflow
 		}
 	}
 	
-	public function getVersion() {
-	}
+	public function getVersion()
+	{}
 	
-	public function getResponse($key='') {
+	public function getResponse($key='')
+	{
 		if ($key) {
 			return $this->response[$key];
 		} else {
@@ -205,7 +231,8 @@ class A_Cart_Payment_Payflow
 		}
 	}
 	
-	public function getTransaction($key='') {
+	public function getTransaction($key='')
+	{
 		if ($key) {
 			return $this->transaction[$key];
 		} else {
@@ -213,44 +240,50 @@ class A_Cart_Payment_Payflow
 		}
 	}
 	
-	public function getReference() {
+	public function getReference()
+	{
 		if ($this->response) {
 			return $this->response['PNREF'];
 		}
 		return '';
 	}
 	
-	public function getResponseMessage() {
+	public function getResponseMessage()
+	{
 		if ($this->response) {
 			return $this->response['RESPMSG'];
 		}
 		return 'Could not connect to credit card processor. ';
 	}
 	
-	public function getErrorMsg() {
+	public function getErrorMsg()
+	{
 		return $this->errorMsg;
 	}
 	
 	/**
 	 * depricated name for getErrorMsg()
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
 	
-	public function getInformation() {
+	public function getInformation()
+	{
 		return $this->infomsg;
 	}
 	
-	public function getResult() {
+	public function getResult()
+	{
 		if (isset($this->response['RESULT'])) {
 			return $this->response['RESULT'];
 		}
 		return -1;
 	}
 	
-	public function process() {
-		
+	public function process()
+	{
 		if ($this->servermode == self::SERVER_NONE) {
 			$this->response['RESULT'] = 0;
 			$this->response['RESPMSG'] = 'Did not connect to credit card processor (A_Cart_Payment_Payflow::SERVER_NONE). ';
@@ -273,15 +306,15 @@ class A_Cart_Payment_Payflow
 	/*
 	 * Post transaction, get response and check for errors
 	 */
-	protected function processTransaction($data) {
-		
+	protected function processTransaction($data)
+	{
 		// Here's your custom headers; adjust appropriately for your setup:
 		$headers[] = "Content-Type: text/namevalue"; //or text/xml if using XMLPay.
 		// Here I set the server timeout value to 45, but notice below in the cURL section, I set the timeout
 		// for cURL to 90 seconds.  You want to make sure the server timeout is less, then the connection.
 		$headers[] = "X-VPS-Timeout: 45";
 		$headers[] = "X-VPS-Request-ID: " . ($this->transactionID ? $this->transactionID : $this->generateID());
-			
+		
 		// Optional Headers.  If used adjust as necessary.
 		//$headers[] = "X-VPS-VIT-OS-Name: Linux";  		// Name of your OS
 		//$headers[] = "X-VPS-VIT-OS-Version: RHEL 4";  	// OS Version
@@ -290,7 +323,7 @@ class A_Cart_Payment_Payflow
 		//$headers[] = "X-VPS-VIT-Client-Architecture: x86";  	// For your info
 		//$headers[] = "X-VPS-VIT-Integration-Product: PHPv4::cURL";  // For your info, would populate with application name
 		//$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; 	// Application version
-	
+		
 		$ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, $this->server);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -304,20 +337,16 @@ class A_Cart_Payment_Payflow
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); 	//verifies ssl certificate
 		curl_setopt($ch, CURLOPT_FORBID_REUSE, true); 	//forces closure of connection when done 
 		curl_setopt($ch, CURLOPT_POST, 1); //data sent as POST 
-								
+		
 		// Try to submit the transaction up to 3 times with 5 second delay.  This can be used
 		// in case of network issues.  The idea here is since you are posting via HTTPS there
 		// could be general network issues, so try a few times before you tell customer there 
 		// is an issue.
-	
-		$i=1;
+		
+		$i = 1;
 		while ($i++ <= 3) {
 	        $result = curl_exec($ch);
 			$headers = curl_getinfo($ch);
-	        //print_r($headers);
-			//echo '<br>';
-			//print_r($result);
-			//echo '<br>';
 			if ($headers['http_code'] != 200) {
 				sleep(5);  // Let's wait 5 seconds to see if its a temporary network issue.
 			} elseif ($headers['http_code'] == 200) {
@@ -342,8 +371,8 @@ class A_Cart_Payment_Payflow
 		}
 	}	 
 	
-	protected function checkResponse() {
-	
+	protected function checkResponse()
+	{
 		$result_code = $this->response['RESULT']; // get the result code to validate.
 		$this->errorMsg = 'General Error.  Please contact Customer Support.';  // Generic error for all results not captured below.
 	
@@ -454,18 +483,20 @@ class A_Cart_Payment_Payflow
 		}
 	}
 		
-	protected function generateID ($length=32) {
+	protected function generateID ($length=32)
+	{
 	    return substr(str_shuffle("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		if ($this->response && ($this->response['RESULT'] == 0)) {
 			return false;
 		}
 		return true;
 	}
 	
-	public function close() {
-	}
+	public function close()
+	{}
 
-} // end class A_Cart_Payment_PayflowPro
+}
