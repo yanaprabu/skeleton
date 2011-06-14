@@ -12,9 +12,11 @@
  * 
  * CLI response. Encapsulates character encoding, quoting, escaping, and content.
  */
-class A_Cli_Response extends A_Cli_View {
+class A_Cli_Response extends A_Cli_View
+{
 
-    public function out() {
+    public function out()
+    {
     	echo $this->render();
     }
     

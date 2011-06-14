@@ -12,13 +12,16 @@
  * 
  * Encapsulate the HTTP request in a class to access information and values
  */
-class A_Cli_Request {
+class A_Cli_Request
+{
+
 	public $data = array();
 	protected $method = false;
 	protected $script_name = false;
 	protected $filters = array();
 	
-	public function __construct() {
+	public function __construct()
+	{
 		// check if called from CLI
 		if (isset($_SERVER['argv'])) {
 			$this->method = 'CLI';
@@ -26,7 +29,6 @@ class A_Cli_Request {
 			$this->script_name = $_SERVER['argv'][0];
 			// save the rest of the args
 			$this->data = $_SERVER['argv'];
-		} else {
 		}
 		if (isset($this->data[1])) {
 			// check if first arg is path
@@ -43,38 +45,45 @@ class A_Cli_Request {
 			}
 		}		
 	}
-
-	public function setPathInfo($path_info) {
+	
+	public function setPathInfo($path_info)
+	{
 		$this->data['PATH_INFO'] = trim($path_info, '/');
 		return $this;
 	}
-
-	public function getScriptName() {
+	
+	public function getScriptName()
+	{
 		return $this->script_name;
 	}
-
-	public function getFilters() {
+	
+	public function getFilters()
+	{
 		return $this->filters;
 	}
-
-	public function setFilters($filters) {
+	
+	public function setFilters($filters)
+	{
 		$this->filters = is_array($filters) ? $filters : array($filters);
 		return $this;
 	}
-
-	public function getMethod() {
+	
+	public function getMethod()
+	{
 		return $this->method;
 	}
-
-	public function isCli() {
+	
+	public function isCli()
+	{
 		return $this->method == 'CLI';
 	}
-
-	protected function _get(&$data, $name, $filters=null, $default=null) {
+	
+	protected function _get(&$data, $name, $filters=null, $default=null)
+	{
 		if (isset($data[$name])) {
 			if ($filters || $this->filters) {
 				// allow single filter to be passed - convert to array
-				if (! is_array($filters)) {
+				if (!is_array($filters)) {
 					$filters = array($filters);
 				}
 				// if global filters - merge
@@ -110,12 +119,14 @@ class A_Cli_Request {
 			return $default;
 		}
 	}
-
-	public function get($name, $filter=null, $default=null) {
+	
+	public function get($name, $filter=null, $default=null)
+	{
 		return $this->_get($this->data, $name, $filter, $default);
 	}
-
-	public function export($filter=null, $pattern=null) {
+	
+	public function export($filter=null, $pattern=null)
+	{
 		if ($filter || $pattern) {
 			$export = array();
 			foreach (array_keys($this->data) as $key) {
@@ -128,8 +139,9 @@ class A_Cli_Request {
 			return $this->data;
 		}
 	}
-
-	public function set($name, $value, $default=null) {
+	
+	public function set($name, $value, $default=null)
+	{
 		if ($value !== null) {
 			$this->data[$name] = $value;
 		} elseif ($default !== null) {
@@ -139,8 +151,9 @@ class A_Cli_Request {
 		}
 		return $this;
 	}
-
-	public function has($name) {
+	
+	public function has($name)
+	{
 		return isset($this->data[$name]);
 	}
 
