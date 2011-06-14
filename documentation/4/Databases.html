@@ -1,11 +1,120 @@
 <h1>Database</h1>
 
-<h2>Database connections</h2>
+<h2>Introduction</h2>
 
-<p class="devnote">Which db connection classes are available? And how to use them?</p>
+<p>Skeleton provides a uniform interface to access most main-stream databases.  The following is the current list of supported databases:</p>
+
+<ul>
+	<li>ADOdb Lite</li>
+	<li>MySQL (mysql and mysqli)</li>
+	<li>Postgres</li>
+	<li>Sqlite 3</li>
+	<li>PDO database drivers</li>
+</ul>
+
+<p>Usage is simple.  Pass the configuration to the constructor of the particular adapter you wish to use.  For example:</p>
+
+<pre class="prettyprint lang-php">
+$config = array(
+	'host' => 'localhost',
+	'user' => 'john',
+	'password' => 'Llf3uE42',
+	'database' => 'foo'
+);
+$database = new A_Db_MySQL($config);
+</pre>
+
+<p>Alternatively, you can pass the configuration data to the adapter's config() method later.</p>
+
+<p>Before executing a query, you must connect the database</p>
+
+<pre class="prettyprint lang-php">
+$database->connect();
+</pre>
+
+<p>Now the database adapter is ready to execute queries.  This is done with the query() method.</p>
+
+<pre class="prettyprint lang-php">
+$result = $database->query('SELECT * FROM users');
+</pre>
+
+<p>The value of $result depends on what kind of query you execute.  If it was a INSERT query or another type of query that does <em>not</em> insert data, the result will be an instance of A_Db_Result.  This object provides general information about the query, error message, etc.</p>
+
+<p>If instead it was an SELECT, or another command that retreives data, it will contain a database-specific Recordset object.  In the case of the MySQL adapter, it will be an instance of A_Db_Recordset_MySQL.</p>
+
+<h2>Result Objects</h2>
+
+<p>Result objects tell you how the query went.  isError() tells you whether or not an error occured, and getErrorMsg() gives you the textual error.  numRows() gives the number of rows affected by the query.</p>
+
+<h2>Recordset Objects</h2>
+
+<p>A Recordset class, as could be expected, is an implementation of the <a href="http://martinfowler.com/eaaCatalog/recordSet.html">Record Set</a> [martinfowler.com] pattern.  It provides an extensive array of interfaces with which to access the row data.</p>
+
+<p>Because Recordset classes implement the <a href="http://php.net/iterator">Iterator</a> [php.net] interface, the easiest method to get row data is simply to traverse it with a <a href="http://php.net/foreach">foreach</a> [php.net] construct.</p>
+
+<pre class="prettyprint lang-php">
+$recordset = $database->query('SELECT * FROM users');
+foreach ($recordset as $row) {
+	echo $row['username'] . '&lt;br /&gt;';
+	echo date('r', $row['joined_date']) . '&lt;br /&gt;';
+}
+</pre>
+
+<p>Recordset also provides the same methods as Result: numRows(), isError(), and getErrorMsg().</p>
+
+<p>If you only wish to get one row, or you wish to loop over the rows manually with a while construct, that can be done with fetchRow().
+
+<pre class="prettyprint lang-php">
+$recordset = $database->query('SELECT * FROM users LIMIT 1');
+$row = $recordset->fetchRow();
+</pre>
+
+<p>Recordset allows you to specify what form you want the row in with setClassName().  The default setting is an associative array.  Calling setClassName() without an argument sets it to the default.  To get an object, set it to A_Db_Recordset_Base::OBJECT.  Or, pass a class name, and the row (as an associative array) will be passed to the constructor of a new instance.</p>
+
+<pre class="prettyprint lang-php">
+$recordset = $database->query('SELECT * FROM users');
+
+// either this:
+$recordset->setClassName();
+
+// or this:
+$recordset->setClassName(A_Db_Recordset_Base::OBJECT);
+
+// or this:
+$recordset->setClassName('MyUserObject');
+
+// then fetch row(s)
+$recordset->fetchRow();
+</pre>
+
+<p>Another convenient feature provided is "gather" mode.  When set to on, the Recordset will preserve all rows internally as they are fetched.  This internal set is read from (instead of the database) in subsequent traversals.  This means that you can scan through the Recordset multiple times without keeping the rows youself.</p>
+
+<pre class="prettyprint lang-php">
+$recordset = $database->query('SELECT * FROM users');
+
+foreach ($recordset as $row) {
+	// loop over rows
+}
+
+foreach ($recordset as $row) {
+	// loop over rows again
+}
+
+$recordset->rewind();
+while ($row = $recordset->fetchRow()) {
+	// loop over it a different way
+	// we can do this all day long
+}
+
+$allRows = $recordset->toArray();
+</pre>
+
+<p>The last line uses toArray() to get all gathered rows as a normal array.</p>
+
+<h2>More Advanced Database Use</h2>
+
+<p class="devnote">Information about master/slave, config, other methods of adapters, Schema.</p>
 
 <h2>Database access patterns</h2>
 
-<p class="devnote">Quick note on different patterns and which one are implemented in Skeleton (AR, mappers, etc). Those get their own section below this one</p>
-
-
+<p class="devnote">About Datamapper, Tabledatagateway, and Activerecord</p>
