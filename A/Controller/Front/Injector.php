@@ -12,13 +12,19 @@
  * 
  * Create object of this class to pass to Front Controller preFilter() method to set one or more properties in all dispatched Action objects with a given value.
  */
-class A_Controller_Front_Injector {
-	protected $properties;
+class A_Controller_Front_Injector
+{
 
-	/*
-	 * Parameters can be either (array('name'=>'value',...) or ('name', 'value')
+	protected $properties;
+	
+	/**
+	 * Parameters can be either as an array in the first argument, or as separate arguments
+	 * 
+	 * @param array|string $property Array of properties or property name
+	 * @param string $value Value of $property (not applicable if $property is set as a string)
 	 */
-	public function __construct($property, $value=null) {
+	public function __construct($property, $value=null)
+	{
 		if (is_array($property)) {
 			$this->properties = $property;
 		} else {
@@ -26,10 +32,11 @@ class A_Controller_Front_Injector {
 		}
 	}
 	
-	public function run($controller) {
+	public function run($controller)
+	{
 		foreach ($this->properties as $property => $value) {
 			$controller->$property = $value;
 		}
 	}
-	
+
 }
