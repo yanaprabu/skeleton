@@ -13,36 +13,39 @@
  * 
  * Read delimited text file into array of line arrays
  */
-class A_Delimited_Reader extends A_Delimited_Base {
+class A_Delimited_Reader extends A_Delimited_Base
+{
+
 	protected $filemode = 'rb';
 	protected $autoConfigure = false;
 	protected $isAutoConfigured = false;
 	
 	/**
-	 * @param auto - true to check file before reading to determine delimiter
-	 * @return this - for fluent interface
+	 * @param bool $auto True to check file before reading to determine delimiter
+	 * @return $this
 	 */
-	public function setAutoConfigure($auto=true) {
+	public function setAutoConfigure($auto=true)
+	{
 		$this->autoConfigure = $auto;
 		return $this;
 	}
 	
 	/**
-	 * @return array of line arrays read
+	 * @return array Lines read
 	 */
-	public function read() {
-		if (! $this->handle) {
+	public function read()
+	{
+		if (!$this->handle) {
 			$this->open();
 		}
 		if ($this->handle) {
 			if ($this->autoConfigure && !$this->isAutoConfigured) {
 				$this->autoConfig();
 			}
-			if ($this->_config['field_names_in_first_row'] && ! $this->fieldNames) {
+			if ($this->_config['field_names_in_first_row'] && !$this->fieldNames) {
 				$this->fieldNames = fgetcsv($this->handle, $this->maxLineLength, $this->_config['field_delimiter'], $this->_config['field_enclosure']);
 			}
 			$row = fgetcsv($this->handle, $this->maxLineLength, $this->_config['field_delimiter'], $this->_config['field_enclosure']);
-#dump($row, "read: fgetcsv: ");
 			if ($row && is_array($row)) {
 				// not a blank line
 				if ($row[0]) {
@@ -50,23 +53,22 @@ class A_Delimited_Reader extends A_Delimited_Base {
 					if ($this->_config['field_escape']) {
 						array_walk($row, array($this, '_escape'), $this->_config);
 					}
-#dump($row, "read: return: ");
 					return $row;
 				}
 			}
 		}
 		return array();
 	}
-   
-	public function load($lines=0) {
-		if (! $this->handle) {
+	
+	public function load($lines=0)
+	{
+		if (!$this->handle) {
 			$this->open();
 		}
 		$this->nRows = 0;
 		$rows = array();
 		if ($this->handle) {
 			while (($row = $this->read())) {
-#dump($row, "load: ");
 				$rows[$this->nRows++] = $row;
 				if (($lines > 0) && ($lines <= $this->nRows)) {
 					break;
@@ -75,9 +77,10 @@ class A_Delimited_Reader extends A_Delimited_Base {
 		}
 		return $rows;
 	}
-   
-	public function autoConfig() {
-		if (! $this->handle) {
+	
+	public function autoConfig()
+	{
+		if (!$this->handle) {
 			$this->open();
 		}
 		$line = fgets($this->handle, $this->maxLineLength);
@@ -90,5 +93,5 @@ class A_Delimited_Reader extends A_Delimited_Base {
 		$this->isAutoConfigured = true;
 		rewind($this->handle);
 	}
-   
+
 }
