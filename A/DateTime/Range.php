@@ -13,55 +13,74 @@
  * 
  * Date & Time Range functionality
  */
-class A_DateTime_Range {
+class A_DateTime_Range
+{
 
 	protected $start;		// A_Datetime object containing start of range
 	protected $end;			// A_Datetime object containing end  of range
 
-	/*
+	/**
 	 * Range spec parameter is in ISO 8601 Time Intervals format
 	 * See http://en.wikipedia.org/wiki/ISO_8601#Time_intervals
-	 * Can instantiate using start & duration, duration & end, start & end 
+	 * Can instantiate using start & duration, duration & end, start & end
+	 * 
+	 * @param A_DateTime|A_DateTime_Duration $first Either the start point, or a duration.
+	 * @param A_DateTime_Duration|A_DateTime $second Either the end point, or a duration
 	 */
-	public function __construct ($first, $second) {
-		if ($first instanceof A_DateTime && $second instanceof A_DateTime)	{
+	public function __construct($first, $second)
+	{
+		if ($first instanceof A_DateTime && $second instanceof A_DateTime) {
 			$this->start = $first;
 			$this->end = $second;
 		}
-		if ($first instanceof A_DateTime && $second instanceof A_DateTime_Duration)	{
+		if ($first instanceof A_DateTime && $second instanceof A_DateTime_Duration) {
 			$this->start = $first;
-			$this->end = $this->start->add ($second);
+			$this->end = $this->start->add($second);
 		}
-		if ($first instanceof A_DateTime_Duration && $second instanceof A_DateTime)	{
-			$this->start = $second->remove ($first);	
+		if ($first instanceof A_DateTime_Duration && $second instanceof A_DateTime) {
+			$this->start = $second->remove($first);	
 			$this->end = $second;
 		}
 	}
 	
-	/*
+	/**
 	 * Return start date/time as object, or if format given as formatted string
+	 * 
+	 * @param string $format Date format syntax according to the date() function.  Omit or set to null for A_DateTime object.
+	 * @return string|A_DateTime
+	 * @see date()
 	 */
-	public function getStart ($format = null) {
-		if ($format)	{
-			return $this->start->format ($format);
+	public function getStart($format=null)
+	{
+		if ($format) {
+			return $this->start->format($format);
 		}
 		return $this->start;
 	}
 	
-	/*
-	 * Return end date/time as object, or if format given as formatted string
+	/**
+	 * Return end date/time as object, or if format given as formatted string.
+	 * 
+	 * @param string $format Date format syntax according to the date() function.  Omit or set to null for A_DateTime object.
+	 * @return string|A_DateTime
+	 * @see date()
 	 */
-	public function getEnd ($format = null) {
-		if ($format)	{
-			return $this->end->format ($format);
+	public function getEnd($format=null)
+	{
+		if ($format) {
+			return $this->end->format($format);
 		}
 		return $this->end;
 	}
 	
-	/*
+	/**
 	 * Return an array of date/time objects from the start to end date using $duration as the interval
+	 * 
+	 * @param A_DateTime_Duration
+	 * @return array
 	 */
-	public function toArray ($duration)	{
+	public function toArray($duration)
+	{
 		$date = $this->start->newModify();
 		$string = $duration instanceof A_DateTime_Duration ? $duration->toString() : $duration;
 		$ranges = array();
@@ -72,11 +91,15 @@ class A_DateTime_Range {
 		return $ranges;
 	}
 	
-	/*
-	 * Return true|false whether a given date/time object is withiin this range
-	 * The inclusive parameter determines whether the start and end dates are included in the Range
+	/**
+	 * Checks whether or not the given DateTime object is within this range
+	 * 
+	 * @param A_DateTime $datetime DateTime object to check
+	 * @param bool $inclusive Set to true to include start and end in range
+	 * @return bool
 	 */
-	public function contains ($datetime, $inclusive = false)	{
+	public function contains($datetime, $inclusive=false)
+	{
 		if ($datetime instanceof A_DateTime) {
 			if ($inclusive)	{
 				return $datetime->getTimestamp() >= $this->start->getTimestamp() && $datetime->getTimestamp() <= $this->end->getTimestamp();
@@ -86,32 +109,37 @@ class A_DateTime_Range {
 		}
 	}
 	
-/*
-	 * Return true|false whether a given Range object intersects with the current one
+	/**
+	 * Checks whether or not the given Range object intersects this range
+	 * 
+	 * @param A_DateTime_Range $range Range object to check
+	 * @return bool
 	 */
-	public function intersects ($range)	{
-		if (
-				!$range 
-				|| ($this->end->getTimestamp() < $range->getStart()->getTimestamp()) 
-				|| ($range->getEnd()->getTimestamp() < $this->start->getTimestamp())
+	public function intersects($range)
+	{
+		if (!$range 
+			|| ($this->end->getTimestamp() < $range->getStart()->getTimestamp()) 
+			|| ($range->getEnd()->getTimestamp() < $this->start->getTimestamp())
 			) {
 			return false;
 		}
-
 		return true;
 	}
 
-	/*
-	 * Return Range string in strtotime() style
-	 * format: DATE_ISO8601/DATE_ISO8601 
+	/**
+	 * Formats Range as a string according to DATE_ISO8601/DATE_ISO8601 standards
+	 * 
+	 * @return string
 	 */
-	public function toString()	{
+	public function toString()
+	{
 		return $this->start->format(DATE_ISO8601) . '/' . $this->end->format(DATE_ISO8601);  
 	}
 	
-
-		/*
+	/**
 	 * Return value of Range when used in string context per toString() method
+	 * 
+	 * @return string
 	 */
 	public function __toString() {
 		return $this->toString();

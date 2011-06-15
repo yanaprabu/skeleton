@@ -13,9 +13,10 @@
  * 
  * Date & Time Duration functionality 
  */
-class A_DateTime_Duration {
-	
-	protected $partNames = array('years','months','weeks','days','hours','minutes','seconds','positive');
+class A_DateTime_Duration
+{
+
+	protected $partNames = array('years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds', 'positive');
 	protected $years = 0;
 	protected $months = 0;
 	protected $weeks = 0;
@@ -25,40 +26,52 @@ class A_DateTime_Duration {
 	protected $seconds = 0;
 	protected $positive = true;
 	
-	/*
+	/**
 	 * Configuration at instatiation with Duration string, array or indivitual values
+	 * 
+	 * @param int $years
+	 * @param int $months
+	 * @param int $weeks
+	 * @param int $days
+	 * @param int $hours
+	 * @param int $minutes
+	 * @param int $seconds
 	 */
-	public function __construct ($years = 0, $months = 0, $weeks = 0, $days = 0, $hours = 0, $minutes = 0, $seconds = 0)	{
-		if( is_array($years) ) {
+	public function __construct ($years=0, $months=0, $weeks=0, $days=0, $hours=0, $minutes=0, $seconds=0)
+	{
+		if(is_array($years)) {
 			$this->config ($years);
-		} else if ( is_string($years) ) {
+		} elseif (is_string($years)) {
 			$this->parseDuration($years);
 		} else {
-			$this->config (array (
+			$this->config(array(
 				'years' => $years,
 				'months' => $months,
 				'weeks' => $weeks,
 				'days' => $days,
 				'hours' => $hours,
 				'minutes' => $minutes,
-				'seconds' => $seconds)
-			);
+				'seconds' => $seconds
+			));
 		}
 	}
 	
-	/*
-	 * parse a Duration string
-	 * format: '1 years 1 months 3 weeks 4 days 5 hours 6 minutes 7 seconds'
+	/**
+	 * parse a Duration string in the format "1 years 1 months 3 weeks 4 days 5 hours 6 minutes 7 seconds"
+	 * 
+	 * @param string $string
+	 * @return array
 	 */
-	public function parseDuration ($string)	{
+	public function parseDuration ($string)
+	{
 		$parts = array();
-		$stringParts = explode(',',$string);
+		$stringParts = explode(',', $string);
 		foreach($stringParts as $part) {
 			$part = trim($part);
-			$breakPos = strpos($part,' ');
+			$breakPos = strpos($part, ' ');
 			if($breakPos !== false) {
-				$num = (int) substr($part,0,$breakPos);
-				$partName = substr($part,$breakPos + 1);
+				$num = (int) substr($part, 0, $breakPos);
+				$partName = substr($part, $breakPos + 1);
 			} else {
 				$num = 1;
 				$partName = $part;
@@ -74,36 +87,39 @@ class A_DateTime_Duration {
 		return $parts;
 	}
 	
-	/*
-	 * Configure class with assoc array. See partNames property
-	 * format: array('years'=>1, 'months'=>2, 'weeks'=>3, 'days'=>4, 'hours'=>5, minutes'=>6, 'seconds'=>7, 'positive'=>true)
-	 *         values omitted from the array will be set to zero
+	/**
+	 * Configure class with assoc array. See partNames property in the format array('years'=>1, 'months'=>2, 'weeks'=>3, 'days'=>4, 'hours'=>5, minutes'=>6, 'seconds'=>7, 'positive'=>true).  Values omitted from the array will be set to zero
+	 * 
+	 * @param array $parts
 	 */
-	public function config ($parts)	{
+	public function config ($parts)
+	{
 		foreach($this->partNames as $part) {
 			$this->$part = isset($parts[$part]) ? $parts[$part] : 0;
 		}
 	}
 	
-	/*
-	 * Set Duration to be used as a positive value when used with a date 
+	/**
+	 * Set Duration to be used as a positive value when used with a date.
 	 */
-	public function setPositive()	{
+	public function setPositive()
+	{
 		$this->positive = true;
 	}
 	
-	/*
+	/**
 	 * Set Duration to be used as a negative value when used with a date 
 	 */
-	public function setNegative()	{
+	public function setNegative()
+	{
 		$this->positive = false;
 	}
 	
-	/*
-	 * Return Duration string in strtotime() style
-	 * format: '1 years 1 months 3 weeks 4 days 5 hours 6 minutes 7 seconds' 
+	/**
+	 * Return Duration string in strtotime() style in the format "1 years 1 months 3 weeks 4 days 5 hours 6 minutes 7 seconds" 
 	 */
-	public function toString()	{
+	public function toString()
+	{
 		$string = array();
 		foreach($this->partNames as $part) {
 			$value = $this->$part;
@@ -112,8 +128,10 @@ class A_DateTime_Duration {
 		return implode(', ', $string);  
 	}
 	
-	/*
+	/**
 	 * Return Duration values in assoc array
+	 * 
+	 * @return array
 	 */
 	public function toArray()	{
 		return array (
@@ -127,8 +145,10 @@ class A_DateTime_Duration {
 		);
 	}
 			
-	/*
+	/**
 	 * Return value of Duration when used in string context per toString() method
+	 * 
+	 * @return string
 	 */
 	public function __toString() {
 		return $this->toString();
