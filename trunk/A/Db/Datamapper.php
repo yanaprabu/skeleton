@@ -12,7 +12,9 @@
  * 
  * Basic functionality to map table columns to object fields
  */
-class A_Db_Datamapper {
+class A_Db_Datamapper
+{
+
 	protected $db = null;
 	protected $class_name = '';				// class mapped by this mapper
 	protected $table_name = '';				// default inherited by mappings if not specified
@@ -24,29 +26,34 @@ class A_Db_Datamapper {
 	protected $sql = array();
 	protected $allow_key_changes = true;	// allow the key to be changed in a loaded object -- insert rather than update
 	protected $error = false;
-
-	public function __construct($db, $class_name, $table_name='') {
+	
+	public function __construct($db, $class_name, $table_name='')
+	{
 	     $this->db = $db;
 	     $this->class_name = $class_name;
 	     $this->table_name = $table_name;
 	}
 	
-	public function setDb($db) {
+	public function setDb($db)
+	{
 	     $this->db = $db;
 		return $this;
 	}
 	
-	public function setClass($class_name) {
+	public function setClass($class_name)
+	{
 		$this->class_name = $class_name;
 		return $this;
 	}
 	
-	public function setTable($table_name) {
+	public function setTable($table_name)
+	{
 		$this->table_name = $table_name;
 		return $this;
 	}
 	
-	public function addMapping($mapping) {
+	public function addMapping($mapping)
+	{
 		$this->error = false;
 		if ($mapping->property_name) {
 			// use default table name if none provided
@@ -59,15 +66,17 @@ class A_Db_Datamapper {
 		}
 		return $this;
 	}
-
-	public function addJoin($join) {
+	
+	public function addJoin($join)
+	{
 		$this->joins[] = $join;
 		$this->setTableKey($join->table1, $join->field1, '');
 		$this->setTableKey($join->table2, $join->field2, '');
 		return $this;
 	}
-
-	public function getTableNames() {
+	
+	public function getTableNames()
+	{
 		$tables = array();
 		if ($this->table_name) {
 			$tables[$this->table_name] = 1;
@@ -79,8 +88,9 @@ class A_Db_Datamapper {
 		}
 		return array_keys($tables);
 	}
-
-	public function getTableNamesSQL() {
+	
+	public function getTableNamesSQL()
+	{
 		$tables = $this->getTableNames();
 		// more than one table then join
 		if (count($tables) > 1) {
@@ -102,40 +112,45 @@ class A_Db_Datamapper {
 		} else {
 			return $tables[0];
 		}
-			
 	}
-
-	public function getTableFieldNames() {
+	
+	public function getTableFieldNames()
+	{
 		$fields = array();
 		foreach (array_keys($this->mappings) as $property_name) {
 			$fields[$property_name] = $this->mappings[$property_name]->getTableFieldName();
 		}
 		return $fields;
 	}
-
-	public function getKeyField($table_name='') {
+	
+	public function getKeyField($table_name='')
+	{
 		if (!$table_name) $table_name = $this->table_name;
 		return isset($this->table_keys[$table_name]) ? $this->table_keys[$table_name]['field_name'] : '';
 	}
-
-	public function getKeyTableField($table_name='') {
+	
+	public function getKeyTableField($table_name='')
+	{
 		if (!$table_name) $table_name = $this->table_name;
 		return isset($this->table_keys[$table_name]) ? $table_name . '.' . $this->table_keys[$table_name]['field_name'] : '';
 	}
-
-	public function getKeyProperty($table_name='') {
+	
+	public function getKeyProperty($table_name='')
+	{
 		if (!$table_name) $table_name = $this->table_name;
 		return isset($this->table_keys[$table_name]) ? $this->table_keys[$table_name]['property_name'] : '';
 	}
-
-	public function getOperationSQL($field_name, $value, $operator='=') {
+	
+	public function getOperationSQL($field_name, $value, $operator='=')
+	{
 		if ($field_name && $value && $operator) {
 			return "$field_name$operator'$value'";
 		}
 		return '';
 	}
-
-	public function findPropertyByField($field_name) {
+	
+	public function findPropertyByField($field_name)
+	{
 		$property_name = '';
 		foreach ($this->mappings as $mapping) {
 			if ($field_name == $mapping->field_name) {
@@ -145,9 +160,10 @@ class A_Db_Datamapper {
 		}
 		return $property_name;
 	}
-
-	public function setTableKey($table_name, $field_name, $property_name) {
-	if ($table_name && $field_name && ! isset($this->table_keys[$table_name])) {
+	
+	public function setTableKey($table_name, $field_name, $property_name)
+	{
+		if ($table_name && $field_name && !isset($this->table_keys[$table_name])) {
 			$this->table_keys[$table_name]['field_name'] = $field_name;
 			if ($property_name) {
 				$this->table_keys[$table_name]['property_name'] = $property_name;
@@ -155,7 +171,7 @@ class A_Db_Datamapper {
 				// search mappings for property name that goes with the field name
 				$property_name = $this->findPropertyByField($field_name);
 				// not found in mappings, search joins
-				if (! $property_name) {
+				if (!$property_name) {
 					// search joins for property name that goes with the field name
 					foreach ($this->joins as $join) {
 						if ($field_name == $join->field1) {
@@ -173,15 +189,18 @@ class A_Db_Datamapper {
 		return $this;
 	}
 	
-	public function allowKeyChanges($flag=true) {
+	public function allowKeyChanges($flag=true)
+	{
 		return $this->allow_key_changes = $flag;
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		return $this->error;
 	}
 	
-	public function add($object, $replace=true) {
+	public function add($object, $replace=true)
+	{
 		// is same class as this mapping
 		$this->error = false;
 		if (get_class($object) == $this->class_name) {
@@ -203,7 +222,8 @@ class A_Db_Datamapper {
 		return $object;
 	}
 	
-	public function load($key) {
+	public function load($key)
+	{
 		$this->error = false;
 		// load if not already loaded
 		if (! isset($this->objects_loaded[$key])) {
@@ -237,8 +257,8 @@ class A_Db_Datamapper {
 		return $this->objects_loaded[$key];
 	}
 	
-	public function render() {
-
+	public function render()
+	{
 		// update objects that have been added
 		if ($this->objects_loaded) {
 			$key_property = $this->getKeyProperty();
@@ -307,7 +327,8 @@ class A_Db_Datamapper {
 		}
 	}
 	
-	public function updateSQL($table, $key, $data) {
+	public function updateSQL($table, $key, $data)
+	{
 		if ($table && $key && $data) {
 			if (isset($data[$key])) {
 				$key_value = $data[$key];
@@ -320,7 +341,8 @@ class A_Db_Datamapper {
 		}
 	}
 	
-	public function insertSQL($table_name, $data) {
+	public function insertSQL($table_name, $data)
+	{
 		if ($data) {
 			foreach ($data as $field => $value) {
 				$cols[] = $field;
@@ -330,13 +352,15 @@ class A_Db_Datamapper {
 		}
 	}
 	
-	public function deleteSQL($table_name, $key, $key_value) {
+	public function deleteSQL($table_name, $key, $key_value)
+	{
 		if ($key) {
 			$this->sql[] = "DELETE FROM $table_name WHERE $key='$key_value';";
 		}
 	}
 	
-	public function commit() {
+	public function commit()
+	{
 		if ($this->db) {
 			// generate SQL for each update/insert/delete
 			$this->render();
@@ -347,10 +371,12 @@ class A_Db_Datamapper {
 			}
 		}
 	}
-	
+
 }
 
-class A_Db_Datamapper_Mapping {
+class A_Db_Datamapper_Mapping
+{
+
 	public $table_name = '';
 	public $property_name = '';
 	public $field_name = '';
@@ -358,8 +384,9 @@ class A_Db_Datamapper_Mapping {
 	public $size = 0;
 	public $is_key = false;
 	public $filters = array();
-
-	public function __construct($property_name, $field_name, $type, $size, $is_key=false, $table_name='', $filters=array()) {
+	
+	public function __construct($property_name, $field_name, $type, $size, $is_key=false, $table_name='', $filters=array())
+	{
 		$this->property_name = $property_name;
 		$this->field_name = $field_name;
 		$this->type = $type;
@@ -369,7 +396,8 @@ class A_Db_Datamapper_Mapping {
 		$this->filters = $filters;
 	}
 	
-	public function setObject($object, $row) {
+	public function setObject($object, $row)
+	{
 	     if ($this->property_name && $this->field_name) {
 	     	$property = $this->property_name;
 	     	if (isset($row[$this->field_name])) {
@@ -379,7 +407,8 @@ class A_Db_Datamapper_Mapping {
 		return $this;
 	}
 	
-	public function setRow($row, $object) {
+	public function setRow($row, $object)
+	{
 	     if ($this->property_name && $this->field_name) {
 	     	$property = $this->property_name;
 	     	if (isset($object->$property)) {
@@ -388,38 +417,44 @@ class A_Db_Datamapper_Mapping {
 	     }
 		return $this;
 	}
-
-	public function getTableFieldName() {
+	
+	public function getTableFieldName()
+	{
 	     if ($this->table_name) {
 	     	return $this->table_name . '.' . $this->field_name;
 	     } else {
 	     	return $this->field_name;
 	     }
 	}
-
-	public function isKey() {
+	
+	public function isKey()
+	{
 	     return $this->is_key;
 	}
 
 }
 
-class A_Db_Datamapper_Join {
+class A_Db_Datamapper_Join
+{
+
 	public $table1; 
 	public $field1;
 	public $table2; 
 	public $field2;
 	public $type;
 	
-	function __construct($table1, $field1, $table2, $field2, $type='') {
+	function __construct($table1, $field1, $table2, $field2, $type='')
+	{
 		$this->table1 = $table1; 
 		$this->field1 = $field1;
 		$this->table2 = $table2; 
 		$this->field2 = $field2;
 		$this->type = $type;
 	}
-
-	function render() {
+	
+	function render()
+	{
 		return " {$this->table1} {$this->type} JOIN {$this->table2} ON {$this->table1}.{$this->field1}={$this->table2}.{$this->field2} ";
 	}
-}
 
+}
