@@ -14,24 +14,25 @@
  */
 class A_Email_Phpmail
 {
+
 	protected $error = 0;
 	
 	public function connect()
 	{
 		return true;
 	}
-
+	
 	public function disconnect()
 	{
 		return true;
 	}
-
+	
 	public function send($to='', $subject='', $message='', $headers='')
 	{
 		$this->error = mail($to, $subject, $message, $headers);
 		return $this->error;
 	}
-
+	
 	public function getErrorMsg()
 	{
 		return $this->error ? "Send error {$this->error} using mail. " : '';

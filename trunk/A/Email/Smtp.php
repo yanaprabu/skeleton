@@ -14,6 +14,7 @@
  */
 class A_Email_Smtp
 {
+
 	protected $config = array(
 		'server' => 'localhost',
 		'port' => 25,
@@ -22,9 +23,7 @@ class A_Email_Smtp
 		'connection_timeout' => 1,		// timeout for fsockconnect() in seconds
 		'socket_timeout' => 0,			// timeout for fputs() in seconds ini_get("default_socket_timeout")
 	);
-
 	protected $connection; 
-
 	protected $reply_codes = array(
 		'211' => 'System status, or system help reply',
 		'214' => 'Help message (Information on how to use the receiver or the meaning of a particular non-standard command; this reply is useful only to the human user)',
@@ -48,32 +47,22 @@ class A_Email_Smtp
 		'552' => 'Requested mail action aborted: exceeded storage allocation',
 		'553' => 'Requested action not taken: mailbox name not allowed (e.g., mailbox syntax incorrect)',
 		'554' => 'Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")',
-		);
-		
+	);
 	protected $errorMsg = array();
-						
-	/**
-	 * 
-	 */
-	function __construct($server, $username='', $password='')
+	
+	public function __construct($server, $username='', $password='')
 	{
 		$this->config['server'] = $server;
 		$this->config['username'] = $username;
 		$this->config['password'] = $password;
 	}
 	
-	/**
-	 * 
-	 */
-	function setConnectionTimeout($seconds)
+	public function setConnectionTimeout($seconds)
 	{
 		$this->config['connection_timeout'] = $seconds;
 	}
 	
-	/**
-	 * 
-	 */
-	function setSocketTimeout($seconds)
+	public function setSocketTimeout($seconds)
 	{
 		$this->config['socket_timeout'] = $seconds;
 		if (isset($this->connection) && ($seconds > 0)) {
@@ -81,10 +70,7 @@ class A_Email_Smtp
 		}
 	}
 	
-	/**
-	 * 
-	 */
-	function connect()
+	public function connect()
 	{
 		$errmsg = '';
 		
@@ -105,7 +91,7 @@ class A_Email_Smtp
 			if ($errmsg == '') {
 				// start SMTP session
 				$cmd = "HELO ".$this->config['server'];
-				$errmsg = $this->command($cmd, '250', $cmd.' failed. ');
+				$errmsg = $this->command($cmd, '250', $cmd . ' failed. ');
 
 				// If credentials then attempt to authenticate
 				if ($errmsg == '' && $this->config['username'] && $this->config['password']) {
@@ -132,33 +118,30 @@ class A_Email_Smtp
 		return $errmsg == '';
 	}
 	
-	/**
-	 * 
-	 */
-	function send($to, $subject, $message, $headers)
+	public function send($to, $subject, $message, $headers)
 	{
 		$errmsg = '';
-	
+		
 		// get From address
-		if ( preg_match("/From:.*?[A-Za-z0-9\._%-]+\@[A-Za-z0-9\._%-]+.*/", $headers, $froms) ) {
+		if (preg_match("/From:.*?[A-Za-z0-9\._%-]+\@[A-Za-z0-9\._%-]+.*/", $headers, $froms)) {
 			 preg_match("/[A-Za-z0-9\._%-]+\@[A-Za-z0-9\._%-]+/", $froms[0], $fromarr);
 			 $from = $fromarr[0];
 		}
-	
+		
 		$cmd = "MAIL FROM: <$from>";
 		$errmsg = $this->command($cmd, '250', $cmd . ' failed. ');
 		
 		if ($errmsg == '') {
-
+			
 			$cmd = "RCPT TO: <$to>";
 			$errmsg = $this->command($cmd, '250', $cmd . ' failed. ');
 			
 			if ($errmsg == '') {
-			
+				
 				$errmsg = $this->command('DATA', '354', 'DATA failed. ');
 				
 				if ($errmsg == '') {
-				
+					
 					// All message fields plus line at the with a lone period
 					$cmd = "To: $to\r\nFrom: $from\r\nSubject: $subject\r\n$headers\r\n\r\n$message\r\n.";
 					$errmsg = $this->command($cmd, '250', $cmd . 'Message failed. ');
@@ -171,10 +154,7 @@ class A_Email_Smtp
 		
 		return $errmsg == '';
 	}
-
-	/**
-	 * 
-	 */
+	
 	public function disconnect ()
 	{
 		$errmsg = $this->command('QUIT', '221', 'QUIT failed. ');
@@ -183,20 +163,20 @@ class A_Email_Smtp
 	}
 
 	/**
-	 * returns collected error messages
+	 * Returns collected error messages as an array as a string with a delimiter
+	 * 
+	 * @param string $separator Delimiter between error messages.  Set to null for an array.
+	 * @return string|array
 	 */
 	public function getErrorMsg($separator="\n")
 	{
 		return $separator ? implode($separator, $this->errorMsg) : $this->errorMsg;
 	}
-
-	/**
-	 * 
-	 */
+	
 	protected function command ($command, $success_code, $errmsg)
 	{
 		if ($command) {
-			fputs($this->connection,"$command\r\n");
+			fputs($this->connection, "$command\r\n");
 		}
 		$reply = fgets($this->connection, 256);
 		$code = substr($reply, 0, 3);
