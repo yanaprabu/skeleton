@@ -13,16 +13,20 @@
  * 
  * Date & Time Timezone functionality
  */
-class A_DateTime_Timezone {
-	
+class A_DateTime_Timezone
+{
+
 	protected $reference;
 	protected $target;
 	protected $errorMsg;
 	
-	/*
+	/**
 	 * Configuration at instatiation with timezone string or null for PHP default timezone
+	 * 
+	 * @param string $name Timezone ID
 	 */
-	public function __construct ($name='')	{
+	public function __construct($name='')
+	{
 	    if ($name == '') {
 	    	$name = date_default_timezone_get();
 		}
@@ -33,28 +37,37 @@ class A_DateTime_Timezone {
 		}
 	}
 	
-	/*
-	 * return the string name of the reference timezone
+	/**
+	 * Return the string name of the reference timezone
+	 * 
+	 * @return string
 	 */
-	public function getName ()	{
+	public function getName()
+	{
 	    if (isset($this->reference)) {
 			return $this->reference->getName();
 		}
 	}
-
-	/*
-	 * return the UTC offset of the reference timezone
+	
+	/**
+	 * Return the UTC offset of the reference timezone
+	 * 
+	 * @return int
 	 */
-	public function getOffset ()	{
+	public function getOffset()
+	{
 	    if (isset($this->reference)) {
 	    	return $this->reference->getOffset(new DateTime("now", $this->reference)) / 3600;
 		}
 	}
-
-	/*
-	 * set the target timezone by name
+	
+	/**
+	 * Set the target timezone by name
+	 * 
+	 * @param string $name
 	 */
-	public function setTargetName ($name='')	{
+	public function setTargetName($name='')
+	{
 	    if ($name == '') {
 	    	$name = date_default_timezone_get();
 		}
@@ -64,29 +77,38 @@ class A_DateTime_Timezone {
 			$this->errorMsg = $e->getMessage();
 		}
 	}
-
-	/*
-	 * return the string name of the target timezone
+	
+	/**
+	 * Return the string name of the target timezone
+	 * 
+	 * @return string
 	 */
-	public function getTargetName ()	{
+	public function getTargetName()
+	{
 	    if (isset($this->target)) {
 			return $this->target->getName();
 		}
 	}
-
-	/*
-	 * return the UTC offset of the target timezone
+	
+	/**
+	 * Return the UTC offset of the target timezone
+	 * 
+	 * @return int
 	 */
-	public function getTargetOffset ()	{
+	public function getTargetOffset()
+	{
 	    if (isset($this->target)) {
 	    	return $this->target->getOffset(new DateTime("now", $this->target)) / 3600;
 		}
 	}
-
-	/*
-	 * return the difference between the reference and target offsets
+	
+	/**
+	 * Return the difference between the reference and target offsets
+	 * 
+	 * @return int
 	 */
-	public function getDifference ()	{
+	public function getDifference()
+	{
     	return $this->getTargetOffset() - $this->getOffset();
 	}
 
