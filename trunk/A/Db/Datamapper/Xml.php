@@ -12,9 +12,11 @@
  * 
  * Maps a database to an XML file.
  */
-class A_Db_Datamapper_Xml extends A_Db_Datamapper {
+class A_Db_Datamapper_Xml extends A_Db_Datamapper
+{
 
-	public function __construct($db, $filename) {
+	public function __construct($db, $filename)
+	{
 		$xml = simplexml_load_file($filename);
 		if ($xml) {
 			$this->setDb($db);
@@ -43,6 +45,5 @@ class A_Db_Datamapper_Xml extends A_Db_Datamapper {
 			}
 		}
 	}
-	
-}
 
+}
