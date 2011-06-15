@@ -17,6 +17,7 @@
  */
 abstract class A_Db_Recordset_Base implements Iterator
 {
+
 	// resource object from database adapter
 	protected $result = null;
 	// number of rows that match query
@@ -44,8 +45,8 @@ abstract class A_Db_Recordset_Base implements Iterator
 	const OBJECT = 'stdClass';
 	
 	/**
-	 * Constructor, receives the number of rows, error number, and error message
-	 * from creator
+	 * Constructor, receives the number of rows, error number, and error message from creator
+	 * 
 	 * @param int $numRows Number of rows returned from query
 	 * @param int $error Error number from database
 	 * @param string $errorMsg The error message from database
@@ -59,17 +60,21 @@ abstract class A_Db_Recordset_Base implements Iterator
 	
 	/**
 	 * Sets the database resource object, and loads first row into memory
+	 * 
 	 * @param mixed $result Resource object
 	 */
-	public function setResult ($result) {
+	public function setResult($result)
+	{
 		$this->result = $result;
 	}
 	
 	/**
 	 * Turn on Lazy Gather mode
+	 * 
 	 * @param boolean $enable True to enable, false to disable.  Optional, true by default
+	 * @return $this
 	 */
-	public function enableGather($enable = true)
+	public function enableGather($enable=true)
 	{
 		$this->gatherMode = (boolean) $enable;
 		return $this;
@@ -77,10 +82,11 @@ abstract class A_Db_Recordset_Base implements Iterator
 	
 	/**
 	 * Sets a class to create a row of
+	 * 
 	 * @param string $className Name of class to set (optional, default null)
-	 * @return this
+	 * @return $this
 	 */
-	public function setClassName($className = null)
+	public function setClassName($className=null)
 	{
 		$this->className = $className;
 		return $this;
@@ -88,6 +94,8 @@ abstract class A_Db_Recordset_Base implements Iterator
 	
 	/**
 	 * Gets the number of rows got in query
+	 * 
+	 * @return int
 	 */
 	public function numRows()
 	{
@@ -96,13 +104,15 @@ abstract class A_Db_Recordset_Base implements Iterator
 	
 	/**
 	 * Fetches a row from the database, or from the cache if already fetched
+	 * 
+	 * @return mixed
 	 */
 	public function fetchRow()
 	{
 		if (isset($this->_data[$this->nextRowNum])) {
 			$row = $this->_data[$this->nextRowNum];
 			$this->currentRow =& $this->_data[$this->nextRowNum];
-			++$this->nextRowNum;
+			$this->nextRowNum++;
 		} else {
 			if ($this->className == self::OBJECT) {
 				$row = $this->_fetch();
@@ -117,14 +127,15 @@ abstract class A_Db_Recordset_Base implements Iterator
 			} else {
 				$this->currentRow = $row;		// save for current()
 			}
-			++$this->nextRowNum;
+			$this->nextRowNum++;
 		}
 		return $row;
 	}
 	
 	/**
 	 * Fetches all rows from the database and loads them into memory
-	 * @return this
+	 * 
+	 * @return $this
 	 */
 	public function fetchAll() {
 		$this->_data = array();
@@ -136,6 +147,8 @@ abstract class A_Db_Recordset_Base implements Iterator
 	
 	/**
 	 * Returns if there was an error or not during query
+	 * 
+	 * @return bool
 	 */
 	public function isError()
 	{
@@ -144,6 +157,8 @@ abstract class A_Db_Recordset_Base implements Iterator
 	
 	/**
 	 * Returns the error message produced by database
+	 * 
+	 * @return string
 	 */
 	public function getErrorMsg()
 	{
@@ -151,16 +166,29 @@ abstract class A_Db_Recordset_Base implements Iterator
 	}
 	
 	/**
-	 * Iterator function, resets the index
+	 * Returns internal data array
+	 * 
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return $this->_data;
+	}
+	
+	/*
+	 * Iterator Methods
+	 */
+	
+	/**
+	 * @see Iterator::current()
 	 */
 	public function rewind()
 	{
-		// this is called first by foreach
 		$this->nextRowNum = 0;
 	}
 	
 	/**
-	 * Iterator function, gets the current database row
+	 * @see Iterator::current()
 	 */
 	public function current()
 	{
@@ -173,7 +201,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 	}
 	
 	/**
-	 * Iterator function, gets the current key
+	 * @see Iterator::current()
 	 */
 	public function key()
 	{
@@ -182,7 +210,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 	}
 	
 	/**
-	 * Iterator function, moves the index forward
+	 * @see Iterator::current()
 	 */
 	public function next()
 	{
@@ -190,19 +218,11 @@ abstract class A_Db_Recordset_Base implements Iterator
 	}
 	
 	/**
-	 * Iterator function, returns true if there are more elements
+	 * @see Iterator::current()
 	 */
 	public function valid()
 	{
 		return $this->nextRowNum <= $this->numRows;
-	}
-	
-	/**
-	 * returns internal data array
-	 */
-	public function toArray()
-	{
-		return $this->_data;
 	}
 
 }
