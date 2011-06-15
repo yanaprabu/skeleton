@@ -13,24 +13,28 @@
  *
  * Write arrays to a delimited text file.
  */
-class A_Delimited_Writer extends A_Delimited_Base {
+class A_Delimited_Writer extends A_Delimited_Base
+{
+
 	protected $filemode = 'wb';
 	
 	/**
-	 * @param $value - array of data to be written to line in file
-	 * @return mixed - false for error or length of string written
+	 * @param array $value Data to be written to line in file
+	 * @return $this
 	 */
-	public function setWriteAllEnclosed($value) {
+	public function setWriteAllEnclosed($value)
+	{
 		$this->_config['write_all_enclosed'] = $value;
 		return $this;
 	}
 	
 	/**
-	 * @param row - array of data to be written to line in file
-	 * @return mixed - false for error or length of string written
+	 * @param array $row Data to be written to line in file
+	 * @return bool|int Length of data written or false on error
 	 */
-	public function write($row) {
-		if (! $this->handle) {
+	public function write($row)
+	{
+		if (!$this->handle) {
 			$this->open();
 		}
 		if ($this->handle && $row) {
@@ -51,29 +55,30 @@ class A_Delimited_Writer extends A_Delimited_Base {
 		}
 		return false;
 	}
- 
+	
 	/**
-	 * @param rows - array of line arrays to be written to file
-	 * @return mixed - false for error or number of lines written
+	 * @param array $rows Lines to be written to file
+	 * @return bool|int Length of data written or false on error
 	 */
-	public function save($rows=null) {
-		if (! $rows) {
+	public function save($rows=null)
+	{
+		if (!$rows) {
 			$rows = $this->rows;
 		}
 		if ($rows) {
 			$this->nRows = 0;
 			foreach ($rows as $row) {
 				if ($this->write($row) !== false) {
-					++$this->nRows;
+					$this->nRows++;
 				} else {
 					return false;
 				}
 			}
 			return $this->nRows;
 		} else {
-			$this->_errorHandler(1, "No rows to save. ");
+			$this->_errorHandler(1, 'No rows to save. ');
 		}
 		return false;
 	}
- 
+
 }

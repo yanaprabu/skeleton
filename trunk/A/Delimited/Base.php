@@ -13,7 +13,9 @@
  * 
  * Abstract base class with common read/write functionality for delimited text files
  */
-class A_Delimited_Base {
+class A_Delimited_Base
+{
+
 	protected $maxLineLength = 1000;
 	protected $filename = '';
 	protected $filemode = 'r';
@@ -26,10 +28,11 @@ class A_Delimited_Base {
 	protected $_exception = '';
 	
 	/**
-	 * @param filename - full path to file to be read
-	 * @param config - optional configuration object
+	 * @param string $filename Full path to file to be read
+	 * @param string $config Configuration object
 	 */
-	public function __construct($filename=null, $config=null) {
+	public function __construct($filename=null, $config=null)
+	{
 		if ($filename) {
 			$this->setFilename($filename);
 		}
@@ -45,12 +48,13 @@ class A_Delimited_Base {
 			$this->config($config);
 		}
 	}
- 
+ 	
 	/**
-	 * @param filename - full path to file to be read
-	 * @return this - for fluent interface
+	 * @param string $filename Full path to file to be read
+	 * @return $this
 	 */
-	public function setFilename($filename) {
+	public function setFilename($filename)
+	{
 #		$this->filename = realpath($filename);
 		$this->filename = $filename;
 #		if (!$this->filename && $filename) {
@@ -60,10 +64,11 @@ class A_Delimited_Base {
 	}
 	
 	/**
-	 * @param _config - configuration object
-	 * @return this - for fluent interface
+	 * @param array $config
+	 * @return $this
 	 */
-	public function config($config) {
+	public function config($config)
+	{
 		if (is_array($config)) {
 			foreach ($config as $key => $value) {
 		    	$this->_config[$key] = $value;
@@ -72,35 +77,42 @@ class A_Delimited_Base {
 		return $this;
 	}
 	
-	public function setConfig($config) {
+	public function setConfig($config)
+	{
 		return $this->config($config);
 	}
 	
-	public function setLineDelimiter($value) {
+	public function setLineDelimiter($value)
+	{
 		return $this->_config['line_delimiter'] = $value;;
 	}
 	
-	public function setFieldDelimiter($value) {
+	public function setFieldDelimiter($value)
+	{
 		return $this->_config['field_delimiter'] = $value;;
 	}
 	
-	public function setFieldEnclosure($value) {
+	public function setFieldEnclosure($value)
+	{
 		return $this->_config['field_enclosure'] = $value;;
 	}
 	
-	public function setFieldEscape($value) {
+	public function setFieldEscape($value)
+	{
 		return $this->_config['field_escape'] = $value;;
 	}
 	
-	public function setFieldNamesInFirstRow($value) {
+	public function setFieldNamesInFirstRow($value)
+	{
 		return $this->_config['field_names_in_first_row'] = $value;;
 	}
 	
 	/**
-	 * @param filename - full path to file to be read
-	 * @return handle to file opened or false
+	 * @param string $filename Full path to file to be read
+	 * @return resource
 	 */
-	protected function open($filename='') {
+	protected function open($filename='')
+	{
 		$this->close();
 		if ($filename) {
 			$this->filename = $filename;
@@ -120,75 +132,65 @@ class A_Delimited_Base {
 		return $this->handle;
 	}
 	
-	/**
-	 * @return
-	 */
-	public function close() {
+	public function close()
+	{
 		if ($this->handle && fclose($this->handle)) {
 			$this->handle = false;
 			$this->reset();
 		}
 	}
-   
-	/**
-	 * @return
-	 */
-	public function rewind() {
+	
+	public function rewind()
+	{
 		if ($this->handle) {
 			rewind($this->handle);
 		}
-#		$this->reset();
 	}
-   
-	/**
-	 * @return
-	 */
-	public function reset() {
+	
+	public function reset()
+	{
 		$rows = array();
 		$this->nRows = 0;
 		$this->fieldNames = array();
 		$this->autoConfigured = false;
 	}
- 
-	/**
-	 * @return
-	 */
-	public function isError() {
+	
+	public function isError()
+	{
 		return $this->_errorMsg != '';
 	}
-   
-	/**
-	 * @return
-	 */
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		return $this->_errorMsg;
 	}
-   
-	public function _errorHandler($errno, $errorMsg) {
+	
+	public function _errorHandler($errno, $errorMsg)
+	{
 		$this->_errorMsg .= $errorMsg;
 		if ($this->_exception) {
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
-	}	
-
+	}
+	
 	/**
-	 * @param $item is a reference to the value to unescape
+	 * @param $item A reference to the value to unescape
 	 * @param $key not used
 	 * @param $config is a config object
-	 * @return
 	 */
-	protected function _unescape(&$item, $key, $config) {
+	protected function _unescape(&$item, $key, $config)
+	{
 		$item = str_replace($config['field_escape'], '', $item);
 	}
-   
+	
 	/**
 	 * @param $item is a reference to the value to escape
 	 * @param $key not used
 	 * @param $config is a config object
-	 * @return
 	 */
-	protected function _escape(&$item, $key, $config) {
+	protected function _escape(&$item, $key, $config)
+	{
 		$item = str_replace($config['field_enclosure'], $config['field_escape'].$config['field_enclosure'], $item);
 	}
-   
+
 }
