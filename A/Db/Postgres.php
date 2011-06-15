@@ -12,17 +12,21 @@
  * 
  * Database connection class using Postgres.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_Postgres extends A_Db_Adapter {
+class A_Db_Postgres extends A_Db_Adapter
+{
+
 	protected $config = null;
 	protected $link = null;
 	protected $sequenceext = '_seq';
 	protected $sequencestart = 1;
 	
-	public function __construct($config=null) {
+	public function __construct($config=null)
+	{
 		$this->config = $config;
 	}
-		
-	public function connect ($config=null) {
+	
+	public function connect($config=null)
+	{
 		$result = false;
 		if ($config) {
 			$this->config = $config;
@@ -32,24 +36,24 @@ class A_Db_Postgres extends A_Db_Adapter {
 			foreach ($this->config as $param => $value) {
 				if ($value) {
 					switch ($param) {
-					case 'hostspec':
-					case 'host':
-						$connstr .= "host={$value} ";
-						break;
-					case 'dbname':
-					case 'database':
-						$connstr .= "dbname={$value} ";
-						break;
-					case 'port':
-						$connstr .= "port={$value} ";
-						break;
-					case 'username':
-					case 'user':
-						$connstr .= "user={$value} ";
-						break;
-					case 'password':
-						$connstr .= "password={$value} ";
-						break;
+						case 'hostspec':
+						case 'host':
+							$connstr .= "host={$value} ";
+							break;
+						case 'dbname':
+						case 'database':
+							$connstr .= "dbname={$value} ";
+							break;
+						case 'port':
+							$connstr .= "port={$value} ";
+							break;
+						case 'username':
+						case 'user':
+							$connstr .= "user={$value} ";
+							break;
+						case 'password':
+							$connstr .= "password={$value} ";
+							break;
 					}
 				}
 			}
@@ -61,18 +65,21 @@ class A_Db_Postgres extends A_Db_Adapter {
 		}
 		return $this->link;
 	}
-		
-	public function close() {
+	
+	public function close()
+	{
 		if ($this->link) {
 			pg_disconnect($this->link);
 		} 
 	}
-		
-	public function disconnect() {
+	
+	public function disconnect()
+	{
 		$this->close();
 	}
-		
-	public function query($sql, $bind=array()) {
+	
+	public function query($sql, $bind=array())
+	{
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
@@ -91,15 +98,17 @@ class A_Db_Postgres extends A_Db_Adapter {
 		$obj->error = $obj->errorMsg != '';
 		return $obj;
 	}
-		
-	public function limit($sql, $count, $offset='') {
+	
+	public function limit($sql, $count, $offset='')
+	{
 		if ($offset) {
 			$count = "$count OFFSET $offset";
 		} 
 		return "$sql LIMIT $count";
 	}
-		
-	public function nextId ($sequence) {
+	
+	public function nextId($sequence)
+	{
 	    if ($sequence) {
 		    $result = pg_query($this->link, "SELECT nextval('$sequence')");
 	    	if ($result) {
@@ -113,128 +122,155 @@ class A_Db_Postgres extends A_Db_Adapter {
 	    }
 	    return 0;
 	}
-		
-	public function createSequence ($sequence) {
+	
+	public function createSequence($sequence)
+	{
 	    $result = 0;
 	    if ($sequence) {
 		    $result = pg_query($this->link, "CREATE SEQUENCE $sequence START {$this->sequencestart}");
 	    }
 	    return($result);
 	}
-		
-	public function start() {
+	
+	public function start()
+	{
 		return mysql_query('BEGIN');
 	}
-
-	public function savepoint($savepoint='') {
+	
+	public function savepoint($savepoint='')
+	{
 		if ($savepoint) {
 			return mysql_query('SAVEPOINT ' . $savepoint);
 		}
 	}
-
-	public function commit() {
+	
+	public function commit()
+	{
 		return mysql_query('COMMIT');
 	}
-
-	public function rollback($savepoint='') {
+	
+	public function rollback($savepoint='')
+	{
 		return mysql_query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
 	}
-
-	public function escape($value) {
+	
+	public function escape($value)
+	{
 		return pg_escape_string($value);
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		return pg_last_error($this->link) != '';
 	}
-		
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		return pg_last_error($this->link);
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
-	
+
 }
 
+class A_Db_Postgres_Result
+{
 
-class A_Db_Postgres_Result {
 	protected $result;
 	public $error;
 	public $errorMsg;
 	
-	public function __construct($result=null) {
+	public function __construct($result=null)
+	{
 		$this->result = $result;
 	}
-		
-	public function numRows() {
+	
+	public function numRows()
+	{
 		if ($this->result) {
 			return(pg_affected_rows($this->result));
 		} else {
 			return 0;
 		}
 	}
-		
-	public function isError() {
+	
+	public function isError()
+	{
 		return $this->_error;
 	}
-		
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		return $this->_errorMsg;
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
-	
+
 }
 
+class A_Db_Postgres_Recordset extends A_Db_Postgres_Result
+{
 
-class A_Db_Postgres_Recordset extends A_Db_Postgres_Result {
-
-	public function __construct($result=null) {
+	public function __construct($result=null)
+	{
 		$this->result = $result;
 	}
-		
-	public function fetchRow ($mode=null) {
+	
+	public function fetchRow($mode=null)
+	{
 		if ($this->result) {
 			return pg_fetch_assoc($this->result);
 		}
 	}
-		
-	public function fetchObject ($class=null) {
+	
+	public function fetchObject($class=null)
+	{
 		if ($this->result) {
 			return pg_fetch_object($this->result, null, $class);
 		}
 	}
-		
-	public function fetchAll ($mode=null) {
+	
+	public function fetchAll($mode=null)
+	{
 		if ($this->result) {
 			return pg_fetch_all($this->result);
 		}
 	}
-		
-	public function numRows() {
+	
+	public function numRows()
+	{
 		if ($this->result) {
 			return pg_num_rows($this->result);
 		} else {
 			return 0;
 		}
 	}
-		
-	public function numCols() {
+	
+	public function numCols()
+	{
 		if ($this->result) {
 			return pg_num_cols($this->result);
 		} else {
 			return 0;
 		}
 	}
-	
+
 }
