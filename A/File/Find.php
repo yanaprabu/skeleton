@@ -12,6 +12,5 @@
  * 
  * Find files in a filesystem
  */
-class A_File_Find {
-	
-}
+class A_File_Find
+{}
