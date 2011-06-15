@@ -9,51 +9,54 @@
  * @link	 http://skeletonframework.com/
  */
 
-class A_Controller_Helper_Load {
+class A_Controller_Helper_Load
+{
+
 	protected $locator;
 	protected $parent;
 	protected $paths = array(
-							'app'=>'', 
-							'module'=>'', 
-							'controller'=>'', 
-							'action'=>'',
-							);
+		'app'=>'', 
+		'module'=>'', 
+		'controller'=>'', 
+		'action'=>'',
+	);
 	protected $dirs = array(
-							'controller'=>'controllers/', 
-							'event'=>'events/', 
-							'helper'=>'helpers/', 
-							'model'=>'models/', 
-							'template'=>'templates/', 
-							'view'=>'views/', 
-							'class'=>'',
-							);
+		'controller'=>'controllers/', 
+		'event'=>'events/', 
+		'helper'=>'helpers/', 
+		'model'=>'models/', 
+		'template'=>'templates/', 
+		'view'=>'views/', 
+		'class'=>'',
+	);
 	protected $action = null;
 	protected $method = null;
 	protected $suffix = array(
-							'controller'=>'', 
-							'model'=>'Model', 
-							'view'=>'View', 
-							'helper'=>'Helper', 
-							'class'=>'', 
-							);
+		'controller'=>'', 
+		'model'=>'Model', 
+		'view'=>'View', 
+		'helper'=>'Helper', 
+		'class'=>'', 
+	);
 	protected $rendererTypes = array('view', 'template');
 	protected $scope;
 	protected $scopePath;
 	protected $responseName = '';
 	protected $renderClasses = array(
-							'php' => 'A_Template_Include',
-							'xml' => 'A_Template_Include',
-							'json' => 'A_Template_Include',
-							'js' => 'A_Template_Include',
-							'html' => 'A_Template_Strreplace',
-							'txt' => 'A_Template_Strreplace',
-							);
+		'php' => 'A_Template_Include',
+		'xml' => 'A_Template_Include',
+		'json' => 'A_Template_Include',
+		'js' => 'A_Template_Include',
+		'html' => 'A_Template_Strreplace',
+		'txt' => 'A_Template_Strreplace',
+	);
 	protected $renderClass = 'A_Template_Include';
 	protected $renderExtension = 'php';
 	protected $responseSet = false;
 	protected $errorMsg = array();
 	
-	public function __construct($locator, $parent, $scope=null){
+	public function __construct($locator, $parent, $scope=null)
+	{
 		$this->locator = $locator;
 		if ($locator) {
 			$mapper = $locator->get('Mapper');
@@ -68,34 +71,29 @@ class A_Controller_Helper_Load {
 		$this->parent = $parent;
 		$this->load($scope);
 	}
-	 
-	/*
+	
+	/**
 	 * Scopes are:
 	 * global /app/
 	 * module /app/$module/
 	 * controller /app/$module/$type/$controller/
 	 * action /app/$module/$type/$controller/$action/
+	 * 
+	 * @param A_Controller_Mapper
+	 * @return $this
 	 */
-	public function setMapper($mapper){
+	public function setMapper($mapper)
+	{
 		if ($mapper) {
-#			$type = '%s';
 			$this->action = $mapper->getClass();
 			$this->method = $mapper->getMethod();
 			$this->paths = $mapper->getPaths('%s');	// get paths array with sprintf placeholder
-/*
-			$this->paths['app'] = $mapper->getBasePath();
-			$this->paths['module'] = $this->paths['app'] . $mapper->getDir();
-			$this->paths['controller'] = $this->paths['module'] . $type . $this->action . '/';
-			$this->paths['action'] = $this->paths['controller'] . ($this->method ? "$this->method/" : '');
-			$this->paths['app'] .= $type;
-			$this->paths['module'] .= $type;
-*/
-#dump($this->paths);
 		}
 		return $this;
 	}
-		
-	public function setPath($name, $path, $relative_name=''){
+	
+	public function setPath($name, $path, $relative_name='')
+	{
 		$path = $path ? (rtrim($path, '/') . '/') : '';		// add trailing dir separator
 		if ($relative_name) {
 			$this->paths[$name] = $this->paths[$relative_name] . $path;
@@ -105,39 +103,48 @@ class A_Controller_Helper_Load {
 		return $this;
 	}
 	
-	protected function setDir($name, $dir){
+	protected function setDir($name, $dir)
+	{
 		$this->dirs[$name] = $dir ? (rtrim($dir, '/') . '/') : '';
 		return $this;
 	}
 	
-	public function setRenderClass($name, $ext='php'){
+	public function setRenderClass($name, $ext='php')
+	{
 		$ext = ltrim($ext, '.');
 		$this->renderClasses[$ext] = $name;
 		return $this;
 	}
 	
-	public function setSuffix($name, $suffix){
+	public function setSuffix($name, $suffix)
+	{
 		$this->suffix[$name] = $suffix;
 		return $this;
 	}
 	
 	/**
-	 * get error messages
+	 * Get error messages
+	 * 
+	 * @param string $separator Delimiter to place between error messages.  If empty, an array of error messages is returned.
+	 * @return string|array
 	 */
-	public function getErrorMsg($separator="\n") {
+	public function getErrorMsg($separator="\n")
+	{
 		if ($separator) {
 			return implode($separator, $this->errorMsg);
 		}
 		return $this->errorMsg;
 	}
 	
-	public function response($name='') {	
+	public function response($name='')
+	{	
 		$this->responseSet = true;
 		$this->responseName = $name;
 		return $this;
 	}
-
-	public function load($scope=null, $target=null) {
+	
+	public function load($scope=null, $target=null)
+	{
 		if (is_array($scope)) {
 			$scope = $scope[0];
 		}
@@ -149,8 +156,9 @@ class A_Controller_Helper_Load {
 		$this->responseSet = false;		// reset response mode to off for each call
 		return $this;
 	}
-
-	public function __call($type, $args) {
+	
+	public function __call($type, $args)
+	{
 		$obj = null;
 		// is this a defined type of subdirectory
 		if (isset($this->dirs[$type])) {
@@ -160,7 +168,7 @@ class A_Controller_Helper_Load {
 			$length = strpos($class, '.');
 			if ($length) {
 				// get extension to use below
-				$ext = substr($class, $length+1);
+				$ext = substr($class, $length + 1);
 				$class = substr($class, 0, $length);
 			} else {										// no extension
 				$ext = $type == 'template' ? $this->renderExtension : '.php';
@@ -224,7 +232,6 @@ class A_Controller_Helper_Load {
 					$this->errorMsg[] = "\$this->_load('{$this->scope}')->$type(" . (isset($args[0]) ? "'{$args[0]}'" : '') . ") call to Locator->loadClass('$class', '$path') failed. Check scope, path and class name. ";
 				}
 			} elseif (file_exists("$path$class.php")) {
-				#include_once "$path$class.php";
 				if (class_exists($class)) {
 					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
 				}
@@ -239,18 +246,18 @@ class A_Controller_Helper_Load {
 				}
 				// template and view need passed values set
 				switch ($type) {
-				case 'template':
-				case 'view':
-					if (isset($args[1]) && is_array($args[1])) {
-						// if 2nd param is array then use it to set template values
-						foreach ($args[1] as $key => $val) {
-							$obj->set($key, $val);
+					case 'template':
+					case 'view':
+						if (isset($args[1]) && is_array($args[1])) {
+							// if 2nd param is array then use it to set template values
+							foreach ($args[1] as $key => $val) {
+								$obj->set($key, $val);
+							}
 						}
-					}
-					break;
-				case 'helper':
-					$this->parent->_helper($args[0], $obj);
-					break;
+						break;
+					case 'helper':
+						$this->parent->_helper($args[0], $obj);
+						break;
 				}
 				 // this is the section for when response() has been called
 				 if ($this->responseSet) {
