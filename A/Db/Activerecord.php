@@ -13,25 +13,26 @@
  * 
  * DataSource access using the Active Record pattern.
  */
-class A_Db_Activerecord extends A_Collection {
-	protected static $globaldb = null;
+class A_Db_Activerecord extends A_Collection
+{
+
+	public $sql = '';
+	
 	protected $db = null;
 	protected $table;
 	protected $key = 'id';
 	protected $select;
 	protected $errorMsg = '';
 	protected $columns = '*';
-	public $sql = '';
 	protected $num_rows = 0;
 	protected $is_loaded = false;
+	
+	protected static $globaldb = null;
 
-#	Do we need a A_Db_Activerecord_List class that contains an array of A_Db_Activerecord objects?
-#	it would a separate array to iterate over
-
-#	protected $has_many = array of A_Db_Activerecord_Hasmany (or A_Db_Activerecord) objects that
-#	knows the table.field=table.field mapping and is a list of records
-
-	public function __construct($db=null, $table='', $key='id') {
+	# Do we need a A_Db_Activerecord_List class that contains an array of A_Db_Activerecord objects?  It would a separate array to iterate over
+	
+	public function __construct($db=null, $table='', $key='id')
+	{
 		if ($db) {
 			$this->db = $db;
 		} elseif (self::$globaldb) {
@@ -42,8 +43,9 @@ class A_Db_Activerecord extends A_Collection {
 		$this->select = new A_Sql_Select();
 		$this->select->from($this->getTable());
 	}
-
-	public function setDb($db) {
+	
+	public function setDb($db)
+	{
 		if (isset($this)) {
 			$this->db = $db;
 			return $this;
@@ -52,7 +54,8 @@ class A_Db_Activerecord extends A_Collection {
 		}
 	}
 	
-	public function table($table=null) {
+	public function table($table=null)
+	{
 		if ($table) {
 			$this->table = $table;
 		} else {
@@ -61,11 +64,13 @@ class A_Db_Activerecord extends A_Collection {
 		return $this;
 	}
 	
-	public function getTable() {
+	public function getTable()
+	{
 		return $this->table;
 	}
 	
-	public function key($key=null) {
+	public function key($key=null)
+	{
 		if ($key) {
 			$this->key = $key;
 		} elseif (! $this->key) {
@@ -74,24 +79,25 @@ class A_Db_Activerecord extends A_Collection {
 		return $this;
 	}
 	
-	public function getKey() {
+	public function getKey()
+	{
 		return $this->key;
 	}
 	
-	public function setColumns($columns) {
+	public function setColumns($columns)
+	{
 		$this->columns = $columns;
 		return $this;
 	}
 	
-	public function where() {
+	public function where()
+	{
 		$args = func_get_args();
 		// allow one param that is array of args
 		if (is_array($args[0])) {
 			$args = $args[0];
 		}
 		$nargs = count($args);
-#print_r($args);
-#echo "nargs=$nargs</br>";
 		if ($nargs == 1) {
 			// find match for key
 			$this->select->where($this->key . '=', $args[0]);
@@ -100,16 +106,17 @@ class A_Db_Activerecord extends A_Collection {
 		}
 		return $this;
 	}
-
-	public function find() {
+	
+	public function find()
+	{
 		$allrows = array();
-
+		
 		$args = func_get_args();
 		// if params then where condition passed
 		if (count($args)) {
 			$this->where($args);
 		}
-
+		
 		$this->sql = $this->select->render();
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
@@ -123,16 +130,17 @@ class A_Db_Activerecord extends A_Collection {
 		return $this->errorMsg;
 	}
 	
-	public function save($data=array()) {
+	public function save($data=array())
+	{
 		if ($data) {
 			$this->_data = $data;
 		}
-		if (! $this->is_loaded) {
+		if (!$this->is_loaded) {
 			$insert = new A_Sql_Insert();
 			$insert->table($this->table)->values($this->_data);
 			$this->sql = $insert->render();
 			$this->db->query($this->sql);
-			$try_update = ! $this->db->isError();
+			$try_update = !$this->db->isError();
 		}
 		if (isset($this->_data[$this->key]) && ($this->is_loaded || $try_update)) {
 			$update = new A_Sql_Update();
@@ -142,7 +150,8 @@ class A_Db_Activerecord extends A_Collection {
 		}
 	}
 	
-	public function delete() {
+	public function delete()
+	{
 		if (isset($this->_data[$this->key]) && $this->is_loaded) {
 			$delete = new A_Sql_Delete();
 			$delete->table($this->table)->where($this->key, $this->_data[$this->key]);
