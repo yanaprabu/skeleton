@@ -12,11 +12,9 @@
  * 
  * This is an implementation of the Front Controller pattern. It is one of the buidling blocks of the MVC structure in Skeleton.
  */
-class A_Controller_Front {
-	
-	/**
-	 * Error constans
-	 */
+class A_Controller_Front
+{
+
 	const NO_ERROR = '';
 	const NO_MAPPER = 'Mapper object not available';
 	const NO_CLASS = 'Requested class not loaded';
@@ -40,7 +38,7 @@ class A_Controller_Front {
 	 */
 	protected $defaultRoute;
 	
-	/*
+	/**
 	 * name of method for Actions with dipatcher
 	 * @var string
 	 */
@@ -87,8 +85,10 @@ class A_Controller_Front {
 	 *
 	 * @param A_Controller_Mapper $mapper
 	 * @param array $error_route containing dir/class/method/args for when dispatch error occurs
+	 * @param string $default_route
 	 */
-	public function __construct($mapper, $error_route, $default_route='') {
+	public function __construct($mapper, $error_route, $default_route='')
+	{
 		$this->mapper = $mapper;
 		$this->errorRoute = $error_route;
 		$this->defaultRoute = $default_route;
@@ -98,8 +98,10 @@ class A_Controller_Front {
 	 * Generic configuration method
 	 *
 	 * @param string $config
+	 * @return $this
 	 */
-	public function config($config=array()) {
+	public function config($config=array())
+	{
    		$this->config = $config;
    		return $this;
 	}
@@ -107,22 +109,25 @@ class A_Controller_Front {
 	/**
 	 * Get mapper object, create if does not exist
 	 * 
-	 * @return array
+	 * @return A_Controller_Mapper
 	 */
-	public function getMapper() {
+	public function getMapper()
+	{
 		// if directory passed as 1st param to contstructor, create a mapper
-		if (! is_object($this->mapper)) {
+		if (!is_object($this->mapper)) {
 			$this->mapper = new A_Controller_Mapper($this->mapper, $this->defaultRoute ? $this->defaultRoute : $this->errorRoute);
 		}
 		return $this->mapper;
 	}
 	
 	/**
-	 * Get mapper object
+	 * Set mapper object
 	 * 
-	 * @return array
+	 * @param A_Controller_Mapper $mapper
+	 * @return $this
 	 */
-	public function setMapper($mapper) {
+	public function setMapper($mapper)
+	{
 		return $this->mapper = $mapper;
 		return $this;
 	}
@@ -130,20 +135,20 @@ class A_Controller_Front {
 	/**
 	 * Add a pre-dispatch filter
 	 *
-	 * @param string $name
-	 * @param object with run($controller) method
+	 * @param mixed $filter
 	 */
-	public function addPreFilter($filter) {
+	public function addPreFilter($filter)
+	{
    		$this->preFilters[] = $filter;
 	}
 	
 	/**
 	 * Add a post-dispatch filter
 	 *
-	 * @param string $name
-	 * @param object with run($controller) method
+	 * @param mixed $filter
 	 */
-	public function addPostFilter($filter) {
+	public function addPostFilter($filter)
+	{
    		$this->postFilters[] = $filter;
 	}
 	
@@ -152,7 +157,8 @@ class A_Controller_Front {
 	 * 
 	 * @return array
 	 */
-	public function getRoutes() {
+	public function getRoutes()
+	{
 		return $this->routeHistory;
 	}
 	
@@ -160,11 +166,11 @@ class A_Controller_Front {
 	 * Start dispatch process
 	 *
 	 * @param A_Locator $locator
-	 * @return boolean Error
+	 * @return string
 	 */
-	public function run($locator = null) {
-		
-		if(! $locator){
+	public function run($locator = null)
+	{
+		if(! $locator) {
 			$locator = new A_Locator();
 		}
 		if (! $locator->has('Request')) {
@@ -186,8 +192,8 @@ class A_Controller_Front {
 		while ($route) {
 			$error = self::NO_ERROR;
 			$mapper->setRoute($route); // set dir/class/method
-			++$n;
-			$class  = $mapper->getFormattedClass();
+			$n++;
+			$class = $mapper->getFormattedClass();
 			$method = $mapper->getFormattedMethod();
 			$dir = $mapper->getPath();
 			$this->routeHistory[] = $route;	// save history of routes
@@ -218,7 +224,7 @@ class A_Controller_Front {
 						if (method_exists($controller, $method)) {
 							$route = $controller->{$method}($locator);
 						} else {
-							$error = self::NO_METHOD . ": $method";		// no known method to dispatch
+							$error = self::NO_METHOD . ': ' . $method;		// no known method to dispatch
 						}
 					}
 				}
@@ -248,9 +254,11 @@ class A_Controller_Front {
 	 * Invoke filters
 	 *
 	 * @param object $controller an action controller
-	 * @filters array of filter objects with run($controller) method
-	 * 	 */
-	protected function runFilters($controller, $filters) {
+	 * @param array $filters Array of filter objects with run($controller) method
+	 * @return mixed
+	 */
+	protected function runFilters($controller, $filters)
+	{
 		foreach ($filters as $filter) {
 			$change_route = null;
 			switch (gettype($filter)) {
@@ -276,22 +284,25 @@ class A_Controller_Front {
 			}
 		}
 	}
-
+	
 	/**
 	 * Check if an error has been raised during dispatching
 	 *
 	 * @return boolean
 	 */
-	public function isError() {
+	public function isError()
+	{
 		return $this->errorMsg != array(); 
 	}
 	
 	/**
 	 * get error messages as array or if sepearator provided as concatenated string
-	 *
-	 * @return array or string
+	 * 
+	 * @param string $seperator
+	 * @return array|string
 	 */
-	public function getErrorMsg($separator="\n") {
+	public function getErrorMsg($separator="\n")
+	{
 		$errormsg = $this->errorMsg;
 		foreach ($this->controllerHistory as $controller) {
 			if (method_exists($controller, 'getErrorMsg')) {
@@ -303,5 +314,5 @@ class A_Controller_Front {
 		}
 		return $errormsg;
 	}
-	
+
 }
