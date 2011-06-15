@@ -12,30 +12,36 @@
  * 
  * Database connection class using SQLite.  Configuration array can contain the following indices: filename, mode.
  */
-class A_Db_Sqlite3 extends A_Db_Adapter {	protected $dsn = null;	protected $link = null;	protected $_sequence_ext = '_seq';
+class A_Db_Sqlite3 extends A_Db_Adapter
+{
+	protected $dsn = null;	protected $link = null;	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Sqlite3';
 	protected $_result_class = 'A_Db_Result';
 	
-	public function __construct($dsn=null) {
+	public function __construct($dsn=null)
+	{
 		if ($dsn && isset($dsn['autoconnect'])) {
 			$this->connect($dsn);
 		}
 	}
-		
-	public function connect ($dsn=null, $options=null) {
+	
+	public function connect ($dsn=null, $options=null)
+	{
 		if ($this->link == null) {
 			$this->link = sqlite3_open($dsn['filename'], $dsn['mode']);
 		} 
 	}
-		
-	public function disconnect() {
+	
+	public function disconnect()
+	{
 		if ($db->link) {
 			sqlite3_close($db->link);
 		} 
 	}
-		
-	public function query($sql, $bind=array()) {
+	
+	public function query($sql, $bind=array())
+	{
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
@@ -60,45 +66,56 @@ class A_Db_Sqlite3 extends A_Db_Adapter {	protected $dsn = null;	protected $li
 		}
 		return $obj;
 	}
-		
-	public function limit($sql, $count, $offset = null) {
+	
+	public function limit($sql, $count, $offset = null)
+	{
 		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
 		return $sql . ' LIMIT ' . $limit;
 	}
 	
-	public function lastId() {
+	public function lastId()
+	{
 		if ($this->link) {
 			return(sqlite3_last_insert_rowid($this->link));
 		} else {
 			return 0;
 		}
 	}
-		
-	public function nextId ($sequence) {
+	
+	public function nextId($sequence)
+	{
+	    return 0;
+	}
+	
+	public function createSequence($sequence)
+	{
 	    return 0;
 	}
 		
-	public function createSequence ($sequence) {
-	    return 0;
-	}
-		
-	public function escape($value) {
+	public function escape($value)
+	{
 		return sqlite3_escape_string($value);
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		return sqlite3_last_error($this->link);
 	}
-		
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		return sqlite3_error_string(sqlite3_last_error($this->link));
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
-	
+
 }
