@@ -14,13 +14,15 @@
  */
 class A_Db_Mysqli extends A_Db_Adapter
 {
+
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Mysqli';
 	protected $_result_class = 'A_Db_Result';
 	protected $mysqli = null;
 	
-	public function _connect($dsn=null) {
+	public function _connect($dsn=null)\
+	{
 		$result = false;
 		if ($dsn) {
 			$this->dsn = $dsn;
@@ -33,11 +35,12 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 		return $this->mysqli;
 	}
-		
-	public function selectDb($database='') {
+	
+	public function selectDb($database='')
+	{
 		$link = $this->connectBySql('SELECT');
 		if ($link) {
-			if (! $database) {
+			if (!$database) {
 				$database = $this->dsn['database'];
 			}
 			$result = $this->mysqli->select_db($this->dsn['database']);
@@ -45,14 +48,16 @@ class A_Db_Mysqli extends A_Db_Adapter
 			$this->_error = $this->_errorMsg != '';
 		}
 	}
-		
-	protected function _close($name='') {
+	
+	protected function _close($name='')
+	{
 		if (isset($this->_connection[$name])) {
 			$this->_connection[$name]->close();
 		}
 	}
 	
-	public function query($sql, $bind=array()) {
+	public function query($sql, $bind=array())
+	{
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
@@ -81,21 +86,24 @@ class A_Db_Mysqli extends A_Db_Adapter
 			$this->_errorHandler(0, 'No connection. ');
 		}
 	}
-		
-	public function limit($sql, $count, $offset='') {
+	
+	public function limit($sql, $count, $offset='')
+	{
 		if ($offset) {
 			$count = "$count OFFSET $offset";
 		} 
 		return "$sql LIMIT $count";
 	}
-		
-	public function lastId() {
+	
+	public function lastId()
+	{
 		if (isset($this->_connection[$name])) {
 			return $this->_connection[$name]->insert_id();
 		}
 	}
-		
-	public function nextId ($sequence) {
+	
+	public function nextId($sequence)
+	{
 		$link = $this->connectBySql('UPDATE');
 		if ($link && $sequence) {
 			$result = $link->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
@@ -118,17 +126,19 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 		return 0;
 	}
-		
-	public function createSequence ($sequence) {
+	
+	public function createSequence($sequence)
+	{
 		$link = $this->connectBySql('UPDATE');
 		$result = 0;
 		if ($sequence) {
 			$result = $link->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
 		}
-		return($result);
+		return $result;
 	}
-		
-	public function escape($value, $name='') {
+	
+	public function escape($value, $name='')
+	{
 		if (isset($this->_connection[$name])) {
 			return $this->_connection[$name]->escape_string($value);
 		}
@@ -148,37 +158,42 @@ class A_Db_Mysqli extends A_Db_Adapter
 	}
 }
 
+class A_Db_Mysqli_Recordset extends A_Db_Mysqli_Result
+{
 
-class A_Db_Mysqli_Recordset extends A_Db_Mysqli_Result {
+	public function __construct($result=null)
+	{
+		$this->result = $result;
+	}
+	
+	public function fetchRow($class=null)
+	{
+		if ($this->result) {
+			return $this->result->fetch_assoc($this->result);
+		}
+	}
+	
+	public function numRows()
+	{
+		if ($this->result) {
+			return $this->result->num_rows;
+		} else {
+			return 0;
+		}
+	}
+	
+	public function numCols()
+	{
+		if ($this->result) {
+			return $this->result->field_count;
+		} else {
+			return 0;
+		}
+	}
+	
+	public function __call($name, $args)
+	{
+		return call_user_func(array($this->result, $name), $args);
+	}
 
-public function __construct($result=null) {
-	$this->result = $result;
-}
-	
-public function fetchRow ($class=null) {
-	if ($this->result) {
-		return $this->result->fetch_assoc($this->result);
-	}
-}
-	
-public function numRows() {
-	if ($this->result) {
-		return $this->result->num_rows;
-	} else {
-		return 0;
-	}
-}
-	
-public function numCols() {
-	if ($this->result) {
-		return $this->result->field_count;
-	} else {
-		return 0;
-	}
-}
-	
-public function __call($name, $args) {
-	return call_user_func(array($this->result, $name), $args);
-}
-	
 }

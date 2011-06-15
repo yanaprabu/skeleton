@@ -12,13 +12,16 @@
  * 
  * Database connection class using the mysql_ library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_MySQL extends A_Db_Adapter {
+class A_Db_MySQL extends A_Db_Adapter
+{
+
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_MySQL';
 	protected $_result_class = 'A_Db_Result';
 	
-	protected function _connect ($config) {
+	protected function _connect($config)
+	{
 		$result = false;
 		$host = isset($config['host']) ? $config['host'] : $config['hostspec'];
 		// fix for problem connecting to server with localhost. Windows only?
@@ -37,11 +40,12 @@ class A_Db_MySQL extends A_Db_Adapter {
 		$this->_errorMsg = mysql_error($link);
 		return $link;
 	}
-		
-	public function selectDb($database='') {
+	
+	public function selectDb($database='')
+	{
 		$link = $this->connectBySql('SELECT');
 		if ($link) {
-			if (! $database) {
+			if (!$database) {
 				$database = $this->dsn['database'];
 			}
 			$result = mysql_select_db($database, $link);
@@ -49,14 +53,16 @@ class A_Db_MySQL extends A_Db_Adapter {
 			$this->_errorMsg = mysql_error($link);
 		}
 	}
-		
-	protected function _close($name='') {
+	
+	protected function _close($name='')
+	{
 		if (isset($this->_connection[$name])) {
 			mysql_close($this->_connection[$name]);
 		}
 	}
 	
-	public function query($sql, $bind=array()) {
+	public function query($sql, $bind=array())
+	{
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
@@ -86,15 +92,17 @@ class A_Db_MySQL extends A_Db_Adapter {
 			$this->_errorHandler(0, 'No connection. ');
 		}
 	}
-		
-	public function limit($sql, $count, $offset='') {
+	
+	public function limit($sql, $count, $offset='')
+	{
 		if ($offset) {
 			$count = "$count OFFSET $offset";
 		} 
 		return "$sql LIMIT $count";
 	}
-		
-	public function lastId() {
+	
+	public function lastId()
+	{
 		$link = $this->connectBySql('INSERT');
 		if ($link) {
 			return(mysql_insert_id($link));
@@ -102,8 +110,9 @@ class A_Db_MySQL extends A_Db_Adapter {
 			return 0;
 		}
 	}
-		
-	public function nextId ($sequence) {
+	
+	public function nextId($sequence)
+	{
 		if ($sequence) {
 			$link = $this->connectBySql('UPDATE');
 			$result = $this->query("UPDATE $sequence{$this->_sequence_ext} SET id=LAST_INSERT_ID(id+1)", $link);
@@ -126,25 +135,29 @@ class A_Db_MySQL extends A_Db_Adapter {
 		}
 		return 0;
 	}
-		
-	public function createSequence ($sequence) {
+	
+	public function createSequence($sequence){
 		$result = 0;
 		if ($sequence) {
 			$result = $this->query("CREATE TABLE $sequence{$this->_sequence_ext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->_sequence_start}", $link);
 		}
 		return($result);
 	}
-		
-	public function escape($value) {
+	
+	public function escape($value)
+	{
 		$link = $this->connectBySql('SELECT');
 		return mysql_real_escape_string($value, $link);
 	}
-
+	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
 	public function getMessage() {
 		return $this->getErrorMsg();
 	}
-	
+
 }
