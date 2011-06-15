@@ -12,7 +12,9 @@
  * 
  * Controller class with request filtering and validation
  */
-class A_Controller_Input extends A_Controller_Action {
+class A_Controller_Input extends A_Controller_Action
+{
+
 	public $params = array();
 	protected $filters = array();	// global filters run on every parameter
 	protected $rules = array();		// global rules run on every parameter
@@ -20,35 +22,41 @@ class A_Controller_Input extends A_Controller_Action {
 	protected $validator;
 	protected $error = false;
 	
-	public function __construct($locator=null){
+	public function __construct($locator=null)
+	{
 	    parent::__construct($locator);
 	}
-	 
-	public function addFilter($filter, $names=array()) {
+	
+	public function addFilter($filter, $names=array())
+	{
 		$n = count($this->filters);
 		$this->filters[$n]['filter'] = $filter;
 		$this->filters[$n]['names'] = $names;
 	}
 	
-	public function addRule($rule, $names=array()) {
+	public function addRule($rule, $names=array())
+	{
 		$n = count($this->rules);
 		$this->rules[$n]['rule'] = $rule;
 		$this->rules[$n]['names'] = $names;
 	}
 	
-	public function addField($object) {
+	public function addField($object)
+	{
 		if ($object) {
 			$this->params[$object->name] = $object;
 		}
 	}
 	
-	public function getField($name) {
+	public function getField($name)
+	{
 		if (isset($this->params[$name])) {
 			return $this->params[$name];
 		}
 	}
 	
-	public function processRequest($request) {
+	public function processRequest($request)
+	{
 		$filterchain = new A_Filter_Set();
 		$validator = new A_Rule_Set();
 		$this->error = false;
@@ -96,11 +104,12 @@ class A_Controller_Input extends A_Controller_Action {
 				}
 			}
 		}
-	
-		return ! $this->error;
+		
+		return !$this->error;
 	}
 	
-	public function set($name, $value, $default=null) {
+	public function set($name, $value, $default=null)
+	{
 		if (isset($this->params[$name])) {
 			if ($value !== null) {
 				$this->params[$name]->value = $value;
@@ -113,14 +122,16 @@ class A_Controller_Input extends A_Controller_Action {
 		return $this;
 	}
 	
-	public function get($name) {
+	public function get($name)
+	{
 		if (isset($this->params[$name]->value)) {
 			return $this->params[$name]->value;
 		}
 		return $this;
 	}
-
-	public function getFieldVarArray($var) {
+	
+	public function getFieldVarArray($var)
+	{
 		if ($var) {
 			$data = array();
 			foreach (array_keys($this->params) as $field) {
@@ -129,8 +140,9 @@ class A_Controller_Input extends A_Controller_Action {
 			return $data;
 		}
 	}
-
-	public function getErrorMsgs($separator=null) {
+	
+	public function getErrorMsgs($separator=null)
+	{
 		$data = array();
 		foreach (array_keys($this->params) as $field) {
 			if ($this->params[$field]->isError()) {
@@ -139,17 +151,20 @@ class A_Controller_Input extends A_Controller_Action {
 		}
 		return $separator === null ? $data : implode($separator, $data);
 	}
-
-	public function getValues() {
+	
+	public function getValues()
+	{
 		return $this->getFieldVarArray('value');
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		return $this->error;
 	}
-
-	public function isValid() {
-		return ! $this->error;
+	
+	public function isValid()
+	{
+		return !$this->error;
 	}
 
 }
