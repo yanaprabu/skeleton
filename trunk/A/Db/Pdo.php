@@ -29,13 +29,15 @@
  * 
  * Adapt PDO to basic database connection functionality.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_Pdo extends A_Db_Adapter {
+class A_Db_Pdo extends A_Db_Adapter
+{
 
 	protected $dsn = null;
 	protected $_connection = null;
 	protected $connected = false;
 	
-	public function __construct($config, $username='', $password='', $attr=array()) {
+	public function __construct($config, $username='', $password='', $attr=array())
+	{
 		if ($username) {
 			$config['username'] = $username;
 		}
@@ -47,8 +49,9 @@ class A_Db_Pdo extends A_Db_Adapter {
 		}
 		parent::__construct($config);
 	}
-
-	public function _connect($config) {
+	
+	public function _connect($config)
+	{
 		if (is_array($config)) {
 			if (!isset($config['phptype'])) {
 				$this->_error = 1;
@@ -77,20 +80,27 @@ class A_Db_Pdo extends A_Db_Adapter {
 		}
 		return $connection;
 	}
-		
-	public function _close($name='') {
+	
+	public function _close($name='')
+	{
 		if (isset($this->_connection[$name])) {
 			unset($this->_connection[$name]);
 		}
 	}
-		
-	public function selectDb($database) {
+	
+	public function selectDb($database)
+	{
 		$this->query("USE $database");
 		return $this;
 	}
-		
-	/*
+	
+	/**
 	 * public function query() implemented in PDO
+	 * 
+	 * @param string $sql
+	 * @param array $bind
+	 * @param mixed $arg3
+	 * @param mixed $arg4
 	 */
 	public function query($sql, $bind=array(), $arg3=null, $arg4=null) {
 		if (is_object($sql)) {
@@ -117,24 +127,28 @@ class A_Db_Pdo extends A_Db_Adapter {
 		}
 	}
 	
-	public function limit($sql, $count, $offset='') {
+	public function limit($sql, $count, $offset='')
+	{
 		if ($offset) {
 			$count = "$count OFFSET $offset";
 		} 
 		return "$sql LIMIT $count";
 	}
-		
-	public function lastId() {
+	
+	public function lastId()
+	{
 		$connection = $this->connectBySql('INSERT');
 		return $connection->lastInsertId();
 	}
-		
-	public function escape($value) {
+	
+	public function escape($value)
+	{
 		$connection = $this->connectBySql();
 		return trim($connection->quote($value), "\"'");
 	}
 	
-	protected function _setError($connection) {
+	protected function _setError($connection)
+	{
 		// get error array
 		$errorInfo = $connection->errorInfo();
 		$this->_error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
@@ -144,163 +158,194 @@ class A_Db_Pdo extends A_Db_Adapter {
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
 	
 	/**
-	 * compatablility methods
+	 * Compatablility methods
+	 * 
+	 * @param mixed $attribute
+	 * @param string $connection_name
+	 * @return mixed
 	 */
-	public function getAttribute($attribute, $connection_name='') {
+	public function getAttribute($attribute, $connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->getAttribute($attribute);
 	}
 	
-	public function getAvailableDrivers($connection_name='') {
+	public function getAvailableDrivers($connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->getAvailableDrivers();
 	}
 	
-	public function setAttribute($attribute, $value, $connection_name='') {
+	public function setAttribute($attribute, $value, $connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->setAttribute($attribute, $value);
 	}
 	
-	public function prepare($sql, $driver_options=array(), $connection_name='') {
+	public function prepare($sql, $driver_options=array(), $connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->prepare($sql, $driver_options);
 	}
 	
-	public function exec($sql, $connection_name='') {
+	public function exec($sql, $connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->getAttribute($sql);
 	}
 	
-	public function quote($value, $connection_name='') {
+	public function quote($value, $connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return trim($connection->quote($value), "\"'");
 	}
 	
-	public function lastInsertId($connection_name='') {
+	public function lastInsertId($connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->lastInsertId();
 	}
 	
-	public function beginTransaction($connection_name='') {
+	public function beginTransaction($connection_name='')
+	{
 		return parent::start($connection_name);
 	}
 	
-	public function commit($connection_name='') {
+	public function commit($connection_name='')
+	{
 		return parent::commit($connection_name);
 	}
 	
-	public function errorCode($connection_name='') {
+	public function errorCode($connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->errorCode();
 	}
 	
-	public function errorInfo($connection_name='') {
+	public function errorInfo($connection_name='')
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->errorInfo();
 	}
 	
-	public function __sleep() {
+	public function __sleep()
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->__sleep();
 	}
 	
-	public function __wakeup() {
+	public function __wakeup()
+	{
 		$connection = $this->connect($connection_name);
 		return $connection->__wakeup();
 	}
-	
+
 }
 
+class A_Db_Pdo_Recordset extends PDOStatement
+{
 
-class A_Db_Pdo_Recordset extends PDOStatement {
+	protected function __construct()
+	{}
 	
-	protected function __construct() {
-	}
-		
-	public function isError() {
+	public function isError()
+	{
 		$code = $this->errorCode();
 		return $code == '00000' ? 0 : $code;		// PDO success value
 	}
-		
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		// get error array
 		$errorInfo = $this->errorInfo();
 		// return the message only
 		return $errorInfo[2];
 	}
-
+	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
 	
-	public function fetchRow() {
+	public function fetchRow()
+	{
 		return $this->fetch(PDO::FETCH_ASSOC);
 	}
-		
-	/*
-	 * public function fetchObject() implemented in PDOStatement
-	 */
-		
-	/*
-	 * public function fetchAll() implemented in PDOStatement
-	 */
-		
-	public function numRows() {
+	
+	public function numRows()
+	{
 		return $this->rowCount();
 	}
-		
-	public function numCols() {
+	
+	public function numCols()
+	{
 		return $this->columnCount();
 	}
-	
+
 }
 
+class A_Db_Pdo_Result
+{
 
-class A_Db_Pdo_Result {
 	protected $_error;
 	protected $_errorMsg;
 	
-	public function __construct($error, $errorMsg) {
+	public function __construct($error, $errorMsg)
+	{
 		$this->_error = $error;
 		$this->_errorMsg = $errorMsg;
 	}
-		
-	public function isError() {
+	
+	public function isError()
+	{
 		return $this->_error;
 	}
-		
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		return $this->_errorMsg;
 	}
-
-	public function fetchRow() {
+	
+	public function fetchRow()
+	{
 		return array();
 	}
-		
-	public function fetchObject() {
+	
+	public function fetchObject()
+	{
 		return array();
 	}
-		
-	public function fetchAll() {
+	
+	public function fetchAll()
+	{
 		return array();
 	}
-		
-	public function numRows() {
-		return 0;
-	}
-		
-	public function numCols() {
+	
+	public function numRows()
+	{
 		return 0;
 	}
 	
+	public function numCols()
+	{
+		return 0;
+	}
+
 }
