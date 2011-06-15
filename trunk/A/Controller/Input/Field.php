@@ -12,7 +12,9 @@
  * 
  * Input field class with request filtering and validation
  */
-class A_Controller_Input_Field {
+class A_Controller_Input_Field
+{
+
 	public $name = '';
 	public $value = '';
 	public $filters = null;
@@ -21,34 +23,40 @@ class A_Controller_Input_Field {
 	public $renderer = null;
 	public $error = false;
 	
-	public function __construct($name) {
+	public function __construct($name)
+	{
 		$this->name = $name;
 	}
 	
-	public function addFilter($filter) {
+	public function addFilter($filter)
+	{
 		$this->filters[] = $filter;
 	}
 	
-	public function addRule($rule) {
+	public function addRule($rule)
+	{
 		$this->rules[] = $rule;
 	}
 	
-	public function getValue() {
+	public function getValue()
+	{
 		return $this->value;
 	}
 	
-	public function setValue($value) {
+	public function setValue($value)
+	{
 		$this->value = $value;
 		return $this;
 	}
 	
-	public function setRenderer($renderer) {
+	public function setRenderer($renderer)
+	{
 		$this->renderer = $renderer;
 		return $this;
 	}
 	
-	public function getErrorMsg($separator=null) {
-
+	public function getErrorMsg($separator=null)
+	{
 		if ($separator === null) {
 			return $this->errorMsg;
 		} else {
@@ -60,8 +68,12 @@ class A_Controller_Input_Field {
 	
 	/**
 	 * Add an error or clear errors by passing null
+	 * 
+	 * @param string $value
+	 * @return $this
 	 */
-	public function setError($value='') {
+	public function setError($value='')
+	{
 		if ($value !== null) {
 			if (is_array($value)) {
 				$this->errorMsg = array_merge($this->errorMsg, $value);
@@ -76,17 +88,20 @@ class A_Controller_Input_Field {
 		return $this;
 	}
 	
-	public function isError() {
+	public function isError()
+	{
 		return $this->error;
 	}
 	
-	public function isValid() {
-		return ! $this->error;
+	public function isValid()
+	{
+		return !$this->error;
 	}
-
-	public function render() {
+	
+	public function render()
+	{
 		if (isset($this->type['renderer'])) {
-			if (! isset($this->renderer)){
+			if (!isset($this->renderer)){
 				$this->renderer = $this->type['renderer'];
 				unset($this->type['renderer']);
 			}
@@ -102,7 +117,6 @@ class A_Controller_Input_Field {
 			$this->type['value'] = $this->value;
 			return $this->renderer->render($this->type);
 		}
-		
 		return $this->value;
 	}
 
