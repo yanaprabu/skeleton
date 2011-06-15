@@ -14,6 +14,7 @@
  */
 class A_Controller_Mapper
 {
+
 	protected $dir = '';
 	protected $class = '';
 	protected $method = '';
@@ -32,28 +33,33 @@ class A_Controller_Mapper
 	protected $class_param = 'controller';
 	protected $method_param = 'action';
 	protected $default_method = 'index';
-
-	public function __construct($base_path, $default_action) {
+	
+	public function __construct($base_path, $default_action)
+	{
 		$this->setBasePath($base_path);
 		$this->default_action = $default_action;
 	}
-
-	public function setBasePath($path) {
+	
+	public function setBasePath($path)
+	{
 		$this->base_path = $path ? rtrim($path, '/') . '/' : '';
 		return $this;
 	}
-
-	public function setDefaultDir($dir='default') {
+	
+	public function setDefaultDir($dir='default')
+	{
 		$this->default_dir = $dir ? trim($dir, '/') . '/' : '';
 		return $this;
 	}
-
-	public function setClassDir($dir) {
+	
+	public function setClassDir($dir)
+	{
 		$this->class_dir = $dir ? trim($dir, '/') . '/' : '';
 		return $this;
 	}
-
-	public function setDir($dir) {
+	
+	public function setDir($dir)
+	{
 		if ($dir) {
 			$this->dir = rtrim($dir, '/') . '/';		// paths have trailing slash
 		} else {
@@ -61,109 +67,108 @@ class A_Controller_Mapper
 		}
 		return $this;
 	}
-
-	public function setClass($class) {
+	
+	public function setClass($class)
+	{
 		$this->class = $class;
 		return $this;
 	}
-
-	public function setMethod($method) {
+	
+	public function setMethod($method)
+	{
 		$this->method = $method;
 		return $this;
 	}
-
-	public function setDirParam($param) {
+	
+	public function setDirParam($param)
+	{
 		$this->dir_param = $param;
 		return $this;
 	}
-
-	public function setControllerParam($param) {
+	
+	public function setControllerParam($param)
+	{
 		$this->class_param = $param;
 		return $this;
 	}
-
-	public function setActionParam($param) {
+	
+	public function setActionParam($param)
+	{
 		$this->method_param = $param;
 		return $this;
 	}
-
-	public function setDefaultMethod($default_method) {
+	
+	public function setDefaultMethod($default_method)
+	{
 		$this->default_method = $default_method;
 		return $this;
 	}
-
-	/**
-	 * 
-	 */
-	public function getDefaultMethod() {
+	
+	public function getDefaultMethod()
+	{
 		return $this->default_method;
 	}
-
-	public function setDefaultAction($default_action) {
+	
+	public function setDefaultAction($default_action)
+	{
 		$this->default_action = $default_action;
 		return $this;
 	}
-
-	public function setClassNaming($class_prefix='', $class_transform=null, $class_suffix='') {
+	
+	public function setClassNaming($class_prefix='', $class_transform=null, $class_suffix='')
+	{
 		$this->class_prefix = $class_prefix;
 		$this->class_transform = $class_transform;
 		$this->class_suffix = $class_suffix;
 		return $this;
 	}
-
-	public function setMethodNaming($method_prefix='', $method_transform=null, $method_suffix='') {
+	
+	public function setMethodNaming($method_prefix='', $method_transform=null, $method_suffix='')
+	{
 		$this->method_prefix = $method_prefix;
 		$this->method_transform = $method_transform;
 		$this->method_suffix = $method_suffix;
 		return $this;
 	}
-
-	/**
-	 * 
-	 */
-	public function getBasePath() {
+	
+	public function getBasePath()
+	{
 		return $this->base_path;
 	}
-
-	/**
-	 * 
-	 */
-	public function getDir() {
+	
+	public function getDir()
+	{
 		return $this->dir;
 	}
-
-	public function getClassDir() {
+	
+	public function getClassDir()
+	{
 		return $this->class_dir;
 	}
-
-	/**
-	 * 
-	 */
-	public function getPath() {
+	
+	public function getPath()
+	{
 		return $this->base_path . $this->dir . $this->class_dir;
 	}
-
-	/**
-	 * 
-	 */
-	public function getClass() {
+	
+	public function getClass()
+	{
 		return $this->class;
 	}
-
-	/**
-	 * 
-	 */
-	public function getMethod() {
+	
+	public function getMethod()
+	{
 		return $this->method;
 	}
-
+	
 	/**
-	 * return array of paths to MVC type (e.g. controllers, models, views, helpers)
+	 * Return array of paths to MVC type (e.g. controllers, models, views, helpers)
 	 *
 	 * @param string $type
-	 * @return string
+	 * @return array
 	 */
-	public function getPaths($type) {
+	public function getPaths($type)
+	{
 		$type = rtrim($type, '/') . '/';		// paths have training space
 		$paths['app'] = $this->base_path;
 		$paths['module'] = $paths['app'] . $this->dir;
@@ -173,34 +178,34 @@ class A_Controller_Mapper
 		$paths['module'] .= $type;
 		return $paths;
 	}
-
-	/**
-	 * 
-	 */
-	public function getFormattedClass() {
+	
+	public function getFormattedClass()
+	{
 		$base = $this->class;
 		if ($this->class_transform) {
 			$base = call_user_func($this->class_transform, $base);
 		}
 		return $this->class_prefix . $base . $this->class_suffix;
 	}
-
-	/**
-	 * 
-	 */
-	public function getFormattedMethod() {
+	
+	public function getFormattedMethod()
+	{
 		$base = $this->method;
 		if ($this->method_transform) {
 			$base = call_user_func($this->method_transform, $base);
 		}
 		return $this->method_prefix . $base . $this->method_suffix;
 	}
-
+	
 	/**
 	 * Take a route array (or string or object) and set properties
+	 * 
+	 * @param array $route
+	 * @return $this
 	 */
-	public function setRoute($route) {
-		if (! is_array($route)) {
+	public function setRoute($route)
+	{
+		if (!is_array($route)) {
 			if (is_string($route)) {
 				$route = explode('/', $route);
 			}
@@ -221,11 +226,9 @@ class A_Controller_Mapper
 		$this->method = $route[2];
 		return $this;
 	}
-
-	/**
-	 * 
-	 */
-	public function getRoute($request) {
+	
+	public function getRoute($request)
+	{
 		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/D', '/[^a-zA-Z0-9\_\-]/');
 		$this->dir = preg_replace($regex, array(''), $request->get($this->dir_param));
 		if ($this->dir) {
@@ -237,14 +240,14 @@ class A_Controller_Mapper
 		$this->method = preg_replace($regex, array(''), $request->get($this->method_param));
 		
 		$path = $this->getPath();
-		if (! $this->class) {
+		if (!$this->class) {
 			$this->setRoute($this->default_action);
 		}
 		$route = array($this->dir, $this->class, $this->method);
 		if ($route[2] == '') {
 			$route[2] = $this->default_method;
 		}
-
+		
 		return $route;
 	}
 
