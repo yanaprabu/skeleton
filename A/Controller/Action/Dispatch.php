@@ -12,8 +12,9 @@
  * 
  * This action controller implementation controls the actual action dispatch process and allows for pre- and post- dispatch hooks to be used.
  */
-class A_Controller_Action_Dispatch extends A_Controller_Action {
-	
+class A_Controller_Action_Dispatch extends A_Controller_Action
+{
+
 	/**
 	 * Dispatch request
 	 *  - Register request object
@@ -21,24 +22,25 @@ class A_Controller_Action_Dispatch extends A_Controller_Action {
 	 * @param string $action
 	 * @param A_Locator $locator
 	 */
-	public function _dispatch($locator, $action) {
+	public function _dispatch($locator, $action)
+	{
 		if (method_exists($this, $action)) {
 			$this->_preDispatch();
 			$this->$action($locator);
 			$this->_postDispatch();
-		} else {
-			// set error here
 		}
 	}
 	
 	/**
 	 * Pre-dispatch hook
 	 */
-	public function _preDispatch() {}
+	public function _preDispatch()
+	{}
 	
 	/**
 	 * Post-dispatch hook
 	 */
-	public function _postDispatch() {}
-	
+	public function _postDispatch()
+	{}
+
 }
