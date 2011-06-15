@@ -12,5 +12,6 @@
  * 
  * Database exception type
  */
-class A_Db_Exception extends Exception {
+class A_Db_Exception extends Exception
+{
 }
