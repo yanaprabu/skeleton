@@ -14,6 +14,4 @@
  * Database result set for Postgres select, show, or desc queries
  */
 class A_Db_Recordset_Postgres extends A_Db_Recordset_Base
-{
-	
-}
+{}
