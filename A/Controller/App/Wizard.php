@@ -12,37 +12,24 @@
  * 
  * Handles sequences of controller/actions to be used with A_Controller_App.  Define each step with an action/controller pair (array('controller', 'action')) using setStep().
  */
-class A_Controller_App_Wizard {
-	protected $maxStep = -1;
-	
-	/*
-	 * 
-	 */
-	function __construct() {
-		
-	}
+class A_Controller_App_Wizard
+{
 
-	/*
-	 * 
-	 */
-	function setStep($position, $forward) {
+	protected $maxStep = -1;
+
+	public function setStep($position, $forward)
+	{
 		$this->_steps[$postion] = $forward;
 		if ($position > $this->maxStep) {
 			$this->maxStep = $position;
 		}
 	}
-
-	/*
-	 * 
-	 */
-	function addStep($forward) {
+	
+	public function addStep($forward)
+	{
 		$this->_steps[++$this->maxStep] = $forward;
 	}
 	
-	/*
-	 * 
-	 */
-	function isValid() {
-		
-	}
+	function isValid()
+	{}
 }
