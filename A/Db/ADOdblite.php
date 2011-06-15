@@ -12,7 +12,9 @@
  * 
  * Database connection class using ADOdb.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_ADOdblite extends A_Db_Adapter {
+class A_Db_ADOdblite extends A_Db_Adapter
+{
+
 	protected $dsn = null;
 	protected $adodb = null;
 	protected $limit = '';
@@ -20,11 +22,13 @@ class A_Db_ADOdblite extends A_Db_Adapter {
 	protected $sequenceext = '_seq';
 	protected $sequencestart = 1;
 	
-	public function __construct($dsn=null) {
+	public function __construct($dsn=null)
+	{
 		$this->dsn = $dsn;
 	}
-		
-	public function connect ($dsn=null) {
+	
+	public function connect($dsn=null)
+	{
 		$result = false;
 		if ($dsn) {
 			$this->dsn = $dsn;
@@ -34,14 +38,16 @@ class A_Db_ADOdblite extends A_Db_Adapter {
 		}
 		return $result;
 	}
-		
-	public function close() {
+	
+	public function close()
+	{
 		if ($this->adodb) {
 			$this->adodb->Close();
 		} 
 	}
-		
-	public function query($sql, $bind=array()) {
+	
+	public function query($sql, $bind=array())
+	{
 		if (is_object($sql)) {
 			// convert object to string by executing SQL builder object
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
@@ -60,137 +66,166 @@ class A_Db_ADOdblite extends A_Db_Adapter {
 		$obj->errorMsg = $this->adodb->ErrorMsg();
 		return $obj;
 	}
-		
-	public function limitQuery ($sql, $from, $count) {
-		return($this->query($sql . " LIMIT $from,$count"));
+	
+	public function limitQuery($sql, $from, $count)
+	{
+		return $this->query($sql . " LIMIT $from,$count");
 	}
 	
-	public function lastId() {
+	public function lastId()
+	{
 		if ($this->adodb) {
 			return $this->adodb->Insert_ID();
 		} else {
 			return 0;
 		}
 	}
-		
-	public function nextId ($sequence=null, $startID=null) {
+	
+	public function nextId($sequence=null, $startID=null)
+	{
 		if ($sequence) {
 			$result = $this->adodb->GenID($seqName, $startID);
 		}
 		return 0;
 	}
-		
-	public function createSequence ($sequence=null, $startID=null) {
+	
+	public function createSequence ($sequence=null, $startID=null)
+	{
 		$result = 0;
 		if ($sequence) {
 			$result = $this->adodb->CreateSequence($seqName, $startID);
 		}
-		return($result);
+		return $result;
 	}
-		
-	public function start() {
+	
+	public function start()
+	{
 		return $this->query('START');
 	}
-
-	public function savepoint($savepoint='') {
+	
+	public function savepoint($savepoint='')
+	{
 		if ($savepoint) {
 			return $this->query('SAVEPOINT ' . $savepoint);
 		}
 	}
-
-	public function commit() {
+	
+	public function commit()
+	{
 		return $this->query('COMMIT');
 	}
-
-	public function rollback($savepoint='') {
+	
+	public function rollback($savepoint='')
+	{
 		return $this->query('ROLLBACK' . ($savepoint ? ' TO SAVEPOINT ' . $savepoint : ''));
 	}
-
-	public function escape($value) {
+	
+	public function escape($value)
+	{
 		return $this->adodb->quote();
 	}
 
-	public function isError() {
+	public function isError()
+	{
 		return $this->adodb->ErrorNo();
 	}
 		
-	public function getErrorMsg() {
+	public function getErrorMsg()
+	{
 		return $this->adodb->ErrorMsg();
 	}
-
+	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
 	public function getMessage() {
 		return $this->getErrorMsg();
 	}
 	
-	public function __call($name, $args) {
+	public function __call($name, $args)
+	{
 		return call_user_func_array(array($this->adodb, $name), $args);
 	}
 
 }
-	
-	
-class A_Db_ADOdblite_Result {
+
+class A_Db_ADOdblite_Result
+{
+
 	protected $result;
 	public $error;
 	public $errorMsg;
 	
-	public function __construct($result=null) {
+	public function __construct($result=null)
+	{
 		$this->result = $result;
 	}
-		
-	public function numRows() {
+	
+	public function numRows()
+	{
 		if ($this->result) {
 			return $this->result->RecordCount();
 		} else {
 			return 0;
 		}
 	}
-		
-	public function isError() {
+	
+	public function isError()
+	{
 		return $this->_error;
 	}
-		
-	public function getErrorMsg() {
+	
+	public function getErrorMsg()
+	{
 		return $this->_errorMsg;
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @depreciated
+	 * @see getErrorMsg
 	 */
-	public function getMessage() {
+	public function getMessage()
+	{
 		return $this->getErrorMsg();
 	}
 	
-	public function __call($name, $args) {
+	public function __call($name, $args)
+	{
 		return call_user_func_array(array($this->result, $name), $args);
 	}
 
 }
-	
-	
-class A_Db_ADOdblite_Recordset extends A_Db_ADOdblite_Result {
-	
-	public function __construct($result=null) {
+
+class A_Db_ADOdblite_Recordset extends A_Db_ADOdblite_Result
+{
+
+	public function __construct($result=null)
+	{
 		$this->result = $result;
 	}
-		
-	public function fetchRow ($mode=null) {
+	
+	public function fetchRow ($mode=null)
+	{
 		if ($this->result) {
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 			return $this->resultFetchRow();
 		}
 	}
-		
-	public function fetchObject ($mode=null) {
+	
+	public function fetchObject ($mode=null)
+	{
 		if ($this->result) {
 			return $this->FetchNextObject();
 		}
 	}
-		
-	public function fetchAll ($class=null) {
+	
+	public function fetchAll ($class=null)
+	{
 		$rows = array();
 		if ($this->result) {
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -200,16 +235,18 @@ class A_Db_ADOdblite_Recordset extends A_Db_ADOdblite_Result {
 		}
 		return $rows;
 	}
-		
-	public function numRows() {
+	
+	public function numRows()
+	{
 		if ($this->result) {
 			return $this->result->RecordCount();
 		} else {
 			return 0;
 		}
 	}
-		
-	public function numCols() {
+	
+	public function numCols()
+	{
 		if ($this->result) {
 			return $this->result->FieldCount();
 		} else {
@@ -217,13 +254,14 @@ class A_Db_ADOdblite_Recordset extends A_Db_ADOdblite_Result {
 		}
 	}
 	
-	public function __call($name, $args) {
+	public function __call($name, $args)
+	{
 		return call_user_func_array(array($this->result, $name), $args);
 	}
 
 }
 /*
- $db->Affected_Rows()
+$db->Affected_Rows()
 $db->Close()
 $db->Concat($string, $string)
 $db->ErrorMsg()
