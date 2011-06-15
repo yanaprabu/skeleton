@@ -15,6 +15,7 @@
  */
 class A_Event_Manager
 {
+
 	const ERROR_NO_EVENT = 'No event specified. ';
 	const ERROR_NO_METHOD = 'Listener has no onEvent() method . ';
 	const ERROR_WRONG_TYPE = 'The only types callback, closure and object with onEvent() method supported. ';
@@ -133,7 +134,7 @@ class A_Event_Manager
 	 * the event handler.
 	 * 
 	 * @param string $eventName
-	 * @param mixed $eventData	any data you want to pass to listeners
+	 * @param mixed $eventData any data you want to pass to listeners
 	 */
 	public function fireEvent($eventName, $eventData = null)
 	{
@@ -184,6 +185,8 @@ class A_Event_Manager
 	
 	/**
 	 * Gets any errors accumulated
+	 * 
+	 * @return string
 	 */
 	public function getErrorMsg() {
 		return $this->_errorMsg;
@@ -229,4 +232,5 @@ class A_Event_Manager
 			return false;
 		}
 	}
+
 }
