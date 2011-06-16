@@ -12,14 +12,18 @@
  * 
  * String loading and trailing whitespace with the trim() function.
  */
-class A_Filter_Trim extends A_Filter_Base {
-	protected $charset = null;
+class A_Filter_Trim extends A_Filter_Base
+{
 
-	public function __construct($charset=null) {
+	protected $charset = null;
+	
+	public function __construct($charset=null)
+	{
 		$this->charset = $charset;
 	}
-
-	public function filter () {
+	
+	public function filter()
+	{
 		return trim($this->getValue(), $this->charset);
 	}
 

@@ -12,13 +12,15 @@
  * 
  * Contains multiple filters that are all run. 
  */
-class A_Filter_Set implements A_Filter_Interface {
-	
+class A_Filter_Set implements A_Filter_Interface
+{
+
     protected $chain = array();
     protected $errorMsg = array();
     protected $dir = 'A_Filter_';
-
-	public function addFilter($filter, $fields=array()) {	
+	
+	public function addFilter($filter, $fields=array())
+	{	
 		// if filter is string then we load the class later
 		if(is_string($filter)) {
 			$filter = func_get_args();
@@ -42,9 +44,11 @@ class A_Filter_Set implements A_Filter_Interface {
 	/**
      * Sets the filterchain to an array of filters
      * 
+     * @param array $chain
      * @return $this
      */
-	public function setChain($chain) {
+	public function setChain($chain)
+	{
 		if (is_array($chain)) {
 			$this->chain = $chain;
 		}
@@ -54,9 +58,11 @@ class A_Filter_Set implements A_Filter_Interface {
 	/**
      * Adds an array of filters to the filterchain
      * 
+     * @param array $chain
      * @return $this
      */
-	public function addChain($chain) {
+	public function addChain($chain)
+	{
 		if (is_array($chain)) {
 			$this->chain = array_merge($this->chain, $chain);
 		}
@@ -66,9 +72,12 @@ class A_Filter_Set implements A_Filter_Interface {
 	/**
      * Returns array with filtered data
      * 
+     * @param mixed $container
+     * @param array $chain
      * @return filtered array
      */
-	public function doFilter($container, $chain=array()) {
+	public function doFilter($container, $chain=array())
+	{
 		$result = array();
 		if ($chain) {
 			$this->chain = is_array($chain) ? $chain : array($chain);
@@ -98,5 +107,5 @@ class A_Filter_Set implements A_Filter_Interface {
 		}
 		return $container;
     }
-	
+
 }

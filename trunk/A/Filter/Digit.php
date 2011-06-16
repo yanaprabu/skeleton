@@ -12,9 +12,11 @@
  * 
  * Filter a string to leave only digits
  */
-class A_Filter_Digit extends A_Filter_Base {
-	
-	public function filter () { 
+class A_Filter_Digit extends A_Filter_Base
+{
+
+	public function filter()
+	{ 
 		return preg_replace('/[^[:digit:]]/', '', $this->getValue());
 	}
 

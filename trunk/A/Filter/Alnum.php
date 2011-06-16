@@ -12,9 +12,11 @@
  * 
  * Filter a string to leave only alpha-numeric characters
  */
-class A_Filter_Alnum extends A_Filter_Base {
-	
-	public function filter () {
+class A_Filter_Alnum extends A_Filter_Base
+{
+
+	public function filter()
+	{
 		return preg_replace('/[^[:alnum:]]/', '', $this->getValue());
 	}
 

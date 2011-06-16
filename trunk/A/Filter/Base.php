@@ -12,25 +12,26 @@
  * 
  * Abstract base class for filters 
  */
-abstract class A_Filter_Base implements A_Filter_Interface {
+abstract class A_Filter_Base implements A_Filter_Interface
+{
 
 	protected $container;
 	/*
 	 * $params array define the order and names of the constructor params
 	 */
 	protected $params = array(
-							'field' => '', 
-							);
-							
+		'field' => '', 
+	);
+	
 	/**
 	 * When creating children here, remember to call this function and 
 	 * put params before $field 
 	 * 
 	 * @param string field this filter applies to
 	 * @param boolean whether this filter returns true for null value
-	 *
 	 */
-	public function __construct(/* $field='', $optional=false*/) {
+	public function __construct(/* $field='', $optional=false*/)
+	{
 		$params = func_get_args();
 		if (count($params) == 1) {
 			// first param is array of params
@@ -49,9 +50,10 @@ abstract class A_Filter_Base implements A_Filter_Interface {
      * Set params property with assoc array
      * 
      * @param array $params
-     * @return instance of this object (for fluent interface)
+     * @return $this
      */
-	public function config($params=array()) {
+	public function config($params=array())
+	{
 		foreach ($params as $key => $value) {
 			$this->params[$key] = $value;
 		}
@@ -62,22 +64,24 @@ abstract class A_Filter_Base implements A_Filter_Interface {
      * Changes the field this filter applies to
      * 
      * @param string field this filter applies to
-     * @return instance of this object (for fluent interface)
+     * @return $this
      */
-	public function setName($field) {
+	public function setName($field)
+	{
 		$this->params['field'] = $field;
 		return $this;
 	}
-
+	
     /**
      * Returns the field this filter applies to
      * 
      * @return string field this filter applies to
      */
-	public function getName() {
+	public function getName()
+	{
 		return $this->params['field'];
 	}
-		
+	
 	/**
      * Returns the value associated with this filter by default, but can return any value in
      * the data container that this filter is validating
@@ -85,7 +89,8 @@ abstract class A_Filter_Base implements A_Filter_Interface {
      * @param string field you're trying to access
      * @return mixed whatever is inside the container array at key $name
      */
-	public function getValue($name = null) {
+	public function getValue($name=null)
+	{
 		if (is_null($name)) {
 			$name = $this->params['field'];
 		}
@@ -105,9 +110,10 @@ abstract class A_Filter_Base implements A_Filter_Interface {
      * 
      * @param string name of field
      * @param mixed value to set
-     * @return mixed whatever is inside the container array at key $name
+     * @return $this
      */
-	public function setValue($name, $value=null) {
+	public function setValue($name, $value=null)
+	{
 		if ($name && ($value !== null)) {
 			if (is_array($this->container)) {
 				$this->container[$name] = $value;
@@ -124,24 +130,18 @@ abstract class A_Filter_Base implements A_Filter_Interface {
 	 * Filters data
 	 *
 	 * @param $container
-	 * @return filtered $container
+	 * @return string Filtered data
 	 */
 	public function doFilter($container) {
 	    $this->container = $container;
-/*
-	    $value = $this->filter();
-echo "doFilter: $value<br/>";
-	    $this->setValue($this->getName(), $value);
-	    return $value;
-*/
 	    return $this->filter();
 	}
 	
     /**
+     * Filter and return $this->getValue()
      * 
-     * 
-     * @return ?
+     * @return string
      */
 	abstract protected function filter();
-							
+
 }

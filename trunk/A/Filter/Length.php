@@ -12,14 +12,18 @@
  * 
  * Trim value to specified length.
  */
-class A_Filter_Length extends A_Filter_Base {
+class A_Filter_Length extends A_Filter_Base
+{
+
 	protected $length = 0;
 	
-	public function __construct($length) {
+	public function __construct($length)
+	{
 		$this->length = $length;
 	}
-		
-	public function filter() {
+	
+	public function filter()
+	{
 		if ($this->length < strlen($this->getValue())) {
 			$value = substr($this->getValue(), 0, $this->length);
 		}

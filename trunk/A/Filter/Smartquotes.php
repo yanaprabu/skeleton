@@ -12,9 +12,11 @@
  * 
  * Convert smart quotes to standard quotes
  */
-class A_Filter_Smartquotes extends A_Filter_Base {
-	
-	public function filter () {
+class A_Filter_Smartquotes extends A_Filter_Base
+{
+
+	public function filter()
+	{
 		$smartQuotes = array(
 			chr(145) => "'",
 			chr(146) => "'",

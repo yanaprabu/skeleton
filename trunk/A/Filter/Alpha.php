@@ -12,9 +12,11 @@
  * 
  * Filter a string to leave only alpha characters
  */
-class A_Filter_Alpha extends A_Filter_Base {
-	
-	public function filter () {
+class A_Filter_Alpha extends A_Filter_Base
+{
+
+	public function filter()
+	{
 		return preg_replace('/[^[:alpha:]]/', '', $this->getValue());
 	}
 

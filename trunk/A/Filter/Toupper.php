@@ -12,9 +12,11 @@
  * 
  * Convert a string to uppercase
  */
-class A_Filter_Toupper extends A_Filter_Base {
+class A_Filter_Toupper extends A_Filter_Base
+{
 
-	public function filter () {
+	public function filter()
+	{
 		return strtoupper($this->getValue());
 	}
 
