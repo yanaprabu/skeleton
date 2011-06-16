@@ -12,12 +12,11 @@
  * 
  * Generate HTML span tag
  */
-class A_Html_Span extends A_Html_Tag {
+class A_Html_Span extends A_Html_Tag
+{
 
-	/*
-	 * name=string, value=string
-	 */
-	public function render($attr=array(), $str='') {
+	public function render($attr=array(), $str='')
+	{
 		parent::mergeAttr($attr);
 		if (!$str && isset($attr['value'])) {
 			$str = $attr['value'];
