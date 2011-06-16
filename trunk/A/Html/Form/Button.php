@@ -12,14 +12,13 @@
  * 
  * Generate HTML form button
  */
-class A_Html_Form_Button extends A_Html_Tag {
+class A_Html_Form_Button extends A_Html_Tag
+{
 
-	/*
-	 * name=string, value=string
-	 */
-	public function render($attr=array()) {
+	public function render($attr=array())
+	{
 		parent::mergeAttr($attr);
-		parent::defaultAttr($attr, array('type'=>'button', 'value'=>''));
+		parent::defaultAttr($attr, array('type' => 'button', 'value' => ''));
 		return parent::render('input', $attr);
 	}
 

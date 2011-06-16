@@ -5,12 +5,14 @@
  * @package A_Html
  */
 
-class A_Html_Form_Select extends A_Html_Tag {
+class A_Html_Form_Select extends A_Html_Tag
+{
 
 	/*
 	 * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
 	 */
-	public function render($attr=array()) {
+	public function render($attr=array())
+	{
 		parent::mergeAttr($attr);
 		$selected = isset($attr['value']) ? A_Html_Form_Select::_toArray($attr['value']) : array();
 		unset($attr['value']);
@@ -26,7 +28,7 @@ class A_Html_Form_Select extends A_Html_Tag {
 			$attr['name'] .= '[]';
 			$attr['multiple'] = 'multiple';		// multiple sends array
 		}
-
+		
 		$str = '';
 		foreach ($values as $value) {
 			$str .= '<option value="' . $value . '"';
@@ -36,13 +38,14 @@ class A_Html_Form_Select extends A_Html_Tag {
 			$str .= '>' . current($labels) . "</option>";
 			next($labels);
 		}
-
+		
 		return parent::render('select', $attr, $str);
 	}
-
-	protected function _toArray($var) {
+	
+	protected function _toArray($var)
+	{
 		if (isset($var)) {
-			if (! is_array($var)) {
+			if (!is_array($var)) {
 				$var = array($var);
 			}
 		} else {

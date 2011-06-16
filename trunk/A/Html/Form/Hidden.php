@@ -12,14 +12,16 @@
  * 
  * Generate HTML form hidden input
  */
-class A_Html_Form_Hidden extends A_Html_Tag {
+class A_Html_Form_Hidden extends A_Html_Tag
+{
 
 	/*
 	 * name=string, value=string, print=boolean(0|1)
 	 */
-	public function render($attr=array()) {
+	public function render($attr=array())
+	{
 		parent::mergeAttr($attr);
-		parent::defaultAttr($attr, array('type'=>'hidden', 'value'=>''));
+		parent::defaultAttr($attr, array('type' => 'hidden', 'value' => ''));
 		if (isset($attr['print'])) {
 			$print = $attr['value'];
 			$this->removeAttr($attr, 'print');
@@ -30,4 +32,3 @@ class A_Html_Form_Hidden extends A_Html_Tag {
 	}
 
 }
-

@@ -11,31 +11,31 @@
  * A_Html_Form_Button
  * 
  * Generate HTML form select from database query data
+ * This will generate a <select> from an SQL query. Provide a DB object, SQL string, the name of the DB
+ * column to use as <option> values and one or more columns for the <option> text (concated with spaces)
+ * 
+ * db=object, sql=string, value_col=string, label_cols=array()
+ * 
+ * Or provide a callable array to a object/method. Parameters for the method can be provided,
+ * 
+ * model=array(object, method), model_params=array(), value_col=string, label_cols=array()
+ * 
+ * The interface to A_Html_Form_Select is:
+ * 
+ * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
  */
-class A_Html_Form_Selectdb extends A_Html_Form_Select {
+class A_Html_Form_Selectdb extends A_Html_Form_Select
+{
 
-	/*
-	 * This will generate a <select> from an SQL query. Provide a DB object, SQL string, the name of the DB
-	 * column to use as <option> values and one or more columns for the <option> text (concated with spaces)
-	 * 
-	 * db=object, sql=string, value_col=string, label_cols=array()
-	 * 
-	 * Or provide a callable array to a object/method. Parameters for the method can be provided,
-	 * 
-	 * model=array(object, method), model_params=array(), value_col=string, label_cols=array()
-	 * 
-	 * The interface to A_Html_Form_Select is:
-	 * 
-	 * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
-	 */
-	public function render($attr=array()) {
+	public function render($attr=array())
+	{
 		parent::mergeAttr($attr);
 		if (isset($attr['value_col']) && isset($attr['label_cols'])) {
 			$rows = array();
 			if (isset($attr['db']) && isset($attr['sql'])) {
 				$db = $attr['db'];
 				$result = $db->query($attr['sql']);
-				if (! $db->isError()) {
+				if (!$db->isError()) {
 					while ($row = $result->fetchRow()) {
 						$rows[] = $row;
 					}

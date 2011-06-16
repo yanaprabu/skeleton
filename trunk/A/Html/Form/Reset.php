@@ -12,14 +12,16 @@
  * 
  * Generate HTML form reset button
  */
-class A_Html_Form_Reset extends A_Html_Tag {
+class A_Html_Form_Reset extends A_Html_Tag
+{
 
 	/*
 	 * name=string, value=string
 	 */
-	public function render($attr=array()) {
+	public function render($attr=array())
+	{
 		parent::mergeAttr($attr);
-		parent::defaultAttr($attr, array('type'=>'reset'));
+		parent::defaultAttr($attr, array('type' => 'reset'));
 		return parent::render('input', $attr);
 	}
 

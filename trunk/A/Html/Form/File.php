@@ -12,22 +12,24 @@
  * 
  * Generate HTML form file input
  */
-class A_Html_Form_File extends A_Html_Tag {
+class A_Html_Form_File extends A_Html_Tag
+{
 
-	/*
-	 * name=string, value=string
-	 */
-	public function render($attr=array()) {
+	public function render($attr=array())
+	{
 		parent::mergeAttr($attr);
-		parent::defaultAttr($attr, array('type'=>'file'));
+		parent::defaultAttr($attr, array('type' => 'file'));
 		return parent::render('input', $attr);
 	}
-
-	public function getEnctype() {
+	
+	public function getEnctype()
+	{
 		return 'enctype="multipart/form-data"' ;
 	}
 	
-	public function getEnctypeAttribute() {
+	public function getEnctypeAttribute()
+	{
 		return array('enctype' => 'multipart/form-data');
 	}
+
 }
