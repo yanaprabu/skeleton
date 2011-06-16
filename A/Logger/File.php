@@ -12,34 +12,42 @@
  *
  * File writer for the A_Logger class.
  */
-class A_Logger_File {
+class A_Logger_File
+{
+
 	protected $filename = '';
 	protected $errorMsg = '';
-
-	public function __construct($filename) {
+	
+	public function __construct($filename)
+	{
 		$this->filename = $filename;
 	}
 	
-	public function setFilename($filename) {
+	public function setFilename($filename)
+	{
 		$this->filename = $filename;
 		return $this;
 	}
 	
-	public function getFilename() {
+	public function getFilename()
+	{
 		return $this->filename;
 	}
 	
-	public function getErrorMsg() {
+	public function getErrorMsg()
+	{
 		return $this->errorMsg;
 	}
 	
-	public function clear() {
+	public function clear()
+	{
 		if ($this->filename && file_exists($this->filename)) {
  			unlink($this->filename);
 		}
 	}
 	
-	public function write($buffer='') {
+	public function write($buffer='')
+	{
 		if ($this->filename) {
 			$fp = fopen($this->filename, 'a');
 			if ($fp) {
@@ -55,4 +63,5 @@ class A_Logger_File {
 		}
 		return $this;
 	}
+
 }
