@@ -12,7 +12,9 @@
  *
  * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
  */
-class A_Http_View {
+class A_Http_View
+{
+
 	protected $data = array();
 	protected $template = null;
 	protected $template_type = 'templates';
@@ -41,35 +43,42 @@ class A_Http_View {
 	protected $use_local_vars = true;
 	protected $errorMsg = array();
 	
-	public function __construct($locator=null) {
+	public function __construct($locator=null)
+	{
 		$this->locator = $locator;
 	}
 	
-	public function setLocator($locator) {
+	public function setLocator($locator)
+	{
 		$this->locator = $locator;
 	}
 	
-	public function setCharacterSet($character_set) {
+	public function setCharacterSet($character_set)
+	{
 		$this->character_set = $character_set;
 		return $this;
 	}
-
-	public function setQuoteStyle($escape_quote_style) {
+	
+	public function setQuoteStyle($escape_quote_style)
+	{
 		$this->escape_quote_style = $escape_quote_style;
 		return $this;
 	}
-
-	public function setEscape($escape_output) {
+	
+	public function setEscape($escape_output)
+	{
 		$this->escape_output = $escape_output;
 		return $this;
 	}
-
-	public function useLocalVars($use_local_vars) {
+	
+	public function useLocalVars($use_local_vars)
+	{
 		$this->use_local_vars = $use_local_vars;
 		return $this;
 	}
-
-	public function setHeader($field, $param=null) {
+	
+	public function setHeader($field, $param=null)
+	{
 		if (is_array($param)) {
 			$this->headers[$field] = $param;
 		} else {
@@ -77,71 +86,85 @@ class A_Http_View {
 		}
 		return $this;
 	}
-
-	public function getHeaders() {
+	
+	public function getHeaders()
+	{
 		return $this->headers;
 	}
-
-	public function setCookie() {
+	
+	public function setCookie()
+	{
 		$args = func_get_args();
 		$this->cookie[$args[0]] = $args;
 		return $this;
 	}
-
-	public function getCookie($name) {
+	
+	public function getCookie($name)
+	{
 		if (isset($this->cookie[$name])) {
 			return $this->cookie[$name];
 		}
 	}
-
-	public function setRedirect($url) {
+	
+	public function setRedirect($url)
+	{
 		$this->redirect = $url;
 		return $this;
 	}
-
-	public function getRedirect() {
+	
+	public function getRedirect()
+	{
 		return $this->redirect;
 	}
-
-	public function setContent($content) {
+	
+	public function setContent($content)
+	{
 		$this->content = $content;
 		return $this;
 	}
-
-	public function getContent() {
+	
+	public function getContent()
+	{
 		return $this->content;
 	}
-
-	public function setTemplate($template, $scope='') {
+	
+	public function setTemplate($template, $scope='')
+	{
 		$this->template = $template;
 		if ($scope) $this->template_scope = $scope;
 		return $this;
 	}
-
-	public function setTemplateScope($scope) {
+	
+	public function setTemplateScope($scope)
+	{
 		$this->template_scope = $scope;
 		return $this;
 	}
-
-	public function setTemplatePath($path) {
+	
+	public function setTemplatePath($path)
+	{
 		$this->template_path = $path;
 		return $this;
 	}
-
-	public function getTemplate() {
+	
+	public function getTemplate()
+	{
 		return $this->template;
 	}
-
-	public function setRenderer($renderer) {
+	
+	public function setRenderer($renderer)
+	{
 		$this->renderer = $renderer;
 		return $this;
 	}
-
-	public function hasRenderer() {
+	
+	public function hasRenderer()
+	{
 		return isset($this->renderer);
 	}
-
-	public function set($name, $value, $default=null) {
+	
+	public function set($name, $value, $default=null)
+	{
 		if ($value !== null) {
 			$this->data[$name] = $value;
 		} elseif ($default !== null) {
@@ -151,20 +174,24 @@ class A_Http_View {
 		}
 		return $this;
 	}
-
-	public function get($name) {
+	
+	public function get($name)
+	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-
-	public function has($name) {
+	
+	public function has($name)
+	{
 		return isset($this->data[$name]);
 	}
-
-	public function escape($content, $escape_quote_style=null) {
+	
+	public function escape($content, $escape_quote_style=null)
+	{
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
 	
-	public function _getPath($template) {
+	public function _getPath($template)
+	{
 		if (substr($template, -4, 4) != '.php') {
 			$template .= '.php';
 		}
@@ -183,17 +210,28 @@ class A_Http_View {
 	}
 	
 	/**
-	 * include PHP template
+	 * Include PHP template
+	 * 
+	 * @param string $template
+	 * @param mixed $data
+	 * @return string
 	 */
-	public function partial($template, $data=null) {
+	public function partial($template, $data=null)
+	{
 		$template = $this->_getPath($template);
 		return $this->escape_output ? $this->escape($this->_include($template, $data)) : $this->_include($template, $data);
 	}
 	
 	/**
 	 * include PHP template for each value in array
+	 * 
+	 * @param string $template
+	 * @param string $name
+	 * @param mixed $data
+	 * @return string
 	 */
-	public function partialLoop($template, $name, $data=null) {
+	public function partialLoop($template, $name, $data=null)
+	{
 		$template = $this->_getPath($template);
 		$str = '';
 		if ($data) {
@@ -217,21 +255,30 @@ class A_Http_View {
 	}
 	
 	/**
-	 * short for $this->set($name, $this->partial($template, $data))
+	 * Convenience method to more easily set a partial template
+	 * 
+	 * @param string $name
+	 * @param string $template
+	 * @param mixed $data
+	 * @return @this
 	 */
 	public function setPartial($name, $template, $data=null) {
-		return $this->set($name, $this->partial($template, $data));
+		$this->set($name, $this->partial($template, $data));
+		return $this;
 	}
 	
 	/**
 	 * short for $this->set($name, $this->partialLoop($template, $data_name, $data))
 	 */
-	public function setPartialLoop($name, $template, $data_name, $data=null) {
-		return $this->set($name, $this->partialLoop($template, $name, $data));
+	public function setPartialLoop($name, $template, $data_name, $data=null)
+	{
+		$this->set($name, $this->partialLoop($template, $name, $data));
+		return $this;
 	}
 	
-	public function render($template='', $scope='') {
-		if (! $template && $this->template) {
+	public function render($template='', $scope='')
+	{
+		if (!$template && $this->template) {
 			$template = $this->template;
 		}
 		if ($scope) $this->template_scope = $scope;
@@ -254,12 +301,11 @@ class A_Http_View {
 		return $this->escape_output ? $this->escape($this->content) : $this->content;
 	}
 	
-	/**
-	 * _include($template_path, $data=null)
-	 * include a file
-	 * optional second parameter is data array to be extracted
+	/*
+	 * Include a PHP file, passing internal data to it as variables
 	 */
-	protected function _include() {
+	protected function _include()
+	{
 		if (func_num_args() > 0) {					// must have at least the template path
 			ob_start();
 			if ($this->use_local_vars && $this->data) {
@@ -274,31 +320,36 @@ class A_Http_View {
 			return ob_get_clean();
 		}
 	}
-
-	public function __get($name) {
+	
+	public function __get($name)
+	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-
-	public function __set($name, $value) {
+	
+	public function __set($name, $value)
+	{
 		return $this->set($name, $value);
 	}
-
+	
 	/**
 	 * Allow calls directly to the renderer object's methods
 	 */
-	public function __call($name, $args) {
+	public function __call($name, $args)
+	{
 		if (method_exists($this->renderer, $name)) {
 			return call_user_func_array(array($this->renderer, $name), $args);
 		}
-		// elseif $name is a helper then load it
+		// TODO elseif $name is a helper then load it
 		// else throw an error or exception
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		return $this->render();
 	}
-
-	protected function _load($scope=null) {
+	
+	protected function _load($scope=null)
+	{
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
@@ -306,9 +357,10 @@ class A_Http_View {
 		}
 		return $this->load;
 	}
- 
-	protected function _flash($name=null, $value=null) {
-		if (! isset($this->flash)) {
+	
+	protected function _flash($name=null, $value=null)
+	{
+		if (!isset($this->flash)) {
 			$this->flash = new A_Controller_Helper_Flash($this->locator);
 		}
 		if ($name) {
@@ -320,23 +372,26 @@ class A_Http_View {
 		}
 		return $this->flash;
 	}
- 
-	public function setHelper($name, $helper) {
+	
+	public function setHelper($name, $helper)
+	{
 		if ($name) {
 			$this->helpers[$name] = $helper;
 		}
 		return $this;
 	}
- 
-	public function setHelperClass($name, $class) {
+	
+	public function setHelperClass($name, $class)
+	{
 		if ($name) {
 			$this->helperClass[$name] = $class;
 		}
 		return $this;
 	}
- 
-	protected function helper($name) {
-		if (! isset($this->helpers[$name])) {
+	
+	protected function helper($name)
+	{
+		if (!isset($this->helpers[$name])) {
 			if (isset($this->helperClass[$name])) {
 				$class = $this->helperClass[$name];
 			} else {
@@ -348,9 +403,12 @@ class A_Http_View {
 			return $this->helpers[$name];
 		}
 	}
-
+	
 	/**
-	 * get error messages
+	 * Get error messages
+	 * 
+	 * @param string $separator Separator between errors, set to null for an array
+	 * @return string|array
 	 */
 	public function getErrorMsg($separator="\n") {
 		$errormsg = $this->errorMsg;
@@ -362,5 +420,5 @@ class A_Http_View {
 		}
 		return $errormsg;
 	}
-	
+
 }
