@@ -12,15 +12,19 @@
  *
  * Allows static Singleton access to an A_Locator (or other) obejct
  */
-class A_Locator_Singleton {
+class A_Locator_Singleton
+{
+
 	private static $_instance;
-       
-	function setInstance($instance) {
+	
+	function setInstance($instance)
+	{
 		$this->_instance = $instance;
 	}
-
-	function getInstance() {
-		if (! isset($this->_instance)) {
+	
+	function getInstance()
+	{
+		if (!isset($this->_instance)) {
 			$this->_instance = new A_Locator();
 		}
 		return $this->_instance;
