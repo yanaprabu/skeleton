@@ -12,35 +12,41 @@
  * 
  * Generate <head> tag
  */
-class A_Html_Head {
-	
+class A_Html_Head
+{
+
 	protected $_config = array(
-					'meta' => array(),
-					'links' => array(),
-					'style_links' => array(),
-					'stylesheets' => array(),
-					'styles' => array(),
-					'script_links' => array(),
-					'scripts' => array(),
+		'meta' => array(),
+		'links' => array(),
+		'style_links' => array(),
+		'stylesheets' => array(),
+		'styles' => array(),
+		'script_links' => array(),
+		'scripts' => array(),
 	); 
 	protected $_withTags = true;
 	protected $_label = '';
 	
-	/*
-	* optional configuration array
-	*/
-	public function __construct($config=array()) {
+	/**
+	 * Constructor
+	 * 
+	 * @param array $config
+	 */
+	public function __construct($config=array())
+	{
 		if ($config) {
 			$this->config($config);
 		}
 	}
 	
-	public function config($config) {
+	public function config($config)
+	{
 		$this->_config = array_merge($this->_config, $config);
 		return $this;
 	}
 	
-	public function set($name, $value) {
+	public function set($name, $value)
+	{
 		if (isset($this->_config[$name])) {
 			if (is_array($this->_config[$name])) {
 				$this->_config[$name][] = $value;
@@ -52,8 +58,9 @@ class A_Html_Head {
 		}
 		return $this;
 	}
-
-	public function _addConfig($name, $data) {
+	
+	public function _addConfig($name, $data)
+	{
 		if ($name && $data) {
 			if ($this->_label) {
 				$data['label'] = $this->_label;
@@ -77,45 +84,49 @@ class A_Html_Head {
 		return $this;
 	}
 	
-	public function setTitle($title) {
+	public function setTitle($title)
+	{
 		$this->_config['title'] = $title;
 		return $this;
 	}
-
-	public function getTitle() {
+	
+	public function getTitle()
+	{
 		return $this->_config['title'];
 	}
-
-	public function setBase($url) {
+	
+	public function setBase($url)
+	{
 		$this->_config['base'] = $url;
 		return $this;
 	}
-
-	public function getBase() {
+	
+	public function getBase()
+	{
 		return $this->_config['base'];
 	}
-
-	 
-	/**
+	
+	/*
+	 * http-equiv:
+	 * content-type
+	 * content-style-type
+	 * expires
+	 * refresh
+	 * set-cookie
 	 * 
-http-equiv:
-content-type
-content-style-type
-expires
-refresh
-set-cookie
-
-name:
-author
-description
-keywords
-generator
-revised
-
-scheme:
-format/URI
+	 * name:
+	 * author
+	 * description
+	 * keywords
+	 * generator
+	 * revised
+	 * 
+	 * scheme:
+	 * format/URI
 	 */
-	public function removeMeta($attr, $type) {
+	
+	public function removeMeta($attr, $type)
+	{
 		if ($attr && $type) {
 			foreach ($this->_config['meta'] as $key => $data) {
 				if (($data['attr'] == $attr) && ($data['type'] == $type)) {
@@ -126,35 +137,40 @@ format/URI
 		return $this;
 	}
 	
-	public function addMetaHttpEquiv($type, $content, $scheme='') {
+	public function addMetaHttpEquiv($type, $content, $scheme='')
+	{
 		if ($type && ($content != '')) {
 			$this->_addConfig('meta', array('attr'=>'http-equiv', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>''));
 		}
 		return $this;
 	}
 	
-	public function removeMetaHttpEquiv($type) {
+	public function removeMetaHttpEquiv($type)
+	{
 		if ($type) {
 			$this->removeMeta('http-equiv', $type);
 		}
 		return $this;
 	}
 	
-	public function addMetaName($type, $content, $scheme='', $lang='') {
+	public function addMetaName($type, $content, $scheme='', $lang='')
+	{
 		if ($type && ($content != '')) {
 			$this->_addConfig('meta', array('attr'=>'name', 'type'=>$type, 'content'=>$content, 'scheme'=>$scheme, 'lang'=>$lang));
 		}
 		return $this;
 	}
 	
-	public function removeMetaName($type) {
+	public function removeMetaName($type)
+	{
 		if ($type) {
 			$this->removeMeta('name', $type);
 		}
 		return $this;
 	}
 	
-	public function addLink($attr, $rel, $href, $type='', $media='all') {
+	public function addLink($attr, $rel, $href, $type='', $media='all')
+	{
 		if ($attr && $rel && $href) {
 			$this->_addConfig('links', array('attr'=>$attr, 'rel'=>$rel, 'href'=>$href, 'type'=>$type, 'media'=>$media));
 		}
@@ -162,10 +178,11 @@ format/URI
 	}
 	
 	/**
-	 * removeLink()
 	 * Remove link elements from the head object
+	 * 
 	 * @param string $attr
 	 * @param string $rel The link element type defined upon creation
+	 * @return $this
 	 */
 	public function removeLink($attr, $rel) {
 		foreach ($this->_config['links'] as $key => $data) {
@@ -177,10 +194,10 @@ format/URI
 	}
 	
 	/**
-	 * @param $rel
-	 * @param $href
-	 * @param $type
-	 * @param $media
+	 * @param string $rel
+	 * @param string $href
+	 * @param string $type
+	 * @param string $media
 	 * @return $this
 	 */
 	public function addLinkRel($rel, $href, $type='', $media='all') {
@@ -191,10 +208,11 @@ format/URI
 	}
 	
 	/**
-	 * removeLinkRel()
 	 * Remove link elements from the head object that have a rel attribute.
 	 * This method provides specific data to removeLink()
+	 * 
 	 * @param string $type The type of the link element defined upon creation.
+	 * @return $this
 	 */
 	public function removeLinkRel($rel) {
 		$this->removeLink('rel', $rel);
@@ -202,13 +220,14 @@ format/URI
 	}
 	
 	/**
-	 * @param $rel
-	 * @param $href
-	 * @param $type
-	 * @param $media
+	 * @param string $rel
+	 * @param string $href
+	 * @param string $type
+	 * @param string $media
 	 * @return $this
 	 */
-	public function addLinkRev($rel, $href, $type='', $media='all') {
+	public function addLinkRev($rel, $href, $type='', $media='all')
+	{
 		if ($rel && $href) {
 			$this->addLink('rev', $rel, $href, $type, $media);
 		}
@@ -216,96 +235,112 @@ format/URI
 	}
 	
 	/**
-	 * removeLinkRev()
 	 * Removes link elements from the head object that have a rev attribute.
 	 * This method provides specific data to removeLink()
+	 * 
 	 * @param string $type The type of the link element defined upon creation.
+	 * @return $this
 	 */
-	public function removeLinkRev($rel) {
+	public function removeLinkRev($rel)
+	{
 		$this->removeLink('rev', $rel);
 		return $this;
 	}
 	
-	public function addStyle($style, $media='all') {
+	public function addStyle($style, $media='all')
+	{
 		if ($style) {
-			$this->_addConfig('styles', array('style'=>$style, 'media'=>$media));
+			$this->_addConfig('styles', array('style' => $style, 'media' => $media));
 		}
 		return $this;
 	}
-	 
-	public function addStylesheet($sheet, $media='all') {
+	
+	public function addStylesheet($sheet, $media='all')
+	{
 		if ($sheet) {
-			$this->_addConfig('stylesheets', array('sheet'=>$sheet, 'media'=>$media));
+			$this->_addConfig('stylesheets', array('sheet' => $sheet, 'media' => $media));
 		}
 		return $this;
 	}
-	 
-	public function addStyleLink($url, $media='all') {
+	
+	public function addStyleLink($url, $media='all')
+	{
 		if ($url) {
-			$this->_addConfig('style_links', array('href'=>$url, 'media'=>$media));
+			$this->_addConfig('style_links', array('href' => $url, 'media' => $media));
 		}
 		return $this;
 	}
-	 
-	public function addScript($script, $type='text/javascript') {
+	
+	public function addScript($script, $type='text/javascript')
+	{
 		if ($script) {
-			$this->_addConfig('scripts', array('script'=>$script, 'type'=>$type));
+			$this->_addConfig('scripts', array('script' => $script, 'type' => $type));
 		}
 		return $this;
 	}
-	 
-	public function addScriptLink($url, $type='text/javascript') {
+	
+	public function addScriptLink($url, $type='text/javascript')
+	{
 		if ($url) {
-			$this->_addConfig('script_links', array('src'=>$url, 'type'=>$type));
+			$this->_addConfig('script_links', array('src' => $url, 'type' => $type));
 		}
 		return $this;
 	}
-	 
-	/**
+	
+	/*
 	 * Convenience methods
 	 */
-	public function setCharset($charset) {
+	
+	public function setCharset($charset)
+	{
 		return $this->addMetaHttpEquiv('Content-Type', "text/html; charset=$charset");
 	}
-
-	public function setLanguage($language) {
+	
+	public function setLanguage($language)
+	{
 		return $this->addMetaHttpEquiv('Content-Language', $language);
 	}
-
-	public function ifIE($logic) {
+	
+	public function ifIE($logic)
+	{
 		if ($logic) {
 			$this->ifIElogic = $logic;
 		}
 		return $this;
 	}
 	
-	public function before($label) {
+	public function before($label)
+	{
 		if ($label) {
 			$this->beforeLabel= $label;
 		}
 		return $this;
 	}
 	
-	public function after($label) {
+	public function after($label)
+	{
 		if ($label) {
 			$this->afterLabel= $label;
 		}
 		return $this;
 	}
-
-	/**
+	
+	/*
 	 * Rendering methods
 	 */
 	
-	public function renderTitle() {
+	public function renderTitle()
+	{
 		return $this->_config['title'] ? "<title>{$this->_config['title']}</title>\n" : '';
 	}
-
-	public function renderBase() {
+	
+	public function renderBase()
+	{
 		return $this->_config['base'] ? "<base href=\"{$this->_config['base']}\"/>\n" : '';
 	}
-
-	public function renderMeta() {
+	
+	public function renderMeta()
+	{
 		$str = '';
 		if (is_array($this->_config['meta'])) {
 			foreach ($this->_config['meta'] as $key => $data) {
@@ -315,24 +350,27 @@ format/URI
 		}
 		return $str;
 	}
-
-	public function renderLinks() {
+	
+	public function renderLinks()
+	{
 		$str = '';
 		foreach ($this->_config['links'] as $link) {
 			$str .= "<link {$link['attr']}=\"{$link['rel']}\" href=\"{$link['href']}\" type=\"{$link['type']}\" title=\"{$link['title']}\" media=\"{$link['media']}\"/>\n";
 		}
 		return $str;
 	}
-
-	public function renderStyleLinks() {
+	
+	public function renderStyleLinks()
+	{
 		$str = '';
 		foreach ($this->_config['style_links'] as $style) {
 			$str .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$style['href']}\" media=\"{$style['media']}\"/>\n";
 		}
 		return $str;
 	}
-
-	public function renderStylesheets() {
+	
+	public function renderStylesheets()
+	{
 		$str = '';
 		foreach ($this->_config['stylesheets'] as $data) {
 			$media = $data['media'] ? " media=\"{$data['media']}\"" : '';
@@ -340,8 +378,9 @@ format/URI
 		}
 		return $str;
 	}
-
-	public function renderStyles() {
+	
+	public function renderStyles()
+	{
 		// gather styles for each media type
 		$stylemedia = array();
 		foreach ($this->_config['styles'] as $style) {
@@ -354,27 +393,30 @@ format/URI
 		}
 		return $str;
 	}
-
-	public function renderScriptLinks() {
+	
+	public function renderScriptLinks()
+	{
 		$str = '';
 		foreach ($this->_config['script_links'] as $data) {
 			$str .= "<script type=\"{$data['type']}\" src=\"{$data['src']}\"></script>\n";
 		}
 		return $str;
 	}
-
-	public function renderScripts() {
+	
+	public function renderScripts()
+	{
 		$str = '';
 		foreach ($this->_config['scripts'] as $data) {
 			$str .= "<script type=\"{$data['type']}\">\n{$data['script']}\n</script>\n";
 		}
 		return $str;
 	}
-
+	
 	/*
 	* name=string, value=string or renderer
 	*/
-	public function render($attr=array(), $content=null) {
+	public function render($attr=array(), $content=null)
+	{
 		$html = '';
 		$html .= $this->renderTitle();
 		$html .= $this->renderBase();
@@ -387,8 +429,10 @@ format/URI
 		$html .= $this->renderScripts();
 		return $this->_withTags ? "<head>\n$html</head>\n" : $html;
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		$this->render();
 	}
+
 }

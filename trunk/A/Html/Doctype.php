@@ -12,7 +12,9 @@
  * 
  * Generate HTML doctype tag
  */
-class A_Html_Doctype {
+class A_Html_Doctype
+{
+
 	const HTML_4_01_STRICT = 1;
 	const HTML_4_01_TRANSITIONAL = 2;
 	const HTML_4_01_FRAMESET = 3;
@@ -24,27 +26,24 @@ class A_Html_Doctype {
 	
 	protected $_config = array('doctype' => '');
 	
-	/*
-	* 
-	*/
-	public function __construct($doctype='') {
+	public function __construct($doctype='')
+	{
 		$this->setDoctype($doctype);
 	}
 	
 	/*
 	* name=string, value=string or renderer
 	*/
-	public function config($config) {
+	public function config($config)
+	{
 		if (isset($config['doctype'])) {
 			$this->setDoctype($config['doctype']);
 		}
 		return $this;
 	}
 	
-	/*
-	* 
-	*/
-	public function setDoctype($doctype='') {
+	public function setDoctype($doctype='')
+	{
 		$this->_config['doctype'] = $doctype;
 		return $this;
 	}
@@ -52,7 +51,8 @@ class A_Html_Doctype {
 	/*
 	* name=string, value=string or renderer
 	*/
-	public function render($doctype=null) {
+	public function render($doctype=null)
+	{
 		$doctypes = array(
 			self::HTML_5 => '<!DOCTYPE html>',
 			self::HTML_4_01_STRICT => "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\n\"http://www.w3.org/TR/html4/strict.dtd\">",
@@ -62,12 +62,12 @@ class A_Html_Doctype {
 			self::XHTML_1_0_TRANSITIONAL => "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">",	
 			self::XHTML_1_0_FRAMESET => "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Frameset//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\">",
 			self::XHTML_1_1 => "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">",
-			);
+		);
 		if (($doctype === null) && isset($this->_config['doctype'])) {
 			$doctype = $this->_config['doctype'];
 		}
 		// allow using string names of constants
-		if ($doctype && ! is_integer($doctype)) {
+		if ($doctype && !is_integer($doctype)) {
 			$doctype = constant("A_Html_Doctype::$doctype");
 		}
 		if (isset($doctypes[$doctype])) {
@@ -75,5 +75,5 @@ class A_Html_Doctype {
 		}
 		return '';
 	}
-	
+
 }

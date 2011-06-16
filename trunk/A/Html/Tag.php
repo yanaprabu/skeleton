@@ -12,36 +12,43 @@
  * 
  * Generic HTML tag w/attribute functionality
  */
-class A_Html_Tag {
+class A_Html_Tag
+{
+
 	protected $_attr = array();
 	
-	public function __construct($attr=array(), $value=null) {
+	public function __construct($attr=array(), $value=null)
+	{
 		$this->_attr = $attr;
 		if ($value !== null) {
 			$this->_attr['value'] = $value;
 		}
 	}
 	
-	public function mergeAttr(&$attr) {
+	public function mergeAttr(&$attr)
+	{
 		if (isset($this) && isset($this->_attr) && is_array($attr)) {
 			$attr = array_merge($this->_attr, $attr);
 		}
 	}
-
-	public function import($data) {
+	
+	public function import($data)
+	{
 		$this->_attr = array_merge($this->_attr, $data);
 		return $this;
 	}
 	
-	public function defaultAttr(&$attr, $defaults=array()) {
+	public function defaultAttr(&$attr, $defaults=array())
+	{
 		foreach($defaults as $key => $value) {
-			if (! isset($attr[$key])) {
+			if (!isset($attr[$key])) {
 				$attr[$key] = $value;
 			}
 		}
 	}
 	
-	public function removeAttr(&$attr, $key) {
+	public function removeAttr(&$attr, $key)
+	{
 		if ($key) {
 			unset($attr[$key]);
 			if (isset($this->_attr[$key])) {
@@ -50,16 +57,21 @@ class A_Html_Tag {
 		}
 	}
 	
-	public function get($key) {
+	public function get($key)
+	{
 		if (isset($this->_attr[$key])) {
 			return $this->_attr[$key];
 		}
 	}
 	
-	/*
-	 * can be called as set('name', 'foo') or set(array('name'=>'foo'))  
+	/**
+	 * Set a tag attribute(s).
+	 * 
+	 * @param string|array $key Either the attribute name, or an array of key/value pairs
+	 * @param mixed $value Value of attribute, not applicable if $key is an array
 	 */
-	public function set($key, $value=null) {
+	public function set($key, $value=null)
+	{
 		if ($key != '') {
 			if (is_array($key)) {
 				foreach ($key as $name => $value) {
@@ -72,7 +84,6 @@ class A_Html_Tag {
 		return $this;
 	}
 	
-	
 	/*
 	 * $tag - name of tag
 	 * $attr - array of attributes 
@@ -81,9 +92,11 @@ class A_Html_Tag {
 	 * e.g. render('div', array('id'=>'foo'), 'bar') generates <div id="foo">bar</div>
 	 * e.g. render('img', array('src'=>'foo.jpg', 'alt'=>'bar')) generates <img src="foo.jpg" alt="bar"/>
  	 */
-	public function render($tag, $attr=array(), $content=null) {
+	
+	public function render($tag, $attr=array(), $content=null)
+	{
 		self::mergeAttr($attr);
- 
+ 		
 		if (isset($attr['before'])) {
 			$before = is_object($attr['before']) ? $attr['before']->render() : $attr['before'];
 			unset($attr['before']);
@@ -96,7 +109,7 @@ class A_Html_Tag {
 		} else {
 			$after = '';
 		}
-
+		
 		$str = '';
 		if ($tag) {
 			$str = '<' . $tag;
@@ -116,8 +129,10 @@ class A_Html_Tag {
 		}
 		return $before.$str.$after;
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		$this->render();
 	}
+
 }

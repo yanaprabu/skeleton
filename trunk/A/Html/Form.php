@@ -12,11 +12,13 @@
  * 
  * Generate HTML form with fluent interface for form fields
  */
-class A_Html_Form {
+class A_Html_Form
+{
+
 	protected $_attr = array(
-					'action' => '',
-					'method' => 'post',
-					); 
+		'action' => '',
+		'method' => 'post',
+	); 
 	protected $_elements = array();
 	protected $_helpers = array();
 	protected $_wrapper = null;
@@ -25,7 +27,8 @@ class A_Html_Form {
 	/*
 	 * name=string, value=string or renderer
 	 */
-	public function render($attr=array(), $content='') {
+	public function render($attr=array(), $content='')
+	{
 		if (isset($this)) {
 			$content .= $this->partial($attr);
 		}
@@ -33,8 +36,9 @@ class A_Html_Form {
 		A_Html_Tag::defaultAttr($attr, array('method'=>'post', 'action'=>'', ));
 		return A_Html_Tag::render('form', $attr, $content);
 	}
-
-	public function partial($attr=array()) {
+	
+	public function partial($attr=array())
+	{
 		$out = '';
 		foreach ($this->_elements as $name => $element) {
 			$this->setValueFromModel($name, $element['renderer']);
@@ -43,7 +47,6 @@ class A_Html_Form {
 				$str .= is_object($element['label']) ? $element['label']->render() : $element['label'];
 			}
 			if (is_object($element['renderer'])) {
-#echo '<pre>' . print_r($element['renderer'], 1) . '</pre>';
 				$str .= $element['renderer']->render();
 			}
 			// if we wrap elements in a tag
@@ -54,20 +57,29 @@ class A_Html_Form {
 		}
 		return $out;
 	}
-
-	/*
-	 * get an attrubute of this HTML tag  
+	
+	/**
+	 * Get an attrubute of this HTML tag
+	 * 
+	 * @param string $key Attribute key
+	 * @return mixed
 	 */
 	public function get($key) {
-		if (isset($this->_attr[$key])) {
+		if (isset($this->_attr[$key]))
+		{
 			return $this->_attr[$key];
 		}
 	}
 	
-	/*
-	 * can be called as set('name', 'foo') or set(array('name'=>'foo'))  
+	/**
+	 * Set an attribute to this tag
+	 * 
+	 * @param string|array $key Either the key, or an associtive array of key/value pairs
+	 * @param mixed $value Value of attribute, not applicable if first argument is array
+	 * @return $this
 	 */
-	public function set($key, $value=null) {
+	public function set($key, $value=null)
+	{
 		if ($key != '') {
 			if (is_array($key)) {
 				foreach ($key as $name => $value) {
@@ -80,31 +92,44 @@ class A_Html_Form {
 		return $this;
 	}
 	
-	/*
-	 * set the URL for <form action="$action" ...>  
+	/**
+	 * Set this form's destination URL
+	 * 
+	 * @param string $action
+	 * @return $this
 	 */
-	public function setAction($action='') {
+	public function setAction($action='')
+	{
 		$this->_attr['action'] = $action;
 		return $this;
 	}
-                             // Optional method to set the Model
-	/*
-	 * set the POST/GET for <form method="$method" ...>  
+	
+	/**
+	 * Set form method
+	 * 
+	 * @param string $method Either POST or GET.  Default POST.
+	 * @return $this
 	 */
-	public function setMethod($method='post') {
+	public function setMethod($method='post')
+	{
 		$this->_attr['method'] = $method;
 		return $this;
 	}
 	
-	/*
-	 * set data model that form will get/set values to/from  
+	/**
+	 * set data model that form will get/set values to/from.
+	 * 
+	 * @param mixed $model
+	 * @return $this
 	 */
-	public function setModel($model) {
+	public function setModel($model)
+	{
 		$this->model = $model;
 		return $this;
 	}
-
-	public function setWrapper($obj, $attr=array()) {
+	
+	public function setWrapper($obj, $attr=array())
+	{
 		if (is_string($obj)) {
 			$this->_wrapper = new $obj();
 		} else {
@@ -113,30 +138,35 @@ class A_Html_Form {
 		$this->_wrapperAttr = $attr;
 		return $this;
 	}
-
-	protected function getHelperClass($type) {
+	
+	protected function getHelperClass($type)
+	{
 		return isset($this->_helpers[$type]) ? $this->_helpers[$type] : 'A_Html_Form_' . ucfirst($type);
 	}
-
-	protected function setHelperClass($type, $class) {
+	
+	protected function setHelperClass($type, $class)
+	{
 		$this->_helpers[$type] = $class;
 		return $this;
 	}
-
-	protected function getHelper($type, $attr=array()) {
+	
+	protected function getHelper($type, $attr=array())
+	{
 		$class = $this->getHelperClass($type);
 		if (class_exists($class)) {
 			$element = new $class($attr);
 			return $element;
 		}
 	}
-
-	public function reset() {
+	
+	public function reset()
+	{
 		$this->_elements = array(); 
 		return $this;
 	}
 	
-	public function __call($type, $args) {
+	public function __call($type, $args)
+	{
 		$params = array();
 		// allow (args), (name), (name, label), (name, args)
 		if(is_array($args[0])) {
@@ -156,7 +186,7 @@ class A_Html_Form {
 			}
 			$params['name'] = $args[0];
 		}
-	
+		
 		if ($type == 'fieldset') {
 			$this->_elements[] = $params['value'];
 		} elseif (isset($params['name']) && $params['name']) {
@@ -165,7 +195,7 @@ class A_Html_Form {
 			if (isset($params['label'])) {
 				$str = $params['label'];
 				unset($params['label']);
-				$label = $this->getHelper('label', array('for'=>$params['name'], 'value'=>$str));
+				$label = $this->getHelper('label', array('for' => $params['name'], 'value' => $str));
 				$this->_elements[$params['name']]['label'] = $label;
 			}
 			// if we wrap elements in a tag
@@ -181,7 +211,8 @@ class A_Html_Form {
 		return $this;
 	}
 	
-	protected function setValueFromModel($name, $element) {
+	protected function setValueFromModel($name, $element)
+	{
 		if (isset($this->model)) {
 			// get value depending on if model is an array or object AND if value is set
 			if (is_array($this->model) && isset($this->model[$name])) {
@@ -191,8 +222,10 @@ class A_Html_Form {
 			}
 		}
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		$this->render();
 	}
+
 }
