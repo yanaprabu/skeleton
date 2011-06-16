@@ -7,11 +7,6 @@
  * @link	 http://skeletonframework.com/
  */
 
-/**
- * A_Http_Upload
- *
- * Support for HTTP file upload
- */
 /*
 // todo - add the ability to see max sizes and timeouts
  * ini_set('max_input_time', 120);  
@@ -27,54 +22,66 @@ define('A_HTTP_UPLOAD_ERR_FILE_UNLINK', 1004);
 define('A_HTTP_UPLOAD_ERR_FILE_MOVE', 1005);
 define('A_HTTP_UPLOAD_ERR_FILE_TYPE', 1006);
 
-class A_Http_Upload {
+/**
+ * A_Http_Upload
+ *
+ * Support for HTTP file upload
+ */
+class A_Http_Upload
+{
+
 	const NOT_UPLOAD_FILE = 1001;
 	const ERR_MAX_SIZE = 1002;
 	const ERR_FILE_EXISTS = 1003;
 	const ERR_FILE_UNLINK = 1004;
 	const ERR_FILE_MOVE = 1005;
 	const ERR_FILE_TYPE = 1006;
+	
 	public $file_param = 'file';		// form/http parameter name for file(s)
 	public $submit_param = 'upload';	// form/http parameter name for the submit button
 	public $path_param = 'path';		// form/http parameter name for path relative to dir
+	public $paths = array();
+	public $labels = array();		// text labels for form select in formSelectPath(), one matching text label for each path in dir array
+	
 	protected $base_path = '/tmp';				// destination directory for uploaded file, or array of dirs will shows a select box, see formSelectPath()
 	protected $file_mode = 0777;			// mode to create new directories and files
 	protected $filename_regexp_pattern = array('/[^a-zA-Z0-9_\-\.]/');
 	protected $filename_regexp_replace = array('_');
-	
 	protected $replace = true;			// if destination file exists, delete and the upload
 	protected $min_size = 1;			// set minimum size of files, 0 to allow zero size files
 	protected $max_size = 0;			// cap size of file with this value
 	protected $allowed_types = array();
 	
-	public $paths = array();
-	public $labels = array();		// text labels for form select in formSelectPath(), one matching text label for each path in dir array
-	
-	
-	public function __construct() {
+	public function __construct()
+	{
 		$this->setMaxFilesize(0);
 	}
 	
-	public function isSubmitted() {
+	public function isSubmitted()
+	{
 		return($_REQUEST[$this->submit_param]);
 	}
 	
-	public function setFileParam($name) {
+	public function setFileParam($name)
+	{
 		$this->file_param = $name;
 		return $this;
 	}
 	
-	public function setPathParam($path) {
+	public function setPathParam($path)
+	{
 		$this->path_param = $path;
 		return $this;
 	}
 	
-	public function setSubmitParam($name) {
+	public function setSubmitParam($name)
+	{
 		$this->submit_param = $name;
 		return $this;
 	}
 	
-	public function setBasePath($base_path) {
+	public function setBasePath($base_path)
+	{
 		if (substr($base_path, -1) != '/') {
 			$base_path .= '/';
 		}
@@ -82,7 +89,8 @@ class A_Http_Upload {
 		return $this;
 	}
 	
-	public function setMinFilesize($min) {
+	public function setMinFilesize($min)
+	{
 		$this->min_size = $min;
 		return $this;
 	}
@@ -97,23 +105,27 @@ class A_Http_Upload {
 		return $this;
 	}
 	
-	public function setAllowedTypes($types=array()) {
+	public function setAllowedTypes($types=array())
+	{
 		$this->allowed_types = $types;
 		return $this;
 	}
 	
-	public function setReplace($replace) {
+	public function setReplace($replace)
+	{
 		$this->replace = $replace;
 		return $this;
 	}
 	
-	public function addPath($id, $path, $label='') {
+	public function addPath($id, $path, $label='')
+	{
 		$this->paths[$id] = $path;
 		$this->labels[$id] = $label;
 		return $this;
 	}
 	
-	public function fileCount() {
+	public function fileCount()
+	{
 		$n = 0;
 		if (isset($_FILES[$this->file_param]['name']) && ($_FILES[$this->file_param]['name'][0] != '')) {
 			$n = count($_FILES[$this->file_param]['name']);
@@ -121,26 +133,27 @@ class A_Http_Upload {
 		return $n;
 	}
 	
-	public function getMaxFilesize() {
+	public function getMaxFilesize()
+	{
 		$max = ini_get('upload_max_filesize');
 		if (is_string($max)) {
 			$n = strlen($max) - 1;
 			switch ($max[$n]) {
-			case 'K':
-				$m = 1024;
-				$max[$n] = "\0";
-				break;
-			case 'M':
-				$m = 1048576;
-				$max[$n] = "\0";
-				break;
-			case 'G':
-				$m = 1073741824;
-				$max[$n] = "\0";
-				break;
-			default:
-				$m = 1;
-				break;
+				case 'K':
+					$m = 1024;
+					$max[$n] = "\0";
+					break;
+				case 'M':
+					$m = 1048576;
+					$max[$n] = "\0";
+					break;
+				case 'G':
+					$m = 1073741824;
+					$max[$n] = "\0";
+					break;
+				default:
+					$m = 1;
+					break;
 			}
 			return($max * $m);
 		} else {
@@ -148,7 +161,8 @@ class A_Http_Upload {
 		}
 	}
 	
-	public function getFileOption($option, $n=0, $param='') {
+	public function getFileOption($option, $n=0, $param='')
+	{
 		if ($param == '') {
 			$param = $this->file_param;
 		}
@@ -163,7 +177,8 @@ class A_Http_Upload {
 		}
 	}
 	
-	public function setFileOption($value, $option, $n=0, $param='') {
+	public function setFileOption($value, $option, $n=0, $param='')
+	{
 		if ($param == '') {
 			$param = $this->file_param;
 		}
@@ -175,23 +190,28 @@ class A_Http_Upload {
 		return $this;
 	}
 	
-	public function getFileName($n=0, $param='') {
+	public function getFileName($n=0, $param='')
+	{
 		return preg_replace($this->filename_regexp_pattern, $this->filename_regexp_replace, $this->getFileOption('name', $n, $param));
 	}
 	
-	public function getFileTmpName($n=0, $param='') {
+	public function getFileTmpName($n=0, $param='')
+	{
 		return $this->getFileOption('tmp_name', $n, $param);
 	}
 	
-	public function getFileType($n=0, $param='') {
+	public function getFileType($n=0, $param='')
+	{
 		return $this->getFileOption('type', $n, $param);
 	}
 	
-	public function getFileSize($n=0, $param='') {
+	public function getFileSize($n=0, $param='')
+	{
 		return $this->getFileOption('size', $n, $param);
 	}
 	
-	public function getImageData($n=0, $param='') {
+	public function getImageData($n=0, $param='')
+	{
 	#	$imagedata = getimagesize($this->getFileTmpName($n, $param));
 	#	$width = $imagedata[0];
 	#	$height = $imagedata[1];
@@ -201,11 +221,13 @@ class A_Http_Upload {
 		return getimagesize($this->getFileTmpName($n, $param));
 	}
 	
-	public function getFileError($n=0, $param='') {
+	public function getFileError($n=0, $param='')
+	{
 		return $this->getFileOption('error', $n, $param);
 	}
 	
-	public function getFileErrorMsg($n=0, $param='') {
+	public function getFileErrorMsg($n=0, $param='')
+	{
 		$error = $this->getFileOption('error', $n, $param);
 		$errorMsg = array(
 			UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the maximum size allowed. ', 
@@ -219,11 +241,12 @@ class A_Http_Upload {
 			self::ERR_FILE_UNLINK => 'Cannot replace existing file. ',
 			self::ERR_FILE_MOVE => 'Permission denied. ',
 			self::ERR_FILE_TYPE => 'File type not allowed. ',
-			);
+		);
 		return isset($errorMsg[$error]) ? $errorMsg[$error] : '';
 	}
 	
-	public function isUploadedFile($n=0, $param='') {
+	public function isUploadedFile($n=0, $param='')
+	{
 		if (is_uploaded_file($this->getFileTmpName($n, $param))) {
 			return true;
 		} else {
@@ -232,8 +255,8 @@ class A_Http_Upload {
 		}
 	}
 	
-	public function isAllowedFilesize($n=0, $param='') {
-		
+	public function isAllowedFilesize($n=0, $param='')
+	{
 		$size = $this->getFileOption('size', $n, $param);
 		if ($this->min_size >= $size) {
 			return false;
@@ -250,7 +273,8 @@ class A_Http_Upload {
 		return true;
 	}
 	
-	public function isAllowedType($n=0, $param='') {
+	public function isAllowedType($n=0, $param='')
+	{
 		if ($this->allowed_types) {
 			if (in_array($this->getFileOption('type', $n, $param), $this->allowed_types)) {
 				return true;
@@ -262,11 +286,13 @@ class A_Http_Upload {
 		return true;
 	}
 	
-	public function isAllowed($n=0, $param='') {
+	public function isAllowed($n=0, $param='')
+	{
 		return $this->isUploadedFile($n, $param) && $this->isAllowedFilesize($n, $param) && $this->isAllowedType($n, $param);
 	}
 	
-	public function moveUploadedFile($n=0, $param='', $filename='') {
+	public function moveUploadedFile($n=0, $param='', $filename='')
+	{
 		if ($filename == '') {
 			$filename = $this->getFileName($n, $param);
 		}
@@ -289,16 +315,17 @@ class A_Http_Upload {
 				return false;
 			}
 		}
-		if (! @move_uploaded_file($this->getFileTmpName($n, $param), $filename)) {
+		if (!@move_uploaded_file($this->getFileTmpName($n, $param), $filename)) {
 			$this->setFileOption(self::ERR_FILE_MOVE, 'error', $n, $param);
 			return false;
 		}
 		return true;
 	}
 	
-	public function createDir($path, $mode=0) {
+	public function createDir($path, $mode=0)
+	{
 		if ($path) {
-			if (! $mode) {
+			if (!$mode) {
 				$mode = $this->file_mode;
 			}
 			if (file_exists($path)) {
@@ -312,13 +339,15 @@ class A_Http_Upload {
 		return false;
 	}
 	
-	public function deleteTmpFile($n, $param='') {
+	public function deleteTmpFile($n, $param='')
+	{
 		if ($filename = $this->getFileTmpName($n, $param)) {
 			return @unlink($filename);
 		}
 	}
 	
-	public function getPath() {
+	public function getPath()
+	{
 		if (isset($_REQUEST[$this->path_param])) {
 			return preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $_REQUEST[$this->path_param]);
 		} else {

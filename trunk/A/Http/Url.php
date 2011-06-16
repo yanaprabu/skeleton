@@ -12,45 +12,52 @@
  *
  * This class provides various functions with which to create, manipulate, and read URLs.
  */
-class A_Http_Url {
-   protected $action_param = '';
+class A_Http_Url
+{
+
+	protected $action_param = '';
 	
-    public function __construct($action_param='') {
-        $this->action_param = $action_param;
-    }
-
-    public function setActionParam($action_param) {
-        $this->action_param = $action_param;
+	public function __construct($action_param='')
+	{
+		$this->action_param = $action_param;
+	}
+	
+	public function setActionParam($action_param)
+	{
+		$this->action_param = $action_param;
 		return $this;
-    }
-
-    public function getActionParam() {
-        return $this->action_param;
-    }
-
-	public function getProtocol() {
+	}
+	
+	public function getActionParam()
+	{
+		return $this->action_param;
+	}
+	
+	public function getProtocol()
+	{
 		if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
 			return 'https';
 		} else {
 			return 'http';
 		}
 	}
-		
-    public function getBaseUrl ($page='', $server='', $protocol='') {
-		if (! $page) {
+	
+	public function getBaseUrl($page='', $server='', $protocol='')
+	{
+		if (!$page) {
 			$page = $_SERVER['SCRIPT_NAME'];
 		}
-		if (! $server) {
+		if (!$server) {
 			$server = $_SERVER['SERVER_NAME'];
 		}
 		if (! $protocol) {
 			$protocol = $this->getProtocol();
 		}
-	
 		return "$protocol://$server$page";
 	}
-		
-	public function getParams ($params=array()) {
+	
+	public function getParams ($params=array())
+	{
 		if ($params) {
 			if (is_array($params)) {
 /*
@@ -67,14 +74,16 @@ class A_Http_Url {
 		}
 		return $str;
 	}
-		
-	public function getUrl($params=array(), $page='', $server='', $protocol='') {
+	
+	public function getUrl($params=array(), $page='', $server='', $protocol='')
+	{
 		return $this->getBaseUrl($page, $server, $protocol) . '?' . $this->getParams($params);
 	}
 	
-	public function getCleanUrl($action, $params=array(), $page='', $server='', $protocol='') 	{
+	public function getCleanUrl($action, $params=array(), $page='', $server='', $protocol='')
+	{
 		$params[$this->action_param] = $action;
 		return $this->getUrl($params, $page, $server, $protocol);
 	}
-	
+
 }
