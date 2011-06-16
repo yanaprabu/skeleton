@@ -21,7 +21,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 	protected $_result_class = 'A_Db_Result';
 	protected $mysqli = null;
 	
-	public function _connect($dsn=null)\
+	public function _connect($dsn=null)
 	{
 		$result = false;
 		if ($dsn) {
