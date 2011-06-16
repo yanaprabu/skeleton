@@ -12,18 +12,21 @@
  * 
  * Filter a string with a regular expression (or multiple) by replacement.
  */
-class A_Filter_Regexp extends A_Filter_Base {
+class A_Filter_Regexp extends A_Filter_Base
+{
 
 	protected $from = '';
 	protected $to = '';
 	
-	public function __construct($from, $to='') {
+	public function __construct($from, $to='')
+	{
 		$this->from = $from;
 		$this->to = $to;
 	}
-		
-	protected function _filter_fix_from ($from) {
-		if($from) {
+	
+	protected function _filter_fix_from ($from)
+	{
+		if ($from) {
 			if(substr($from, 0, 1) != '/') {
 				$from = '/' . $from;
 			}
@@ -34,7 +37,8 @@ class A_Filter_Regexp extends A_Filter_Base {
 		return $from;
 	}
 	
-	public function filter () {
+	public function filter()
+	{
 		if (is_array($this->from)) {
 			foreach ($this->from as $key => $val) {
 				$this->from[$key] = $this->_filter_fix_from($val);

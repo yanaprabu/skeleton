@@ -12,9 +12,11 @@
  * 
  * Filter a string to leave only alpha-numeric characters
  */
-class A_Filter_Tolower extends A_Filter_Base {
+class A_Filter_Tolower extends A_Filter_Base
+{
 
-	public function filter () {
+	public function filter()
+	{
 		return strtolower($this->getValue());
 	}
 

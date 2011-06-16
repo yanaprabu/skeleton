@@ -14,15 +14,19 @@
  * 
  * @package A_Filter 
  */
-class A_Filter_Iterator extends A_Filter_Base {
-protected $filter;
-	
-    public function __construct($filter) {
-		$this->filter = $filter;
-    }
+class A_Filter_Iterator extends A_Filter_Base
+{
 
-    public function filter() {
-    	$value = $this->container;
+	protected $filter;
+	
+	public function __construct($filter)
+	{
+		$this->filter = $filter;
+	}
+	
+	public function filter()
+	{
+		$value = $this->container;
 		if (is_array($value)) {
 			$data = array();
 			foreach ($value as $key => $indexValue) {
@@ -32,5 +36,6 @@ protected $filter;
 		} else {
 			return $this->filter->doFilter($value);
 		}
-    }
+	}
+
 }
