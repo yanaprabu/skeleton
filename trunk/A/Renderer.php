@@ -12,9 +12,17 @@
  *
  * Interface representing an object capable of rendering data.
  */
-interface A_Renderer extends A_Renderable
+interface A_Renderer
 {
 
+	/**
+	 * Render the data in this Renderer.  Called by a containing Renderable.
+	 * 
+	 * @return string Rendered result
+	 * @see A_Renderer
+	 */
+	public function render();
+	
 	/**
 	 * Set internal data to be rendered
 	 * 
