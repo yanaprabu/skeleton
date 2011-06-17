@@ -60,13 +60,6 @@ class A_Http_Url
 	{
 		if ($params) {
 			if (is_array($params)) {
-/*
-				$p = array();
-				foreach ($params as $key => $val) {
-					$p[] = "$key=$val";
-				}
-				$str = implode('&', $p);
-*/
 				$str = http_build_query($params);
 			} elseif (is_string($params)) {
 				$str .= $params;
