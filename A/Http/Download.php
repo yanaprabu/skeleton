@@ -86,7 +86,7 @@ class A_Http_Download
 	 */
 	public function setContentLength($length)
 	{
-		if ($length) {
+		if ($length >= 0) {
 			$this->content_length = $length;
 		}
 		return $this;
