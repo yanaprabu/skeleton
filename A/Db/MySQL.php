@@ -54,10 +54,10 @@ class A_Db_MySQL extends A_Db_Adapter
 		}
 	}
 	
-	protected function _close($name='')
+	protected function _close($connection)
 	{
-		if (isset($this->_connection[$name])) {
-			mysql_close($this->_connection[$name]);
+		if (isset($connection)) {
+			mysql_close($connection);
 		}
 	}
 	

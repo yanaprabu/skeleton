@@ -13,7 +13,7 @@
  * 
  * Database result set for Sqlite3 select, show, or desc queries
  */
-class A_Db_Recordset_Sqlite3 extends A_Db_Recordset_Base
+class A_Db_Recordset_Sqlite extends A_Db_Recordset_Base
 {
 
 	/**
@@ -23,7 +23,7 @@ class A_Db_Recordset_Sqlite3 extends A_Db_Recordset_Base
 	 */
 	protected function _fetch()
 	{
-		return $this->result->fetchArray(SQLITE3_ASSOC);
+		return sqlite_fetch_array($this->result, SQLITE_ASSOC);
 	}
 		
 	/**
@@ -34,7 +34,7 @@ class A_Db_Recordset_Sqlite3 extends A_Db_Recordset_Base
 	public function numRows()
 	{
 		if ($this->result) {
-			return $this->numRows();
+			return sqlite_num_rows($this->result);
 		} else {
 			return 0;
 		}
@@ -48,7 +48,7 @@ class A_Db_Recordset_Sqlite3 extends A_Db_Recordset_Base
 	public function numCols()
 	{
 		if ($this->result) {
-			return $this->result->numColumns();
+			return sqlite_num_cols($this->result);
 		} else {
 			return 0;
 		}

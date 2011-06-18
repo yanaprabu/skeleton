@@ -138,10 +138,10 @@ abstract class A_Db_Adapter
 				}
 				return $this->_connection[$config['name']];
 			} else {
-				$this->_errorHandler(0, "No connection config data for '{$config['name']}'. ");
+				$this->_errorHandler(1, "No connection config data for '{$config['name']}'. ");
 			}
 		} else {
-			$this->_errorHandler(0, "No config data. ");
+			$this->_errorHandler(1, "No config data. ");
 		}
 	}
 	
@@ -197,11 +197,12 @@ abstract class A_Db_Adapter
 	}
 		
 	/**
-	 * Supplied my child class - must close connection if supported by extension passes back what _connect() returns for connection
+	 * Supplied by child class - must close connection if supported by extension
+	 * $connection is whatever variable that _connect() returns
 	 * 
-	 * @param string $name
+	 * @param mixed $connection
 	 */
-	abstract protected function _close($name='');
+	abstract protected function _close($connection);
 	
 	/**
 	 * Adds limit syntax to SQL statement
@@ -263,6 +264,7 @@ abstract class A_Db_Adapter
 	
 	public function _errorHandler($errno, $errorMsg)
 	{
+		$this->_error = $errno;
 		$this->_errorMsg .= $errorMsg;
 		if ($this->_exception) {
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
