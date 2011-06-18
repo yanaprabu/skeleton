@@ -12,11 +12,11 @@
  * 
  * Database connection class using SQLite.  Configuration array can contain the following indices: filename, mode.
  */
-class A_Db_Sqlite3 extends A_Db_Adapter
+class A_Db_Sqlite extends A_Db_Adapter
 {	protected $mode;
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
-	protected $_recordset_class = 'A_Db_Recordset_Sqlite3';
+	protected $_recordset_class = 'A_Db_Recordset_Sqlite';
 	protected $_result_class = 'A_Db_Result';
 	
 	public function __construct($config=null)
@@ -24,7 +24,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		if (is_string($config)) {
 			$config['filename'] = $config;
 		}
-		$this->mode = SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE;
+		$this->mode = 0666;
 		$this->config($config);
 		if ($config && isset($config['autoconnect'])) {
 			$this->connect();
@@ -41,7 +41,10 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 				$config['encryption_key'] = null;
 			}
 #echo "filename={$config['filename']}, mode={$config['mode']}, encryption_key={$config['encryption_key']}<br/>";
-			$sqlite = new SQLite3($config['filename'], $config['mode'], $config['encryption_key']);
+			$sqlite = sqlite_open($config['filename'], $config['mode'], $errormsg);
+			if ($errormsg) {
+				$this->_errorHandler(2, $errormsg);
+			}
 		} else {
 			$this->_errorHandler(2, 'No filename. ');
 		}
@@ -51,7 +54,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	public function _close($sqlite)
 	{
 		if (isset($sqlite)) {
-			$sqlite->close();
+			sqlite_close($sqlite);
 		} 
 	}
 	
@@ -68,17 +71,17 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		}
 		$sqlite = $this->connectBySql($sql);
 		if ($sqlite) {
-			$result = $sqlite->query($sql);
+			$result = sqlite_query($sqlite, $sql);
 			$this->_sql[] = $sql;			// save history
-			$obj->error = $sqlite->lastErrorCode();
-			$obj->errorMsg = $sqlite->lastErrorMsg();
+			$obj->error = sqlite_last_error($sqlite);
+			$obj->errorMsg = sqlite_error_string($obj->error);
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
 				$this->_numRows = -1;	// $result->num_rows($result);
 				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 				// call RecordSet specific setters
 				$obj->setResult($result);
 			} else {
-				$this->_numRows = $sqlite->changes();
+				$this->_numRows = sqlite_num_rows($result);
 				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 			}
 			return $obj;
@@ -98,7 +101,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	{
 		$sqlite = $this->connectBySql('INSERT');
 		if ($sqlite) {
-			return($sqlite->lastInsertRowID());
+			return sqlite_last_insert_row_id($sqlite);
 		} else {
 			return 0;
 		}
@@ -117,7 +120,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	public function escape($value)
 	{
 		$sqlite = $this->connectBySql('SELECT');
-		return $sqlite->escapeString($value);
+		return sqlite_escape_string($value);
 	}
 	
 }
