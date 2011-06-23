@@ -1,0 +1,214 @@
+#summary Lays out the syntax requirements for committed code
+#labels Phase-Design,Phase-Requirements
+
+= Syntax Standards =
+
+This document gives the required standards for committing to the repository.  This is an abbridged version of A_Collection (as of r1157):
+
+{{{
+<?php
+/**
+ * Collection.php
+ *
+ * @package	A
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Cory Kaufman, Christopher Thompson, Jonah Dahlquist
+ */
+
+/**
+ * A_Collection
+ * 
+ * Standard collection class that has get/set/has, iterator and array access
+ */
+class A_Collection implements Iterator, ArrayAccess
+{
+	protected $_data = array();
+	
+	/**
+	 * @param array $data Initial Collection data
+	 */
+	public function __construct($data=array())
+	{
+		$this->import($data);
+	}
+	
+	protected function _expand($obj, $data)
+	{
+		if (isset($data)) {
+			foreach ($data as $key => $value) {
+				if (is_array($value)) {
+			        if (!isset($obj->_data[$key])) {
+			        	$obj->_data[$key] = new A_Collection();
+			        }
+					$this->_expand($obj->_data[$key], $value);
+				} else {
+		        	$obj->_data[$key] = $value;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Sets the specified key to a value, or a default if the value is null.  The key is deleted if default is null
+	 * 
+	 * @param mixed $key
+	 * @param mixed $value
+	 * @param mixed $default Set as value if $value is strict null.  Optional, default null.
+	 * @return $this
+	 */
+	public function set($key, $value, $default=null)
+	{
+		if ($value !== null) {
+			$this->_data[$key] = $value;
+		} elseif ($default !== null) {
+			$this->_data[$key] = $default;
+		} else {
+			unset($this->_data[$key]);
+		}
+		return $this;
+	}
+	
+	/**
+	 * Appends an item to the end of the collection.
+	 * 
+	 * @param mixed $value Value to append to the collection
+	 * @param mixed $ignoreNull Won't add null items if set to true (optional, default false)
+	 * @return $this
+	 */
+	public function add($value, $ignoreNull=false)
+	{
+		if ($value !== null || !$ignoreNull) {
+			$this->_data[] = $value;
+		}
+		return $this;
+	}
+	
+	/**
+	 * Get the number of items in this Collection
+	 * 
+	 * @return int
+	 */
+	public function count()
+	{
+		return count($this->_data);
+	}
+	
+	/**
+	 * Check if this Collection contains the specified key
+	 * 
+	 * @param mixed $key
+	 * @return boolean True if key exists
+	 */
+	public function has($key)
+	{	
+		return isset($this->_data[$key]);
+	}
+	
+	/**
+	 * Convert this Collection to a normal array
+	 * 
+	 * @param $convertChildren Set to true to recursively convert child collections too (optional, default false).
+	 * @return array
+	 */
+	public function toArray($convertChildren=false)
+	{
+		$data = $this->_data;
+		if ($convertChildren)
+			foreach ($data as $key => $value)
+				if ($value instanceof A_Collection)
+					$data[$key] = $value->toArray(true);
+		
+		return $data;
+	}
+	
+	/*
+	 * Iterator methods
+	 */
+	
+	/**
+	 * @see Iterator::current()
+	 */
+	public function current()
+	{
+		return current($this->_data);
+	}
+	
+	/**
+	 * @see Iterator::key()
+	 */
+	public function key()
+	{
+		return key($this->_data);
+	}
+	
+	/**
+	 * @see Iterator::next()
+	 */
+	public function next()
+	{
+		next($this->_data);
+	}
+	
+	/**
+	 * @see Iterator::rewind()
+	 */
+	public function rewind()
+	{
+		reset($this->_data);
+	}
+	
+	/**
+	 * @see Iterator::valid()
+	 */
+	public function valid()
+	{
+		return key($this->_data) !== null;
+	}
+	
+	/*
+	 * Magic methods
+	 */
+	
+	public function __toString()
+	{
+		return $this->join(',');
+	}
+	
+}
+}}}
+
+= The Breakdown =
+
+  * Each page should start with a full opening PHP tag (<?php)
+  * The top of the page has a document-level PHPDoc header, containing at least the file name, @package, @license, @link, and @author.
+  * After a single empty line is the class-level PHPDoc comment, containing at least the class name and a description.
+  * Immediately following is the class.  All extends and implements keywords are on the same line.  The opening hash is on the next line, at the same indentation.
+  * Following that is an empty line at the same indentation.
+  * Tabs should always be used for indentation, and should only be used for indentation.
+  * Next is all class properties.  They should be grouped and sorted according to their type (static before instance, public before protected before private).  Groups of a certain type should be separated by an empty line.
+  * Method/property keywords should be in this order: exposure (static?) variablename.  (e.x. public static $variable or public static $variable = 'hello').
+  * All class properties should be formatted in camelCase (e.x. $someVariable, $someOtherVariable).
+  * Private property variables should be prefixed with an underscore.
+  * All empty lines in the code should be indented _as if there was code present_.
+  * The constructor is the first method.
+  * There should be parentheses directly after the method name, with no spacing between them.
+  * Method arguments should be separated by a comma and a space, in that order.
+  * Default arguments should _not_ be spaced (e.x. $arg='hello').
+  * All method names should be clear and descriptive of what the method does.  They must be intuitive, and use *full words*.
+  * The position of the opening hash relative to the method is the same as a class.
+  * Control structures should have a space between the keyword (e.x. if, while, for, etc.) and the parentheses, spacing between logical operators (e.x. ||, &&, etc.) and expressions, and a space between the closing parentheses and the opening hash.
+  * If the logic is too long, it can be wrapped and put on the next line, indented to one in this form:
+{{{
+if (
+	$foo == true
+	&& $bar == $foo
+	|| (
+		$bar != $foo
+		&& $foo == false
+	)
+) {
+}}}
+  * Method PHPDoc comments should give a clear description of the method, and list all parameters and the return value type (and optionally an explanation
+
+_*More to come*_
