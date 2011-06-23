@@ -12,7 +12,9 @@
  *
  * An extension of A_Model representing request data/parameters.
  */
-class A_Model_Form extends A_Model {
+class A_Model_Form extends A_Model
+{
+
 	protected $method = 'POST';
 	protected $submit_param = '';
 	protected $is_post = true;
@@ -20,22 +22,26 @@ class A_Model_Form extends A_Model {
 	protected $fieldClass = 'A_Model_Form_Field';
 	
 	/**
-	 * @param $method The allowed HTTP method, either: 'POST', 'GET', or ''
-	 * @return $this for fluent interface
+	 * @param string $method The allowed HTTP method, either 'POST', 'GET', or ''
+	 * @return $this
 	 */
-	public function setMethod($method) {
+	public function setMethod($method)
+	{
 		$method = strtoupper($method);
         if (in_array($method, array('POST','GET',''))) {
         	$this->method = $method;
         }
         return $this;
     }
-
+	
 	/**
-	 * @param $name The name of a required parameter
-	 * @return $this for fluent interface
+	 * Set the field which denotes that this form has been submitted
+	 * 
+	 * @param string $name The field name
+	 * @return $this
 	 */
-    public function setSubmitParameterName($name) {
+    public function setSubmitParameterName($name)
+    {
 		if ($name) {
 			$this->submit_field_name = $name;
 		}
@@ -44,38 +50,39 @@ class A_Model_Form extends A_Model {
 	
 	/**
 	 * @param $request A Request object
-	 * @return true if not error
+	 * @return bool True if successful, false otherwise
 	 */
-	public function isValid($request=null) {
+	public function isValid($request=null)
+	{
 		  if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
 			$this->is_submitted = true;
-
 			parent::isValid($request);
 		} else {
 			$this->is_submitted = false;
 			$this->error = true;
 		}
-			
-		return ! $this->error;
+		
+		return !$this->error;
 	}
 	
 	/**
 	 * Run the form as a Command object passed a Registry containing the Request
-	 * @param $locator Registry object
-	 * @return true if error occured
+	 * 
+	 * @param A_Locator $locator
+	 * @return bool True if error occured
 	 */
-	public function run($locator) {
+	public function run($locator)
+	{
 		$request = $locator->get('Request');
-	
 		$this->processRequest($request);
-
 		return $this->error;
 	}
-
+	
 	/**
-	 * @return true|false
+	 * @return bool True if form has been validated
 	 */
-	public function isSubmitted() {
+	public function isSubmitted()
+	{
 		return $this->is_submitted;
 	}
 

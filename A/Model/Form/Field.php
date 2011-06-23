@@ -12,40 +12,44 @@
  *
  * An extension of A_Model_Field.  It's purpose is to act as a field object for a A_Model_Form.  This class provides the ability to attach a renderer to it.
  */
-class A_Model_Form_Field extends A_Model_Field {
+class A_Model_Form_Field extends A_Model_Field
+{
 	// from Input Controller
 	public $renderer = null;
 	// from Form Controller
 	public $type = '';
 	public $addtype = '';
 	
-	public function setType($type, $addtype='') {
+	public function setType($type, $addtype='')
+	{
 		$this->type = $type;
 		$this->addtype = $addtype;
 		return $this;
 	}
 	
-	public function setRenderer($renderer) {
+	public function setRenderer($renderer)
+	{
 		$this->renderer = $renderer;
 		return $this;
 	}
 	
-	public function render() {
+	public function render()
+	{
 		// if no value and addtype set then use it
-		if ($this->addtype && ($this->value == '')) {
+		if ($this->addtype && $this->value == '') {
 			$savetype = $this->type;
 			$this->type = $this->addtype;
 		} else {
 			$savetype = null;
 		}
 		if (isset($this->type['renderer'])) {
-			if (! isset($this->renderer)){
+			if (!isset($this->renderer)) {
 				$this->renderer = $this->type['renderer'];
 				unset($this->type['renderer']);
 			}
 		}
 		// string is name of class with underscores in loadable convention
-		if (is_string($this->renderer)){
+		if (is_string($this->renderer)) {
 			// load locator if not loaded
 			if (A_Locator::loadClass($this->renderer)) {
 				// instantiate render passing the array of field
@@ -68,7 +72,8 @@ class A_Model_Form_Field extends A_Model_Field {
 		return $this->value;
 	}
 	
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->render();
 	}
 
