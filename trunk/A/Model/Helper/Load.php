@@ -94,5 +94,5 @@ class A_Model_Helper_Load
 		
 		return $object;
 	}
-	
+
 }
