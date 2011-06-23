@@ -11,10 +11,12 @@
 /**
  * A_Pagination_Standalone
  */
-class A_Pagination_Standalone extends A_Pagination_View_Standard	{
+class A_Pagination_Standalone extends A_Pagination_View_Standard
+{
 
-	public function __construct ($adapter, $pageSize = false, $currentPage = false)	{
-		parent::__construct (new A_Pagination_Request ($adapter, $pageSize, $currentPage));
+	public function __construct($adapter, $pageSize = false, $currentPage=false)
+	{
+		parent::__construct(new A_Pagination_Request($adapter, $pageSize, $currentPage));
 	}
 
 }

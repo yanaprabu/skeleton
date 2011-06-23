@@ -11,8 +11,9 @@
 /**
  * A_Pagination_View_DataGrid
  * 
- * Generate complete datagrid
+ * Generate complete data grid
  */
-class A_Pagination_View_DataGrid	{
+class A_Pagination_View_DataGrid
+{
 
 }

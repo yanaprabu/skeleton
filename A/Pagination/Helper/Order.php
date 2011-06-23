@@ -13,27 +13,33 @@
  * 
  * Generate orderBy links
  */
-class A_Pagination_Helper_Order	{
+class A_Pagination_Helper_Order
+{
+
 	protected $pager;
 	protected $url;
 	protected $columns;
 	protected $separator = '</th><th>';
 	
-	public function __construct ($pager, $url=false, $columns=array()) {
+	public function __construct ($pager, $url=false, $columns=array())
+	{
 		$this->pager = $pager;
 		$this->url = $url ? $url : new A_Pagination_Helper_Url();
 		$this->columns = $columns;
 	}
-
-	public function setColumns($columns) {
+	
+	public function setColumns($columns)
+	{
 		$this->columns = $columns;
 	}
-
-	public function setSeparator($separator) {
+	
+	public function setSeparator($separator)
+	{
 		$this->separator = $separator;
 	}
-
-	public function render($columns=array()) {
+	
+	public function render($columns=array())
+	{
 		if ($columns) {
 			$this->columns = $columns;
 		}
