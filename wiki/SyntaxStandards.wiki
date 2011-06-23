@@ -3,7 +3,7 @@
 
 = Syntax Standards =
 
-This document gives the required standards for committing to the repository.  This is an abbridged version of A_Collection (as of r1157):
+This document gives the required standards for committing to the repository.  This is an abridged (and slightly modified) version of A_Collection (as of r1157):
 
 {{{
 <?php
