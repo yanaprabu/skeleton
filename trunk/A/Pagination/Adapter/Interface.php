@@ -12,10 +12,11 @@
  * 
  * Interface for pagination adapters
  */
-interface A_Pagination_Adapter_Interface	{
+interface A_Pagination_Adapter_Interface
+{
 
-	public function getItems ($offset, $length);
+	public function getItems($offset, $length);
 	public function getNumItems();
-	public function setOrderBy ($field, $descending=false);
+	public function setOrderBy($field, $descending=false);
 
 }

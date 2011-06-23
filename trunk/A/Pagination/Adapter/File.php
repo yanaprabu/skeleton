@@ -12,19 +12,24 @@
  * 
  * Datasource access class for paging through lines in a file.
  */
-class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base	{
+class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base
+{
+
 	protected $filename;
 	protected $session = null;
 	
-	public function __construct($filename) {
+	public function __construct($filename)
+	{
 		$this->filename = $filename;
 	}
-
-	public function setSession ($session)	{
+	
+	public function setSession($session)
+	{
 		$this->session = $session;
 	}
-
-	public function getNumItems() {
+	
+	public function getNumItems()
+	{
 		$counter = 0;
 		$fp = fopen($this->filename, 'r');
 		if ($fp) {
@@ -36,8 +41,9 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base	{
 		}
 		return $counter;
 	}
-
-	public function getItems($start, $length) {
+	
+	public function getItems($start, $length)
+	{
 		$counter = 1;
 		$rows = array();
 		$fp = fopen($this->filename, 'r');
@@ -55,11 +61,11 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base	{
 		}
 		return $rows;
 	}
+	
+	public function setOrderBy($field, $descending = 0)
+	{}
 
-	public function setOrderBy($field, $descending = 0)	{
-	}
+	public function constructOrderBy()
+	{}
 
-	public function constructOrderBy()	{
-	}
 }
-
