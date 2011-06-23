@@ -12,35 +12,42 @@
  * 
  * Datasource access class for Pager using array.
  */
-class A_Pagination_Adapter_Array {
+class A_Pagination_Adapter_Array
+{
+
 	protected $data;
 	protected $order_by_field = '';
 	protected $order_by_descending = 0;
 	
-    public function __construct($data) {
-        $this->data = $data;
-    }
-
-    public function getNumItems() { 
-        return count($this->data);
-    }
-    
-    public function getItems($start, $length) {
+	public function __construct($data)
+	{
+		$this->data = $data;
+	}
+	
+	public function getNumItems()
+	{ 
+		return count($this->data);
+	}
+	
+	public function getItems($start, $length)
+	{
 		$max = count($this->data);
 		if (($max > 0) && ($begin > 0) && ($end <= $max)) {
-        	--$begin;
-        	$this->orderBy();
-        	return array_slice($this->data, $begin, $end - $begin);
-        }
+			--$begin;
+			$this->orderBy();
+			return array_slice($this->data, $begin, $end - $begin);
+		}
 	}
-
-    public function setOrderBy($field, $descending=0) {
+	
+	public function setOrderBy($field, $descending=0)
+	{
 		$this->order_by_field = $field;
 		$this->order_by_descending = $descending;
 		return $this;
-    }
-
-    public function orderBy() {
+	}
+	
+	public function orderBy()
+	{
 		global $A_Pagination_Adapter_Array_Cmp_Key;
 		if ($this->order_by_field) {
 			$A_Pagination_Adapter_Array_Cmp_Key = $this->order_by_field;
@@ -52,7 +59,7 @@ class A_Pagination_Adapter_Array {
 			}
 		}
 		return $this;
-    }
+	}
 
 }
 
@@ -85,4 +92,3 @@ function pageable_array_cmp_number_reverse($a, $b)
 	
 	return $a[$A_Pagination_Adapter_Array_Cmp_Key] < $b[$A_Pagination_Adapter_Array_Cmp_Key];
 }
-
