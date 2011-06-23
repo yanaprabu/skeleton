@@ -16,6 +16,7 @@ These parameters must be met before committing to the trunk.
   * Valid PHPDoc file headers must be created for any code changed that did not already have them.
   * PHPDoc file headers must be updated to reflect any changes made.
   * Valid PHPDoc comments must be created for any new or edited classes, methods, or public class variables.
+  * PHPDoc for protected and private methods is optional.
 
 === Log Message ===
 
