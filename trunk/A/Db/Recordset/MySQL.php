@@ -9,11 +9,11 @@
  */
 
 /**
- * A_Db_Recordset_MySQL
+ * A_Db_Recordset_Mysql
  * 
- * Database result set for MySQL select, show, or desc queries
+ * Database result set for Mysql select, show, or desc queries
  */
-class A_Db_Recordset_MySQL extends A_Db_Recordset_Base
+class A_Db_Recordset_Mysql extends A_Db_Recordset_Base
 {
 
 	/**

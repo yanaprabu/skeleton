@@ -31,28 +31,32 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		}
 	}
 	
-	public function _connect ($config=null)
+	public function connect ()
 	{
-		if (isset($config['filename'])) {
-			if (! isset($config['mode'])) {
-				$config['mode'] = $this->mode;
+		if (isset($this->_config['filename']) && ! $this->_connection) {
+			if (! isset($this->_config['mode'])) {
+				$this->_config['mode'] = $this->mode;
 			}
-			if (! isset($config['encryption_key'])) {
-				$config['encryption_key'] = null;
+			if (! isset($this->_config['encryption_key'])) {
+				$this->_config['encryption_key'] = null;
 			}
-#echo "filename={$config['filename']}, mode={$config['mode']}, encryption_key={$config['encryption_key']}<br/>";
-			$sqlite = new SQLite3($config['filename'], $config['mode'], $config['encryption_key']);
+#echo "filename={$this->_config['filename']}, mode={$this->_config['mode']}, encryption_key={$this->_config['encryption_key']}<br/>";
+			$this->_connection = new SQLite3($this->_config['filename'], $this->_config['mode'], $this->_config['encryption_key']);
+			$errmsg = $this->_connection->lastErrorMsg();
+			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
 		} else {
-			$this->_errorHandler(2, 'No filename. ');
+			$this->_errorHandler(1, 'No filename. ');
 		}
-		return $sqlite; 
+		return $this; 
 	}
 	
-	public function _close($sqlite)
+	public function close()
 	{
-		if (isset($sqlite)) {
-			$sqlite->close();
-		} 
+		if (isset($this->_connection)) {
+			$this->_connection->close();
+			$this->_connection = null;
+		}
+		return $this; 
 	}
 	
 	public function query($sql, $bind=array())
@@ -66,24 +70,23 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
-		$sqlite = $this->connectBySql($sql);
-		if ($sqlite) {
-			$result = $sqlite->query($sql);
+		if ($this->_connection) {
+			$result = $this->_connection->query($sql);
 			$this->_sql[] = $sql;			// save history
-			$obj->error = $sqlite->lastErrorCode();
-			$obj->errorMsg = $sqlite->lastErrorMsg();
+			$errmsg = $this->_connection->lastErrorMsg();
+			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
 				$this->_numRows = -1;	// $result->num_rows($result);
 				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 				// call RecordSet specific setters
 				$obj->setResult($result);
 			} else {
-				$this->_numRows = $sqlite->changes();
+				$this->_numRows = $this->_connection->changes();
 				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 			}
 			return $obj;
 		} else {
-			$this->_errorHandler(3, 'No connection. ');
+			$this->_errorHandler(2, 'No connection. ');
 		}
 		return $obj;
 	}
@@ -96,12 +99,13 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	
 	public function lastId()
 	{
-		$sqlite = $this->connectBySql('INSERT');
-		if ($sqlite) {
-			return($sqlite->lastInsertRowID());
-		} else {
-			return 0;
+		$id = 0;
+		if ($this->_connection) {
+			$id = $this->_connection->lastInsertRowID();
+			$errmsg = $this->_connection->lastErrorMsg();
+			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
 		}
+		return $id;
 	}
 	
 	public function nextId($sequence)
@@ -116,8 +120,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		
 	public function escape($value)
 	{
-		$sqlite = $this->connectBySql('SELECT');
-		return $sqlite->escapeString($value);
+		return $this->_connection->escapeString($value);
 	}
 	
 }
