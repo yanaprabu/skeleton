@@ -1,4 +1,12 @@
 <?php
+/**
+ * Db.php
+ *
+ * @package  A_Session
+ * @license  http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	 http://skeletonframework.com/
+ */
+
 /*
 
 Code based on http://phpsec.org/projects/guide/5.html Copyright PHP Security Consortium
@@ -32,8 +40,12 @@ To free up the memory used by rows that have been deleted, use ALTER TABLE ENGIN
 
 */
 
-class A_Session_Db {
-	
+/**
+ * A_Session_Db
+ */
+class A_Session_Db
+{
+
 	function _construct($db)
 	{
 		$this->db = $db;
@@ -41,18 +53,19 @@ class A_Session_Db {
 		
 	function init()
 	{
-		session_set_save_handler(array($this, 'open'),
-		                       array($this, 'close'),
-		                       array($this, 'read'),
-		                       array($this, 'write'),
-		                       array($this, 'destroy'),
-		                       array($this, 'clean'));
+		session_set_save_handler(
+			array($this, 'open'),
+			array($this, 'close'),
+			array($this, 'read'),
+			array($this, 'write'),
+			array($this, 'destroy'),
+			array($this, 'clean')
+		);
 	}
-
+	
 	function open()
 	{
 		$this->db->connect();
-		  
 		return false;
 	}
 	
@@ -64,58 +77,53 @@ class A_Session_Db {
 	function read($id)
 	{
 		$id = $this->db->escape($id);
-	
 		$sql = "SELECT data
 		        FROM   sessions
 		        WHERE  id = '$id'";
-	
-		if ($result = $this->db->query($sql))
-		{
-		  if ($this->db->num_rows($result))
-		  {
-		    $record = $this->db->fetch($result);
-	
-		    return $record['data'];
-		  }
+		if ($result = $this->db->query($sql)) {
+			if ($this->db->num_rows($result)) {
+				$record = $this->db->fetch($result);
+				return $record['data'];
+			}
 		}
-	
+		
 		return '';
 	}
 	
 	function write($id, $data)
 	{   
 		$access = time();
-	
+		
 		$id = $this->db->escape($id);
 		$access = $this->db->escape($access);
 		$data = $this->db->escape($data);
-	
+		
 		$sql = "REPLACE 
 		        INTO    sessions
 		        VALUES  ('$id', '$access', '$data')";
-	
+		
 		return $this->db->query($sql);
 	}
 	
 	function destroy($id)
 	{
 		$id = $this->db->escape($id);
-	
+		
 		$sql = "DELETE
 		        FROM   sessions
 		        WHERE id = '$id'";
-	
+		
 		return $this->db->query($sql);
 	}
 	
 	function clean($age)
 	{
 		$time = $this->db->escape(time() - $age);
-	
+		
 		$sql = "DELETE
 		        FROM   sessions
 		        WHERE  access < '$time'";
-	
+		
 		return $this->db->query($sql);
 	}
 
