@@ -20,20 +20,20 @@ class A_Socket_Server
 	const INTERFACE_CLIENT = 'A_Socket_Client';
 	// message class interface to check
 	const INTERFACE_MESSAGE = 'A_Socket_Message';
-
+	
 	// connect event identifier
 	const EVENT_CONNECT = 'a.socket.onconnect';
 	// disconnect event identifier
 	const EVENT_DISCONNECT = 'a.socket.ondisconnect';
 	// message event identifier
 	const EVENT_MESSAGE = 'a.socket.onmessage';
-
+	
 	/**
 	 * Holds the main socket listening for connections
 	 * @var resource
 	 */
 	protected $socket;
-
+	
 	/**
 	 * Holds all connected sockets
 	 * @var array
@@ -45,43 +45,43 @@ class A_Socket_Server
 	 * @var array
 	 */
 	protected $clients = array();
-
+	
 	/**
 	 * The host to listen on
 	 * @var string
 	 */
 	protected $host;
-
+	
 	/**
 	 * The port to listen on
 	 * @var integer
 	 */
 	protected $port;
-
+	
 	/**
 	 * Event manager.  Used to fire events on connect, disconnect, and message
 	 * @var A_Event_Manager
 	 */
 	protected $eventManager;
-
+	
 	/**
 	 * The class name to use when instantiating a new client
 	 * @var string
 	 */
 	protected $client_class;
-
+	
 	/**
 	 * The class name to use when instantiating a new message
 	 * @var string
 	 */
 	protected $message_class;
-
+	
 	/**
 	 * The message to send when a connection is made
 	 * @var string
 	 */
 	protected $connectMessage;
-
+	
 	/**
 	 * The message to send when a client disconnects
 	 * @var string
@@ -97,7 +97,7 @@ class A_Socket_Server
 	{
 		$this->eventManager = $eventManager;
 	}
-
+	
 	/**
 	 * Main server loop
 	 *
@@ -109,12 +109,12 @@ class A_Socket_Server
 		$this->port = $config['port'];
 		$this->connectMessage = $config['message-connect'];
 		$this->disconnectMessage = $config['message-disconnect'];
-
+		
 		$this->client_class = $config['class-client'];
 		if (!in_array(self::INTERFACE_CLIENT, class_implements($this->client_class))) {
 			throw new Exception('A_Socket_Server: the client class is invalid.');
 		}
-
+		
 		$this->message_class = $config['class-message'];
 		if (!in_array(self::INTERFACE_MESSAGE, class_implements($this->message_class))) {
 			throw new Exception('A_Socket_Server: the message class is invalid.');
@@ -126,7 +126,7 @@ class A_Socket_Server
 		while ($stopLoop == false) {
 			$updated_sockets = $this->sockets;
 			socket_select($updated_sockets, $write = NULL, $exceptions = NULL, NULL);
-				
+			
 			foreach ($updated_sockets as $socket) {
 				if ($socket == $this->socket) {
 					// A new connection
@@ -167,7 +167,7 @@ class A_Socket_Server
 			}
 		}
 	}
-
+	
 	/**
 	 * Setup main socket to listen for new connections
 	 */
@@ -177,22 +177,22 @@ class A_Socket_Server
 		if ($this->socket === false) {
 			throw new Exception('Could not create socket: ' . socket_strerror(socket_last_error()));
 		}
-
+		
 		socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
-
+		
 		$success = socket_bind($this->socket, $this->host, $this->port);
 		if ($success === false) {
 			throw new Exception('Could not bind socket: ' . socket_strerror(socket_last_error()));
 		}
-
+		
 		$success = socket_listen($this->socket, 5);
 		if ($success === false) {
 			throw new Exception('Could not listen to socket: ' . socket_strerror(socket_last_error()));
 		}
-
+		
 		$this->sockets[] = $this->socket;
 	}
-
+	
 	/**
 	 * Convenience function for firing events
 	 * 
@@ -207,4 +207,5 @@ class A_Socket_Server
 			new $this->message_class($message, $client, $this->clients)
 		);
 	}
+
 }

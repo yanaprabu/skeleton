@@ -18,10 +18,10 @@ class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 
 	// websocket end of line marker
 	const SOCKET_EOL = "\r\n";
-
+	
 	// validation response template
 	const HANDSHAKE_RESPONSE = "HTTP/1.1 101 Web Socket Protocol Handshake\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n%s\r\n%s";
-
+	
 	/**
 	 * Send message to client
 	 * 
@@ -31,7 +31,7 @@ class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 	{
 		$this->_send(chr(0) . $message . chr(255));
 	}
-
+	
 	/**
 	 * Extract messages from data stream
 	 * 
@@ -41,26 +41,26 @@ class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 	public function receive($data)
 	{
 		$blocks = array();
-
+		
 		$firstChar = substr($data, 0, 1);
 		$endIndex = strpos($data, chr(255));
-
+		
 		while ($firstChar == chr(0) && $endIndex !== false) {
 			// get block and remove from data
 			$block = substr($data, 1, $endIndex - 1);
 			$data = substr($data, $endIndex);
-
+			
 			// store the block
 			$blocks[] = $block;
-
+			
 			// get ready for next loop
 			$firstChar = substr($data, 0, 1);
 			$index = strpos($data, chr(255));
 		}
-
+		
 		return $blocks;
 	}
-
+	
 	/**
 	 * Perform WebSocket rev 76 handshake with client
 	 * 
@@ -124,12 +124,13 @@ class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 		// Write response to socket
 		socket_write($this->socket, $responseString, strlen($responseString));
 		$this->connected = true;
-
+		
 		// indicate success to Server
 		return true;
 	}
 	
-	private function keyToBytes($key) {
+	private function keyToBytes($key)
+	{
 		$matchNumbers = preg_match_all('/[0-9]/', $key, $number);
 		$matchSpaces = preg_match_all('/ /', $key, $space);
 		if ($matchNumbers && $matchSpaces) {
@@ -138,7 +139,8 @@ class A_Socket_Client_WebSocket extends A_Socket_Client_Base
 		return '';
 	}
 	
-	private function securityDigest($key1, $key2, $key3) {
+	private function securityDigest($key1, $key2, $key3)
+	{
 		return md5(
 			pack('N', $this->keyToBytes($key1)) .
 			pack('N', $this->keyToBytes($key2)) .

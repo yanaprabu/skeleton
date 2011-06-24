@@ -27,13 +27,13 @@ class A_Socket_Message_Base implements A_Socket_Message
 	 * @var object
 	 */
 	protected $client;
-
+	
 	/**
 	 * An array of all clients connected
 	 * @var array
 	 */
 	protected $clients;
-
+	
 	/**
 	 * Constructor
 	 *
@@ -47,7 +47,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		$this->client = $client;
 		$this->clients = $clients;
 	}
-
+	
 	/**
 	 * Send message back to client(s)
 	 *
@@ -59,7 +59,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		$this->_reply($data, $recipient);
 		return $this;
 	}
-
+	
 	/**
 	 * Get route data from message
 	 */
@@ -67,7 +67,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 	{
 		return null;
 	}
-
+	
 	/**
 	 * Get the actual message data
 	 * 
@@ -77,7 +77,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 	{
 		return $this->message;
 	}
-
+	
 	/**
 	 * Get the session from the sender client
 	 *
@@ -87,7 +87,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 	{
 		return $this->client->getSession();
 	}
-
+	
 	/**
 	 * Set the session of the sender client
 	 *
@@ -99,7 +99,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		$this->client->setSession($session);
 		return $this;
 	}
-
+	
 	/**
 	 * Get sessions from all connected clients
 	 * 
@@ -113,7 +113,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		}
 		return $sessions;
 	}
-
+	
 	/**
 	 * Send message back to client(s)
 	 *
@@ -147,4 +147,5 @@ class A_Socket_Message_Base implements A_Socket_Message
 		}
 		return $this;
 	}
+
 }

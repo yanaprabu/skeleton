@@ -27,7 +27,7 @@ class A_Socket_Message_Json extends A_Socket_Message_Base
 	{
 		parent::__construct(json_decode($message), $client, $clients);
 	}
-
+	
 	/**
 	 * Reply to client(s)
 	 *
@@ -40,7 +40,7 @@ class A_Socket_Message_Json extends A_Socket_Message_Base
 		$this->_reply(json_encode($data), $recipient);
 		return $this;
 	}
-
+	
 	/**
 	 * Get route data from message
 	 */
@@ -58,4 +58,5 @@ class A_Socket_Message_Json extends A_Socket_Message_Base
 			return null;
 		}
 	}
+
 }
