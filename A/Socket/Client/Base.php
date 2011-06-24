@@ -21,13 +21,13 @@ class A_Socket_Client_Base implements A_Socket_Client
 	 * @var resource
 	 */
 	protected $socket;
-
+	
 	/**
 	 * If handshake has been completed
 	 * @var boolean
 	 */
 	protected $connected = false;
-
+	
 	/**
 	 * User session data.  Developer defined.
 	 * @var mixed
@@ -43,7 +43,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		$this->socket = $socket;
 	}
-
+	
 	/**
 	 * Send message to client
 	 * 
@@ -53,7 +53,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		$this->_send($message);
 	}
-
+	
 	/**
 	 * Extract messages from data stream
 	 *
@@ -64,7 +64,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		return array($data);
 	}
-
+	
 	/**
 	 * Write data to socket
 	 * 
@@ -79,7 +79,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 			socket_close($this->socket);
 		}
 	}
-
+	
 	/**
 	 * Validate connection
 	 * 
@@ -89,7 +89,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		$this->connected = true;
 	}
-
+	
 	/**
 	 * Check if connection has been validated
 	 * 
@@ -99,7 +99,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		return $this->connected;
 	}
-
+	
 	/**
 	 * Get the client session data
 	 * 
@@ -109,7 +109,7 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		return $this->session;
 	}
-
+	
 	/**
 	 * Set the client session data
 	 *
@@ -121,4 +121,5 @@ class A_Socket_Client_Base implements A_Socket_Client
 		$this->session = $session;
 		return $this;
 	}
+
 }

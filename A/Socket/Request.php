@@ -21,19 +21,19 @@ class A_Socket_Request
 	 * @var string
 	 */
 	protected $method = false;
-
+	
 	/**
 	 * Message to pass to controller
 	 * @var object
 	 */
 	protected $data;
-
+	
 	/**
 	 * Route to navigate to
 	 * @var mixed
 	 */
 	protected $route;
-
+	
 	/**
 	 * Constructor
 	 * 
@@ -45,7 +45,7 @@ class A_Socket_Request
 		$this->data = $data;
 		$this->route = $data->getRoute();
 	}
-
+	
 	/**
 	 * Gets route/method information from request
 	 * 
@@ -61,7 +61,7 @@ class A_Socket_Request
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Get message passed from Server
 	 * 
@@ -71,4 +71,5 @@ class A_Socket_Request
 	{
 		return $this->data;
 	}
+
 }

@@ -21,7 +21,7 @@ class A_Socket_EventListener_FrontController
 	 * @var A_Locator
 	 */
 	protected $locator;
-
+	
 	/**
 	 * Constructor
 	 * 
@@ -31,7 +31,7 @@ class A_Socket_EventListener_FrontController
 	{
 		$this->locator = $locator;
 	}
-
+	
 	/**
 	 * Sets the events handled by this object
 	 *
@@ -41,7 +41,7 @@ class A_Socket_EventListener_FrontController
 	{
 		return array(A_Socket_Server::EVENT_CONNECT, A_Socket_Server::EVENT_MESSAGE, A_Socket_Server::EVENT_DISCONNECT);
 	}
-
+	
 	/**
 	 * Called when a client connects, sends a message, or disconnects.  Creates
 	 * a new Front Controller and dispatches to the controller.
@@ -61,4 +61,5 @@ class A_Socket_EventListener_FrontController
 		$front = new A_Controller_Front($Config->get('APP'), $Config->get('DEFAULT_ACTION'), $Config->get('ERROR_ACTION'));
 		$front->run($Locator);
 	}
+
 }

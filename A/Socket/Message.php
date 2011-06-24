@@ -20,17 +20,17 @@ interface A_Socket_Message
 	 * Reply only to the client that sent the message
 	 */
 	const SENDER = 0;
-
+	
 	/**
 	 * Reply to all clients
 	 */
 	const ALL = 1;
-
+	
 	/**
 	 * Reply to all clients except the sender
 	 */
 	const OTHERS = 2;
-
+	
 	/**
 	 * Constructor
 	 *
@@ -39,7 +39,7 @@ interface A_Socket_Message
 	 * @param array Array of all connected clients
 	 */
 	public function __construct($message, $client, $clients);
-
+	
 	/**
 	 * Reply to client(s)
 	 *
@@ -47,32 +47,33 @@ interface A_Socket_Message
 	 * @param mixed $recipient Clients to send to.  Can be SENDER, ALL, OTHERS, or a callback that returns a boolean value
 	 */
 	public function reply($message, $recipient);
-
+	
 	/**
 	 * Get raw message data
 	 *
 	 * @return mixed
 	 */
 	public function getMessage();
-
+	
 	/**
 	 * Get session data associated with sender client
 	 *
 	 * @return mixed
 	 */
 	public function getSession();
-
+	
 	/**
 	 * Set session data associated with sender client
 	 *
 	 * @param mixed $session Session data to set
 	 */
 	public function setSession($session);
-
+	
 	/**
 	 * Get an array of all client sessions
 	 *
 	 * @return array
 	 */
 	public function getAllSessions();
+
 }
