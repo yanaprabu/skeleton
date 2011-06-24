@@ -22,40 +22,42 @@ class A_Db_Sqlite extends A_Db_Adapter
 	public function __construct($config=null)
 	{
 		if (is_string($config)) {
-			$config['filename'] = $config;
+			$config = array('filename' => $config);
 		}
 		$this->mode = 0666;
 		$this->config($config);
-		if ($config && isset($config['autoconnect'])) {
+		if ($this->_config && isset($this->_config['autoconnect'])) {
 			$this->connect();
 		}
 	}
 	
-	public function _connect ($config=null)
+	public function connect ()
 	{
-		if (isset($config['filename'])) {
-			if (! isset($config['mode'])) {
-				$config['mode'] = $this->mode;
+		if (isset($this->_config['filename']) && ! $this->_connection) {
+			if (! isset($this->_config['mode'])) {
+				$this->_config['mode'] = $this->mode;
 			}
-			if (! isset($config['encryption_key'])) {
-				$config['encryption_key'] = null;
+			if (! isset($this->_config['encryption_key'])) {
+				$this->_config['encryption_key'] = null;
 			}
-#echo "filename={$config['filename']}, mode={$config['mode']}, encryption_key={$config['encryption_key']}<br/>";
-			$sqlite = sqlite_open($config['filename'], $config['mode'], $errormsg);
+#echo "filename={$this->_config['filename']}, mode={$this->_config['mode']}, encryption_key={$this->_config['encryption_key']}<br/>";
+			$this->_connection = sqlite_open($this->_config['filename'], $this->_config['mode'], $errormsg);
 			if ($errormsg) {
 				$this->_errorHandler(2, $errormsg);
 			}
 		} else {
 			$this->_errorHandler(2, 'No filename. ');
 		}
-		return $sqlite; 
+		return $this->_connection; 
 	}
 	
-	public function _close($sqlite)
+	public function close()
 	{
-		if (isset($sqlite)) {
-			sqlite_close($sqlite);
+		if (isset($this->_connection)) {
+			sqlite_close($this->_connection);
+			$this->_connection = null;
 		} 
+		return $this; 
 	}
 	
 	public function query($sql, $bind=array())
@@ -69,12 +71,13 @@ class A_Db_Sqlite extends A_Db_Adapter
 			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
-		$sqlite = $this->connectBySql($sql);
-		if ($sqlite) {
-			$result = sqlite_query($sqlite, $sql);
+		if ($this->_connection) {
+			$result = sqlite_query($this->_connection, $sql);
 			$this->_sql[] = $sql;			// save history
-			$obj->error = sqlite_last_error($sqlite);
-			$obj->errorMsg = sqlite_error_string($obj->error);
+			$error = sqlite_last_error($this->_connection);
+			$errmsg = sqlite_error_string($error);
+			// sqlite returns 'not an error' which we convert to ''
+			$this->_errorHandler($error, $errmsg != 'not an error' ? $errmsg : '');
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
 				$this->_numRows = -1;	// $result->num_rows($result);
 				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
@@ -99,9 +102,12 @@ class A_Db_Sqlite extends A_Db_Adapter
 	
 	public function lastId()
 	{
-		$sqlite = $this->connectBySql('INSERT');
-		if ($sqlite) {
-			return sqlite_last_insert_row_id($sqlite);
+		if ($this->_connection) {
+			$id = sqlite_last_insert_row_id($this->_connection);
+			$error = sqlite_last_error($this->_connection);
+			$errmsg = sqlite_error_string($error);
+			$this->_errorHandler($error, $errmsg != 'not an error' ? $errmsg : '');
+			return $id;
 		} else {
 			return 0;
 		}
@@ -119,7 +125,6 @@ class A_Db_Sqlite extends A_Db_Adapter
 		
 	public function escape($value)
 	{
-		$sqlite = $this->connectBySql('SELECT');
 		return sqlite_escape_string($value);
 	}
 	

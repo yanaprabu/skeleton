@@ -1,11 +1,22 @@
 <?php
 include 'config.php';
-#include 'A/Db/Sqlite.php';
-#include 'A/Db/Activerecord.php';
 
-$db = new A_Db_MySQL($ConfigArray['DBDSN']);
+$db = new A_Db_Mysql($ConfigArray['DBDSN']);
 $db->connect();
-if ($db->isError()) die('ERROR: ' . $db->getMessage());
+if (! $db->isError()) {
 
-dump($project->sql);
-dump($project->toArray());
+	$sql = "SELECT * FROM users";
+	$result = $db->query($sql);
+	if (! $db->isError()) {
+		$row = $result->fetchAll();
+dump($row, 'ROW: ');
+
+	} else {
+		echo 'connect ERROR: ' . $db->getErrorMsg();
+	}
+
+} else {
+	echo 'connect ERROR: ' . $db->getErrorMsg();
+}
+
+dump();

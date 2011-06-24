@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQL.php
+ * Mysql.php
  *
  * @package  A_Db
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -8,57 +8,63 @@
  */
 
 /**
- * A_Db_MySQL
+ * A_Db_Mysql
  * 
  * Database connection class using the mysql_ library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
  */
-class A_Db_MySQL extends A_Db_Adapter
+class A_Db_Mysql extends A_Db_Adapter
 {
-
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
-	protected $_recordset_class = 'A_Db_Recordset_MySQL';
+	protected $_recordset_class = 'A_Db_Recordset_Mysql';
 	protected $_result_class = 'A_Db_Result';
 	
-	protected function _connect($config)
+	public function connect()
 	{
-		$result = false;
-		$host = isset($config['host']) ? $config['host'] : $config['hostspec'];
-		// fix for problem connecting to server with localhost. Windows only?
-		if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
-			$host = '127.0.0.1';
-		}
-		if (isset($config['persistent'])) {
-			$link = mysql_pconnect($host, $config['username'], $config['password']);
+		if ($this->_config && ! $this->_connection) {
+			$host = $this->_config['host'];
+			// fix for problem connecting to server with localhost. Windows only?
+			if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
+				$host = '127.0.0.1';
+			}
+			if (isset($this->_config['persistent'])) {
+				$this->_connection = mysql_pconnect($host, $this->_config['username'], $this->_config['password']);
+			} else {
+				$this->_connection = mysql_connect($host, $this->_config['username'], $this->_config['password']);
+			}
+			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
+			if ($this->_connection && isset($this->_config['database'])) {
+				mysql_select_db($this->_config['database'], $this->_connection);
+				$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
+			}
+			if (! $this->_connection) {
+				$this->_errorHandler(1, "Cconnection failed. ");
+			}
 		} else {
-			$link = mysql_connect($host, $config['username'], $config['password']);
+			$this->_errorHandler(1, "No config data. ");
 		}
-		if ($link && isset($config['database'])) {
-			mysql_select_db($config['database'], $link);
-		}
-		$this->_error = mysql_errno($link);
-		$this->_errorMsg = mysql_error($link);
-		return $link;
+		return $this;
 	}
 	
 	public function selectDb($database='')
 	{
-		$link = $this->connectBySql('SELECT');
-		if ($link) {
+		if ($this->_connection) {
 			if (!$database) {
 				$database = $this->dsn['database'];
 			}
-			$result = mysql_select_db($database, $link);
-			$this->_error = mysql_errno($link);
-			$this->_errorMsg = mysql_error($link);
+			mysql_select_db($database, $this->_connection);
+			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 		}
+		return $this;
 	}
 	
-	protected function _close($connection)
+	public function close()
 	{
-		if (isset($connection)) {
-			mysql_close($connection);
+		if (isset($this->_connection)) {
+			mysql_close($this->_connection);
+			$this->_connection = null;
 		}
+		return $this;
 	}
 	
 	public function query($sql, $bind=array())
@@ -72,24 +78,22 @@ class A_Db_MySQL extends A_Db_Adapter
 			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
-		$link = $this->connectBySql($sql);
-		if ($link) {
-			$result = mysql_query($sql, $link);
+		if ($this->_connection) {
+			$result = mysql_query($sql, $this->_connection);
 			$this->_sql[] = $sql;			// save history
-			$this->_error = mysql_errno($link);
-			$this->_errorMsg = mysql_error($link);
+			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
 				$this->_numRows = mysql_num_rows($result);
 				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 				// call RecordSet specific setters
 				$obj->setResult($result);
 			} else {
-				$this->_numRows = mysql_affected_rows($link);
+				$this->_numRows = mysql_affected_rows($this->_connection);
 				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 			}
 			return $obj;
 		} else {
-			$this->_errorHandler(0, 'No connection. ');
+			$this->_errorHandler(3, 'No connection. ');
 		}
 	}
 	
@@ -103,9 +107,8 @@ class A_Db_MySQL extends A_Db_Adapter
 	
 	public function lastId()
 	{
-		$link = $this->connectBySql('INSERT');
-		if ($link) {
-			return(mysql_insert_id($link));
+		if ($this->_connection) {
+			return(mysql_insert_id($this->_connection));
 		} else {
 			return 0;
 		}
@@ -114,15 +117,14 @@ class A_Db_MySQL extends A_Db_Adapter
 	public function nextId($sequence)
 	{
 		if ($sequence) {
-			$link = $this->connectBySql('UPDATE');
-			$result = $this->query("UPDATE $sequence{$this->_sequence_ext} SET id=LAST_INSERT_ID(id+1)", $link);
+			$result = $this->query("UPDATE $sequence{$this->_sequence_ext} SET id=LAST_INSERT_ID(id+1)", $this->_connection);
 			if ($result) {
-				$id = $this->lastId($link);
+				$id = $this->lastId();
 				if ($id > 0) {
 					return $id;
 				} else {
-					$result = $this->query("INSERT $sequence{$this->_sequence_ext} SET id=1", $link);
-					$id = $this->lastId($link);
+					$result = $this->query("INSERT $sequence{$this->_sequence_ext} SET id=1", $this->_connection);
+					$id = $this->lastId();
 					if ($id > 0) {
 						return $id;
 					}
@@ -139,25 +141,14 @@ class A_Db_MySQL extends A_Db_Adapter
 	public function createSequence($sequence){
 		$result = 0;
 		if ($sequence) {
-			$result = $this->query("CREATE TABLE $sequence{$this->_sequence_ext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->_sequence_start}", $link);
+			$result = $this->query("CREATE TABLE $sequence{$this->_sequence_ext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->_sequence_start}", $this->_connection);
 		}
 		return($result);
 	}
 	
 	public function escape($value)
 	{
-		$link = $this->connectBySql('SELECT');
-		return mysql_real_escape_string($value, $link);
+		return mysql_real_escape_string($value, $this->_connection);
 	}
 	
-	/**
-	 * Alias for getErrorMsg()
-	 * 
-	 * @depreciated
-	 * @see getErrorMsg
-	 */
-	public function getMessage() {
-		return $this->getErrorMsg();
-	}
-
 }

@@ -14,46 +14,44 @@
  */
 class A_Db_Mysqli extends A_Db_Adapter
 {
-
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Mysqli';
 	protected $_result_class = 'A_Db_Result';
-	protected $mysqli = null;
 	
-	public function _connect($dsn=null)
+	public function connect()
 	{
-		$result = false;
-		if ($dsn) {
-			$this->dsn = $dsn;
-		}
-		$this->mysqli = new MySQLi($this->dsn['hostspec'], $this->dsn['username'], $this->dsn['password']);
-		if (isset($this->dsn['database'])) {
-			$result = $this->mysqli->select_db($this->dsn['database'], $this->link);
+		if ($this->_config && ! $this->_connection) {
+			$this->_connection = new Mysqli($this->_config['host'], $this->_config['username'], $this->_config['password']);
+			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+			if (isset($this->_config['database'])) {
+				$result = $this->_connection->select_db($this->_config['database']);
+				$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+			}
 		} else {
-			$result = true;
+			$this->_errorHandler(1, "No config data. ");
 		}
-		return $this->mysqli;
+		return $this;
 	}
 	
 	public function selectDb($database='')
 	{
-		$link = $this->connectBySql('SELECT');
-		if ($link) {
+		if ($this->_connection) {
 			if (!$database) {
-				$database = $this->dsn['database'];
+				$database = $this->_config['database'];
 			}
-			$result = $this->mysqli->select_db($this->dsn['database']);
-			$this->_errorMsg = $this->mysqli->error;
-			$this->_error = $this->_errorMsg != '';
+			$result = $this->_connection->select_db($this->_config['database']);
+			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		}
 	}
 	
-	protected function _close($name='')
+	protected function close()
 	{
-		if (isset($this->_connection[$name])) {
-			$this->_connection[$name]->close();
+		if (isset($this->_connection)) {
+			$this->_connection->close();
+			$this->_connection = null;
 		}
+		return $this; 
 	}
 	
 	public function query($sql, $bind=array())
@@ -67,13 +65,11 @@ class A_Db_Mysqli extends A_Db_Adapter
 			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
-		$link = $this->connectBySql($sql);
-		if ($link) {
-			$result = $link->query($sql, $link);
+		if ($this->_connection) {
+			$result = $this->_connection->query($sql);
 			$this->_sql[] = $sql;			// save history
-			$this->_errorMsg = $this->mysqli->error;
-			$this->_error = $this->_errorMsg != '';
-			$this->_numRows = $link->affected_rows;
+			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+			$this->_numRows = $this->_connection->affected_rows;
 			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
 				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 				// call RecordSet specific setters
@@ -104,16 +100,15 @@ class A_Db_Mysqli extends A_Db_Adapter
 	
 	public function nextId($sequence)
 	{
-		$link = $this->connectBySql('UPDATE');
-		if ($link && $sequence) {
-			$result = $link->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
+		if ($this->_connection && $sequence) {
+			$result = $this->_connection->query("UPDATE $sequence{$this->sequenceext} SET id=LAST_INSERT_ID(id+1)");
 			if ($result) {
-				$id = $link->insert_id();
+				$id = $this->_connection->insert_id();
 				if ($id > 0) {
 					return $id;
 				} else {
-					$result = $link->query("INSERT $sequence{$this->sequenceext} SET id=1");
-					$id = $link->insert_id();
+					$result = $this->_connection->query("INSERT $sequence{$this->sequenceext} SET id=1");
+					$id = $this->_connection->insert_id();
 					if ($id > 0) {
 						return $id;
 					}
@@ -129,71 +124,40 @@ class A_Db_Mysqli extends A_Db_Adapter
 	
 	public function createSequence($sequence)
 	{
-		$link = $this->connectBySql('UPDATE');
-		$result = 0;
 		if ($sequence) {
-			$result = $link->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
+			$result = $this->_connection->query($this->link, "CREATE TABLE $sequence{$this->sequenceext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->sequencestart}");
 		}
-		return $result;
+		return $this;
 	}
 	
-	public function escape($value, $name='')
+	public function escape($value)
 	{
-		if (isset($this->_connection[$name])) {
-			return $this->_connection[$name]->escape_string($value);
+		if (isset($this->_connection)) {
+			return $this->_connection->escape_string($value);
 		}
 	}
 	
 	/**
 	 * __call
 	 * 
-	 * Magic function __call, redirects to instance of MySQLi
+	 * Magic function __call, redirects to instance of Mysqli_Result
+	 * 
+	 * @param string $function Property to access
+	 */
+	public function __get($name) {
+		return $this->_connection->$name;
+	}
+
+	/**
+	 * __call
+	 * 
+	 * Magic function __call, redirects to instance of Mysqli
 	 * 
 	 * @param string $function Function to call
 	 * @param array $args Arguments to pass to $function
 	 */
 	function __call($function, $args)
 	{
-		return call_user_func_array(array($this->mysqli, $function), $args);
+		return call_user_func_array(array($this->_connection, $function), $args);
 	}
-}
-
-class A_Db_Mysqli_Recordset extends A_Db_Mysqli_Result
-{
-
-	public function __construct($result=null)
-	{
-		$this->result = $result;
-	}
-	
-	public function fetchRow($class=null)
-	{
-		if ($this->result) {
-			return $this->result->fetch_assoc($this->result);
-		}
-	}
-	
-	public function numRows()
-	{
-		if ($this->result) {
-			return $this->result->num_rows;
-		} else {
-			return 0;
-		}
-	}
-	
-	public function numCols()
-	{
-		if ($this->result) {
-			return $this->result->field_count;
-		} else {
-			return 0;
-		}
-	}
-	
-	public function __call($name, $args)
-	{
-		return call_user_func(array($this->result, $name), $args);
-	}
-
 }

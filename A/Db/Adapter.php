@@ -15,9 +15,8 @@
 abstract class A_Db_Adapter
 {
 
-	protected $_connection;
-	protected $_config;
-	protected $_config_class = 'A_Db_Config_Single';
+	protected $_connection = null;
+	protected $_config = array();
 	/**
 	 * convert connnect keys based on this table
 	 * @var array
@@ -64,29 +63,10 @@ abstract class A_Db_Adapter
 				$config[$name] = $config[$alias];
 			}
 		}
-		if (isset($this->_config)) {
-			$this->_config->config($config);
-		} else {
-			if (isset($config['exception'])) {
-				$this->setException($config['exception']);				
-			}
-			$config_class = isset($config['config_class']) ? $config['config_class'] : $this->_config_class;
-			$this->_config = new $config_class ($config);
-		}
-		return $this;
-	}
-	
-	public function setConfigClass($class)
-	{
-		$this->_config_class = $class;
-		return $this;
-	}
-	
-	public function setConfigObject($config)
-	{
-		// check base type or interface here?
 		$this->_config = $config;
-		$this->_config_class = get_class($config);
+		if (isset($config['exception'])) {
+			$this->setException($config['exception']);				
+		}
 		return $this;
 	}
 	
@@ -103,9 +83,7 @@ abstract class A_Db_Adapter
 	
 	public function getConfig($sql='')
 	{
-		if (isset($this->_config)) {
-			return $this->_config->getConfigBySql($sql);
-		}
+		return $this->_config;
 	}
 	
 	public function setException($class)
@@ -123,87 +101,24 @@ abstract class A_Db_Adapter
 	}
 
 	/**
-	 * Connect to database based on SQL. Tracks and uses existing connections.
+	 * Supplied by child class - Open connection as specified by $config
 	 * 
-	 * @param string $name Name of database to connect to
-	 * @return resource
+	 * @return $this
 	 */
-	public function connect($name='')
-	{
-		if (isset($this->_config)) {
-			$config = $this->_config->getConfig($name);
-			if (isset($config['name']) && $config['data']) {
-				if (!isset($this->_connection[$config['name']])) {
-					$this->_connection[$config['name']] = $this->_connect($config['data']);
-				}
-				return $this->_connection[$config['name']];
-			} else {
-				$this->_errorHandler(1, "No connection config data for '{$config['name']}'. ");
-			}
-		} else {
-			$this->_errorHandler(1, "No config data. ");
-		}
-	}
-	
-	/**
-	 * Supplied by child class - must connect as specified by $config
-	 * 
-	 * @param array $config
-	 * @return resource
-	 */
-	abstract protected function _connect($config);
+	abstract protected function connect();
 
 	/**
-	 * Connect to database based on SQL. Tracks and uses existing connections.
+	 * Supplied by child class - Closes all or named connection (if close supported by extension)
 	 * 
-	 * @param string $sql
-	 * @return resource
+	 * @return $this
 	 */
-	public function connectBySql($sql='')
-	{
-		$name = $this->_config->getConfigName($sql);
-		return $this->connect($name);
-	}
-
-	/**
-	 * Closes all or named connection (if close supported by extension)
-	 * 
-	 * @param string $name Name of database connection.  Omit to close all connections
-	 */
-	public function close($name='')
-	{
-		if ($name) {
-			if (is_string($name)) {
-				$names = array($name);
-			} elseif (is_array($name)) {
-				$names = $name;
-			} 
-		} elseif (isset($this->_connection)) {			// connections and no name given
-			$names = array_keys($this->_connection);	// close all
-		} else {
-			$names = array();
-		}
-		foreach ($names as $name) { 
-			if (isset($this->_connection[$name])) {
-				$this->_close($this->_connection[$name]);
-				unset($this->_connection[$name]);
-			}
-		}
-	}
-	
+	abstract protected function close();
+		
 	public function disconnect()
 	{
-		$this->close();
+		return $this->close();
 	}
 		
-	/**
-	 * Supplied by child class - must close connection if supported by extension
-	 * $connection is whatever variable that _connect() returns
-	 * 
-	 * @param mixed $connection
-	 */
-	abstract protected function _close($connection);
-	
 	/**
 	 * Adds limit syntax to SQL statement
 	 * 
@@ -213,7 +128,7 @@ abstract class A_Db_Adapter
 	 */
 	abstract public function limit($sql, $count, $offset='');
 	
-	public function start($connection_name='')
+	public function start()
 	{
 		if ($this->_transaction_level < 1) {
 			$result = $this->query('START');
@@ -225,14 +140,14 @@ abstract class A_Db_Adapter
 		return $result;
 	}
 	
-	public function savepoint($savepoint='', $connection_name='')
+	public function savepoint($savepoint='')
 	{
 		if ($savepoint) {
 			return $this->query('SAVEPOINT ' . $savepoint);
 		}
 	}
 	
-	public function commit($connection_name='')
+	public function commit()
 	{
 		$this->_transaction_level--;
 		if ($this->_transaction_level == 0) {
@@ -243,7 +158,7 @@ abstract class A_Db_Adapter
 		return $result;
 	}
 	
-	public function rollback($savepoint='', $connection_name='')
+	public function rollback($savepoint='')
 	{
 		$this->_transaction_level--;
 		if ($this->_transaction_level == 0) {
@@ -260,16 +175,9 @@ abstract class A_Db_Adapter
 	}
 		
 	public function escape($value)
-	{}
-	
-	public function _errorHandler($errno, $errorMsg)
 	{
-		$this->_error = $errno;
-		$this->_errorMsg .= $errorMsg;
-		if ($this->_exception) {
-			throw A_Exception::getInstance($this->_exception, $errorMsg);
-		}
-	}	
+		return  addslashes($value);
+	}
 	
 	public function isError()
 	{
@@ -281,5 +189,14 @@ abstract class A_Db_Adapter
 		return $this->_errorMsg;
 	}
 
+	public function _errorHandler($errno, $errorMsg)
+	{
+		$this->_error = $errno;
+		$this->_errorMsg .= $errorMsg;
+		if ($errno && $this->_exception) {
+			throw A_Exception::getInstance($this->_exception, $errorMsg);
+		}
+	}	
+	
 }
 
