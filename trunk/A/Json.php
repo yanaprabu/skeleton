@@ -14,10 +14,11 @@
  */
 class A_Json
 {
+
 	protected $encoded = null;  // holds passed or last encoded JSON strings
 	protected $decoded = null;  // holds passed or last decoded PHP object or array
 
-	public function __construct($mixed = null)
+	public function __construct($mixed=null)
 	{
 		if (is_string($mixed) && (substr($mixed, 0, 1) == '{')) {
 			$this->encoded = $mixed;	// var is JSON string
@@ -25,19 +26,19 @@ class A_Json
 			$this->decoded = $mixed;	// var is PHP var
 		}
 	}
-
+	
 	public function encode($mixed)
 	{
 		$this->encoded = json_encode(isset($mixed) ? $mixed : $this->decoded);
 		return $this->encoded;
 	}
-
+	
 	public function decode($mixed=null, $array=false)
 	{
 		$this->decoded = json_decode(isset($mixed) ? $mixed : $this->encoded, $array);
 		return $this->decoded;
 	}
-
+	
 	public function decodeInto($into, $mixed=null, $intersect=true)
 	{
 		$array = json_decode(isset($mixed) ? $mixed : $this->encoded, true);
@@ -60,7 +61,6 @@ class A_Json
 				$into->$key = $array[$key];
 			}
 		}
-		
 		return $into;
 	}
 

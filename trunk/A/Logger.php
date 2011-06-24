@@ -14,6 +14,7 @@
  */
 class A_Logger
 {
+
 	protected $buffer = '';
 	protected $template = "{datetime} - {message}\n";
 	protected $writers = array();
@@ -23,8 +24,8 @@ class A_Logger
 	protected $errorMsg = '';
 	
 	/**
-	 * @param $writer - filename (will create A_Logger_File($writer)) or array of writer objects
-	 * @param $level  - level to log messages
+	 * @param array $writer Filename (will create A_Logger_File($writer)) or array of writer objects
+	 * @param int $level Level to log messages
 	 */
 	public function __construct($writers=array(), $level=0)
 	{
@@ -42,6 +43,7 @@ class A_Logger
 	
 	/**
 	 * @param $writer - filename (will create A_Logger_File($writer)) or array of writer objects
+	 * @return $this
 	 */
 	public function addWriter($writer)
 	{
@@ -55,6 +57,7 @@ class A_Logger
 	
 	/**
 	 * @param $template - string containing the {datetime} and {message} tags for replacement
+	 * @return $this
 	 */
 	public function setTemplate($template)
 	{
@@ -64,6 +67,7 @@ class A_Logger
 	
 	/**
 	 * @param $level  - maximum level at or below which messages will be written to log
+	 * @return $this
 	 */
 	public function setLevel($level)
 	{
@@ -73,6 +77,7 @@ class A_Logger
 	
 	/**
 	 * @param $autoWrite  - set whether unwritten log messages arewritten on destruct
+	 * @return $this
 	 */
 	public function setAutoWrite($autoWrite)
 	{
@@ -91,14 +96,15 @@ class A_Logger
 	}
 	
 	/**
-	 * @param $message - string to write to log
-	 * @param $level   - level to log messages
+	 * @param string $message String to write to log
+	 * @param int $level Level to log messages
+	 * @return $this
 	 */
 	public function log($message, $level=0)
 	{
 		$this->levels[$this->nMessages] = $level;
 		$this->messages[$this->nMessages] = str_replace(array('{datetime}', '{message}') , array(date('Y-m-d H:i:s'), $message), $this->template);
-		++$this->nMessages;
+		$this->nMessages++;
 		$this->written = false;
 		return $this;
 	}
@@ -115,6 +121,7 @@ class A_Logger
 	
 	/**
 	 * @param $message - optional message to log
+	 * @return $this
 	 */
 	public function write($level=null)
 	{
@@ -138,9 +145,11 @@ class A_Logger
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * Return current error message
+	 * 
+	 * @return string
 	 */
 	public function getErrorMsg()
 	{
@@ -158,4 +167,3 @@ class A_Logger
 	}
 
 }
-

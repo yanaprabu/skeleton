@@ -15,6 +15,7 @@
  */
 class A_Application
 {
+
 	protected $exception;
 	protected $includePath = '';
 	protected $configPath = array('config.ini', 'skeleton');	
@@ -31,7 +32,7 @@ class A_Application
 		'Front'    => array('A_Controller_Front', false),
 	);
 	
-	public function __construct($exception = null)
+	public function __construct($exception=null)
 	{
 		$this->exception = $exception;
 	}
@@ -82,9 +83,6 @@ class A_Application
 		return $config->loadFile();
 	}
 	
-	/**
-	 * 
-	 */
 	public function initMapper($component)
 	{
 		$config = $this->component('Config');
@@ -132,8 +130,6 @@ class A_Application
 	}
 	
 	/**
-	 * 
-	 * Enter description here ...
 	 * @param unknown_type $component
 	 * @param unknown_type $object
 	 * @param unknown_type $register
@@ -144,7 +140,7 @@ class A_Application
 		$this->loadComponents[$component] = array($object, (bool)$register);
 		return $this;
 	}
-
+	
 	/**
 	 * Set the include path
 	 * 
@@ -176,5 +172,5 @@ class A_Application
 	protected function load($class) {
 		return include_once str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
 	}
-} 
 
+} 

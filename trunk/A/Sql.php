@@ -14,6 +14,7 @@
  */
 class A_Sql
 {
+
 	protected $connection;
 	protected $select = null;
 	protected $insert = null;
@@ -44,25 +45,25 @@ class A_Sql
 					$this->select = new A_Sql_Select($this->connection);
 				}
 				return $this->select->columns($args);
-			break;
+				break;
 			case 'insert':
 				if (!$this->insert) {
 					$this->insert = new A_Sql_Insert($this->connection);
 				}
 				return $this->insert->table($args);
-			break;
+				break;
 			case 'update':
 				if (!$this->update) {
 					$this->update = new A_Sql_Update($this->connection);
 				}
 				return $this->update->table($args);
-			break;
+				break;
 			case 'delete':
 				if (!$this->delete) {
 					$this->delete = new A_Sql_Delete($this->connection);
 				}
 				return $this->delete->table($args);
-			break;
+				break;
 		}
 	}
 
