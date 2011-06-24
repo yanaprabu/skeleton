@@ -12,17 +12,21 @@
  * 
  * Rule to check for a value matching a provided regular expression
  */
-class A_Rule_Regexp extends A_Rule_Base {
-	const ERROR = 'A_Rule_Regexp';
+class A_Rule_Regexp extends A_Rule_Base
+{
 
+	const ERROR = 'A_Rule_Regexp';
+	
 	protected $params = array(
-							'regexp' => '', 
-							'field' => '', 
-							'errorMsg' => '', 
-							'optional' => false
-							);
-							
-    protected function validate() {
+		'regexp' => '', 
+		'field' => '', 
+		'errorMsg' => '', 
+		'optional' => false
+	);
+	
+	protected function validate()
+	{
 		return (preg_match($this->params['regexp'], $this->getValue()));
 	}
+
 }

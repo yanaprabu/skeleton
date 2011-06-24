@@ -12,9 +12,10 @@
  * 
  * This is the interface for Rule objects.
  */
-interface A_Rule_Interface {
+interface A_Rule_Interface
+{
 
-    public function isValid($container);
-    public function getErrorMsg();
+	public function isValid($container);
+	public function getErrorMsg();
 
 }

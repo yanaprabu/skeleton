@@ -12,16 +12,21 @@
  * 
  * Rule to check if string is in provided array
  */
-class A_Rule_Inarray extends A_Rule_Base {
-	const ERROR = 'A_Rule_Inarray';
-	protected $params = array(
-							'array' => array(), 
-							'field' => '', 
-							'errorMsg' => '', 
-							'optional' => false
-							);
+class A_Rule_Inarray extends A_Rule_Base
+{
 
-	protected function validate() {
+	const ERROR = 'A_Rule_Inarray';
+	
+	protected $params = array(
+		'array' => array(), 
+		'field' => '', 
+		'errorMsg' => '', 
+		'optional' => false
+	);
+	
+	protected function validate()
+	{
 		return in_array($this->getValue(), $this->params['array']);
 	}
+
 }

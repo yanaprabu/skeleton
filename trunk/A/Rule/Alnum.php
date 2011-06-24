@@ -12,10 +12,14 @@
  * 
  * Rule to make sure string only contains alphanumeric characters
  */
-class A_Rule_Alnum extends A_Rule_Base {
-	const ERROR = 'A_Rule_Alnum';
+class A_Rule_Alnum extends A_Rule_Base
+{
 
-    protected function validate() {
-      return (preg_match("/^[[:alnum:]]+$/", $this->getValue()));
-    }
+	const ERROR = 'A_Rule_Alnum';
+	
+	protected function validate()
+	{
+		return (preg_match("/^[[:alnum:]]+$/", $this->getValue()));
+	}
+
 }

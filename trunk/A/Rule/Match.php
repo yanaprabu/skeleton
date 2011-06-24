@@ -14,16 +14,21 @@
  * 
  * @package A_Rule_Set 
  */
-class A_Rule_Match extends A_Rule_Base {
+class A_Rule_Match extends A_Rule_Base
+{
+
 	const ERROR = 'A_Rule_Match';
+	
 	protected $params = array(
-							'refField' => '', 
-							'field' => '', 
-							'errorMsg' => '', 
-							'optional' => false
-							);
-							
-    protected function validate() {
-      return (strcmp($this->getValue(), $this->getValue($this->params['refField'])) == 0);
-    }
+		'refField' => '', 
+		'field' => '', 
+		'errorMsg' => '', 
+		'optional' => false
+	);
+	
+	protected function validate()
+	{
+		return (strcmp($this->getValue(), $this->getValue($this->params['refField'])) == 0);
+	}
+
 }
