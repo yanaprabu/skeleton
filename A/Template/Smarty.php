@@ -12,20 +12,25 @@
  * 
  * Template class that Adapts Smarty to be used as Skeleton renderer.
  */
-class A_Template_Smarty extends Smarty {
+class A_Template_Smarty extends Smarty
+{
+
 	protected $filename;
 	
-	public function __construct ($filename='') {
+	public function __construct($filename='')
+	{
 		parent::Smarty();
 		$this->filename = $filename;
 	}
 	
-	public function set($key, $value) {
+	public function set($key, $value)
+	{
 		parent::assign($key, $value);
 	}
 	
-	public function render($template=null, $cache_id=null, $compile_id=null) {
+	public function render($template=null, $cache_id=null, $compile_id=null)
+	{
 		return parent::fetch($template ? $template : $this->template, $cache_id, $compile_id);
 	}
-	
+
 }

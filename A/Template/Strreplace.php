@@ -12,11 +12,14 @@
  * 
  * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
  */
-class A_Template_Strreplace extends A_Template_File {
+class A_Template_Strreplace extends A_Template_File
+{
+
 	protected $tagprefix = '{';
 	protected $tagsuffix = '}';
 	
-	public function set($field, $value) {
+	public function set($field, $value)
+	{
 		// field required and value must be a string or an object with __toString()
 		if ($field && (is_scalar($value) || (is_object($value) && method_exists($value, '__toString')))) {
 			// check that suffix/prefix are on tag and add if necessary
@@ -31,14 +34,16 @@ class A_Template_Strreplace extends A_Template_File {
 		return $this;
 	}
 	
-	public function import($data) {
+	public function import($data)
+	{
 		foreach ($data as $key => $value) {
 			$this->set($key, $value);
 		}
 		return $this;
 	}
-
-	public function render($block='') {
+	
+	public function render($block='')
+	{
 	   	if ($this->auto_blocks) {
 	   		$this->makeBlocks();
 	   	} else {
@@ -55,4 +60,3 @@ class A_Template_Strreplace extends A_Template_File {
 	}
 
 }
-
