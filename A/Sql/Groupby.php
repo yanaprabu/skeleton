@@ -12,12 +12,16 @@
  * 
  * Generate SQL GROUP BY clause
  */
-class A_Sql_Groupby extends A_Sql_Columns {
+class A_Sql_Groupby extends A_Sql_Columns
+{
+
 	protected $columns;
 	
-	public function render() {
+	public function render()
+	{
 		if ($this->columns) {
 			return ' GROUP BY '. parent::render();
 		}
 	}
+
 }

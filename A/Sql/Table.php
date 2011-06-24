@@ -12,10 +12,12 @@
  * 
  * Generate SQL table columns list
  */
-class A_Sql_Columns {
+class A_Sql_Columns
+{
+
 	protected $table = '';
 	protected $joins = array();
-
+	
 	/**
 	 * Class constructor
 	 * 
@@ -23,7 +25,8 @@ class A_Sql_Columns {
 	 *
 	 * @param mixed $args
 	 */
-	public function __construct($args=null) {
+	public function __construct($args=null)
+	{
 		if (is_array($args)) {
 			if (isset($args[0]) && is_array($args[0])) {
 				$this->columns = $args[0];
@@ -48,15 +51,17 @@ class A_Sql_Columns {
 	 *
 	 * @return array
 	 */	
-	public function getTables() {
+	public function getTables()
+	{
 		if ($this->joins) {
 			return array_merge(array($this->table), array_keys($this->joins));
 		} else {
 			return array($this->table);
 		}
 	}
-
-	public function join()	{
+	
+	public function join()
+	{
 		if (func_num_args()) {
 			$join = A_Sql_Join(func_get_arg(0),func_get_arg(1),func_get_arg(2));
 			$this->joins[$join->getTable()] = $join;
@@ -64,7 +69,8 @@ class A_Sql_Columns {
 		return $this;
 	}
 	
-	public function getJoins()	{
+	public function getJoins()
+	{
 		return $this->joins();
 	}
 	
@@ -73,7 +79,8 @@ class A_Sql_Columns {
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->render();
 	}
 	
@@ -82,10 +89,12 @@ class A_Sql_Columns {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function render()
+	{
 		if (!count($this->columns)) {
 			return '';
 		}
 		return implode(', ', $this->columns);		
 	}
+
 }

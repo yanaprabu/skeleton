@@ -12,10 +12,13 @@
  * 
  * Generate SQL unions
  */
-class A_Sql_Union extends A_Sql_Statement {
+class A_Sql_Union extends A_Sql_Statement
+{
+
 	protected $selects = array();
 	
-	public function select($select = null) {	
+	public function select($select = null)
+	{	
 		if (!$select) {
 			$select = new A_Sql_Select();
 		}
@@ -24,21 +27,23 @@ class A_Sql_Union extends A_Sql_Statement {
 		return $select;
 	}
 	
-	public function orderBy($columns) {
+	public function orderBy($columns)
+	{
 		$this->orderby = new A_Sql_Orderby($columns);	
 		return $this;
 	}	
 	
-	public function render() {
+	public function render()
+	{
 		$this->notifyListeners();
-
+		
 		if (count($this->selects)) {
 			$maxColumns = 0;
 			foreach ($this->selects as $select) {
 				$columnCount = count($select->getColumns());
 				$maxColumns = $columnCount > $maxColumns ? $columnCount : $maxColumns;
 			}
-
+			
 			foreach ($this->selects as $select) {	
 				$columns = $select->getColumns();
 				$select->columns(array_merge($columns, array_diff_key(array_fill(0, $maxColumns, 'null'), $columns)));
@@ -52,4 +57,5 @@ class A_Sql_Union extends A_Sql_Statement {
 		
 		return "(". implode(") UNION (", $this->selects) .")$orderby"; 
 	}
+
 }

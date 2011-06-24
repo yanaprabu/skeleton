@@ -12,7 +12,9 @@
  * 
  * Generate SQL a prepared statement
  */
-class A_Sql_Prepare {
+class A_Sql_Prepare
+{
+
 	protected $statement = '';			// SQL template
 	protected $db = null;				// object with escape() method
 	protected $named_args = array();	// assoc array
@@ -20,38 +22,43 @@ class A_Sql_Prepare {
 	protected $sql;						// prepared sql
 	protected $quote_values = false;
 	
-	public function __construct(/*$statement, $args...*/) {
+	public function __construct(/*$statement, $args...*/)
+	{
 		$args = func_get_args();
 		if (count($args) > 0) {
 			$this->statement = array_shift($args);
 			if (count($args) > 0) {
-#echo '__construct1 ARGS=<pre>' . print_r($args, 1) . '</pre>';
 				$this->bind($args);
 			}
 		}
 	}
-		
-	public function setDb($db) {
+	
+	public function setDb($db)
+	{
 		$this->db = $db;
 		return $this; 
 	}
-		
-	public function quoteValues($flag=true) {
+	
+	public function quoteValues($flag=true)
+	{
 		$this->quote_values = $flag;
 		return $this; 
 	}
-		
-	public function quoteEscape($value) {
+	
+	public function quoteEscape($value)
+	{
 		$value = $this->db ? $this->db->escape($value) : addslashes($value);
 		return $this->quote_values ? "'" . $value . "'" : $value;
 	}
-
-	public function statement($statement) {
+	
+	public function statement($statement)
+	{
 		$this->statement = $statement;
 		return $this; 
 	}
-		
-	public function bind(/* args, ... */) {
+	
+	public function bind(/* args, ... */)
+	{
 		$args = func_get_args();
 		// check for the case where they passed an array
 		if ((count($args) == 1) && is_array($args[0])) {
@@ -61,7 +68,6 @@ class A_Sql_Prepare {
 			$n = 1;
 			// process each arg
 			foreach ($args as $key1 => $arg1) {
-#echo 'ARGS=<pre>' . print_r($arg, 1) . '</pre>';
 				// arg may be an array or a string
 				if (is_array($arg1)) {
 					foreach ($arg1 as $key2 => $value) {
@@ -82,13 +88,11 @@ class A_Sql_Prepare {
 				}
 			}
 		}
-#echo 'BIND ARGS=<pre>' . print_r($args, 1) . '</pre>';
-#echo 'NAMED=<pre>' . print_r($this->named_args, 1) . '</pre>';
-#echo 'NUMBERED=<pre>' . print_r($this->numbered_args, 1) . '</pre>';
 		return $this; 
 	}
 	
-	public function render($db=null) {
+	public function render($db=null)
+	{
 		if ($this->statement) {
 			// set object with escape() method if passed
 			if ($db !== null) {
@@ -118,7 +122,8 @@ class A_Sql_Prepare {
 		return $this->sql;
 	}
 	
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->render();
 	}
 

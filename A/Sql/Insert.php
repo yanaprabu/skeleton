@@ -12,32 +12,37 @@
  * 
  * Generate SQL INSERT statement
  */
-class A_Sql_Insert extends A_Sql_Statement {
+class A_Sql_Insert extends A_Sql_Statement
+{
+
 	protected $table;
 	protected $values;
 	protected $columns;
 	protected $select;
-
+	
 	/**
 	 * Class constructor
 	 *
 	 * @param string $table Table name
 	 * @param array $bind Column-value pairs
 	 */
-	public function __construct($table=null, $bind=array()) {
+	public function __construct($table=null, $bind=array())
+	{
 		$this->table($table);
-		if ($bind)	{
+		if ($bind) {
 			$this->columns($bind);	
 		}
 		
 	}
 	
-	public function table($table) {
+	public function table($table)
+	{
 		$this->table = new A_Sql_From($table);
 		return $this;
 	}
-
-	public function values($data, $value=null) {
+	
+	public function values($data, $value=null)
+	{
 		if ($data) {
 			$this->columns = null;
 			$this->select = null;
@@ -46,19 +51,22 @@ class A_Sql_Insert extends A_Sql_Statement {
 		return $this;
 	}
 	
-	public function columns() {
+	public function columns()
+	{
 		$this->columns = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
-
-	public function select() {
+	
+	public function select()
+	{
 		if (!$this->select) {
 			$this->select = new A_Sql_Select();
 		}
 		return $this->select;
 	}
-
-	public function render($db=null) {
+	
+	public function render($db=null)
+	{
 		$columns = array();
 		if ($this->table) {
 			$table = $this->table->render();
@@ -70,8 +78,9 @@ class A_Sql_Insert extends A_Sql_Statement {
 			return $insert;
 		}
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		return $this->render();
 	}
 

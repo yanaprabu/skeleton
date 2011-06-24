@@ -12,16 +12,19 @@
  * 
  * Generate SQL SELECT statement
  */
-class A_Sql_Select extends A_Sql_Statement {
-	
+class A_Sql_Select extends A_Sql_Statement
+{
+
 	/**
 	 * Rendered SQL pieces
+	 * 
 	 * @var array
 	 */
 	protected $replace = array();
 	
 	/**
 	 * Select statement pieces
+	 * 
 	 * @var array
 	 */
 	protected $pieces = array(
@@ -36,26 +39,30 @@ class A_Sql_Select extends A_Sql_Statement {
 	
 	/**
 	 * Limit A_Sql_Limit
+	 * 
 	 * @var object
 	 */
 	protected $limit = null;
 	
 	/**
 	 * Set select statement columns
-	 * @return self
-	 * @question Why are there no arguments inside the method declaration? 
-	 * It's important both for documentation and auto-complete feature of IDE's
+	 * 
+	 * @return $this
+	 * @note Why are there no arguments inside the method declaration?  It's important both for documentation and auto-complete feature of IDE's
 	 */
-	public function columns() {	
+	public function columns()
+	{	
 		$this->pieces['columns'] = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
 	
 	/**
 	 * Get number of columns
+	 * 
 	 * @return int
 	 */
-	public function getColumns() {
+	public function getColumns()
+	{
 		if (!$this->pieces['columns']) {
 			return array();
 		}
@@ -65,11 +72,12 @@ class A_Sql_Select extends A_Sql_Statement {
 	/**
 	 * Set select statement FROM clause
 	 * 
-	 * @return self
+	 * @return $this
 	 * @param mixed $table_name OR $table_array OR $from_object
 	 * @question - see my notes on columns()
 	 */
-	public function from(/* $table_name OR $table_array OR $from_object */) {
+	public function from(/* $table_name OR $table_array OR $from_object */)
+	{
 		$args = func_get_args();
 		if (func_num_args() == 1)	{
 			$this->pieces['tables'] = is_object($args[0]) ? $args[0] : new A_Sql_From($args[0]);
@@ -88,9 +96,10 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @param mixed $arg1
 	 * @param mixed $arg2
 	 * @param mixed $arg3
-	 * @return self
+	 * @return $this
 	 */
-	public function where($arg1=null, $arg2=null, $arg3=null) {
+	public function where($arg1=null, $arg2=null, $arg3=null)
+	{
 		if (!$this->pieces['where']) {	
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
@@ -109,10 +118,11 @@ class A_Sql_Select extends A_Sql_Statement {
 	 *
 	 * @param mixed $data
 	 * @param string $value
-	 * @return self
-	 * @question Could someone elaborate on the argumetns?
+	 * @return $this
+	 * @todo elaborate on the argumetns?
 	 */
-	public function orWhere($data, $value=null) {
+	public function orWhere($data, $value=null)
+	{
 		if (!$this->pieces['where']) {	
 			$this->pieces['where'] = new A_Sql_Where();
 			$this->addListener($this->pieces['where']);
@@ -127,9 +137,10 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @param string $table1
 	 * @param string $table2
 	 * @param string $type
-	 * @return self
+	 * @return $this
 	 */	
-	public function join($table1, $table2, $type='INNER') {
+	public function join($table1, $table2, $type='INNER')
+	{
 		if (!$this->pieces['joins']) {
 			$this->pieces['joins'] = new A_Sql_Join();
 		}
@@ -139,79 +150,84 @@ class A_Sql_Select extends A_Sql_Statement {
 	
 	/**
 	 * Set select statement INNER JOIN clause
-	 *
+	 * 
 	 * @param string $table1
 	 * @param string $table2
-	 * @return self
+	 * @return $this
 	 */		
-	public function innerJoin($table1, $table2) {
+	public function innerJoin($table1, $table2)
+	{
 		return $this->join($table1, $table2, 'INNER');
 	}
-	
 	
 	/**
 	 * Set select statement INNER JOIN clause
 	 *
 	 * @param string $table1
 	 * @param string $table2
-	 * @return self
+	 * @return $this
 	 */		
 	public function leftJoin($table1, $table2) {
 		return $this->join($table1, $table2, 'LEFT');
 	}	
-
+	
 	/**
 	 * Set select statement RIGHT JOIN clause
 	 *
 	 * @param string $table1
 	 * @param string $table2
-	 * @return self
+	 * @return $this
 	 */		
-	public function rightJoin($table1, $table2) {
+	public function rightJoin($table1, $table2)
+	{
 		return $this->join($table1, $table2, 'RIGHT');
 	}	
-
+	
 	/**
 	 * Set select statement CROSS JOIN clause
 	 *
 	 * @param string $table1
 	 * @param string $table2
-	 * @return self
+	 * @return $this
 	 */		
-	public function crossJoin($table1, $table2) {
+	public function crossJoin($table1, $table2)
+	{
 		return $this->join($table1, $table2, 'CROSS');
 	}
-
+	
 	/**
 	 * Set select statement FULL JOIN clause
 	 *
 	 * @param string $table1
 	 * @param string $table2
-	 * @return self
+	 * @return $this
 	 */		
-	public function fullJoin($table1, $table2) {
+	public function fullJoin($table1, $table2)
+	{
 		return $this->join($table1, $table2, 'FULL');
 	}
-
+	
 	/**
 	 * Set select statement NATURAL JOIN clause
 	 *
 	 * @param string $table1
 	 * @param string $table2
-	 * @return self
+	 * @return $this
 	 */		
-	public function naturalJoin($table1, $table2) {
+	public function naturalJoin($table1, $table2)
+	{
 		return $this->join($table1, $table2, 'NATURAL');
 	}
-
+	
 	/**
 	 * Set select statement JOIN clause
 	 *
 	 * @param mixed $arg1
 	 * @param mixed $arg1
-	 * @return self
+	 * @return $this
 	 */		
-	public function on($arg1, $arg2=null, $arg3=null) {
+	public function on($arg1, $arg2=null, $arg3=null)
+	{
 		if (!$this->pieces['joins']) {
 			return $this;
 		}
@@ -223,13 +239,15 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * Set select statement HAVING clause
 	 *
 	 * Succesive having invocations are added by AND
+	 * 
 	 * @param unknown_type $arg1
 	 * @param unknown_type $arg2
 	 * @param unknown_type $arg3
-	 * @return self
-	 * @question Please elaborate on the arguments
+	 * @return $this
+	 * @todo Please elaborate on the arguments
 	 */
-	public function having($arg1, $arg2=null, $arg3=null) {
+	public function having($arg1, $arg2=null, $arg3=null)
+	{
 		if (!$this->pieces['having']) {
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
@@ -243,10 +261,11 @@ class A_Sql_Select extends A_Sql_Statement {
 	 *
 	 * @param unknown_type $data
 	 * @param unknown_type $value
-	 * @return self
-	 * @question Please elaborate on the arguments
+	 * @return $this
+	 * @todo Please elaborate on the arguments
 	 */
-	public function orHaving($data, $value=null) {
+	public function orHaving($data, $value=null)
+	{
 		if (!($this->pieces['having'] instanceof A_Sql_Having)) {
 			$this->pieces['having'] = new A_Sql_Having();
 			$this->addListener($this->pieces['having']);
@@ -261,7 +280,8 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * @param unknown_type $columns
 	 * @return self
 	 */
-	public function groupBy($columns) {
+	public function groupBy($columns)
+	{
 		$this->pieces['groupby'] = new A_Sql_Groupby($columns);	
 		return $this;
 	}
@@ -270,10 +290,11 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * Set select statement ORDER BY clause
 	 *
 	 * @param unknown_type $columns
-	 * @return self
-	 * @question Same as before
+	 * @return $this
+	 * @todo Same as before
 	 */
-	public function orderBy($columns) {
+	public function orderBy($columns)
+	{
 		$this->pieces['orderby'] = new A_Sql_Orderby($columns);	
 		return $this;
 	}
@@ -283,9 +304,10 @@ class A_Sql_Select extends A_Sql_Statement {
      *
      * @param int $count 
      * @param int $offset 
-     * @return self
+     * @return $this
      */
-    public function limit($count = null, $offset=null) {
+    public function limit($count=null, $offset=null)
+    {
         $this->limit = (int)$count;
         $this->offset = (int)$offset;
         return $this;
@@ -296,9 +318,10 @@ class A_Sql_Select extends A_Sql_Statement {
      *
      * @param int $page Page number
      * @param int $rowCount Rows per page
-     * @return self
+     * @return $this
      */
-    public function limitPage($page, $rowCount) {
+    public function limitPage($page, $rowCount)
+    {
         $page = ($page > 0) ? $page : 1;
         $rowCount = ($rowCount > 0) ? $rowCount : 1;
         $this-> _limit = (int) $rowCount;
@@ -310,36 +333,35 @@ class A_Sql_Select extends A_Sql_Statement {
 	 * Convert object to string, invokes render()
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->render();
 	}
-
+	
 	/**
 	 * Render SQL statement from parts
 	 * @return string
 	 */
-	public function render() {
+	public function render()
+	{
 		$this->notifyListeners();
 		
 		if (!($this->pieces['tables'] instanceof A_Sql_From && count($this->pieces['tables']->getTables()))) {
 			return ''; //throw new A_Sql_Exception('No valid table name was supplied');
 		}
-
+		
 		if (!($this->pieces['columns'] instanceof A_Sql_Columns && count($this->pieces['columns']->getColumns()))) {
 			$this->columns('*');
 		}
-
+		
 		foreach ($this->pieces as $name => $piece) {
 			$output = null;
 			if (method_exists($piece, 'render')) {
 				$output = $piece->render();
 			}
-#$output = str_replace(' ', '_', $output);
 			$this->replace['['.$name.']'] = $output;
-#echo "<pre>PIECE $name: =$output=</pre>\n";
-#			$this->replace['['.$name.']'] = strlen($output) ? ' '. $output : $output; //add spacing
 		}
-
+		
 		$sql = "SELECT [columns] FROM [tables][joins][having][where][orderby][groupby]";
 		$sql = str_replace(array_keys($this->replace), array_values($this->replace), $sql);
 		
@@ -354,11 +376,13 @@ class A_Sql_Select extends A_Sql_Statement {
      * Clear the SQL statement parts
      *
      * @param string $part OPTIONAL
-     * @return self
+     * @return $this
      */	
-	public function reset() {
+	public function reset()
+	{
 		foreach ($this->pieces as &$piece) {
 			$piece = null;
 		}
 	}
+
 }

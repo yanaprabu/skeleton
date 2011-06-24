@@ -12,21 +12,25 @@
  * 
  * Generate SQL table columns list
  */
-class A_Sql_Columns {
+class A_Sql_Columns
+{
+
 	/**
 	 * Columns array
+	 * 
 	 * @var array
 	 */
 	protected $columns = array();
-
+	
 	/**
-	 * Class constructor
+	 * Constructor
 	 * 
 	 * Casts arguments into columns array
 	 *
 	 * @param mixed $args
 	 */
-	public function __construct($args=null) {
+	public function __construct($args=null)
+	{
 		if (is_array($args)) {
 			if (isset($args[0]) && is_array($args[0])) {
 				$this->columns = $args[0];
@@ -51,28 +55,32 @@ class A_Sql_Columns {
 	 *
 	 * @return array
 	 */	
-	public function getColumns() {
+	public function getColumns()
+	{
 		return $this->columns;
 	}
-
+	
 	/**
-	 * Magic string transformation
+	 * Automagically renders when used in a string context
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->render();
 	}
 	
 	/**
 	 * Return prepared statement
-	 *
+	 * 
 	 * @return string
 	 */
-	public function render() {
+	public function render()
+	{
 		if (!count($this->columns)) {
 			return '';
 		}
 		return implode(', ', $this->columns);		
 	}
+
 }

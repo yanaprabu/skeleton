@@ -12,20 +12,24 @@
  * 
  * Generate SQL joins
  */
-class A_Sql_Join {
+class A_Sql_Join
+{
+
 	protected $type = '';
 	protected $table_right = '';
 	protected $table_left = '';
 	protected $on = null;
 	protected $on_expression = null;
 	
-	public function __construct($table_right=null, $table_left=null, $type=null) {
+	public function __construct($table_right=null, $table_left=null, $type=null)
+	{
 		if ($table_right) {
 			$this->join($table_right, $table_left, $type);
 		} 
 	}
 	
-	public function join($table_right, $table_left, $type=null) {
+	public function join($table_right, $table_left, $type=null)
+	{
 		$this->type = ($type !== null) ? strtoupper($type) : 'INNER';
 		$this->table_right = $table_right;
 		$this->on = null;
@@ -40,8 +44,9 @@ class A_Sql_Join {
 		return $this;
 	}
 	
-	public function on($argument1, $argument2=null, $argument3=null) {
-		if (! $this->table_right) { //no join has been set yet
+	public function on($argument1, $argument2=null, $argument3=null)
+	{
+		if (!$this->table_right) { //no join has been set yet
 			return;
 		}
 		if (!$this->on) {						
@@ -84,8 +89,9 @@ class A_Sql_Join {
 		}
 		return $this;
 	}
-
-	public function render() {
+	
+	public function render()
+	{
 		$return = '';
 		if ($this->table_right) {
 			$on = '';
@@ -100,16 +106,17 @@ class A_Sql_Join {
 		}
 		return $return;
 	}
-
-	protected function prependTableAlias($alias, $table) {
+	
+	protected function prependTableAlias($alias, $table)
+	{
 		if (!strpos($table, '.')) { //already an alias
 			return $alias .'.'. $table;
 		}
 		return $table;
 	}
-
-
-	public function getTables() {
+	
+	public function getTables()
+	{
 		$tables = array();
 		if ($this->table_right) {
 			$tables[] = $this->table_right;
@@ -119,9 +126,10 @@ class A_Sql_Join {
 		}
 		return $tables;
 	}
-
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		return $this->render();
 	}
+
 }
