@@ -12,11 +12,15 @@
  * 
  * Rule to check for a value not being empty or null.
  */
-class A_Rule_Notnull extends A_Rule_Base {
+class A_Rule_Notnull extends A_Rule_Base
+{
+
 	const ERROR = 'A_Rule_Notnull';
 	
-	protected function validate() {
+	protected function validate()
+	{
 		$value = $this->getValue();
 		return ($value !== null) && ($value !== '');
 	}
+
 }

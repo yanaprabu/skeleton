@@ -12,10 +12,14 @@
  * 
  * Rule to check for values with only digits
  */
-class A_Rule_Digit extends A_Rule_Base {
-	const ERROR = 'A_Rule_Digit';
+class A_Rule_Digit extends A_Rule_Base
+{
 
-   protected function validate() {
-      return (preg_match("/^[[:digit:]]+$/", $this->getValue()));
-    }
+	const ERROR = 'A_Rule_Digit';
+	
+	protected function validate()
+	{
+		return (preg_match("/^[[:digit:]]+$/", $this->getValue()));
+	}
+
 }

@@ -12,20 +12,24 @@
  * 
  * Rule to check a rule against an array of values.
  */
-class A_Rule_Iterator extends A_Rule_Base {
+class A_Rule_Iterator extends A_Rule_Base
+{
+
 	protected $rule;
 	protected $params = array(
-							'rule' => null, 
-							'field' => '', 
-							'errorMsg' => '', 
-							'optional' => false
-							);
-
-    public function get($name) {
-      return $this->value;
-    }
-
-    protected function validate() {
+		'rule' => null, 
+		'field' => '', 
+		'errorMsg' => '', 
+		'optional' => false
+	);
+	
+	public function get($name)
+	{
+	  return $this->value;
+	}
+	
+	protected function validate()
+	{
 		$data = $this->getValue();
 		$result = false;
 		if (is_array($data)) {
@@ -39,5 +43,6 @@ class A_Rule_Iterator extends A_Rule_Base {
 		} else {
 			return ($this->params['rule']->validate($this->getValue()));
 		}
-    }
+	}
+
 }

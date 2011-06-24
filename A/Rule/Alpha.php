@@ -12,10 +12,14 @@
  * 
  * Rule to make sure string only contains alphabetic characters
  */
-class A_Rule_Alpha extends A_Rule_Base {
-	const ERROR = 'A_Rule_Alpha';
+class A_Rule_Alpha extends A_Rule_Base
+{
 
-    protected function validate() {
-      return (preg_match("/^[[:alpha:]]+$/", $this->getValue()));
-    }
+	const ERROR = 'A_Rule_Alpha';
+	
+	protected function validate()
+	{
+		return (preg_match("/^[[:alpha:]]+$/", $this->getValue()));
+	}
+
 }

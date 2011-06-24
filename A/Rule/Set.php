@@ -12,7 +12,8 @@
  * 
  * Contains multiple rules that must all pass for this to be isValid
  */
-class A_Rule_Set {
+class A_Rule_Set
+{
 
 	protected $chain = array();
 	protected $excludes = array();		// array of names not to be validated
@@ -20,8 +21,9 @@ class A_Rule_Set {
 	protected $errorMsg = array();
 	protected $dir = 'A_Rule_';
 	
-	public function addRule($rules, $fields=array(), $errorMsgs=array()) {
-		if (! is_array($rules)) {
+	public function addRule($rules, $fields=array(), $errorMsgs=array())
+	{
+		if (!is_array($rules)) {
 			$rules = array($rules);
 		}
 		foreach ($rules as $rule) {
@@ -30,10 +32,10 @@ class A_Rule_Set {
 				$rule = func_get_args();
 				$fields = null;
 			} else {
-				if (! is_array($fields)) {
+				if (!is_array($fields)) {
 					$fields = array($fields);
 				}
-				if (! is_array($errorMsgs)) {
+				if (!is_array($errorMsgs)) {
 					$fields = array($errorMsgs);
 				}
 			}
@@ -54,8 +56,9 @@ class A_Rule_Set {
 		}
 		return $this;
 	}
-
-	public function excludeRules($names=array()) {
+	
+	public function excludeRules($names=array())
+	{
 		if (is_string($names)) {
 			$names = array($names);
 		}
@@ -63,7 +66,8 @@ class A_Rule_Set {
 		return $this;
 	}
 	
-	public function includeRules($names=array()) {
+	public function includeRules($names=array())
+	{
 		if (is_string($names)) {
 			$names = array($names);
 		}
@@ -74,21 +78,21 @@ class A_Rule_Set {
 	/**
 	 * Remove all assigned rules
 	 */
-	public function clearRules() {
+	public function clearRules()
+	{
 		$this->chain = array();
-#		foreach (array_keys($this->chain) as $key) {
-#			unset($this->chain[$key]);
-#		}
 	}
 	
 	/**
 	 * Sets whether fields allow null values or not
 	 * 
-	 * @param boolean
-	 * @return instance of this object (for fluent interface)
+	 * @param array $names
+	 * @param bool $tf
+	 * @return $this
 	 */
-	public function setOptional($names, $tf=true) {
-		if (! is_array($names)) {
+	public function setOptional($names, $tf=true)
+	{
+		if (!is_array($names)) {
 			$names = array($names);
 		}
 		foreach ($names as $name) {
@@ -100,12 +104,15 @@ class A_Rule_Set {
 		}
 		return $this;
 	}
+	
 	/**
 	 * Whether field is allows null values or not
 	 * 
-	 * @return boolean value of optional flag
+	 * @param string $name
+	 * @return bool Value of optional flag
 	 */
-	public function isOptional($name) {
+	public function isOptional($name)
+	{
 		$optional = true;
 		foreach ($this->chain as $key => $rule) {
 			if (($key == $name) && ! $rule->isOptional()) {
@@ -115,15 +122,17 @@ class A_Rule_Set {
 		}
 		return $optional;
 	}
-
+	
 	/**
 	 * Tells whether this rule passes or not
 	 * 
-	 * @return boolean true if pass, fail otherwise
+	 * @param object $container
+	 * @return bool
 	 */
-	public function isValid($container) {
+	public function isValid($container)
+	{
 		$this->errorMsg = array();
-
+		
 		// load helpers specified by array('class_name', 'param', ...)
 		foreach ($this->chain as $key => $args) {
 			// class names with params are added as arrays
@@ -133,7 +142,6 @@ class A_Rule_Set {
 				if(strstr($name, '_') === false) {
 					$name = $this->dir . ucfirst($name);
 				}
-				#include_once str_replace('_', '/', $name) . '.php';
 				$ref = new ReflectionClass($name);
 				$this->chain[$key] = $ref->newInstanceArgs($args);
 				unset($ref);
@@ -151,7 +159,7 @@ class A_Rule_Set {
 		} else {
 			$chain = array_keys($this->chain);
 		}
-
+		
 		// if excludes certain fields then remove rules with those names from the chain
 		if ($this->excludes) {
 			$keys = array_keys($chain);
@@ -161,10 +169,10 @@ class A_Rule_Set {
 				}
 			}
 		}
-
+		
 		// check each rule in chain and gather error messages
 		foreach ($chain as $key) {
-			if (! $this->chain[$key]->isValid($container)) {
+			if (!$this->chain[$key]->isValid($container)) {
 				$errorMsg = $this->chain[$key]->getErrorMsg();
 				if (is_array($errorMsg)) {
 					$this->errorMsg = array_merge($this->errorMsg, $errorMsg);
@@ -176,7 +184,8 @@ class A_Rule_Set {
 		return empty($this->errorMsg);
 	}
 	
-	public function getErrorMsg($separator=null) {
+	public function getErrorMsg($separator=null)
+	{
  		return $separator === null ? $this->errorMsg : implode($separator, $this->errorMsg);
 	}
 
