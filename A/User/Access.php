@@ -12,33 +12,40 @@
  * 
  * Check if user has access based on supplied rules.
  */
-class A_User_Access {
+class A_User_Access
+{
+
 	protected $user;
 	protected $rules = array();
 	protected $errorMsg = null;
 	
-	public function __construct($user) {
+	public function __construct($user)
+	{
 		$this->user = $user;
 	}
-
-	public function addRule($rule) {
+	
+	public function addRule($rule)
+	{
 		$this->rules[] = $rule;
 		return $this;
 	}
-
+	
 	/*
 	 * errorMsg holds the forward array
 	 */
-	public function setErrorMsg($forward=array()) {
+	public function setErrorMsg($forward=array())
+	{
 		$this->errorMsg = $forward;
 		return $this;
 	}
-
-	public function getErrorMsg($forward=array()) {
+	
+	public function getErrorMsg($forward=array())
+	{
 		return $this->errorMsg;
 	}
-
-	public function run($obj) {
+	
+	public function run($obj)
+	{
 		if (is_a($obj, 'A_Locator')) {
 			$request = $obj->get('Request');
 		} elseif (is_a($obj, 'A_Http_Request')) {
@@ -46,18 +53,15 @@ class A_User_Access {
 		} else {
 			$request = null;
 		}
-#echo 'ERRMSG='.print_r($errorMsg, 1).'<br/>';
-#dump($errorMsg, 'FORWARD/ERRORMSG: ');
 		if ($request) {
 			foreach ($this->rules as $rule) {
 				if (!$rule->isValid($this->user)) { 
 					// A_User_Rule_* use the Rule's errorMsg to hold the forward
 					$errorMsg = $rule->getErrorMsg();
 					// use global forward
-					if (! $errorMsg) {
+					if (!$errorMsg) {
 						$errorMsg = $this->errorMsg;
 					}
-					#echo 'RULE NOT VALID<br/>';
 					if (is_array($errorMsg)) {
 						// if array has 3 elements then 1st is module
 						if (count($errorMsg) > 2) {
@@ -74,4 +78,5 @@ class A_User_Access {
 		} else {		// a controller - being used as a preFilter
 		}
 	}
+
 }

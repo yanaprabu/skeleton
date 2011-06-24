@@ -13,65 +13,69 @@
  * Check credentials.
  */
 class A_User_Auth extends A_User_Access
-{	protected $db;	protected $table = 'user';	protected $sequence = 'user';	protected $userid_func = null;	protected $password_func = null;	protected $success_url = '';				// set to redirect on successful login	protected $crypt_func = 'md5';	protected $no_password = false;				// set to true for userid only login
+{
+	protected $db;	protected $table = 'user';	protected $sequence = 'user';	protected $userid_func = null;	protected $password_func = null;	protected $success_url = '';				// set to redirect on successful login	protected $crypt_func = 'md5';	protected $no_password = false;				// set to true for userid only login
 	
-	public function setDB ($db)
+	public function setDB($db)
 	{
 		$this->db = $db;
 		return $this;
 	}
 	
-	public function setDBTable ($table)
+	public function setDBTable($table)
 	{
-		if ($table){
+		if ($table) {
 			$this->table=$table;
 		}
 		return $this;
 	}
 	
-	public function setDBFieldUserID ($field)
+	public function setDBFieldUserID($field)
 	{
-		if ($field){
+		if ($field) {
 			$this->field_userid=$field;
 		}
 		return $this;
 	}
 	
-	public function setDBFieldPassword ($field)
+	public function setDBFieldPassword($field)
 	{
-		if ($field){
+		if ($field) {
 			$this->field_password=$field;
 		}
 		return $this;
 	}
 	
-	public function setDBFieldSequence ($field)
+	public function setDBFieldSequence($field)
 	{
 		$this->field_sequence=$field;
 		return $this;
 	}
 	
-	public function setSuccessRedirect ($url)
+	public function setSuccessRedirect($url)
 	{
 		$this->success_url = $url;
 		return $this;
 	}
 	
-	public function setCryptFunction ($func)
+	public function setCryptFunction($func)
 	{
 		$this->crypt_func = $func;
 		return $this;
 	}
 	
 	/**
-	 * depricated name for login()
+	 * Alias for login()
+	 * 
+	 * @depreciated
+	 * @see login()
 	 */
 	public function signin ($userid, $password)
 	{
-		$this->login ($userid, $password);
+		$this->login($userid, $password);
 	}
 	
-	public function login ($userid, $password)
+	public function login($userid, $password)
 	{
 		$this->error = 0;
 		if (function_exists($this->userid_func)) {
@@ -80,23 +84,23 @@ class A_User_Auth extends A_User_Access
 		if (function_exists($this->password_func)) {
 			$password = call_user_func($this->password_func, $password);
 		}
-		if ($userid && ($password || $this->no_password)){
-	
-			if ($this->db){
+		if ($userid && ($password || $this->no_password)) {
+			
+			if ($this->db) {
 				$sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->field_userid . "='$userid'";
 	
 				$result = $this->db->query($sql);
 				if (DB::isError($result)) {
 					$this->error = 3;
 				} else {
-					if ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)){
+					if ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
 						if ($userid == $row[$this->field_userid]) {
 							if ($this->crypt_func) {
 								$password = call_user_func($this->crypt_func, $password);
 							}
 	
 							if (($row[$this->field_password] == $password) || $this->no_password) {
-	# password match
+								// password match
 								if ($this->field_accessdate) {
 									$sql = 'UPDATE ' . $this->table . ' SET ' . $this->field_accessdate . '=NULL WHERE ' . $this->field_userid . "='$userid'";
 									$result = $this->db->query($sql);
@@ -106,33 +110,33 @@ class A_User_Auth extends A_User_Access
 								$this->redirect($this->success_url);
 								return $row;
 							}else{
-	# password does not match
+								// password does not match
 								$this->error = 6;
 							}
 						}else{
-	# userid does not match result
+							// userid does not match result
 							$this->error = 5;
 						}
 					}else{
-	# fetch failed
+						// fetch failed
 						$this->error = 3;
 					}
 				}
 			}else{
-	# no database connection
+				// no database connection
 				$this->error = 11;
 			}
 		} elseif ($userid){
-	# no password
+			// no password
 			$this->error = 2;
 		} else {
-	# no userid
+			// no userid
 			$this->error = 1;
 		}
 		return 0;
 	}
 	
-	public function create ($userid, $password, $userdata=array())
+	public function create($userid, $password, $userdata=array())
 	{
 		$this->error = 0;
 		if (function_exists($this->userid_func)) {
@@ -146,12 +150,12 @@ class A_User_Auth extends A_User_Access
 				$sql = "SELECT * FROM {$this->table} WHERE {$this->field_userid}='$userid'";
 				$result = $this->db->query($sql);
 				if (DB::isError($result)) {
-	// error with select
+					// error with select
 					$this->error = 3;
 				} else {
-					if ($result->numRows() == 0){
-	// clear if garbage passed
-						if (! is_array($userdata)) {
+					if ($result->numRows() == 0) {
+						// clear if garbage passed
+						if (!is_array($userdata)) {
 							$userdata = array();
 						}
 						if ($this->crypt_func) {
@@ -159,10 +163,10 @@ class A_User_Auth extends A_User_Access
 						}
 						$userdata[$this->field_userid] = $userid;
 						$userdata[$this->field_password] = $password;
-	// build SQL insert command
+						// build SQL insert command
 						$fields = '';
 						$values = '';
-	// if a sequence and field are specified then get the next value
+						// if a sequence and field are specified then get the next value
 						if ($this->field_sequence && $this->sequence) {
 							$userdata[$this->field_sequence] = $this->db->nextId($this->sequence, true);
 						}
@@ -179,34 +183,34 @@ class A_User_Auth extends A_User_Access
 						$sql = "INSERT INTO {$this->table} ($fields) VALUES ($values)";
 						$result = $this->db->query($sql);
 						if (DB::isError($result)) {
-	# userid not added
+							// userid not added
 							$this->error = 9;
 						} else {
-	// sign-in
+							// sign-in
 							$this->merge($userdata);
 							$this->redirect($this->success_url);
 							return $userdata;
 						}
 					}else{
-	# userid exists
+						// userid exists
 						$this->error = 4;
 					}
 				}
 			}else{
-	# no database connection
+				// no database connection
 				$this->error = 11;
 			}
 		} elseif ($userid) {
-	# no password
+			// no password
 			$this->error = 2;
 		} else {
-	# no userid
+			// no userid
 			$this->error = 1;
 		}
 		return 0;
 	}
 	
-	public function changePassword ($userid, $newpassword, $oldpassword='')
+	public function changePassword($userid, $newpassword, $oldpassword='')
 	{
 		$this->error = 0;
 		if (function_exists($this->userid_func)) {
@@ -220,7 +224,7 @@ class A_User_Auth extends A_User_Access
 				$sql = "SELECT * FROM {$this->table} WHERE {$this->field_userid}='$userid'";
 				$result = $this->db->query($sql);
 				if (DB::isError($result)) {
-	// error with select
+					// error with select
 					$this->error = 3;
 				} else {
 					if ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)){
@@ -239,30 +243,30 @@ class A_User_Auth extends A_User_Access
 							$sql = "UPDATE {$this->table} SET {$this->field_password}='{$row[$this->field_password]}' WHERE {$this->field_userid}='$userid'";
 							$result = $this->db->query($sql);
 							if (DB::isError($result)) {
-	# error writing new password
+								// error writing new password
 								$this->error = 10;
 							} else {
 								$this->error = 0;
 								return $row[$this->field_password];
 							}
 						}else{
-	# old password did not match
+							// old password did not match
 							$this->error = 8;
 						}
 					}else{
-	# userid not found
+						// userid not found
 						$this->error = 7;
 					}
 				}
 			}else{
-	# no database connection
+				// no database connection
 				$this->error = 11;
 			}
 		} elseif ($userid){
-	# no password
+			// no password
 			$this->error = 2;
 		} else {
-	# no userid
+			// no userid
 			$this->error = 1;
 		}
 		return 0;
@@ -272,49 +276,53 @@ class A_User_Auth extends A_User_Access
 	 * Generate a password string of a given length from the character set string
 	 * where characters and character ranges are separated by commas, for
 	 * example "1,2,A-Z" would contain 1, 2 and all the upper case letters.
-	 * Defaults to 10 character passwords with a few symbols, but no 1,l,0,O,Q
-	 **/
+	 * Defaults to 10 character passwords with a few symbols, but no 1,l,0,O,Q.
+	 * 
+	 * @param int $length
+	 * @param string $charset
+	 * @return string
+	 */
 	public function generatePassword($length=10, $charset='')
 	{
 		$password = '';
-		if(empty($charset)){
+		if(empty($charset)) {
 			$charset = 'a-k,m-z,A-N,P,R-Z,2-9,-,+,=,$,%,&,*';
 		}
-		if($length > 0){
+		if($length > 0) {
 			$n = 0;
 			$array = explode(',', $charset);
 			$nranges = count($array);
-			for($i=0; $i<$nranges; ++$i){
-				if(strpos($array[$i], '-')){
+			for($i = 0; $i < $nranges; $i++) {
+				if(strpos($array[$i], '-')) {
 					$ch1 = substr($array[$i], 0, 1);
 					$ch2 = substr($array[$i], 2, 1);
 					if($ch2 < $ch1){
 						$ch2 = $ch1;
 					}
-				}else{
+				} else {
 					$ch1 = substr($array[$i], 0, 1);
 					$ch2 = $ch1;
 				}
-				for($ch=ord($ch1); $ch<=ord($ch2); ++$ch){
+				for($ch = ord($ch1); $ch <= ord($ch2); $ch++) {
 					$chars[$n++] = chr($ch);
 				}
 			}
-		mt_srand((double) microtime() * 1000000);
-		for($i=0; $i<$length; ++$i){
-			$password .= $chars[mt_rand(0, $n-1)];
+			mt_srand((double) microtime() * 1000000);
+			for($i=0; $i<$length; ++$i) {
+				$password .= $chars[mt_rand(0, $n-1)];
 			}
 		}
 		return $password;
 	}
 	
-	public function isError ()
+	public function isError()
 	{
 		return($this->error);
 	}
 	
 	public function getErrorMsg($error=0)
 	{
-		$msg = array (
+		$msg = array(
 			0 => '',
 			1 => 'no userid was given',
 			2 => 'no password was given',
@@ -328,7 +336,7 @@ class A_User_Auth extends A_User_Access
 			10=> 'error occured while saving the new password',
 			11=> 'no database connection'
 		);
-	
+		
 		if ($error == 0) {
 			return ($msg[$this->error]);
 		} else {
@@ -337,15 +345,17 @@ class A_User_Auth extends A_User_Access
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias for getErrorMsg()
+	 * 
+	 * @deprecated
+	 * @see getErrorMsg()
 	 */
-	public function errorMsg ($error=0)
+	public function errorMsg($error=0)
 	{
 		return($this->getErrorMsg($error));
 	}
 
-} // class A_User_Auth
-
+}
 
 /*
 

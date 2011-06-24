@@ -12,13 +12,16 @@
  * 
  * Check if user is logged-in.
  */
-class A_User_Rule_Isloggedin extends A_User_Rule_Base {
-	
-	public function __construct ($forward) {
+class A_User_Rule_Isloggedin extends A_User_Rule_Base
+{
+
+	public function __construct ($forward)
+	{
 		$this->forward = $forward;
 	}
-
-	public function isValid($user=null) { 
+	
+	public function isValid($user=null)
+	{ 
 		$user = $this->getUser($user);
 		if ($user && $user->isLoggedIn()) {
 			$this->errorMsg = '';

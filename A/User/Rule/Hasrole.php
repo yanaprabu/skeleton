@@ -19,21 +19,25 @@
  * 
  * Checks if the group(s) passed to the constructor are group(s) that the user is a member of.
  */
-class A_User_Rule_Hasrole extends A_Rule_Set {
+class A_User_Rule_Hasrole extends A_Rule_Set
+{
+
 	protected $params = array(
-							'errorMsg' => '', 
-							'optional' => false
-							);
+		'errorMsg' => '', 
+		'optional' => false
+	);
 	
-	public function allow() {
+	public function allow()
+	{
 		return $this;
 	}
 	
-	public function deny() {
+	public function deny()
+	{
 		return $this;
 	}
 	
-	public function validate() {
-	}
+	public function validate()
+	{}
 
 }
