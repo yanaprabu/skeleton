@@ -12,13 +12,16 @@
  * 
  * Template class using XML files as templates
  */
-class A_Template_Xml extends A_Template_Base {
+class A_Template_Xml extends A_Template_Base
+{
+
 	protected $data = array();
 	protected $depth = -1;
 	protected $filename = '';
 	protected $errorMsg = '';
-
-	public function __construct($filename='') {
+	
+	public function __construct($filename='')
+	{
 		$this->filename = $filename;
 		$this->xml_parser = xml_parser_create();
 		if ($this->xml_parser) {
@@ -29,25 +32,30 @@ class A_Template_Xml extends A_Template_Base {
 			$this->errorMsg = 'Error creating xml_parser';
 		}
 	}
-
-	public function free() {
+	
+	public function free()
+	{
 		xml_parser_free($this->xml_parser);
 	}
-
-	protected function _startElement($parser,$tagname,$attr) {
+	
+	protected function _startElement($parser,$tagname,$attr)
+	{
 		$this->tags[++$this->depth] = $tagname;
 		$this->data[$tagname] = '';
 	}
-
-	protected function _characterData($parser, $data) {
+	
+	protected function _characterData($parser, $data)
+	{
 		$this->data[$this->tags[$this->depth]] .= trim($data);
 	}
-
-	protected function _endElement($parser,$tagname) {
+	
+	protected function _endElement($parser,$tagname)
+	{
 		--$this->depth;
 	}
-
-	public function read($filename='') {
+	
+	public function read($filename='')
+	{
 		if ($this->filename) {
 			$this->filename = $this->filename;
 		}

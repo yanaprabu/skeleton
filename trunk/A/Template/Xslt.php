@@ -12,24 +12,30 @@
  * 
  * Template class that transforms XML templates with XSL. No blocks.
  */
-class A_Template_Xslt extends A_Template_Base {
-	protected $filenamexml = '';
+class A_Template_Xslt extends A_Template_Base
+{
 
-	public function __construct($filenamexsl='', $data=array()) {
+	protected $filenamexml = '';
+	
+	public function __construct($filenamexsl='', $data=array())
+	{
 	    parent::__construct($filenamexsl, $data);
 	}
 	
-	public function setXML($xml) {
+	public function setXML($xml)
+	{
 	    $this->template = $xml;
 		return $this;
 	}
 	
-	public function setXMLFilename($filename) {
+	public function setXMLFilename($filename)
+	{
 	    $this->filenamexml = $filename;
 		return $this;
 	}
 	
-	public function render() {
+	public function render()
+	{
 		if ($this->filename && ($this->template || $this->filenamexml)) {
 			$xml = new DOMDocument();
 			if ($this->template) {

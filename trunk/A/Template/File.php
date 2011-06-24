@@ -12,34 +12,41 @@
  * 
  * Base Template class for templates that are read as files
  */
-class A_Template_File extends A_Template_Base {
+class A_Template_File extends A_Template_Base
+{
+
 	protected $blocks = array();
 	protected $blockprefix = '<!--{';
 	protected $blocksuffix = '}-->';
 	protected $auto_blocks;
-
-	public function __construct($filename='', $data=array(), $auto_blocks=false) {
+	
+	public function __construct($filename='', $data=array(), $auto_blocks=false)
+	{
 		parent::__construct($filename, $data);
 		$this->auto_blocks = $auto_blocks;
 	}
-
-	public function readFile($filename) {
+	
+	public function readFile($filename)
+	{
 		return file_get_contents($filename);
 	}
-
-	public function setTemplate($template) {
+	
+	public function setTemplate($template)
+	{
 	    $this->template = $template;
 	    $this->blocks = array();
 		return $this;
 	}
 	
-	public function setFilename($filename) {
+	public function setFilename($filename)
+	{
 	    $this->filename = $filename;
 	    $this->blocks = array();
 		return $this;
 	}
 	
-	public function loadTemplate() {
+	public function loadTemplate()
+	{
 		if ($this->template) {
 			$this->blocks[''] = $this->template;
 		} elseif (! isset($this->blocks['']) || ! $this->blocks['']) {
@@ -47,14 +54,15 @@ class A_Template_File extends A_Template_Base {
 		}
 		return $this;
 	}
-
-	public function makeBlocks($prefix='', $suffix='') {
+	
+	public function makeBlocks($prefix='', $suffix='')
+	{
 	   	$this->loadTemplate();
-		if (! $prefix) {
+		if (!$prefix) {
 			$prefix = $this->blockprefix;
 		}
 		if (strpos($this->blocks[''], $prefix) !== false) {
-			if (! $suffix) {
+			if (!$suffix) {
 				$suffix = $this->blocksuffix;
 			}
 			$arr = array();
@@ -70,12 +78,14 @@ class A_Template_File extends A_Template_Base {
 		}
 		return $this;
 	}
-
-	public function hasBlock($block=null) {
+	
+	public function hasBlock($block=null)
+	{
 	   	if ($block) {
 			return isset($this->blocks[$block]);
 	   	} else {
 			return count($this->blocks) > 1;
 	   	}
 	}
+
 }
