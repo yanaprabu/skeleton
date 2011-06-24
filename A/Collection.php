@@ -15,6 +15,7 @@
  */
 class A_Collection implements Iterator, ArrayAccess
 {
+
 	protected $_data = array();
 	
 	/**
@@ -44,7 +45,7 @@ class A_Collection implements Iterator, ArrayAccess
 		if (isset($data)) {
 			foreach ($data as $key => $value) {
 				if (is_array($value)) {
-			        if (! isset($obj->_data[$key])) {
+			        if (!isset($obj->_data[$key])) {
 			        	$obj->_data[$key] = new A_Collection();
 			        }
 					$this->_expand($obj->_data[$key], $value);

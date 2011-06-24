@@ -14,6 +14,7 @@
  */
 class A_Session
 {
+
 	protected $_data = array();
 	protected $_a_namespace = 'A_Session';
 	protected $_namespace;
@@ -62,22 +63,25 @@ class A_Session
 	 * setHandler
 	 *
 	 * @param mixed $handler ???
+	 * @return $this
 	 */
 	public function setHandler($handler) 
 	{
-		session_set_save_handler(array(&$handler, 'open'),
-									array(&$handler, 'close'),
-									array(&$handler, 'read'),
-									array(&$handler, 'write'),
-									array(&$handler, 'destroy'),
-									array(&$handler, 'gc'));
+		session_set_save_handler(
+			array(&$handler, 'open'),
+			array(&$handler, 'close'),
+			array(&$handler, 'read'),
+			array(&$handler, 'write'),
+			array(&$handler, 'destroy'),
+			array(&$handler, 'gc')
+		);
 		register_shutdown_function('session_write_close');
 		
 		//ensure the session is restarted after changing the save handler
 		session_destroy();
 		session_start();
 		session_regenerate_id();
-
+		
 		return $this;
 	}
 	
@@ -135,7 +139,7 @@ class A_Session
 	{
 		$this->start();
 		if ($name !== null) {
-			if (! isset($this->_data[$name])) {
+			if (!isset($this->_data[$name])) {
 				$this->_data[$name] = array();
 			}
 			return $this->_data[$name];
@@ -227,7 +231,7 @@ class A_Session
 		if (isset($_SESSION[$this->_a_namespace]['expire'])) {
 			foreach ($_SESSION[$this->_a_namespace]['expire'] as $name => $value) {
 				if ($value > 0) {
-					--$_SESSION[$this->_a_namespace]['expire'][$name];		// decrement counter if > 1
+					$_SESSION[$this->_a_namespace]['expire'][$name]--;		// decrement counter if > 1
 				} else {
 					unset($this->_data[$name]);								// remove session var
 					unset($_SESSION[$this->_a_namespace]['expire'][$name]);	// remove counter

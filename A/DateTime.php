@@ -15,10 +15,12 @@
  */
 class A_DateTime extends DateTime
 {
+
 	/**
 	 * date format returnd by _toString
 	 */
 	protected $dateFormat = 'Y-m-d H:i:s';
+	
 	/**
 	 * true dd/mm, false mm/dd
 	 */
@@ -40,7 +42,7 @@ class A_DateTime extends DateTime
 			parent::__construct($date);
 		}
 	}
-
+	
 	/**
 	 * provide fluent interface for DateTime::modify()
 	 */
@@ -52,7 +54,7 @@ class A_DateTime extends DateTime
 		parent::modify($date);
 		return $this;
 	}
-
+	
 	/**
 	 * provide fluent interface for DateTime::setTimezone()
 	 */
@@ -61,7 +63,7 @@ class A_DateTime extends DateTime
 		parent::setTimezone($timezone);
 		return $this;
 	}
-
+	
 	/**
 	 * provide fluent interface for DateTime::setTime()
 	 */
@@ -70,7 +72,7 @@ class A_DateTime extends DateTime
 		parent::setTime($hour, $minute, $second);
 		return $this;
 	}
-
+	
 	/**
 	 * provide fluent interface for DateTime::setDate()
 	 */
@@ -79,7 +81,7 @@ class A_DateTime extends DateTime
 		parent::setDate($year, $month, $day);
 		return $this;
 	}
-
+	
 	/**
 	 * provide fluent interface for DateTime::setISODate()
 	 */
@@ -88,7 +90,7 @@ class A_DateTime extends DateTime
 		parent::setISODate($year, $week, $day);
 		return $this;
 	}
-
+	
 	/**
 	 * Set format of value returned by __toString()
 	 */
@@ -97,7 +99,7 @@ class A_DateTime extends DateTime
 		$this->dateFormat = $format;
 		return $this;
 	}
-
+	
 	/**
 	 * Set internal format for __tostring
 	 */
@@ -106,7 +108,7 @@ class A_DateTime extends DateTime
 		$this->dayMonthOrder = $dayfirst;
 		return $this;
 	}
-
+	
 	/**
 	 * Clearer name for existing method
 	 */
@@ -114,7 +116,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->getOffset();
 	}
-
+	
 	/**
 	 * get date string in YYYY-MM-DD format
 	 */
@@ -122,7 +124,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('Y-m-d' . ($time ? ' H:i:s' : ''));
 	}
-
+	
 	/**
 	 * get timestamp
 	 */
@@ -130,7 +132,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('U');
 	}
-
+	
 	/**
 	 * get time string in 23:15 or 11:15 pm format, with or without seconds
 	 */
@@ -139,7 +141,7 @@ class A_DateTime extends DateTime
 		$sec = $seconds ? ':s' : '';
 		return $this->format($meridian ? "g:i$sec a" : "G:i$sec");
 	}
-
+	
 	/**
 	 * get year
 	 */
@@ -147,7 +149,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('Y');
 	}
-
+	
 	/**
 	 * get month
 	 */
@@ -155,7 +157,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('n');
 	}
-
+	
 	/**
 	 * get day
 	 */
@@ -163,7 +165,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('j');
 	}
-
+	
 	/**
 	 * get hour
 	 */
@@ -171,7 +173,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format($meridian ? 'h' : 'H');
 	}
-
+	
 	/**
 	 * get minute
 	 */
@@ -179,7 +181,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('i');
 	}
-
+	
 	/**
 	 * get second
 	 */
@@ -187,7 +189,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->format('s');
 	}
-
+	
 	/**
 	 * return a new modified object based on the format string 
 	 */
@@ -197,7 +199,7 @@ class A_DateTime extends DateTime
 		$date->modify($format);
 		return $date;
 	}
-
+	
 	/**
 	 * Set date from dates in dd-mm- or mm-dd order, with 2 or 4 digit years and any non-digit separater
 	 *  This pro
@@ -250,17 +252,17 @@ class A_DateTime extends DateTime
 		}			
 		return $this;
 	}
-
+	
 	public function add (A_DateTime_Duration $duration)
 	{
 		$duration->setPositive();
-		return $this->newModify ($duration->toString());
+		return $this->newModify($duration->toString());
 	}
 	
 	public function remove (A_DateTime_Duration $duration)
 	{
 		$duration->setNegative();
-		return $this->newModify ($duration->toString());
+		return $this->newModify($duration->toString());
 	}
 	
 	/**
@@ -294,7 +296,7 @@ class A_DateTime extends DateTime
 			return $this->getTimestamp() > $date->getTimestamp();
 		}
 	}
-
+	
 	/**
 	 * check if date/time of another objects is after the date/time of this object
 	 */
@@ -302,7 +304,7 @@ class A_DateTime extends DateTime
 	{
 		return $this->getTimestamp() >= $date->getTimestamp();
 	}
-
+	
 	/**
 	 * check if this date/time a range
 	 */
@@ -359,7 +361,7 @@ class A_DateTime extends DateTime
 		}
 		return '';
 	}
-
+	
 	/**
 	 * get date using internal format value
 	 */

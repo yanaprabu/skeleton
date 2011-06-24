@@ -14,6 +14,7 @@
  */
 class A_Locator
 {
+
 	// standard repository object names
 	const CONFIG = 'Config';
 	const MAPPER = 'Mapper';
@@ -43,12 +44,15 @@ class A_Locator
 			$this->_dir['A'] = dirname(dirname(__FILE__)) . '/';
 		}
 	}
-
+	
 	/**
 	 * Set a directory to used for class names that:
 	 *      1. namespace '' the dir from which to load when do match is found
 	 *      2. matched first part of PEAR class name 'Foo_*' or namespace '\Foo\'
 	 *      3. match a perl regex like '/^Foo.*$/'
+	 * @param string $dir
+	 * @param string $namespace
+	 * @return $this
 	 */
 	public function setDir($dir, $namespace='')
 	{
@@ -82,7 +86,10 @@ class A_Locator
 				'__construct' => array(array('A_Locator'=>'get, 'name'=>'', 'class'=>'Baz'), 
 				), 
 			); 
-	*/
+	 * 
+	 * @param string $dl
+	 * @return $this
+	 */
 	public function register($dl)
 	{
 		if (is_string($dl)) {
@@ -95,7 +102,7 @@ class A_Locator
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * Load class using PEAR name to path rules. 
 	 *
@@ -109,7 +116,7 @@ class A_Locator
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
-
+		
 		$class = ltrim($class, '\\');
 		// convert to dir separators
 		$file = str_replace(array('_','\\','-'), array('/','/','_'), $class);
@@ -154,7 +161,7 @@ class A_Locator
 		}
 		return $result && class_exists($class, $autoload);
 	}
-
+	
 	/**
 	 * Get object from registery by name. If name does not exist and class given then will attempt to load/instatiate
 	 * baseclass is used to lookup DI information, if baseclass is '*' then it will search for info by parent classes/interfaces 
@@ -188,7 +195,7 @@ class A_Locator
 			return $this->newInstance($class, $baseclass, $param);
 		}
 	}
-
+	
 	/**
 	 * load class and create instance
 	 *
@@ -266,7 +273,7 @@ class A_Locator
 		}
 		return $obj;
 	}
-
+	
 	public function set($name, $value)
 	{
 		if ($value !== null) {
@@ -276,7 +283,7 @@ class A_Locator
 		}
 		return $this;
 	}
-
+	
 	public function has($name)
 	{
 		return isset($this->_obj[$name]);

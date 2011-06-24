@@ -14,6 +14,7 @@
  */
 class A_Model
 {
+
 	protected $datasource = null;	// should be an array() of datasources?
 	protected $fields = array();
 	protected $filters = array();
@@ -23,11 +24,11 @@ class A_Model
 	protected $fieldClass = 'A_Model_Field';
 	protected $errorMsg = array();
 	protected $error = false;
-
+	
 	public function addField($objects)
 	{
-        if(is_array($objects)){
-            foreach($objects as $object){
+        if(is_array($objects)) {
+            foreach($objects as $object) {
                 $this->fields[$object->name] = $object;
             }
         } else {
@@ -38,12 +39,12 @@ class A_Model
 	public function addFilter($filter, $fields=array())
 	{
 		if ($fields) {
-			if (! is_array($fields)) {
+			if (!is_array($fields)) {
 				$fields = array($fields);
 			}
 			// if field names provided then assign filter to multiple fields
 			foreach ($fields as $name) {
-				if (! isset($this->fields[$name])) {
+				if (!isset($this->fields[$name])) {
 					// if field does not exist the create it
 					$this->fields[$name] = new A_Model_Field($name);
 				}
@@ -65,13 +66,13 @@ class A_Model
 	public function addRule($rule, $fields=array())
 	{
 		if ($fields) {
-			if (! is_array($fields)) {
+			if (!is_array($fields)) {
 				$fields = array($fields);
 			}
 			// if field names provided then assign rule to multiple fields
 			$field_rule = null;
 			foreach ($fields as $name) {
-				if (! isset($this->fields[$name])) {
+				if (!isset($this->fields[$name])) {
 					// if field does not exist the create it
 					$this->fields[$name] = new A_Model_Field($name);
 				}
@@ -111,7 +112,7 @@ class A_Model
 	
 	public function newField($name)
 	{
-		if (! isset($this->fields[$name])) {
+		if (!isset($this->fields[$name])) {
 			$this->fields[$name] = new $this->fieldClass($name);
 		}
 		return $this->fields[$name];
@@ -157,12 +158,12 @@ class A_Model
 			return $this->fields[$name]->value;
 		}
 	}
-
+	
 	public function has($name)
 	{
 		return isset($this->fields[$name]);
 	}
-
+	
 	public function getFieldNames()
 	{
 		$data = array();
@@ -171,7 +172,7 @@ class A_Model
 		}
 		return $data;
 	}
-
+	
 	public function getSourceNames()
 	{
 		$data = array();
@@ -180,7 +181,7 @@ class A_Model
 		}
 		return $data;
 	}
-
+	
 	public function getFieldVarArray($var)
 	{
 		if ($var) {
@@ -191,7 +192,7 @@ class A_Model
 			return $data;
 		}
 	}
-
+	
 	public function getValues()
 	{
 		return $this->getFieldVarArray('value');
@@ -207,7 +208,7 @@ class A_Model
 		}
 		return $data;
 	}
-
+	
 	public function isValid($datasource=null)
 	{
 		$filterchain = new A_Filter_Set();
@@ -217,7 +218,7 @@ class A_Model
 		
 		$this->error = false;
 		$this->errorMsg = array();
-
+		
 		if ($this->includeRules) {
 			$rule_names = $this->includeRules;
 		} else {
@@ -226,7 +227,7 @@ class A_Model
 		if ($this->excludeRules) {
 			$rule_names = array_diff($rule_names, $this->excludeRules);
 		}
-
+		
 		$field_names = array_keys($this->fields);
 		if ($field_names) {
 			if (!$datasource) {
@@ -285,9 +286,9 @@ class A_Model
 		
 		}
 		
-		return ! $this->error;
+		return !$this->error;
 	}
-
+	
 	public function save()
 	{
 		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
@@ -295,8 +296,9 @@ class A_Model
 			// error messages and return value?
 		}
 	}
-
-	protected function _load($scope=null) {
+	
+	protected function _load($scope=null)
+	{
 		if (isset($this->load)) {
 			$this->load->load($scope);
 		} else {
@@ -304,7 +306,7 @@ class A_Model
 		}
 		return $this->load;
 	}
- 
+	
 	public function isError()
 	{
 		return $this->error;
@@ -320,7 +322,7 @@ class A_Model
 		}
 		return $separator === null ? $data : implode($separator, $data);
 	}
-
+	
 	public function setErrorMsg($name, $errorMsg)
 	{
 		if (isset($this->fields[$name])) {
@@ -329,7 +331,7 @@ class A_Model
 			$this->errorMsg[$name] = $errorMsg;
 		}
 	}
-
+	
 	public function addErrorMsg($name, $errorMsg)
 	{
 		if(isset($this->fields[$name])){
@@ -345,5 +347,3 @@ class A_Model
 	}
 
 }
-
-

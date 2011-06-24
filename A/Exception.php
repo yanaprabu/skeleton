@@ -14,6 +14,7 @@
  */
 class A_Exception
 {
+
 	public static function getInstance($class_or_obj, $message)
 	{
 		$obj = null;
