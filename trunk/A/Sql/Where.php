@@ -12,11 +12,15 @@
  * 
  * Generate SQL WHERE clause 
  */
-class A_Sql_Where extends A_Sql_LogicalList {
-	public function render() {
+class A_Sql_Where extends A_Sql_LogicalList
+{
+
+	public function render()
+	{
 		$where = parent::render();
 		if ($where) {
 			return ' WHERE '. $where;
 		}
 	}
+
 }

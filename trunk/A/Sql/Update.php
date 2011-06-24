@@ -12,20 +12,23 @@
  * 
  * Generate SQL UPDATE statement
  */
-class A_Sql_Update extends A_Sql_Statement {
+class A_Sql_Update extends A_Sql_Statement
+{
+
 	protected $table;
 	protected $where;
 	protected $joins = array();	
 	protected $set;
 	
 	/**
-	 * Class constructor
-	 *
+	 * Constructor
+	 * 
 	 * @param string $table Table name
 	 * @param array $bind Column-value pairs
 	 * @param array $where Where statement
 	 */
-	public function __construct($table=null, $bind = array(), $where = array()) {
+	public function __construct($table=null, $bind = array(), $where = array())
+	{
 		$this->table($table);
 		if($bind)	{
 			$this->set($bind);
@@ -33,12 +36,14 @@ class A_Sql_Update extends A_Sql_Statement {
 		$this->where($where);
 	}
 	
-	public function table($table) {
+	public function table($table)
+	{
 		$this->table = new A_Sql_From($table);
 		return $this;
 	}	
-
-	public function set($data, $value=null) {
+	
+	public function set($data, $value=null)
+	{
 		if (!$this->set) {	
 			$this->set = new A_Sql_Set();
 		}
@@ -46,12 +51,14 @@ class A_Sql_Update extends A_Sql_Statement {
 		return $this;
 	}
 	
-	public function join($table1, $column1, $table2, $column2) {
+	public function join($table1, $column1, $table2, $column2)
+	{
 		$this->joins[$table2] = new A_Sql_Join($table1, $column1, $table2, $column2);
 		return $this;
 	}	
 	
-	public function where($arg1, $arg2=null, $arg3=null) {
+	public function where($arg1, $arg2=null, $arg3=null)
+	{
 		if ($arg1) {
 			if (!$this->where) {	
 				$this->where = new A_Sql_Where();
@@ -60,8 +67,9 @@ class A_Sql_Update extends A_Sql_Statement {
 		}
 		return $this;		
 	}
-
-	public function orWhere($data, $value=null) {
+	
+	public function orWhere($data, $value=null)
+	{
 		if (!$this->where) {
 			$this->where = new A_Sql_Where();
 		}
@@ -69,7 +77,8 @@ class A_Sql_Update extends A_Sql_Statement {
 		return $this;		
 	}
 	
-	public function render() {
+	public function render()
+	{
 		if (!$this->table || !$this->set) return;
 		$this->notifyListeners();
 		
@@ -79,8 +88,9 @@ class A_Sql_Update extends A_Sql_Statement {
 		$where   = $this->where ? $this->where->setDb($this->db)->render() : '';		
 		return "UPDATE $table$set$joins$where";
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		return $this->render();
 	}
 

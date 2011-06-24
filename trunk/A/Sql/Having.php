@@ -12,10 +12,14 @@
  * 
  * Generate SQL HAVING clause
  */
-class A_Sql_Having extends A_Sql_LogicalList {
-	public function render() {
+class A_Sql_Having extends A_Sql_LogicalList
+{
+
+	public function render()
+	{
 		if ($this->data) {
 			return ' HAVING '. parent::render();
 		}
 	}
+
 }

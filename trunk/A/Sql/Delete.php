@@ -12,22 +12,26 @@
  * 
  * Class for SQL delete query generation.
  */
-class A_Sql_Delete extends A_Sql_Statement{
-	
+class A_Sql_Delete extends A_Sql_Statement
+{
+
 	/**
 	 * Table name
+	 * 
 	 * @var string
 	 */
 	protected $table = null;
 	
 	/**
 	 * Where clause
+	 * 
 	 * @var string
 	 */
 	protected $where = null;
 	
 	/**
 	 * Where expression
+	 * 
 	 * @var unknown_type
 	 */
 	protected $whereExpression;
@@ -38,20 +42,22 @@ class A_Sql_Delete extends A_Sql_Statement{
 	 * @param string $table
 	 * @param array $where
 	 */
-	public function __construct($table=null, $where=array()) {
+	public function __construct($table=null, $where=array())
+	{
 		$this->table($table);
 		$this->where($where);
 	}
 	
-	public function table($table) {
+	public function table($table)
+	{
 		if ($table) {
-			#include_once('A/Sql/Table.php');
 			$this->table = new A_Sql_From($table);
 		}
 		return $this;
 	}
-
-	public function where($arg1, $arg2=null, $arg3=null) {
+	
+	public function where($arg1, $arg2=null, $arg3=null)
+	{
 		if ($arg1) {
 			if (!$this->where) {
 				$this->where = new A_Sql_Where();
@@ -60,21 +66,24 @@ class A_Sql_Delete extends A_Sql_Statement{
 		}
 		return $this;		
 	}
-
-	public function orWhere($data, $value=null) {
+	
+	public function orWhere($data, $value=null)
+	{
 		$this->where('OR', $data, $value);
 		return $this;		
 	}
 	
-	function render() {
+	function render()
+	{
 		if ($this->table) {
 			$table = $this->table->render();
 			$where = $this->where ? $this->where->setDb($this->db)->render() : '';
 			return "DELETE FROM $table$where";
 		}
 	}
-
-	public function __toString() {
+	
+	public function __toString()
+	{
 		return $this->render();
 	}
 

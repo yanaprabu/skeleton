@@ -12,14 +12,11 @@
  * 
  * Generate SQL values list
  */
-class A_Sql_Values extends A_Sql_Expression {
+class A_Sql_Values extends A_Sql_Expression
+{
 
-	/*
-	 * Constructor is from A_Sql_Expression\
-	 * public function __construct($data, $value=null, $escape=true)
-	 */
-	
-	public function render($logic='') {
+	public function render($logic='')
+	{
 		if ($this->data) {
 			// is it an array or rows or just one row? Check if first element is array.
 			if (is_array(current($this->data))) {
@@ -35,4 +32,5 @@ class A_Sql_Values extends A_Sql_Expression {
 			return "(". $columns .") VALUES ". implode(', ', $values);
 		}
 	}
+
 }

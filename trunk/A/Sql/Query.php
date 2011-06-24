@@ -11,22 +11,27 @@
 /**
  * A_Sql_Query
  */
-class A_Sql_Query	{
-	
-	public function select()	{
+class A_Sql_Query
+{
+
+	public function select()
+	{
 		return new A_Sql_Select();
 	}
 	
-	public function insert($table = null, $bind = array())	{
+	public function insert($table=null, $bind=array())
+	{
 		return new A_Sql_Insert($table, $bind);
 	}
 	
-	public function update($table = null, $bind = array(), $where = array())	{
+	public function update($table=null, $bind=array(), $where=array())
+	{
 		return new A_Sql_Update($table, $bind, $where);
 	}
 	
-	public function delete($table = null, $where = array())	{
+	public function delete($table = null, $where = array())
+	{
 		return new A_Sql_Delete($table, $where);
 	}
-	
+
 }
