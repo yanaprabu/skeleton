@@ -18,7 +18,7 @@ class A_Http_Response extends A_Http_View
 	public function render($template='', $scope='')
 	{
 		if ($this->headers) {
-			foreach ($this->cookies as $name => $values) {
+			foreach ($this->headers as $name => $values) {
 				header("$name: " . implode(',', $values));
 			}
 		}
