@@ -12,11 +12,16 @@ These parameters must be met before committing to the trunk.
 
 === PHPDoc Headers/Comments ===
 
-  * Valid PHPDoc file headers must be created for any new code.
-  * Valid PHPDoc file headers must be created for any code changed that did not already have them.
-  * PHPDoc file headers must be updated to reflect any changes made.
-  * Valid PHPDoc comments must be created for any new or edited classes, methods, or public class variables.
-  * PHPDoc for protected and private methods is optional.
+  * Valid PHPDoc comments must be created for any files, classes, public class properties/constants, or public methods.
+  * PHPDoc comments are optional for protected methods/properties.
+  * Valid PHPDoc commets must be created for any code changed that did not already have them.
+  * PHPDoc comments must be updated to reflect any changes made.
+
+=== Comments ===
+
+  * Private class variables can have a single line comment or block comment if necessary.
+  * Be *rigorous* about keeping comments up to date.
+  * Commented-out code is a no-no.  Either delete it, or (fix and?) integrate it.
 
 === Log Message ===
 
