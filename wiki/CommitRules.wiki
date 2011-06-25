@@ -26,4 +26,4 @@ These parameters must be met before committing to the trunk.
 
 === Syntax Standards ===
 
-At this point, the PEAR Codesniffer standard to check against has not been yet decided.  Until then, check with Zend, and ignore any line length or tab errors.
+At this point, the PEAR Codesniffer standard to check against has not been yet decided.  ~~Until then, check with Zend, and ignore any line length or tab errors~~ Refer to this document: SyntaxStandards .
