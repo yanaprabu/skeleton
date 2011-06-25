@@ -1,5 +1,5 @@
 #summary Lays out the syntax requirements for committed code
-#labels Phase-Design,Phase-Requirements
+#labels Phase-Design,Phase-Requirements,Featured
 
 = Syntax Standards =
 
