@@ -63,8 +63,9 @@ $dbconfig = array(
 		'username' => $Config->get('username'),
 		'password' => $Config->get('password')
 		);
-#$Db = new A_Db_Pdo($dbconfig);
-$Db = new A_Db_MySQL($dbconfig);
+$Db = new A_Db_Pdo($dbconfig);
+$Db->connect();
+#$Db = new A_Db_MySQL($dbconfig);
 		
 // Create HTTP Response object and set default template and valuesS
 $Response = new A_Http_Response();
