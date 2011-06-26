@@ -102,10 +102,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	
 	public function limit($sql, $count, $offset='')
 	{
-		if ($offset) {
-			$count = "$count OFFSET $offset";
-		} 
-		return "$sql LIMIT $count";
+		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
 	
 	public function nextId($sequence)

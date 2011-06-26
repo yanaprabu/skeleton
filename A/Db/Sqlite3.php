@@ -89,8 +89,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	
 	public function limit($sql, $count, $offset=null)
 	{
-		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
-		return $sql . ' LIMIT ' . $limit;
+		return "$sql LIMIT " . ($offset > 0 ? "$offset, $count" : $count);
 	}
 	
 	public function lastId()
