@@ -131,6 +131,27 @@ abstract class A_Db_Adapter
 	}
 	
 	/**
+	 * Gets the ID of the most recently inserted row
+	 * 
+	 * @return string|bool Either the row ID, or false if there is no connection or no rows have been inserted.
+	 */
+	public function lastId()
+	{
+		if ($this->_connection) {
+			return $this->_lastId();
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Adapter-specific method to get the last inserted row ID.
+	 * 
+	 * @return mixed
+	 */
+	abstract protected function _lastId();
+	
+	/**
 	 * Adds limit syntax to SQL statement
 	 * 
 	 * @param string $sql
@@ -187,7 +208,7 @@ abstract class A_Db_Adapter
 	
 	public function escape($value)
 	{
-		return  addslashes($value);
+		return addslashes($value);
 	}
 	
 	public function isError()

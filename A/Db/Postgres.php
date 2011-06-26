@@ -155,5 +155,10 @@ class A_Db_Postgres extends A_Db_Adapter
 	{
 		return $this->getErrorMsg();
 	}
+	
+	protected function _lastId()
+	{
+		return 0;
+	}
 
 }

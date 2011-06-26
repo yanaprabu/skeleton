@@ -85,11 +85,9 @@ class A_Db_Mysqli extends A_Db_Adapter
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
 	
-	public function lastId()
+	protected function _lastId()
 	{
-		if (isset($this->_connection[$name])) {
-			return $this->_connection[$name]->insert_id();
-		}
+		return $this->_connection->insert_id();
 	}
 	
 	public function nextId($sequence)
