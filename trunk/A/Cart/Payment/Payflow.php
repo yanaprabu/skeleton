@@ -262,7 +262,10 @@ class A_Cart_Payment_Payflow
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias name for getErrorMsg()
+	 * 
+	 * @deprecated
+	 * @see getErrorMsg()
 	 */
 	public function getMessage()
 	{
