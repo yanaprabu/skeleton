@@ -68,7 +68,6 @@ $(document).ready(function(){
 		<li><a class="ajaxlink" href="./?p=Access_Control">Access Control</a></li>
 		<li><a class="ajaxlink" href="./?p=Forms">Forms</a></li>
 		<li><a class="ajaxlink" href="./?p=Error_Handling">Error Handling</a></li>
-		<li><a class="ajaxlink" href="./?p=Http_PathInfo">Controller PathInfo</a></li>
 		<li><a class="ajaxlink" href="./?p=Event">Event Handling</a></li>
 		<li><a class="ajaxlink" href="./?p=Socket">Socket Server</a></li>
 		
