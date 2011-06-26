@@ -51,13 +51,9 @@ class A_Db_Sqlite extends A_Db_Adapter
 		return $this->_connection; 
 	}
 	
-	public function close()
+	protected function _close()
 	{
-		if (isset($this->_connection)) {
-			sqlite_close($this->_connection);
-			$this->_connection = null;
-		} 
-		return $this; 
+		sqlite_close($this->_connection);
 	}
 	
 	public function query($sql, $bind=array())

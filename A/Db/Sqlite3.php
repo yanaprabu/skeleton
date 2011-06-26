@@ -50,13 +50,9 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		return $this; 
 	}
 	
-	public function close()
+	protected function _close()
 	{
-		if (isset($this->_connection)) {
-			$this->_connection->close();
-			$this->_connection = null;
-		}
-		return $this; 
+		$this->_connection->close();
 	}
 	
 	public function query($sql, $bind=array())

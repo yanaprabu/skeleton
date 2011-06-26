@@ -59,12 +59,9 @@ class A_Db_Postgres extends A_Db_Adapter
 		return $this;
 	}
 	
-	public function close()
+	protected function _close()
 	{
-		if ($this->_connection) {
-			pg_disconnect($this->_connection);
-			$this->_connection = null;			
-		} 
+		pg_disconnect($this->_connection);
 	}
 	
 	public function query($sql, $bind=array())
