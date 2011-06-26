@@ -188,7 +188,10 @@ class A_Cart_Payment_Pfpro
 	}
 	
 	/**
-	 * depricated name for getErrorMsg()
+	 * Alias name for getErrorMsg()
+	 * 
+	 * @deprecated
+	 * @see getErrorMsg()
 	 */
 	public function getMessage()
 	{
