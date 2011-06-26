@@ -93,12 +93,6 @@ class A_Db_Pdo extends A_Db_Adapter
 		return $this;
 	}
 	
-	protected function selectDb($database)
-	{
-		$this->query("USE $database");
-		return $this;
-	}
-	
 	/**
 	 * public function query() implemented in PDO
 	 * 

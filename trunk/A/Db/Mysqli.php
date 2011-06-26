@@ -43,17 +43,6 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 	}
 	
-	public function selectDb($database='')
-	{
-		if ($this->_connection) {
-			if (!$database) {
-				$database = $this->_config['database'];
-			}
-			
-			
-		}
-	}
-	
 	protected function _close()
 	{
 		$this->_connection->close();
