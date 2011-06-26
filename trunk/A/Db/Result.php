@@ -32,7 +32,7 @@ class A_Db_Result
 	/**
 	 * Alias for getErrorMsg()
 	 * 
-	 * @depreciated
+	 * @deprecated
 	 * @see getErrorMsg
 	 */
 	public function getMessage() {
