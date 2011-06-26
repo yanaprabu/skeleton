@@ -151,7 +151,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	/**
 	 * Alias for getErrorMsg()
 	 * 
-	 * @depreciated
+	 * @deprecated
 	 * @see getErrorMsg
 	 */
 	public function getMessage()

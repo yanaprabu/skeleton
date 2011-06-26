@@ -138,7 +138,7 @@ class A_Db_ADOdblite extends A_Db_Adapter
 	/**
 	 * Alias for getErrorMsg()
 	 * 
-	 * @depreciated
+	 * @deprecated
 	 * @see getErrorMsg
 	 */
 	public function getMessage() {
@@ -186,7 +186,7 @@ class A_Db_ADOdblite_Result
 	/**
 	 * Alias for getErrorMsg()
 	 * 
-	 * @depreciated
+	 * @deprecated
 	 * @see getErrorMsg
 	 */
 	public function getMessage()

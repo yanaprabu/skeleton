@@ -21,7 +21,7 @@ class A_Collection implements Iterator, ArrayAccess
 	/**
 	 * @param array $data Initial Collection data
 	 */
-	public function __construct($data = array())
+	public function __construct($data=array())
 	{
 		$this->import($data);
 	}

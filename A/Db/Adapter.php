@@ -44,7 +44,7 @@ abstract class A_Db_Adapter
 	 * username	=> (string) Connect to the database as this username.
 	 * password	=> (string) Password associated with the username.
 	 * host		=> (string) What host to connect to, defaults to localhost
-	 *
+	 * 
 	 * @param  array|A_Config $config
 	 * @throws A_Db_Exception
 	 */

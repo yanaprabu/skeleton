@@ -67,7 +67,7 @@ class A_User_Auth extends A_User_Access
 	/**
 	 * Alias for login()
 	 * 
-	 * @depreciated
+	 * @deprecated
 	 * @see login()
 	 */
 	public function signin ($userid, $password)
