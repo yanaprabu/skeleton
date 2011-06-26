@@ -92,15 +92,9 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		return "$sql LIMIT " . ($offset > 0 ? "$offset, $count" : $count);
 	}
 	
-	public function lastId()
+	protected function _lastId()
 	{
-		$id = 0;
-		if ($this->_connection) {
-			$id = $this->_connection->lastInsertRowID();
-			$errmsg = $this->_connection->lastErrorMsg();
-			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
-		}
-		return $id;
+		return $this->_connection->lastInsertRowID();
 	}
 	
 	public function nextId($sequence)

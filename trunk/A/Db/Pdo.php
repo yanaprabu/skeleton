@@ -136,9 +136,8 @@ class A_Db_Pdo extends A_Db_Adapter
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
 	
-	public function lastId()
+	protected function _lastId()
 	{
-		$this->_connection = $this->connectBySql('INSERT');
 		return $this->_connection->lastInsertId();
 	}
 	

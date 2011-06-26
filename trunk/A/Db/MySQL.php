@@ -99,13 +99,9 @@ class A_Db_Mysql extends A_Db_Adapter
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
 	
-	public function lastId()
+	protected function _lastId()
 	{
-		if ($this->_connection) {
-			return(mysql_insert_id($this->_connection));
-		} else {
-			return 0;
-		}
+		return mysql_insert_id($this->_connection);
 	}
 	
 	public function nextId($sequence)
