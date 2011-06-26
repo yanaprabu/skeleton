@@ -111,5 +111,10 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	{
 		return $this->_connection->escapeString($value);
 	}
+	
+	protected function _selectDb($database)
+	{
+		$this->_errorHandler(0, 'Selecting a different database is not supported by SQLite 3');
+	}
 
 }

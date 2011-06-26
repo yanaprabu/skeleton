@@ -35,14 +35,22 @@ class A_Db_Mysqli extends A_Db_Adapter
 		return $this;
 	}
 	
+	protected function _selectDb($database)
+	{
+		$result = $this->_connection->select_db($database);
+		if (!$success) {
+			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+		}
+	}
+	
 	public function selectDb($database='')
 	{
 		if ($this->_connection) {
 			if (!$database) {
 				$database = $this->_config['database'];
 			}
-			$result = $this->_connection->select_db($this->_config['database']);
-			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+			
+			
 		}
 	}
 	

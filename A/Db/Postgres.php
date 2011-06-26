@@ -150,7 +150,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	 * Alias for getErrorMsg()
 	 * 
 	 * @deprecated
-	 * @see getErrorMsg
+	 * @see getErrorMsg()
 	 */
 	public function getMessage()
 	{
@@ -161,6 +161,11 @@ class A_Db_Postgres extends A_Db_Adapter
 	{
 		$row = pg_fetch_row(pg_query($this->_connection, 'SELECT lastval();'));
 		return $row[0];
+	}
+	
+	protected function _selectDb($database)
+	{
+		$this->_errorHandler(0, 'Selecting a different database is not supported by PostgreSQL');
 	}
 
 }
