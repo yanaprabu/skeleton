@@ -21,7 +21,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	
 	public function connect()
 	{
-		if ($this->_config && ! $this->_connection) {
+		if ($this->_config && !$this->_connection) {
 			$connstr = '';
 			foreach ($this->_config as $param => $value) {
 				if ($value) {
