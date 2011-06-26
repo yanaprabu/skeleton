@@ -47,16 +47,12 @@ class A_Db_Mysql extends A_Db_Adapter
 		return $this;
 	}
 	
-	public function selectDb($database='')
+	protected function _selectDb($database)
 	{
-		if ($this->_connection) {
-			if (!$database) {
-				$database = $this->dsn['database'];
-			}
-			mysql_select_db($database, $this->_connection);
+		$success = mysql_select_db($database, $this->_connection);
+		if (!$success) {
 			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 		}
-		return $this;
 	}
 	
 	protected function _close()

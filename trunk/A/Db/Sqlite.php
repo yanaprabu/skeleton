@@ -114,5 +114,10 @@ class A_Db_Sqlite extends A_Db_Adapter
 	{
 		return sqlite_escape_string($value);
 	}
+	
+	protected function _selectDb($database)
+	{
+		$this->_errorHandler(0, 'Selecting a different database is not supported by SQLite');
+	}
 
 }

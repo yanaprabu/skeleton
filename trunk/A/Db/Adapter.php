@@ -151,6 +151,19 @@ abstract class A_Db_Adapter
 	 */
 	abstract protected function _lastId();
 	
+	public function selectDb($databaseName='')
+	{
+		if ($this->_connection) {
+			if (!$database) {
+				$database = $this->_config['database'];
+			}
+			$this->_selectDb($database);
+		}
+		return $this;
+	}
+	
+	protected function _selectDb($databaseName);
+	
 	/**
 	 * Adds limit syntax to SQL statement
 	 * 

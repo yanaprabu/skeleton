@@ -87,7 +87,13 @@ class A_Db_Pdo extends A_Db_Adapter
 		$this->_connection->close();
 	}
 	
-	public function selectDb($database)
+	protected function _selectDb($database)
+	{
+		$this->query("USE $database");
+		return $this;
+	}
+	
+	protected function selectDb($database)
 	{
 		$this->query("USE $database");
 		return $this;
