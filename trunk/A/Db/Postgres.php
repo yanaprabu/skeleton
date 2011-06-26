@@ -14,6 +14,7 @@
  */
 class A_Db_Postgres extends A_Db_Adapter
 {
+
 	protected $sequenceext = '_seq';
 	protected $sequencestart = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Postgres';
@@ -158,7 +159,8 @@ class A_Db_Postgres extends A_Db_Adapter
 	
 	protected function _lastId()
 	{
-		return 0;
+		$row = pg_fetch_row(pg_query($this->_connection, 'SELECT lastval();'));
+		return $row[0];
 	}
 
 }
