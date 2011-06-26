@@ -14,6 +14,7 @@
  */
 class A_Db_Mysql extends A_Db_Adapter
 {
+
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Mysql';
@@ -21,7 +22,7 @@ class A_Db_Mysql extends A_Db_Adapter
 	
 	public function connect()
 	{
-		if ($this->_config && ! $this->_connection) {
+		if ($this->_config && !$this->_connection) {
 			$host = $this->_config['host'];
 			// fix for problem connecting to server with localhost. Windows only?
 			if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
@@ -37,7 +38,7 @@ class A_Db_Mysql extends A_Db_Adapter
 				mysql_select_db($this->_config['database'], $this->_connection);
 				$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 			}
-			if (! $this->_connection) {
+			if (!$this->_connection) {
 				$this->_errorHandler(1, "Cconnection failed. ");
 			}
 		} else {
@@ -134,7 +135,8 @@ class A_Db_Mysql extends A_Db_Adapter
 		return 0;
 	}
 	
-	public function createSequence($sequence){
+	public function createSequence($sequence)
+	{
 		$result = 0;
 		if ($sequence) {
 			$result = $this->query("CREATE TABLE $sequence{$this->_sequence_ext} (id int(10) unsigned NOT NULL auto_increment, PRIMARY KEY(id)) TYPE=MyISAM AUTO_INCREMENT={$this->_sequence_start}", $this->_connection);
@@ -146,5 +148,5 @@ class A_Db_Mysql extends A_Db_Adapter
 	{
 		return mysql_real_escape_string($value, $this->_connection);
 	}
-	
+
 }

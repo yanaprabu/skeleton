@@ -70,7 +70,7 @@ class A_User_Auth extends A_User_Access
 	 * @deprecated
 	 * @see login()
 	 */
-	public function signin ($userid, $password)
+	public function signin($userid, $password)
 	{
 		$this->login($userid, $password);
 	}
@@ -105,7 +105,7 @@ class A_User_Auth extends A_User_Access
 									$sql = 'UPDATE ' . $this->table . ' SET ' . $this->field_accessdate . '=NULL WHERE ' . $this->field_userid . "='$userid'";
 									$result = $this->db->query($sql);
 								}
-		
+								
 								$this->merge($row);
 								$this->redirect($this->success_url);
 								return $row;

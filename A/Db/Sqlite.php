@@ -13,7 +13,8 @@
  * Database connection class using SQLite.  Configuration array can contain the following indices: filename, mode.
  */
 class A_Db_Sqlite extends A_Db_Adapter
-{	protected $mode;
+{
+	protected $mode;
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Sqlite';
@@ -31,16 +32,15 @@ class A_Db_Sqlite extends A_Db_Adapter
 		}
 	}
 	
-	public function connect ()
+	public function connect()
 	{
-		if (isset($this->_config['filename']) && ! $this->_connection) {
-			if (! isset($this->_config['mode'])) {
+		if (isset($this->_config['filename']) && !$this->_connection) {
+			if (!isset($this->_config['mode'])) {
 				$this->_config['mode'] = $this->mode;
 			}
-			if (! isset($this->_config['encryption_key'])) {
+			if (!isset($this->_config['encryption_key'])) {
 				$this->_config['encryption_key'] = null;
 			}
-#echo "filename={$this->_config['filename']}, mode={$this->_config['mode']}, encryption_key={$this->_config['encryption_key']}<br/>";
 			$this->_connection = sqlite_open($this->_config['filename'], $this->_config['mode'], $errormsg);
 			if ($errormsg) {
 				$this->_errorHandler(2, $errormsg);
@@ -90,7 +90,7 @@ class A_Db_Sqlite extends A_Db_Adapter
 		return $obj;
 	}
 	
-	public function limit($sql, $count, $offset = null)
+	public function limit($sql, $count, $offset=null)
 	{
 		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
 		return $sql . ' LIMIT ' . $limit;
@@ -118,10 +118,10 @@ class A_Db_Sqlite extends A_Db_Adapter
 	{
 	    return 0;
 	}
-		
+	
 	public function escape($value)
 	{
 		return sqlite_escape_string($value);
 	}
-	
+
 }

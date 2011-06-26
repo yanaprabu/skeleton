@@ -14,6 +14,7 @@
  */
 class A_Db_Mysqli extends A_Db_Adapter
 {
+
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Mysqli';
@@ -21,7 +22,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 	
 	public function connect()
 	{
-		if ($this->_config && ! $this->_connection) {
+		if ($this->_config && !$this->_connection) {
 			$this->_connection = new Mysqli($this->_config['host'], $this->_config['username'], $this->_config['password']);
 			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 			if (isset($this->_config['database'])) {
@@ -134,19 +135,14 @@ class A_Db_Mysqli extends A_Db_Adapter
 	}
 	
 	/**
-	 * __call
-	 * 
-	 * Magic function __call, redirects to instance of Mysqli_Result
-	 * 
-	 * @param string $function Property to access
+	 * Magic function __get, redirects to instance of Mysqli_Result
 	 */
-	public function __get($name) {
+	public function __get($name)
+	{
 		return $this->_connection->$name;
 	}
-
+	
 	/**
-	 * __call
-	 * 
 	 * Magic function __call, redirects to instance of Mysqli
 	 * 
 	 * @param string $function Function to call
@@ -156,4 +152,5 @@ class A_Db_Mysqli extends A_Db_Adapter
 	{
 		return call_user_func_array(array($this->_connection, $function), $args);
 	}
+
 }

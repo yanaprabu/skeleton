@@ -54,7 +54,7 @@ class A_Db_Pdo extends A_Db_Adapter
 	
 	public function connect()
 	{
-		if ($this->_config && ! $this->_connection) {
+		if ($this->_config && !$this->_connection) {
 			if (!isset($this->_config['phptype'])) {
 				$this->_error = 1;
 				$this->_errorMsg = "config['phptype'] not set. ";
@@ -107,7 +107,7 @@ class A_Db_Pdo extends A_Db_Adapter
 			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
 		}
 		if ($this->_connection) {
-			if (! $bind) {
+			if (!$bind) {
 				$result = $this->_connection->query($sql);
 			} elseif (is_array($bind)) {
 				$result = $this->_connection->prepare($sql);
@@ -178,19 +178,16 @@ class A_Db_Pdo extends A_Db_Adapter
 	}
 	
 	/**
-	 * __call
-	 * 
-	 * Magic function __call, redirects to instance of Mysqli_Result
+	 * Magic function __get, redirects to instance of Mysqli_Result
 	 * 
 	 * @param string $function Property to access
 	 */
-	public function __get($name) {
+	public function __get($name)
+	{
 		return $this->_connection->$name;
 	}
-
+	
 	/**
-	 * __call
-	 * 
 	 * Magic function __call, redirects to instance of Mysqli
 	 * 
 	 * @param string $function Function to call

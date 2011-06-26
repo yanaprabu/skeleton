@@ -13,7 +13,8 @@
  * Database connection class using SQLite.  Configuration array can contain the following indices: filename, mode.
  */
 class A_Db_Sqlite3 extends A_Db_Adapter
-{	protected $mode;
+{
+	protected $mode;
 	protected $_sequence_ext = '_seq';
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Sqlite3';
@@ -33,14 +34,13 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	
 	public function connect ()
 	{
-		if (isset($this->_config['filename']) && ! $this->_connection) {
-			if (! isset($this->_config['mode'])) {
+		if (isset($this->_config['filename']) && !$this->_connection) {
+			if (!isset($this->_config['mode'])) {
 				$this->_config['mode'] = $this->mode;
 			}
-			if (! isset($this->_config['encryption_key'])) {
+			if (!isset($this->_config['encryption_key'])) {
 				$this->_config['encryption_key'] = null;
 			}
-#echo "filename={$this->_config['filename']}, mode={$this->_config['mode']}, encryption_key={$this->_config['encryption_key']}<br/>";
 			$this->_connection = new SQLite3($this->_config['filename'], $this->_config['mode'], $this->_config['encryption_key']);
 			$errmsg = $this->_connection->lastErrorMsg();
 			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
@@ -87,7 +87,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		return $obj;
 	}
 	
-	public function limit($sql, $count, $offset = null)
+	public function limit($sql, $count, $offset=null)
 	{
 		$limit = (is_int($offset) && $offset > 0) ? ($offset . ', ' . $count) : $count; 
 		return $sql . ' LIMIT ' . $limit;
@@ -113,10 +113,10 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	{
 	    return 0;
 	}
-		
+	
 	public function escape($value)
 	{
 		return $this->_connection->escapeString($value);
 	}
-	
+
 }

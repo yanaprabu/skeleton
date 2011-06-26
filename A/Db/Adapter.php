@@ -17,8 +17,10 @@ abstract class A_Db_Adapter
 
 	protected $_connection = null;
 	protected $_config = array();
+	
 	/**
 	 * convert connnect keys based on this table
+	 * 
 	 * @var array
 	 */
 	protected $_config_alias = array(
@@ -34,7 +36,7 @@ abstract class A_Db_Adapter
 	protected $_exception = '';
 	protected $_error = 0;
 	protected $_errorMsg = '';
-
+	
 	/**
 	 * Constructor.
 	 *
@@ -99,14 +101,14 @@ abstract class A_Db_Adapter
 	{
 		return $this->_sql;
 	}
-
+	
 	/**
 	 * Supplied by child class - Open connection as specified by $config
 	 * 
 	 * @return $this
 	 */
 	abstract protected function connect();
-
+	
 	/**
 	 * Closes connection (if close is supported by extension)
 	 * 
@@ -122,12 +124,12 @@ abstract class A_Db_Adapter
 	}
 	
 	abstract protected function _close();
-		
+	
 	public function disconnect()
 	{
 		return $this->close();
 	}
-		
+	
 	/**
 	 * Adds limit syntax to SQL statement
 	 * 
@@ -182,7 +184,7 @@ abstract class A_Db_Adapter
 	{
 		return $this->_transaction_level;
 	}
-		
+	
 	public function escape($value)
 	{
 		return  addslashes($value);
@@ -192,12 +194,12 @@ abstract class A_Db_Adapter
 	{
 		return $this->_error;
 	}
-		
+	
 	public function getErrorMsg()
 	{
 		return $this->_errorMsg;
 	}
-
+	
 	public function _errorHandler($errno, $errorMsg)
 	{
 		$this->_error = $errno;
@@ -206,6 +208,5 @@ abstract class A_Db_Adapter
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
 	}
-	
-}
 
+}
