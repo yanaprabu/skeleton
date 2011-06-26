@@ -108,11 +108,20 @@ abstract class A_Db_Adapter
 	abstract protected function connect();
 
 	/**
-	 * Supplied by child class - Closes all or named connection (if close supported by extension)
+	 * Closes connection (if close is supported by extension)
 	 * 
 	 * @return $this
 	 */
-	abstract protected function close();
+	public function close()
+	{
+		if ($this->_connection) {
+			$this->_close();
+			$this->_connection = null;
+		}
+		return $this;
+	}
+	
+	abstract protected function _close();
 		
 	public function disconnect()
 	{
@@ -196,7 +205,7 @@ abstract class A_Db_Adapter
 		if ($errno && $this->_exception) {
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
-	}	
+	}
 	
 }
 

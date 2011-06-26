@@ -58,13 +58,9 @@ class A_Db_Mysql extends A_Db_Adapter
 		return $this;
 	}
 	
-	public function close()
+	protected function _close()
 	{
-		if (isset($this->_connection)) {
-			mysql_close($this->_connection);
-			$this->_connection = null;
-		}
-		return $this;
+		mysql_close($this->_connection);
 	}
 	
 	public function query($sql, $bind=array())
