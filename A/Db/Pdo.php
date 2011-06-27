@@ -55,27 +55,27 @@ class A_Db_Pdo extends A_Db_Adapter
 	public function connect()
 	{
 		if ($this->_config && !$this->_connection) {
-			if (!isset($this->_config['phptype'])) {
-				$this->_error = 1;
-				$this->_errorMsg = "config['phptype'] not set. ";
-				return;
+			if (!isset($this->_config['username'])) {
+				$this->_errorHandler(1, 'username not set in config');
+				return $this;
 			}
-			// init attributes array in not in config
+			if (!isset($this->_config['password'])) {
+				$this->_errorHandler(1, 'password not set in config')
+				return $this;
+			}
+			if (!isset($this->_config['phptype'])) {
+				$this->_errorHandler(1, 'phptype not set in config');
+				return $this;
+			}
 			if (!isset($this->_config['attr'])) {
 				$this->_config['attr'] = array();
 			}
 			if (isset($this->_config['persistent'])) {
 				$this->_config['attr'][PDO::ATTR_PERSISTENT] = $this->_config['persistent'];
 			}
-			$dsn = $this->_config['phptype'] . ":host=" . $this->_config['host'] . ";" . "dbname=" . $this->_config['database'] . (isset($this->_config['port']) ? ";port={$this->_config['port']}" : '');
-		} else {
-			$dsn = $this->_config;
-		}
-		
-		if ($dsn && $this->_config['username'] && $this->_config['password']) {
-			$this->_connection = new PDO($dsn, $this->_config['username'], $this->_config['password'], $this->_config['attr']);
-			// have query() return A_Db_Pdo_Recordset
-#			$this->_connection->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('A_Db_Pdo_Recordset', array()));
+			$configString = $this->_config['phptype'] . ":host=" . $this->_config['host'] . ";" . "dbname=" . $this->_config['database'] . (isset($this->_config['port']) ? ";port={$this->_config['port']}" : '');
+			
+			$this->_connection = new PDO($configString, $this->_config['username'], $this->_config['password'], $this->_config['attr']);
 		} else {
 			$this->_errorHandler(1, "No DSN, username or password to create PDO object. ");
 		}
