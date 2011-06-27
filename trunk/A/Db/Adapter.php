@@ -234,7 +234,7 @@ abstract class A_Db_Adapter
 		return $this->_errorMsg;
 	}
 	
-	public function _errorHandler($errno, $errorMsg)
+	protected function _errorHandler($errno, $errorMsg)
 	{
 		$this->_error = $errno;
 		$this->_errorMsg .= $errorMsg;
