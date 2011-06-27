@@ -35,19 +35,6 @@ class A_Db_Mysqli extends A_Db_Adapter
 		return $this;
 	}
 	
-	protected function _selectDb($database)
-	{
-		$result = $this->_connection->select_db($database);
-		if (!$success) {
-			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
-		}
-	}
-	
-	protected function _close()
-	{
-		$this->_connection->close();
-	}
-	
 	public function query($sql, $bind=array())
 	{
 		if (is_object($sql)) {
@@ -82,11 +69,6 @@ class A_Db_Mysqli extends A_Db_Adapter
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
 	
-	protected function _lastId()
-	{
-		return $this->_connection->insert_id();
-	}
-	
 	public function nextId($sequence)
 	{
 		if ($this->_connection && $sequence) {
@@ -119,13 +101,6 @@ class A_Db_Mysqli extends A_Db_Adapter
 		return $this;
 	}
 	
-	public function escape($value)
-	{
-		if (isset($this->_connection)) {
-			return $this->_connection->escape_string($value);
-		}
-	}
-	
 	/**
 	 * Magic function __get, redirects to instance of Mysqli_Result
 	 */
@@ -140,9 +115,34 @@ class A_Db_Mysqli extends A_Db_Adapter
 	 * @param string $function Function to call
 	 * @param array $args Arguments to pass to $function
 	 */
-	function __call($function, $args)
+	public function __call($function, $args)
 	{
 		return call_user_func_array(array($this->_connection, $function), $args);
+	}
+	
+	public function escape($value)
+	{
+		if (isset($this->_connection)) {
+			return $this->_connection->escape_string($value);
+		}
+	}
+	
+	protected function _lastId()
+	{
+		return $this->_connection->insert_id();
+	}
+	
+	protected function _selectDb($database)
+	{
+		$result = $this->_connection->select_db($database);
+		if (!$success) {
+			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+		}
+	}
+	
+	protected function _close()
+	{
+		$this->_connection->close();
 	}
 
 }

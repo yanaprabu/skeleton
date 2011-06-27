@@ -47,19 +47,6 @@ class A_Db_Mysql extends A_Db_Adapter
 		return $this;
 	}
 	
-	protected function _selectDb($database)
-	{
-		$success = mysql_select_db($database, $this->_connection);
-		if (!$success) {
-			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
-		}
-	}
-	
-	protected function _close()
-	{
-		mysql_close($this->_connection);
-	}
-	
 	public function query($sql, $bind=array())
 	{
 		if (is_object($sql)) {
@@ -93,11 +80,6 @@ class A_Db_Mysql extends A_Db_Adapter
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
-	}
-	
-	protected function _lastId()
-	{
-		return mysql_insert_id($this->_connection);
 	}
 	
 	public function nextId($sequence)
@@ -136,6 +118,24 @@ class A_Db_Mysql extends A_Db_Adapter
 	public function escape($value)
 	{
 		return mysql_real_escape_string($value, $this->_connection);
+	}
+	
+	protected function _lastId()
+	{
+		return mysql_insert_id($this->_connection);
+	}
+	
+	protected function _selectDb($database)
+	{
+		$success = mysql_select_db($database, $this->_connection);
+		if (!$success) {
+			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
+		}
+	}
+	
+	protected function _close()
+	{
+		mysql_close($this->_connection);
 	}
 
 }

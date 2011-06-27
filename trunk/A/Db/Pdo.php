@@ -82,17 +82,6 @@ class A_Db_Pdo extends A_Db_Adapter
 		return $this;
 	}
 	
-	protected function _close()
-	{
-		$this->_connection->close();
-	}
-	
-	protected function _selectDb($database)
-	{
-		$this->query("USE $database");
-		return $this;
-	}
-	
 	/**
 	 * public function query() implemented in PDO
 	 * 
@@ -134,11 +123,6 @@ class A_Db_Pdo extends A_Db_Adapter
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
-	}
-	
-	protected function _lastId()
-	{
-		return $this->_connection->lastInsertId();
 	}
 	
 	public function escape($value)
@@ -202,6 +186,22 @@ class A_Db_Pdo extends A_Db_Adapter
 	public function __wakeup()
 	{
 		return $this->_connection->__wakeup();
+	}
+	
+	protected function _lastId()
+	{
+		return $this->_connection->lastInsertId();
+	}
+	
+	protected function _close()
+	{
+		$this->_connection->close();
+	}
+	
+	protected function _selectDb($database)
+	{
+		$this->query("USE $database");
+		return $this;
 	}
 
 }
