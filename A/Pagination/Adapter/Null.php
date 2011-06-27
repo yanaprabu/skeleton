@@ -12,7 +12,7 @@
  * 
  * Null datasource access class for pager.
  */
-class A_Pagination_Adapter_Null implements A_Pagination_Adapter_Interface
+class A_Pagination_Adapter_Null implements A_Pagination_Adapter
 {
 
 	protected $numItems = 0;

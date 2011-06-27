@@ -32,7 +32,7 @@ class A_Pagination_Core
 	 * @param int $pageSize
 	 * @param int $currentPage
 	 */
-	public function __construct(A_Pagination_Adapter_Interface $datasource, $pageSize=0, $currentPage=0)
+	public function __construct(A_Pagination_Adapter $datasource, $pageSize=0, $currentPage=0)
 	{
 		$this->datasource = $datasource;
 		if ($pageSize > 0) {
