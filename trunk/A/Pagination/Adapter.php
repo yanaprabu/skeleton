@@ -1,6 +1,6 @@
 <?php
 /**
- * Interface.php
+ * Adapter.php
  *
  * @package  A_Pagination
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -8,7 +8,7 @@
  */
 
 /**
- * A_Pagination_Adapter_Interface
+ * A_Pagination_Adapter
  * 
  * Interface for pagination adapters
  */
