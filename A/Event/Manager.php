@@ -40,7 +40,7 @@ class A_Event_Manager
 	public function setException($class)
 	{
 		if ($class === true) {
-			$this->_exception = 'A_Exception';
+			$this->_exception = 'Exception';
 		} else {
 			$this->_exception = $class;
 		}
