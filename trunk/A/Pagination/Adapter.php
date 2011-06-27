@@ -12,7 +12,7 @@
  * 
  * Interface for pagination adapters
  */
-interface A_Pagination_Adapter_Interface
+interface A_Pagination_Adapter
 {
 
 	public function getItems($offset, $length);

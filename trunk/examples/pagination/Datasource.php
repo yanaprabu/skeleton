@@ -5,7 +5,7 @@
  * @package A_Pager
  */
 
-class Datasource implements A_Pagination_Adapter_Interface {
+class Datasource implements A_Pagination_Adapter {
 	protected $data;
 	protected $order_by_field = '';
 	protected $order_by_descending = 0;

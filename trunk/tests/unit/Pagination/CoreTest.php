@@ -1,6 +1,6 @@
 <?php
 
-class Pagination_Core_DatasourceMock implements A_Pagination_Adapter_Interface {
+class Pagination_Core_DatasourceMock implements A_Pagination_Adapter {
 	protected $items = array(
 							array('id'=>1, 'name'=>'One', 'color'=>'blue'),
 							array('id'=>2, 'name'=>'Two', 'color'=>'red'),

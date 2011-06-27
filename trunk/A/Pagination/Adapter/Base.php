@@ -12,7 +12,7 @@
  * 
  * Abstract class for pager datasource adapters.
  */
-abstract class A_Pagination_Adapter_Base implements A_Pagination_Adapter_Interface
+abstract class A_Pagination_Adapter_Base implements A_Pagination_Adapter
 {
 
 	protected $db;
