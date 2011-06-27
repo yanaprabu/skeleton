@@ -12,7 +12,7 @@
  * 
  * Contains multiple filters that are all run. 
  */
-class A_Filter_Set implements A_Filter_Interface
+class A_Filter_Set implements A_Filter_Filterer
 {
 
     protected $chain = array();

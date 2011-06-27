@@ -8,11 +8,11 @@
  */
 
 /**
- * A_Filter_Interface
+ * A_Filter_Filterer
  * 
  * Defines the Filter interface
  */
-interface A_Filter_Interface
+interface A_Filter_Filterer
 {
 
 	public function doFilter($container);
