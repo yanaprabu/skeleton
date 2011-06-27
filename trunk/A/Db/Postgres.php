@@ -27,11 +27,9 @@ class A_Db_Postgres extends A_Db_Adapter
 			foreach ($this->_config as $param => $value) {
 				if ($value) {
 					switch ($param) {
-						case 'hostspec':
 						case 'host':
 							$connstr .= "host={$value} ";
 							break;
-						case 'dbname':
 						case 'database':
 							$connstr .= "dbname={$value} ";
 							break;
@@ -39,7 +37,6 @@ class A_Db_Postgres extends A_Db_Adapter
 							$connstr .= "port={$value} ";
 							break;
 						case 'username':
-						case 'user':
 							$connstr .= "user={$value} ";
 							break;
 						case 'password':

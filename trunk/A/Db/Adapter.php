@@ -27,6 +27,7 @@ abstract class A_Db_Adapter
 		'dbname' => 'database', 
 		'hostname' => 'host',
 		'hostspec' => 'host',
+		'user' => 'username'
 	);
 	protected $_recordset_class;
 	protected $_result_class;
@@ -162,7 +163,7 @@ abstract class A_Db_Adapter
 		return $this;
 	}
 	
-	protected function _selectDb($databaseName);
+	abstract protected function _selectDb($databaseName);
 	
 	/**
 	 * Adds limit syntax to SQL statement
