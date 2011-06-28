@@ -20,19 +20,14 @@ class A_Db_Mysqli extends A_Db_Adapter
 	protected $_recordset_class = 'A_Db_Recordset_Mysqli';
 	protected $_result_class = 'A_Db_Result';
 	
-	public function connect()
+	protected function _connect()
 	{
-		if ($this->_config && !$this->_connection) {
-			$this->_connection = new Mysqli($this->_config['host'], $this->_config['username'], $this->_config['password']);
+		$this->_connection = new Mysqli($this->_config['host'], $this->_config['username'], $this->_config['password']);
+		$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+		if (isset($this->_config['database'])) {
+			$result = $this->_connection->select_db($this->_config['database']);
 			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
-			if (isset($this->_config['database'])) {
-				$result = $this->_connection->select_db($this->_config['database']);
-				$this->_errorHandler($this->_connection->errno, $this->_connection->error);
-			}
-		} else {
-			$this->_errorHandler(1, "No config data. ");
 		}
-		return $this;
 	}
 	
 	public function query($sql, $bind=array())
