@@ -104,11 +104,26 @@ abstract class A_Db_Adapter
 	}
 	
 	/**
+	 * Open connection to database using settings specified in config.
+	 * 
+	 * @return $this
+	 */
+	public function connect()
+	{
+		if ($this->_config && !$this->_connection) {
+			$this->_connect();    
+		} else {
+			$this->_errorHandler(1, "No config data. ");
+		}
+		return $this;
+	}
+	
+	/**
 	 * Supplied by child class - Open connection as specified by $config
 	 * 
 	 * @return $this
 	 */
-	abstract protected function connect();
+	abstract protected function _connect();
 	
 	/**
 	 * Closes connection (if close is supported by extension)
