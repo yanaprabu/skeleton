@@ -51,36 +51,22 @@ class A_Db_Sqlite extends A_Db_Adapter
 		sqlite_close($this->_connection);
 	}
 	
-	public function query($sql, $bind=array())
+	protected function _query($sql)
 	{
-		if (is_object($sql)) {
-			// convert object to string by executing SQL builder object
-			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
-		}
-		if ($bind) {
-			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this);
-			$sql = $prepare->render();
-		}
-		if ($this->_connection) {
-			$result = sqlite_query($this->_connection, $sql);
-			$this->_sql[] = $sql;			// save history
-			$error = sqlite_last_error($this->_connection);
-			$errmsg = sqlite_error_string($error);
-			// sqlite returns 'not an error' which we convert to ''
-			$this->_errorHandler($error, $errmsg != 'not an error' ? $errmsg : '');
-			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$this->_numRows = -1;	// $result->num_rows($result);
-				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-				// call RecordSet specific setters
-				$obj->setResult($result);
-			} else {
-				$this->_numRows = sqlite_num_rows($result);
-				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
-			}
-			return $obj;
+		$result = sqlite_query($this->_connection, $sql);
+		$this->_sql[] = $sql;			// save history
+		$error = sqlite_last_error($this->_connection);
+		$errmsg = sqlite_error_string($error);
+		// sqlite returns 'not an error' which we convert to ''
+		$this->_errorHandler($error, $errmsg != 'not an error' ? $errmsg : '');
+		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+			$this->_numRows = -1;	// $result->num_rows($result);
+			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+			// call RecordSet specific setters
+			$obj->setResult($result);
 		} else {
-			$this->_errorHandler(3, 'No connection. ');
+			$this->_numRows = sqlite_num_rows($result);
+			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 		}
 		return $obj;
 	}

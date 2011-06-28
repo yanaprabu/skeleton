@@ -125,6 +125,25 @@ abstract class A_Db_Adapter
 	 */
 	abstract protected function _connect();
 	
+	public function query($sql, $bind=array())
+	{
+		if (is_object($sql)) {
+			$sql = $sql->render($this);
+		}
+		if ($bind) {
+			$prepare = new A_Sql_Prepare($sql, $bind);
+			$prepare->setDb($this);
+			$sql = $prepare->render();
+		}
+		if ($this->_connection) {
+			return $this->_query($sql);
+		} else {
+			$this->_errorHandler(3, 'No connection. ');
+		}
+	}
+	
+	abstract protected function _query($sql);
+	
 	/**
 	 * Closes connection (if close is supported by extension)
 	 * 
