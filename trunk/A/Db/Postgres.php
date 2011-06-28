@@ -59,40 +59,27 @@ class A_Db_Postgres extends A_Db_Adapter
 		pg_disconnect($this->_connection);
 	}
 	
-	public function query($sql, $bind=array())
+	protected function _query($sql)
 	{
-		if (is_object($sql)) {
-			// convert object to string by executing SQL builder object
-			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
-		}
-		if ($bind) {
-			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this);
-			$sql = $prepare->render();
-		}
-		if ($this->_connection) {
-			$result = pg_query($this->_connection, $sql);
-			$this->_sql[] = $sql;			// save history
-			if ($result) {
-				$this->_errorMsg = pg_result_error($result);
-			} else {
-				$this->_errorMsg = pg_last_error($this->_connection);
-			}
-			$this->_error = $this->_errorMsg != '';
-			$this->_errorHandler($this->_error, $this->_errorMsg);
-			if ($result && in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$this->_numRows = pg_num_rows($result);
-				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-				// call RecordSet specific setters
-				$obj->setResult($result);
-			} else {
-				$this->_numRows = pg_affected_rows($this->_connection);
-				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
-			}
-			return $obj;
+		$result = pg_query($this->_connection, $sql);
+		$this->_sql[] = $sql;			// save history
+		if ($result) {
+			$this->_errorMsg = pg_result_error($result);
 		} else {
-			$this->_errorHandler(3, 'No connection. ');
+			$this->_errorMsg = pg_last_error($this->_connection);
 		}
+		$this->_error = $this->_errorMsg != '';
+		$this->_errorHandler($this->_error, $this->_errorMsg);
+		if ($result && in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+			$this->_numRows = pg_num_rows($result);
+			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+			// call RecordSet specific setters
+			$obj->setResult($result);
+		} else {
+			$this->_numRows = pg_affected_rows($this->_connection);
+			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
+		}
+		return $obj;
 	}
 	
 	public function limit($sql, $count, $offset='')

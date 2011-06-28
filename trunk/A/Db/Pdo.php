@@ -77,42 +77,20 @@ class A_Db_Pdo extends A_Db_Adapter
 		$this->_connection = new PDO($configString, $this->_config['username'], $this->_config['password'], $this->_config['attr']);
 	}
 	
-	/**
-	 * public function query() implemented in PDO
-	 * 
-	 * @param string $sql
-	 * @param array $bind
-	 * @param mixed $arg3
-	 * @param mixed $arg4
-	 */
-	public function query($sql, $bind=array(), $arg3=null, $arg4=null) {
-		if (is_object($sql)) {
-			// convert object to string by executing SQL builder object
-			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
-		}
-		if ($this->_connection) {
-			if (!$bind) {
-				$result = $this->_connection->query($sql);
-			} elseif (is_array($bind)) {
-				$result = $this->_connection->prepare($sql);
-				$result->execute($bind);
-			} else {
-				$result = $this->_connection->query($sql, $bind, $arg3, $arg4);
-			}
-			$this->_sql[] = $sql;			// save history
-			$this->_setError();
-			$this->_numRows = $result->rowCount();
-			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-				// call RecordSet specific setters
-				$obj->setResult($result);
-			} else {
-				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
-			}
-			return $obj;
+	protected function _query($sql)
+	{
+		$result = $this->_connection->query($sql);
+		$this->_sql[] = $sql;			// save history
+		$this->_setError();
+		$this->_numRows = $result->rowCount();
+		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+			// call RecordSet specific setters
+			$obj->setResult($result);
 		} else {
-			$this->_errorHandler(0, 'No connection for query. ');
+			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 		}
+		return $obj;
 	}
 	
 	public function limit($sql, $count, $offset='')

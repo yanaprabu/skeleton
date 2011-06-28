@@ -30,33 +30,20 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 	}
 	
-	public function query($sql, $bind=array())
+	protected function _query($sql)
 	{
-		if (is_object($sql)) {
-			// convert object to string by executing SQL builder object
-			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
-		}
-		if ($bind) {
-			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this);
-			$sql = $prepare->render();
-		}
-		if ($this->_connection) {
-			$result = $this->_connection->query($sql);
-			$this->_sql[] = $sql;			// save history
-			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
-			$this->_numRows = $this->_connection->affected_rows;
-			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-				// call RecordSet specific setters
-				$obj->setResult($result);
-			} else {
-				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
-			}
-			return $obj;
+		$result = $this->_connection->query($sql);
+		$this->_sql[] = $sql;			// save history
+		$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+		$this->_numRows = $this->_connection->affected_rows;
+		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+			// call RecordSet specific setters
+			$obj->setResult($result);
 		} else {
-			$this->_errorHandler(0, 'No connection. ');
+			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 		}
+		return $obj;
 	}
 	
 	public function limit($sql, $count, $offset='')

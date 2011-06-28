@@ -50,34 +50,20 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		$this->_connection->close();
 	}
 	
-	public function query($sql, $bind=array())
+	protected function _query($sql)
 	{
-		if (is_object($sql)) {
-			// convert object to string by executing SQL builder object
-			$sql = $sql->render($this);   // pass $this to provide db specific escape() method
-		}
-		if ($bind) {
-			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this);
-			$sql = $prepare->render();
-		}
-		if ($this->_connection) {
-			$result = $this->_connection->query($sql);
-			$this->_sql[] = $sql;			// save history
-			$errmsg = $this->_connection->lastErrorMsg();
-			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
-			if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-				$this->_numRows = -1;	// $result->num_rows($result);
-				$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-				// call RecordSet specific setters
-				$obj->setResult($result);
-			} else {
-				$this->_numRows = $this->_connection->changes();
-				$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
-			}
-			return $obj;
+		$result = $this->_connection->query($sql);
+		$this->_sql[] = $sql;			// save history
+		$errmsg = $this->_connection->lastErrorMsg();
+		$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
+		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
+			$this->_numRows = -1;	// $result->num_rows($result);
+			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+			// call RecordSet specific setters
+			$obj->setResult($result);
 		} else {
-			$this->_errorHandler(2, 'No connection. ');
+			$this->_numRows = $this->_connection->changes();
+			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 		}
 		return $obj;
 	}
