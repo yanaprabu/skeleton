@@ -52,34 +52,29 @@ class A_Db_Pdo extends A_Db_Adapter
 		parent::__construct($config);
 	}
 	
-	public function connect()
+	protected function _connect()
 	{
-		if ($this->_config && !$this->_connection) {
-			if (!isset($this->_config['username'])) {
-				$this->_errorHandler(1, 'username not set in config');
-				return $this;
-			}
-			if (!isset($this->_config['password'])) {
-				$this->_errorHandler(1, 'password not set in config');
-				return $this;
-			}
-			if (!isset($this->_config['phptype'])) {
-				$this->_errorHandler(1, 'phptype not set in config');
-				return $this;
-			}
-			if (!isset($this->_config['attr'])) {
-				$this->_config['attr'] = array();
-			}
-			if (isset($this->_config['persistent'])) {
-				$this->_config['attr'][PDO::ATTR_PERSISTENT] = $this->_config['persistent'];
-			}
-			$configString = $this->_config['phptype'] . ":host=" . $this->_config['host'] . ";" . "dbname=" . $this->_config['database'] . (isset($this->_config['port']) ? ";port={$this->_config['port']}" : '');
-			
-			$this->_connection = new PDO($configString, $this->_config['username'], $this->_config['password'], $this->_config['attr']);
-		} else {
-			$this->_errorHandler(1, "No DSN, username or password to create PDO object. ");
+		if (!isset($this->_config['username'])) {
+			$this->_errorHandler(1, 'username not set in config');
+			return $this;
 		}
-		return $this;
+		if (!isset($this->_config['password'])) {
+			$this->_errorHandler(1, 'password not set in config');
+			return $this;
+		}
+		if (!isset($this->_config['phptype'])) {
+			$this->_errorHandler(1, 'phptype not set in config');
+			return $this;
+		}
+		if (!isset($this->_config['attr'])) {
+			$this->_config['attr'] = array();
+		}
+		if (isset($this->_config['persistent'])) {
+			$this->_config['attr'][PDO::ATTR_PERSISTENT] = $this->_config['persistent'];
+		}
+		$configString = $this->_config['phptype'] . ":host=" . $this->_config['host'] . ";" . "dbname=" . $this->_config['database'] . (isset($this->_config['port']) ? ";port={$this->_config['port']}" : '');
+		
+		$this->_connection = new PDO($configString, $this->_config['username'], $this->_config['password'], $this->_config['attr']);
 	}
 	
 	/**

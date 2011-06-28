@@ -20,30 +20,25 @@ class A_Db_Mysql extends A_Db_Adapter
 	protected $_recordset_class = 'A_Db_Recordset_Mysql';
 	protected $_result_class = 'A_Db_Result';
 	
-	public function connect()
+	protected function _connect()
 	{
-		if ($this->_config && !$this->_connection) {
-			$host = $this->_config['host'];
-			// fix for problem connecting to server with localhost. Windows only?
-			if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
-				$host = '127.0.0.1';
-			}
-			if (isset($this->_config['persistent'])) {
-				$this->_connection = mysql_pconnect($host, $this->_config['username'], $this->_config['password']);
-			} else {
-				$this->_connection = mysql_connect($host, $this->_config['username'], $this->_config['password']);
-			}
-			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
-			if ($this->_connection && isset($this->_config['database'])) {
-				$this->selectDb($this->_config['database']);
-			}
-			if (!$this->_connection) {
-				$this->_errorHandler(1, "Cconnection failed. ");
-			}
-		} else {
-			$this->_errorHandler(1, "No config data. ");
+		$host = $this->_config['host'];
+		// fix for problem connecting to server with localhost. Windows only?
+		if (($host == 'localhost') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
+			$host = '127.0.0.1';
 		}
-		return $this;
+		if (isset($this->_config['persistent'])) {
+			$this->_connection = mysql_pconnect($host, $this->_config['username'], $this->_config['password']);
+		} else {
+			$this->_connection = mysql_connect($host, $this->_config['username'], $this->_config['password']);
+		}
+		$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
+		if ($this->_connection && isset($this->_config['database'])) {
+			$this->selectDb($this->_config['database']);
+		}
+		if (!$this->_connection) {
+			$this->_errorHandler(1, "Cconnection failed. ");
+		}
 	}
 	
 	public function query($sql, $bind=array())

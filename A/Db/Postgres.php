@@ -20,41 +20,38 @@ class A_Db_Postgres extends A_Db_Adapter
 	protected $_recordset_class = 'A_Db_Recordset_Postgres';
 	protected $_result_class = 'A_Db_Result';
 	
-	public function connect()
+	protected function _connect()
 	{
-		if ($this->_config && !$this->_connection) {
-			$connstr = '';
-			foreach ($this->_config as $param => $value) {
-				if ($value) {
-					switch ($param) {
-						case 'host':
-							$connstr .= "host={$value} ";
-							break;
-						case 'database':
-							$connstr .= "dbname={$value} ";
-							break;
-						case 'port':
-							$connstr .= "port={$value} ";
-							break;
-						case 'username':
-							$connstr .= "user={$value} ";
-							break;
-						case 'password':
-							$connstr .= "password={$value} ";
-							break;
-					}
+		$connstr = '';
+		foreach ($this->_config as $param => $value) {
+			if ($value) {
+				switch ($param) {
+					case 'host':
+						$connstr .= "host={$value} ";
+						break;
+					case 'database':
+						$connstr .= "dbname={$value} ";
+						break;
+					case 'port':
+						$connstr .= "port={$value} ";
+						break;
+					case 'username':
+						$connstr .= "user={$value} ";
+						break;
+					case 'password':
+						$connstr .= "password={$value} ";
+						break;
 				}
 			}
-			if (isset($this->_config['persistent'])) {
-				$this->_connection = pg_pconnect($connstr);
-			} else {
-				$this->_connection = pg_connect($connstr);
-			}
-			if (pg_connection_status($this->_connection) !== PGSQL_CONNECTION_OK) {
-				$this->_errorHandler(1, "Cconnection failed. ");
-			}    
 		}
-		return $this;
+		if (isset($this->_config['persistent'])) {
+			$this->_connection = pg_pconnect($connstr);
+		} else {
+			$this->_connection = pg_connect($connstr);
+		}
+		if (pg_connection_status($this->_connection) !== PGSQL_CONNECTION_OK) {
+			$this->_errorHandler(1, "Cconnection failed. ");
+		}
 	}
 	
 	protected function _close()

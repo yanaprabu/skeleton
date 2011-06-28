@@ -32,22 +32,17 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		}
 	}
 	
-	public function connect ()
+	protected function _connect()
 	{
-		if (isset($this->_config['filename']) && !$this->_connection) {
-			if (!isset($this->_config['mode'])) {
-				$this->_config['mode'] = $this->mode;
-			}
-			if (!isset($this->_config['encryption_key'])) {
-				$this->_config['encryption_key'] = null;
-			}
-			$this->_connection = new SQLite3($this->_config['filename'], $this->_config['mode'], $this->_config['encryption_key']);
-			$errmsg = $this->_connection->lastErrorMsg();
-			$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
-		} else {
-			$this->_errorHandler(1, 'No filename. ');
+		if (!isset($this->_config['mode'])) {
+			$this->_config['mode'] = $this->mode;
 		}
-		return $this; 
+		if (!isset($this->_config['encryption_key'])) {
+			$this->_config['encryption_key'] = null;
+		}
+		$this->_connection = new SQLite3($this->_config['filename'], $this->_config['mode'], $this->_config['encryption_key']);
+		$errmsg = $this->_connection->lastErrorMsg();
+		$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
 	}
 	
 	protected function _close()
