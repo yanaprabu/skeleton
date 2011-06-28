@@ -114,6 +114,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	
 	protected function _selectDb($database)
 	{
+		// Should this do a close() and then connect($database) (changing the config ?
 		$this->_errorHandler(0, 'Selecting a different database is not supported by SQLite 3');
 	}
 
