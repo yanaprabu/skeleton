@@ -162,7 +162,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	
 	protected function _selectDb($database)
 	{
-		$this->_errorHandler(0, 'Selecting a different database is not supported by PostgreSQL');
+		$this->_errorHandler(1, 'Selecting a different database is not supported by PostgreSQL');
 	}
 
 }

@@ -35,8 +35,7 @@ class A_Db_Mysql extends A_Db_Adapter
 			}
 			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 			if ($this->_connection && isset($this->_config['database'])) {
-				mysql_select_db($this->_config['database'], $this->_connection);
-				$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
+				$this->selectDb($this->_config['database']);
 			}
 			if (!$this->_connection) {
 				$this->_errorHandler(1, "Cconnection failed. ");

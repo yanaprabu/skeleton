@@ -60,7 +60,7 @@ class A_Db_Pdo extends A_Db_Adapter
 				return $this;
 			}
 			if (!isset($this->_config['password'])) {
-				$this->_errorHandler(1, 'password not set in config')
+				$this->_errorHandler(1, 'password not set in config');
 				return $this;
 			}
 			if (!isset($this->_config['phptype'])) {
