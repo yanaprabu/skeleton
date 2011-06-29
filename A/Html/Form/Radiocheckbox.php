@@ -46,11 +46,11 @@ class A_Html_Form_Radiocheckbox extends A_Html_Tag
 		$value = isset($attr['value']) ? $attr['value'] : array();
 		unset($attr['value']);
 		$values = isset($attr['values']) ? $attr['values'] : array();
-		$this->removeAttr($attr, 'values');
+		parent::removeAttr($attr, 'values');
 		$labels = isset($attr['labels']) ? $attr['labels'] : array();
-		$this->removeAttr($attr, 'labels');
+		parent::removeAttr($attr, 'labels');
 		$separator = isset($attr['separator']) ? $attr['separator'] :'';
-		$this->removeAttr($attr, 'separator');
+		parent::removeAttr($attr, 'separator');
 		$options = array();
 		$n = count($values);
 		for ($i = 0; $i < $n; $i++) {
