@@ -30,11 +30,11 @@ class Orm_DataMapperTest extends UnitTestCase	{
 	}
 
 	public function testGetTableNames()	{
-		$this->assertEqual ($this->mapper->getTableNames(), array('pages', 'items'));
+		$this->assertEqual ($this->mapper->getTables(), array('pages', 'items'));
 	}
 
 	public function testGetFieldNames()	{
-		$this->assertEqual ($this->mapper->getFieldNames(), array ('title','description', array ('body' => 'page_body')));
+		$this->assertEqual ($this->mapper->getColumns(), array ('title','description', array ('body' => 'page_body')));
 	}
 
 }

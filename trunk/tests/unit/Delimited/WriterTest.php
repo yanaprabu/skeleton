@@ -1,11 +1,19 @@
 <?php
 
 class Delimited_WriterTest extends UnitTestCase {
+	protected $filename;
 	
 	function setUp() {
+		$this->filename = dirname(__FILE__) . '/data1.csv';
+		if (file_exists($this->filename)) {
+			unlink($this->filename);
+		}
 	}
 	
 	function TearDown() {
+		if (file_exists($this->filename)) {
+			unlink($this->filename);
+		}
 	}
 	
 	function testDelimited_WriterNoFile() {
@@ -19,13 +27,13 @@ class Delimited_WriterTest extends UnitTestCase {
 	}
 	
 	function testDelimited_WriterCsvFile() {
-		$reader = new A_Delimited_Reader(dirname(__FILE__) . '/data1.csv');
+		$reader = new A_Delimited_Reader($this->filename);
 		$reader->setFieldDelimiter(',');	// CSV
 		$data = $reader->load();
 #echo $Writer->getErrorMsg();
 #dump($data);
 
-		$writer = new A_Delimited_Writer(dirname(__FILE__) . '/data2.csv');
+		$writer = new A_Delimited_Writer($this->filename);
 		$writer->setFieldDelimiter(',');	// CSV
 		$writer->setWriteAllEnclosed(true);	// quote all field values
 		$writer->save($data);
