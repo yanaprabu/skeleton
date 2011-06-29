@@ -237,13 +237,23 @@ class A_DateTime extends DateTime
 					$day = $datearray[1];
 				}
 			}
-/*
-		} elseif (strlen($date) == 6) {
-			// fix dates in mmddyy format
-			$year = '20' . substr($date, 4, 2);
-			$month = substr($date, 0, 2);
-			$day = substr($date, 2, 2);
-*/
+		} else {
+			if (strlen($date) == 6) {
+				// fix dates in ddmmyy/mmddyy format
+				$year = '20' . substr($date, 4, 2);
+				if ($this->dayMonthOrder) {
+					$month = substr($date, 2, 2);
+					$day = substr($date, 0, 2);
+				} else {
+					$month = substr($date, 0, 2);
+					$day = substr($date, 2, 2);
+				}
+			} else if (strlen($date) == 8) {
+				// fix dates in yyyymmdd format
+				$year = substr($date, 0, 4);
+				$month = substr($date, 4, 2);
+				$day = substr($date, 6, 2);
+			}
 		}
 		$this->setDate($year, $month, $day);
 		// if time values then set time

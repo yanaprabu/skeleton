@@ -15,27 +15,36 @@ class DatetimeTest extends UnitTestCase {
   		$datetime = new A_DateTime();
 
 		$datetime->parseDate('2001/12/20');
-		$this->assertTrue($datetime->getDate() == '2001-12-20');
+		$this->assertEqual($datetime->getDate(), '2001-12-20');
 
 		$datetime->parseDate('12//20//2001');
-		$this->assertTrue($datetime->getDate() == '2001-12-20');
+		$this->assertEqual($datetime->getDate(), '2001-12-20');
 
 		$datetime->parseDate('20.12.2001');
-		$this->assertTrue($datetime->getDate() == '2001-12-20');
+		$this->assertEqual($datetime->getDate(), '2001-12-20');
 
 		$datetime->parseDate('12/20/01');
-		$this->assertTrue($datetime->getDate() == '2001-12-20');
+		$this->assertEqual($datetime->getDate(), '2001-12-20');
 
 		$datetime->parseDate('12/20/01');
-		$this->assertTrue($datetime->getDate() == '2001-12-20');
+		$this->assertEqual($datetime->getDate(), '2001-12-20');
 
 		$datetime->parseDate('1/2/01');
-		$this->assertTrue($datetime->getDate() == '2001-02-01');
+		$this->assertEqual($datetime->getDate(), '2001-02-01');
 
+		$datetime->parseDate('020301');
+		$this->assertEqual($datetime->getDate(), '2001-03-02');
+
+		$datetime->parseDate('19990706');
+		$this->assertEqual($datetime->getDate(), '1999-07-06');
+		
 		$datetime->setDayMonthOrder(false);
 		$datetime->parseDate('1/2/01');
-		$this->assertTrue($datetime->getDate() == '2001-01-02');
+		$this->assertEqual($datetime->getDate(), '2001-01-02');
 
+		$datetime->parseDate('040501');
+		$this->assertEqual($datetime->getDate(), '2001-04-05');
+		
 	}
 	
 	function testDatetime_toString() {
@@ -43,9 +52,9 @@ class DatetimeTest extends UnitTestCase {
 
   		$datetime->parseDate('2001/12/20 12:11:10');
 		// default format is 'U' for timestamp so check
-		$this->assertTrue("$datetime" == '2001-12-20 12:11:10');
+		$this->assertEqual("$datetime", '2001-12-20 12:11:10');
  		$datetime->setFormat('d.m.Y');
-		$this->assertTrue("$datetime" == '20.12.2001');
+		$this->assertEqual("$datetime", '20.12.2001');
 		
 	}
 	
