@@ -9,10 +9,10 @@ class Db_ADOdbliteTest extends UnitTestCase {
 	}
 	
 	function testDb_ADOdbliteNotNull() {
-  		$Db_ADOdblite = new A_Db_ADOdblite();
+#		$Db_ADOdblite = new A_Db_ADOdblite();
 		
 		$result = true;
-  		$this->assertTrue($result);
+		$this->assertTrue($result);
 		$this->assertFalse(!$result);
 	}
 	

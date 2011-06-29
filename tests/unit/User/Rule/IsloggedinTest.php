@@ -1,5 +1,5 @@
 <?php
-include dirname(__FILE__) . '/../UserMock.php';
+include_once dirname(__FILE__) . '/../UserMock.php';
 
 class User_Rule_IsLoggedInTest extends UnitTestCase {
 	

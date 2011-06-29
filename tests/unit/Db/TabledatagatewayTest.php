@@ -28,6 +28,9 @@ class A_Db_Tabledatagateway_MockDbResult {
 		return next($this->rows);
 	}
 	
+	public function numRows() {
+		return 2;
+	}
 	public function isError() {
 		return 0;
 	}
