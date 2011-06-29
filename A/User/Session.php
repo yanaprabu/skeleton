@@ -18,6 +18,7 @@ class A_User_Session
 	protected $_data;
 	protected $_session;
 	protected $_namespace;
+	protected $_authField = 'auth';
 	
 	public function __construct($session, $namespace='A_User_Session')
 	{
@@ -47,6 +48,11 @@ class A_User_Session
 		return $this->_namespace;
 	}
 	
+	public function setAuthField($authField) {
+		$this->_authField = $authField;
+		return $this;
+	}
+
 	public function start()
 	{
 		$this->_session->start();
@@ -58,7 +64,7 @@ class A_User_Session
 	public function isLoggedIn()
 	{
 		$this->start();
-		if ($this->_data && isset($this->_data['auth'])) {
+		if ($this->_data && isset($this->_data[$this->_authField]) ) {
 			return true;
 		} else {
 			return false;
@@ -76,7 +82,9 @@ class A_User_Session
 	{
 		if ($this->_namespace) {
 			$this->start();
-			$this->_data['auth'] = true;
+			if (! isset($this->_authField)) {
+				$this->_data[$this->_authField] = true;
+			}
 			$this->merge($data);
 		}
 	}
