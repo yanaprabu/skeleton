@@ -53,19 +53,17 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 	protected function _query($sql)
 	{
 		$result = $this->_connection->query($sql);
-		$this->_sql[] = $sql;			// save history
-		$errmsg = $this->_connection->lastErrorMsg();
-		$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
-		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-			$this->_numRows = -1;	// $result->num_rows($result);
-			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-			// call RecordSet specific setters
-			$obj->setResult($result);
+		$error = $this->_connection->lastErrorCode();
+		$this->_errorHandler($error, $error != 0 ? $this->_connection->lastErrorMsg() : '');
+		if ($result && $this->queryHasResultSet($sql)) {
+			$this->_numRows = -1;
+			$resultObject = $this->createRecordsetObject();
+			$resultObject->setResult($result);
 		} else {
 			$this->_numRows = $this->_connection->changes();
-			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
+			$resultObject = $this->createResultObject();
 		}
-		return $obj;
+		return $resultObject;
 	}
 	
 	public function limit($sql, $count, $offset=null)

@@ -103,6 +103,25 @@ abstract class A_Db_Adapter
 		return $this->_sql;
 	}
 	
+	public function queryHasResultSet($sql)
+	{
+		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR','EXPLA'))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	protected function createResultObject()
+	{
+		$resultObject = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
+	}
+	
+	protected function createRecordseObject()
+	{
+		$resultObject = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+	}
+	
 	/**
 	 * Open connection to database using settings specified in config.
 	 * 
@@ -136,6 +155,7 @@ abstract class A_Db_Adapter
 			$sql = $prepare->render();
 		}
 		if ($this->_connection) {
+			$this->_sql[] = $sql;
 			return $this->_query($sql);
 		} else {
 			$this->_errorHandler(3, 'No connection. ');

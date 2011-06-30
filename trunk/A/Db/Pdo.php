@@ -80,17 +80,15 @@ class A_Db_Pdo extends A_Db_Adapter
 	protected function _query($sql)
 	{
 		$result = $this->_connection->query($sql);
-		$this->_sql[] = $sql;			// save history
 		$this->_setError();
 		$this->_numRows = $result->rowCount();
-		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR'))) {
-			$obj = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
-			// call RecordSet specific setters
-			$obj->setResult($result);
+		if ($result && $this->queryHasResultSet($sql)) {
+			$resultObject = $this->createRecordsetObject();
+			$resultObject->setResult($result);
 		} else {
-			$obj = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
+			$resultObject = $this->createResultObject();
 		}
-		return $obj;
+		return $resultObject;
 	}
 	
 	public function limit($sql, $count, $offset='')
@@ -109,7 +107,7 @@ class A_Db_Pdo extends A_Db_Adapter
 		// get error array
 		$errorInfo = $this->_connection->errorInfo();
 		$this->_error = ($errorInfo[0] == '00000') ? 0 : $errorInfo[0];		// PDO success value
-		if(isset($errorInfo[2])){
+		if (isset($errorInfo[2])) {
 			$this->_errorMsg = $errorInfo[2];			
 			$this->_errorHandler($this->_error, $this->_errorMsg);
 		}
