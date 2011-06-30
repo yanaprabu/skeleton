@@ -114,12 +114,12 @@ abstract class A_Db_Adapter
 	
 	protected function createResultObject()
 	{
-		$resultObject = new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
+		return new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 	}
 	
-	protected function createRecordseObject()
+	protected function createRecordsetObject()
 	{
-		$resultObject = new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
+		return new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 	}
 	
 	/**
