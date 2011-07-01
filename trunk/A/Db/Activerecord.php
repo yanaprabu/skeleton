@@ -48,10 +48,10 @@ class A_Db_Activerecord extends A_Collection
 	{
 		if (isset($this)) {
 			$this->db = $db;
-			return $this;
 		} else {
 			self::$globaldb = $db;
 		}
+		return $this;
 	}
 	
 	public function table($table=null)
@@ -73,7 +73,7 @@ class A_Db_Activerecord extends A_Collection
 	{
 		if ($key) {
 			$this->key = $key;
-		} elseif (! $this->key) {
+		} elseif (!$this->key) {
 			$this->key = 'id';
 		}
 		return $this;
@@ -148,6 +148,7 @@ class A_Db_Activerecord extends A_Collection
 			$this->sql = $update->render();
 			$this->db->query($this->sql);
 		}
+		return $this;
 	}
 	
 	public function delete()
@@ -158,6 +159,7 @@ class A_Db_Activerecord extends A_Collection
 			$this->sql = $delete->render();
 			$this->db->query($this->sql);
 		}
+		return $this;
 	}
 
 }
