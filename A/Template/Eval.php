@@ -12,7 +12,7 @@
  * 
  * Template class that loads and eval()'s PHP templates. Templates can have blocks.
  */
-class A_Template_Eval extends A_Template_File
+class A_Template_Eval extends A_Template_File implements A_Renderer
 {
 
 	protected $str = '';

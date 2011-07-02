@@ -12,7 +12,7 @@
  *
  * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
  */
-class A_Http_View
+class A_Http_View implements A_Renderer
 {
 
 	protected $data = array();
@@ -183,6 +183,12 @@ class A_Http_View
 	public function has($name)
 	{
 		return isset($this->data[$name]);
+	}
+	
+	public function import($data)
+	{
+		$this->data = array_merge($this->data, $data);
+		return $this;
 	}
 	
 	public function escape($content, $escape_quote_style=null)

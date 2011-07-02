@@ -12,7 +12,7 @@
  * 
  * Template class that Adapts Smarty to be used as Skeleton renderer.
  */
-class A_Template_Smarty extends Smarty
+class A_Template_Smarty extends Smarty implements A_Renderer
 {
 
 	protected $filename;

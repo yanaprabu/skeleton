@@ -12,7 +12,7 @@
  * 
  * Template class that includes PHP templates. No block support.
  */
-class A_Template_Include extends A_Template_Base
+class A_Template_Include extends A_Template_Base implements A_Renderer
 {
 
 	public function partial($template, $data=null)
