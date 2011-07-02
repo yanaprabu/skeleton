@@ -12,7 +12,7 @@
  * 
  * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
  */
-class A_Template_Strreplace extends A_Template_File
+class A_Template_Strreplace extends A_Template_File implements A_Renderer
 {
 
 	protected $tagprefix = '{';

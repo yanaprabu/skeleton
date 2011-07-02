@@ -12,7 +12,7 @@
  * 
  * Template class that transforms XML templates with XSL. No blocks.
  */
-class A_Template_Xslt extends A_Template_Base
+class A_Template_Xslt extends A_Template_Base implements A_Renderer
 {
 
 	protected $filenamexml = '';

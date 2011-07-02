@@ -12,7 +12,7 @@
  * 
  * Template class using XML files as templates
  */
-class A_Template_Xml extends A_Template_Base
+class A_Template_Xml extends A_Template_Base implements A_Renderer
 {
 
 	protected $data = array();
@@ -79,4 +79,9 @@ class A_Template_Xml extends A_Template_Base
 		}
 	}
 
+	public function render()
+	{
+		return $this->data;
+	}
+	
 }

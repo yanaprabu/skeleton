@@ -30,7 +30,7 @@ abstract class A_Template_Base
 		}
 	}
 	
-	abstract public function render();
+//	abstract public function render();
 	
 	public function setTemplate($template)
 	{
