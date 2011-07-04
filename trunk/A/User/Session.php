@@ -11,6 +11,13 @@
  * A_User_Session
  * 
  * Access to user data from session.
+ * normally the $_SESSION contains user data in this format:
+ * array(
+ * 		'A_User_Session'=>array(			// This is the namespace. This name can be changed with constructor or setNamespace(). 
+ * 			'auth'=>1,						// Determines in authorized or not. This name can be changed with setAuthField().
+ *			'data'=>array('of user data')	// Array of user information (usually from datasource) passed to login()
+ *			),
+ *		);
  */
 class A_User_Session
 {
@@ -82,7 +89,8 @@ class A_User_Session
 	{
 		if ($this->_namespace) {
 			$this->start();
-			if (! isset($this->_authField)) {
+			// this check is here so that you can use a field that already has data in it to determinie if authorized
+			if (! isset($this->_data[$this->_authField])) {
 				$this->_data[$this->_authField] = true;
 			}
 			$this->merge($data);
