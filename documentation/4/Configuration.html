@@ -1,30 +1,26 @@
 <h1>Configuration</h1>
 
-<p>Configuration files allow you to change the way the framework and your application behave.</p>
-<p class="devnote">Is this accurate?</p>
-
-<p>There are several options for application configuration, and this document will cover those.</p>
+<p>The Configuration classes allow you to maintain common settings/option separetly from your application code.</p>
 
 <h2>PHP Configuration</h2>
 
-<p>This solution allows you to create a normal PHP file that declares a special multi-dimensional array containing the configuration required by the framework.</p>
+<p>This solution allows you to create a normal PHP file that declares a special multi-dimensional array containing the configuration required by the framework and your application.</p>
 
 <h3>Example PHP Config</h3>
 
 <pre class="prettyprint lang-php">
 &lt;?php
-$ConfigArray = array(
-'DBDSN' => array(
-    'phptype' => 'mysql',
-    'hostspec' => 'localhost',
-    'database' => 'xxxx',
-    'username' => 'xxxx',
-    'password' => 'xxxx',
+$config = array(
+	'DBDSN' => array(
+	    'phptype' => 'mysql',
+	    'hostspec' => 'localhost',
+	    'database' => 'database_name',
+	    'username' => 'johndoe',
+	    'password' => 'xxxx',
 	),
-
-'LIB' => '../../',
-'APP' => './app/',
-'BASE' => 'http://www.mydomain.com/',
+	'LIB' => '../../',
+	'APP' => './app/',
+	'BASE' => 'http://www.mydomain.com/',
 );
 ?&gt;
 </pre>
@@ -32,12 +28,8 @@ $ConfigArray = array(
 <p>This file must be passed to a new A_Config_Php instance like so.</p>
 
 <pre class="prettyprint lang-php">
-&lt;?php
-// ...
-$Config = new A_Config_Php();
-$Config->loadFile('path/to/config/file.php');
-// ...
-?&gt;
+$Config = new A_Config_Php('path/to/config/file.php');
+$Config->loadFile();
 </pre>
 
 <p>Remember, this file is imported with include(), so you can put other configuration related PHP here also.  But wait, there's more: you can also put custom settings into the main config array that can be read from the A_Config_Php object by your application.</p>
@@ -65,7 +57,16 @@ ERROR = E_ALL|E_STRICT
 </pre>
 
 <p>This file must be passed to a new A_Config_Ini object.  The syntax is the same as PHP.  This method can use custom option parameters.</p>
-<p class="devnote">Should this be documented further?</p>
+
+<h2>Other Configuration Classes</h2>
+
+<p>Config also supports configuration with XML and YAML; these are used in the same way as the ones laid out here.  Please refer to the <a href="http://skeletonframework.com/documentation/api/">PHPDocs</a> for more info.</p>
+
+<p class="devnote">All the rest should be removed, to reduce documentation maintainance needed.</p>
+
+<br /><br />
+<hr />
+<br /><br /><br />
 
 <h2>XML Configuration</h2>
 
