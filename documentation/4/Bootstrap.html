@@ -1,34 +1,43 @@
 <h1>Boostrap</h1>
-<h2>Directory Structure</h2>
-<p>Class files are located in the "A" directory and follow the PEAR naming convention where underscores in the class name correspond to directory separators in the file path. For example, the Front Controller class is named A_Controller_Front and is in the file A/Controller/Front.php</p>
-<p>The classes internally assume that the directory containing the "A" directory is in the include_path. In addition, the application will typicall need to include files from directories that contain "controllers", "models", and "views" classes. No specific directory layout is required. An example layout is provided.</p>
 
-<h2>Bootstrap File (index.php)</h2>
-<p>A minimum index.php file is a follows. This file creates the following objects Request and response </p>
+<h2>Introduction</h2>
+
+<p>The boostrap is what configures the application and starts it.  A typical boostrap will create a <a href="?p=Locator">Locator</a>, populate it with <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> object, configure the <a href="?p=FrontController">Front Controller</a>, and run it.</p>
+
+<p>Here is an example bootstrap:</p>
+
 <pre class="prettyprint lang-php">
 &lt;?php
-require '/path/to/A/Locator.php';
 
+require '/path/to/lib/A/Locator.php';
+
+// create registry and initialize autoloading
 $Locator = new A_Locator();
-$Locator->autoload();			// initializing autoloading
+$Locator->autoload();
 
-$Request = new A_Http_Request();
-$Response = new A_Http_Response();
+// populate the Locator with the necessary objects
+$Locator->set('Request', new A_Http_Request());
+$Locator->set('Response', new A_Http_Response());
 
-$Locator->set('Request', $Request);
-$Locator->set('Response', $Response);
-
+// tell the framework where to find application files (controllers, views, models, etc.)
 $Mapper = new A_Controller_Mapper('/path/to/app/', array('', 'home', ''));
 
+// create and run the front controller
 $Controller = new A_Controller_Front($Mapper, array('', 'error', ''));
 $Controller->run($Locator);
 
-$Response->run($Locator);
+// provide final output from view
 echo $Response->render();
 </pre>
-<p>This file creates the following objects</p>
-<ul>
-<li>Request object used to access GET or POST vars, and PATH_INFO.</li>
-<li>Response object used assemble the HTML output and headers to send to the browser.</li>
-</ul>
-<p></p>
+
+<p>Normally, your application should only have to include one file: the <a href="?p=Locator">Locator</a>.  After autoloading has been initialized, all files are loaded manually.</p>
+
+<p>The <a href="?p=Locator">Locator</a> is <em>the</em> most integral part of Skeleton Framework.  It is passed throughout the application, and contains important objects that need to be shared.  More info on <a href="?p=Locator">it's documentation page</a>.</p>
+
+<p>The <a href="?p=Request">Request</a> object represents the HTTP request made to run this application.  It contains things such as GET and POST data, the protocol used, access to cookies, et cetera.  <a href="?p=Request">Request</a> is need by the <a href="?p=FrontController">Front Controller</a>, and used by application controllers.</p>
+
+<p class="devnote">About mapper?</p>
+
+<p><a href="?p=FrontController">Front Controller</a> is responsible for routing the HTTP request to the appropriate action controller.  It uses data in the <a href="?p=Request">Request</a> object (inside the <a href="?p=Locator">Locator</a>) to find out what action to run.  The default is to use the module, controller, and action GET parameters, but this is settable.  <a href="?p=Urls">PathInfo</a> allows a more versitile routing system.</p>
+
+<p>The last step in most applications is to output the <a href="?p=Response">Response</a>.  This can be done simply by echoing the returned value of render().</p>
