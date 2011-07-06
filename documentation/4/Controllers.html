@@ -63,29 +63,3 @@
 <p>Either extending A_Controller_Action or not is not your only option.  You can extend your own class to consolidate code common among controllers, or one of Skeleton's other controller classes.</p>
 
 <p class="devnote">List other specialty classes that can be extended</p>
-
-<br /><br />
-<hr />
-<p class="devnote">The following info should be documented under Mapper</p>
-<br /><br />
-
-<p>Customization - You can change the default location and naming of controllers with the A_Controller_Mapper. To change the default directory from <strong>controllers/</strong> to another directory name use the setClassDir($dir) method. To change the default controller class naming scheme to another style use the setClassNaming($class_prefix, $class_transform, $class_suffix) method, which takes a prefix and suffix string, plus a transform function for capitalizatino, etc.. </p>
-<p>The constructor and the dispatched method will be passed a Locator object by the Front Controller. This parameter is optional and you may choose to use it or not. </p>  
-<p>You can change the name of this default method to anything you want using the A_Controller_Mapper::setDefaultMethod(). All the defaults, such as the name of the request parameters, are configurable. </p>
-<p>Customization - You can change the default location and naming of controllers with the A_Controller_Mapper. To change the default method name from <strong>index</strong> to another name use the setClassDir($dir) method. </p>
-
-
-<h2>Orgainzing Controllers into Sub-Directories</h2>
-<p>Typically you would have several Action methods in each controller file. But you don't have to have multiple methods per Action Controller. Skeleton provides a ways in the URL to organize controllers into sub-directories in the controllers directory. Here are the options:</p>
-<ul>
-    <li>mysite.com/foobar/ loads controllers/foobar.php</li>
-    <li>mysite.com/foo_bar/ loads controllers/foo/bar.php</li>
-    <li>mysite.com/foo-bar/ loads controllers/foo_bar.php</li>
-</ul>
-
-<p>And remember that you can also organize your controllers into module directories, each with its own controllers, models, views sub-directories. See the documenation about Working With URLs. Here are some examples:</p>
-<ul>
-    <li>mysite.com/admin/foo/ loads admin/controllers/foobar.php</li>
-    <li>mysite.com/blog/post/ loads admin/blog/controllers/post.php</li>
-</ul>
-

@@ -1,0 +1,45 @@
+<h1>Mapper</h1>
+
+<h2>Introduction</h2>
+
+<p>The Mapper defines how how <a href="?p=Requests">Requests</a> relate to action <a href="?p=Controllers">controllers</a>.  You can use it to change what parametersc define modules, controllers, and actions, where the app files are stored, among other things.  Typically the Mapper is created in the <a href="?p=Bootstrap">bootstrap</a> file and passed to the <a href="?p=FrontController">Front Controller</a>.</p>
+
+<p>When instantiating a Mapper, you must pass the path to the application files, and the default action.  The default action is dispatched to if no controller is defined.</p>
+
+<pre class="prettyprint lang-php">
+$Mapper = new A_Controller_Mapper('path/to/app/files/', array('modulefoo', 'controllerbar', 'actionbaz'));
+</pre>
+
+<h2>Modules/Controllers/Actions</h2>
+
+<p>Any place in Skeleton that needs a specific action (in the case of Mapper, the default action), that value must always be an array with three indices: one for the module, one for the controller, and one for the action.  In the previous example, it would load the controller "controllerbar" in the "modulefoo" module, and call the method "actionbaz".</p>
+
+<p>The default settings of Mapper are to:</p>
+
+<ul>
+	<li>Find a field called "module" in the Request, and route that to a module</li>
+	<li>Find a field called "controller" in the Request, and look for a controller of that name in the "controllers" folder</li>
+	<li>Find a field called "action", and use that as the method to call on the controller.</li>
+</ul>
+
+<p class="devnote">Needs to be completed.  The following information was imported from the Controller page.</p>
+
+<p>Customization - You can change the default location and naming of controllers with the A_Controller_Mapper. To change the default directory from <strong>controllers/</strong> to another directory name use the setClassDir($dir) method. To change the default controller class naming scheme to another style use the setClassNaming($class_prefix, $class_transform, $class_suffix) method, which takes a prefix and suffix string, plus a transform function for capitalizatino, etc.. </p>
+<p>The constructor and the dispatched method will be passed a Locator object by the Front Controller. This parameter is optional and you may choose to use it or not. </p>  
+<p>You can change the name of this default method to anything you want using the A_Controller_Mapper::setDefaultMethod(). All the defaults, such as the name of the request parameters, are configurable. </p>
+<p>Customization - You can change the default location and naming of controllers with the A_Controller_Mapper. To change the default method name from <strong>index</strong> to another name use the setClassDir($dir) method. </p>
+
+
+<h2>Orgainzing Controllers into Sub-Directories</h2>
+<p>Typically you would have several Action methods in each controller file. But you don't have to have multiple methods per Action Controller. Skeleton provides a ways in the URL to organize controllers into sub-directories in the controllers directory. Here are the options:</p>
+<ul>
+    <li>mysite.com/foobar/ loads controllers/foobar.php</li>
+    <li>mysite.com/foo_bar/ loads controllers/foo/bar.php</li>
+    <li>mysite.com/foo-bar/ loads controllers/foo_bar.php</li>
+</ul>
+
+<p>And remember that you can also organize your controllers into module directories, each with its own controllers, models, views sub-directories. See the documenation about Working With URLs. Here are some examples:</p>
+<ul>
+    <li>mysite.com/admin/foo/ loads admin/controllers/foobar.php</li>
+    <li>mysite.com/blog/post/ loads admin/blog/controllers/post.php</li>
+</ul>
