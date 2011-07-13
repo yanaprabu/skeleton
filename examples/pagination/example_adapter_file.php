@@ -44,7 +44,7 @@ echo "<div>{$view->render()}</div>";
 
 ?>
 <p/>
-<a href="../">Return to Examples</a>
+<a href="./">Return to Examples</a>
 </p>
 
 </body>

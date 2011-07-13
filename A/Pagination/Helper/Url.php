@@ -24,7 +24,7 @@ class A_Pagination_Helper_Url
 	 * @param string $base Domain name and path
 	 * @param string $protocol HTTP or HTTPS
 	 */
-	public function __construct ($base='', $protocol='http')
+	public function __construct($base='', $protocol='http')
 	{
 		$this->base = $base ? $base : $_SERVER['SERVER_NAME'];
 		$this->protocol = $protocol;
@@ -67,7 +67,7 @@ class A_Pagination_Helper_Url
 	 * @param array $ignore Param names to remove
 	 * @return string Full URL
 	 */
-	public function render ($page=false, $params=array(), $ignore=array())
+	public function render($page=false, $params=array(), $ignore=array())
 	{
 		$params = array_merge($this->state, $params);
 		foreach ($ignore as $key)
