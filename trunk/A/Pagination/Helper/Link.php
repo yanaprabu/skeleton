@@ -19,7 +19,7 @@ class A_Pagination_Helper_Link
 	public $url;
 	
 	protected $pager;
-	protected $class = false;
+	protected $attributes = array();
 	protected $separator = ' ';
 	protected $alwaysShowFirstLast = false;
 	protected $alwaysShowPreviousNext = false;
@@ -53,16 +53,6 @@ class A_Pagination_Helper_Link
 	public function setSeparator($separator)
 	{
 		$this->separator = $separator;
-		return $this;
-	}
-	
-	/**
-	 * @param string $class Class name
-	 * @return $this
-	 */
-	public function setClass($class)
-	{
-		$this->class = $class;
 		return $this;
 	}
 	
@@ -109,7 +99,7 @@ class A_Pagination_Helper_Link
  	 * @param string $separator Text to put after link
 	 * @return string HTML link or '' if not in range
 	 */
-	public function previous ($label=false, $separator=true)
+	public function previous($label=false, $separator=true)
 	{
 		if ($this->pager->isPage(-1) || $this->alwaysShowPreviousNext == true) {
 			return $this->page($this->pager->getPage(-1), $label) . ($separator ? $this->separator : '');
@@ -202,7 +192,68 @@ class A_Pagination_Helper_Link
 	 */
 	protected function _link($url, $label)
 	{
-		return "<a href=\"$url\"" .($this->class ? " class=\"{$this->class}\"" : '') . ">$label</a>";
+		$link = "<a href=\"$url\"";
+		foreach ($this->attributes as $name => $value) {
+			$link .= " $name=\"$value\"";
+		}
+		$link .= ">$label</a>";
+		return $link;
+	}
+	
+	/*
+	 * HTML Attribute methods
+	 */
+	
+	/**
+	 * Set an HTML attribute to be rendered in the link
+	 * 
+	 * @param string $name
+	 * @param mixed $value
+	 * @return $this
+	 */
+	public function set($name, $value)
+	{
+		if ($value !== null) {
+			$this->attributes[$name] = $value;
+		} else {
+			$this->remove($name);
+		}
+		return $this;
+	}
+	
+	/**
+	 * Get an HTML attribute that will be rendered in the link
+	 * 
+	 * @param string $name
+	 * @param mixed $default Default returned value if name does not exist
+	 * @return mixed
+	 */
+	public function get($name, $default=null)
+	{
+		return $this->has($name) ? $this->attributes[$name] : $default;
+	}
+	
+	/**
+	 * Remove an HTML attribute
+	 * 
+	 * @param string $name
+	 * @return $this
+	 */
+	public function remove($name)
+	{
+		unset($this->attributes[$name]);
+		return $this;
+	}
+	
+	/**
+	 * Check if an HTML attribute is present
+	 * 
+	 * @param string $name
+	 * @return bool
+	 */
+	public function has($name)
+	{
+		return isset($this->attributes[$name]);
 	}
 
 }

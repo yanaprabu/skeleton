@@ -12,7 +12,7 @@
  * 
  * Datasource access class for Pager using array.
  */
-class A_Pagination_Adapter_Array
+class A_Pagination_Adapter_Array implements A_Pagination_Adapter
 {
 
 	protected $data;
