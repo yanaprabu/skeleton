@@ -16,6 +16,7 @@ class A_Logger
 {
 
 	protected $buffer = '';
+	protected $nMessages = 0;
 	protected $template = "{datetime} - {message}\n";
 	protected $writers = array();
 	protected $level = 0;		// logging level default to always write
@@ -104,7 +105,7 @@ class A_Logger
 	{
 		$this->levels[$this->nMessages] = $level;
 		$this->messages[$this->nMessages] = str_replace(array('{datetime}', '{message}') , array(date('Y-m-d H:i:s'), $message), $this->template);
-		$this->nMessages++;
+		++$this->nMessages;
 		$this->written = false;
 		return $this;
 	}
