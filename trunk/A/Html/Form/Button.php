@@ -12,7 +12,7 @@
  * 
  * Generate HTML form button
  */
-class A_Html_Form_Button extends A_Html_Tag
+class A_Html_Form_Button extends A_Html_Tag implements A_Renderer
 {
 
 	public function render($attr=array())

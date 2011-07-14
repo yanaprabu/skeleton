@@ -12,7 +12,7 @@
  * 
  * Generate HTML form password input
  */
-class A_Html_Form_Password extends A_Html_Tag
+class A_Html_Form_Password extends A_Html_Tag implements A_Renderer
 {
 
 	/*

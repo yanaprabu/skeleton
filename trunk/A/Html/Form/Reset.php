@@ -12,7 +12,7 @@
  * 
  * Generate HTML form reset button
  */
-class A_Html_Form_Reset extends A_Html_Tag
+class A_Html_Form_Reset extends A_Html_Tag implements A_Renderer
 {
 
 	/*

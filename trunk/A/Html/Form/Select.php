@@ -5,7 +5,7 @@
  * @package A_Html
  */
 
-class A_Html_Form_Select extends A_Html_Tag
+class A_Html_Form_Select extends A_Html_Tag implements A_Renderer
 {
 
 	/*
