@@ -1,6 +1,6 @@
 <?php
 /**
- * UploadForm
+ * Uploadform.php
  *
  * @package  A_Http
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -8,11 +8,11 @@
  */
 
 /**
- * A_Http_UploadForm
+ * A_Http_Uploadform
  *
  * Support for file upload forms
  */
-class A_Http_UploadForm
+class A_Http_Uploadform
 {
 
 	protected $upload;

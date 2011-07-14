@@ -57,7 +57,7 @@ class upload_files_iframe extends A_Controller_Action {
 			
 		} else {
 		
-			$uploadform = new A_Http_UploadForm($upload);
+			$uploadform = new A_Http_Uploadform($upload);
 			$page_template->set('uploadform', $uploadform);		
 			$page_template->set('select_path', $this->_request('select_path'));		
 			$page_template->set('multi_file', $this->_request('multi_file'));		
