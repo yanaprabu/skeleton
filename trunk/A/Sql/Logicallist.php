@@ -1,6 +1,6 @@
 <?php
 /**
- * LogicalList.php
+ * Logicallist.php
  *
  * @package  A_Sql
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -8,11 +8,11 @@
  */
 
 /**
- * A_Sql_LogicalList
+ * A_Sql_Logicallist
  * 
  * Generate SQL AND/OR/NOT list strings.
  */
-class A_Sql_LogicalList extends A_Sql_Statement
+class A_Sql_Logicallist extends A_Sql_Statement
 {
 
 	protected $data = array();

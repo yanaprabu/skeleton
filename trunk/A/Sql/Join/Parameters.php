@@ -27,7 +27,7 @@ class A_Sql_Join_Parameters
 	
 	public function on()
 	{
-		$this->on = new A_Sql_LogicalList();
+		$this->on = new A_Sql_Logicallist();
 		$this->on->setEscape(false);
 		if(func_num_args() == 1 && is_array(func_get_arg(0))) {
 			
