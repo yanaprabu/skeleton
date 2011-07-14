@@ -12,7 +12,7 @@
  * 
  * Generate HTML paragraph tag
  */
-class A_Html_P extends A_Html_Tag
+class A_Html_P extends A_Html_Tag implements A_Renderer
 {
 
 	public function render($attr=array(), $str='')

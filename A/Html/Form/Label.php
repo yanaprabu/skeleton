@@ -12,7 +12,7 @@
  * 
  * Generate HTML form label tag
  */
-class A_Html_Form_Label extends A_Html_Tag
+class A_Html_Form_Label extends A_Html_Tag implements A_Renderer
 {
 
 	/*

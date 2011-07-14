@@ -12,7 +12,7 @@
  * 
  * Generate HTML form hidden input
  */
-class A_Html_Form_Hidden extends A_Html_Tag
+class A_Html_Form_Hidden extends A_Html_Tag implements A_Renderer
 {
 
 	/*

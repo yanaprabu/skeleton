@@ -12,7 +12,7 @@
  * 
  * Generate HTML anchor tag
  */
-class A_Html_A extends A_Html_Tag
+class A_Html_A extends A_Html_Tag implements A_Renderer
 {
 
 	public function render($attr=array(), $str='', $href=null)

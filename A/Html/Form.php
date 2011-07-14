@@ -12,7 +12,7 @@
  * 
  * Generate HTML form with fluent interface for form fields
  */
-class A_Html_Form
+class A_Html_Form implements A_Renderer
 {
 
 	protected $_attr = array(
@@ -82,9 +82,7 @@ class A_Html_Form
 	{
 		if ($key != '') {
 			if (is_array($key)) {
-				foreach ($key as $name => $value) {
-					$this->_attr[$name] = $value;
-				}
+				$this->import($key);
 			} else {
 				$this->_attr[$key] = $value;
 			}
@@ -221,6 +219,14 @@ class A_Html_Form
 				$element->set('value', $this->model->get($name));
 			}
 		}
+	}
+	
+	public function import($data)
+	{
+		if (is_array($data)) {
+			$this->_attr = array_merge($this->_attr, $data);
+		}
+		return $this;
 	}
 	
 	public function __toString()

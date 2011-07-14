@@ -12,7 +12,7 @@
  * 
  * Base class to generate HTML form radio buttons and checkboxes
  */
-class A_Html_Form_Radiocheckbox extends A_Html_Tag
+class A_Html_Form_Radiocheckbox extends A_Html_Tag implements A_Renderer
 {
 
 	public function render($attr=array())
