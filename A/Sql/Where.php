@@ -12,7 +12,7 @@
  * 
  * Generate SQL WHERE clause 
  */
-class A_Sql_Where extends A_Sql_LogicalList
+class A_Sql_Where extends A_Sql_Logicallist
 {
 
 	public function render()

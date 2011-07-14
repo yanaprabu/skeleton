@@ -50,7 +50,7 @@ class A_Sql_Join
 			return;
 		}
 		if (!$this->on) {						
-			$this->on = new A_Sql_LogicalList();
+			$this->on = new A_Sql_Logicallist();
 			$this->on->setEscape(false);
 		}		
 		$this->on_expression = null;
