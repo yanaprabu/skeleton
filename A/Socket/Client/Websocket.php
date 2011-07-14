@@ -1,6 +1,6 @@
 <?php
 /**
- * WebSocket.php
+ * Websocket.php
  *
  * @package  A_Socket
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -9,11 +9,11 @@
  */
 
 /**
- * A_Socket_Client_WebSocket
+ * A_Socket_Client_Websocket
  *
  * Variations on the Client object for the WebSocket protocol
  */
-class A_Socket_Client_WebSocket extends A_Socket_Client_Base
+class A_Socket_Client_Websocket extends A_Socket_Client_Base
 {
 
 	// websocket end of line marker
