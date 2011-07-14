@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 require_once 'A/Http/Request.php';
-require_once 'A/Http/PathInfo.php';
+require_once 'A/Http/Pathinfo.php';
 
 $map = array(
 	'' => array(
@@ -33,7 +33,7 @@ $map2 = array(
 $Request = new A_Http_Request();
 
 // initialize with $map_extra_param_pairs=false so we only set the params found in the routes
-$Mapper = new A_Http_PathInfo($map, false);
+$Mapper = new A_Http_Pathinfo($map, false);
 $Mapper->run($Request);
 
 // set second map and process to map those routes

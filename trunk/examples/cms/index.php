@@ -86,8 +86,8 @@ $map = array(
             ),
         ),
     );
-$PathInfo = new A_Http_PathInfo($map);
-$PathInfo->run($Request); 
+$Pathinfo = new A_Http_Pathinfo($map);
+$Pathinfo->run($Request); 
 
 // Create mapper with base application path and default action
 $Mapper = new A_Controller_Mapper($Config->get('APP'), array('', 'index', 'index'));

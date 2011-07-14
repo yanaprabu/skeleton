@@ -1,7 +1,7 @@
 <h1>Clean Urls</h1>
 <p class="devnote">Explain the different ways skeleton can handle URL's (both parameter based and clean)</p>
 
-<h3>A_Http_PathInfo</h3>
+<h3>A_Http_Pathinfo</h3>
 
 <p>This class adds/modifies the values in the Request object, so the code can be used with mod_rewrite and the Mapper, or without. The default parameters are <b>controller</b> and <b>action</b>, but these two parameter names can be changed by passing a different map to the constructor. </p>
 
@@ -71,8 +71,8 @@ $map = array(
 		),
 	),
 );
-$PathInfo = new A_Http_PathInfo($map);
+$Pathinfo = new A_Http_Pathinfo($map);
 // process Request according to map
-$PathInfo->run($Request);
+$Pathinfo->run($Request);
 // ...
 </code></pre>

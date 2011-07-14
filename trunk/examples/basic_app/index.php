@@ -7,7 +7,7 @@ require_once $ConfigArray['LIB'] . 'A/Locator.php';
 #require_once 'A/Locator.php';
 #require_once 'A/Http/Request.php';
 #require_once 'A/Http/Response.php';
-#require_once 'A/Http/PathInfo.php';
+#require_once 'A/Http/Pathinfo.php';
 #require_once 'A/Controller/Front.php';
 #require_once 'A/Controller/Mapper.php';
 #require_once 'A/Template/Strreplace.php';
@@ -24,7 +24,7 @@ $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 $Locator->set('Session', $Session);
 
-$Mapper = new A_Http_PathInfo(array('' => array('controller','action','id',)));	// array('' => array('class', 'method')));
+$Mapper = new A_Http_Pathinfo(array('' => array('controller','action','id',)));	// array('' => array('class', 'method')));
 $Mapper->run($Request);	// copies clean URL values into the Request based on the map
 
 $Action = array('', 'home', 'index');
