@@ -80,7 +80,7 @@ part.  Starting with the config.</p>
 name of the class we want to use to represent a connected client.  This depends
 on what protocol is being used.  This class must extend
 A_Socket_Client_Abstract, or an exception will be thrown.  A_Socket comes
-preloaded with A_Socket_Client_WebSocket, for the WebSocket protocol.</p>
+preloaded with A_Socket_Client_Websocket, for the WebSocket protocol.</p>
 
 <p>The 'class-message' option tells the server the name of the class to use
 for the message.  This depends on the format of the messages being passed.  This
@@ -200,7 +200,7 @@ $ConfigArray = array(
 	'SOCKET' => array(
 		'host' => 'localhost',
 		'port' => '9091',
-		'class-client' => 'A_Socket_Client_WebSocket',
+		'class-client' => 'A_Socket_Client_Websocket',
 		'class-message' => 'A_Socket_Message_Json',
 		'message-connect' => '{"type":{"module":"","controller":"connect","action":"user"},"data":null}',
 		'message-disconnect' => '{"type":{"module":"","controller":"disconnect","action":"user"},"data":null}'
