@@ -1,6 +1,6 @@
 <?php
 
-class Http_UploadFormTest extends UnitTestCase {
+class Http_UploadformTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -8,9 +8,9 @@ class Http_UploadFormTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testHttp_UploadFormNotNull() {
+	function testHttp_UploadformNotNull() {
   		$upload = new A_Http_Upload();
-  		$Http_UploadForm = new A_Http_UploadForm($upload);
+  		$Http_Uploadform = new A_Http_Uploadform($upload);
 		
 		$result = true;
   		$this->assertTrue($result);

@@ -62,7 +62,7 @@ class upload_files {
 			
 		} else {
 		
-			$uploadform = new A_Http_UploadForm($upload);
+			$uploadform = new A_Http_Uploadform($upload);
 			$uploadform->addHidden('action', 'upload_files');
 #			$content .= $uploadform->form('index.php');
 			$content .= $uploadform->formOpen() . "<br/>\n";
