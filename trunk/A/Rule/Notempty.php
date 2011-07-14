@@ -1,6 +1,6 @@
 <?php
 /**
- * NotEmpty.php
+ * Notempty.php
  *
  * @package  A_Rule
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
