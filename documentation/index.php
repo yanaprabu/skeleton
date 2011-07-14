@@ -103,7 +103,7 @@ $(document).ready(function(){
 		<li><span>3.00</span><a class="ajaxlink" href="3/Http">Http</a>
 			<ol>
 				<li><a class="ajaxlink" href="./?p=Controller_Front">A_Controller_Front</a></li>
-				<li><a class="ajaxlink" href="./?p=Http_PathInfo">A_Http_PathInfo.php</a></li>
+				<li><a class="ajaxlink" href="./?p=Http_Pathinfo">A_Http_Pathinfo.php</a></li>
 
 				<li><a class="ajaxlink" href="./?p=Http_Download">Download.php</a></li>
 				<li><a class="ajaxlink" href="./?p=Http_Request">Request.php</a></li>

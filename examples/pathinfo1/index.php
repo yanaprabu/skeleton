@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 require_once 'A/Http/Request.php';
-require_once 'A/Http/PathInfo.php';
+require_once 'A/Http/Pathinfo.php';
 
 $map = array(
 /*
@@ -93,7 +93,7 @@ $map3 = array(
 	);
 
 $Request = new A_Http_Request();
-$Router = new A_Http_PathInfo($map3);
+$Router = new A_Http_Pathinfo($map3);
 $Router->run($Request);
 
 ?>

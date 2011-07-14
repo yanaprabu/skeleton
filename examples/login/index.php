@@ -52,8 +52,8 @@ $map = array(
 		1 => array('name'=>'action', 'default'=>'index'),
 		),
 	);
-$PathInfo = new A_Http_Pathinfo($map, false);
-$PathInfo->run($Request);
+$Pathinfo = new A_Http_Pathinfo($map, false);
+$Pathinfo->run($Request);
 
 // create mapper with base application path and default action
 $Mapper = new A_Controller_Mapper($ConfigArray['APP'], array('', 'home', 'index'));

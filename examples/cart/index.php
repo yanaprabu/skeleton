@@ -28,8 +28,8 @@ $Locator->set('Request', $Request);
 $Locator->set('Response', $Response);
 $Locator->set('Session', $Session);
 
-$PathInfo = new A_Http_PathInfo();
-$PathInfo->run($Request); 
+$Pathinfo = new A_Http_Pathinfo();
+$Pathinfo->run($Request); 
 
 $Controller = new A_Controller_Front($Config->get('APP'), array('', 'product_category', 'index'));
 $Controller->run($Locator);

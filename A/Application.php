@@ -23,7 +23,7 @@ class A_Application
 	protected $loadComponents = array(
 		'Locator'  => array('A_Locator', false),
 		'Config'   => array('A_Config_Ini', true), 
-		'Pathinfo' => array('A_Http_PathInfo', false), 
+		'Pathinfo' => array('A_Http_Pathinfo', false), 
 		'Mapper'   => array('A_Controller_Mapper', false), 
 		'Request'  => array('A_Http_Request', true),
 		'Response' => array('A_Http_Response', true),
