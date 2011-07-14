@@ -1,6 +1,6 @@
 <?php
 
-class Http_HordeRoutesTest extends UnitTestCase {
+class Http_HorderoutesTest extends UnitTestCase {
 	
 	function setUp() {
 	}
@@ -8,8 +8,8 @@ class Http_HordeRoutesTest extends UnitTestCase {
 	function TearDown() {
 	}
 	
-	function testHttp_HordeRoutesNotNull() {
-#  		$Http_HordeRoutes = new A_Http_HordeRoutes();
+	function testHttp_HorderoutesNotNull() {
+#  		$Http_Horderoutes = new A_Http_Horderoutes();
 		
 		$result = true;
   		$this->assertTrue($result);
