@@ -47,5 +47,12 @@ interface A_Renderer
 	 * @return $this Should return self for fluency
 	 */
 	public function import($data);
+	
+	/**
+	 * Magic method to automatically render when used in a string context
+	 * 
+	 * @return string
+	 */
+	public function __toString();
 
 }
