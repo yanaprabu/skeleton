@@ -53,7 +53,7 @@ class A_Pagination_Helper_Link
 	 * @param A_Renderer $renderer
 	 * @return $this
 	 */
-	public function setRenderer($renderer)
+	public function setRenderer(A_Renderer $renderer)
 	{
 		$this->renderer = $renderer;
 		return $this;
