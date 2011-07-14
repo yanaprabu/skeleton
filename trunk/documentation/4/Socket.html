@@ -53,7 +53,7 @@ $Config = new A_Config_Php();
 $Config->import($ConfigArray);
 $Locator->set('Config', $Config);
 
-$EventListener = new A_Socket_EventListener_FrontController($Locator);
+$EventListener = new A_Socket_Eventlistener_Frontcontroller($Locator);
 
 $EventManager = new A_Event_Manager();
 $EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, function () { echo 'Client connected :)' . PHP_EOL; });
@@ -95,7 +95,7 @@ the message class.</p>
 <a href="?p=Boostrap">here</a>), so well skip up to the end.</p>
 
 <pre class="prettyprint lang-php">
-$EventListener = new A_Socket_EventListener_FrontController($Locator);
+$EventListener = new A_Socket_Eventlistener_Frontcontroller($Locator);
 
 $EventManager = new A_Event_Manager();
 $EventManager->addEventListener(A_Socket_Server::EVENT_CONNECT, function () { echo 'Client connected :)' . PHP_EOL; });
@@ -127,7 +127,7 @@ $Server->run($ConfigArray['SOCKET']);
 events.  You can handle the events listed above in any way you like, as is
 allowed by A_Event_Manager.  In this example, we use the PHP 5.3
 <a href="http://php.net/functions.anonymous">closure</a> syntax.  A_Socket comes
-preloaded with A_Socket_EventListener-FrontController.  This is a very cool
+preloaded with A_Socket_Eventlistener-FrontController.  This is a very cool
 handler that delegates to the Skeleton front Controller.</p>
 
 <p>Finally, the server is created, and the listener/parser passed to it.  Lastly
@@ -218,7 +218,7 @@ $Config->import($ConfigArray);
 
 $Locator->set('Config', $Config);
 
-$EventListener = new A_Socket_EventListener_FrontController($Locator);
+$EventListener = new A_Socket_Eventlistener_Frontcontroller($Locator);
 
 $EventManager = new A_Event_Manager();
 $EventManager->addEventListener($EventListener);
