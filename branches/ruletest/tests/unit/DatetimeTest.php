@@ -1,7 +1,7 @@
 <?php
 
-Mock::Generate ('A_DateTime_Range');
-Mock::Generate ('A_DateTime_Duration');
+Mock::Generate ('A_Datetime_Range');
+Mock::Generate ('A_Datetime_Duration');
 
 class DatetimeTest extends UnitTestCase {
 	
@@ -12,7 +12,7 @@ class DatetimeTest extends UnitTestCase {
 	}
 	
 	function testDatetime_parseDate() {
-  		$datetime = new A_DateTime();
+  		$datetime = new A_Datetime();
 
 		$datetime->parseDate('2001/12/20');
 		$this->assertTrue($datetime->getDate() == '2001-12-20');
@@ -104,34 +104,34 @@ class DatetimeTest extends UnitTestCase {
 	}
 
 	function testIsWithinRangeReturnsTrue()	{
-		$date1 = new A_DateTime();
+		$date1 = new A_Datetime();
 		$date1->parseDate ('2008/12/22');
-		$date2 = new A_DateTime();
+		$date2 = new A_Datetime();
 		$date2->parseDate ('2008/12/21');
-		$date3 = new A_DateTime();
+		$date3 = new A_Datetime();
 		$date3->parseDate ('2008/12/23');
-		$range = new MockA_DateTime_Range();
+		$range = new MockA_Datetime_Range();
 		$range->setReturnValue ('getStart', $date2->getTimestamp());
 		$range->setReturnValue ('getEnd', $date3->getTimestamp());
 		$this->assertTrue ($date1->isWithin ($range));
 	}
 
 	function testIsNotWithinRangeReturnsFalse()	{
-		$date1 = new A_DateTime();
+		$date1 = new A_Datetime();
 		$date1->parseDate ('2008/12/20');
-		$date2 = new A_DateTime();
+		$date2 = new A_Datetime();
 		$date2->parseDate ('2008/12/21');
-		$date3 = new A_DateTime();
+		$date3 = new A_Datetime();
 		$date3->parseDate ('2008/12/23');
-		$range = new MockA_DateTime_Range();
+		$range = new MockA_Datetime_Range();
 		$range->setReturnValue ('getStart', $date2->getTimestamp());
 		$range->setReturnValue ('getEnd', $date3->getTimestamp());
 		$this->assertFalse ($date1->isWithin ($range));
 	}
 
 	function testAddReturnsNewDate()	{
-		$date = new A_DateTime();
-		$duration = new MockA_DateTime_Duration();
+		$date = new A_Datetime();
+		$duration = new MockA_Datetime_Duration();
 		$duration->setReturnValue ('toString', '+1 day');
 		$duration->expectOnce ('setPositive');
 		$duration->expectOnce ('toString');
@@ -140,8 +140,8 @@ class DatetimeTest extends UnitTestCase {
 	}
 	
 	function testRemoveReturnsNewDate()	{
-		$date = new A_DateTime();
-		$duration = new MockA_DateTime_Duration();
+		$date = new A_Datetime();
+		$duration = new MockA_Datetime_Duration();
 		$duration->setReturnValue ('toString', '-1 days');
 		$duration->expectOnce ('setNegative');
 		$duration->expectOnce ('toString');
@@ -153,7 +153,7 @@ class DatetimeTest extends UnitTestCase {
 		$array1 = array('year'=>'2008','mon'=>'12','mday'=>'20','hours'=>'21','minutes'=>'11','seconds'=>'10');
 		$array2 = array('year'=>'2008','month'=>'12','day'=>'20','hour'=>'21','minute'=>'11','second'=>'10');
 		$array3 = array('year'=>'2009','month'=>'11','day'=>'10','hour'=>'01','minute'=>'21','second'=>'11');
-		$datetime = new A_DateTime($array2);
+		$datetime = new A_Datetime($array2);
 		$str = $datetime->getDate(true);
 		$this->assertEqual($str, '2008-12-20 21:11:10');
 

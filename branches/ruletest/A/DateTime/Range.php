@@ -9,11 +9,11 @@
  */
 
 /**
- * A_DateTime_Range
+ * A_Datetime_Range
  * 
  * Date & Time Range functionality
  */
-class A_DateTime_Range {
+class A_Datetime_Range {
 
 	protected $start;		// A_Datetime object containing start of range
 	protected $end;			// A_Datetime object containing end  of range
@@ -24,15 +24,15 @@ class A_DateTime_Range {
 	 * Can instantiate using start & duration, duration & end, start & end 
 	 */
 	public function __construct ($first, $second) {
-		if ($first instanceof A_DateTime && $second instanceof A_DateTime)	{
+		if ($first instanceof A_Datetime && $second instanceof A_Datetime)	{
 			$this->start = $first;
 			$this->end = $second;
 		}
-		if ($first instanceof A_DateTime && $second instanceof A_DateTime_Duration)	{
+		if ($first instanceof A_Datetime && $second instanceof A_Datetime_Duration)	{
 			$this->start = $first;
 			$this->end = $this->start->add ($second);
 		}
-		if ($first instanceof A_DateTime_Duration && $second instanceof A_DateTime)	{
+		if ($first instanceof A_Datetime_Duration && $second instanceof A_Datetime)	{
 			$this->start = $second->remove ($first);	
 			$this->end = $second;
 		}
@@ -63,7 +63,7 @@ class A_DateTime_Range {
 	 */
 	public function toArray ($duration)	{
 		$date = $this->start->newModify();
-		$string = $duration instanceof A_DateTime_Duration ? $duration->toString() : $duration;
+		$string = $duration instanceof A_Datetime_Duration ? $duration->toString() : $duration;
 		$ranges = array();
 		while ($date->getTimestamp() <= $this->end->getTimestamp())	{
 			$ranges[] = $date;
@@ -77,7 +77,7 @@ class A_DateTime_Range {
 	 * The inclusive parameter determines whether the start and end dates are included in the Range
 	 */
 	public function contains ($datetime, $inclusive = false)	{
-		if ($datetime instanceof A_DateTime) {
+		if ($datetime instanceof A_Datetime) {
 			if ($inclusive)	{
 				return $datetime->getTimestamp() >= $this->start->getTimestamp() && $datetime->getTimestamp() <= $this->end->getTimestamp();
 			} else {

@@ -1,6 +1,6 @@
 <?php
 /**
- * DateTime.php
+ * Datetime.php
  *
  * @package  A
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -9,11 +9,11 @@
  */
 
 /**
- * A_DateTime
+ * A_Datetime
  *
  * Date and time functionality
  */
-class A_DateTime extends DateTime
+class A_Datetime extends DateTime
 {
 	/**
 	 * date format returnd by _toString

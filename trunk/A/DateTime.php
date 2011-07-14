@@ -9,11 +9,11 @@
  */
 
 /**
- * A_DateTime
+ * A_Datetime
  *
  * Date and time functionality
  */
-class A_DateTime extends DateTime
+class A_Datetime extends DateTime
 {
 
 	/**
@@ -263,13 +263,13 @@ class A_DateTime extends DateTime
 		return $this;
 	}
 	
-	public function add (A_DateTime_Duration $duration)
+	public function add (A_Datetime_Duration $duration)
 	{
 		$duration->setPositive();
 		return $this->newModify($duration->toString());
 	}
 	
-	public function remove (A_DateTime_Duration $duration)
+	public function remove (A_Datetime_Duration $duration)
 	{
 		$duration->setNegative();
 		return $this->newModify($duration->toString());
@@ -318,7 +318,7 @@ class A_DateTime extends DateTime
 	/**
 	 * check if this date/time a range
 	 */
-	public function isWithin (A_DateTime_Range $range, $inclusive = false)
+	public function isWithin (A_Datetime_Range $range, $inclusive = false)
 	{
 		if ($inclusive)	{
 			return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
@@ -330,7 +330,7 @@ class A_DateTime extends DateTime
 	/**
 	 * check if this date/time a range or equal to the end dates
 	 */
-	public function isWithinOrEqual(A_DateTime_Range $range)
+	public function isWithinOrEqual(A_Datetime_Range $range)
 	{
 		return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
 	}

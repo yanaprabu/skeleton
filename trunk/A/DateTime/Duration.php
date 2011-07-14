@@ -2,18 +2,18 @@
 /**
  * Duration.php
  *
- * @package  A_DateTime
+ * @package  A_Datetime
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	 http://skeletonframework.com/
  * @author   Eran Galt, Cory Kaufman, Christopher Thompson
  */
 
 /**
- * A_DateTime_Duration
+ * A_Datetime_Duration
  * 
  * Date & Time Duration functionality 
  */
-class A_DateTime_Duration
+class A_Datetime_Duration
 {
 
 	protected $partNames = array('years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds', 'positive');

@@ -18,8 +18,8 @@ $locator->setDir("$path/Foo", $regex);
 echo "A_Locator setDir() to load classes in matching regex '$regex' from $path/Foo/<br/>";
 
 /*
-$duration = new A_DateTime_Duration();
-if ($duration) echo "A_DateTime_Duration autoloaded<br/>";
+$duration = new A_Datetime_Duration();
+if ($duration) echo "A_Datetime_Duration autoloaded<br/>";
 $bar = new Bar();
 $foobar = new Foo_Bar();
 */

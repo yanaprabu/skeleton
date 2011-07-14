@@ -9,11 +9,11 @@
  */
 
 /**
- * A_DateTime_Duration
+ * A_Datetime_Duration
  * 
  * Date & Time Duration functionality 
  */
-class A_DateTime_Duration {
+class A_Datetime_Duration {
 	
 	protected $partNames = array('years','months','weeks','days','hours','minutes','seconds','positive');
 	protected $years = 0;
