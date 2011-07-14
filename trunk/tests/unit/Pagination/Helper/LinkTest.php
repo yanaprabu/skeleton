@@ -115,6 +115,20 @@ class A_Pagination_LinkTest extends UnitTestCase
 		$core = $this->createCore();
 		$linkHelper = new A_Pagination_Helper_Link($core, new MockUrlHelper());
 		
+		$core->setCurrentPage(4);
+		$core->setRangeSize(1);
+		
+		$tag = new A_Html_A(array('class' => 'foobar'));
+		$linkHelper->setRenderer($tag);
+		
+		$this->assertEqual($linkHelper->range(), '<a class="foobar" href="foo">3</a> 4 <a class="foobar" href="foo">5</a>');
+	}
+	
+	public function testRangeWithHtmlRenderer()
+	{
+		$core = $this->createCore();
+		$linkHelper = new A_Pagination_Helper_Link($core, new MockUrlHelper());
+		
 		$tag = new A_Html_A(array('class' => 'foobar'));
 		$linkHelper->setRenderer($tag);
 		$linkHelper->alwaysShowFirstLast(true);
