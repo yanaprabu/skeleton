@@ -35,7 +35,7 @@ class A_Http_View implements A_Renderer
 	protected $paths = array();				// cache array of paths calculated by Mapper
 	protected $helpers = array();
 	protected $helperClass = array(
-		'datetime'=>'A_DateTime',
+		'datetime'=>'A_Datetime',
 		'json'=>'A_Json',
 		'pagination'=>'A_Pagination_View_Standard',
 		'url'=>'A_Http_Helper_Url',
