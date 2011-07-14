@@ -23,6 +23,7 @@ class A_Pagination_Helper_Link
 	protected $separator = ' ';
 	protected $alwaysShowFirstLast = false;
 	protected $alwaysShowPreviousNext = false;
+	protected $renderer = null;
 	
 	/**
 	 * @param A_Pagination_Core $pager
@@ -44,6 +45,18 @@ class A_Pagination_Helper_Link
 		if ($order_by) {
 			$this->url->set($this->pager->getParamName('order_by'), $order_by);
 		}
+	}
+	
+	/**
+	 * Set a renderer to render the individual links.
+	 * 
+	 * @param A_Renderer $renderer
+	 * @return $this
+	 */
+	public function setRenderer($renderer)
+	{
+		$this->renderer = $renderer;
+		return $this;
 	}
 	
 	/**
@@ -192,11 +205,21 @@ class A_Pagination_Helper_Link
 	 */
 	protected function _link($url, $label)
 	{
-		$link = "<a href=\"$url\"";
-		foreach ($this->attributes as $name => $value) {
-			$link .= " $name=\"$value\"";
+		$link;
+		if ($this->renderer) {
+			$this->renderer->import(array_merge(
+				$this->attributes,
+				// keys deliberately compatible with A_Html_Tag
+				array('href' => $url, 'value' => $label)
+			));
+			$link = $this->renderer->render();
+		} else {
+			$link = "<a href=\"$url\"";
+			foreach ($this->attributes as $name => $value) {
+				$link .= " $name=\"$value\"";
+			}
+			$link .= ">$label</a>";
 		}
-		$link .= ">$label</a>";
 		return $link;
 	}
 	

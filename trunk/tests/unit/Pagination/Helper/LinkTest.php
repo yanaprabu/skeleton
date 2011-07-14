@@ -98,6 +98,30 @@ class A_Pagination_LinkTest extends UnitTestCase
 		$this->assertEqual($linkHelper->range(), '4');
 	}
 	
+	public function testFirstWithTemplateRenderer()
+	{
+		$core = $this->createCore();
+		$linkHelper = new A_Pagination_Helper_Link($core, new MockUrlHelper());
+		
+		$template = new A_Template_Strreplace(__DIR__ . '/a_template.txt');
+		$linkHelper->setRenderer($template);
+		$linkHelper->alwaysShowFirstLast(true);
+		
+		$this->assertEqual($linkHelper->first('baz'), '<a href="foo" class="bar">baz</a> ');
+	}
+	
+	public function testFirstWithHtmlRenderer()
+	{
+		$core = $this->createCore();
+		$linkHelper = new A_Pagination_Helper_Link($core, new MockUrlHelper());
+		
+		$tag = new A_Html_A(array('class' => 'foobar'));
+		$linkHelper->setRenderer($tag);
+		$linkHelper->alwaysShowFirstLast(true);
+		
+		$this->assertEqual($linkHelper->first('baz'), '<a class="foobar" href="foo">baz</a> ');
+	}
+	
 	private function createCore()
 	{
 		return new A_Pagination_Request(new A_Pagination_Adapter_Array(array(
