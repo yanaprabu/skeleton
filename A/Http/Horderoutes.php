@@ -1,6 +1,6 @@
 <?php
 /**
- * HordeRoutes.php
+ * Horderoutes.php
  *
  * @package  A_Http
  * @license  http://www.opensource.org/licenses/bsd-license.php BSD
@@ -8,11 +8,11 @@
  */
 
 /**
- * A_Http_HordeRoutes
+ * A_Http_Horderoutes
  *
  * Wrap the Horde Routes in Intercepting Filter style class for use with Request object
  */
-class A_Http_HordeRoutes
+class A_Http_Horderoutes
 {
 
 	protected $path;
