@@ -8,14 +8,14 @@
  */
 
 /**
- * A_Rule_NotEmpty
+ * A_Rule_Notempty
  * 
  * Rule to check for a value not being empty, null, zero, or false.  Uses the empty() method.
  */
-class A_Rule_NotEmpty extends A_Rule_Base
+class A_Rule_Notempty extends A_Rule_Base
 {
 
-	const ERROR = 'A_Rule_NotEmpty';
+	const ERROR = 'A_Rule_Notempty';
 	
 	protected function validate()
 	{

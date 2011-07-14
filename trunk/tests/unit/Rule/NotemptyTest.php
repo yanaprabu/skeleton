@@ -1,11 +1,11 @@
 <?php
 
-class Rule_NotEmptyTest extends UnitTestCase {
+class Rule_NotemptyTest extends UnitTestCase {
 	
-	function testRule_NotEmptyValidate() {
+	function testRule_NotemptyValidate() {
 		$dataspace = new A_Collection();
 
-		$rule = new A_Rule_NotEmpty('foo', 'foo error');
+		$rule = new A_Rule_Notempty('foo', 'foo error');
 		
 		$this->assertFalse($rule->isValid($dataspace));
 		
