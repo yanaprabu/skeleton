@@ -26,7 +26,7 @@ $Config->import($ConfigArray);
 
 $Locator->set('Config', $Config);
 
-$EventListener = new A_Socket_EventListener_FrontController($Locator);
+$EventListener = new A_Socket_Eventlistener_Frontcontroller($Locator);
 
 $EventManager = new A_Event_Manager();
 $EventManager->addEventListener($EventListener);
