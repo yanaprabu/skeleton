@@ -12,7 +12,7 @@
  * 
  * Base MVC View class for a whole or partial CLI response character encoding, quoting, escaping, and content.
  */
-class A_Cli_View
+class A_Cli_View implements A_Renderer
 {
 
 	protected $data = array();
