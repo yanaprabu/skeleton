@@ -42,6 +42,30 @@ class A_Pagination_Helper_Url
 	}
 	
 	/**
+	 * Get a state value
+	 * 
+	 * @param string $key
+	 * @param value $default Value returned if $key doesn't exist
+	 * @return mixed
+	 */
+	public function get($key, $default=null)
+	{
+		return isset($this->state[$key]) ? $this->state[$key] : $default;
+	}
+	
+	/**
+	 * Import state data
+	 * 
+	 * @param array $data
+	 * @return $this
+	 */
+	public function import($data)
+	{
+		$this->state = array_merge($data, $this->state);
+		return $this;
+	}
+	
+	/**
 	 * @param string $base Domain name and path
 	 * @return $this
 	 */
@@ -80,6 +104,16 @@ class A_Pagination_Helper_Url
 			$query .= http_build_query($params);
 		}
 		return $base . $page . $query;
+	}
+	
+	/**
+	 * Magic method to automatically render when used in a string context
+	 * 
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->render();
 	}
 
 }
