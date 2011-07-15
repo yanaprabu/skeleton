@@ -92,7 +92,7 @@ class A_Datetime_Duration
 	 * 
 	 * @param array $parts
 	 */
-	public function config ($parts)
+	public function config($parts)
 	{
 		foreach($this->partNames as $part) {
 			$this->$part = isset($parts[$part]) ? $parts[$part] : 0;

@@ -69,13 +69,13 @@ class A_Pagination_View_Standard
 		return $this->helpers['url'];
 	}
 	
-	public function first ($label=false, $separator=true)
+	public function first($label=false, $separator=true)
 	{
 		$this->links .= $this->link()->first ($label, $separator);
 		return $this;
 	}
 	
-	public function previous ($label = false, $separator=true)
+	public function previous($label = false, $separator=true)
 	{
 		$this->links .= $this->link()->previous ($label, $separator);
 		return $this;
