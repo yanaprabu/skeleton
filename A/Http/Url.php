@@ -56,7 +56,7 @@ class A_Http_Url
 		return "$protocol://$server$page";
 	}
 	
-	public function getParams ($params=array())
+	public function getParams($params=array())
 	{
 		if ($params) {
 			if (is_array($params)) {
