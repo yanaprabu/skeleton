@@ -13,7 +13,7 @@
  *
  * This class provides various methods with which to create, manipulate, and read URLs.
  */
-class A_Http_Cookie
+class A_Http_Cookie implements A_Renderer
 {
 	protected $expire = 0;
 	protected $path = '';
@@ -57,6 +57,32 @@ class A_Http_Cookie
 		return $this;
 	}
 	
+	/**
+	 * Import an array of cookies.  For the proper array values, see the argument names of the setcookie() method.
+	 * 
+	 * http://php.net/setcookie
+	 * 
+	 * The array key can be used instead of the 'name' key.
+	 * 
+	 * @param array $cookies
+	 * @return $this
+	 */
+	public function import($cookies)
+	{
+		foreach ($cookies as $name => $cookie) {
+			$this->cookies[$name] = array(
+				'name' => isset($cookie['name']) ? $cookie['name'] : $name,
+				'value' => isset($cookie['value']) ? $cookie['value'] : null,
+				'expire' => isset($cookie['expire']) ? $cookie['expire'] : $this->expire,
+				'path' => isset($cookie['path']) ? $cookie['path'] : $this->path,
+				'domain' => isset($cookie['domain']) ? $cookie['domain'] : $this->domain,
+				'secure' => isset($cookie['secure']) ? $cookie['secure'] : $this->secure,
+				'httponly' => isset($cookie['httponly']) ? $cookie['httponly'] : $this->httponly
+			);
+		}
+		return $this;
+	}
+	
 	public function setExpire($expire)
 	{
 		$this->expire = $expire;
@@ -92,6 +118,11 @@ class A_Http_Cookie
 		foreach ($this->cookies as $c) {
 			setcookie($c['name'], $c['value'], $c['expire'], $c['path'], $c['domain'], $c['secure'], $c['httponly']);
         }
+	}
+	
+	public function __toString()
+	{
+		return $this->render();
 	}
 
 }
