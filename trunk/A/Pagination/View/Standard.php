@@ -61,6 +61,18 @@ class A_Pagination_View_Standard
 		return $this->helpers['link'];
 	}
 	
+	/**
+	 * Assign a renderer to the Link helper
+	 * 
+	 * @param A_Renderer $renderer
+	 * @return $this
+	 */
+	public function setRenderer(A_Renderer $renderer)
+	{
+		$this->link()->setRenderer($renderer);
+		return $this;
+	}
+	
 	public function url()
 	{
 		if (!isset($this->helpers['url'])) {
