@@ -70,8 +70,8 @@ class Db_SqliteTest extends UnitTestCase {
 		$rows = $result->fetchAll();
 #dump($rows, 'ROWS: ', 1);
 		foreach ($rows as $n => $row) {
-			$this->assertTrue($test_rows[$n]['id'] == $row['id']);
-			$this->assertTrue($test_rows[$n]['name'] == $row['name']);
+			$this->assertTrue($test_rows[$n][':id'] == $row['id']);
+			$this->assertTrue($test_rows[$n][':name'] == $row['name']);
 		}
 		
 #dump($Db_Sqlite->getSql(), 'SQL HISTORY: ', 1);
