@@ -35,7 +35,7 @@ class Pagination_CoreTest extends UnitTestCase {
 
 	function testPaginationgetFirstPage() {
  		$datasource = new Pagination_Core_DatasourceMock();
-		$pager = new A_Pagination($datasource, 5);
+		$pager = new A_Pagination_Core($datasource, 5);
 
 		$result = true;
 		$this->assertEqual($pager->getCurrentPage(), 1);
@@ -48,7 +48,7 @@ class Pagination_CoreTest extends UnitTestCase {
 
 	function testPaginationSecondPage() {
  		$datasource = new Pagination_Core_DatasourceMock();
-		$pager = new A_Pagination($datasource, 5);
+		$pager = new A_Pagination_Core($datasource, 5);
 		$pager->setCurrentPage(2);
 
 		$result = true;
@@ -62,13 +62,13 @@ class Pagination_CoreTest extends UnitTestCase {
 
 	public function testGetParamNameSetsKeyIfNotSet()	{
 		$datasource = new Pagination_Core_DatasourceMock();
-		$pager = new A_Pagination($datasource, 5);
+		$pager = new A_Pagination_Core($datasource, 5);
 		$this->assertEqual ($pager->getParamName ('abc123'), 'abc123');
 	}
 
 	public function testSetParamName()	{
 		$datasource = new Pagination_Core_DatasourceMock();
-		$pager = new A_Pagination($datasource, 5);
+		$pager = new A_Pagination_Core($datasource, 5);
 		$pager->setParamName ('abc123', 'page');
 		$this->assertEqual ($pager->getParamName ('abc123'), 'page');
 	}
