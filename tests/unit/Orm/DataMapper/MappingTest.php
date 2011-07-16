@@ -18,11 +18,11 @@ class Orm_DataMapper_Mapping_Test extends UnitTestCase	{
 		$this->column = 'table.description';
 		$this->alias = 'description';
 		$this->table = 'items';
+#		public function __construct ($getMethod='', $setMethod='', $property='', $column='', $table='', $key = false, $callback = array(), $param = false)	{
 		$this->mapping = new A_Orm_DataMapper_Mapping(
 			$this->getMethod,
 			$this->setMethod,
 			$this->property,
-			'',
 			array ($this->alias => $this->column),
 			$this->table,
 			true

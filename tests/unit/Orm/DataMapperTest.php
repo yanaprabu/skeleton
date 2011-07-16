@@ -34,7 +34,7 @@ class Orm_DataMapperTest extends UnitTestCase	{
 	}
 
 	public function testGetFieldNames()	{
-		$this->assertEqual ($this->mapper->getColumns(), array ('title','description', array ('body' => 'page_body')));
+		$this->assertEqual ($this->mapper->getColumns(), array ('pages.title','items.description', 'pages.page_body AS body'));
 	}
 
 }
