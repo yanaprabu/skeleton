@@ -1,6 +1,6 @@
 <?php
 
-class A_Pagination_LinkTest extends UnitTestCase
+class A_Pagination_Helper_LinkTest extends UnitTestCase
 {
 
 	public function testSeparator()
