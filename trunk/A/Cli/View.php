@@ -140,6 +140,12 @@ class A_Cli_View implements A_Renderer
 		return isset($this->data[$name]);
 	}
 
+	public function import($data)
+	{
+		$this->data = array_merge($this->data, $data);
+		return $this;
+	}
+	
 	public function escape($content, $escape_quote_style=null)
 	{
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
