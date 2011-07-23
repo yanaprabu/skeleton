@@ -2,9 +2,18 @@
 <p>A template class is any class with render() and set() methods. Skeleton provides several simple template classes, plus Adapters to popular template systems. You can wrap any template code you like with a render() and set() method, and use it as a renderer in the Skeleton framework. </p>
 <ul>
 	<li><h3>PHP include templates - A_Template_Include</h3>
-	<p>This template class will include a PHP template return the output as a string.</p>
+	<p>This template class will include a PHP template and return the output as a string.</p>
 	</li>
 	<li><h3>String tag replacement templates - A_Template_Strreplace</h3>
-	<p>This template class will include a HTML template file. Tags in braces in the format {tagname} will be replace with set() values using str_replace(). The result is returned as a string by the render() method.</p>
+	<p>This template class will load a HTML template file. Tags in braces in the format {tagname} will be replace with set() values using str_replace(). The result is returned as a string by the render() method.</p>
+	</li>
+	<li><h3>Smarty templates - A_Template_Smarty</h3>
+	<p>The smarty template class extends the Smarty class.  It only adds the set and render methods, and grabs the file name via the constructor before delegating to the Smarty constructor.</p>
+	</li>
+	<li><h3>XML templates - A_Template_Xml</h3>
+	<p class="devnote">Describe A_Template_Xml</p>
+	</li>
+	<li><h3>XSLT templates - A_Template_Xslt</h3>
+	<p class="devnote">Describe A_Template_Xslt</p>
 	</li>
 </ul>
