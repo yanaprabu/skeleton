@@ -21,9 +21,6 @@
 		<h3>Set the internal content buffer directly</h3>
 		<p>You may set the buffer directly using the setContent() method. The method takes a string that will be returned when render() is called. </p>
 		<pre class="prettyprint lang-php">
-&lt;?php
-include_once 'A/Http/View.php';
-
 $view = new A_Http_View();
 $view->setContent('Hello world!');
 echo $view->render();
@@ -31,13 +28,10 @@ echo $view->render();
 	</li>
 	<li>
 		<h3>Specify a PHP template to be included</h3>
-		<p>You may specify a PHP template using the setTemplate() method. The method takes a string that is the base name of the template requested. For example, calling setTemplate('foo') will load 'templates/foo.php'. Varibles can be made available by calling the set() method. The output of the included PHP template will be returned when render() is called. </p>
+		<p>You may specify a PHP template using the setTemplate() method. The method takes a string that is the base name of the template requested. For example, calling setTemplate('foo') will load 'templates/foo.php'. Variables can be made available by calling the set() method. The output of the included PHP template will be returned when render() is called. </p>
 		File: templates/foo.php
 		<pre class="prettyprint lang-php">Hello &lt;?php echo $this->bar; ?&gt;!</pre>
 		<pre class="prettyprint lang-php">
-&lt;?php
-include_once 'A/Http/View.php';
-
 $view = new A_Http_View();
 $view->setTemplate('foo');
 $view->set('bar', 'world');
@@ -49,10 +43,6 @@ echo $view->render();
 		<p>You may give the View an object to render the output using the setRenderer() method. The method takes an object that will have render() and set() methods. When the View render() method is called, it proxies the call to the renderer's render() method. </p>
 		File: templates/foo.html<pre class="prettyprint lang-php">Hello {bar}!</pre>
 		<pre class="prettyprint lang-php">
-&lt;?php
-include_once 'A/Template/Strreplace.php';
-include_once 'A/Http/View.php';
-
 // create a template object to render the template
 $template = new A_Template_Strreplace('templates/foo.html');
 $template->set('bar', 'world');
@@ -108,4 +98,4 @@ $view->set('title', $view->partialLoop('bar', 'greeting', array('Hello', 'Goodby
 <h2>The Response</h2>
 <p>The A_Http_Response class extends A_Http_View class, so it may be used as the root View object if you have a tree of Views/templates. Or it can be used as the only View object in a single View object solution. The Response is different from the View class in that its render() method gathers and outputs HTTP headers in addition to normal output. </p>
 <h2>Templates</h2>
-<p>A template class is any class with render() and set() methods. Skeleton provides several simple template classes, plus Adapters to popular template systems (See section <a href="4/Template_Classes.html" class="ajaxlink">Template Classes</a>). You can wrap any template code you like with a render() and set() method, and use it as a renderer in the Skeleton framework. </p>
+<p>A template class is any class with render() and set() methods. Skeleton provides several simple template classes, plus Adapters to popular template systems (See section <a href="?p=Template_Classes">Template Classes</a>). You can wrap any template code you like with a render() and set() method, and use it as a renderer in the Skeleton framework. </p>
