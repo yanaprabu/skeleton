@@ -1,9 +1,11 @@
-<h1>Views and templates</h1>
+<h1>The Response, Views and Templates</h1>
 <p class="devnote">What are Views and what are templates?</p>
 
 <h3>Renderers and Rendering</h3>
 <p>Any class that provides a render() and set() methods can act as a renderer. The Response and View use this polymorphism to enable renders to be attached in any arrangement. A number of classes provide a setRenderer() that allows the render to be set at run-time. Also if you assign a renderer object to the View using the set() method, the render's render() method will not be called until the View's render() method is called. This allows lazy rendering when the templates to render are specified, but only loaded and processed if used. </p>
 
+<h2>The Response</h2>
+<p>The A_Http_Response class extends A_Http_View class, so it may be used as the root View object if you have a tree of Views/templates. Or it can be used as the only View object in a single View object solution. In a standard Skeleton configuration, the Request object is the top level View object. In simple applications, the Response object may be the only View object and Controllers simply set which template file to render. The Response class is different from the View class in that its render() method gathers and outputs HTTP headers in addition to normal output. </p>
 
 <h2>Difference between Views and templates</h2>
 <p>Both View and template classes have a render() method that returns the output. Views add the ability to:
@@ -95,7 +97,5 @@ $view->setPartialLoop('title', 'bar', 'greeting', array('Hello', 'Goodbye'));
 // is the same as
 $view->set('title', $view->partialLoop('bar', 'greeting', array('Hello', 'Goodbye')));</pre>
 
-<h2>The Response</h2>
-<p>The A_Http_Response class extends A_Http_View class, so it may be used as the root View object if you have a tree of Views/templates. Or it can be used as the only View object in a single View object solution. The Response is different from the View class in that its render() method gathers and outputs HTTP headers in addition to normal output. </p>
 <h2>Templates</h2>
 <p>A template class is any class with render() and set() methods. Skeleton provides several simple template classes, plus Adapters to popular template systems (See section <a href="?p=Template_Classes">Template Classes</a>). You can wrap any template code you like with a render() and set() method, and use it as a renderer in the Skeleton framework. </p>

@@ -1,0 +1,35 @@
+<h1>Locator - A_Locator</h1>
+
+<p>The Locator is a central and integral object for the Skeleton MVC classes. It is passed throughout the application, and contains important objects that need to be shared among the MVC objects.  You application can use it as a simple Registry, an application context object, or not at all. The Locator combines the following functionaity in one object. </p>
+<ul>
+	<li>Registry to make commonly use objects available throughout the application</li>
+	<li>Class Loader to load classes manualy</li>
+	<li>Autoloader that registers the Class Loader as an SPL autoloader</li>
+	<li>Dependency Injection container that will both load and intialize objects</li>
+</ul>
+<p>Normally, your application should only have to include one file containing the A_Locator class.  After autoloading has been initialized, all framework classes will be autoloaded.</p>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+
+require '/path/to/lib/A/Locator.php';
+
+// create registry and initialize autoloading
+$Locator = new A_Locator();
+$Locator->autoload();
+</pre>
+
+<p>A typical boostrap will create a <b>Locator</b>, populate it with <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> objects.</p>
+
+<pre class="prettyprint lang-php">
+// populate the Locator with the necessary objects
+$Locator->set('Request', new A_Http_Request());
+$Locator->set('Response', new A_Http_Response());
+</pre>
+
+<p>The <b>Locator</b> object will then be passed to the Front Controller to be used by the MVC class. </p>
+
+<pre class="prettyprint lang-php">
+$Controller->run($Locator);
+</pre>
+
