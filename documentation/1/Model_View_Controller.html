@@ -1,43 +1,36 @@
 <h1>Model View Controller</h1>
-<p class="devnote">Explain the different layers of a modern MVC app here. What are considered best practices?</p>
-<p class="devnote">Note: not sure what overlap there is with Application Flow. Maybe just start writing down one story and see how it can be broken up</p>
-<p>MVC specifies that the application code is divided in to three sepearte parts -- in two layers. The Model is in a lower Domain layer that should be independent from the other parts. The View and Controller are both in the Presentation layer. The Controllers stay focused just on request processing and program flow. The View is focused on only building the response that is sent back to browser. All the "business" or "domain" code is separated out into a separate, lower Model layer with the goal of keeping it independent from the request/response and program flow code. This scheme has proven to make larger, more complex application easier for multiple programmers to maintain.</p>
+
+<p>The Model-View-Controller pattern (MVC) specifies that the application code is divided in to three separate parts -- in two layers. The Model is in a lower Domain layer that should be independent from the other parts. The View and Controller are both in the Presentation layer. The Controllers stay focused just on request processing and program flow. The View is focused on only building the response that is sent back to browser. All the "business" or "domain" logic/code is separated out into a separate, lower Model layer with the goal of keeping it independent from the request/response and program flow code. This scheme has proven to make larger, more complex application easier for multiple programmers to maintain.  Here is how Skeleton implements the MVC pattern.</p>
+
+<ul>
+	<li><p><strong>Model:</strong> A_Model is corresponds to the Model in the MVC pattern.  It provides methods to manage data, interact with <a href="?p=Forms">forms</a> (which are treated as models), and other things.</p></li>
+	<li><p><strong>View:</strong> The View is handled a large array of many classes which you can either choose from, or combine as is needed.  These include A_Html classes, several classes in A_Http, A_Pagination_View, and A_Template classes.  Each has a different purpose, and is responsible for a different kind of output.  A_Http_Response and A_Http_View are generic renderers, responsible for either a string output, or a hierarchy of sub-renderers.  A_Http_Response is the most commonly used.  A_Html classes are for dynamically generated HTML.  A_Pagination is a specialized renderer who's purpose is to split large data sets over several pages, for example search results.  Lastly, A_Template classes provide the ability to place key/value sets into text templates of different formats.</p></li>
+	<li><p><strong>Controller:</strong> A_Controller_Action and it's sub-classes correspond to the Controller in the MVC pattern.  They provide methods to interact with models, the Request object, and the subsequuent View.<p></li>
+</ul>
+
+<p>Note that the points above are mostly for HTTP requests only.  Other classes are included for other purposes, for example A_Cli for command line interfaces (CLI).</p>
 
 <h2>Model</h2>
 
+<p class="devnote">More information on the Model part of the pattern, and how A_Model implements it.</p>
+
 <h2>View</h2>
 
+<p class="devnote">More information about the View part of the pattern, and about the various classes that implement it (listed above).</p>
+
 <h2>Controller</h2>
-<p>The Front Controller and Action Controller patterns are a commonly used in implementatiing of the Controller part of the Model-View-Controller pattern. A Controller is a specific piece of code that deals with request processing and program flow, and providing support code to deal with those things (e.g., forwards). There are three main kinds of Controllers related to this discussion.</p>
+<p>The Front Controller pattern and Action Controllers are commonly used in the implementation of the Controller part of the MVC pattern. A Controller is a specific piece of code that deals with request processing and program flow, and providing support code to deal with those things (e.g., forwards). There are three main kinds of Controllers related to this discussion.</p>
 
-<ol>
-	<li>The Page Controller pattern is what it sounds like you are using right now -- that is what is usually called "simple PHP pages" where each page is a specific entry point for the application. Typically each Page Controller includes common code.</li>
-	<li>The Front Controller pattern is where all requests to the application go through a single entry point (PHP script). The has the advantages of centralizing code that is duplicated in Page Controllers. Usually the Front Controller loads and runs (i.e, dispatches) and Action Controller that contains all the page specific code that is in your Page Controllers, but none of the common code which are provided centrally (by the Front Controller, etc.</li>
+<ul>
+	<li>The Page Controller pattern is what it sounds like.  You are using it right now -- that is what is usually called "simple PHP pages" where each page is a specific entry point for the application. Typically each Page Controller includes common code.</li>
+	<li>The Front Controller pattern is where all requests to the application go through a single entry point (PHP script). The has the advantages of centralizing code that is duplicated in Page Controllers. Usually the Front Controller loads and runs (i.e, dispatches) the correct Action Controller.</li>
 	<li>Action Controllers usually follow the Command pattern. The goal is to have them fairly minimal and just focus on the code related to a specific request. Common code is provided to them and therefore can be refactored in a structured way.</li>
-</ol>
+</ul>
 
-<p>Skeleton implements the Front and Action Controller patterns. The Front Controller class is A_Controller_Front. It is instantiated once in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, defaults in the Configuration. </p>
+<p>Skeleton implements the Front Controller pattern and Action Controllers.  The Front Controller is implemented by A_Controller_Front. It is instantiated in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, the default set in the Configuration.  See the <a href="?p=FrontController">Front Controller</a> page for more details.</p>
 
-<p>Action Controllers can be plain PHP classes or they can extend the A_Controller_Action class to provide additional commmon functionality. Or you can use you own base Controller class, since no base class is required. In addition, there is a A_Controller_Action_Dispatch class that provides the additional functionality of pre and post filters.</p>
+<p>Action Controllers can be plain PHP classes or they can extend the A_Controller_Action class to provide additional commmon functionality. Alternatively, you can use you own base Controller class, since no base class is required.  There are also several speciality classes to extend.  See the <a href="?p=Controllers">Action Controllers</a> page for more details.</p>
 
-<p>And Action Controller is implemented by creating a file with the same name as the name used to request it. So a "login" Controller would be implemented as:</p>
-<pre class="prettyprint lang-php">
-&lt;?php
+<h2>References</h2>
 
-class login {
-	
-	function index($locator) {
-	}
-}
-
-class login extends A_Controller_Action {
-	
-	function index($locator) {
-	}
-}
-
-class login extends MyBaseController {
-	
-	function index($locator) {
-	}
-}</pre>
+<p>See <a href="http://martinfowler.com/eaaCatalog/modelViewController.html">Martin Fowler's site</a> for more infomation on the MVC pattern, and the <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">Wikipedia page</a> on it.
