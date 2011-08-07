@@ -54,3 +54,6 @@ p.devnote { color:#700; }
 #main_footer p { font-size:12px;margin:0 0px 18px; }
 
 .ajaxlink { text-decoration:none; }
+
+code { display: inline; background: #EEEEEE; color: #333333; }
+code:hover { background: #D7D7D7; }
