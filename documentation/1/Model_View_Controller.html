@@ -4,11 +4,11 @@
 
 <ul>
 	<li><p><strong>Model:</strong> A_Model is corresponds to the Model in the MVC pattern.  It provides methods to manage data, interact with <a href="?p=Forms">forms</a> (which are treated as models), and other things.</p></li>
-	<li><p><strong>View:</strong> The View is handled a large array of many classes which you can either choose from, or combine as is needed.  These include A_Html classes, several classes in A_Http, A_Pagination_View, and A_Template classes.  Each has a different purpose, and is responsible for a different kind of output.  A_Http_Response and A_Http_View are generic renderers, responsible for either a string output, or a hierarchy of sub-renderers.  A_Http_Response is the most commonly used.  A_Html classes are for dynamically generated HTML.  A_Pagination is a specialized renderer who's purpose is to split large data sets over several pages, for example search results.  Lastly, A_Template classes provide the ability to place key/value sets into text templates of different formats.</p></li>
-	<li><p><strong>Controller:</strong> A_Controller_Action and it's sub-classes correspond to the Controller in the MVC pattern.  They provide methods to interact with models, the Request object, and the subsequuent View.<p></li>
+	<li><p><strong>View:</strong> The View is handled a large array of many classes which you can either choose from, or combine as is needed.  These include <code>A_Html</code> classes, several classes in <code>A_Http</code>, <code>A_Pagination_View</code>, and <code>A_Template</code> classes.  Each has a different purpose, and is responsible for a different kind of output.  <code>A_Http_Response</code> and <code>A_Http_View</code> are generic renderers, responsible for either a string output, or a hierarchy of sub-renderers.  <code>A_Http_Response</code> is the most commonly used.  <code>A_Html</code> classes are for dynamically generated HTML.  <code>A_Pagination</code> is a specialized renderer who's purpose is to split large data sets over several pages, for example search results.  Lastly, <code>A_Template</code> classes provide the ability to place key/value sets into text templates of different formats.</p></li>
+	<li><p><strong>Controller:</strong> <code>A_Controller_Action</code> and it's sub-classes correspond to the Controller in the MVC pattern.  They provide methods to interact with models, the Request object, and the subsequuent View.<p></li>
 </ul>
 
-<p>Note that the points above are mostly for HTTP requests only.  Other classes are included for other purposes, for example A_Cli for command line interfaces (CLI).</p>
+<p>Note that the points above are mostly for HTTP requests only.  Other classes are included for other purposes, for example <code>A_Cli</code> for command line interfaces (CLI).</p>
 
 <h2>Model</h2>
 
@@ -16,7 +16,36 @@
 
 <h2>View</h2>
 
-<p class="devnote">More information about the View part of the pattern, and about the various classes that implement it (listed above).</p>
+<p>All View classes in Skeleton implement the <code>A_Renderer</code> interface.  The <code>A_Renderer</code> interface defines getters/setters and a <code>render()</code> method.  <code>render()</code>'s purpose is to tell the object to return the visual representation of it's contents in the form of a string.  It is called whenever anything is printed.  You can use <code>set()</code> to attach a value to a key in the renderer.  This can be either a string, or another renderer.  Some renderers don't know how to render themselves on their own, and require another renderer to be attached to them with <code>setRenderer()</code>.  <code>A_Http_Response</code> is an example of this.</p>
+
+<p><code>A_Http_Response</code> is the primary View object.  It is responsible for managing either a hierarchy of sub-renderers or just an output string, headers, cookies, and HTTP redirects.  When <code>render()</code> is called on it, it will return it's output string if it is set, or otherwise call <code>render()</code> on the renderer atteched to it with <code>setRenderer()</code>.  Here's an example of using A_Http_Response with an attached renderer.
+
+<pre class="prettyprint lang-php">
+$Response = new A_Http_Response();
+$Template = new A_Template_Include('template_file.php');
+
+$Response->set('greeting', 'Hello');
+$Response->set('person', 'world');
+
+$Response->setRenderer($Template);
+echo $Response->render();
+</pre>
+
+<p>If the contents of <code>template_file.php</code> are as follows:</p>
+
+<pre class="prettyprint lang-php">
+&lt;?php
+echo $greeting . ', ' . $person . '!';
+?&gt;
+</pre>
+
+<p>Then the output of that page will look like this:</p>
+
+<pre>
+Hello, world!
+</pre>
+
+<p>There are many other renderer classes for other types of output.  See the <a href="?p=Views">Views</a> page for more information.</p>
 
 <h2>Controller</h2>
 <p>The Front Controller pattern and Action Controllers are commonly used in the implementation of the Controller part of the MVC pattern. A Controller is a specific piece of code that deals with request processing and program flow, and providing support code to deal with those things (e.g., forwards). There are three main kinds of Controllers related to this discussion.</p>
@@ -27,9 +56,9 @@
 	<li>Action Controllers usually follow the Command pattern. The goal is to have them fairly minimal and just focus on the code related to a specific request. Common code is provided to them and therefore can be refactored in a structured way.</li>
 </ul>
 
-<p>Skeleton implements the Front Controller pattern and Action Controllers.  The Front Controller is implemented by A_Controller_Front. It is instantiated in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, the default set in the Configuration.  See the <a href="?p=FrontController">Front Controller</a> page for more details.</p>
+<p>Skeleton implements the Front Controller pattern and Action Controllers.  The Front Controller is implemented by <code>A_Controller_Front</code>. It is instantiated in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, the default set in the Configuration.  See the <a href="?p=FrontController">Front Controller</a> page for more details.</p>
 
-<p>Action Controllers can be plain PHP classes or they can extend the A_Controller_Action class to provide additional commmon functionality. Alternatively, you can use you own base Controller class, since no base class is required.  There are also several speciality classes to extend.  See the <a href="?p=Controllers">Action Controllers</a> page for more details.</p>
+<p>Action Controllers can be plain PHP classes or they can extend the <code>A_Controller_Action</code> class to provide additional commmon functionality. Alternatively, you can use you own base Controller class, since no base class is required.  There are also several speciality classes to extend.  See the <a href="?p=Controllers">Action Controllers</a> page for more details.</p>
 
 <h2>References</h2>
 
