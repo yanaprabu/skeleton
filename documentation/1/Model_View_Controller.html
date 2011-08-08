@@ -12,7 +12,7 @@
 
 <h2>Model</h2>
 
-<p class="devnote">More information on the Model part of the pattern, and how A_Model implements it.</p>
+<p>Like all other application classes in Skeleton, Models do <strong>not</strong> have to extend a common object.  <code>A_Model</code> is provided to offer functionality that makes it easier to create a Model.</p>
 
 <h2>View</h2>
 
@@ -45,7 +45,7 @@ echo $greeting . ', ' . $person . '!';
 Hello, world!
 </pre>
 
-<p>There are many other renderer classes for other types of output.  See the <a href="?p=Views">Views</a> page for more information.</p>
+<p>This separation between different renderers is to keep responsibilities of output in separate objects.  There are many other renderer classes for other types of output.  See the <a href="?p=Views">Views</a> page for more information.</p>
 
 <h2>Controller</h2>
 <p>The Front Controller pattern and Action Controllers are commonly used in the implementation of the Controller part of the MVC pattern. A Controller is a specific piece of code that deals with request processing and program flow, and providing support code to deal with those things (e.g., forwards). There are three main kinds of Controllers related to this discussion.</p>
