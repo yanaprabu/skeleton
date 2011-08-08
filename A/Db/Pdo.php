@@ -2,9 +2,8 @@
 /**
  * Pdo.php
  *
- * @package  A_Db
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /*
@@ -28,6 +27,8 @@
  * A_Db_Pdo
  * 
  * Adapt PDO to basic database connection functionality.  Configuration array can contain the following indices: type, hostspec, username, password, database.
+ * 
+ * @package A_Db
  */
 class A_Db_Pdo extends A_Db_Adapter
 {

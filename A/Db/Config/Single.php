@@ -2,15 +2,16 @@
 /**
  * Single.php
  *
- * @package  A_Db
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Db_Config_Single
  * 
- * This is the default connnection configuration class.  This class can be replaceable with a class that provides other connection functionality, like master/slave support.  See A_Db_Config_* for other options. 
+ * This is the default connnection configuration class.  This class can be replaceable with a class that provides other connection functionality, like master/slave support.  See A_Db_Config_* for other options.
+ * 
+ * @package A_Db
  */
 class A_Db_Config_Single
 {

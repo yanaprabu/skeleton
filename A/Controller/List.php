@@ -2,15 +2,16 @@
 /**
  * List.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_List
  * 
  * was intended for pagination support -- not used
+ * 
+ * @package A_Controller
  */
 class A_Controller_List extends A_Controller_Input
 {

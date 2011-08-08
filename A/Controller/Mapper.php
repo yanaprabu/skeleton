@@ -2,15 +2,16 @@
 /**
  * Mapper.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_Mapper
  * 
  * Provides mapping from module/controller/action request variables to path/class/method
+ * 
+ * @package A_Controller
  */
 class A_Controller_Mapper
 {

@@ -1,17 +1,18 @@
 <?php
 /**
  * Writer.php
- *
- * @package  A_Delimited
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Christopher Thompson
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Christopher Thompson
  */
 
 /**
  * A_Delimited_Writer
  *
  * Write arrays to a delimited text file.
+ * 
+ * @package A_Delimited
  */
 class A_Delimited_Writer extends A_Delimited_Base
 {

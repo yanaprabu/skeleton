@@ -1,10 +1,18 @@
 <?php
 /**
+ * Pdo.php
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ */
+
+/**
+ * A_Pagination_Adapter_Pdo
+ * 
  * Datasource access class for pager using PDO  
  * 
  * @package A_Pagination 
  */
-
 class A_Pagination_Adapter_Pdo extends A_Pagination_Adapter_Base
 {
 

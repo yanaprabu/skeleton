@@ -1,10 +1,9 @@
 <?php
 /**
  * Ingroup.php
- *
- * @package  A_User
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /*
@@ -18,6 +17,8 @@
  * 
  * Checks if the group(s) passed to the constructor are group(s) that the user 
  * is a member of.
+ * 
+ * @package A_User
  */
 class A_User_Rule_Ingroup extends A_User_Rule_Base
 {

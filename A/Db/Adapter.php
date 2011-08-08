@@ -2,15 +2,16 @@
 /**
  * Adapter.php
  *
- * @package  A_Db
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Db_Adapter
  * 
  * Abstract class for database wrappers.  Meant to be extended, and abstract methods implemented for database-specific behavior.
+ * 
+ * @package A_Db
  */
 abstract class A_Db_Adapter
 {

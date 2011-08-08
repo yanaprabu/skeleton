@@ -1,16 +1,17 @@
 <?php
 /**
  * Smartquotes.php
- *
- * @package  A_Filter
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Smartquotes
  * 
  * Convert smart quotes to standard quotes
+ * 
+ * @package A_Filter
  */
 class A_Filter_Smartquotes extends A_Filter_Base
 {

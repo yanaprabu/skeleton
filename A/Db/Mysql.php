@@ -2,15 +2,16 @@
 /**
  * Mysql.php
  *
- * @package  A_Db
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Db_Mysql
  * 
  * Database connection class using the mysql_ library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
+ * 
+ * @package A_Db
  */
 class A_Db_Mysql extends A_Db_Adapter
 {

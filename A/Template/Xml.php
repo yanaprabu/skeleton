@@ -1,16 +1,17 @@
 <?php
 /**
  * Xml.php
- *
- * @package  A_Template
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Xml
  * 
  * Template class using XML files as templates
+ * 
+ * @package A_Template
  */
 class A_Template_Xml extends A_Template_Base implements A_Renderer
 {

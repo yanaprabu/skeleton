@@ -2,13 +2,12 @@
 /**
  * Selectdb.php
  *
- * @package  A_Html
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
- * A_Html_Form_Button
+ * A_Html_Form_Selectdb
  * 
  * Generate HTML form select from database query data
  * This will generate a <select> from an SQL query. Provide a DB object, SQL string, the name of the DB
@@ -23,6 +22,8 @@
  * The interface to A_Html_Form_Select is:
  * 
  * name=string, values=array(), $labels=array(), $selected=array(), multiple=boolean
+ 
+ * @package A_Html
  */
 class A_Html_Form_Selectdb extends A_Html_Form_Select
 {

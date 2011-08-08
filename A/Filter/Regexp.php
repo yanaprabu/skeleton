@@ -1,16 +1,17 @@
 <?php
 /**
  * Regexp.php
- *
- * @package  A_Filter
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Regexp
  * 
  * Filter a string with a regular expression (or multiple) by replacement.
+ * 
+ * @package A_Filter
  */
 class A_Filter_Regexp extends A_Filter_Base
 {

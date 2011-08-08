@@ -2,13 +2,14 @@
 /**
  * File.php
  *
- * @package  A_Cache
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Cache_File
+ * 
+ * @package A_Cache
  */
 class A_Cache_File
 {

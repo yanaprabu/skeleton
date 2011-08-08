@@ -1,16 +1,17 @@
 <?php
 /**
  * Password.php
- *
- * @package  A_Html
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Form_Password
  * 
  * Generate HTML form password input
+ * 
+ * @package A_Html
  */
 class A_Html_Form_Password extends A_Html_Tag implements A_Renderer
 {

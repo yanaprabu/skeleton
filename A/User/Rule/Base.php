@@ -1,16 +1,17 @@
 <?php
 /**
  * Base.php
- *
- * @package  A_User
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Rule_Base
  * 
  * Base class for A_User_Rule classes.
+ * 
+ * @package A_User
  */
 abstract class A_User_Rule_Base
 {

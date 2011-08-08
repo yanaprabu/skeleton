@@ -2,25 +2,39 @@
 /**
  * Url.php
  *
- * @package  A_Cart
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Cart_Url
  *
  * Generate URLs to add items to the shopping cart.  Links created with this class can be placed in a page, and when clicked, will lead to a page to add that item to the cart.
+ * 
+ * @package A_Cart
  */
 class A_Cart_Url
 {
-		protected $cart;
-		protected $base_url;
-		protected $cmd_separator = ';';	protected $cmd_data_separator = ',';	protected $cmd_data_equals = ':';
-		protected $cmdcart = 'cart';	protected $cmd_del = 'del';
-		protected $cmd_sku_add = 'skuadd';	protected $cmd_sku_data_set = 'skudataset';
-		protected $cmd_pos_del = 'posdel';	protected $cmd_pos_data_set = 'posdataset';	protected $cmd_pos_data_del = 'posdatadel';
-		protected $cmd_quantity = 'quantity';
+	
+	protected $cart;
+	
+	protected $base_url;
+	
+	protected $cmd_separator = ';';
+	protected $cmd_data_separator = ',';
+	protected $cmd_data_equals = ':';
+	
+	protected $cmdcart = 'cart';
+	protected $cmd_del = 'del';
+	
+	protected $cmd_sku_add = 'skuadd';
+	protected $cmd_sku_data_set = 'skudataset';
+	
+	protected $cmd_pos_del = 'posdel';
+	protected $cmd_pos_data_set = 'posdataset';
+	protected $cmd_pos_data_del = 'posdatadel';
+	
+	protected $cmd_quantity = 'quantity';
 	
 	
 	/**

@@ -1,16 +1,17 @@
 <?php
 /**
  * Set.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Set
  * 
  * Contains multiple rules that must all pass for this to be isValid
+ * 
+ * @package A_Rule
  */
 class A_Rule_Set
 {

@@ -2,15 +2,16 @@
 /**
  * Form.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_Form
  * 
  * Controller class for callback style form support
+ * 
+ * @package A_Controller
  */
 class A_Controller_Form extends A_Controller_App
 {

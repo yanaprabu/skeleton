@@ -1,16 +1,17 @@
 <?php
 /**
  * Insert.php
- *
- * @package  A_Sql
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Insert
  * 
  * Generate SQL INSERT statement
+ * 
+ * @package A_Sql
  */
 class A_Sql_Insert extends A_Sql_Statement
 {

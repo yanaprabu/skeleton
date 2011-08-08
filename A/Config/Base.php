@@ -2,15 +2,16 @@
 /**
  * Base.php
  *
- * @package  A_Config
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Config_Base
  * 
  * Abstract base class for configuration
+ * 
+ * @package A_Config
  */
 abstract class A_Config_Base extends A_Collection
 {

@@ -2,15 +2,16 @@
 /**
  * Xml.php
  *
- * @package  A_Db
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Db_Datamapper_Xml
  * 
  * Maps a database to an XML file.
+ * 
+ * @package A_Db
  */
 class A_Db_Datamapper_Xml extends A_Db_Datamapper
 {

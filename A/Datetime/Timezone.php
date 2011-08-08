@@ -2,16 +2,17 @@
 /**
  * Timezone.php
  *
- * @package  A_Datetime
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Eran Galt, Cory Kaufman, Christopher Thompson
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Eran Galt, Cory Kaufman, Christopher Thompson
  */
 
 /**
  * A_Datetime_Timezone
  * 
  * Date & Time Timezone functionality
+ * 
+ * @package A_Datetime
  */
 class A_Datetime_Timezone
 {

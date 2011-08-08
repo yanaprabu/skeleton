@@ -2,15 +2,16 @@
 /**
  * App.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_App
  * 
  * Application controller class for state/transition based action selection
+ * 
+ * @package A_Controller
  */
 class A_Controller_App extends A_Controller_Input
 {

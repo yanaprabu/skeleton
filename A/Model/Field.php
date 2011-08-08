@@ -1,16 +1,17 @@
 <?php
 /**
  * Field.php
- *
- * @package  A_Model
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Model_Field
  *
  * Represents a field in a model.
+ * 
+ * @package A_Model
  */
 class A_Model_Field
 {

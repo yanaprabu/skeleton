@@ -2,15 +2,16 @@
 /**
  * Front.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_Front
  * 
- * This is an implementation of the Front Controller pattern. It is one of the buidling blocks of the MVC structure in Skeleton.
+ * This is an implementation of the Front Controller pattern. It is one of the buidling blocks of the MVC structure in Skeleton.t
+ * 
+ * @package  A_Controller
  */
 class A_Controller_Front
 {

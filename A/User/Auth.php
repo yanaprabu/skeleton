@@ -1,20 +1,29 @@
 <?php
 /**
  * Auth.php
- *
- * @package  A_User
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Auth
  * 
  * Check credentials.
+ * 
+ * @package A_User
  */
 class A_User_Auth extends A_User_Access
 {
-	protected $db;	protected $table = 'user';	protected $sequence = 'user';	protected $userid_func = null;	protected $password_func = null;	protected $success_url = '';				// set to redirect on successful login	protected $crypt_func = 'md5';	protected $no_password = false;				// set to true for userid only login
+
+	protected $db;
+	protected $table = 'user';
+	protected $sequence = 'user';
+	protected $userid_func = null;
+	protected $password_func = null;
+	protected $success_url = '';				// set to redirect on successful login
+	protected $crypt_func = 'md5';
+	protected $no_password = false;				// set to true for userid only login
 	
 	public function setDB($db)
 	{

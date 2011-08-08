@@ -2,15 +2,16 @@
 /**
  * Wizard.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_App_Wizard
  * 
  * Handles sequences of controller/actions to be used with A_Controller_App.  Define each step with an action/controller pair (array('controller', 'action')) using setStep().
+ * 
+ * @package A_Controller
  */
 class A_Controller_App_Wizard
 {

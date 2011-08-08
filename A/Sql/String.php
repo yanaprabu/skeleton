@@ -1,17 +1,18 @@
 <?php
 /**
  * String.php
- *
- * @package  A_Sql
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Cory Kaufman
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Cory Kaufman
  */
 
 /**
  * A_Sql_String
  * 
  * Generate SQL using strings with replaceable tags
+ * 
+ * @package A_Sql
  */
 class A_Sql_String
 {

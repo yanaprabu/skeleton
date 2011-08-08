@@ -1,16 +1,17 @@
 <?php
 /**
  * View.php
- *
- * @package  A_Http
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Http_View
  *
  * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
+ * 
+ * @package A_Http
  */
 class A_Http_View implements A_Renderer
 {

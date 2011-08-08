@@ -1,17 +1,18 @@
 <?php
 /**
  * Cachedcontroller.php
- *
- * @package  A_Socket_Eventlistener
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
  * A_Socket_Eventlistener_Cachedcontroller
  * 
  * Stores controllers in memory ahead of time to reduce routing time.
+ * 
+ * @package A_Socket
  */
 class A_Socket_Eventlistener_Cachedcontroller
 {

@@ -1,17 +1,18 @@
 <?php
 /**
  * Client.php
- *
- * @package  A_Socket
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
  * A_Socket_Client
  *
  * Inteface defining a Client object
+ * 
+ * @package A_Socket
  */
 interface A_Socket_Client
 {

@@ -1,17 +1,18 @@
 <?php
 /**
  * Application.php
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author John Cartwright
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	John Cartwright
  */
 
 /**
  * A_Application
  *
  *  Wrap bootstrap in a class that has configuration settings
+ * 
+ * @package A
  */
 class A_Application
 {

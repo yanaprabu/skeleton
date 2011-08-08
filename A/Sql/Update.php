@@ -1,16 +1,17 @@
 <?php
 /**
  * Update.php
- *
- * @package  A_Sql
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Update
  * 
  * Generate SQL UPDATE statement
+ * 
+ * @package A_Sql
  */
 class A_Sql_Update extends A_Sql_Statement
 {

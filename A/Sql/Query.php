@@ -1,15 +1,16 @@
 <?php
 /**
  * Query.php
- *
- * @package  A_Sql
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Cory Kaufman
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Cory Kaufman
  */
 
 /**
  * A_Sql_Query
+ * 
+ * @package A_Sql
  */
 class A_Sql_Query
 {

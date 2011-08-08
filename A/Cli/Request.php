@@ -2,15 +2,16 @@
 /**
  * Request.php
  *
- * @package  A_Cli
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Cli_Request
  * 
  * Encapsulate the HTTP request in a class to access information and values
+ * 
+ * @package  A_Cli
  */
 class A_Cli_Request
 {

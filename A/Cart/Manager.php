@@ -2,19 +2,26 @@
 /**
  * Manager.php
  *
- * @package  A_Cart
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Cart_Manager
  *
  * Shopping cart management functionality
+ * 
+ * @package A_Cart
  */
 class A_Cart_Manager
 {
-		protected $name = '';	protected $itemid = 0;	protected $items = array();	protected $maxitems = 99;	protected $othercosts = null;	protected $currency = '$';
+	
+	protected $name = '';
+	protected $itemid = 0;
+	protected $items = array();
+	protected $maxitems = 99;
+	protected $othercosts = null;
+	protected $currency = '$';
 	
 	/**
 	 * Constructor

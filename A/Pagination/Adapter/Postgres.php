@@ -1,10 +1,18 @@
 <?php
 /**
- * Datasource access class for pager using Postgres  
+ * Postgres.php
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ */
+
+/**
+ * A_Pagination_Adapter_Postgres
+ * 
+ * Datasource access class for pager using Postgres
  * 
  * @package A_Pagination 
  */
-
 class A_Pagination_Adapter_Postgres extends A_Pagination_Adapter_Base
 {
 

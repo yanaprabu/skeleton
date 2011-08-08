@@ -1,10 +1,9 @@
 <?php
 /**
  * Load.php
- *
- * @package  A_Model
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
@@ -16,6 +15,8 @@
  * Helper suffix: Helper (e.x. helper('foo') will load myHelper)
  * Model suffix: Model (e.x. model('foo') will load myModel)
  * Lib suffix: none
+ * 
+ * @package A_Model
  */
 class A_Model_Helper_Load
 {

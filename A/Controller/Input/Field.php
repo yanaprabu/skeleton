@@ -2,15 +2,16 @@
 /**
  * Field.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_Input_Field
  * 
  * Input field class with request filtering and validation
+ * 
+ * @package A_Controller
  */
 class A_Controller_Input_Field
 {

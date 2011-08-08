@@ -1,10 +1,9 @@
 <?php
 /**
  * Upload.php
- *
- * @package  A_Http
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /*
@@ -26,6 +25,8 @@ define('A_HTTP_UPLOAD_ERR_FILE_TYPE', 1006);
  * A_Http_Upload
  *
  * Support for HTTP file upload
+ * 
+ * @package A_Http
  */
 class A_Http_Upload
 {

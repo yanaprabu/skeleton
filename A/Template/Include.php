@@ -1,16 +1,17 @@
 <?php
 /**
  * Include.php
- *
- * @package  A_Template
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Include
  * 
  * Template class that includes PHP templates. No block support.
+ * 
+ * @package A_Template
  */
 class A_Template_Include extends A_Template_Base implements A_Renderer
 {
