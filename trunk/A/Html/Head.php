@@ -1,16 +1,17 @@
 <?php
 /**
  * Head.php
- *
- * @package  A_Html
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Head
  * 
  * Generate <head> tag
+ * 
+ * @package A_Html
  */
 class A_Html_Head
 {

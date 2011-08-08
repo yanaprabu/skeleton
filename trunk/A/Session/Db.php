@@ -1,10 +1,9 @@
 <?php
 /**
  * Db.php
- *
- * @package  A_Session
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /*
@@ -42,6 +41,8 @@ To free up the memory used by rows that have been deleted, use ALTER TABLE ENGIN
 
 /**
  * A_Session_Db
+ * 
+ * @package A_Session
  */
 class A_Session_Db
 {

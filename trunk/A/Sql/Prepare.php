@@ -1,16 +1,17 @@
 <?php
 /**
  * Prepare.php
- *
- * @package  A_Sql
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Prepare
  * 
  * Generate SQL a prepared statement
+ * 
+ * @package A_Sql
  */
 class A_Sql_Prepare
 {

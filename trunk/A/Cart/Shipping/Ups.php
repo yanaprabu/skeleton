@@ -2,9 +2,8 @@
 /**
  * Ups.php
  *
- * @package  A_Cart
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
@@ -22,11 +21,20 @@
  * XPR => Worldwide Express
  * XPD => Worldwide Expedited
  * XDM => Worldwide Express Plus
+ 
+ * @package A_Cart
  */
-
 class A_Cart_Shipping_UPS
 {
-	protected $http_post = false;		// true=POST, false=GET	protected $shipping_type;	protected $postal_from;	protected $postal_to;	protected $country_to;	protected $weight;	protected $value = 0;	protected $buffer = '';
+
+	protected $http_post = false;		// true=POST, false=GET
+	protected $shipping_type;
+	protected $postal_from;
+	protected $postal_to;
+	protected $country_to;
+	protected $weight;
+	protected $value = 0;
+	protected $buffer = '';
 	
 	public function __construct($shipping_type='',  $postal_from='', $postal_to='',  $country_to='US',  $weight='')
 	{

@@ -1,16 +1,17 @@
 <?php
 /**
  * Group.php
- *
- * @package  A_User
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Prefilter_Group
  * 
  * Front Controller pre-filter for group based access control.
+ * 
+ * @package A_User
  */
 class A_User_Prefilter_Group
 {

@@ -2,13 +2,14 @@
 /**
  * Field2.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
- * A_Controller_Form_Field
+ * A_Controller_Form_Fieldt
+ * 
+ * @package A_Controller
  */
 class A_Controller_Form_Field
 {

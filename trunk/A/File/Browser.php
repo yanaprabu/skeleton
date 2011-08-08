@@ -1,16 +1,17 @@
 <?php
 /**
  * Browser.php
- *
- * @package  A_File
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_File_Browser
  * 
  * Get list of directories and files in a directory.
+ * 
+ * @package A_File
  */
 class A_File_Browser
 {

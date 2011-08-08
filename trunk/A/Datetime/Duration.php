@@ -2,16 +2,17 @@
 /**
  * Duration.php
  *
- * @package  A_Datetime
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Eran Galt, Cory Kaufman, Christopher Thompson
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Eran Galt, Cory Kaufman, Christopher Thompson
  */
 
 /**
  * A_Datetime_Duration
  * 
- * Date & Time Duration functionality 
+ * Date & Time Duration functionality
+ * 
+ * @package A_Datetime
  */
 class A_Datetime_Duration
 {

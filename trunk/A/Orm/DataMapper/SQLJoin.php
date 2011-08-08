@@ -1,15 +1,16 @@
 <?php
 /**
  * SQLJoin.php
- *
- * @package  A_Orm
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Cory Kaufman
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Cory Kaufman
  */
 
 /**
  * A_Orm_DataMapper_SQLJoin
+ * 
+ * @package A_Orm
  */
 class A_Orm_DataMapper_SQLJoin	{
 	

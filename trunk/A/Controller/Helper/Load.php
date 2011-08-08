@@ -1,14 +1,18 @@
 <?php
 /**
+ * Load.php
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ */
+
+/**
  * A_Controller_Helper_Load
  * 
  * Provides class loading and instantiation within the application directory
  * 
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @package A_Controller
  */
-
 class A_Controller_Helper_Load
 {
 

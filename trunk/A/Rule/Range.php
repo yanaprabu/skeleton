@@ -1,10 +1,9 @@
 <?php
 /**
  * Range.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
@@ -12,7 +11,7 @@
  * 
  * Rule to check for a value being within a numeric range
  * 
- * @package A_Rule_Set 
+ * @package A_Rule
  */
 class A_Rule_Range extends A_Rule_Base
 {
@@ -44,3 +43,4 @@ class A_Rule_Range extends A_Rule_Base
 	}
 
 }
+

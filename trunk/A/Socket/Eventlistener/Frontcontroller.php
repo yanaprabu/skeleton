@@ -1,17 +1,18 @@
 <?php
 /**
  * Frontcontroller.php
- *
- * @package  A_Socket
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
  * A_Socket_Eventlistener_Frontcontroller
  *
  * Handles events fired by the Server, and delegates to the Skeleton Front Controller.
+ * 
+ * @package A_Socket
  */
 class A_Socket_Eventlistener_Frontcontroller
 {

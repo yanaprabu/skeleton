@@ -1,16 +1,17 @@
 <?php
 /**
  * Abstract.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Abstract
  * 
- * Abstract base class for validation rules 
+ * Abstract base class for validation rules
+ * 
+ * @package A_Rule 
  */
 abstract class A_Rule_Base
 {

@@ -2,15 +2,16 @@
 /**
  * Datamapper.php
  *
- * @package  A_Db
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Db_Datamapper
  * 
  * Basic functionality to map table columns to object fields
+ * 
+ * @package A_Db
  */
 class A_Db_Datamapper
 {

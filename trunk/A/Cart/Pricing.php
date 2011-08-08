@@ -2,19 +2,22 @@
 /**
  * Pricing.php
  *
- * @package  A_Cart
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Cart_Pricing
  *
  * Shopping Cart Pricing Class library
+ * 
+ * @package A_Cart
  */
 class A_Cart_Pricing
 {
-		protected $currency_symbol = '$';	protected $currency_format = '%01.2f'; // sprintf format
+	
+	protected $currency_symbol = '$';
+	protected $currency_format = '%01.2f'; // sprintf format
 	
 	/**
 	 *  create pricing array in the format: array[min_quantity]=price

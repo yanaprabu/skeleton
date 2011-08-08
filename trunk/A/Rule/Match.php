@@ -1,10 +1,9 @@
 <?php
 /**
  * Alnum.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
@@ -12,7 +11,7 @@
  * 
  * Rule to enforce a specific value.
  * 
- * @package A_Rule_Set 
+ * @package A_Rule
  */
 class A_Rule_Match extends A_Rule_Base
 {
@@ -32,3 +31,4 @@ class A_Rule_Match extends A_Rule_Base
 	}
 
 }
+

@@ -1,16 +1,17 @@
 <?php
 /**
  * Logger.php
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Logger
  *
  * Log to file or provided writer object
+ * 
+ * @package A
  */
 class A_Logger
 {

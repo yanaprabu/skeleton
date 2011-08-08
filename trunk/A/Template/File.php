@@ -1,16 +1,17 @@
 <?php
 /**
  * File.php
- *
- * @package  A_Template
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_File
  * 
  * Base Template class for templates that are read as files
+ * 
+ * @package A_Template
  */
 class A_Template_File extends A_Template_Base
 {

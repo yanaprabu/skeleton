@@ -1,16 +1,17 @@
 <?php
 /**
  * Alnum.php
- *
- * @package  A_Filter
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Alnum
  * 
  * Filter value with htmlspecialchars() function with provided quote style and character set
+ * 
+ * @package A_Filter
  */
 class A_Filter_Htmlspecialchars extends A_Filter_Base
 {

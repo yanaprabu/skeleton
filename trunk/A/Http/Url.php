@@ -1,16 +1,17 @@
 <?php
 /**
  * Url.php
- *
- * @package  A_Http
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Http_Url
  *
  * This class provides various functions with which to create, manipulate, and read URLs.
+ * 
+ * @package A_Http
  */
 class A_Http_Url
 {

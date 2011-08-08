@@ -1,10 +1,18 @@
 <?php
 /**
+ * Adodb.php
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ */
+
+/**
+ * A_Pagination_Adapter_Adodb
+ * 
  * Datasource access class for pager using ADODB  
  * 
  * @package A_Pagination 
  */
-
 class A_Pagination_Adapter_Adodb
 {
 

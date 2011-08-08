@@ -1,16 +1,17 @@
 <?php
 /**
  * Base.php
- *
- * @package  A_Filter
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Base
  * 
- * Abstract base class for filters 
+ * Abstract base class for filters
+ * 
+ * @package A_Filter 
  */
 abstract class A_Filter_Base implements A_Filter_Filterer
 {

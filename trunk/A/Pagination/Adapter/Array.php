@@ -1,16 +1,17 @@
 <?php
 /**
  * Array.php
- *
- * @package  A_Pagination
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Pagination_Adapter_Array
  * 
  * Datasource access class for Pager using array.
+ * 
+ * @package A_Pagination
  */
 class A_Pagination_Adapter_Array implements A_Pagination_Adapter
 {

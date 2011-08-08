@@ -1,17 +1,18 @@
 <?php
 /**
  * Base.php
- *
- * @package  A_Socket
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Jonah Dahlquist <jonah@nucleussystems.com>
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Jonah Dahlquist <jonah@nucleussystems.com>
  */
 
 /**
  * A_Message_Base
  *
  * Common logic between message objects
+ * 
+ * @package A_Socket
  */
 class A_Socket_Message_Base implements A_Socket_Message
 {

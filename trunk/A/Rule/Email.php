@@ -1,16 +1,17 @@
 <?php
 /**
  * Email.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Email
  * 
  * Rule to check if value is a valid email address, and that the domain exists
+ * 
+ * @package A_Rule
  */
 class A_Rule_Email extends A_Rule_Base
 {

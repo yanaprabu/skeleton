@@ -1,10 +1,9 @@
 <?php
 /**
  * Hasrole.php
- *
- * @package  A_User
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /*
@@ -18,6 +17,8 @@
  * A_User_Rule_Hasrole
  * 
  * Checks if the group(s) passed to the constructor are group(s) that the user is a member of.
+ * 
+ * @package A_User
  */
 class A_User_Rule_Hasrole extends A_Rule_Set
 {

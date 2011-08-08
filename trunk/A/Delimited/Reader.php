@@ -1,17 +1,18 @@
 <?php
 /**
  * Reader.php
- *
- * @package  A_Delimited
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Christopher Thompson
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Christopher Thompson
  */
 
 /**
  * A_Delimited_Reader
  * 
  * Read delimited text file into array of line arrays
+ * 
+ * @package A_Delimited
  */
 class A_Delimited_Reader extends A_Delimited_Base
 {

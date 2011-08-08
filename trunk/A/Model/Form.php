@@ -1,16 +1,17 @@
 <?php
 /**
  * Form.php
- *
- * @package  A_Model
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Model_Form
  *
  * An extension of A_Model representing request data/parameters.
+ * 
+ * @package A_Model
  */
 class A_Model_Form extends A_Model
 {

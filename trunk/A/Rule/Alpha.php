@@ -1,16 +1,17 @@
 <?php
 /**
  * Alpha.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Alpha
  * 
  * Rule to make sure string only contains alphabetic characters
+ * 
+ * @package A_Rule
  */
 class A_Rule_Alpha extends A_Rule_Base
 {

@@ -1,17 +1,18 @@
 <?php
 /**
  * DateTime.php
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author Eran Galt, Cory Kaufman, Christopher Thompson, Cliff Ingham
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Eran Galt, Cory Kaufman, Christopher Thompson, Cliff Ingham
  */
 
 /**
  * A_Datetime
  *
  * Date and time functionality
+ * 
+ * @package A
  */
 class A_Datetime extends DateTime
 {

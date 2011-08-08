@@ -1,16 +1,17 @@
 <?php
 /**
  * File.php
- *
- * @package  A_Pagination
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Pagination_Adapter_File
  * 
  * Datasource access class for paging through lines in a file.
+ * 
+ * @package A_Pagination
  */
 class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base
 {

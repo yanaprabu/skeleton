@@ -1,16 +1,17 @@
 <?php
 /**
  * Alnum.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Alnum
  * 
  * Rule to make sure string only contains alphanumeric characters
+ * 
+ * @package A_Rule
  */
 class A_Rule_Alnum extends A_Rule_Base
 {

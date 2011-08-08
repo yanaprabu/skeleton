@@ -1,16 +1,17 @@
 <?php
 /**
  * Union.php
- *
- * @package  A_Sql
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Union
  * 
  * Generate SQL unions
+ * 
+ * @package A_Sql
  */
 class A_Sql_Union extends A_Sql_Statement
 {

@@ -1,16 +1,17 @@
 <?php
 /**
  * Date.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Date
  * 
  * Rule to make sure date is in format YYYY-M-D
+ * 
+ * @package A_Rule
  */
 class A_Rule_Date extends A_Rule_Base
 {

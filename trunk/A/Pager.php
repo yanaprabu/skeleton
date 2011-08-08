@@ -1,10 +1,9 @@
 <?php
 /**
  * Pagination class
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
@@ -12,6 +11,7 @@
  * 
  * @deprecated replaced by A_Pagination package
  * @see A_Pagination
+ * @package A
  */
 class A_Pager {
 	/**

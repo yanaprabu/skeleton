@@ -2,19 +2,22 @@
 /**
  * Validate.php
  *
- * @package  A_Cart
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Cart_Creditcard_Validate
  * 
  * Validate credit card numbers using Luhn formula
+ * 
+ * @package A_Cart
  */
 class A_Cart_Creditcard_Validate
 {
-	protected $number = '';	protected $type = '';
+
+	protected $number = '';
+	protected $type = '';
 	
 	public function __construct($number='', $type='')
 	{

@@ -1,16 +1,17 @@
 <?php
 /**
  * Renderer.php
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Renderer
  *
  * Interface representing an object capable of rendering data.
+ * 
+ * @package A
  */
 interface A_Renderer
 {

@@ -1,16 +1,17 @@
 <?php
 /**
  * Smtp.php
- *
- * @package  A_Email
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Email_Smtp
  *
  * Connection using socket connection to SMTP server.
+ * 
+ * @package A_Email
  */
 class A_Email_Smtp
 {

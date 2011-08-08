@@ -1,17 +1,18 @@
 <?php
 /**
  * DataMapper.php
- *
- * @package  A_Orm
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
- * @author   Cory Kaufman, Christopher Thompson
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
+ * @author	Cory Kaufman, Christopher Thompson
  */
 
 /**
  * A_Orm_DataMapper
  *
  * Implementation of Data Mapper pattern
+ * 
+ * @package A_Orm
  */
 class A_Orm_DataMapper extends A_Orm_DataMapper_Core	{
 

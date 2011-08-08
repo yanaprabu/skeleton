@@ -1,16 +1,17 @@
 <?php
 /**
  * Pathinfo.php
- *
- * @package  A_Http
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Http_Pathinfo
  *
  * Parse PATH_INFO based on mapped routes and set the Request object with values
+ * 
+ * @package A_Http
  */
 class A_Http_Pathinfo
 {

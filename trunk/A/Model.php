@@ -1,16 +1,17 @@
 <?php
 /**
  * Model.php
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Model
  *
  * Base class for Models with filtering and validation
+ * 
+ * @package A
  */
 class A_Model
 {

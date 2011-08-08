@@ -1,16 +1,17 @@
 <?php
 /**
  * Singleton.php
- *
- * @package  A_Locator
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Locator_Singleton
  *
  * Allows static Singleton access to an A_Locator (or other) obejct
+ * 
+ * @package A_Locator
  */
 class A_Locator_Singleton
 {

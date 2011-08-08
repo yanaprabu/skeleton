@@ -1,16 +1,17 @@
 <?php
 /**
  * Eval.php
- *
- * @package  A_Template
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Eval
  * 
  * Template class that loads and eval()'s PHP templates. Templates can have blocks.
+ * 
+ * @package A_Template
  */
 class A_Template_Eval extends A_Template_File implements A_Renderer
 {

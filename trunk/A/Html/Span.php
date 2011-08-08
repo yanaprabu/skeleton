@@ -1,16 +1,17 @@
 <?php
 /**
  * Span.php
- *
- * @package  A_Html
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Span
  * 
  * Generate HTML span tag
+ * 
+ * @package A_Html
  */
 class A_Html_Span extends A_Html_Tag implements A_Renderer
 {

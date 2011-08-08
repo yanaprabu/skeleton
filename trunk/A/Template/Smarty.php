@@ -1,16 +1,17 @@
 <?php
 /**
  * Smarty.php
- *
- * @package  A_Template
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Smarty
  * 
  * Template class that Adapts Smarty to be used as Skeleton renderer.
+ * 
+ * @package A_Template
  */
 class A_Template_Smarty extends Smarty implements A_Renderer
 {

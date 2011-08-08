@@ -1,16 +1,17 @@
 <?php
 /**
  * Email.php
- *
- * @package  A
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Email
  *
  * Basic simple and multipart email functionality
+ * 
+ * @package A
  */
 class A_Email
 {

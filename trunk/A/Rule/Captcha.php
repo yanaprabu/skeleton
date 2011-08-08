@@ -1,16 +1,17 @@
 <?php
 /**
  * Captcha.php
- *
- * @package  A_Rule
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Captcha
  * 
  * Rule to check for captcha value.  Class acts as both a Rule for Validator and Renderer for View
+ * 
+ * @package A_Rule
  */
 class A_Rule_Captcha extends A_Rule_Base
 {

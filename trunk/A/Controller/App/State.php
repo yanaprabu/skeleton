@@ -2,15 +2,16 @@
 /**
  * State.php
  *
- * @package  A_Controller
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_App_State
  * 
  * Application controller class to hold state and callback
+ * 
+ * @package A_Controller
  */
 class A_Controller_App_State
 {

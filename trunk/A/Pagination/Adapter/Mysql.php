@@ -1,10 +1,18 @@
 <?php
 /**
- * Datasource access class for pager using the mysql extension  
+ * Mysql.php
  * 
- * @package A_Pagination 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
+/**
+ * A_Pagination_Adapter_Mysql
+ * 
+ * Datasource access class for pager using the mysql extension
+ * 
+ * @package A_Pagination
+ */
 class A_Pagination_Adapter_Mysql extends A_Pagination_Adapter_Base
 {
 

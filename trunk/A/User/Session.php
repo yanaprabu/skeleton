@@ -1,10 +1,9 @@
 <?php
 /**
  * Session.php
- *
- * @package  A_User
- * @license  http://www.opensource.org/licenses/bsd-license.php BSD
- * @link	 http://skeletonframework.com/
+ * 
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD
+ * @link	http://skeletonframework.com/
  */
 
 /**
@@ -18,6 +17,8 @@
  *			'data'=>array('of user data')	// Array of user information (usually from datasource) passed to login()
  *			),
  *		);
+ * 
+ * @package A_User
  */
 class A_User_Session
 {
