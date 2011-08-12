@@ -42,26 +42,26 @@ abstract class A_Db_Adapter
 	/**
 	 * Constructor.
 	 *
-	 * Must be passed either a connection or a configuration array (or implementation of ArrayAccess).  The configuration must contain key/value pairs with the information necessary to connect to the database.  These options are common to most adapters:
+	 * Must be passed a configuration array (or implementation of ArrayAccess).  The configuration must contain key/value pairs with the information necessary to connect to the database.  These options are common to most adapters:
 	 * 
 	 * database	=> (string) The name of the database to user
 	 * username	=> (string) Connect to the database as this username.
 	 * password	=> (string) Password associated with the username.
 	 * host		=> (string) What host to connect to, defaults to localhost
 	 * 
+	 * You can also pass a 'connection' key and it will be used as the database connection.
+	 * 
 	 * @param  array|ArrayAccess|object|resource $connection
 	 * @throws A_Db_Exception
 	 * @see ArrayAccess
 	 */
-	public function __construct($connection=array())
+	public function __construct($config=array())
 	{
-		if ($connection) {
-			if ($this->_isConnection($connection)) {
-				$this->_connection = $connection;
-			} else {
-				$config = $connection;
-				$this->config($config);
+		if ($config) {
+			if (isset($config['connection']) && $config['connection']) {
+				$this->_connection = $config['connection'];
 			}
+			$this->config($config);
 		}
 	}
 	
@@ -79,8 +79,6 @@ abstract class A_Db_Adapter
 		}
 		return $this;
 	}
-	
-	abstract protected function _isConnection($connection);
 	
 	public function setResultClasses($result_class, $recordset_class)
 	{

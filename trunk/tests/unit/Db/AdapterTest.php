@@ -3,9 +3,6 @@
 class DbAdapterClass extends A_Db_Adapter
 {
 
-	const VALID_CONNECTION = '8186CD02-F17D-414E-A08C-FFB73F7F15EB';
-	const INVALID_CONNECTION = '201A49D1-4027-49E2-A8EA-D04C712A967C';
-	
 	public $test_config = array();
 	
 	public function _connect()
@@ -19,11 +16,6 @@ class DbAdapterClass extends A_Db_Adapter
 	
 	protected function _query($sql)
 	{}
-	
-	protected function _isConnection($connection)
-	{
-		return $connection == self::VALID_CONNECTION;
-	}
 	
 	protected function _lastId()
 	{}
@@ -64,16 +56,14 @@ class Db_AdapterTest extends UnitTestCase
 		$this->assertEqual($Db_Adapter->test_config['database'], 'single');
 	}
 	
-	public function testDb_AdapterConstructValidConnection()
+	public function testDb_AdapterConstructConnection()
 	{
-		$Db_Adapter = new DbAdapterClass(DbAdapterClass::VALID_CONNECTION);
-		$this->assertEqual($Db_Adapter->getConnection(), DbAdapterClass::VALID_CONNECTION);
-	}
-	
-	public function testDb_AdapterConstructInvalidConnection()
-	{
-		$Db_Adapter = new DbAdapterClass(DbAdapterClass::INVALID_CONNECTION);
-		$this->assertEqual($Db_Adapter->getConnection(), false);
+		$connection = 'foo';
+		$config = $this->config['SINGLE'];
+		$config['connection'] = $connection;
+		$Db_Adapter = new DbAdapterClass($config);
+		
+		$this->assertEqual($Db_Adapter->getConnection(), $connection);
 	}
 	
 	public function testDb_AdapterGetConnection()
