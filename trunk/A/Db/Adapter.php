@@ -295,6 +295,16 @@ abstract class A_Db_Adapter
 		return $this->_errorMsg;
 	}
 	
+	/**
+	 * Access the connection resource/object directly.  Returns boolean false if not connected.
+	 * 
+	 * @return resource|object|bool
+	 */
+	public function getConnection()
+	{
+		return $this->_connection ? $this->_connection : false;
+	}
+	
 	protected function _errorHandler($errno, $errorMsg)
 	{
 		$this->_error = $errno;
