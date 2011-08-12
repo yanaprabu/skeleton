@@ -28,10 +28,7 @@ class A_Db_Sqlite extends A_Db_Adapter
 			$config = array('filename' => $config);
 		}
 		$this->mode = 0666;
-		$this->config($config);
-		if ($this->_config && isset($this->_config['autoconnect'])) {
-			$this->connect();
-		}
+		parent::__construct($config);
 	}
 	
 	protected function _connect()

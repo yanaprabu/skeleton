@@ -136,10 +136,12 @@ abstract class A_Db_Adapter
 	 */
 	public function connect()
 	{
-		if ($this->_config && !$this->_connection) {
-			$this->_connect();    
-		} else {
-			$this->_errorHandler(1, "No config data. ");
+		if (!$this->_connection) {
+			if ($this->_config) {
+				$this->_connect();
+			} else {
+				$this->_errorHandler(1, "No config data. ");
+			}
 		}
 		return $this;
 	}
@@ -151,6 +153,12 @@ abstract class A_Db_Adapter
 	 */
 	abstract protected function _connect();
 	
+	/*
+	 * Executes a query against the database.  If no connection exists, an attempt is made to connect.
+	 * 
+	 * @param string|A_Sql_* SQL query to execute.  Can be string or a A_Sql object.
+	 * @return A_Db_Recordset_Base
+	 */
 	public function query($sql, $bind=array())
 	{
 		if (is_object($sql)) {
@@ -161,6 +169,8 @@ abstract class A_Db_Adapter
 			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
+		
+		$this->connect();
 		if ($this->_connection) {
 			$this->_sql[] = $sql;
 			return $this->_query($sql);

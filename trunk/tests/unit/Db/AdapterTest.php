@@ -66,6 +66,15 @@ class Db_AdapterTest extends UnitTestCase
 		$this->assertEqual($Db_Adapter->getConnection(), $connection);
 	}
 	
+	public function testDb_AdapterAutoconnect()
+	{
+		$Db_Adapter = new DbAdapterClass($this->config['SINGLE']);
+		
+		$this->assertEqual($Db_Adapter->getConnection(), false);
+		$Db_Adapter->query('foo');
+		$this->assertEqual($Db_Adapter->getConnection(), 'xyz');
+	}
+	
 	public function testDb_AdapterGetConnection()
 	{
 		$Db_Adapter = new DbAdapterClass($this->config['SINGLE']);
