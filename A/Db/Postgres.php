@@ -71,11 +71,6 @@ class A_Db_Postgres extends A_Db_Adapter
 		return $resultObject;
 	}
 	
-	protected function _isConnection($connection)
-	{
-		return is_resource($connection);
-	}
-	
 	protected function _close()
 	{
 		pg_disconnect($this->_connection);

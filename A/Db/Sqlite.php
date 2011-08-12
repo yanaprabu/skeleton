@@ -64,11 +64,6 @@ class A_Db_Sqlite extends A_Db_Adapter
 		return $resultObject;
 	}
 	
-	protected function _isConnection($connection)
-	{
-		return is_resource($connection);
-	}
-	
 	protected function _close()
 	{
 		sqlite_close($this->_connection);

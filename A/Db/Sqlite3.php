@@ -63,11 +63,6 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		return $resultObject;
 	}
 	
-	protected function _isConnection($connection)
-	{
-		return is_object($connection) && $connection instanceof SQLite3;
-	}
-	
 	protected function _close()
 	{
 		$this->_connection->close();

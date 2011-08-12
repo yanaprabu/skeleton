@@ -92,11 +92,6 @@ class A_Db_Pdo extends A_Db_Adapter
 		return $resultObject;
 	}
 	
-	protected function _isConnection($connection)
-	{
-		return is_object($connection) && $connection instanceof PDO;
-	}
-	
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
