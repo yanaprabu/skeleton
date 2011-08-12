@@ -47,11 +47,6 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 		$this->_errorHandler($this->_connection->lastErrorCode(), $errmsg != 'not an error' ? $errmsg : '');
 	}
 	
-	protected function _close()
-	{
-		$this->_connection->close();
-	}
-	
 	protected function _query($sql)
 	{
 		$result = $this->_connection->query($sql);
@@ -66,6 +61,16 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 			$resultObject = $this->createResultObject();
 		}
 		return $resultObject;
+	}
+	
+	protected function _isConnection($connection)
+	{
+		return is_object($connection) && $connection instanceof SQLite3;
+	}
+	
+	protected function _close()
+	{
+		$this->_connection->close();
 	}
 	
 	public function limit($sql, $count, $offset=null)

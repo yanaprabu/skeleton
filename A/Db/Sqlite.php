@@ -48,11 +48,6 @@ class A_Db_Sqlite extends A_Db_Adapter
 		}
 	}
 	
-	protected function _close()
-	{
-		sqlite_close($this->_connection);
-	}
-	
 	protected function _query($sql)
 	{
 		$result = sqlite_query($this->_connection, $sql);
@@ -67,6 +62,16 @@ class A_Db_Sqlite extends A_Db_Adapter
 			$resultObject = $this->createResultObject();
 		}
 		return $resultObject;
+	}
+	
+	protected function _isConnection($connection)
+	{
+		return is_resource($connection);
+	}
+	
+	protected function _close()
+	{
+		sqlite_close($this->_connection);
 	}
 	
 	public function limit($sql, $count, $offset=null)

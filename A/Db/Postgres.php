@@ -55,11 +55,6 @@ class A_Db_Postgres extends A_Db_Adapter
 		}
 	}
 	
-	protected function _close()
-	{
-		pg_disconnect($this->_connection);
-	}
-	
 	protected function _query($sql)
 	{
 		$result = pg_query($this->_connection, $sql);
@@ -74,6 +69,16 @@ class A_Db_Postgres extends A_Db_Adapter
 			$resultObject = $this->createResultObject();
 		}
 		return $resultObject;
+	}
+	
+	protected function _isConnection($connection)
+	{
+		return is_resource($connection);
+	}
+	
+	protected function _close()
+	{
+		pg_disconnect($this->_connection);
 	}
 	
 	public function limit($sql, $count, $offset='')

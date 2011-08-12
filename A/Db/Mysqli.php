@@ -46,6 +46,11 @@ class A_Db_Mysqli extends A_Db_Adapter
 		return $resultObject;
 	}
 	
+	protected function _isConnection($connection)
+	{
+		return is_object($connection) && $connection instanceof MySQLi;
+	}
+	
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');

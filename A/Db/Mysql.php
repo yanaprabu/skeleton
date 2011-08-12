@@ -42,6 +42,11 @@ class A_Db_Mysql extends A_Db_Adapter
 		}
 	}
 	
+	protected function _isConnection($connection)
+	{
+		return is_resource($connection);
+	}
+	
 	protected function _query($sql)
 	{
 		$result = mysql_query($sql, $this->_connection);
