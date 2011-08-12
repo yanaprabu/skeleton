@@ -28,10 +28,7 @@ class A_Db_Sqlite3 extends A_Db_Adapter
 			$config['filename'] = $config;
 		}
 		$this->mode = SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE;
-		$this->config($config);
-		if ($config && isset($config['autoconnect'])) {
-			$this->connect();
-		}
+		parent::__construct($config);
 	}
 	
 	protected function _connect()
