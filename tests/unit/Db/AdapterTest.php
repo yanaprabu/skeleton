@@ -83,6 +83,15 @@ class Db_AdapterTest extends UnitTestCase
 		$Db_Adapter->connect();
 		$this->assertEqual($Db_Adapter->getConnection(), 'xyz');
 	}
+	
+	public function testDb_AdapterGetConnection()
+	{
+		$Db_Adapter = new DbAdapterClass($this->config['SINGLE']);
+		
+		$this->assertIdentical$Db_Adapter->isConnected(), false, 'Connection already being made somehow, or registering a false positive');
+		$Db_Adapter->connect();
+		$this->assertSame($Db_Adapter->isConnected(), true, 'Connection not recognized');
+	}
 
 }
 
