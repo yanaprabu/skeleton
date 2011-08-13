@@ -321,6 +321,16 @@ abstract class A_Db_Adapter
 		return $this->_connection ? $this->_connection : false;
 	}
 	
+	/**
+	 * Get whether or not the adapter is connected to the database server.
+	 * 
+	 * @return bool
+	 */
+	public function isConnected()
+	{
+		return $this->_connection ? true : false;
+	}
+	
 	protected function _errorHandler($errno, $errorMsg)
 	{
 		$this->_error = $errno;
