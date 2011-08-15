@@ -38,6 +38,7 @@ abstract class A_Db_Adapter
 	protected $_exception = '';
 	protected $_error = 0;
 	protected $_errorMsg = '';
+	protected $_currentDatabase = null;
 	
 	/**
 	 * Constructor.
@@ -139,6 +140,7 @@ abstract class A_Db_Adapter
 		if (!$this->_connection) {
 			if ($this->_config) {
 				$this->_connect();
+				$this->selectDb();
 			} else {
 				$this->_errorHandler(1, "No config data. ");
 			}
@@ -223,13 +225,20 @@ abstract class A_Db_Adapter
 	 */
 	abstract protected function _lastId();
 	
-	public function selectDb($database)
-	{
-		if ($this->_connection) {
-			if (!$database) {
-				$database = $this->_config['database'];
-			}
+	/**
+	 * Switch to using a different database/schema.  If the database passed is already selected, no call is made.
+	 * 
+	 * @param string $database If omitted, the database in the configuration will be used
+	 */
+	public function selectDb($database=null) {
+		if (empty($database)) {
+			$database = $this->_config['database'];
+		} else {
+			$this->_config['database'] = $database;
+		}
+		if ($database && $this->_currentDatabase != $database && $this->_connection) {
 			$this->_selectDb($database);
+			$this->_currentDatabase = $database;
 		}
 		return $this;
 	}
