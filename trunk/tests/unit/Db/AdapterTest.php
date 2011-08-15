@@ -3,13 +3,16 @@
 class DbAdapterClass extends A_Db_Adapter
 {
 
+	const DEFAULT_DB = null;
+	const CONNECTION = 'xyz';
+	
 	public $test_config = array();
-	public $db = null;
+	public $db = self::DEFAULT_DB;
 	
 	public function _connect()
 	{
 		$this->test_config = $this->_config;
-		$this->_connection = 'xyz';
+		$this->_connection = self::CONNECTION;
 	}
 	
 	protected function _close()
@@ -41,6 +44,10 @@ class DbAdapterClass extends A_Db_Adapter
 class Db_AdapterTest extends UnitTestCase
 {
 
+	const ALT_DB = 'foo';
+	const ALT_USER = 'bar';
+	const ALT_CONNECTION = 'baz';
+	
 	protected $config;
 	
 	function setUp()
@@ -63,26 +70,25 @@ class Db_AdapterTest extends UnitTestCase
 		$Db_Adapter = $this->createSingle();
 		
 		$Db_Adapter->connect();
-		$this->assertEqual($Db_Adapter->test_config['database'], 'single');
+		$this->assertEqual($Db_Adapter->test_config['database'], $this->config['SINGLE']['database']);
 	}
 	
 	public function testDb_AdapterConfig()
 	{
 		$Db_Adapter = $this->createSingle();
-		$Db_Adapter->config(array('username' => 'foo'));
+		$Db_Adapter->config(array('username' => self::ALT_USER));
 		$Db_Adapter->connect();
-		$this->assertEqual($Db_Adapter->test_config['database'], 'single', '\'database\' must NOT be overwritten/deleted');
-		$this->assertEqual($Db_Adapter->test_config['username'], 'foo', '\'username\' index must be overwritten');
+		$this->assertEqual($Db_Adapter->test_config['database'], $this->config['SINGLE']['database'], '\'database\' must NOT be overwritten/deleted');
+		$this->assertEqual($Db_Adapter->test_config['username'], self::ALT_USER, '\'username\' index must be overwritten');
 	}
 	
 	public function testDb_AdapterConstructConnection()
 	{
-		$connection = 'foo';
 		$config = $this->config['SINGLE'];
-		$config['connection'] = $connection;
+		$config['connection'] = self::ALT_CONNECTION;
 		$Db_Adapter = new DbAdapterClass($config);
 		
-		$this->assertEqual($Db_Adapter->getConnection(), $connection);
+		$this->assertEqual($Db_Adapter->getConnection(), self::ALT_CONNECTION);
 	}
 	
 	public function testDb_AdapterAutoconnect()
@@ -90,8 +96,8 @@ class Db_AdapterTest extends UnitTestCase
 		$Db_Adapter = $this->createSingle();
 		
 		$this->assertIdentical($Db_Adapter->getConnection(), false);
-		$Db_Adapter->query('foo');
-		$this->assertEqual($Db_Adapter->getConnection(), 'xyz');
+		$Db_Adapter->query('dudquery');
+		$this->assertEqual($Db_Adapter->getConnection(), DbAdapterClass::CONNECTION);
 	}
 	
 	public function testDb_AdapterAutoSelectDb()
@@ -99,20 +105,32 @@ class Db_AdapterTest extends UnitTestCase
 		$Db_Adapter = $this->createSingle();
 		
 		$this->assertIdentical($Db_Adapter->getCurrentDatabase(), null, 'Initial status of database must be null');
-		$this->assertEqual($Db_Adapter->db, null, 'Database must not be called before connect()');
+		$this->assertEqual($Db_Adapter->db, DbAdapterClass::DEFAULT_DB, 'Database must not be called before connect()');
 		$Db_Adapter->connect();
 		$this->assertEqual($Db_Adapter->db, $this->config['SINGLE']['database'], 'Database not passed correct name, or not called at all');
 		$this->assertEqual($Db_Adapter->getCurrentDatabase(), $this->config['SINGLE']['database'], 'Current database not updated properly');
 	}
 	
+	public function testDb_AdapterSelectDbDefault()
+	{
+		$Db_Adapter = $this->createSingle();
+		$Db_Adapter->connect();
+		$Db_Adapter->config(array('database' => self::ALT_DB));
+		$Db_Adapter->selectDb();
+		
+		$this->assertNotEqual($Db_Adapter->db, $this->config['SINGLE']['database'], 'New schema not selected');
+		$this->assertEqual($Db_Adapter->db, self::ALT_DB, 'Schema not changed properly');
+		$this->assertEqual($Db_Adapter->getCurrentDatabase(), self::ALT_DB, 'Current database not updated properly');
+	}
+	
 	public function testDb_AdapterSelectDbPreConnect()
 	{
 		$Db_Adapter = $this->createSingle();
-		$Db_Adapter->selectDb('foo');
-		$this->assertEqual($Db_Adapter->db, null, 'Database must not be called before connect()');
+		$Db_Adapter->selectDb(self::ALT_DB);
+		$this->assertEqual($Db_Adapter->db, DbAdapterClass::DEFAULT_DB, 'Database must not be called before connect()');
 		$Db_Adapter->connect();
-		$this->assertEqual($Db_Adapter->db, 'foo', 'Database not passed correct name, or not called at all');
-		$this->assertEqual($Db_Adapter->getCurrentDatabase(), 'foo', 'Current database not updated properly');
+		$this->assertEqual($Db_Adapter->db, self::ALT_DB, 'Database not passed correct name, or not called at all');
+		$this->assertEqual($Db_Adapter->getCurrentDatabase(), self::ALT_DB, 'Current database not updated properly');
 	}
 	
 	public function testDb_AdapterSelectDbPostConnect()
@@ -121,9 +139,9 @@ class Db_AdapterTest extends UnitTestCase
 		$Db_Adapter->connect();
 		$this->assertEqual($Db_Adapter->db, $this->config['SINGLE']['database'], 'Database not passed correct name, or not called at all');
 		$this->assertEqual($Db_Adapter->getCurrentDatabase(), $this->config['SINGLE']['database'], 'Current database not updated properly');
-		$Db_Adapter->selectDb('foo');
-		$this->assertEqual($Db_Adapter->db, 'foo', 'Secondary database select not executed');
-		$this->assertEqual($Db_Adapter->getCurrentDatabase(), 'foo', 'Current database not updated properly');
+		$Db_Adapter->selectDb(self::ALT_DB);
+		$this->assertEqual($Db_Adapter->db, self::ALT_DB, 'Secondary database select not executed');
+		$this->assertEqual($Db_Adapter->getCurrentDatabase(), self::ALT_DB, 'Current database not updated properly');
 	}
 	
 	public function testDb_AdapterSelectDbConservative()
@@ -131,9 +149,9 @@ class Db_AdapterTest extends UnitTestCase
 		$Db_Adapter = $this->createSingle();
 		$Db_Adapter->connect();
 		// reset mock database to detect changes
-		$Db_Adapter->db = null;
+		$Db_Adapter->db = DbAdapterClass::DEFAULT_DB;
 		$Db_Adapter->selectDb($this->config['SINGLE']['database']);
-		$this->assertIdentical($Db_Adapter->db, null, 'Database called when correct database was already selected');
+		$this->assertIdentical($Db_Adapter->db, DbAdapterClass::DEFAULT_DB, 'Database called when correct database was already selected');
 	}
 	
 	public function testDb_AdapterGetConnection()
@@ -142,7 +160,7 @@ class Db_AdapterTest extends UnitTestCase
 		
 		$this->assertIdentical($Db_Adapter->getConnection(), false);
 		$Db_Adapter->connect();
-		$this->assertEqual($Db_Adapter->getConnection(), 'xyz');
+		$this->assertEqual($Db_Adapter->getConnection(), DbAdapterClass::CONNECTION);
 	}
 	
 	public function testDb_AdapterIsConnected()
