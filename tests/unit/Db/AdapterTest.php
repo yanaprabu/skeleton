@@ -66,6 +66,15 @@ class Db_AdapterTest extends UnitTestCase
 		$this->assertEqual($Db_Adapter->test_config['database'], 'single');
 	}
 	
+	public function testDb_AdapterConfig()
+	{
+		$Db_Adapter = $this->createSingle();
+		$Db_Adapter->config(array('username' => 'foo'));
+		$Db_Adapter->connect();
+		$this->assertEqual($Db_Adapter->test_config['database'], 'single', '\'database\' must NOT be overwritten/deleted');
+		$this->assertEqual($Db_Adapter->test_config['username'], 'foo', '\'username\' index must be overwritten');
+	}
+	
 	public function testDb_AdapterConstructConnection()
 	{
 		$connection = 'foo';
