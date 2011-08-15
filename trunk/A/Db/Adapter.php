@@ -66,6 +66,12 @@ abstract class A_Db_Adapter
 		}
 	}
 	
+	/**
+	 * Configure the internal settings.  Will merge and overwrite existing settings.  See the constructor for valid configuration keys (sans 'connection').
+	 * 
+	 * @param array|ArrayAccess $config
+	 * @return $this
+	 */
 	public function config($config)
 	{
 		// config element compatablity
@@ -74,7 +80,7 @@ abstract class A_Db_Adapter
 				$config[$name] = $config[$alias];
 			}
 		}
-		$this->_config = $config;
+		$this->_config = array_merge($this->_config, $config);
 		if (isset($config['exception'])) {
 			$this->setException($config['exception']);				
 		}
