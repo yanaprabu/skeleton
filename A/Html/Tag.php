@@ -20,7 +20,9 @@ class A_Html_Tag
 	
 	public function __construct($attr=array(), $value=null)
 	{
-		$this->_attr = $attr;
+		if (is_array($attr)) {
+			$this->_attr = $attr;
+		}
 		if ($value !== null) {
 			$this->_attr['value'] = $value;
 		}
