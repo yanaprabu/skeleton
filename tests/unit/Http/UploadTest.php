@@ -47,4 +47,22 @@ class Http_UploadTest extends UnitTestCase {
 		$this->assertTrue($upload->mimeInList(self::MIME_1, $upload->getMimeBlacklist()));
 	}
 
+	public function testClearAllowedMimes()
+	{
+		$upload = new A_Http_Upload();
+
+		$upload->addAllowedMimes(array(self::MIME_1));
+		$upload->clearAllowedMimes();
+		$this->assertFalse($upload->mimeInList(self::MIME_1, $upload->getMimeWhitelist()));
+	}
+
+	public function testClearDeniedMimes()
+	{
+		$upload = new A_Http_Upload();
+
+		$upload->addDeniedMimes(array(self::MIME_1));
+		$upload->clearDeniedMimes();
+		$this->assertFalse($upload->mimeInList(self::MIME_1, $upload->getMimeBlacklist()));
+	}
+
 }
