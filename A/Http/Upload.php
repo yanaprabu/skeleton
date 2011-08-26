@@ -51,7 +51,9 @@ class A_Http_Upload
 	protected $replace = true;			// if destination file exists, delete and the upload
 	protected $min_size = 1;			// set minimum size of files, 0 to allow zero size files
 	protected $max_size = 0;			// cap size of file with this value
-	protected $allowed_types = array();
+	
+	protected $mime_whitelist = array();
+	protected $mime_blacklist = array();
 	
 	public function __construct()
 	{
@@ -103,12 +105,6 @@ class A_Http_Upload
 		if ($max && (($max < $this->max_size) || ($this->max_size == 0)) ) {
 			$this->max_size = $max;
 		}
-		return $this;
-	}
-	
-	public function setAllowedTypes($types=array())
-	{
-		$this->allowed_types = $types;
 		return $this;
 	}
 	
@@ -276,17 +272,14 @@ class A_Http_Upload
 	
 	public function isAllowedType($n=0, $param='')
 	{
-		if ($this->allowed_types) {
-			if (in_array($this->getFileOption('type', $n, $param), $this->allowed_types)) {
-				return true;
-			} else {
-				$this->setFileOption(self::ERR_FILE_TYPE, 'error', $n, $param);
-				return false;
-			}
+		if ($this->mimeIsAllowed($this->getFileOption('type', $n, $param))) {
+			return true;
+		} else {
+			$this->setFileOption(self::ERR_FILE_TYPE, 'error', $n, $param);
+			return false;
 		}
-		return true;
 	}
-	
+		
 	public function isAllowed($n=0, $param='')
 	{
 		return $this->isUploadedFile($n, $param) && $this->isAllowedFilesize($n, $param) && $this->isAllowedType($n, $param);
@@ -354,6 +347,99 @@ class A_Http_Upload
 		} else {
 			return '';
 		}
+	}
+
+	/**
+	 * Add an array of mime-types (or a single mime-type) to the whitelist.  Types can either be normal strings to match, or regular expressions.
+	 *
+	 * @param array|string $types
+	 * @return $this
+	 */
+	public function addAllowedMimes($types)
+	{
+		if (is_array($types)) {
+			$this->mime_whitelist = array_unique(array_merge($this->mime_whitelist, $types));
+		} elseif (is_string($types)) {
+			$this->mime_whitelist[] = $types;
+			$this->mime_whitelist = array_unique($this->mime_whitelist);
+		}
+		return $this;
+	}
+
+	/**
+	 * Empty the mime-type whitelist.
+	 *
+	 * @return $this
+	 */
+	public function clearAllowedMimes()
+	{
+		$this->mime_whitelist = array();
+		return $this;
+	}
+
+	/**
+	 * Add an array of mime-types (or a single mime-type) to the regular whitelist.  Types can either be normal strings to match, or regular expressions.
+	 *
+	 * @param array|string $types
+	 * @return $this
+	 */
+	public function addDeniedMimes($types)
+	{
+		if (is_array($types)) {
+			$this->mime_blacklist = array_unique(array_merge($this->mime_blacklist, $types));
+		} elseif (is_string($types)) {
+			$this->mime_blacklist[] = $types;
+			$this->mime_blacklist = array_unique($this->mime_blacklist);
+		}
+		return $this;
+	}
+	
+	/**
+	 * Determine if a given mime-type is allowed by first checking if it is in the whitelist (or the whitelist is empty), and making sure it's not covered the blacklist.
+	 *
+	 * @param string $mime
+	 * @return bool
+	 */
+	public function mimeAllowed($mime)
+	{
+		return ($this->mimeInList($mime, $this->mime_whitelist) || count($this->mime_whitelist) == 0) && !$this->mimeInList($mime, $this->mime_blacklist);
+	}
+
+	/**
+	 * Check if a mime-type is in a given array.  Types in array can either be mime-types in the form of strings or regular expressions.
+	 *
+	 * @param string $mime
+	 * @param array $list
+	 * @return bool
+	 */
+	public function mimeInList($mime, $list)
+	{
+		foreach ($list as $thisMime) {
+			if ($mime == $thisMime || (preg_match('/^([^\w\s]).*(\1)[\a]*$/i', $thisMime) && preg_match($thisMime, $mime))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Get the list of whitelisted mime-types
+	 *
+	 * @return array
+	 */
+	public function getMimeWhitelist()
+	{
+		return $this->mime_whitelist;
+	}
+	
+	/**
+	 * Get list of blacklisted mime-types
+	 *
+	 * @return array
+	 */
+	public function getMimeBlacklist()
+	{
+		return $this->mime_blacklist;
 	}
 
 }
