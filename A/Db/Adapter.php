@@ -74,6 +74,9 @@ abstract class A_Db_Adapter
 	 */
 	public function config($config)
 	{
+		if (is_object($config) && method_exists($config, 'toArray')) {
+			$config = $config->toArray();
+		}
 		// config element compatablity
 		foreach ($this->_config_alias as $alias => $name) {
 			if (isset($config[$alias])) {
