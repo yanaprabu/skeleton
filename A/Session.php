@@ -112,11 +112,11 @@ class A_Session
 			if ($msie && $this->_p3p) {
 				header($this->_p3p);
 			}
-			$this->initNamespace();
 			if ($this->_regenerate) {
 				session_regenerate_id();
 			}
 		}
+		$this->initNamespace();
 	}
 	
 	/**
