@@ -99,8 +99,7 @@ class A_Db_Pdo extends A_Db_Adapter
 	
 	public function escape($value)
 	{
-		$this->_connection = $this->connectBySql();
-		return trim($this->_connection->quote($value), "\"'");
+		return trim($this->_connection->quote($value));
 	}
 	
 	protected function _setError()
