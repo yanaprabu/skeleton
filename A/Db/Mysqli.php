@@ -104,9 +104,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 	
 	public function escape($value)
 	{
-		if (isset($this->_connection)) {
-			return $this->_connection->escape_string($value);
-		}
+		return $this->_connection->escape_string($value);
 	}
 	
 	protected function _lastId()
