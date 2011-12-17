@@ -81,7 +81,7 @@ class A_User_Session
 	
 	public function logout()
 	{
-		if ($this->_data) {
+		if ($this->_session) {
 			$this->_session->set($this->_namespace, null);	// unset all data
 		}
 	}
