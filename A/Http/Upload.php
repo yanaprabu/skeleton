@@ -371,9 +371,10 @@ class A_Http_Upload
 	 *
 	 * @return $this
 	 */
-	public function clearAllowedMimes()
+	public function clearAllowedMimes($types=array())
 	{
-		$this->mime_whitelist = array();
+#		$this->mime_whitelist = array();
+		$this->_clearMimes($this->mime_whitelist, $types);
 		return $this;
 	}
 
@@ -394,6 +395,38 @@ class A_Http_Upload
 		return $this;
 	}
 	
+	/**
+	 * Empty the mime-type blacklist.
+	 *
+	 * @return $this
+	 */
+	public function clearDeniedMimes($types=array())
+	{
+		$this->_clearMimes($this->mime_blacklist, $types);
+		return $this;
+	}
+	
+	/**
+	 * Empty a mime-type list.
+	 *
+	 * @return $this
+	 */
+	public function _clearMimes(&$list, $types=array())
+	{
+		if ($types === array()) {
+			$list = array();
+		} else {
+			foreach ($types as $type) {
+				foreach ($list as $key => $value) {
+					if ($type == $value) {
+						unset($list[$key]);
+					}
+				}
+			}
+		}
+		return $this;
+	}
+
 	/**
 	 * Determine if a given mime-type is allowed by first checking if it is in the whitelist (or the whitelist is empty), and making sure it's not covered the blacklist.
 	 *
