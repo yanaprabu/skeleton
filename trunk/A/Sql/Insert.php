@@ -67,6 +67,12 @@ class A_Sql_Insert extends A_Sql_Statement
 		return $this->select;
 	}
 
+	/**
+	 * Add a ON DUPLICATE KEY UPDATE statement to the INSERT in case the values chosen conflict with another row under a unique key column.
+	 *
+	 * @param string|array $columns
+	 * @return $this
+	 */
 	public function updateIfDuplicateKey($columns)
 	{
 		if (!is_array($columns))
