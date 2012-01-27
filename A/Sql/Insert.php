@@ -20,6 +20,7 @@ class A_Sql_Insert extends A_Sql_Statement
 	protected $values;
 	protected $columns;
 	protected $select;
+	protected $onDuplicateKey;
 	
 	/**
 	 * Class constructor
@@ -65,6 +66,14 @@ class A_Sql_Insert extends A_Sql_Statement
 		}
 		return $this->select;
 	}
+
+	public function updateIfDuplicateKey($columns)
+	{
+		if (!is_array($columns))
+			$columns = array($columns);
+		$this->onDuplicateKey = new A_Sql_Onduplicatekey($columns);
+		return $this;
+	}
 	
 	public function render($db=null)
 	{
@@ -75,6 +84,9 @@ class A_Sql_Insert extends A_Sql_Statement
 				$insert = "INSERT INTO $table " . $this->values->render();
 			} elseif ($this->columns && $this->select) {
 				$insert = "INSERT INTO $table (" . $this->columns->render() . ') ' . $this->select->setDb($this->db)->render();
+			}
+			if ($this->onDuplicateKey) {
+				$insert .= ' ' . $this->onDuplicateKey->render();
 			}
 			return $insert;
 		}
