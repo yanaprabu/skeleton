@@ -40,5 +40,19 @@ class Sql_InsertTest extends UnitTestCase {
   		$this->assertEqual($Sql_Insert->render(), "INSERT INTO foobar (foo, bar) SELECT fox, box FROM barfoo WHERE (id!= 42)");
 
 	}
+
+	public function testSql_InsertDuplicateKey() {
+
+		$Sql_Insert = new A_Sql_Insert();
+		$Sql_Insert->table('foobar')
+			->values(array(
+				'foo' => 'barbaz'
+			))
+			->updateIfDuplicateKey('foo');
+
+		$query = $Sql_Insert->render();
+
+		$this->assertEqual($query, 'INSERT INTO foobar (foo) VALUES (\'barbaz\') ON DUPLICATE KEY UPDATE `foo` = VALUES(`foo`)');
+	}
 	
 }
