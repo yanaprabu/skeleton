@@ -102,6 +102,21 @@ class A_Collection implements Iterator, ArrayAccess
 		}
 		return $this;
 	}
+
+	/**
+	 * Appends an array or a Collection of items to the end of the collection.
+	 * 
+	 * @param array $values Values to append to the collection
+	 * @param bool $ignoreNull Won't add null items if set to true (optional, default false)
+	 * @return $this
+	 */
+	public function addAll($values, $ignoreNull=false)
+	{
+		foreach ($values as $value) {
+			$this->add($value, $ignoreNull);
+		}
+		return $this;
+	}
 	
 	/**
 	 * Removed the specified key from this Collection
