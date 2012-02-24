@@ -88,6 +88,52 @@ class A_CollectionTest extends UnitTestCase
 		$return = $collection->add(null);
 		$this->assertEqual($return, $collection);
 	}
+
+	public function testAddAll()
+	{
+		$collection = new A_Collection(array(
+			'foo' => 'bar',
+			'barfoo' => 'baz'
+		));
+		
+		$array = array(2, 4, 'foo');
+		$collection->addAll($array);
+
+		$this->assertEqual($collection->toArray(), array(
+			'foo' => 'bar',
+			'barfoo' => 'baz',
+			0 => 2,
+			1 => 4,
+			2 => 'foo'
+		));
+
+		$collection = new A_Collection();
+		$otherCollection = new A_Collection(array(
+			'foo' => 'bar',
+			'blah' => 'baz'
+		));
+
+		$collection->addAll($otherCollection);
+
+		$this->assertEqual($collection->toArray(), array(
+			0 => 'bar',
+			1 => 'baz'
+		));
+
+		$collection = new A_Collection();
+		$array = array('foo', 'bar', null, false, 0, '', 'baz');
+
+		$collection->addAll($array, true);
+
+		$this->assertEqual($collection->toArray(), array(
+			'foo',
+			'bar',
+			false,
+			0,
+			'',
+			'baz'
+		));
+	}
 	
 	public function testRemove()
 	{
