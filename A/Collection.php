@@ -112,8 +112,10 @@ class A_Collection implements Iterator, ArrayAccess
 	 */
 	public function addAll($values, $ignoreNull=false)
 	{
-		foreach ($values as $value) {
-			$this->add($value, $ignoreNull);
+		if (is_array($values) || (is_object($values) && $values instanceOf Traversable)) {
+			foreach ($values as $value) {
+				$this->add($value, $ignoreNull);
+			}
 		}
 		return $this;
 	}
