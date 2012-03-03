@@ -16,12 +16,12 @@
 class A_Session
 {
 
-	protected $_data = array();
 	protected $_a_namespace = 'A_Session';
 	protected $_namespace;
 	protected $_regenerate;
 	protected $_isstarted = false;
 	protected $_p3p = '';
+	public $_debug = array();
 	
 	/**
 	 * __construct
@@ -31,6 +31,7 @@ class A_Session
 	 */
 	public function __construct($namespace=null, $regenerate=false)
 	{
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . '__construct()';
 		$this->initNamespace($namespace);
 		$this->_regenerate = $regenerate;
 	}
@@ -43,6 +44,7 @@ class A_Session
 	 */
 	public function initNamespace($namespace=null)
 	{
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'initNamespace()';
 		if ($namespace) {
 			$this->_namespace = $namespace;
 		}
@@ -51,9 +53,6 @@ class A_Session
 				if (! isset($_SESSION[$this->_namespace])) {
 					$_SESSION[$this->_namespace] = array();
 				}
-				$this->_data =& $_SESSION[$this->_namespace];
-			} else {
-				$this->_data =& $_SESSION;
 			}
 			$this->_isstarted = true;	// already started
 			$this->doExpiration();
@@ -103,9 +102,12 @@ class A_Session
 	 */
 	public function start()
 	{
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'start()';
 		if (session_id() == '') {
 			$msie = isset($_SERVER['HTTP_USER_AGENT']) ? strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE') : '';
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . "msie=$msie";
 			if ($msie) {
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limiter()';
 				session_cache_limiter('must-revalidate');
 			}
 			session_start();
@@ -128,7 +130,16 @@ class A_Session
 	public function get($name, $default=null)
 	{
 		$this->start();
-		return isset($this->_data[$name]) ? $this->_data[$name] : $default;
+		if ($name !== null) {
+			if ($this->_namespace) {
+				if (isset($_SESSION[$this->_namespace][$name])) {
+					return $_SESSION[$this->_namespace][$name];
+				}
+			} elseif (isset($_SESSION[$name])) {
+				return $_SESSION[$name];
+			}
+		}
+		return $default;
 	}
 	
 	/**
@@ -140,13 +151,21 @@ class A_Session
 	{
 		$this->start();
 		if ($name !== null) {
-			if (!isset($this->_data[$name])) {
-				$this->_data[$name] = array();
+			if ($this->_namespace) {
+				if (!isset($_SESSION[$this->_namespace][$name])) {
+					$_SESSION[$this->_namespace][$name] = array();
+				}
+				return $_SESSION[$this->_namespace][$name];
+			} else {
+				//
+				if (!isset($_SESSION[$name])) {
+					$_SESSION[$name] = array();
+				}
+				return $_SESSION[$name];
 			}
-			return $this->_data[$name];
-		} else {
-			return $this->_data;
 		}
+		$value = array();
+		return $value;
 	}
 	
 	/**
@@ -161,15 +180,21 @@ class A_Session
 	{
 		if ($name) {
 			$this->start();
-			if ($value !== null) {
-				$this->_data[$name] = $value;
-			} elseif ($this->_namespace) {
-				unset($_SESSION[$this->_namespace][$name]);
-			} else {
-				unset($_SESSION[$name]);
-			}
-			if ($count > 0) {
-				$this->expire($name, $count);
+			if ($name) {
+				if ($value !== null) {
+					if ($this->_namespace) {
+						$_SESSION[$this->_namespace][$name] = $value;
+					} else {
+						$_SESSION[$name] = $value;
+					}
+				} elseif ($this->_namespace) {
+					unset($_SESSION[$this->_namespace][$name]);
+				} else {
+					unset($_SESSION[$name]);
+				}
+				if ($count > 0) {
+					$this->expire($name, $count);
+				}
 			}
 		}
 		return $this;
@@ -184,7 +209,11 @@ class A_Session
 	public function has($name)
 	{
 		$this->start();
-		return isset($this->_data[$name]);
+		if ($this->_namespace) {
+			return isset($_SESSION[$this->_namespace][$name]);
+		} else {
+			return isset($_SESSION[$name]);
+		}
 	}
 	
 	/**
@@ -229,12 +258,17 @@ class A_Session
 	 */
 	protected function doExpiration()
 	{
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'doExpiration()';
 		if (isset($_SESSION[$this->_a_namespace]['expire'])) {
 			foreach ($_SESSION[$this->_a_namespace]['expire'] as $name => $value) {
 				if ($value > 0) {
 					$_SESSION[$this->_a_namespace]['expire'][$name]--;		// decrement counter if > 1
 				} else {
-					unset($this->_data[$name]);								// remove session var
+					if ($this->_namespace) {
+						unset($_SESSION[$this->_namespace][$name]);			// remove session var
+					} else {
+						unset($_SESSION[$name]);							// remove session var
+					}
 					unset($_SESSION[$this->_a_namespace]['expire'][$name]);	// remove counter
 				}
 			}
@@ -248,6 +282,7 @@ class A_Session
 	 */
 	public function close()
 	{
+		$this->start();
 		session_write_close();
 	}
 	
@@ -258,6 +293,8 @@ class A_Session
 	 */
 	public function destroy()
 	{
+$this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'destroy()';
+		$this->start();
 		if ($this->_namespace) {
 			$_SESSION[$this->_namespace] = array();
 		} else {
