@@ -271,7 +271,7 @@ class A_Model
 			
 			// check if there are rules and run those as well
 			if ($this->rules) {
-				foreach ($this->rules as $name => $srule) { 
+				foreach ($this->rules as $name => $rule) { 
 					$validator->addRule($rule);
 				}
 			}			
