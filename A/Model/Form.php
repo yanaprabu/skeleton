@@ -75,7 +75,7 @@ class A_Model_Form extends A_Model
 	public function run($locator)
 	{
 		$request = $locator->get('Request');
-		$this->processRequest($request);
+		$this->isValid($request);
 		return $this->error;
 	}
 	
