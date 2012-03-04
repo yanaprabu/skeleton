@@ -44,7 +44,7 @@ class A_Model_Form extends A_Model
     public function setSubmitParameterName($name)
     {
 		if ($name) {
-			$this->submit_field_name = $name;
+			$this->submit_param = $name;
 		}
 		return $this;
 	}
