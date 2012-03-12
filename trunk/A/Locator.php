@@ -114,15 +114,15 @@ class A_Locator
 	 */
 	public function loadClass($class='', $dir='', $autoload=false)
 	{
-		if (class_exists($class, $autoload)) {
-			return true;
-		}
-		
 		$class = ltrim($class, '\\');
 		// convert to dir separators
 		$file = str_replace(array('_','\\','-'), array('/','/','_'), $class);
 		//allow underscores that are not dir separators using dashes
 		$class = str_replace('-', '_', $class);
+		
+		if (class_exists($class, $autoload)) {
+			return true;
+		}
 		
 		$pos = strripos($class, '\\');
 		if ($pos !== false) {		// namespace found
