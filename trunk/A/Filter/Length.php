@@ -25,8 +25,9 @@ class A_Filter_Length extends A_Filter_Base
 	
 	public function filter()
 	{
-		if ($this->length < strlen($this->getValue())) {
-			$value = substr($this->getValue(), 0, $this->length);
+		$value = $this->getValue();
+		if ($this->length < strlen($value)) {
+			$value = substr($value, 0, $this->length);
 		}
 		return $value;
 	}
