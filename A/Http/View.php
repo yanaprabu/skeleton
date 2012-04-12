@@ -96,14 +96,14 @@ class A_Http_View implements A_Renderer
 	public function setCookie()
 	{
 		$args = func_get_args();
-		$this->cookie[$args[0]] = $args;
+		$this->cookies[$args[0]] = $args;
 		return $this;
 	}
 	
 	public function getCookie($name)
 	{
-		if (isset($this->cookie[$name])) {
-			return $this->cookie[$name];
+		if (isset($this->cookies[$name])) {
+			return $this->cookies[$name];
 		}
 	}
 	
