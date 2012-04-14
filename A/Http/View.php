@@ -282,10 +282,11 @@ class A_Http_View implements A_Renderer
 	 * @param mixed $data
 	 * @return string
 	 */
-	public function partial($template, $data=null)
+	public function partial($template, $data=null, $escape_fields=null)
 	{
 		$template = $this->_getPath($template);
-		return $this->_include($template, $data);
+		$str = $this->_include($template, $data, $escape_fields);
+		return $str;
 	}
 	
 	/**
@@ -296,31 +297,20 @@ class A_Http_View implements A_Renderer
 	 * @param mixed $data
 	 * @return string
 	 */
-	public function partialLoop($template, $name, $data=null)
+	public function partialLoop($template, $name, $data=null, $escape_fields=null)
 	{
 		$template = $this->_getPath($template);
 		$str = '';
 		if ($data) {
-			$tmp = $this->data[$name];		// save current value
 			// $name and $data set so each element in $data set to $name
 			foreach ($data as $value) {
-				$this->data[$name] = $value;
-				$str .= $this->_include($template);
+				$str .= $this->_include($template, array($name=>$value), $escape_fields);
 			}
-			$this->data[$name] = $tmp;		// restore original value
 		} else {
 			$tmp = array();
 			// $name but not $data, so $name contains $data. set() to $keys in each element array
 			foreach ($name as $data) {
-				if (is_array($data)) {
-					foreach ($data as $key => $value) {
-						if (!isset($tmp[$key])) {		// if not previously saved then save current value
-							$tmp[$key] = isset($this->data[$key]) ? $this->data[$key] : null;
-						}
-						$this->data[$key] = $value;
-					}
-				}
-				$str .= $this->_include($template);
+				$str .= $this->_include($template, $data, $escape_fields);
 			}
 			// restore original values
 			foreach($tmp as $key => $value) {
@@ -388,7 +378,7 @@ class A_Http_View implements A_Renderer
 			ob_start();
 			if ($this->use_local_vars && $this->data) {
 				$this->_escape();
-				extract($this->data, EXTR_REFS);
+				extract($this->data);
 			}
 			if ((func_num_args() > 1) && is_array(func_get_arg(1))) {		// array of values passed
 				if ((func_num_args() > 2) && is_array(func_get_arg(2))) {	// array of fields to escaped passed
@@ -399,6 +389,7 @@ class A_Http_View implements A_Renderer
 			}
 			include func_get_arg(0);
 			return ob_get_clean();
+			return $str;
 		}
 	}
 	
