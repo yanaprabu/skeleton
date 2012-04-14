@@ -123,13 +123,22 @@ class Http_ViewTest extends UnitTestCase {
 		$file = 'foobar.php';
 		$view->setTemplatePath(dirname(__FILE__) . '/templates');
 
+		$str = '<hr style="foo"> &';
+		$str_escaped = '&lt;hr style=&quot;foo&quot;&gt; &amp;';
+
 		$view->set('foo', 'Foo. ');
 		$view->set('bar', 'Bar. ');
 		$this->assertEqual('Foo. Bar. ', $view->partial($file));
 
+		$view->set('foo', 'X');
+		$view->set('bar', 'Y');
+		$this->assertEqual('Foo. Bar. ', $view->partial($file, array('foo'=>'Foo. ', 'bar'=>'Bar. ')));
+		$this->assertEqual('X', $view->get('foo'));
+		$this->assertEqual('Y', $view->get('bar'));
+
 		$view->set('foo', '');
 		$view->set('bar', '');
-		$this->assertEqual('Foo. Bar. ', $view->partial($file, array('foo'=>'Foo. ', 'bar'=>'Bar. ')));
+		$this->assertEqual($str_escaped.$str, $view->partial($file, array('foo'=>$str, 'bar'=>$str), array('foo')));
 	}
 	
 	function testHttp_ViewPartialLoop() {
