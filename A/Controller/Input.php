@@ -97,8 +97,8 @@ class A_Controller_Input extends A_Controller_Action
 					$names = $rule['names'] ? $rule['names'] : $param_names;
 					foreach ($names as $name) {
 						$rule['rule']->setName($name);		// set all rules to work on this parameter
-						if (! $validator->validate($request, $rule['rule'])) {
-							$this->params[$name]->setError($validator->getErrorMsg());
+						if (! $rule['rule']->isValid($request)) {
+							$this->params[$name]->setError($rule['rule']->getErrorMsg());
 							$this->error = true;
 						}
 					}
