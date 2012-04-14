@@ -1,10 +1,11 @@
 <?php
-ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 ini_set('display_errors', 1);
 ini_set('log_errors', 'Off');
 require_once('config.php');
 require_once(SIMPLETESTDIR . 'simpletest.php');
 require_once(SIMPLETESTDIR . 'unit_tester.php');
+require_once(SIMPLETESTDIR . 'web_tester.php');
 require_once(SIMPLETESTDIR . 'mock_objects.php');
 require_once(SIMPLETESTDIR . 'reporter.php');
 
