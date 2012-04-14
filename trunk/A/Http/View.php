@@ -17,6 +17,7 @@ class A_Http_View implements A_Renderer
 {
 
 	protected $data = array();
+	protected $escape_fields = array();		// array of keys in $data to escape, values are true/false whether field is escaped
 	protected $template = null;
 	protected $template_type = 'templates';
 	protected $template_path = 'templates';
@@ -27,7 +28,6 @@ class A_Http_View implements A_Renderer
 	protected $cookies = array();
 	protected $redirect = null;
 	protected $escape_quote_style = ENT_QUOTES;
-	protected $escape_output = false;
 	protected $character_set = 'UTF-8';
 	protected $locator = null;
 	protected $load;
@@ -66,12 +66,6 @@ class A_Http_View implements A_Renderer
 		return $this;
 	}
 	
-	public function setEscape($escape_output)
-	{
-		$this->escape_output = $escape_output;
-		return $this;
-	}
-	
 	public function useLocalVars($use_local_vars)
 	{
 		$this->use_local_vars = $use_local_vars;
@@ -80,10 +74,14 @@ class A_Http_View implements A_Renderer
 	
 	public function setHeader($field, $param=null)
 	{
-		if (is_array($param)) {
-			$this->headers[$field] = $param;
-		} else {
-			$this->headers[$field][0] = $param;
+		if (is_string($field)) {
+			if (is_array($param)) {
+				$this->headers[$field] = $param;
+			} elseif ($param === null) {
+				unset($this->headers[$field]);
+			} else {
+				$this->headers[$field] = array(0 => $param);
+			}
 		}
 		return $this;
 	}
@@ -93,10 +91,15 @@ class A_Http_View implements A_Renderer
 		return $this->headers;
 	}
 	
+	/**
+	 * @param Parameters the same as the PHP setcookie() function
+	 */
 	public function setCookie()
 	{
 		$args = func_get_args();
-		$this->cookies[$args[0]] = $args;
+		if ($args) {
+			$this->cookies[$args[0]] = $args;
+		}
 		return $this;
 	}
 	
@@ -168,10 +171,17 @@ class A_Http_View implements A_Renderer
 	{
 		if ($value !== null) {
 			$this->data[$name] = $value;
+			if (isset($this->escape_fields[$name])) {
+				$this->escape_fields[$name] = false;
+			}
 		} elseif ($default !== null) {
 			$this->data[$name] = $default;
+			if (isset($this->escape_fields[$name])) {
+				$this->escape_fields[$name] = false;
+			}
 		} else {
 			unset($this->data[$name]);
+			unset($this->escape_fields[$name]);
 		}
 		return $this;
 	}
@@ -194,7 +204,56 @@ class A_Http_View implements A_Renderer
 	
 	public function escape($content, $escape_quote_style=null)
 	{
+		if (extension_loaded('mbstring')) {
+			mb_substitute_character('none');
+			$content = mb_convert_encoding($content, $this->character_set, $this->character_set);
+		}
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
+	}
+	
+	public function setEscape($name, $value, $default=null)
+	{
+		$this->escape_fields[$name] = false;			// Register this to be escaped later. False because not yet escaped.
+		$this->set($name, $value, $default);
+	}
+	
+	/**
+	 * @param $name mixed field name or array of field names to be escaped
+	 */
+	public function escapeField($names)
+	{
+		if (!is_array($names)) {
+			$names = array($names);
+		}
+		foreach ($names as $name) {
+			if (!isset($this->escape_fields[$name])) {		// skip if already registered
+				$this->escape_fields[$name] = false;			// Register this to be escaped later. False because not yet escaped.
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public function _escape()
+	{
+		foreach ($this->escape_fields as $field => $isEscaped) {
+			if (!$isEscaped) {
+				$this->data[$field] =$this->escape($this->data[$field]);
+				$this->escape_fields[$field] = true;		// set to escaped
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public function _escape_array($data, $escape_fields)
+	{
+		foreach ($escape_fields as $field) {
+			$data[$field] = $this->escape($data[$field]);
+		}
+		return $data;
 	}
 	
 	public function _getPath($template)
@@ -226,7 +285,7 @@ class A_Http_View implements A_Renderer
 	public function partial($template, $data=null)
 	{
 		$template = $this->_getPath($template);
-		return $this->escape_output ? $this->escape($this->_include($template, $data)) : $this->_include($template, $data);
+		return $this->_include($template, $data);
 	}
 	
 	/**
@@ -242,23 +301,33 @@ class A_Http_View implements A_Renderer
 		$template = $this->_getPath($template);
 		$str = '';
 		if ($data) {
+			$tmp = $this->data[$name];		// save current value
 			// $name and $data set so each element in $data set to $name
 			foreach ($data as $value) {
 				$this->data[$name] = $value;
 				$str .= $this->_include($template);
 			}
+			$this->data[$name] = $tmp;		// restore original value
 		} else {
+			$tmp = array();
 			// $name but not $data, so $name contains $data. set() to $keys in each element array
 			foreach ($name as $data) {
 				if (is_array($data)) {
 					foreach ($data as $key => $value) {
+						if (!isset($tmp[$key])) {		// if not previously saved then save current value
+							$tmp[$key] = isset($this->data[$key]) ? $this->data[$key] : null;
+						}
 						$this->data[$key] = $value;
 					}
 				}
 				$str .= $this->_include($template);
 			}
+			// restore original values
+			foreach($tmp as $key => $value) {
+				$this->data[$key] = $value;
+			}
 		}
-		return $this->escape_output ? $this->escape($str) : $str;
+		return $str;
 	}
 	
 	/**
@@ -279,7 +348,7 @@ class A_Http_View implements A_Renderer
 	 */
 	public function setPartialLoop($name, $template, $data_name, $data=null)
 	{
-		$this->set($name, $this->partialLoop($template, $name, $data));
+		$this->set($name, $this->partialLoop($template, $data_name, $data));
 		return $this;
 	}
 	
@@ -288,7 +357,9 @@ class A_Http_View implements A_Renderer
 		if (!$template && $this->template) {
 			$template = $this->template;
 		}
-		if ($scope) $this->template_scope = $scope;
+		if ($scope) {
+			$this->template_scope = $scope;
+		}
 		if ($template) {
 			$this->content = $this->_include($this->_getPath($template));
 		} elseif ($this->renderer) {
@@ -305,7 +376,7 @@ class A_Http_View implements A_Renderer
 				$this->content = $this->renderer->render();
 			}
 		}
-		return $this->escape_output ? $this->escape($this->content) : $this->content;
+		return $this->content;
 	}
 	
 	/*
@@ -313,13 +384,16 @@ class A_Http_View implements A_Renderer
 	 */
 	protected function _include()
 	{
-		if (func_num_args() > 0) {					// must have at least the template path
+		if (func_num_args() > 0) {											// must have at least the template path
 			ob_start();
 			if ($this->use_local_vars && $this->data) {
+				$this->_escape();
 				extract($this->data, EXTR_REFS);
 			}
-			if (func_num_args() > 1) {				// extract array of values if passed
-				if (is_array(func_get_arg(1))) {
+			if ((func_num_args() > 1) && is_array(func_get_arg(1))) {		// array of values passed
+				if ((func_num_args() > 2) && is_array(func_get_arg(2))) {	// array of fields to escaped passed
+					extract($this->_escape_array(func_get_arg(1), func_get_arg(2)));
+				} else {
 					extract(func_get_arg(1));
 				}
 			}
