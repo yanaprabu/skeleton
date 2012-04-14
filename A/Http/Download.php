@@ -21,7 +21,9 @@ class A_Http_Download
 	protected $content_length = 0;
 	protected $source_file = '';
 	protected $target_file = '';
-	protected $errorMsg = '';
+	protected $target_file_type = 'attachment';
+	protected $headers = array();
+	protected $error = 0;
 	
 	/**
 	 * Set the mime type of the file to be downloaded to be specified in the header
@@ -69,12 +71,16 @@ class A_Http_Download
 	 * Set the filename to be used on the client.  Use if no source file or if you want a different name than the source file.
 	 * 
 	 * @param string $name
+	 * @param string $type 'attachment' or 'inline' or 'hidden'
 	 * @return $this
 	 */
-	public function setTargetFileName($name)
+	public function setTargetFileName($name, $type='')
 	{
 		if ($name) {
 			$this->target_file = $name;
+		}
+		if ($type) {
+			$this->target_file_type = $type;
 		}
 		return $this;
 	}
@@ -89,6 +95,21 @@ class A_Http_Download
 	{
 		if ($length >= 0) {
 			$this->content_length = $length;
+		}
+		return $this;
+	}
+	
+	/**
+	 * Add additional header to be sent.
+	 * 
+	 * @param string $name
+	 * @param string $value
+	 * @return $this
+	 */
+	public function setHeader($name, $value)
+	{
+		if ($name) {
+			$this->headers[$name] = $value;
 		}
 		return $this;
 	}
@@ -131,31 +152,56 @@ class A_Http_Download
 				 header("Pragma: public");	//	Stop old IEs saving the download script by mistake
 				 */
 				// if target file name is supplied add it to header
-				if ($this->target_file) {
-					$this->_header('Content-Disposition', 'attachment; filename=' . $this->target_file);
+				if ($this->target_file_type) {
+					if ($this->target_file_type) {
+						$type = $this->target_file_type . '; ';
+					} else {
+						$type = '';
+					}
+					$this->_header('Content-Disposition', $type . 'filename=' . $this->target_file);
+				}
+				if ($this->headers) {
+					foreach ($this->headers as $name => $value) {
+						$this->_header($name, $value);
+					}
 				}
 
 				// if source file path is specified then dump the file following the header
 				if ($this->source_file) {
 					header('Content-Length: ' . @filesize($this->source_file));
 					if (@readfile($this->source_file) === false) {
-						$this->errorMsg = 'Error reading file ' . $this->source_file . '. ';
+						$this->error = 3;
 					}
 				} elseif ($this->content_length > 0){
 					header('Content-Length: ' . $this->content_length);
 				}
 			} else {
-				$this->errorMsg = 'No MIME type. ';
+				$this->error = 2;
 			}
 		} else {
-			$this->errorMsg = 'Headers sent. ';
+			$this->error = 1;
 		}
-		return $this->errorMsg;
+		return $this->error;
 	}
 	
 	public function isError()
 	{
-		return $this->errorMsg;
+		return $this->error;
+	}
+
+	public function getError()
+	{
+		return $this->error;
+	}
+
+	public function getErrorMsg()
+	{
+		$messages = array(
+			1 => 'Headers sent. ',
+			2 => 'No MIME type. ',
+			3 => 'Error reading file ' . $this->source_file . '. ',
+			);
+		return isset($messages[$this->error]) ? $messages[$this->error] : '';
 	}
 
 }
