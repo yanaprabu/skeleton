@@ -371,8 +371,12 @@ class A_Http_View implements A_Renderer
 	
 	/*
 	 * Include a PHP file, passing internal data to it as variables
+	 * Note: no local variables are used in this function to keep the namespace clean for extracted variables
+	 * @param $template - the name of the template file
+	 * @param $data - optional array data for template: keys are field names
+	 * @param $escaped_fields - optional array of field names to escape
 	 */
-	protected function _include()
+	protected function _include(/* $template, $data=array(), $escaped_fields=array() */)
 	{
 		if (func_num_args() > 0) {											// must have at least the template path
 			ob_start();
@@ -389,7 +393,6 @@ class A_Http_View implements A_Renderer
 			}
 			include func_get_arg(0);
 			return ob_get_clean();
-			return $str;
 		}
 	}
 	
