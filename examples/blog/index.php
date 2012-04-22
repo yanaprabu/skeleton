@@ -18,6 +18,8 @@ function dump($var=null, $name='', $now=false) {
 	}
 }
 
+
+
 // Basic config data
 $file_path = dirname($_SERVER['SCRIPT_FILENAME']);
 $url_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');

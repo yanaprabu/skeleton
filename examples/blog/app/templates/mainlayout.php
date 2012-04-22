@@ -20,11 +20,18 @@
 		<ul id="mainnav">
 			<li><a href="<?php echo $BASE ?>">Home</a></li>
 			<li><a href="<?php echo $BASE ?>posts/">Posts</a></li>
-			<?php if (isset($user) && $user->isLoggedIn()) echo "<li><a href=\"{$BASE}admin/\">Admin</a></li>"; ?>
+			<?php if (isset($user) && $user->isLoggedIn()) { echo "<li><a href=\"{$BASE}admin/\">Admin</a></li>"; } ?>
 		</ul>
 		
 		<div id="loginbox">
-			<p>Admin: <a href="<?php echo $BASE ?>login/">login</a> | <a href="<?php echo $BASE ?>login/logout">logout</a></p>
+			<p><?php if (isset($user) && $user->isLoggedIn()) { ?> 
+					<a href="<?php echo $BASE ?>user/profile">Profile</a> |
+					<a href="<?php echo $BASE ?>user/logout">Logout</a> 
+				<?php } else { ?> 
+					<a href="<?php echo $BASE ?>user/login/">Login</a> |
+					<a href="<?php echo $BASE ?>user/register/">Register</a>
+				<?php } ?>
+			</p>
 		</div>
 	</div>
 	
