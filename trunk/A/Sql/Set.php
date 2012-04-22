@@ -19,7 +19,7 @@ class A_Sql_Set extends A_Sql_Statement
 	public function addExpression($arg1, $arg2)
 	{
 		$this->escapeListeners[] = $expression = new A_Sql_Expression($arg1, $arg2);
-		$this->data[] = $expression;;
+		$this->data[] = $expression;
 	}
 	
 	public function render()

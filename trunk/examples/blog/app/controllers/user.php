@@ -72,8 +72,6 @@ class user extends A_Controller_Action {
 			$usermodel = $this->_load('app')->model('users');
 			$usermodel->addRule(new A_Rule_Match('passwordagain', 'password', 'Fields password and passwordagain do not match'));
 			$usermodel->addRule(new A_Rule_Regexp('/agree/', 'tos', 'Dont agree with the terms of service?'), 'tos'); 
-          	// Exclude some fields not needed in the validation of the model
-         	//   $usermodel->excludeRules(array('id','firstname','lastname','active','access'));
 				
 			// Inlcude only rules for these fields
 			$usermodel->includeRules(array('username', 'password', 'passwordagain', 'email', 'tos'));
@@ -84,7 +82,7 @@ class user extends A_Controller_Action {
 				$this->response->setPartial('maincontent', 'user/register/registerForm', array('messages' => $messages));
 			} 
 			else 
-			{
+			{	
 				if($usermodel->isUsernameAvailable($request->get('username')))
 				{
 					if($usermodel->isEmailAvailable($request->get('email')))
@@ -119,7 +117,7 @@ class user extends A_Controller_Action {
 					{ 
 						if($usermodel->isAccountActivated($request->get('username'), $request->get('email')))
 						{
-							if($usermodel->isPasswordCorrect($request->get('username'), $request->get('password')))
+							if($usermodel->isPasswordCorrect($request->get('username'), $request->get('password'), $locator->get('Config')->get('SITESALT')))
 							{
 								// Login the user
 								$usermodel->login($request->get('username'), $request->get('password'));
@@ -153,7 +151,7 @@ class user extends A_Controller_Action {
 		}
 		
 	}
-	
+
 	private function mailActivationMessage($email, $activationlink){
 		$subject = 'Registration at this app';
 		$message = 'Thanks for registering, ' . "\n\r";
@@ -165,38 +163,12 @@ class user extends A_Controller_Action {
 	}
 	
 	public function activate($locator){
-		$errmsg = '';
+
 		// get the activation key
 		$activationkey = $this->request->get('id');
-		// @todo: do some validation to make sure it's a 32 string
 		
 		$model = $this->_load('app')->model('users');
-		
 		$model->activate($activationkey);
-/*
-		if(!empty($activationkey)){
-			// @Todo: Check if the account already been activated?
-			
-				// If yes, user might not know. Show login screen
-
-				// If not, activate account + sign in user + redirect to certain page		
-			
-			$result = $model->activate($activationkey);
-			if($result){
-				// registration activation succesfull
-				$errmsg = 'Your account is now activated';
-			} else {
-				// something went wrong..
-				$errmsg = 'We could not activate the account.';
-			}
-			
-		} else {
-			// User is on activate page but the activation key is missing. What to show?
-			$errmsg = 'The activation key is missing.';
-		}
-		$template = $this->_load()->template('user/activate');
-		$template->set('errmsg', $model->getErrorMsg());
-*/
 		
 		$this->response->setPartial('maincontent', 'user/activate', array('errmsg' => $model->getErrorMsg(' ')));
 		
@@ -234,37 +206,47 @@ class user extends A_Controller_Action {
 	}
 		
 	public function profile($locator){
-		$session = $locator->get('Session');
-		$user = $locator->get('UserSession');
+		$session 	= $locator->get('Session');
+		$user 		= $locator->get('UserSession');
 		$session->start();
+		$messages 	= array();
+		$request 	= $this->request;
 		
-		$errmsg = '';
-
 		// If user is not signed in don't show profile page but redirect to login?
 		if (!$user->isLoggedIn()) {
 			$this->_redirect($locator->get('Config')->get('BASE') . 'user/login/');	// build redirect URL back to this page		
 		}
-				
-		$form = new A_Model_Form();
-		// @todo: what info do we want
 		
 		// To show the profile we need the model
 		$model = $this->_load('app')->model('users');
-		// @todo: load user data from db
+		$userdata = $model->find($user->get('id'));
 		
-		// If profile form is posted and is valid
-		if($form->isValid($this->request)){
-			// @todo: save/update profile data
+		if($request->isPost()){ 
+			$model->includeRules(array('firstname', 'lastname', 'email'));
+			if(!$model->isValid($request)){
+				$messages[] = $model->getErrorMsg("</li>\n<li>");
+				$data = array(
+					'firstname' => $request->get('firstname'),
+					'lastname' 	=> $request->get('lastname'),
+					'email' 	=> $request->get('email')
+				);
+				$this->response->setPartial('maincontent', 'user/profile', array( 'messages' => $messages, 'data'=>$data ));
+			} else {
+				$data = array(
+					'firstname' => $model->get('firstname'),
+					'lastname' 	=> $model->get('lastname'),
+					'email' 	=> $model->get('email')
+				);
+				$user_id = $user->get('id');
+				$model->updateUser($data, $user_id);
+				$this->response->setPartial('maincontent', 'user/profile', array( 'messages' => $messages, 'data'=>$data ));
+			}
 			
-		} elseif($form->isSubmitted()){		// submitted form has errors
-			$errmsg =  $form->getErrorMsg(', ');
+		} else {
+			
+			$this->response->setPartial('maincontent', 'user/profile', array( 'messages' => $messages, 'data' => $userdata ));
 		}
 		
-		// Show profile page and form
-		$template = $this->_load()->template('user/profile');
-		$template->set('errmsg', $errmsg);
-		$template->set('user', $user);
-		$this->response->set('maincontent', $template);
 	}
 	
 

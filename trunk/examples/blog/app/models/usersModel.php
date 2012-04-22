@@ -19,8 +19,9 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('access'));
 
 		$this->addRule(new A_Rule_Numeric('id', 'invalid ID'), 'id');
-		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'The firstname is not valid'), 'firstname'); 
-		$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'lastname', 'The lastname is not valid'), 'lastname'); 
+		//$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'The first name is not valid'), 'firstname'); 
+		$this->addRule(new A_Rule_Regexp('/^[A-Za-z ]+$/', 'firstname', 'The first name is not valid'), 'firstname'); 
+		$this->addRule(new A_Rule_Regexp('/^[0-9a-zA-Z\-\ \\\']+$/', 'lastname', 'The last name is not valid'), 'lastname'); 
 		$this->addRule(new A_Rule_Length(3, 15, 'username', 'The username must be between 3 to 25 characters'), 'username'); 
 		$this->addRule(new A_Rule_Regexp('/^[A-Za-z0-9]+$/D', 'username', 'The username is not valid'), 'username');		
 		$this->addRule(new A_Rule_Regexp('/[0-9a-zA-Z\-\_\@\.]+/', 'password', 'The password is not valid'), 'password'); 
@@ -51,31 +52,34 @@ class usersModel extends A_Model {
 	
 	public function findAll(){
 		$this->errorMsg = array();;
-		$rows = $this->datasource->find(array('active'=>1));
-		if (isset($rows[0])) {
-			return $rows;
+		$result = $this->datasource->find(array('active'=>1));
+		if($result->numRows() > 0) {
+			return $result->fetchAll();
 		} else {
-			$this->errorMsg[] = $this->datasource->getErrorMsg();
+			return array();
 		}
-		return array();
 	}
 	
 	public function find($id){
-		$rows = $this->datasource->find(array('id'=>$id));
-		return $rows;
+		$result = $this->datasource->find(array('id'=>$id));
+		if($result->numRows() > 0) {
+			return $result->current();
+		} else {
+			return array();
+		}
 	}
 	
 	public function delete($id){}	
-	
+
 	public function login($username, $password, $sitesalt) {
 		$this->errorMsg = array();
 
-		$rows = $this->datasource->find(array('username'=>$username, 'active'=>1));
-		if (isset($rows[0])) { 
-			
-			if ($rows[0]['username'] == $username) { 
-				if ($rows[0]['password'] == hash('sha512', $rows[0]['usersalt'] . $password . $sitesalt)) {
-					return $rows[0];
+		$result = $this->datasource->find(array('username'=>$username, 'active'=>1));
+		if($result->numRows() > 0) {
+			$row = $result->current();
+			if ($row['username'] == $username) { 
+				if ($row['password'] == hash('sha512', $row['usersalt'] . $password . $sitesalt)) {
+					return $row;
 				} else {
 					$this->errorMsg[] = 'Password does not match. ';
 				}
@@ -92,15 +96,9 @@ class usersModel extends A_Model {
 		return $this->errorMsg;
 	}
 
-	
 	public function isUsernameAvailable($username){ 
-		$this->errorMsg = array();;
-		$rows = $this->datasource->find(array('username'=>$username));
-		if($this->datasource->isError()){
-			$this->error = true;
-			$this->errorMsg[] = $this->datasource->getErrorMsg();
-		}
-		if(!empty($rows)){
+		$result = $this->datasource->find(array('username'=>$username));
+		if($result->numRows() > 0) {
 			return false;
 		} else {
 			return true;
@@ -108,8 +106,8 @@ class usersModel extends A_Model {
 	}
 	
 	public function isEmailAvailable($email){	
-		$rows = $this->datasource->find(array('email'=>$email));
-		if(!empty($rows)){
+		$result = $this->datasource->find(array('email'=>$email));
+		if($result->numRows() > 0) {
 			return false;
 		} else {
 			return true;
@@ -117,8 +115,8 @@ class usersModel extends A_Model {
 	}
 	
 	public function usernameMatchesEmail($username, $email){ 
-		$rows = $this->datasource->find(array('username'=>$username ,'email'=>$email));
-		if(!empty($rows)){
+		$result = $this->datasource->find(array('username'=>$username ,'email'=>$email));
+		if($result->numRows() > 0) {
 			return true;
 		} else {
 			return false;
@@ -126,18 +124,23 @@ class usersModel extends A_Model {
 	}
 	
 	public function isAccountActivated($username, $email){
-		$rows = $this->datasource->find(array('username'=>$username ,'active'=>1));
-		if(!empty($rows)){
+		$result = $this->datasource->find(array('username'=>$username ,'active'=>1));
+		if($result->numRows() > 0) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	public function isPasswordCorrect($username, $password){
-		$rows = $this->datasource->find(array('username'=>$username ,'password'=>$password));
-		if(!empty($rows)){
-			return true;
+	public function isPasswordCorrect($username, $password, $sitesalt){
+		$result = $this->datasource->find(array('username'=>$username, 'active'=>1));
+		if($result->numRows() > 0) {
+			$row = $result->current();
+			if ($row['password'] == hash('sha512', $row['usersalt'] . $password . $sitesalt)) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -148,26 +151,41 @@ class usersModel extends A_Model {
 	}
 
 	public function insertUser($username, $password, $email, $activationkey, $usersalt, $sitesalt){
-		// @Todo insert
 		$user_hash = hash('sha512', $usersalt . $password . $sitesalt);
-		$this->datasource->insert(array('username'=>$username,'email'=>$email,'password'=>$user_hash, 'usersalt' => $usersalt, 'activationkey'=>$activationkey));
+		$this->datasource->insert(array(
+								'username'		=>$username,
+								'email'			=>$email,
+								'password'		=>$user_hash, 
+								'usersalt' 		=> $usersalt, 
+								'activationkey'	=>$activationkey
+								));
+	}
+	
+	public function updateUser( $data = array(), $id ) {
+
+		$result = $this->datasource->update($data, array('id'=>$id));
+
+		if($result->numRows() > 0) {
+			$this->errorMsg[] = 'User data updated';
+			return true;
+		} else {
+			$this->errorMsg[] = 'User data could not be updated';
+			return false;
+		}
 	}
 	
 	public function activate($activationkey){
 		if(!empty($activationkey)){
-			// @Todo: Check if the account already been activated?
 			
-				// If yes, user might not know. Show login screen
+			// Is there a row with this activationkey
+			$result = $this->datasource->find(array('activationkey'=>$activationkey));
 
-				// If not, activate account + sign in user + redirect to certain page		
-			
-			// Is there a row with this activationkey?
-			$rows = $this->datasource->find(array('activationkey'=>$activationkey));
 			// If there is activate the acount
-			if(!empty($rows)){
+			if($result->numRows() > 0) {
+				$row = $result->current();
 				// set to active and remove key
-				$rows = $this->datasource->update(array('active'=>'1', 'activationkey'=>''), array('id'=>$rows[0]['id']));
-				if($rows) {
+				$result = $this->datasource->update(array('active'=>'1', 'activationkey'=>''), array('id'=>$row['id']));
+				if($result->numRows() > 0) {
 					$this->errorMsg[] = 'Your account is now activated. ';
 					return true;
 				}
