@@ -7,20 +7,20 @@
  */
 
 /*
-    * PDO::__construct — Creates a PDO instance representing a connection to a database
-    * PDO::getAttribute — Retrieve a database connection attribute
-    * PDO::getAvailableDrivers — Return an array of available PDO drivers
-    * PDO::setAttribute — Set an attribute
-    * PDO::prepare — Prepares a statement for execution and returns a statement object
-    * PDO::exec — Execute an SQL statement and return the number of affected rows
-    * PDO::query — Executes an SQL statement, returning a result set as a PDOStatement object
-    * PDO::quote — Quotes a string for use in a query.
-    * PDO::lastInsertId — Returns the ID of the last inserted row or sequence value
-    * PDO::beginTransaction  — Initiates a transaction
-    * PDO::commit — Commits a transaction
-    * PDO::rollBack — Rolls back a transaction
-    * PDO::errorCode — Fetch the SQLSTATE associated with the last operation on the database handle
-    * PDO::errorInfo — Fetch extended error information associated with the last operation on the database handle
+    * PDO::__construct - Creates a PDO instance representing a connection to a database
+    * PDO::getAttribute - Retrieve a database connection attribute
+    * PDO::getAvailableDrivers - Return an array of available PDO drivers
+    * PDO::setAttribute - Set an attribute
+    * PDO::prepare - Prepares a statement for execution and returns a statement object
+    * PDO::exec - Execute an SQL statement and return the number of affected rows
+    * PDO::query - Executes an SQL statement, returning a result set as a PDOStatement object
+    * PDO::quote - Quotes a string for use in a query.
+    * PDO::lastInsertId - Returns the ID of the last inserted row or sequence value
+    * PDO::beginTransaction  - Initiates a transaction
+    * PDO::commit - Commits a transaction
+    * PDO::rollBack - Rolls back a transaction
+    * PDO::errorCode - Fetch the SQLSTATE associated with the last operation on the database handle
+    * PDO::errorInfo - Fetch extended error information associated with the last operation on the database handle
 */
 
 /**
@@ -82,7 +82,9 @@ class A_Db_Pdo extends A_Db_Adapter
 	{
 		$result = $this->_connection->query($sql);
 		$this->_setError();
-		$this->_numRows = $result->rowCount();
+		if ($result !== false) {
+			$this->_numRows = $result->rowCount();
+		}
 		if ($result && $this->queryHasResultSet($sql)) {
 			$resultObject = $this->createRecordsetObject();
 			$resultObject->setResult($result);
@@ -99,7 +101,7 @@ class A_Db_Pdo extends A_Db_Adapter
 	
 	public function escape($value)
 	{
-		return trim($this->_connection->quote($value));
+		return trim($this->_connection->quote($value), "'");	// remove the quotes because PDO has no escape()
 	}
 	
 	protected function _setError()
