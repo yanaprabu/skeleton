@@ -107,7 +107,7 @@ class A_Controller_Helper_Load
 		return $this;
 	}
 	
-	protected function setDir($name, $dir)
+	public function setDir($name, $dir)
 	{
 		$this->dirs[$name] = $dir ? (rtrim($dir, '/') . '/') : '';
 		return $this;
