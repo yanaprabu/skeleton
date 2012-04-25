@@ -1,11 +1,11 @@
 <h1>Locator - A_Locator</h1>
 
-<p>The Locator is a central and integral object for the Skeleton MVC classes. It is passed throughout the application, and contains important objects that need to be shared among the MVC objects.  You application can use it as a simple Registry, an application context object, or not at all. The Locator combines the following functionaity in one object. </p>
+<p>The Locator is a central and integral object for the Skeleton MVC classes. It is passed throughout the application, and contains important objects that need to be shared among the MVC objects.  You application can use it as a simple Registry, an application context object, or not at all. The Locator combines the following functionality in one object. </p>
 <ul>
 	<li>Registry to make commonly use objects available throughout the application</li>
-	<li>Class Loader to load classes manualy</li>
+	<li>Class Loader to load classes manually</li>
 	<li>Autoloader that registers the Class Loader as an SPL autoloader</li>
-	<li>Dependency Injection container that will both load and intialize objects</li>
+	<li>Dependency Injection container that will both load and initialize objects</li>
 </ul>
 <p>Normally, your application should only have to include one file containing the A_Locator class.  After autoloading has been initialized, all framework classes will be autoloaded.</p>
 
@@ -19,7 +19,7 @@ $Locator = new A_Locator();
 $Locator->autoload();
 </pre>
 
-<p>A typical boostrap will create a <b>Locator</b>, populate it with <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> objects.</p>
+<p>A typical bootstrap will create a <b>Locator</b>, populate it with <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> objects.</p>
 
 <pre class="prettyprint lang-php">
 // populate the Locator with the necessary objects
@@ -33,3 +33,23 @@ $Locator->set('Response', new A_Http_Response());
 $Controller->run($Locator);
 </pre>
 
+<h2>Autoloading Libraries</h2>
+
+<p>The Locator automatically registers the A/ directory as a namespace for autoloading. You may register other libraries to autoload in several ways:</p>
+<ol>
+	<li>Registry a default directory to load classes for which no namespace or matching is registered with the autoloader. 
+<pre class="prettyprint lang-php">
+$Locator->setDir('/path/to/includes', '');		// class Foo loads from /path/to/includes/Foo.php
+</pre>
+		</li>
+	<li>Registry a directory associated with a namespace, such as directory Foo/ for classes starting with 'Foo_' or in namespace '\Foo\'. 
+<pre class="prettyprint lang-php">
+$Locator->setDir('/path/to/Foo', 'Foo');		// class Foo_Name loads from /path/to/Foo/Name.php
+</pre>
+	</li>
+	<li>Registry a directory for classes with names matching a regular expression, such as directory foolib/ for class names starting with 'Foo'. 
+<pre class="prettyprint lang-php">
+$Locator->set('/path/to/foolib', '/^Foo.*$/');		// class FooName loads from /path/to/foolib/FooName.php
+</pre>
+	</li>
+</ol>
