@@ -48,7 +48,7 @@ class A_Locator
 	
 	/**
 	 * Set a directory to used for class names that:
-	 *      1. namespace '' the dir from which to load when do match is found
+	 *      1. namespace '' the dir from which to load when no match is found
 	 *      2. matched first part of PEAR class name 'Foo_*' or namespace '\Foo\'
 	 *      3. match a perl regex like '/^Foo.*$/'
 	 * @param string $dir
