@@ -1,4 +1,23 @@
-Version 0.8.1 (commits 842-10??)
+Version 0.9.1 (commits 1342-1369)
+- A_Controller_Helper_Load - made setDir() public
+- A_Db_Pdo - fixed escape() to strip quotes from PDO::quote()
+- Updates to blog example user registration process
+- A_Http_View - simplified and improved partial code to add escaping
+- A_Http_Download - support for attachment type, etc.
+- A_Http_View - added new set value escaping scheme. 
+- Filter: fixed bug in Length filter
+- A_Locator - moved class_exists() check to after the class name is fixed-up.
+- A_Session - change to directly access $_SESSION. 
+- A_Model_Form - changed call to old deleted processRequest() method to isValid()
+- A_Collection - Added addAll method
+- Added functionality to SQL library to add a ON DUPLICATE KEY UPDATE statement to an INSERT statement. Tests created.
+- A_User_Session - fix logout()
+- A_Http_Upload - added clearDeniedMimes() to match test.
+- A_Db_Pdo - remove old multi code 
+
+Version 0.9.0 (commits 842-1341)
+- Changes to database classes: some interfaces changes, now auto-connects, result object has new functionality
+- A_Email::send() now return success true|false instead of error message. 
 
 Version 0.8.0 (commits 617-841)
 - Converted framework to autoload
