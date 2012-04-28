@@ -117,7 +117,7 @@ class A_Db_Pdo extends A_Db_Adapter
 	
 	public function beginTransaction()
 	{
-		return $this->_connection->start();
+		return $this->_connection->beginTransaction();
 	}
 	
 	public function commit()
