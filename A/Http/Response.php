@@ -30,7 +30,7 @@ class A_Http_Response extends A_Http_View
 		}
 		if ($this->redirect) {
 			$base = $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
-			if (! preg_match('/^http?\:\/\//i', $this->redirect) && (strpos($this->redirect, $base) === false)) {
+			if (! preg_match('/^https?\:\/\//i', $this->redirect) && (strpos($this->redirect, $base) === false)) {
 				if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
 					$protocol = 'https://';
 				} else {
