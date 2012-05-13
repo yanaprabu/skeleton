@@ -115,7 +115,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 	protected function _selectDb($database)
 	{
 		$result = $this->_connection->select_db($database);
-		if (!$success) {
+		if (!$result) {
 			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		}
 	}

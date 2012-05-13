@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 require_once('config.php');
-require_once('A_Template.php');
+require dirname(__FILE__) . '/../../A/autoload.php';
 
 $template = new A_Template_Xslt('collection.xsl');
 

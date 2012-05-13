@@ -21,6 +21,6 @@ $attachment->addPart($emailtext, "text/plain;\n\tcharset=\"ISO-8859-1\"");
 $attachment->addPart($emailhtml, "text/html;\n\tcharset=\"ISO-8859-1\"");
 $body = $attachment->getMessage();
 $email->addHeaders($attachment->getHeaders('multipart/alternative'));
-$errmsg = $email->send('from@email.com', 'to@email.com', 'Example Email', $body);
+$errmsg = $email->send('from@email.com', 'to@mail.com', 'Example Email', $body);
 
 echo "Error=$errmsg<br/>";
