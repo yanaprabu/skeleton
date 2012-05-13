@@ -41,4 +41,4 @@ $db->close();
 
 unlink($filename);
 
-dump();
+

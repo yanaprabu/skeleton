@@ -1,6 +1,9 @@
 <?php
 include 'config.php';
 include '../../A/autoload.php';
+$session = new A_Session();
+$session->start();
+
 ?>
 <html>
 <head>
@@ -8,8 +11,7 @@ include '../../A/autoload.php';
 <body>
     <form action="" method="post">
 <?php
-$session = new A_Session();
-$session->start();
+
 $request = new A_Http_Request();
 
 $captcha = new A_Rule_Captcha('captcha', 'Captcha error.', null, $session);

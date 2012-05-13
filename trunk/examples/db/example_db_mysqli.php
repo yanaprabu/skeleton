@@ -23,4 +23,4 @@ dump($row, 'ROW: ');
 	echo 'connect ERROR: ' . $db->getErrorMsg();
 }
 
-dump();
+
