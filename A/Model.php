@@ -316,6 +316,12 @@ class A_Model
 	public function getErrorMsg($separator=null)
 	{
 		$data = $this->errorMsg;
+		foreach ($this->rules as $rule) {
+			$errmsg = $rule->getErrorMsg($separator);
+			if ($errmsg) {
+				$data[] = $errmsg;
+			}
+		}
 		foreach (array_keys($this->fields) as $field) {
 			if ($this->fields[$field]->isError()) {
 				$data[$field] = $this->fields[$field]->getErrorMsg($separator);
