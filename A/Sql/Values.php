@@ -1,16 +1,16 @@
 <?php
 /**
  * Values.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Columns
- * 
+ *
  * Generate SQL values list
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_Values extends A_Sql_Expression

@@ -1,16 +1,16 @@
 <?php
 /**
  * Delete.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Delete
- * 
+ *
  * Class for SQL delete query generation.
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_Delete extends A_Sql_Statement
@@ -18,25 +18,25 @@ class A_Sql_Delete extends A_Sql_Statement
 
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $table = null;
-	
+
 	/**
 	 * Where clause
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $where = null;
-	
+
 	/**
 	 * Where expression
-	 * 
+	 *
 	 * @var unknown_type
 	 */
 	protected $whereExpression;
-	
+
 	/**
 	 * Class constructor
 	 *
@@ -48,7 +48,7 @@ class A_Sql_Delete extends A_Sql_Statement
 		$this->table($table);
 		$this->where($where);
 	}
-	
+
 	public function table($table)
 	{
 		if ($table) {
@@ -56,7 +56,7 @@ class A_Sql_Delete extends A_Sql_Statement
 		}
 		return $this;
 	}
-	
+
 	public function where($arg1, $arg2=null, $arg3=null)
 	{
 		if ($arg1) {
@@ -65,15 +65,15 @@ class A_Sql_Delete extends A_Sql_Statement
 			}
 			$this->where->addExpression($arg1, $arg2, $arg3);
 		}
-		return $this;		
+		return $this;
 	}
-	
+
 	public function orWhere($data, $value=null)
 	{
 		$this->where('OR', $data, $value);
-		return $this;		
+		return $this;
 	}
-	
+
 	function render()
 	{
 		if ($this->table) {
@@ -82,7 +82,7 @@ class A_Sql_Delete extends A_Sql_Statement
 			return "DELETE FROM $table$where";
 		}
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();

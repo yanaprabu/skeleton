@@ -1,7 +1,7 @@
 <?php
 /**
  * Pathinfo.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Http_Pathinfo
  *
  * Parse PATH_INFO based on mapped routes and set the Request object with values
- * 
+ *
  * @package A_Http
  */
 class A_Http_Pathinfo
@@ -26,7 +26,7 @@ class A_Http_Pathinfo
 	protected $path;
 	protected $path_pos;		// the position in path_info after the end of the current route
 	protected $script_extension = '.php';
-	
+
 	public function __construct($map=null, $map_extra_param_pairs=true)
 	{
 		if ($map !== null) {
@@ -54,36 +54,36 @@ class A_Http_Pathinfo
 		$this->path = trim($path, '/\\');
 		$this->path_pos = 0;
 	}
-	
+
 	public function setScriptExtension($script_extension)
 	{
 		$this->script_extension = $script_extension;
 		return $this;
 	}
-	
+
 	public function setPath($path)
 	{
 		$this->path = $path;
 		return $this;
 	}
-	
+
 	public function setMap($map)
 	{
 		$this->map = $map;
 		return $this;
 	}
-	
+
 	public function addMap($map)
 	{
 		$this->map = array_merge($this->map, $map);
 		return $this;
 	}
-	
+
 	public function getMap()
 	{
 		return $this->map;
 	}
-	
+
 	public function addRoute($route, $params)
 	{
 		$map =& $this->map;		// get reference that we can set to each level in the map as we assign
@@ -108,8 +108,9 @@ class A_Http_Pathinfo
 		$map[''] = $params;
 		return $this;
 	}
-	
-	public function run($request) {
+
+	public function run($request)
+	{
 		$request->set('PATH_INFO', $this->path);
 		if ($this->map) {
 			$path_info = explode('/', $this->path);
@@ -135,7 +136,7 @@ class A_Http_Pathinfo
 				}
 				$i++;
 			}
-			
+
 			// assign parameters based on route
 			if (isset($map[''])) {
 				$route = $map[''];

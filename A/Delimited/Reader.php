@@ -1,7 +1,7 @@
 <?php
 /**
  * Reader.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Christopher Thompson
@@ -9,9 +9,9 @@
 
 /**
  * A_Delimited_Reader
- * 
+ *
  * Read delimited text file into array of line arrays
- * 
+ *
  * @package A_Delimited
  */
 class A_Delimited_Reader extends A_Delimited_Base
@@ -20,7 +20,7 @@ class A_Delimited_Reader extends A_Delimited_Base
 	protected $filemode = 'rb';
 	protected $autoConfigure = false;
 	protected $isAutoConfigured = false;
-	
+
 	/**
 	 * @param bool $auto True to check file before reading to determine delimiter
 	 * @return $this
@@ -30,7 +30,7 @@ class A_Delimited_Reader extends A_Delimited_Base
 		$this->autoConfigure = $auto;
 		return $this;
 	}
-	
+
 	/**
 	 * @return array Lines read
 	 */
@@ -60,7 +60,7 @@ class A_Delimited_Reader extends A_Delimited_Base
 		}
 		return array();
 	}
-	
+
 	public function load($lines=0)
 	{
 		if (!$this->handle) {
@@ -78,7 +78,7 @@ class A_Delimited_Reader extends A_Delimited_Base
 		}
 		return $rows;
 	}
-	
+
 	public function autoConfig()
 	{
 		if (!$this->handle) {

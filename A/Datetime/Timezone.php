@@ -9,9 +9,9 @@
 
 /**
  * A_Datetime_Timezone
- * 
+ *
  * Date & Time Timezone functionality
- * 
+ *
  * @package A_Datetime
  */
 class A_Datetime_Timezone
@@ -20,10 +20,10 @@ class A_Datetime_Timezone
 	protected $reference;
 	protected $target;
 	protected $errorMsg;
-	
+
 	/**
 	 * Configuration at instatiation with timezone string or null for PHP default timezone
-	 * 
+	 *
 	 * @param string $name Timezone ID
 	 */
 	public function __construct($name='')
@@ -33,14 +33,14 @@ class A_Datetime_Timezone
 		}
 	    try {
 			$this->reference = new DateTimeZone($name);
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			$this->errorMsg = $e->getMessage();
 		}
 	}
-	
+
 	/**
 	 * Return the string name of the reference timezone
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getName()
@@ -49,10 +49,10 @@ class A_Datetime_Timezone
 			return $this->reference->getName();
 		}
 	}
-	
+
 	/**
 	 * Return the UTC offset of the reference timezone
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getOffset()
@@ -61,10 +61,10 @@ class A_Datetime_Timezone
 	    	return $this->reference->getOffset(new DateTime("now", $this->reference)) / 3600;
 		}
 	}
-	
+
 	/**
 	 * Set the target timezone by name
-	 * 
+	 *
 	 * @param string $name
 	 */
 	public function setTargetName($name='')
@@ -74,14 +74,14 @@ class A_Datetime_Timezone
 		}
 	    try {
 			$this->target = new DateTimeZone($name);
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			$this->errorMsg = $e->getMessage();
 		}
 	}
-	
+
 	/**
 	 * Return the string name of the target timezone
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTargetName()
@@ -90,10 +90,10 @@ class A_Datetime_Timezone
 			return $this->target->getName();
 		}
 	}
-	
+
 	/**
 	 * Return the UTC offset of the target timezone
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getTargetOffset()
@@ -102,10 +102,10 @@ class A_Datetime_Timezone
 	    	return $this->target->getOffset(new DateTime("now", $this->target)) / 3600;
 		}
 	}
-	
+
 	/**
 	 * Return the difference between the reference and target offsets
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getDifference()

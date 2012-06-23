@@ -1,7 +1,7 @@
 <?php
 /**
  * Base.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Jonah Dahlquist <jonah@nucleussystems.com>
@@ -11,7 +11,7 @@
  * A_Socket_Client_Base
  *
  * Contains common logic between most client objects
- * 
+ *
  * @package A_Socket
  */
 class A_Socket_Client_Base implements A_Socket_Client
@@ -22,19 +22,19 @@ class A_Socket_Client_Base implements A_Socket_Client
 	 * @var resource
 	 */
 	protected $socket;
-	
+
 	/**
 	 * If handshake has been completed
 	 * @var boolean
 	 */
 	protected $connected = false;
-	
+
 	/**
 	 * User session data.  Developer defined.
 	 * @var mixed
 	 */
 	protected $session;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -44,17 +44,17 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		$this->socket = $socket;
 	}
-	
+
 	/**
 	 * Send message to client
-	 * 
+	 *
 	 * @param string $message
 	 */
 	public function send($message)
 	{
 		$this->_send($message);
 	}
-	
+
 	/**
 	 * Extract messages from data stream
 	 *
@@ -65,10 +65,10 @@ class A_Socket_Client_Base implements A_Socket_Client
 	{
 		return array($data);
 	}
-	
+
 	/**
 	 * Write data to socket
-	 * 
+	 *
 	 * @param string $message
 	 */
 	protected function _send($message)
@@ -80,37 +80,37 @@ class A_Socket_Client_Base implements A_Socket_Client
 			socket_close($this->socket);
 		}
 	}
-	
+
 	/**
 	 * Validate connection
-	 * 
+	 *
 	 * @param string $data Data to validate with
 	 */
 	public function connect($data)
 	{
 		$this->connected = true;
 	}
-	
+
 	/**
 	 * Check if connection has been validated
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isConnected()
 	{
 		return $this->connected;
 	}
-	
+
 	/**
 	 * Get the client session data
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getSession()
 	{
 		return $this->session;
 	}
-	
+
 	/**
 	 * Set the client session data
 	 *

@@ -1,16 +1,16 @@
 <?php
 /**
  * Head.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Head
- * 
+ *
  * Generate <head> tag
- * 
+ *
  * @package A_Html
  */
 class A_Html_Head
@@ -24,13 +24,13 @@ class A_Html_Head
 		'styles' => array(),
 		'script_links' => array(),
 		'scripts' => array(),
-	); 
+	);
 	protected $_withTags = true;
 	protected $_label = '';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param array $config
 	 */
 	public function __construct($config=array())
@@ -39,13 +39,13 @@ class A_Html_Head
 			$this->config($config);
 		}
 	}
-	
+
 	public function config($config)
 	{
 		$this->_config = array_merge($this->_config, $config);
 		return $this;
 	}
-	
+
 	public function set($name, $value)
 	{
 		if (isset($this->_config[$name])) {
@@ -59,7 +59,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function _addConfig($name, $data)
 	{
 		if ($name && $data) {
@@ -84,29 +84,29 @@ class A_Html_Head
 		$this->_before = null;
 		return $this;
 	}
-	
+
 	public function setTitle($title)
 	{
 		$this->_config['title'] = $title;
 		return $this;
 	}
-	
+
 	public function getTitle()
 	{
 		return $this->_config['title'];
 	}
-	
+
 	public function setBase($url)
 	{
 		$this->_config['base'] = $url;
 		return $this;
 	}
-	
+
 	public function getBase()
 	{
 		return $this->_config['base'];
 	}
-	
+
 	/*
 	 * http-equiv:
 	 * content-type
@@ -114,18 +114,18 @@ class A_Html_Head
 	 * expires
 	 * refresh
 	 * set-cookie
-	 * 
+	 *
 	 * name:
 	 * author
 	 * description
 	 * keywords
 	 * generator
 	 * revised
-	 * 
+	 *
 	 * scheme:
 	 * format/URI
 	 */
-	
+
 	public function removeMeta($attr, $type)
 	{
 		if ($attr && $type) {
@@ -137,7 +137,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addMetaHttpEquiv($type, $content, $scheme='')
 	{
 		if ($type && ($content != '')) {
@@ -145,7 +145,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function removeMetaHttpEquiv($type)
 	{
 		if ($type) {
@@ -153,7 +153,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addMetaName($type, $content, $scheme='', $lang='')
 	{
 		if ($type && ($content != '')) {
@@ -161,7 +161,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function removeMetaName($type)
 	{
 		if ($type) {
@@ -169,7 +169,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addLink($attr, $rel, $href, $type='', $media='all')
 	{
 		if ($attr && $rel && $href) {
@@ -177,15 +177,16 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Remove link elements from the head object
-	 * 
+	 *
 	 * @param string $attr
 	 * @param string $rel The link element type defined upon creation
 	 * @return $this
 	 */
-	public function removeLink($attr, $rel) {
+	public function removeLink($attr, $rel)
+	{
 		foreach ($this->_config['links'] as $key => $data) {
 			if (($data['attr'] == $attr) && ($data['rel'] == $rel)) {
 				unset($this->_config['links'][$key]);
@@ -193,7 +194,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $rel
 	 * @param string $href
@@ -201,25 +202,27 @@ class A_Html_Head
 	 * @param string $media
 	 * @return $this
 	 */
-	public function addLinkRel($rel, $href, $type='', $media='all') {
+	public function addLinkRel($rel, $href, $type='', $media='all')
+	{
 		if ($rel && $href) {
 			$this->addLink('rel', $rel, $href, $type, $media);
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Remove link elements from the head object that have a rel attribute.
 	 * This method provides specific data to removeLink()
-	 * 
+	 *
 	 * @param string $type The type of the link element defined upon creation.
 	 * @return $this
 	 */
-	public function removeLinkRel($rel) {
+	public function removeLinkRel($rel)
+	{
 		$this->removeLink('rel', $rel);
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $rel
 	 * @param string $href
@@ -234,11 +237,11 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Removes link elements from the head object that have a rev attribute.
 	 * This method provides specific data to removeLink()
-	 * 
+	 *
 	 * @param string $type The type of the link element defined upon creation.
 	 * @return $this
 	 */
@@ -247,7 +250,7 @@ class A_Html_Head
 		$this->removeLink('rev', $rel);
 		return $this;
 	}
-	
+
 	public function addStyle($style, $media='all')
 	{
 		if ($style) {
@@ -255,7 +258,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addStylesheet($sheet, $media='all')
 	{
 		if ($sheet) {
@@ -263,7 +266,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addStyleLink($url, $media='all')
 	{
 		if ($url) {
@@ -271,7 +274,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addScript($script, $type='text/javascript')
 	{
 		if ($script) {
@@ -279,7 +282,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function addScriptLink($url, $type='text/javascript')
 	{
 		if ($url) {
@@ -287,21 +290,21 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	/*
 	 * Convenience methods
 	 */
-	
+
 	public function setCharset($charset)
 	{
 		return $this->addMetaHttpEquiv('Content-Type', "text/html; charset=$charset");
 	}
-	
+
 	public function setLanguage($language)
 	{
 		return $this->addMetaHttpEquiv('Content-Language', $language);
 	}
-	
+
 	public function ifIE($logic)
 	{
 		if ($logic) {
@@ -309,7 +312,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function before($label)
 	{
 		if ($label) {
@@ -317,7 +320,7 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	public function after($label)
 	{
 		if ($label) {
@@ -325,21 +328,21 @@ class A_Html_Head
 		}
 		return $this;
 	}
-	
+
 	/*
 	 * Rendering methods
 	 */
-	
+
 	public function renderTitle()
 	{
 		return $this->_config['title'] ? "<title>{$this->_config['title']}</title>\n" : '';
 	}
-	
+
 	public function renderBase()
 	{
 		return $this->_config['base'] ? "<base href=\"{$this->_config['base']}\"/>\n" : '';
 	}
-	
+
 	public function renderMeta()
 	{
 		$str = '';
@@ -351,7 +354,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	public function renderLinks()
 	{
 		$str = '';
@@ -360,7 +363,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	public function renderStyleLinks()
 	{
 		$str = '';
@@ -369,7 +372,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	public function renderStylesheets()
 	{
 		$str = '';
@@ -379,7 +382,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	public function renderStyles()
 	{
 		// gather styles for each media type
@@ -394,7 +397,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	public function renderScriptLinks()
 	{
 		$str = '';
@@ -403,7 +406,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	public function renderScripts()
 	{
 		$str = '';
@@ -412,7 +415,7 @@ class A_Html_Head
 		}
 		return $str;
 	}
-	
+
 	/*
 	* name=string, value=string or renderer
 	*/
@@ -430,7 +433,7 @@ class A_Html_Head
 		$html .= $this->renderScripts();
 		return $this->_withTags ? "<head>\n$html</head>\n" : $html;
 	}
-	
+
 	public function __toString()
 	{
 		$this->render();

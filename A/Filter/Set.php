@@ -1,16 +1,16 @@
 <?php
 /**
  * Set.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Set
- * 
+ *
  * Contains multiple filters that are all run.
- * 
+ *
  * @package A_Filter
  */
 class A_Filter_Set implements A_Filter_Filterer
@@ -19,18 +19,18 @@ class A_Filter_Set implements A_Filter_Filterer
     protected $chain = array();
     protected $errorMsg = array();
     protected $dir = 'A_Filter_';
-	
+
 	public function addFilter($filter, $fields=array())
-	{	
+	{
 		// if filter is string then we load the class later
-		if(is_string($filter)) {
+		if (is_string($filter)) {
 			$filter = func_get_args();
 			$fields = null;
 		} elseif ($fields && ! is_array($fields)) {
 			$fields = array($fields);
 		}
 		// if for specific fields only then create filter for each field
-		if ($fields) {			
+		if ($fields) {
 			foreach ($fields as $field) {
 				$filter->setName($field);
 				$this->chain[] = $filter;
@@ -41,10 +41,10 @@ class A_Filter_Set implements A_Filter_Filterer
 		}
 		return $this;
 	}
-	
+
 	/**
      * Sets the filterchain to an array of filters
-     * 
+     *
      * @param array $chain
      * @return $this
      */
@@ -55,10 +55,10 @@ class A_Filter_Set implements A_Filter_Filterer
 		}
 		return $this;
 	}
-	
+
 	/**
      * Adds an array of filters to the filterchain
-     * 
+     *
      * @param array $chain
      * @return $this
      */
@@ -69,12 +69,12 @@ class A_Filter_Set implements A_Filter_Filterer
 		}
 		return $this;
 	}
-	
+
 	/**
      * Returns array with filtered data
-     * 
-     * @param mixed $container
-     * @param array $chain
+     *
+     * @param  mixed    $container
+     * @param  array    $chain
      * @return filtered array
      */
 	public function doFilter($container, $chain=array())
@@ -88,7 +88,7 @@ class A_Filter_Set implements A_Filter_Filterer
 		    if (is_array($filter)) {
 				$name = array_shift($filter);
 				// can use built-in rules and $this->dir will be used
-				if(strstr($name, '_') === false) {
+				if (strstr($name, '_') === false) {
 				    $name = $this->dir . ucfirst($name);
 				}
 				$ref = new ReflectionClass($name);

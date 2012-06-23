@@ -1,16 +1,16 @@
 <?php
 /**
  * Insert.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Insert
- * 
+ *
  * Generate SQL INSERT statement
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_Insert extends A_Sql_Statement
@@ -21,7 +21,7 @@ class A_Sql_Insert extends A_Sql_Statement
 	protected $columns;
 	protected $select;
 	protected $onDuplicateKey;
-	
+
 	/**
 	 * Class constructor
 	 *
@@ -32,17 +32,17 @@ class A_Sql_Insert extends A_Sql_Statement
 	{
 		$this->table($table);
 		if ($bind) {
-			$this->columns($bind);	
+			$this->columns($bind);
 		}
-		
+
 	}
-	
+
 	public function table($table)
 	{
 		$this->table = new A_Sql_From($table);
 		return $this;
 	}
-	
+
 	public function values($data, $value=null)
 	{
 		if ($data) {
@@ -52,13 +52,13 @@ class A_Sql_Insert extends A_Sql_Statement
 		}
 		return $this;
 	}
-	
+
 	public function columns()
 	{
 		$this->columns = new A_Sql_Columns(func_get_args());
 		return $this;
 	}
-	
+
 	public function select()
 	{
 		if (!$this->select) {
@@ -80,7 +80,7 @@ class A_Sql_Insert extends A_Sql_Statement
 		$this->onDuplicateKey = new A_Sql_Onduplicatekey($columns);
 		return $this;
 	}
-	
+
 	public function render($db=null)
 	{
 		$columns = array();
@@ -97,7 +97,7 @@ class A_Sql_Insert extends A_Sql_Statement
 			return $insert;
 		}
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();

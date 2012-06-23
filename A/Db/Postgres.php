@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Postgres
- * 
+ *
  * Database connection class using Postgres.  Configuration array can contain the following indices: type, hostspec, username, password, database.
- * 
+ *
  * @package A_Db
  */
 class A_Db_Postgres extends A_Db_Adapter
@@ -20,7 +20,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	protected $sequencestart = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Postgres';
 	protected $_result_class = 'A_Db_Result';
-	
+
 	protected function _connect()
 	{
 		$connstr = '';
@@ -54,7 +54,7 @@ class A_Db_Postgres extends A_Db_Adapter
 			$this->_errorHandler(1, "Cconnection failed. ");
 		}
 	}
-	
+
 	protected function _query($sql)
 	{
 		$result = pg_query($this->_connection, $sql);
@@ -70,17 +70,17 @@ class A_Db_Postgres extends A_Db_Adapter
 		}
 		return $resultObject;
 	}
-	
+
 	protected function _close()
 	{
 		pg_disconnect($this->_connection);
 	}
-	
+
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
-	
+
 	public function nextId($sequence)
 	{
 	    if ($sequence) {
@@ -96,7 +96,7 @@ class A_Db_Postgres extends A_Db_Adapter
 	    }
 	    return 0;
 	}
-	
+
 	public function createSequence($sequence)
 	{
 	    $result = 0;
@@ -105,25 +105,25 @@ class A_Db_Postgres extends A_Db_Adapter
 	    }
 	    return $result;
 	}
-	
+
 	public function escape($value)
 	{
 		return pg_escape_string($value);
 	}
-	
+
 	public function isError()
 	{
 		return pg_last_error($this->_connection) != '';
 	}
-	
+
 	public function getErrorMsg()
 	{
 		return pg_last_error($this->_connection);
 	}
-	
+
 	/**
 	 * Alias for getErrorMsg()
-	 * 
+	 *
 	 * @deprecated
 	 * @see getErrorMsg()
 	 */
@@ -131,13 +131,13 @@ class A_Db_Postgres extends A_Db_Adapter
 	{
 		return $this->getErrorMsg();
 	}
-	
+
 	protected function _lastId()
 	{
 		$row = pg_fetch_row(pg_query($this->_connection, 'SELECT lastval();'));
 		return $row[0];
 	}
-	
+
 	protected function _selectDb($database)
 	{
 		$this->_errorHandler(1, 'Selecting a different database is not supported by PostgreSQL');

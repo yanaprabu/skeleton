@@ -2,7 +2,7 @@
 
 /**
  * Url.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -11,7 +11,7 @@
  * A_Http_Cookie
  *
  * This class provides various methods with which to create, manipulate, and read URLs.
- * 
+ *
  * @package A_Http
  */
 class A_Http_Cookie implements A_Renderer
@@ -21,7 +21,7 @@ class A_Http_Cookie implements A_Renderer
 	protected $domain = '';
 	protected $secure = false;
 	protected $httponly = false;
-	
+
 	public function get($name)
 	{
 		return isset($_COOKIE[$name]) ? $_COOKIE[$name] : null;
@@ -57,14 +57,14 @@ class A_Http_Cookie implements A_Renderer
 			);
 		return $this;
 	}
-	
+
 	/**
 	 * Import an array of cookies.  For the proper array values, see the argument names of the setcookie() method.
-	 * 
+	 *
 	 * http://php.net/setcookie
-	 * 
+	 *
 	 * The array key can be used instead of the 'name' key.
-	 * 
+	 *
 	 * @param array $cookies
 	 * @return $this
 	 */
@@ -83,44 +83,44 @@ class A_Http_Cookie implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function setExpire($expire)
 	{
 		$this->expire = $expire;
 		return $this;
 	}
-	
+
 	public function setPath($path)
 	{
 		$this->path = $path;
 		return $this;
 	}
-	
+
 	public function setDomain($domain)
 	{
 		$this->domain = $domain;
 		return $this;
 	}
-	
+
 	public function setSecure($secure)
 	{
 		$this->secure = $secure;
 		return $this;
 	}
-	
+
 	public function setHttponly($httponly)
 	{
 		$this->httponly = $httponly;
 		return $this;
 	}
-	
+
 	public function render()
 	{
 		foreach ($this->cookies as $c) {
 			setcookie($c['name'], $c['value'], $c['expire'], $c['path'], $c['domain'], $c['secure'], $c['httponly']);
         }
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();

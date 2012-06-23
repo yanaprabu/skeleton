@@ -1,7 +1,7 @@
 <?php
 /**
  * Download.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Http_Download
  *
  * Support for downloading data with different MIME types and settings
- * 
+ *
  * @package A_Http
  */
 class A_Http_Download
@@ -24,10 +24,10 @@ class A_Http_Download
 	protected $target_file_type = 'attachment';
 	protected $headers = array();
 	protected $error = 0;
-	
+
 	/**
 	 * Set the mime type of the file to be downloaded to be specified in the header
-	 * 
+	 *
 	 * @param string $type
 	 * @return $this
 	 */
@@ -38,10 +38,10 @@ class A_Http_Download
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set the Transfer Encoding of the file to be downloaded to be specified in the header
-	 * 
+	 *
 	 * @param string $encoding
 	 * @return $this
 	 */
@@ -52,10 +52,10 @@ class A_Http_Download
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set the path to a file on the server.  The contents will be dumped following outputing the header and content length will be set
-	 * 
+	 *
 	 * @param string $path
 	 * @return $this
 	 */
@@ -66,10 +66,10 @@ class A_Http_Download
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set the filename to be used on the client.  Use if no source file or if you want a different name than the source file.
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $type 'attachment' or 'inline' or 'hidden'
 	 * @return $this
@@ -84,10 +84,10 @@ class A_Http_Download
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Optional - if no source filename specified then use this to set length.
-	 * 
+	 *
 	 * @param int $length
 	 * @return $this
 	 */
@@ -98,10 +98,10 @@ class A_Http_Download
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Add additional header to be sent.
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $value
 	 * @return $this
@@ -113,7 +113,7 @@ class A_Http_Download
 		}
 		return $this;
 	}
-	
+
 	protected function _header($name, $value)
 	{
 		if (is_array($value)) {
@@ -124,10 +124,10 @@ class A_Http_Download
 			header("$name: $value");
 		}
 	}
-	
+
 	/**
 	 * Send headers, followed by the contents of the source file if specified.  Output will be included in the file
-	 * 
+	 *
 	 * @return string Errors acumulated
 	 */
 	public function doDownload()
@@ -172,7 +172,7 @@ class A_Http_Download
 					if (@readfile($this->source_file) === false) {
 						$this->error = 3;
 					}
-				} elseif ($this->content_length > 0){
+				} elseif ($this->content_length > 0) {
 					header('Content-Length: ' . $this->content_length);
 				}
 			} else {
@@ -183,7 +183,7 @@ class A_Http_Download
 		}
 		return $this->error;
 	}
-	
+
 	public function isError()
 	{
 		return $this->error;

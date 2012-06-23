@@ -1,14 +1,15 @@
 <?php
 /**
- * Register autoloader by including this file. Loads framework classes with absolute path 
- * and other classes with include path. 
+ * Register autoloader by including this file. Loads framework classes with absolute path
+ * and other classes with include path.
  *
  * @package A
  * @author Christopher Thompson
  */
 
 
-function a_autoload($class) {
+function a_autoload($class)
+{
 	if (class_exists($class, false)) {
 		return;
 	}

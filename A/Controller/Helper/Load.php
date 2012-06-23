@@ -1,16 +1,16 @@
 <?php
 /**
  * Load.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Controller_Helper_Load
- * 
+ *
  * Provides class loading and instantiation within the application directory
- * 
+ *
  * @package A_Controller
  */
 class A_Controller_Helper_Load
@@ -19,28 +19,28 @@ class A_Controller_Helper_Load
 	protected $locator;
 	protected $parent;
 	protected $paths = array(
-		'app'=>'', 
-		'module'=>'', 
-		'controller'=>'', 
+		'app'=>'',
+		'module'=>'',
+		'controller'=>'',
 		'action'=>'',
 	);
 	protected $dirs = array(
-		'controller'=>'controllers/', 
-		'event'=>'events/', 
-		'helper'=>'helpers/', 
-		'model'=>'models/', 
-		'template'=>'templates/', 
-		'view'=>'views/', 
+		'controller'=>'controllers/',
+		'event'=>'events/',
+		'helper'=>'helpers/',
+		'model'=>'models/',
+		'template'=>'templates/',
+		'view'=>'views/',
 		'class'=>'',
 	);
 	protected $action = null;
 	protected $method = null;
 	protected $suffix = array(
-		'controller'=>'', 
-		'model'=>'Model', 
-		'view'=>'View', 
-		'helper'=>'Helper', 
-		'class'=>'', 
+		'controller'=>'',
+		'model'=>'Model',
+		'view'=>'View',
+		'helper'=>'Helper',
+		'class'=>'',
 	);
 	protected $rendererTypes = array('view', 'template');
 	protected $scope;
@@ -58,7 +58,7 @@ class A_Controller_Helper_Load
 	protected $renderExtension = 'php';
 	protected $responseSet = false;
 	protected $errorMsg = array();
-	
+
 	public function __construct($locator, $parent, $scope=null)
 	{
 		$this->locator = $locator;
@@ -75,14 +75,14 @@ class A_Controller_Helper_Load
 		$this->parent = $parent;
 		$this->load($scope);
 	}
-	
+
 	/**
 	 * Scopes are:
 	 * global /app/
 	 * module /app/$module/
 	 * controller /app/$module/$type/$controller/
 	 * action /app/$module/$type/$controller/$action/
-	 * 
+	 *
 	 * @param A_Controller_Mapper
 	 * @return $this
 	 */
@@ -95,7 +95,7 @@ class A_Controller_Helper_Load
 		}
 		return $this;
 	}
-	
+
 	public function setPath($name, $path, $relative_name='')
 	{
 		$path = $path ? (rtrim($path, '/') . '/') : '';		// add trailing dir separator
@@ -106,29 +106,29 @@ class A_Controller_Helper_Load
 		}
 		return $this;
 	}
-	
+
 	public function setDir($name, $dir)
 	{
 		$this->dirs[$name] = $dir ? (rtrim($dir, '/') . '/') : '';
 		return $this;
 	}
-	
+
 	public function setRenderClass($name, $ext='php')
 	{
 		$ext = ltrim($ext, '.');
 		$this->renderClasses[$ext] = $name;
 		return $this;
 	}
-	
+
 	public function setSuffix($name, $suffix)
 	{
 		$this->suffix[$name] = $suffix;
 		return $this;
 	}
-	
+
 	/**
 	 * Get error messages
-	 * 
+	 *
 	 * @param string $separator Delimiter to place between error messages.  If empty, an array of error messages is returned.
 	 * @return string|array
 	 */
@@ -139,14 +139,14 @@ class A_Controller_Helper_Load
 		}
 		return $this->errorMsg;
 	}
-	
+
 	public function response($name='')
-	{	
+	{
 		$this->responseSet = true;
 		$this->responseName = $name;
 		return $this;
 	}
-	
+
 	public function load($scope=null, $target=null)
 	{
 		if (is_array($scope)) {
@@ -160,7 +160,7 @@ class A_Controller_Helper_Load
 		$this->responseSet = false;		// reset response mode to off for each call
 		return $this;
 	}
-	
+
 	public function __call($type, $args)
 	{
 		$obj = null;
@@ -168,7 +168,7 @@ class A_Controller_Helper_Load
 		if (isset($this->dirs[$type])) {
 			// get class name parameter or use action name or use method name in controller scope for $type/$controller/$action.php
 			$class = isset($args[0]) && $args[0] ? $args[0] : ($this->scope == 'controller' && $this->method ? $this->method : $this->action);
-			// has a . in name is extension so remove for class name and use ext 
+			// has a . in name is extension so remove for class name and use ext
 			$length = strpos($class, '.');
 			if ($length) {
 				// get extension to use below
@@ -184,19 +184,19 @@ class A_Controller_Helper_Load
 					}
 				}
 			}
-			
+
 			// insert type path into scope path
-			if ($this->scopePath) { 
+			if ($this->scopePath) {
 				$path = str_replace('%s', $this->dirs[$type], $this->scopePath);
 			} else {
 				$path = $this->dirs[$type];		// just in case no scopePath
 			}
-			
+
 			// helpers take a parent instance as the parameter
 			if ($type == 'helper') {
 				$args[1] = $this->parent;
 			}
-			
+
 			// templates are a template filename, not a class name -- need to load/create template class
 			if ($type == 'template') {
 				// lookup the renderer by extension, if given
@@ -221,7 +221,7 @@ class A_Controller_Helper_Load
 				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
 				// add in path separators
 				$class = str_replace(array('_','-'), array('/','_'), $class);
-				
+
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
 				if (isset($args[1]) && is_array($args[1])) {
@@ -267,10 +267,10 @@ class A_Controller_Helper_Load
 				 if ($this->responseSet) {
 					 if ($this->locator) {
 					 	$response = $this->locator->get('Response');
-						if ($response && $obj) {					
+						if ($response && $obj) {
 							if ($this->responseName) {
 								$response->set($this->responseName, $obj);		// if name then set data in response
-							
+
 							} elseif (in_array($type, $this->rendererTypes)) {	// if renderer set as renderer
 								$response->setRenderer($obj);
 							} else {

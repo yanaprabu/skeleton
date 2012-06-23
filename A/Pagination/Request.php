@@ -1,7 +1,7 @@
 <?php
 /**
  * Request.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Cory Kaufman, Christopher Thompson
@@ -9,9 +9,9 @@
 
 /**
  * A_Pagination_Request
- * 
+ *
  * Component to initialize the core object from the request
- * 
+ *
  * @package A_Pagination
  */
 class A_Pagination_Request extends A_Pagination_Core
@@ -21,12 +21,12 @@ class A_Pagination_Request extends A_Pagination_Core
 	{
 		$this->request = $request;
 	}
-	
+
 	public function setSession($session)
 	{
 		$this->session = $session;
 	}
-	
+
 	public function process($request=null, $session=null)
 	{
 		if ($request !== null) {
@@ -35,7 +35,7 @@ class A_Pagination_Request extends A_Pagination_Core
 		if ($session !== null) {
 			$this->session = $session;
 		}
-		
+
 		if ($numItems = $this->get('num_items')) {
 			$this->setNumItems(intval($numItems));
 		}
@@ -48,7 +48,7 @@ class A_Pagination_Request extends A_Pagination_Core
 		}
 		$this->setcurrentPage(intval($this->get('page')), $this->getFirstPage());	// do after getting num_items
 	}
-	
+
 	public function get($param, $default='')
 	{
 		$name = $this->getParamName($param);

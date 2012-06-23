@@ -1,7 +1,7 @@
 <?php
 /**
  * Writer.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Christopher Thompson
@@ -11,14 +11,14 @@
  * A_Delimited_Writer
  *
  * Write arrays to a delimited text file.
- * 
+ *
  * @package A_Delimited
  */
 class A_Delimited_Writer extends A_Delimited_Base
 {
 
 	protected $filemode = 'wb';
-	
+
 	/**
 	 * @param array $value Data to be written to line in file
 	 * @return $this
@@ -28,7 +28,7 @@ class A_Delimited_Writer extends A_Delimited_Base
 		$this->_config['write_all_enclosed'] = $value;
 		return $this;
 	}
-	
+
 	/**
 	 * @param array $row Data to be written to line in file
 	 * @return bool|int Length of data written or false on error
@@ -56,7 +56,7 @@ class A_Delimited_Writer extends A_Delimited_Base
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @param array $rows Lines to be written to file
 	 * @return bool|int Length of data written or false on error

@@ -1,7 +1,7 @@
 <?php
 /**
  * Ingroup.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -14,10 +14,10 @@
 
 /**
  * A_User_Rule_Ingroup
- * 
- * Checks if the group(s) passed to the constructor are group(s) that the user 
+ *
+ * Checks if the group(s) passed to the constructor are group(s) that the user
  * is a member of.
- * 
+ *
  * @package A_User
  */
 class A_User_Rule_Ingroup extends A_User_Rule_Base
@@ -25,7 +25,7 @@ class A_User_Rule_Ingroup extends A_User_Rule_Base
 
 	protected $groups;
 	protected $delimiter;
-	
+
 	public function __construct($groups, $forward=array(), $field='access', $delimiter='|')
 	{
 		$this->forward = $forward;
@@ -33,7 +33,7 @@ class A_User_Rule_Ingroup extends A_User_Rule_Base
 		$this->delimiter = $delimiter;
 		$this->setGroups($groups);
 	}
-	
+
 	public function setGroups($groups)
 	{
 		if (is_string($groups)) {
@@ -43,13 +43,13 @@ class A_User_Rule_Ingroup extends A_User_Rule_Base
 		}
 		return $this;
 	}
-	
+
 	public function setDelimiter($delimiter)
 	{
 		$this->delimiter = $delimiter;
 		return $this;
 	}
-	
+
 	/*
 	 * TODO: this method needs to set error messages to help debugging
 	 */
@@ -72,7 +72,7 @@ class A_User_Rule_Ingroup extends A_User_Rule_Base
 				} else {
 					$usergroups = array();
 				}
-				if (array_intersect ($this->groups, $usergroups) )  {
+				if (array_intersect ($this->groups, $usergroups) ) {
 					return true;
 				}
 			} else {

@@ -8,19 +8,19 @@
 
 /**
  * A_Cart_Itemdata
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Itemdata
 {
-	
+
 	protected $name = '';
 	protected $value = '';
 	protected $options = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $name
 	 * @param mixed $value
 	 * @param mixed $options
@@ -31,7 +31,7 @@ class A_Cart_Itemdata
 		$this->value = $value;
 		$this->options = $options;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -39,7 +39,7 @@ class A_Cart_Itemdata
 	{
 		return($this->name);
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -47,7 +47,7 @@ class A_Cart_Itemdata
 	{
 		return($this->value);
 	}
-	
+
 	/**
 	 * @return mixed
 	 */

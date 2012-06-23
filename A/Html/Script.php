@@ -1,44 +1,45 @@
 <?php
 /**
  * Script.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Script
- * 
+ *
  * Generate HTML <script> tag
- * 
+ *
  * @package A_Html
  */
-class A_Html_Style
+class A_Html_Script
 {
 
 	protected $_config = array(
 		'script_links' => array(),
 		'scripts' => array(),
-	); 
+	);
 	protected $_label = '';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param array $config
 	 */
-	public function __construct($config=array()) {
+	public function __construct($config=array())
+	{
 		if ($config) {
 			$this->config($config);
 		}
 	}
-	
+
 	public function config($config)
 	{
 		$this->_config = array_merge($this->_config, $config);
 		return $this;
 	}
-	
+
 	public function set($name, $value)
 	{
 		if (isset($this->_config[$name])) {
@@ -52,7 +53,7 @@ class A_Html_Style
 		}
 		return $this;
 	}
-	
+
 	public function _addConfig($name, $data)
 	{
 		if ($name && $data) {
@@ -77,7 +78,7 @@ class A_Html_Style
 		$this->_before = null;
 		return $this;
 	}
-	
+
 	public function addScript($script, $type='text/javascript')
 	{
 		if ($script) {
@@ -85,7 +86,7 @@ class A_Html_Style
 		}
 		return $this;
 	}
-	
+
 	public function addScriptLink($url, $type='text/javascript')
 	{
 		if ($url) {
@@ -93,7 +94,7 @@ class A_Html_Style
 		}
 		return $this;
 	}
-	
+
 	public function renderScriptLinks()
 	{
 		$str = '';
@@ -102,7 +103,7 @@ class A_Html_Style
 		}
 		return $str;
 	}
-	
+
 	public function renderScripts()
 	{
 		$str = '';
@@ -111,7 +112,7 @@ class A_Html_Style
 		}
 		return $str;
 	}
-	
+
 	public function render($attr=array(), $content=null)
 	{
 		$html = '';
@@ -119,7 +120,7 @@ class A_Html_Style
 		$html .= $this->renderScripts();
 		return $html;
 	}
-	
+
 	public function __toString()
 	{
 		$this->render();

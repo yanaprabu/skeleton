@@ -1,16 +1,16 @@
 <?php
 /**
  * Set.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Set
- * 
+ *
  * Contains multiple rules that must all pass for this to be isValid
- * 
+ *
  * @package A_Rule
  */
 class A_Rule_Set
@@ -21,7 +21,7 @@ class A_Rule_Set
 	protected $includes = array();		// array of names only to be validated
 	protected $errorMsg = array();
 	protected $dir = 'A_Rule_';
-	
+
 	public function addRule($rules, $fields=array(), $errorMsgs=array())
 	{
 		if (!is_array($rules)) {
@@ -57,7 +57,7 @@ class A_Rule_Set
 		}
 		return $this;
 	}
-	
+
 	public function excludeRules($names=array())
 	{
 		if (is_string($names)) {
@@ -66,7 +66,7 @@ class A_Rule_Set
 		$this->excludes = $names;
 		return $this;
 	}
-	
+
 	public function includeRules($names=array())
 	{
 		if (is_string($names)) {
@@ -75,7 +75,7 @@ class A_Rule_Set
 		$this->includes = $names;
 		return $this;
 	}
-	
+
 	/**
 	 * Remove all assigned rules
 	 */
@@ -83,10 +83,10 @@ class A_Rule_Set
 	{
 		$this->chain = array();
 	}
-	
+
 	/**
 	 * Sets whether fields allow null values or not
-	 * 
+	 *
 	 * @param array $names
 	 * @param bool $tf
 	 * @return $this
@@ -105,10 +105,10 @@ class A_Rule_Set
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Whether field is allows null values or not
-	 * 
+	 *
 	 * @param string $name
 	 * @return bool Value of optional flag
 	 */
@@ -123,24 +123,24 @@ class A_Rule_Set
 		}
 		return $optional;
 	}
-	
+
 	/**
 	 * Tells whether this rule passes or not
-	 * 
+	 *
 	 * @param object $container
 	 * @return bool
 	 */
 	public function isValid($container)
 	{
 		$this->errorMsg = array();
-		
+
 		// load helpers specified by array('class_name', 'param', ...)
 		foreach ($this->chain as $key => $args) {
 			// class names with params are added as arrays
 			if (is_array($this->chain[$key])) {
 				$name = array_shift($args);
 				// can use built-in rules and $this->dir will be used
-				if(strstr($name, '_') === false) {
+				if (strstr($name, '_') === false) {
 					$name = $this->dir . ucfirst($name);
 				}
 				$ref = new ReflectionClass($name);
@@ -148,8 +148,8 @@ class A_Rule_Set
 				unset($ref);
 			}
 		}
-		
-		// in only for specific fields the build chain containing only those names 
+
+		// in only for specific fields the build chain containing only those names
 		if ($this->includes) {
 			$chain = array();
 			foreach ($this->chain as $key => $rule) {
@@ -160,7 +160,7 @@ class A_Rule_Set
 		} else {
 			$chain = array_keys($this->chain);
 		}
-		
+
 		// if excludes certain fields then remove rules with those names from the chain
 		if ($this->excludes) {
 			$keys = array_keys($chain);
@@ -170,7 +170,7 @@ class A_Rule_Set
 				}
 			}
 		}
-		
+
 		// check each rule in chain and gather error messages
 		foreach ($chain as $key) {
 			if (!$this->chain[$key]->isValid($container)) {
@@ -184,7 +184,7 @@ class A_Rule_Set
 		}
 		return empty($this->errorMsg);
 	}
-	
+
 	public function getErrorMsg($separator=null)
 	{
  		return $separator === null ? $this->errorMsg : implode($separator, $this->errorMsg);

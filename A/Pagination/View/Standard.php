@@ -1,7 +1,7 @@
 <?php
 /**
  * Standard.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Cory Kaufman, Christopher Thompson
@@ -9,9 +9,9 @@
 
 /**
  * A_Pagination_View_Standard
- * 
+ *
  * Component to paginate items from a datasource
- * 
+ *
  * @package A_Pagination
  */
 class A_Pagination_View_Standard
@@ -20,7 +20,7 @@ class A_Pagination_View_Standard
 	protected $links = '';
 	protected $helpers = array();
 	protected $cacheNumItems = true;
-	
+
 	public function __construct($pager, $url=false, $cache=true)
 	{
 		$this->pager = $pager;
@@ -40,12 +40,12 @@ class A_Pagination_View_Standard
 			$this->url()->set ($this->pager->getParamName('order_by'), $order_by);
 		}
 	}
-	
+
 	public function setHelper($name, $helper)
 	{
 		$this->helpers[$name] = $helper;
 	}
-	
+
 	public function order()
 	{
 		if (!isset($this->helpers['order'])) {
@@ -53,7 +53,7 @@ class A_Pagination_View_Standard
 		}
 		return $this->helpers['order'];
 	}
-	
+
 	public function link()
 	{
 		if (!isset($this->helpers['link'])) {
@@ -61,10 +61,10 @@ class A_Pagination_View_Standard
 		}
 		return $this->helpers['link'];
 	}
-	
+
 	/**
 	 * Assign a renderer to the Link helper
-	 * 
+	 *
 	 * @param A_Renderer $renderer
 	 * @return $this
 	 */
@@ -73,7 +73,7 @@ class A_Pagination_View_Standard
 		$this->link()->setRenderer($renderer);
 		return $this;
 	}
-	
+
 	public function url()
 	{
 		if (!isset($this->helpers['url'])) {
@@ -81,43 +81,43 @@ class A_Pagination_View_Standard
 		}
 		return $this->helpers['url'];
 	}
-	
+
 	public function first($label=false, $separator=true)
 	{
 		$this->links .= $this->link()->first ($label, $separator);
 		return $this;
 	}
-	
+
 	public function previous($label = false, $separator=true)
 	{
 		$this->links .= $this->link()->previous ($label, $separator);
 		return $this;
 	}
-	
+
 	public function page($page=false, $label=false)
 	{
 		$this->links .= $this->link->page ($page, $label);
 		return $this;
 	}
-	
+
 	public function next($label=false, $separator=true)
 	{
 		$this->links .= $this->link()->next($label, $separator);
 		return $this;
 	}
-	
+
 	public function last($label=false, $separator=true)
 	{
 		$this->links .= $this->link()->last($label, $separator);
 		return $this;
 	}
-	
+
 	public function range($offset=false, $page=false)
 	{
 		$this->links .= $this->link()->range($offset, $page);
 		return $this;
 	}
-	
+
 	public function render()
 	{
 		if ($this->links == '') {
@@ -129,26 +129,27 @@ class A_Pagination_View_Standard
 		}
 		return $this->links;
 	}
-	
+
 	public function alwaysShowFirstLast()
 	{
 		$this->link()->alwaysShowFirstLast();
 	}
-	
+
 	public function alwaysShowPreviousNext()
 	{
 		$this->link()->alwaysShowPreviousNext();
 	}
-	
+
 	public function __call ($method, $args)
 	{
 		if (method_exists ($this->pager, $method)) {
 			return call_user_func_array (array ($this->pager, $method), $args);
 		}
 	}
-	
+
 /*
-	public function __call ($method, $params)   {
+	public function __call ($method, $params)
+	{
 		if (!isset($this->helpers[$method])) {
 			$name = ucfirst($method);
 			#include_once 'A/Pagination/View/'. $name . '.php';

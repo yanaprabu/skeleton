@@ -9,16 +9,16 @@
 
 /**
  * A_Db_Activerecord
- * 
+ *
  * DataSource access using the Active Record pattern.
- * 
+ *
  * @package A_Db
  */
 class A_Db_Activerecord extends A_Collection
 {
 
 	public $sql = '';
-	
+
 	protected $db = null;
 	protected $table;
 	protected $key = 'id';
@@ -27,11 +27,11 @@ class A_Db_Activerecord extends A_Collection
 	protected $columns = '*';
 	protected $num_rows = 0;
 	protected $is_loaded = false;
-	
+
 	protected static $globaldb = null;
 
 	# Do we need a A_Db_Activerecord_List class that contains an array of A_Db_Activerecord objects?  It would a separate array to iterate over
-	
+
 	public function __construct($db=null, $table='', $key='id')
 	{
 		if ($db) {
@@ -44,7 +44,7 @@ class A_Db_Activerecord extends A_Collection
 		$this->select = new A_Sql_Select();
 		$this->select->from($this->getTable());
 	}
-	
+
 	public function setDb($db)
 	{
 		if (isset($this)) {
@@ -54,7 +54,7 @@ class A_Db_Activerecord extends A_Collection
 		}
 		return $this;
 	}
-	
+
 	public function table($table=null)
 	{
 		if ($table) {
@@ -64,12 +64,12 @@ class A_Db_Activerecord extends A_Collection
 		}
 		return $this;
 	}
-	
+
 	public function getTable()
 	{
 		return $this->table;
 	}
-	
+
 	public function key($key=null)
 	{
 		if ($key) {
@@ -79,18 +79,18 @@ class A_Db_Activerecord extends A_Collection
 		}
 		return $this;
 	}
-	
+
 	public function getKey()
 	{
 		return $this->key;
 	}
-	
+
 	public function setColumns($columns)
 	{
 		$this->columns = $columns;
 		return $this;
 	}
-	
+
 	public function where()
 	{
 		$args = func_get_args();
@@ -107,17 +107,17 @@ class A_Db_Activerecord extends A_Collection
 		}
 		return $this;
 	}
-	
+
 	public function find()
 	{
 		$allrows = array();
-		
+
 		$args = func_get_args();
 		// if params then where condition passed
 		if (count($args)) {
 			$this->where($args);
 		}
-		
+
 		$this->sql = $this->select->render();
 		$result = $this->db->query($this->sql);
 		if ($result->isError()) {
@@ -130,7 +130,7 @@ class A_Db_Activerecord extends A_Collection
 		}
 		return $this->errorMsg;
 	}
-	
+
 	public function save($data=array())
 	{
 		if ($data) {
@@ -151,7 +151,7 @@ class A_Db_Activerecord extends A_Collection
 		}
 		return $this;
 	}
-	
+
 	public function delete()
 	{
 		if (isset($this->_data[$this->key]) && $this->is_loaded) {

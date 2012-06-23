@@ -1,23 +1,23 @@
 <?php
 /**
  * Email.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Email
- * 
+ *
  * Rule to check if value is a valid email address, and that the domain exists
- * 
+ *
  * @package A_Rule
  */
 class A_Rule_Email extends A_Rule_Base
 {
 
 	const ERROR = 'A_Rule_Email';
-	
+
 	protected $check_dns = false;
 
 	protected function validate()
@@ -30,7 +30,7 @@ class A_Rule_Email extends A_Rule_Base
 
 		 return (preg_match("/^$user@($doIsValid|(\[($ipv4|$ipv6)\]))$/", $this->getValue()));
 		 */
-		
+
 		$email = $this->getValue();
 		/*
 		 Validate an email address.
@@ -50,22 +50,22 @@ class A_Rule_Email extends A_Rule_Base
 			if ($localLen < 1 || $localLen > 64) {
 				// local part length exceeded
 				$isValid = false;
-			} else if ($domainLen < 1 || $domainLen > 255) {
+			} elseif ($domainLen < 1 || $domainLen > 255) {
 				// domain part length exceeded
 				$isValid = false;
-			} else if ($local[0] == '.' || $local[$localLen-1] == '.') {
+			} elseif ($local[0] == '.' || $local[$localLen-1] == '.') {
 				// local part starts or ends with '.'
 				$isValid = false;
-			} else if (preg_match('/\\.\\./', $local)) {
+			} elseif (preg_match('/\\.\\./', $local)) {
 				// local part has two consecutive dots
 				$isValid = false;
-			} else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
+			} elseif (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
 				// character not valid in domain part
 				$isValid = false;
-			} else if (preg_match('/\\.\\./', $domain)) {
+			} elseif (preg_match('/\\.\\./', $domain)) {
 				// domain part has two consecutive dots
 				$isValid = false;
-			} else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
+			} elseif (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
 			str_replace("\\\\","",$local))) {
 				// character not valid in local part unless
 				// local part is quoted

@@ -1,7 +1,7 @@
 <?php
 /**
  * Encapsulate session data
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Session
  *
  * This class provides various utility functions pertaining to the user session
- * 
+ *
  * @package A
  */
 class A_Session
@@ -22,7 +22,7 @@ class A_Session
 	protected $_isstarted = false;
 	protected $_p3p = '';
 	public $_debug = array();
-	
+
 	/**
 	 * __construct
 	 *
@@ -35,7 +35,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . '__construct()';
 		$this->initNamespace($namespace);
 		$this->_regenerate = $regenerate;
 	}
-	
+
 	/**
 	 * initNamespace
 	 *
@@ -58,14 +58,14 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'initNamespace()';
 			$this->doExpiration();
 		}
 	}
-	
+
 	/**
 	 * setHandler
 	 *
 	 * @param mixed $handler ???
 	 * @return $this
 	 */
-	public function setHandler($handler) 
+	public function setHandler($handler)
 	{
 		session_set_save_handler(
 			array(&$handler, 'open'),
@@ -76,15 +76,15 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'initNamespace()';
 			array(&$handler, 'gc')
 		);
 		register_shutdown_function('session_write_close');
-		
+
 		//ensure the session is restarted after changing the save handler
 		session_destroy();
 		session_start();
 		session_regenerate_id();
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * setP3P
 	 *
@@ -94,7 +94,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'initNamespace()';
 	{
 		$this->_p3p = $policy;
 	}
-	
+
 	/**
 	 * start
 	 *
@@ -120,7 +120,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 		}
 		$this->initNamespace();
 	}
-	
+
 	/**
 	 * get
 	 *
@@ -141,7 +141,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 		}
 		return $default;
 	}
-	
+
 	/**
 	 * getRef
 	 *
@@ -167,7 +167,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 		$value = array();
 		return $value;
 	}
-	
+
 	/**
 	 * set
 	 *
@@ -199,7 +199,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * has
 	 *
@@ -215,7 +215,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 			return isset($_SESSION[$name]);
 		}
 	}
-	
+
 	/**
 	 * __get
 	 *
@@ -226,7 +226,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 	{
 		return $this->get($name);
 	}
-	
+
 	/**
 	 * __set
 	 *
@@ -238,7 +238,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 	{
 		return $this->set($name, $value);
 	}
-	
+
 	/**
 	 * expire
 	 *
@@ -250,7 +250,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'session_cache_limit
 		$this->start();
 		$_SESSION[$this->_a_namespace]['expire'][$name] = $count;
 	}
-	
+
 	/**
 	 * doExpiration
 	 *
@@ -274,7 +274,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'doExpiration()';
 			}
 		}
 	}
-	
+
 	/**
 	 * close
 	 *
@@ -285,7 +285,7 @@ $this->_debug[] = 'headers_sent=' . headers_sent() . ', ' . 'doExpiration()';
 		$this->start();
 		session_write_close();
 	}
-	
+
 	/**
 	 * destroy
 	 *

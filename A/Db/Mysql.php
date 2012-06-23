@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Mysql
- * 
+ *
  * Database connection class using the mysql_ library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
- * 
+ *
  * @package A_Db
  */
 class A_Db_Mysql extends A_Db_Adapter
@@ -20,7 +20,7 @@ class A_Db_Mysql extends A_Db_Adapter
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Mysql';
 	protected $_result_class = 'A_Db_Result';
-	
+
 	protected function _connect()
 	{
 		$host = $this->_config['host'];
@@ -41,7 +41,7 @@ class A_Db_Mysql extends A_Db_Adapter
 			$this->_errorHandler(1, "Cconnection failed. ");
 		}
 	}
-	
+
 	protected function _query($sql)
 	{
 		$result = mysql_query($sql, $this->_connection);
@@ -56,12 +56,12 @@ class A_Db_Mysql extends A_Db_Adapter
 		}
 		return $resultObject;
 	}
-	
+
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
-	
+
 	public function nextId($sequence)
 	{
 		if ($sequence) {
@@ -85,7 +85,7 @@ class A_Db_Mysql extends A_Db_Adapter
 		}
 		return 0;
 	}
-	
+
 	public function createSequence($sequence)
 	{
 		$result = 0;
@@ -94,17 +94,17 @@ class A_Db_Mysql extends A_Db_Adapter
 		}
 		return($result);
 	}
-	
+
 	public function escape($value)
 	{
 		return mysql_real_escape_string($value, $this->_connection);
 	}
-	
+
 	protected function _lastId()
 	{
 		return mysql_insert_id($this->_connection);
 	}
-	
+
 	protected function _selectDb($database)
 	{
 		$success = mysql_select_db($database, $this->_connection);
@@ -112,7 +112,7 @@ class A_Db_Mysql extends A_Db_Adapter
 			$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 		}
 	}
-	
+
 	protected function _close()
 	{
 		mysql_close($this->_connection);

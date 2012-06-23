@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Datamapper
- * 
+ *
  * Basic functionality to map table columns to object fields
- * 
+ *
  * @package A_Db
  */
 class A_Db_Datamapper
@@ -27,32 +27,32 @@ class A_Db_Datamapper
 	protected $sql = array();
 	protected $allow_key_changes = true;	// allow the key to be changed in a loaded object -- insert rather than update
 	protected $error = false;
-	
+
 	public function __construct($db, $class_name, $table_name='')
 	{
 	     $this->db = $db;
 	     $this->class_name = $class_name;
 	     $this->table_name = $table_name;
 	}
-	
+
 	public function setDb($db)
 	{
 	     $this->db = $db;
 		return $this;
 	}
-	
+
 	public function setClass($class_name)
 	{
 		$this->class_name = $class_name;
 		return $this;
 	}
-	
+
 	public function setTable($table_name)
 	{
 		$this->table_name = $table_name;
 		return $this;
 	}
-	
+
 	public function addMapping($mapping)
 	{
 		$this->error = false;
@@ -67,7 +67,7 @@ class A_Db_Datamapper
 		}
 		return $this;
 	}
-	
+
 	public function addJoin($join)
 	{
 		$this->joins[] = $join;
@@ -75,7 +75,7 @@ class A_Db_Datamapper
 		$this->setTableKey($join->table2, $join->field2, '');
 		return $this;
 	}
-	
+
 	public function getTableNames()
 	{
 		$tables = array();
@@ -89,7 +89,7 @@ class A_Db_Datamapper
 		}
 		return array_keys($tables);
 	}
-	
+
 	public function getTableNamesSQL()
 	{
 		$tables = $this->getTableNames();
@@ -114,7 +114,7 @@ class A_Db_Datamapper
 			return $tables[0];
 		}
 	}
-	
+
 	public function getTableFieldNames()
 	{
 		$fields = array();
@@ -123,25 +123,25 @@ class A_Db_Datamapper
 		}
 		return $fields;
 	}
-	
+
 	public function getKeyField($table_name='')
 	{
 		if (!$table_name) $table_name = $this->table_name;
 		return isset($this->table_keys[$table_name]) ? $this->table_keys[$table_name]['field_name'] : '';
 	}
-	
+
 	public function getKeyTableField($table_name='')
 	{
 		if (!$table_name) $table_name = $this->table_name;
 		return isset($this->table_keys[$table_name]) ? $table_name . '.' . $this->table_keys[$table_name]['field_name'] : '';
 	}
-	
+
 	public function getKeyProperty($table_name='')
 	{
 		if (!$table_name) $table_name = $this->table_name;
 		return isset($this->table_keys[$table_name]) ? $this->table_keys[$table_name]['property_name'] : '';
 	}
-	
+
 	public function getOperationSQL($field_name, $value, $operator='=')
 	{
 		if ($field_name && $value && $operator) {
@@ -149,7 +149,7 @@ class A_Db_Datamapper
 		}
 		return '';
 	}
-	
+
 	public function findPropertyByField($field_name)
 	{
 		$property_name = '';
@@ -161,7 +161,7 @@ class A_Db_Datamapper
 		}
 		return $property_name;
 	}
-	
+
 	public function setTableKey($table_name, $field_name, $property_name)
 	{
 		if ($table_name && $field_name && !isset($this->table_keys[$table_name])) {
@@ -189,17 +189,17 @@ class A_Db_Datamapper
 		}
 		return $this;
 	}
-	
+
 	public function allowKeyChanges($flag=true)
 	{
 		return $this->allow_key_changes = $flag;
 	}
-	
+
 	public function isError()
 	{
 		return $this->error;
 	}
-	
+
 	public function add($object, $replace=true)
 	{
 		// is same class as this mapping
@@ -222,7 +222,7 @@ class A_Db_Datamapper
 		}
 		return $object;
 	}
-	
+
 	public function load($key)
 	{
 		$this->error = false;
@@ -239,7 +239,7 @@ class A_Db_Datamapper
 					$row = $result->fetchRow();
 				}
 			}
-			
+
 			// record found
 			if ($row) {
 				$class_name = $this->class_name;			// map data to this class
@@ -257,7 +257,7 @@ class A_Db_Datamapper
 		}
 		return $this->objects_loaded[$key];
 	}
-	
+
 	public function render()
 	{
 		// update objects that have been added
@@ -287,7 +287,7 @@ class A_Db_Datamapper
 								$data[$table_name][$object->$key_property][$this->mappings[$property_name]->field_name] = $object->$property_name;
 							}
 						} else {
-							// field has not changed -- no update requireds 
+							// field has not changed -- no update requireds
 						}
 					}
 				} else {
@@ -327,7 +327,7 @@ class A_Db_Datamapper
 			}
 		}
 	}
-	
+
 	public function updateSQL($table, $key, $data)
 	{
 		if ($table && $key && $data) {
@@ -341,7 +341,7 @@ class A_Db_Datamapper
 			}
 		}
 	}
-	
+
 	public function insertSQL($table_name, $data)
 	{
 		if ($data) {
@@ -352,14 +352,14 @@ class A_Db_Datamapper
 			$this->sql[] = "INSERT INTO $table_name (" . implode(',', $cols) . ") VALUES ('" . implode("','", $values) . "');";
 		}
 	}
-	
+
 	public function deleteSQL($table_name, $key, $key_value)
 	{
 		if ($key) {
 			$this->sql[] = "DELETE FROM $table_name WHERE $key='$key_value';";
 		}
 	}
-	
+
 	public function commit()
 	{
 		if ($this->db) {

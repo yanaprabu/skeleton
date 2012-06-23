@@ -8,9 +8,9 @@
 
 /**
  * A_Controller_Action_Dispatch
- * 
+ *
  * This action controller implementation controls the actual action dispatch process and allows for pre- and post- dispatch hooks to be used.
- * 
+ *
  * @package A_Controller
  */
 class A_Controller_Action_Dispatch extends A_Controller_Action
@@ -31,13 +31,13 @@ class A_Controller_Action_Dispatch extends A_Controller_Action
 			$this->_postDispatch();
 		}
 	}
-	
+
 	/**
 	 * Pre-dispatch hook
 	 */
 	public function _preDispatch()
 	{}
-	
+
 	/**
 	 * Post-dispatch hook
 	 */

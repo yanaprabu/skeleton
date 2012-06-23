@@ -1,7 +1,7 @@
 <?php
 /**
  * Base.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Christopher Thompson
@@ -9,9 +9,9 @@
 
 /**
  * A_Delimited_Base
- * 
+ *
  * Abstract base class with common read/write functionality for delimited text files
- * 
+ *
  * @package A_Delimited
  */
 class A_Delimited_Base
@@ -27,7 +27,7 @@ class A_Delimited_Base
 	protected $_config;
 	protected $_errorMsg = '';
 	protected $_exception = '';
-	
+
 	/**
 	 * @param string $filename Full path to file to be read
 	 * @param string $config Configuration object
@@ -49,7 +49,7 @@ class A_Delimited_Base
 			$this->config($config);
 		}
 	}
- 	
+
 	/**
 	 * @param string $filename Full path to file to be read
 	 * @return $this
@@ -63,7 +63,7 @@ class A_Delimited_Base
 #		}
 		return $this;
 	}
-	
+
 	/**
 	 * @param array $config
 	 * @return $this
@@ -77,37 +77,37 @@ class A_Delimited_Base
 		}
 		return $this;
 	}
-	
+
 	public function setConfig($config)
 	{
 		return $this->config($config);
 	}
-	
+
 	public function setLineDelimiter($value)
 	{
 		return $this->_config['line_delimiter'] = $value;;
 	}
-	
+
 	public function setFieldDelimiter($value)
 	{
 		return $this->_config['field_delimiter'] = $value;;
 	}
-	
+
 	public function setFieldEnclosure($value)
 	{
 		return $this->_config['field_enclosure'] = $value;;
 	}
-	
+
 	public function setFieldEscape($value)
 	{
 		return $this->_config['field_escape'] = $value;;
 	}
-	
+
 	public function setFieldNamesInFirstRow($value)
 	{
 		return $this->_config['field_names_in_first_row'] = $value;;
 	}
-	
+
 	/**
 	 * @param string $filename Full path to file to be read
 	 * @return resource
@@ -132,7 +132,7 @@ class A_Delimited_Base
 		}
 		return $this->handle;
 	}
-	
+
 	public function close()
 	{
 		if ($this->handle && fclose($this->handle)) {
@@ -140,14 +140,14 @@ class A_Delimited_Base
 			$this->reset();
 		}
 	}
-	
+
 	public function rewind()
 	{
 		if ($this->handle) {
 			rewind($this->handle);
 		}
 	}
-	
+
 	public function reset()
 	{
 		$rows = array();
@@ -155,17 +155,17 @@ class A_Delimited_Base
 		$this->fieldNames = array();
 		$this->autoConfigured = false;
 	}
-	
+
 	public function isError()
 	{
 		return $this->_errorMsg != '';
 	}
-	
+
 	public function getErrorMsg()
 	{
 		return $this->_errorMsg;
 	}
-	
+
 	public function _errorHandler($errno, $errorMsg)
 	{
 		$this->_errorMsg .= $errorMsg;
@@ -173,7 +173,7 @@ class A_Delimited_Base
 			throw A_Exception::getInstance($this->_exception, $errorMsg);
 		}
 	}
-	
+
 	/**
 	 * @param $item A reference to the value to unescape
 	 * @param $key not used
@@ -183,7 +183,7 @@ class A_Delimited_Base
 	{
 		$item = str_replace($config['field_escape'], '', $item);
 	}
-	
+
 	/**
 	 * @param $item is a reference to the value to escape
 	 * @param $key not used

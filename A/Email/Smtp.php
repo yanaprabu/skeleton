@@ -1,7 +1,7 @@
 <?php
 /**
  * Smtp.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Email_Smtp
  *
  * Connection using socket connection to SMTP server.
- * 
+ *
  * @package A_Email
  */
 class A_Email_Smtp
@@ -24,7 +24,7 @@ class A_Email_Smtp
 		'connection_timeout' => 1,		// timeout for fsockconnect() in seconds
 		'socket_timeout' => 0,			// timeout for fputs() in seconds ini_get("default_socket_timeout")
 	);
-	protected $connection; 
+	protected $connection;
 	protected $reply_codes = array(
 		'211' => 'System status, or system help reply',
 		'214' => 'Help message (Information on how to use the receiver or the meaning of a particular non-standard command; this reply is useful only to the human user)',
@@ -50,45 +50,45 @@ class A_Email_Smtp
 		'554' => 'Transaction failed (Or, in the case of a connection-opening response, "No SMTP service here")',
 	);
 	protected $errorMsg = array();
-	
+
 	public function __construct($server, $username='', $password='')
 	{
 		$this->config['server'] = $server;
 		$this->config['username'] = $username;
 		$this->config['password'] = $password;
 	}
-	
+
 	public function setConnectionTimeout($seconds)
 	{
 		$this->config['connection_timeout'] = $seconds;
 	}
-	
+
 	public function setSocketTimeout($seconds)
 	{
 		$this->config['socket_timeout'] = $seconds;
 		if (isset($this->connection) && ($seconds > 0)) {
-			stream_set_timeout($this->connection, $seconds);			
+			stream_set_timeout($this->connection, $seconds);
 		}
 	}
-	
+
 	public function connect()
 	{
 		$errmsg = '';
-		
+
 		$this->connection = fsockopen($this->config['server'], $this->config['port'], &$error, &$errmsg, $this->config['connection_timeout']);
 
 		if ($this->connection) {
 // Do we need meta data or blocking?
 //			$this->metaData = stream_get_meta_data($this->connection);
 //			stream_set_blocking($this->connection, $this->config['stream_blocking'])
-			
+
 			// set timeout if specified once connected
 			if (isset($this->config['socket_timeout'])) {
 				$this->setSocketTimeout($this->config['socket_timeout']);
 			}
-			
+
 			$errmsg = $this->command('', '220', 'Connection failed. ');			// no command, just get reply
-			
+
 			if ($errmsg == '') {
 				// start SMTP session
 				$cmd = "HELO ".$this->config['server'];
@@ -98,12 +98,12 @@ class A_Email_Smtp
 				if ($errmsg == '' && $this->config['username'] && $this->config['password']) {
 					// request to authenticate
 					$errmsg = $this->command('auth login', '334', 'Auth login failed. ');
-					
-					if ($errmsg == '') {					 
+
+					if ($errmsg == '') {
 						// send username
 						$errmsg = $this->command(base64_encode($this->config['username']), '334', 'Auth username failed. ');
-						
-						if ($errmsg == '') {						 
+
+						if ($errmsg == '') {
 							// send password
 							$errmsg = $this->command(base64_encode($this->config['password']), '235', 'Auth password failed. ');
 						}
@@ -118,31 +118,31 @@ class A_Email_Smtp
 		}
 		return $errmsg == '';
 	}
-	
+
 	public function send($to, $subject, $message, $headers)
 	{
 		$errmsg = '';
-		
+
 		// get From address
 		if (preg_match("/From:.*?[A-Za-z0-9\._%-]+\@[A-Za-z0-9\._%-]+.*/", $headers, $froms)) {
 			 preg_match("/[A-Za-z0-9\._%-]+\@[A-Za-z0-9\._%-]+/", $froms[0], $fromarr);
 			 $from = $fromarr[0];
 		}
-		
+
 		$cmd = "MAIL FROM: <$from>";
 		$errmsg = $this->command($cmd, '250', $cmd . ' failed. ');
-		
+
 		if ($errmsg == '') {
-			
+
 			$cmd = "RCPT TO: <$to>";
 			$errmsg = $this->command($cmd, '250', $cmd . ' failed. ');
-			
+
 			if ($errmsg == '') {
-				
+
 				$errmsg = $this->command('DATA', '354', 'DATA failed. ');
-				
+
 				if ($errmsg == '') {
-					
+
 					// All message fields plus line at the with a lone period
 					$cmd = "To: $to\r\nFrom: $from\r\nSubject: $subject\r\n$headers\r\n\r\n$message\r\n.";
 					$errmsg = $this->command($cmd, '250', $cmd . 'Message failed. ');
@@ -152,20 +152,20 @@ class A_Email_Smtp
 		if ($errmsg != '') {
 			$this->errorMsg[] = $errmsg;
 		}
-		
+
 		return $errmsg == '';
 	}
-	
+
 	public function disconnect ()
 	{
 		$errmsg = $this->command('QUIT', '221', 'QUIT failed. ');
-		
+
 		return $errmsg == '';
 	}
 
 	/**
 	 * Returns collected error messages as an array as a string with a delimiter
-	 * 
+	 *
 	 * @param string $separator Delimiter between error messages.  Set to null for an array.
 	 * @return string|array
 	 */
@@ -173,7 +173,7 @@ class A_Email_Smtp
 	{
 		return $separator ? implode($separator, $this->errorMsg) : $this->errorMsg;
 	}
-	
+
 	protected function command ($command, $success_code, $errmsg)
 	{
 		if ($command) {

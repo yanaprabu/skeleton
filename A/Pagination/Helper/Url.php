@@ -1,7 +1,7 @@
 <?php
 /**
  * Url.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Cory Kaufman, Christopher Thompson
@@ -9,9 +9,9 @@
 
 /**
  * A_Pagination_Helper_Url
- * 
+ *
  * Generate URLs
- * 
+ *
  * @package A_Pagination
  */
 class A_Pagination_Helper_Url
@@ -20,7 +20,7 @@ class A_Pagination_Helper_Url
 	protected $base;
 	protected $protocol;
 	protected $state = array();
-	
+
 	/**
 	 * @param string $base Domain name and path
 	 * @param string $protocol HTTP or HTTPS
@@ -30,7 +30,7 @@ class A_Pagination_Helper_Url
 		$this->base = $base ? $base : $_SERVER['SERVER_NAME'];
 		$this->protocol = $protocol;
 	}
-	
+
 	/**
 	 * @param string $key
 	 * @param string $value
@@ -41,10 +41,10 @@ class A_Pagination_Helper_Url
 		$this->state[$key] = $value;
 		return $this;
 	}
-	
+
 	/**
 	 * Get a state value
-	 * 
+	 *
 	 * @param string $key
 	 * @param value $default Value returned if $key doesn't exist
 	 * @return mixed
@@ -53,10 +53,10 @@ class A_Pagination_Helper_Url
 	{
 		return isset($this->state[$key]) ? $this->state[$key] : $default;
 	}
-	
+
 	/**
 	 * Import state data
-	 * 
+	 *
 	 * @param array $data
 	 * @return $this
 	 */
@@ -65,7 +65,7 @@ class A_Pagination_Helper_Url
 		$this->state = array_merge($data, $this->state);
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $base Domain name and path
 	 * @return $this
@@ -75,7 +75,7 @@ class A_Pagination_Helper_Url
 		$this->base = $base;
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $protocol HTTP or HTTPS
 	 * @return $this
@@ -85,7 +85,7 @@ class A_Pagination_Helper_Url
 		$this->protocol = $protocol;
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $page Specific script name
 	 * @param array $params Name/value pairs where keys are name
@@ -106,10 +106,10 @@ class A_Pagination_Helper_Url
 		}
 		return $base . $page . $query;
 	}
-	
+
 	/**
 	 * Magic method to automatically render when used in a string context
-	 * 
+	 *
 	 * @return string
 	 */
 	public function __toString()

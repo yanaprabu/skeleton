@@ -8,9 +8,9 @@
 
 /**
  * A_Config_Xml
- * 
+ *
  * Support for reading XML configuration files
- * 
+ *
  * @package A_Config
  */
 class A_Config_Xml extends A_Config_Base

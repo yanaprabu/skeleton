@@ -1,17 +1,17 @@
 <?php
 /**
  * Abstract.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Rule_Abstract
- * 
+ *
  * Abstract base class for validation rules
- * 
- * @package A_Rule 
+ *
+ * @package A_Rule
  */
 abstract class A_Rule_Base
 {
@@ -21,15 +21,15 @@ abstract class A_Rule_Base
 	 * $params array define the order and names of the constructor params
 	 */
 	protected $params = array(
-		'field' => '', 
-		'errorMsg' => '', 
+		'field' => '',
+		'errorMsg' => '',
 		'optional' => false
 	);
-	
+
 	/**
-	 * When creating children here, remember to call this function and 
+	 * When creating children here, remember to call this function and
 	 * put params before $field and $errorMsg.
-	 * 
+	 *
 	 * @param string $field This rule applies to
 	 * @param string $error Message to be returned if validation fails
 	 * @param boolean Whether this rule returns true for null value
@@ -49,10 +49,10 @@ abstract class A_Rule_Base
 			}
 		}
 	}
-	
+
 	/**
 	 * Set params property with assoc array
-	 * 
+	 *
 	 * @param array $params
 	 * @return $this
 	 */
@@ -66,10 +66,10 @@ abstract class A_Rule_Base
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Changes the field this rule applies to
-	 * 
+	 *
 	 * @param string $field
 	 * @return $this
 	 */
@@ -78,20 +78,20 @@ abstract class A_Rule_Base
 		$this->params['field'] = $field;
 		return $this;
 	}
-	
+
 	/**
 	 * Returns the field this rule applies to
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getName()
 	{
 		return $this->params['field'];
 	}
-	
+
 	/**
 	 * Sets whether field allows null values or not
-	 * 
+	 *
 	 * @param bool $tf
 	 * @return $this
 	 */
@@ -100,20 +100,20 @@ abstract class A_Rule_Base
 		$this->params['optional'] = $tf;
 		return $this;
 	}
-	
+
 	/**
 	 * Whether field is allows null values or not
-	 * 
+	 *
 	 * @return bool Value of optional flag
 	 */
 	public function isOptional()
 	{
 		return $this->params['optional'];
 	}
-	
+
 	/**
 	 * Returns the value associated with this rule by default, but can return any value in the data container that this rule is validating
-	 * 
+	 *
 	 * @param string $name Field you're trying to access
 	 * @return mixed Whatever is inside the container array at key $name
 	 */
@@ -130,10 +130,10 @@ abstract class A_Rule_Base
 			return $this->container;
 		}
 	}
-	
+
 	/**
 	 * Sets the error message that is to be returned if this rule should fail
-	 * 
+	 *
 	 * @param string $errorMsg
 	 * @return $this
 	 */
@@ -142,10 +142,10 @@ abstract class A_Rule_Base
 		$this->params['errorMsg'] = $errorMsg;
 		return $this;
 	}
-	
+
 	/**
 	 * Gets the error message that is to be returned if this rule should fail
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getErrorMsg()
@@ -162,10 +162,10 @@ abstract class A_Rule_Base
 			return $errorMsg;
 		}
 	}
-	
+
 	/**
 	 * Tells whether this rule passes or not
-	 * 
+	 *
 	 * @return boolean True if pass, false otherwise
 	 */
 	public function isValid($container)
@@ -177,20 +177,20 @@ abstract class A_Rule_Base
 			return $this->validate();
 		}
 	}
-	
+
 	/**
 	 * Tells whether the value is '' or null
-	 * 
+	 *
 	 * @return bool True if value is '' or null, otherwise false
 	 */
 	public function isNull()
 	{
 		return ($this->getValue() === '') || ($this->getValue() === null);
 	}
-	
+
 	/**
 	 * Tells whether this rule passes or not (delegated to child class)
-	 * 
+	 *
 	 * @return bool True if pass, false otherwise
 	 */
 	abstract protected function validate();

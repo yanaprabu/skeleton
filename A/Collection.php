@@ -1,7 +1,7 @@
 <?php
 /**
  * Collection.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Cory Kaufman, Christopher Thompson, Jonah Dahlquist
@@ -9,16 +9,16 @@
 
 /**
  * A_Collection
- * 
+ *
  * Standard collection class that has get/set/has, iterator and array access
- * 
+ *
  * @package A
  */
 class A_Collection implements Iterator, ArrayAccess
 {
 
 	protected $_data = array();
-	
+
 	/**
 	 * @param array $data Initial Collection data
 	 */
@@ -26,10 +26,10 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		$this->import($data);
 	}
-	
+
 	/**
 	 * Recursively import data into this Collection, converting sub-arrays into sub-Collections
-	 * 
+	 *
 	 * @param array $data
 	 * @return self
 	 */
@@ -40,7 +40,7 @@ class A_Collection implements Iterator, ArrayAccess
 		}
 		return $this;
 	}
-	
+
 	protected function _expand($obj, $data)
 	{
 		if (isset($data)) {
@@ -56,10 +56,10 @@ class A_Collection implements Iterator, ArrayAccess
 			}
 		}
 	}
-	
+
 	/**
 	 * Get value at specified index/key, or null if that key doesn't exist
-	 * 
+	 *
 	 * @param mixed $key Index of item to get
 	 * @param mixed $default Default value if key does not exist.  Optional, default null.
 	 */
@@ -67,10 +67,10 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return isset($this->_data[$key]) ? $this->_data[$key] : $default;
 	}
-	
+
 	/**
 	 * Sets the specified key to a value, or a default if the value is null.  The key is deleted if default is null
-	 * 
+	 *
 	 * @param mixed $key
 	 * @param mixed $value
 	 * @param mixed $default Set as value if $value is strict null.  Optional, default null.
@@ -87,10 +87,10 @@ class A_Collection implements Iterator, ArrayAccess
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Appends an item to the end of the collection.
-	 * 
+	 *
 	 * @param mixed $value Value to append to the collection
 	 * @param mixed $ignoreNull Won't add null items if set to true (optional, default false)
 	 * @return self
@@ -105,7 +105,7 @@ class A_Collection implements Iterator, ArrayAccess
 
 	/**
 	 * Appends an array or a Collection of items to the end of the collection.
-	 * 
+	 *
 	 * @param array $values Values to append to the collection
 	 * @param bool $ignoreNull Won't add null items if set to true (optional, default false)
 	 * @return $this
@@ -119,10 +119,10 @@ class A_Collection implements Iterator, ArrayAccess
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Removed the specified key from this Collection
-	 * 
+	 *
 	 * @param mixed $key
 	 * @return self
 	 */
@@ -132,20 +132,20 @@ class A_Collection implements Iterator, ArrayAccess
 			unset($this->_data[$key]);
 		return $this;
 	}
-	
+
 	/**
 	 * Get the number of items in this Collection
-	 * 
+	 *
 	 * @return int
 	 */
 	public function count()
 	{
 		return count($this->_data);
 	}
-	
+
 	/**
 	 * Sort this collection (without preserving keys) with a callback function.
-	 * 
+	 *
 	 * @param callback $callback Function to sort with
 	 * @return self
 	 */
@@ -154,10 +154,10 @@ class A_Collection implements Iterator, ArrayAccess
 		usort($this->_data, $callback);
 		return $this;
 	}
-	
+
 	/**
 	 * Extract a slice of this Collection into a new Collection
-	 * 
+	 *
 	 * @param int $offset Offset of slice
 	 * @param int $length Length of slice (optional, to end of collection if ommitted)
 	 * @return A_Collection
@@ -166,21 +166,21 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return new A_Collection(array_slice($this->_data, $offset, $length, true));
 	}
-	
+
 	/**
 	 * Check if this Collection contains the specified key
-	 * 
+	 *
 	 * @param mixed $key
 	 * @return boolean True if key exists
 	 */
 	public function has($key)
-	{	
+	{
 		return isset($this->_data[$key]);
 	}
-	
+
 	/**
 	 * Convert this Collection to a normal array
-	 * 
+	 *
 	 * @param $convertChildren Set to true to recursively convert child collections too (optional, default false).
 	 * @return array
 	 */
@@ -191,13 +191,13 @@ class A_Collection implements Iterator, ArrayAccess
 			foreach ($data as $key => $value)
 				if ($value instanceof A_Collection)
 					$data[$key] = $value->toArray(true);
-		
+
 		return $data;
 	}
-	
+
 	/**
 	 * Put data into string separated by a delimiter
-	 * 
+	 *
 	 * @param string $delimiter
 	 * @return string
 	 */
@@ -213,11 +213,11 @@ class A_Collection implements Iterator, ArrayAccess
 		}
 		return implode($delimiter, $data);
 	}
-	
+
 	/*
 	 * Iterator methods
 	 */
-	
+
 	/**
 	 * @see Iterator::current()
 	 */
@@ -225,7 +225,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return current($this->_data);
 	}
-	
+
 	/**
 	 * @see Iterator::key()
 	 */
@@ -233,7 +233,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return key($this->_data);
 	}
-	
+
 	/**
 	 * @see Iterator::next()
 	 */
@@ -241,7 +241,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		next($this->_data);
 	}
-	
+
 	/**
 	 * @see Iterator::rewind()
 	 */
@@ -249,7 +249,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		reset($this->_data);
 	}
-	
+
 	/**
 	 * @see Iterator::valid()
 	 */
@@ -257,11 +257,11 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return key($this->_data) !== null;
 	}
-	
+
 	/*
 	 * ArrayAccess methods
 	 */
-	
+
 	/**
 	 * @see ArrayAccess::offsetExists()
 	 */
@@ -269,7 +269,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return $this->has($offset);
 	}
-	
+
 	/**
 	 * @see ArrayAccess::offsetGet()
 	 */
@@ -277,7 +277,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return $this->get($offset);
 	}
-	
+
 	/**
 	 * @see ArrayAccess::offsetSet()
 	 */
@@ -285,7 +285,7 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return $this->set($offset, $value);
 	}
-	
+
 	/**
 	 * @see ArrayAccess::offsetUnset()
 	 */
@@ -293,24 +293,24 @@ class A_Collection implements Iterator, ArrayAccess
 	{
 		return $this->remove($offset);
 	}
-	
+
 	/*
 	 * Magic methods
 	 */
-	
+
 	public function __toString()
 	{
 		return $this->join(',');
 	}
-	
+
 	public function __get($key)
 	{
 		return $this->get($key);
 	}
-	
+
 	public function __set($key, $value)
 	{
 		return $this->set($key, $value);
 	}
-	
+
 }

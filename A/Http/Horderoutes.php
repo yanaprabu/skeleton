@@ -1,7 +1,7 @@
 <?php
 /**
  * Horderoutes.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Http_Horderoutes
  *
  * Wrap the Horde Routes in Intercepting Filter style class for use with Request object
- * 
+ *
  * @package A_Http
  */
 class A_Http_Horderoutes
@@ -18,11 +18,11 @@ class A_Http_Horderoutes
 
 	protected $path;
 	protected $mapper;
-	
+
 	public function __construct()
 	{
   		$this->mapper = new Horde_Routes_Mapper();
-		
+
 		if (isset($_SERVER['PATH_INFO'])) {
 			$path = $_SERVER['PATH_INFO'];
 		} else {
@@ -42,23 +42,23 @@ class A_Http_Horderoutes
 		}
 		$this->path = trim($path, '/');
 	}
-	
+
 	public function createRegs($reg)
 	{
 		return $this->mapper->createRegs($reg);
 	}
-	
+
 	public function connnect($a, $b=null, $c=null, $d=null)
 	{
 		return $this->mapper->connnect($a, $b, $c, $d);
 	}
-	
+
 	public function setPath($path)
 	{
 		$this->path = $path;
 		return $this;
 	}
-	
+
 	public function run($request)
 	{
 		$map = $this->mapper->match($this->path);

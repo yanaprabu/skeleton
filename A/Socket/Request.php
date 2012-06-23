@@ -1,7 +1,7 @@
 <?php
 /**
  * Request.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Jonah Dahlquist <jonah@nucleussystems.com>
@@ -9,9 +9,9 @@
 
 /**
  * A_Socket_Request
- * 
+ *
  * This class encapsulates a request from a Socket client for passage through the Skeleton Front Controller
- * 
+ *
  * @package A_Socket
  */
 class A_Socket_Request
@@ -22,22 +22,22 @@ class A_Socket_Request
 	 * @var string
 	 */
 	protected $method = false;
-	
+
 	/**
 	 * Message to pass to controller
 	 * @var object
 	 */
 	protected $data;
-	
+
 	/**
 	 * Route to navigate to
 	 * @var mixed
 	 */
 	protected $route;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param object $data Message to pass through
 	 */
 	public function __construct($data)
@@ -46,10 +46,10 @@ class A_Socket_Request
 		$this->data = $data;
 		$this->route = $data->getRoute();
 	}
-	
+
 	/**
 	 * Gets route/method information from request
-	 * 
+	 *
 	 * @param string $index
 	 * @return mixed
 	 */
@@ -62,10 +62,10 @@ class A_Socket_Request
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get message passed from Server
-	 * 
+	 *
 	 * @return object
 	 */
 	public function getData()

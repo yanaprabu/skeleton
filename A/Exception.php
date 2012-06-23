@@ -1,7 +1,7 @@
 <?php
 /**
  * Exception.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -9,8 +9,8 @@
 /**
  * A_Exception
  *
- * Instantiation of exception objects 
- * 
+ * Instantiation of exception objects
+ *
  * @package A
  */
 class A_Exception

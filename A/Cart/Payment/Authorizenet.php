@@ -14,9 +14,9 @@ define('A_CART_PAYMENT_AUTHORIZENET_TRXTYPE_AUTHORIZATION', 'A');
 
 /**
  * A_Cart_Payment_Authorizenet
- * 
+ *
  * Authorizenet (credit card processsing) class library
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Payment_Authorizenet
@@ -25,10 +25,10 @@ class A_Cart_Payment_Authorizenet
 	const SERVER_LIVE = 1;
 	const SERVER_TEST = 2;
 	const SERVER_NONE = 3;
-	
+
 	const TRXTYPE_SALE = 'S';
 	const TRXTYPE_AUTHORIZATION = 'A';
-	
+
 	protected $server;
 	protected $serverlist;
 	protected $servermode;
@@ -37,7 +37,7 @@ class A_Cart_Payment_Authorizenet
 	protected $response = array();	// split on delimiters
 	protected $response_raw = '';
 	protected $errorMsg;
-	
+
 	public function __construct($user='', $passwd='', $partner='', $mode=self::SERVER_LIVE)
 	{
 		$this->serverlist = array(
@@ -84,16 +84,16 @@ class A_Cart_Payment_Authorizenet
 			'x_freight'				=> '',
 			'x_po_num'				=> '',
 		);
-		
+
 		$this->setServerMode($mode);
 	}
-	
+
 	public function setServer($value)
 	{
 		$this->server = $value;
 		return $this;
 	}
-	
+
 	public function setServerMode($mode=self::SERVER_LIVE)
 	{
 		switch ($mode) {
@@ -113,7 +113,7 @@ class A_Cart_Payment_Authorizenet
 		$this->servermode = $mode;
 		return $this;
 	}
-	
+
 	public function set($name, $value)
 	{
 		if ($value !== null) {
@@ -123,29 +123,29 @@ class A_Cart_Payment_Authorizenet
 		}
 		return $this;
 	}
-	
+
 	public function get($name)
 	{
 		return isset($this->transaction[$name]) ? $this->transaction[$name] : '';
 	}
-	
+
 	public function setUser($value)
 	{
 		$this->transaction['x_login'] = $value;
 		return $this;
 	}
-	
+
 	public function setPassword($value)
 	{
 		$this->transaction['x_tran_key'] = $value;
 		return $this;
 	}
-	
+
 	public function setPartner($value)
 	{
 		return $this;
 	}
-	
+
 	public function setTransactionType($value)
 	{
 		if (in_array($value, array('AUTH_CAPTURE', 'AUTH_ONLY', 'CAPTURE_ONLY', 'CREDIT', 'VOID', 'PRIOR_AUTH_CAPTURE'))) {
@@ -153,7 +153,7 @@ class A_Cart_Payment_Authorizenet
 		}
 		return $this;
 	}
-	
+
 	public function setPaymentMethod($value)
 	{
 		if (in_array($value, array('CC', 'ECHECK'))) {
@@ -161,25 +161,25 @@ class A_Cart_Payment_Authorizenet
 		}
 		return $this;
 	}
-	
+
 	public function setOrderNumber($value)
 	{
 		$this->transaction['x_invoice_num'] = $value;
 		return $this;
 	}
-	
+
 	public function setAmount($value)
 	{
 		$this->transaction['x_amount'] = $value;
 		return $this;
 	}
-	
+
 	public function setCardNumber($value)
 	{
 		$this->transaction['x_card_num'] = $value;
 		return $this;
 	}
-	
+
 	public function setExpDate($month, $year)
 	{
 		if (strlen(strval($year)) > 2) {
@@ -188,7 +188,7 @@ class A_Cart_Payment_Authorizenet
 		$this->transaction['x_exp_date'] = sprintf('%02d%02d', $month, $year);
 		return $this;
 	}
-	
+
 	public function setName($value)
 	{
 		$names = explode(' ', $value);
@@ -196,49 +196,49 @@ class A_Cart_Payment_Authorizenet
 		$this->transaction['x_first_name'] = array_shift($names);
 		return $this;
 	}
-	
+
 	public function setFirstName($value)
 	{
 		$this->transaction['x_first_name'] = $value;
 		return $this;
 	}
-	
+
 	public function setLastName($value)
 	{
 		$this->transaction['x_last_name'] = $value;
 		return $this;
 	}
-	
+
 	public function setStreet($value)
 	{
 		$this->transaction['x_address'] = $value;
 		return $this;
 	}
-	
+
 	public function setCity($value)
 	{
 		$this->transaction['x_city'] = $value;
 		return $this;
 	}
-	
+
 	public function setState($value)
 	{
 		$this->transaction['x_state'] = $value;
 		return $this;
 	}
-	
+
 	public function setZip($value)
 	{
 		$this->transaction['x_zip'] = $value;
 		return $this;
 	}
-	
+
 	public function setComments($comment1='', $comment2='')
 	{
 		$this->transaction['x_description'] = $comment1;
 		return $this;
 	}
-	
+
 	public function getReference()
 	{
 		if ($this->response) {
@@ -246,12 +246,12 @@ class A_Cart_Payment_Authorizenet
 		}
 		return '';
 	}
-	
+
 	public function getVersion()
 	{
 		return $this->transaction['x_version'];
 	}
-	
+
 	public function process()
 	{
 		if ($this->servermode == self::SERVER_NONE) {
@@ -259,24 +259,24 @@ class A_Cart_Payment_Authorizenet
 			$this->response[3] = 'Did not connect to credit card processor (self::SERVER_NONE). ';
 		} else {
 			$fields = '';
-			foreach($this->transaction as $key => $value) {
+			foreach ($this->transaction as $key => $value) {
 				$fields .= "$key=" . urlencode( $value ) . "&";
 			}
-			
-			$ch = curl_init($this->server); 
-	
+
+			$ch = curl_init($this->server);
+
 			curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
 			curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
 			### curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
-	
+
 			$this->response_raw = curl_exec($ch); //execute post and get results
 			$this->response = explode($this->delimiter, $this->response_raw);
 			curl_close ($ch);
 		}
 		return $this->isError();
 	}
-	
+
 	public function isError()
 	{
 		if ($this->response && ($this->response[0] != 1)) {
@@ -284,7 +284,7 @@ class A_Cart_Payment_Authorizenet
 		}
 		return false;
 	}
-	
+
 	public function getErrorMsg()
 	{
 		if ($this->response) {
@@ -296,10 +296,10 @@ class A_Cart_Payment_Authorizenet
 		}
 		return 'Could not connect to credit card processor. ';
 	}
-	
+
 	/**
 	 * Alias name for getErrorMsg()
-	 * 
+	 *
 	 * @deprecated
 	 * @see getErrorMsg()
 	 */
@@ -307,7 +307,7 @@ class A_Cart_Payment_Authorizenet
 	{
 		return $this->getErrorMsg();
 	}
-	
+
 	public function getResult()
 	{
 		if ($this->response) {
@@ -315,7 +315,7 @@ class A_Cart_Payment_Authorizenet
 		}
 		return -1;
 	}
-	
+
 	public function close()
 	{}
 

@@ -10,29 +10,29 @@
  * A_Cart_Manager
  *
  * Shopping cart management functionality
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Manager
 {
-	
+
 	protected $name = '';
 	protected $itemid = 0;
 	protected $items = array();
 	protected $maxitems = 99;
 	protected $othercosts = null;
 	protected $currency = '$';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param mixed $name
 	 */
 	public function __construct($name)
 	{
 		$this->name = $name;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -40,7 +40,7 @@ class A_Cart_Manager
 	{
 		return $this->name;
 	}
-	
+
 	/**
 	 * @param mixed $id
 	 * @return A_Cart_Item|null
@@ -56,7 +56,7 @@ class A_Cart_Manager
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -64,7 +64,7 @@ class A_Cart_Manager
 	{
 		return count($this->items);
 	}
-	
+
 	/**
 	 * @return array
 	 */
@@ -72,7 +72,7 @@ class A_Cart_Manager
 	{
 		return $this->items;
 	}
-	
+
 	/**
 	 * @param bool $newItem True if item successfully added
 	 */
@@ -98,9 +98,9 @@ class A_Cart_Manager
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param mixed $id
 	 * @return bool True if item existed and was removed
 	 */
@@ -112,7 +112,7 @@ class A_Cart_Manager
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -126,7 +126,7 @@ class A_Cart_Manager
 		}
 		return $total;
 	}
-	
+
 	/**
 	 * @param mixed $name
 	 * @return int
@@ -144,7 +144,7 @@ class A_Cart_Manager
 		}
 		return $total;
 	}
-	
+
 	/**
 	 * @param mixed $name
 	 * @param int $cost
@@ -155,7 +155,7 @@ class A_Cart_Manager
 		$this->othercosts[$name] = $cost;
 		return $this;
 	}
-	
+
 	/**
 	 * @param mixed $name
 	 * @return mixed
@@ -164,7 +164,7 @@ class A_Cart_Manager
 	{
 		return $this->othercosts[$name];
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -178,7 +178,7 @@ class A_Cart_Manager
 		}
 		return $total;
 	}
-	
+
 	/**
 	 * @param string $currency
 	 */
@@ -187,7 +187,7 @@ class A_Cart_Manager
 		$this->currency = $currency;
 		return $this;
 	}
-	
+
 	/**
 	 * @param int $value
 	 * @return string

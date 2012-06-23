@@ -1,23 +1,23 @@
 <?php
 /**
  * Tag.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Tag
- * 
+ *
  * Generic HTML tag w/attribute functionality
- * 
+ *
  * @package A_Html
  */
 class A_Html_Tag
 {
 
 	protected $_attr = array();
-	
+
 	public function __construct($attr=array(), $value=null)
 	{
 		if (is_array($attr)) {
@@ -27,29 +27,29 @@ class A_Html_Tag
 			$this->_attr['value'] = $value;
 		}
 	}
-	
+
 	public function mergeAttr(&$attr)
 	{
 		if (isset($this) && isset($this->_attr) && is_array($attr)) {
 			$attr = array_merge($this->_attr, $attr);
 		}
 	}
-	
+
 	public function import($data)
 	{
 		$this->_attr = array_merge($this->_attr, $data);
 		return $this;
 	}
-	
+
 	public function defaultAttr(&$attr, $defaults=array())
 	{
-		foreach($defaults as $key => $value) {
+		foreach ($defaults as $key => $value) {
 			if (!isset($attr[$key])) {
 				$attr[$key] = $value;
 			}
 		}
 	}
-	
+
 	public function removeAttr(&$attr, $key)
 	{
 		if ($key) {
@@ -59,17 +59,17 @@ class A_Html_Tag
 			}
 		}
 	}
-	
+
 	public function get($key)
 	{
 		if (isset($this->_attr[$key])) {
 			return $this->_attr[$key];
 		}
 	}
-	
+
 	/**
 	 * Set a tag attribute(s).
-	 * 
+	 *
 	 * @param string|array $key Either the attribute name, or an array of key/value pairs
 	 * @param mixed $value Value of attribute, not applicable if $key is an array
 	 */
@@ -86,20 +86,20 @@ class A_Html_Tag
 		}
 		return $this;
 	}
-	
+
 	/*
 	 * $tag - name of tag
-	 * $attr - array of attributes 
+	 * $attr - array of attributes
 	 * $content - determines if the tag has a closing tag - defined yes, null no
 	 *          - a string, an object with a render() method or an array containing any mix of those
 	 * e.g. render('div', array('id'=>'foo'), 'bar') generates <div id="foo">bar</div>
 	 * e.g. render('img', array('src'=>'foo.jpg', 'alt'=>'bar')) generates <img src="foo.jpg" alt="bar"/>
  	 */
-	
+
 	public function render($tag, $attr=array(), $content=null)
 	{
 		self::mergeAttr($attr);
- 		
+
 		if (isset($attr['before'])) {
 			$before = is_object($attr['before']) ? $attr['before']->render() : $attr['before'];
 			unset($attr['before']);
@@ -112,7 +112,7 @@ class A_Html_Tag
 		} else {
 			$after = '';
 		}
-		
+
 		$str = '';
 		if ($tag) {
 			$str = '<' . $tag;
@@ -132,7 +132,7 @@ class A_Html_Tag
 		}
 		return $before.$str.$after;
 	}
-	
+
 	public function __toString()
 	{
 		$this->render();

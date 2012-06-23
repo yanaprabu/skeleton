@@ -1,16 +1,16 @@
 <?php
 /**
  * Access.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Access
- * 
+ *
  * Check if user has access based on supplied rules.
- * 
+ *
  * @package A_User
  */
 class A_User_Access
@@ -19,18 +19,18 @@ class A_User_Access
 	protected $user;
 	protected $rules = array();
 	protected $errorMsg = null;
-	
+
 	public function __construct($user)
 	{
 		$this->user = $user;
 	}
-	
+
 	public function addRule($rule)
 	{
 		$this->rules[] = $rule;
 		return $this;
 	}
-	
+
 	/*
 	 * errorMsg holds the forward array
 	 */
@@ -39,12 +39,12 @@ class A_User_Access
 		$this->errorMsg = $forward;
 		return $this;
 	}
-	
+
 	public function getErrorMsg($forward=array())
 	{
 		return $this->errorMsg;
 	}
-	
+
 	public function run($obj)
 	{
 		if (is_a($obj, 'A_Locator')) {
@@ -56,7 +56,7 @@ class A_User_Access
 		}
 		if ($request) {
 			foreach ($this->rules as $rule) {
-				if (!$rule->isValid($this->user)) { 
+				if (!$rule->isValid($this->user)) {
 					// A_User_Rule_* use the Rule's errorMsg to hold the forward
 					$errorMsg = $rule->getErrorMsg();
 					// use global forward

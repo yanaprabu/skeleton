@@ -1,16 +1,16 @@
 <?php
 /**
  * Strreplace.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Strreplace
- * 
+ *
  * Template class that loads HTML templates and uses str_replace-ment. Templates can have blocks.
- * 
+ *
  * @package A_Template
  */
 class A_Template_Strreplace extends A_Template_File implements A_Renderer
@@ -18,7 +18,7 @@ class A_Template_Strreplace extends A_Template_File implements A_Renderer
 
 	protected $tagprefix = '{';
 	protected $tagsuffix = '}';
-	
+
 	public function set($field, $value)
 	{
 		// field required and value must be a string or an object with __toString()
@@ -34,7 +34,7 @@ class A_Template_Strreplace extends A_Template_File implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function import($data)
 	{
 		foreach ($data as $key => $value) {
@@ -42,7 +42,7 @@ class A_Template_Strreplace extends A_Template_File implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function render($block='')
 	{
 	   	if ($this->auto_blocks) {

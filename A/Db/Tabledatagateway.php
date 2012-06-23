@@ -1,16 +1,16 @@
 <?php
 /**
  * Tabledatagateway.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Db_Tabledatagateway
- * 
+ *
  * Datasource access using the Table Data Gateway pattern
- * 
+ *
  * @package A_Db
  */
 class A_Db_Tabledatagateway
@@ -25,7 +25,7 @@ class A_Db_Tabledatagateway
 	protected $num_rows = 0;
 	protected $update = null;
 	protected $insert = null;
-	
+
 	public function __construct($db, $table=null, $key=null)
 	{
 		$this->db = $db;
@@ -34,7 +34,7 @@ class A_Db_Tabledatagateway
 		$this->select = new A_Sql_Select();
 		$this->select->from($this->getTable());
 	}
-	
+
 	public function table($table=null)
 	{
 		if ($table) {
@@ -44,29 +44,29 @@ class A_Db_Tabledatagateway
 		}
 		return $this;
 	}
-	
+
 	public function getTable()
 	{
 		return $this->table;
 	}
-	
+
 	public function key($key='')
 	{
 		$this->key = $key ? $key : 'id';
 		return $this;
 	}
-	
+
 	public function getKey()
 	{
 		return $this->key;
 	}
-	
+
 	public function columns($columns)
 	{
 		$this->columns = $columns;
 		return $this;
 	}
-	
+
 	public function where($arg1=null, $arg2=null, $arg3=null)
 	{
 		if (isset($arg1)) {
@@ -76,11 +76,11 @@ class A_Db_Tabledatagateway
 		}
 		return $this;
 	}
-	
+
 	public function find()
 	{
 		$this->select->where();			// clear where clause
-		
+
 		$args = func_get_args();
 		// if params then where condition passed
 		if (count($args)) {
@@ -91,7 +91,7 @@ class A_Db_Tabledatagateway
 			}
 			$this->where($args);
 		}
-		
+
 		$this->sql = $this->select
 			->columns($this->columns)
 			->from($this->getTable())
@@ -105,7 +105,7 @@ class A_Db_Tabledatagateway
 		}
 		return $result;
 	}
-	
+
 	public function update($data, $where='')
 	{
 		if ($data) {
@@ -124,7 +124,7 @@ class A_Db_Tabledatagateway
 			return $this->db->query($this->sql);
 		}
 	}
-	
+
 	public function insert($data)
 	{
 		if ($data) {
@@ -135,7 +135,7 @@ class A_Db_Tabledatagateway
 			return $this->db->query($this->sql);
 		}
 	}
-	
+
 	public function save($data)
 	{
 		if ($data) {
@@ -146,7 +146,7 @@ class A_Db_Tabledatagateway
 			}
 		}
 	}
-	
+
 	public function delete($id)
 	{
 		if ($id) {
@@ -154,17 +154,17 @@ class A_Db_Tabledatagateway
 			$this->db->query($this->sql);
 		}
 	}
-	
+
 	public function numRows()
 	{
 		return $this->num_rows;
 	}
-	
+
 	public function isError()
 	{
 		return $this->db->isError() || ($this->errorMsg != '');
 	}
-	
+
 	public function getErrorMsg()
 	{
 		return $this->db->getErrorMsg() . $this->errorMsg;

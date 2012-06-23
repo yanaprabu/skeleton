@@ -8,28 +8,28 @@
 
 /**
  * A_File_Info
- * 
+ *
  * Get file metadata/attributes
- * 
+ *
  * @package A_File
  */
 class A_File_Info
 {
 
 	protected $info;
-	
+
 	public function __construct($path)
 	{
 		$this->init($path);
 	}
-	
+
 	public function init($path)
 	{
 		if (!isset($this->info) && $path) {
 			$this->info = stat($path);
 		}
 	}
-	
+
 	public function size($power='B')
 	{
 		if (isset($this->info['size'])) {

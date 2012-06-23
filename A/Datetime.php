@@ -1,7 +1,7 @@
 <?php
 /**
  * DateTime.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Eran Galt, Cory Kaufman, Christopher Thompson, Cliff Ingham
@@ -11,7 +11,7 @@
  * A_Datetime
  *
  * Date and time functionality
- * 
+ *
  * @package A
  */
 class A_Datetime extends DateTime
@@ -21,12 +21,12 @@ class A_Datetime extends DateTime
 	 * date format returnd by _toString
 	 */
 	protected $dateFormat = 'Y-m-d H:i:s';
-	
+
 	/**
 	 * true dd/mm, false mm/dd
 	 */
 	protected $dayMonthOrder = true;
-	
+
 	/**
 	* constructor add date array support.
 	*
@@ -43,7 +43,7 @@ class A_Datetime extends DateTime
 			parent::__construct($date);
 		}
 	}
-	
+
 	/**
 	 * provide fluent interface for DateTime::modify()
 	 */
@@ -55,7 +55,7 @@ class A_Datetime extends DateTime
 		parent::modify($date);
 		return $this;
 	}
-	
+
 	/**
 	 * provide fluent interface for DateTime::setTimezone()
 	 */
@@ -64,7 +64,7 @@ class A_Datetime extends DateTime
 		parent::setTimezone($timezone);
 		return $this;
 	}
-	
+
 	/**
 	 * provide fluent interface for DateTime::setTime()
 	 */
@@ -73,7 +73,7 @@ class A_Datetime extends DateTime
 		parent::setTime($hour, $minute, $second);
 		return $this;
 	}
-	
+
 	/**
 	 * provide fluent interface for DateTime::setDate()
 	 */
@@ -82,7 +82,7 @@ class A_Datetime extends DateTime
 		parent::setDate($year, $month, $day);
 		return $this;
 	}
-	
+
 	/**
 	 * provide fluent interface for DateTime::setISODate()
 	 */
@@ -91,7 +91,7 @@ class A_Datetime extends DateTime
 		parent::setISODate($year, $week, $day);
 		return $this;
 	}
-	
+
 	/**
 	 * Set format of value returned by __toString()
 	 */
@@ -100,7 +100,7 @@ class A_Datetime extends DateTime
 		$this->dateFormat = $format;
 		return $this;
 	}
-	
+
 	/**
 	 * Set internal format for __tostring
 	 */
@@ -109,7 +109,7 @@ class A_Datetime extends DateTime
 		$this->dayMonthOrder = $dayfirst;
 		return $this;
 	}
-	
+
 	/**
 	 * Clearer name for existing method
 	 */
@@ -117,7 +117,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->getOffset();
 	}
-	
+
 	/**
 	 * get date string in YYYY-MM-DD format
 	 */
@@ -125,7 +125,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('Y-m-d' . ($time ? ' H:i:s' : ''));
 	}
-	
+
 	/**
 	 * get timestamp
 	 */
@@ -133,7 +133,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('U');
 	}
-	
+
 	/**
 	 * get time string in 23:15 or 11:15 pm format, with or without seconds
 	 */
@@ -142,7 +142,7 @@ class A_Datetime extends DateTime
 		$sec = $seconds ? ':s' : '';
 		return $this->format($meridian ? "g:i$sec a" : "G:i$sec");
 	}
-	
+
 	/**
 	 * get year
 	 */
@@ -150,7 +150,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('Y');
 	}
-	
+
 	/**
 	 * get month
 	 */
@@ -158,7 +158,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('n');
 	}
-	
+
 	/**
 	 * get day
 	 */
@@ -166,7 +166,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('j');
 	}
-	
+
 	/**
 	 * get hour
 	 */
@@ -174,7 +174,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format($meridian ? 'h' : 'H');
 	}
-	
+
 	/**
 	 * get minute
 	 */
@@ -182,7 +182,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('i');
 	}
-	
+
 	/**
 	 * get second
 	 */
@@ -190,9 +190,9 @@ class A_Datetime extends DateTime
 	{
 		return $this->format('s');
 	}
-	
+
 	/**
-	 * return a new modified object based on the format string 
+	 * return a new modified object based on the format string
 	 */
 	public function newModify($format)
 	{
@@ -200,7 +200,7 @@ class A_Datetime extends DateTime
 		$date->modify($format);
 		return $date;
 	}
-	
+
 	/**
 	 * Set date from dates in dd-mm- or mm-dd order, with 2 or 4 digit years and any non-digit separater
 	 *  This pro
@@ -249,7 +249,7 @@ class A_Datetime extends DateTime
 					$month = substr($date, 0, 2);
 					$day = substr($date, 2, 2);
 				}
-			} else if (strlen($date) == 8) {
+			} elseif (strlen($date) == 8) {
 				// fix dates in yyyymmdd format
 				$year = substr($date, 0, 4);
 				$month = substr($date, 4, 2);
@@ -260,22 +260,22 @@ class A_Datetime extends DateTime
 		// if time values then set time
 		if (count($datearray) == 6) {
 			$this->setTime($datearray[3], $datearray[4], $datearray[5]);
-		}			
+		}
 		return $this;
 	}
-	
+
 	public function add (A_Datetime_Duration $duration)
 	{
 		$duration->setPositive();
 		return $this->newModify($duration->toString());
 	}
-	
+
 	public function remove (A_Datetime_Duration $duration)
 	{
 		$duration->setNegative();
 		return $this->newModify($duration->toString());
 	}
-	
+
 	/**
 	 * check if date/time of another objects is before the date/time of this object
 	 */
@@ -287,7 +287,7 @@ class A_Datetime extends DateTime
 			return $this->getTimestamp() < $date->getTimestamp();
 		}
 	}
-	
+
 	/**
 	 * check if date/time of another objects is before the date/time of this object
 	 */
@@ -295,7 +295,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->getTimestamp() <= $date->getTimestamp();
 	}
-	
+
 	/**
 	 * check if date/time of another objects is after the date/time of this object
 	 */
@@ -307,7 +307,7 @@ class A_Datetime extends DateTime
 			return $this->getTimestamp() > $date->getTimestamp();
 		}
 	}
-	
+
 	/**
 	 * check if date/time of another objects is after the date/time of this object
 	 */
@@ -315,19 +315,19 @@ class A_Datetime extends DateTime
 	{
 		return $this->getTimestamp() >= $date->getTimestamp();
 	}
-	
+
 	/**
 	 * check if this date/time a range
 	 */
 	public function isWithin (A_Datetime_Range $range, $inclusive = false)
 	{
-		if ($inclusive)	{
+		if ($inclusive) {
 			return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
 		} else {
 			return $this->getTimestamp() > $range->getStart() && $this->getTimestamp() < $range->getEnd();
 		}
 	}
-	
+
 	/**
 	 * check if this date/time a range or equal to the end dates
 	 */
@@ -335,7 +335,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->getTimestamp() >= $range->getStart() && $this->getTimestamp() <= $range->getEnd();
 	}
-	
+
 	/**
 	* Converts date array to string.  Array should be in the form of PHP's getdate() array
 	*
@@ -345,7 +345,7 @@ class A_Datetime extends DateTime
 	{
 		if (is_array($date)) {
 			if (isset($date['month'])) {
-				$date['mon'] = $date['month'];		
+				$date['mon'] = $date['month'];
 			}
 			if (isset($date['day'])) {
 				$date['mday'] = $date['day'];
@@ -353,26 +353,26 @@ class A_Datetime extends DateTime
 			if ($date['year'] && $date['mon'] && $date['mday']) {
 				$str = "{$date['year']}-{$date['mon']}-{$date['mday']}";
 				if (isset($date['hour'])) {
-					$date['hours'] = $date['hour'];	 		
+					$date['hours'] = $date['hour'];
 				}
 				if (isset($date['minute'])) {
-					$date['minutes'] = $date['minute'];	 		
+					$date['minutes'] = $date['minute'];
 				}
 				if (isset($date['second'])) {
-					$date['seconds'] = $date['second'];	 		
+					$date['seconds'] = $date['second'];
 				}
 				if (isset($date['hours']) || isset($date['minutes']) || isset($date['seconds'])) {
 					$str .= (isset($date['hours']) && $date['hours']) ? " {$date['hours']}:" : ' 00:';
 					$str .= (isset($date['minutes']) && $date['minutes']) ? "{$date['minutes']}:" : '00:';
 					$str .= (isset($date['seconds']) && $date['seconds']) ? $date['seconds'] : '00';
-	 
+
 				}
 				return $str;
 			}
 		}
 		return '';
 	}
-	
+
 	/**
 	 * get date using internal format value
 	 */
@@ -380,7 +380,7 @@ class A_Datetime extends DateTime
 	{
 		return $this->format($this->dateFormat);
 	}
-	
+
 	/**
 	 * get date in in string context using internal format value
 	 */

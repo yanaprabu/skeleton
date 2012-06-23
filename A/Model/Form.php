@@ -1,7 +1,7 @@
 <?php
 /**
  * Form.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Model_Form
  *
  * An extension of A_Model representing request data/parameters.
- * 
+ *
  * @package A_Model
  */
 class A_Model_Form extends A_Model
@@ -21,7 +21,7 @@ class A_Model_Form extends A_Model
 	protected $is_post = true;
 	protected $is_submitted = false;
 	protected $fieldClass = 'A_Model_Form_Field';
-	
+
 	/**
 	 * @param string $method The allowed HTTP method, either 'POST', 'GET', or ''
 	 * @return $this
@@ -32,12 +32,13 @@ class A_Model_Form extends A_Model
         if (in_array($method, array('POST','GET',''))) {
         	$this->method = $method;
         }
+
         return $this;
     }
-	
+
 	/**
 	 * Set the field which denotes that this form has been submitted
-	 * 
+	 *
 	 * @param string $name The field name
 	 * @return $this
 	 */
@@ -48,7 +49,7 @@ class A_Model_Form extends A_Model
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * @param $request A Request object
 	 * @return bool True if successful, false otherwise
@@ -62,13 +63,13 @@ class A_Model_Form extends A_Model
 			$this->is_submitted = false;
 			$this->error = true;
 		}
-		
+
 		return !$this->error;
 	}
-	
+
 	/**
 	 * Run the form as a Command object passed a Registry containing the Request
-	 * 
+	 *
 	 * @param A_Locator $locator
 	 * @return bool True if error occured
 	 */
@@ -78,7 +79,7 @@ class A_Model_Form extends A_Model
 		$this->isValid($request);
 		return $this->error;
 	}
-	
+
 	/**
 	 * @return bool True if form has been validated
 	 */

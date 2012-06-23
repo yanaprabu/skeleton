@@ -8,9 +8,9 @@
 
 /**
  * A_Cart_Creditcard_Validate
- * 
+ *
  * Validate credit card numbers using Luhn formula
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Creditcard_Validate
@@ -18,13 +18,13 @@ class A_Cart_Creditcard_Validate
 
 	protected $number = '';
 	protected $type = '';
-	
+
 	public function __construct($number='', $type='')
 	{
 		$this->number = $this->filterNumber($number);
 		$this->type = $type;
 	}
-	
+
 	public function filterNumber($number='')
 	{
 		if (!$number) {
@@ -36,7 +36,7 @@ class A_Cart_Creditcard_Validate
 		}
 		return $n;
 	}
-	
+
 	public function isValidNumber($number='')
 	{
 		if (!$number) {
@@ -44,30 +44,30 @@ class A_Cart_Creditcard_Validate
 		} else {
 			$number = $this->filterNumber($number);
 		}
-		
+
 		//  The Luhn formula works right to left, so reverse the number.
 		$number = strrev($number);
-	
+
 		$checksum = 0;
 		$n = strlen ($number);
 		for ($i = 0; $i < $n; $i++) {
 			$digit = substr($number, $i, 1);
-			
+
 			// if it's an odd digit, double it
 			$j = $i / 2;
 			if ($j != floor($j)) {
 				$digit *= 2;
-				
+
 				// if the result is two digits, add them
 				if (strlen($digit) == 2) {
 					$digit = substr($digit, 0, 1) + substr($digit, 1, 1);
 				}
 			}
-			
+
 			// add the current digit, doubled and added if applicable, to the total
 			$checksum += $digit;
 		}
-		
+
 		// checksum must be a multiple of 10
 		if ($checksum && ! ($checksum % 10)) {
 			return true;
@@ -75,13 +75,13 @@ class A_Cart_Creditcard_Validate
 			return false;
 		}
 	}
-	
+
 	public function getType($number='')
 	{
 		if (!$number) {
 			$number = $this->number;
 		}
-	
+
 		$type = '';
 		if (ereg('^5[1-5].{14}$', $number)) {
 		     $type = 'mc';
@@ -96,14 +96,14 @@ class A_Cart_Creditcard_Validate
 	  	} elseif (ereg('^3.{15}$|^2131|1800.{11}$', $number)) {
 			$type = 'jcb';
 	  	}
-	
+
 		if (!$number) {
 			$this->type = $type;
 		}
-	
+
 		return $type;
 	}
-	
+
 	public function isValidType($type='', $number='')
 	{
 	 	if (!$type) {
@@ -133,10 +133,10 @@ class A_Cart_Creditcard_Validate
 			$result = ereg('^3.{15}$|^2131|1800.{11}$', $number);
 			break;
 		}
-	
+
 		return $result;
 	}
-	
+
 	public function isValidDate($month='', $year='')
 	{
 		$date = "$year$month";

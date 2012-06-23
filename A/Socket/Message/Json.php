@@ -1,7 +1,7 @@
 <?php
 /**
  * Json.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Jonah Dahlquist <jonah@nucleussystems.com>
@@ -11,7 +11,7 @@
  * A_Socket_Message_Json
  *
  * Holds, encodes, and decodes a message in JSON format
- * 
+ *
  * @package A_Socket
  */
 class A_Socket_Message_Json extends A_Socket_Message_Base
@@ -19,7 +19,7 @@ class A_Socket_Message_Json extends A_Socket_Message_Base
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param mixed $message Actual message data
 	 * @param object $client Sender client
 	 * @param array $clients All clients
@@ -28,7 +28,7 @@ class A_Socket_Message_Json extends A_Socket_Message_Base
 	{
 		parent::__construct(json_decode($message), $client, $clients);
 	}
-	
+
 	/**
 	 * Reply to client(s)
 	 *
@@ -41,7 +41,7 @@ class A_Socket_Message_Json extends A_Socket_Message_Base
 		$this->_reply(json_encode($data), $recipient);
 		return $this;
 	}
-	
+
 	/**
 	 * Get route data from message
 	 */

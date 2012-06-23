@@ -1,16 +1,16 @@
 <?php
 /**
  * Hidden.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Form_Hidden
- * 
+ *
  * Generate HTML form hidden input
- * 
+ *
  * @package A_Html
  */
 class A_Html_Form_Hidden extends A_Html_Tag implements A_Renderer

@@ -1,18 +1,18 @@
 <?php
 /**
  * Upload.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /*
 // todo - add the ability to see max sizes and timeouts
- * ini_set('max_input_time', 120);  
-ini_set('max_execution_time', 120);  
+ * ini_set('max_input_time', 120);
+ini_set('max_execution_time', 120);
 
-ini_set('post_max_size', '5M');  
-ini_set('upload_max_filesize', '5M');  
+ini_set('post_max_size', '5M');
+ini_set('upload_max_filesize', '5M');
 */
 define('A_HTTP_UPLOAD_NOT_UPLOAD_FILE', 1001);
 define('A_HTTP_UPLOAD_ERR_MAX_SIZE', 1002);
@@ -25,7 +25,7 @@ define('A_HTTP_UPLOAD_ERR_FILE_TYPE', 1006);
  * A_Http_Upload
  *
  * Support for HTTP file upload
- * 
+ *
  * @package A_Http
  */
 class A_Http_Upload
@@ -37,13 +37,13 @@ class A_Http_Upload
 	const ERR_FILE_UNLINK = 1004;
 	const ERR_FILE_MOVE = 1005;
 	const ERR_FILE_TYPE = 1006;
-	
+
 	public $file_param = 'file';		// form/http parameter name for file(s)
 	public $submit_param = 'upload';	// form/http parameter name for the submit button
 	public $path_param = 'path';		// form/http parameter name for path relative to dir
 	public $paths = array();
 	public $labels = array();		// text labels for form select in formSelectPath(), one matching text label for each path in dir array
-	
+
 	protected $base_path = '/tmp';				// destination directory for uploaded file, or array of dirs will shows a select box, see formSelectPath()
 	protected $file_mode = 0777;			// mode to create new directories and files
 	protected $filename_regexp_pattern = array('/[^a-zA-Z0-9_\-\.]/');
@@ -51,38 +51,38 @@ class A_Http_Upload
 	protected $replace = true;			// if destination file exists, delete and the upload
 	protected $min_size = 1;			// set minimum size of files, 0 to allow zero size files
 	protected $max_size = 0;			// cap size of file with this value
-	
+
 	protected $mime_whitelist = array();
 	protected $mime_blacklist = array();
-	
+
 	public function __construct()
 	{
 		$this->setMaxFilesize(0);
 	}
-	
+
 	public function isSubmitted()
 	{
 		return($_REQUEST[$this->submit_param]);
 	}
-	
+
 	public function setFileParam($name)
 	{
 		$this->file_param = $name;
 		return $this;
 	}
-	
+
 	public function setPathParam($path)
 	{
 		$this->path_param = $path;
 		return $this;
 	}
-	
+
 	public function setSubmitParam($name)
 	{
 		$this->submit_param = $name;
 		return $this;
 	}
-	
+
 	public function setBasePath($base_path)
 	{
 		if (substr($base_path, -1) != '/') {
@@ -91,13 +91,13 @@ class A_Http_Upload
 		$this->base_path = $base_path;
 		return $this;
 	}
-	
+
 	public function setMinFilesize($min)
 	{
 		$this->min_size = $min;
 		return $this;
 	}
-	
+
 	public function setMaxFilesize($max)
 	{
 		$this->max_size = $max;
@@ -107,20 +107,20 @@ class A_Http_Upload
 		}
 		return $this;
 	}
-	
+
 	public function setReplace($replace)
 	{
 		$this->replace = $replace;
 		return $this;
 	}
-	
+
 	public function addPath($id, $path, $label='')
 	{
 		$this->paths[$id] = $path;
 		$this->labels[$id] = $label;
 		return $this;
 	}
-	
+
 	public function fileCount()
 	{
 		$n = 0;
@@ -129,7 +129,7 @@ class A_Http_Upload
 		}
 		return $n;
 	}
-	
+
 	public function getMaxFilesize()
 	{
 		$max = ini_get('upload_max_filesize');
@@ -157,7 +157,7 @@ class A_Http_Upload
 			return 0;
 		}
 	}
-	
+
 	public function getFileOption($option, $n=0, $param='')
 	{
 		if ($param == '') {
@@ -173,7 +173,7 @@ class A_Http_Upload
 			return '';
 		}
 	}
-	
+
 	public function setFileOption($value, $option, $n=0, $param='')
 	{
 		if ($param == '') {
@@ -186,27 +186,27 @@ class A_Http_Upload
 		}
 		return $this;
 	}
-	
+
 	public function getFileName($n=0, $param='')
 	{
 		return preg_replace($this->filename_regexp_pattern, $this->filename_regexp_replace, $this->getFileOption('name', $n, $param));
 	}
-	
+
 	public function getFileTmpName($n=0, $param='')
 	{
 		return $this->getFileOption('tmp_name', $n, $param);
 	}
-	
+
 	public function getFileType($n=0, $param='')
 	{
 		return $this->getFileOption('type', $n, $param);
 	}
-	
+
 	public function getFileSize($n=0, $param='')
 	{
 		return $this->getFileOption('size', $n, $param);
 	}
-	
+
 	public function getImageData($n=0, $param='')
 	{
 	#	$imagedata = getimagesize($this->getFileTmpName($n, $param));
@@ -217,31 +217,31 @@ class A_Http_Upload
 	#	return $imagedata;
 		return getimagesize($this->getFileTmpName($n, $param));
 	}
-	
+
 	public function getFileError($n=0, $param='')
 	{
 		return $this->getFileOption('error', $n, $param);
 	}
-	
+
 	public function getFileErrorMsg($n=0, $param='')
 	{
 		$error = $this->getFileOption('error', $n, $param);
 		$errorMsg = array(
-			UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the maximum size allowed. ', 
-			UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the maximum size allowed in the form. ', 
-			UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded. ', 
-			UPLOAD_ERR_NO_FILE => 'No file was uploaded. ', 
-			UPLOAD_ERR_NO_TMP_DIR => 'Error with temporary folder. ', 
+			UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the maximum size allowed. ',
+			UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the maximum size allowed in the form. ',
+			UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded. ',
+			UPLOAD_ERR_NO_FILE => 'No file was uploaded. ',
+			UPLOAD_ERR_NO_TMP_DIR => 'Error with temporary folder. ',
 			self::NOT_UPLOAD_FILE => 'Error with uploaded file. ',
-			self::ERR_MAX_SIZE => 'The uploaded file exceeds the maximum allowed size. ', 
-			self::ERR_FILE_EXISTS => 'A file by that name already exists. ', 
+			self::ERR_MAX_SIZE => 'The uploaded file exceeds the maximum allowed size. ',
+			self::ERR_FILE_EXISTS => 'A file by that name already exists. ',
 			self::ERR_FILE_UNLINK => 'Cannot replace existing file. ',
 			self::ERR_FILE_MOVE => 'Permission denied. ',
 			self::ERR_FILE_TYPE => 'File type not allowed. ',
 		);
 		return isset($errorMsg[$error]) ? $errorMsg[$error] : '';
 	}
-	
+
 	public function isUploadedFile($n=0, $param='')
 	{
 		if (is_uploaded_file($this->getFileTmpName($n, $param))) {
@@ -251,7 +251,7 @@ class A_Http_Upload
 			return false;
 		}
 	}
-	
+
 	public function isAllowedFilesize($n=0, $param='')
 	{
 		$size = $this->getFileOption('size', $n, $param);
@@ -266,10 +266,10 @@ class A_Http_Upload
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public function isAllowedType($n=0, $param='')
 	{
 		if ($this->mimeIsAllowed($this->getFileOption('type', $n, $param))) {
@@ -279,12 +279,12 @@ class A_Http_Upload
 			return false;
 		}
 	}
-		
+
 	public function isAllowed($n=0, $param='')
 	{
 		return $this->isUploadedFile($n, $param) && $this->isAllowedFilesize($n, $param) && $this->isAllowedType($n, $param);
 	}
-	
+
 	public function moveUploadedFile($n=0, $param='', $filename='')
 	{
 		if ($filename == '') {
@@ -315,7 +315,7 @@ class A_Http_Upload
 		}
 		return true;
 	}
-	
+
 	public function createDir($path, $mode=0)
 	{
 		if ($path) {
@@ -332,14 +332,14 @@ class A_Http_Upload
 		}
 		return false;
 	}
-	
+
 	public function deleteTmpFile($n, $param='')
 	{
 		if ($filename = $this->getFileTmpName($n, $param)) {
 			return @unlink($filename);
 		}
 	}
-	
+
 	public function getPath()
 	{
 		if (isset($_REQUEST[$this->path_param])) {
@@ -394,7 +394,7 @@ class A_Http_Upload
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Empty the mime-type blacklist.
 	 *
@@ -405,7 +405,7 @@ class A_Http_Upload
 		$this->_clearMimes($this->mime_blacklist, $types);
 		return $this;
 	}
-	
+
 	/**
 	 * Empty a mime-type list.
 	 *
@@ -454,7 +454,7 @@ class A_Http_Upload
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get the list of whitelisted mime-types
 	 *
@@ -464,7 +464,7 @@ class A_Http_Upload
 	{
 		return $this->mime_whitelist;
 	}
-	
+
 	/**
 	 * Get list of blacklisted mime-types
 	 *

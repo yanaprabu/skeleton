@@ -1,7 +1,7 @@
 <?php
 /**
  * Link.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Cory Kaufman, Christopher Thompson
@@ -9,26 +9,26 @@
 
 /**
  * A_Pagination_Helper_Link
- * 
+ *
  * Genreate HTML links
- * 
+ *
  * @package A_Pagination
  */
 class A_Pagination_Helper_Link
 {
 
 	public $url;
-	
+
 	protected $pager;
 	protected $attributes = array();
 	protected $separator = ' ';
 	protected $alwaysShowFirstLast = false;
 	protected $alwaysShowPreviousNext = false;
 	protected $renderer = null;
-	
+
 	/**
 	 * @param A_Pagination_Core $pager
-	 * @param A_Pagination_Helper_Url $url Will be created if not passed. 
+	 * @param A_Pagination_Helper_Url $url Will be created if not passed.
 	 */
 	public function __construct($pager, $url=false)
 	{
@@ -47,10 +47,10 @@ class A_Pagination_Helper_Link
 			$this->url->set($this->pager->getParamName('order_by'), $order_by);
 		}
 	}
-	
+
 	/**
 	 * Set a renderer to render the individual links.
-	 * 
+	 *
 	 * @param A_Renderer $renderer
 	 * @return $this
 	 */
@@ -59,7 +59,7 @@ class A_Pagination_Helper_Link
 		$this->renderer = $renderer;
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $separator Text to put between links
 	 * @return $this
@@ -69,10 +69,10 @@ class A_Pagination_Helper_Link
 		$this->separator = $separator;
 		return $this;
 	}
-	
+
 	/**
 	 *  Set whether first/last links are shown
-	 * 
+	 *
 	 * @param bool $always
 	 * @return $this
 	 */
@@ -81,10 +81,10 @@ class A_Pagination_Helper_Link
 		$this->alwaysShowFirstLast = $always;
 		return $this;
 	}
-	
+
 	/**
 	 * Set whether next/prev links are shown
-	 * 
+	 *
 	 * @param bool $always
 	 * @return $this
 	 */
@@ -93,7 +93,7 @@ class A_Pagination_Helper_Link
 		$this->alwaysShowPreviousNext = $always;
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $label Text for link
  	 * @param string $separator Text to put after link
@@ -107,7 +107,7 @@ class A_Pagination_Helper_Link
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $label Text for link
  	 * @param string $separator Text to put after link
@@ -120,7 +120,7 @@ class A_Pagination_Helper_Link
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param int $page Page number
 	 * @param string $label Text label to use instead of page number
@@ -130,7 +130,7 @@ class A_Pagination_Helper_Link
 	{
 		return $this->_link($this->url->render(false, array($this->pager->getParamName('page') => $page)), $label ? $label : $page);
 	}
-	
+
 	/**
 	 * @param string $label Text for link
  	 * @param string $separator Text to put after link
@@ -143,20 +143,21 @@ class A_Pagination_Helper_Link
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $label Text for link
  	 * @param string $separator Text to put after link
 	 * @return string HTML link or '' if not in range
 	 */
-	public function last($label=false, $separator=true) {
+	public function last($label=false, $separator=true)
+	{
 		$page = $this->pager->getLastPage();
 		if (!$this->pager->inPageRange($page) || $this->alwaysShowFirstLast == true) {
 			return ($separator ? $this->separator : '') . $this->page($page, $label);
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param int $offset
 	 * @param int $page
@@ -175,14 +176,15 @@ class A_Pagination_Helper_Link
 		}
 		return implode($this->separator, $links);
 	}
-	
+
 	/**
 	 * @param string $field
 	 * @param string $label
 	 * @param bool $descending
 	 * @return
 	 */
-	public function order($field, $label='', $descending = null) {
+	public function order($field, $label='', $descending = null)
+	{
 		// if descending not specified the currently sorting on this field then reverse sort
 		if (($descending === null) && ($field == $this->pager->getOrderBy())) {
 			$descending = $this->pager->getOrderByDirection() == 'desc' ? false : true;
@@ -190,7 +192,7 @@ class A_Pagination_Helper_Link
 		$orderBy = $field . ($descending ? '|desc' : '');
 		return $this->_link($this->url->render(false, array($this->pager->getParamName('order_by') => $orderBy), array($this->pager->getParamName('page'))), $label ? $label : $page);
 	}
-	
+
 	/**
 	 * @return string Value of the separator property
 	 */
@@ -198,7 +200,7 @@ class A_Pagination_Helper_Link
 	{
 		return $this->separator;
 	}
-	
+
 	/**
 	 * @param string $url
 	 * @param string $label Link text
@@ -223,14 +225,14 @@ class A_Pagination_Helper_Link
 		}
 		return $link;
 	}
-	
+
 	/*
 	 * HTML Attribute methods
 	 */
-	
+
 	/**
 	 * Set an HTML attribute to be rendered in the link
-	 * 
+	 *
 	 * @param string $name
 	 * @param mixed $value
 	 * @return $this
@@ -244,10 +246,10 @@ class A_Pagination_Helper_Link
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Get an HTML attribute that will be rendered in the link
-	 * 
+	 *
 	 * @param string $name
 	 * @param mixed $default Default returned value if name does not exist
 	 * @return mixed
@@ -256,10 +258,10 @@ class A_Pagination_Helper_Link
 	{
 		return $this->has($name) ? $this->attributes[$name] : $default;
 	}
-	
+
 	/**
 	 * Remove an HTML attribute
-	 * 
+	 *
 	 * @param string $name
 	 * @return $this
 	 */
@@ -268,10 +270,10 @@ class A_Pagination_Helper_Link
 		unset($this->attributes[$name]);
 		return $this;
 	}
-	
+
 	/**
 	 * Check if an HTML attribute is present
-	 * 
+	 *
 	 * @param string $name
 	 * @return bool
 	 */

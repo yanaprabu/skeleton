@@ -8,21 +8,21 @@
 
 /**
  * A_Cache_File
- * 
+ *
  * @package A_Cache
  */
 class A_Cache_File
 {
-	
+
 	protected $path = '';
 	protected $prefix = 'a_cache---';
 	protected $serialize = false;
 	protected $lock_file = false;
 	protected $chmod = 0;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $path
 	 */
 	public function __construct($path=null)
@@ -32,7 +32,7 @@ class A_Cache_File
 		}
 		$this->rule = new A_Cache_File_Mtime();
 	}
-	
+
 	/**
 	 * Save name from cache
 	 *
@@ -44,7 +44,7 @@ class A_Cache_File
 	{
 		return $this->_load($this->path . $this->prefix . $name, $timeout);
 	}
-	
+
 	/**
 	 * Save name to cache
 	 *
@@ -56,7 +56,7 @@ class A_Cache_File
 	{
 		return $this->_save($data, $this->path . $this->prefix . $name);
 	}
-	
+
 	/**
 	 * Remove a name in cache
 	 *
@@ -67,7 +67,7 @@ class A_Cache_File
 	{
 		return $this->_remove($this->path . $this->prefix . $name);
 	}
-	
+
 	/**
 	 * Remove everything in cache
 	 *
@@ -77,7 +77,7 @@ class A_Cache_File
 	{
 		return $this->_clean();
 	}
-	
+
 	/**
 	 * Load data from cache file
 	 *
@@ -159,7 +159,7 @@ class A_Cache_File
 	 */
 	protected function _clean()
 	{
-	    foreach(glob("{$this->path}/{$this->prefix}*") as $path) {
+	    foreach (glob("{$this->path}/{$this->prefix}*") as $path) {
 	        unlink($path);
 	    }
 	}

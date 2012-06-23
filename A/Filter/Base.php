@@ -1,17 +1,17 @@
 <?php
 /**
  * Base.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Base
- * 
+ *
  * Abstract base class for filters
- * 
- * @package A_Filter 
+ *
+ * @package A_Filter
  */
 abstract class A_Filter_Base implements A_Filter_Filterer
 {
@@ -21,13 +21,13 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 	 * $params array define the order and names of the constructor params
 	 */
 	protected $params = array(
-		'field' => '', 
+		'field' => '',
 	);
-	
+
 	/**
-	 * When creating children here, remember to call this function and 
-	 * put params before $field 
-	 * 
+	 * When creating children here, remember to call this function and
+	 * put params before $field
+	 *
 	 * @param string field this filter applies to
 	 * @param boolean whether this filter returns true for null value
 	 */
@@ -46,10 +46,10 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 			}
 		}
 	}
-	
+
 	/**
      * Set params property with assoc array
-     * 
+     *
      * @param array $params
      * @return $this
      */
@@ -60,10 +60,10 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 		}
 		return $this;
 	}
-	
+
 	/**
      * Changes the field this filter applies to
-     * 
+     *
      * @param string field this filter applies to
      * @return $this
      */
@@ -72,21 +72,21 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 		$this->params['field'] = $field;
 		return $this;
 	}
-	
+
     /**
      * Returns the field this filter applies to
-     * 
+     *
      * @return string field this filter applies to
      */
 	public function getName()
 	{
 		return $this->params['field'];
 	}
-	
+
 	/**
      * Returns the value associated with this filter by default, but can return any value in
      * the data container that this filter is validating
-     * 
+     *
      * @param string field you're trying to access
      * @return mixed whatever is inside the container array at key $name
      */
@@ -105,10 +105,10 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 			return $this->container;
 		}
 	}
-	
+
 	/**
      * Sets the value in the data container that this filter is validating
-     * 
+     *
      * @param string name of field
      * @param mixed value to set
      * @return $this
@@ -126,21 +126,22 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Filters data
 	 *
 	 * @param $container
 	 * @return string Filtered data
 	 */
-	public function doFilter($container) {
+	public function doFilter($container)
+	{
 	    $this->container = $container;
 	    return $this->filter();
 	}
-	
+
     /**
      * Filter and return $this->getValue()
-     * 
+     *
      * @return string
      */
 	abstract protected function filter();

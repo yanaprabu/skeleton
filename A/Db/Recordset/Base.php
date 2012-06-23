@@ -1,7 +1,7 @@
 <?php
 /**
  * Base.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Jonah <jonah@nucleussystems.com>, Christopher <christopherxthompson@gmail.com>
@@ -9,11 +9,11 @@
 
 /**
  * A_Db_Recordset_Base
- * 
+ *
  * Database recordset set (abstract class)
- * 
+ *
  * This class implements the Iterator interface to allow iterating over it with foreach.  Specific databases must have result classes that extend this one, implementing the abstract methods defined here.
- * 
+ *
  * @package A_Db
  */
 abstract class A_Db_Recordset_Base implements Iterator
@@ -38,16 +38,16 @@ abstract class A_Db_Recordset_Base implements Iterator
 	protected $gatherMode = false;
 	// name of class to create when fetching row
 	protected $className = null;
-	
+
 	/**
 	 * Pass to setClassName() to receive a stdObject
 	 * @var string
 	 */
 	const OBJECT = 'stdClass';
-	
+
 	/**
 	 * Constructor, receives the number of rows, error number, and error message from creator
-	 * 
+	 *
 	 * @param int $numRows Number of rows returned from query
 	 * @param int $error Error number from database
 	 * @param string $errorMsg The error message from database
@@ -58,20 +58,20 @@ abstract class A_Db_Recordset_Base implements Iterator
 		$this->_error = $error;
 		$this->_errorMsg = $errorMsg;
 	}
-	
+
 	/**
 	 * Sets the database resource object, and loads first row into memory
-	 * 
+	 *
 	 * @param mixed $result Resource object
 	 */
 	public function setResult($result)
 	{
 		$this->result = $result;
 	}
-	
+
 	/**
 	 * Turn on Lazy Gather mode
-	 * 
+	 *
 	 * @param boolean $enable True to enable, false to disable.  Optional, true by default
 	 * @return $this
 	 */
@@ -80,10 +80,10 @@ abstract class A_Db_Recordset_Base implements Iterator
 		$this->gatherMode = (boolean) $enable;
 		return $this;
 	}
-	
+
 	/**
 	 * Sets a class to create a row of
-	 * 
+	 *
 	 * @param string $className Name of class to set (optional, default null)
 	 * @return $this
 	 */
@@ -92,20 +92,20 @@ abstract class A_Db_Recordset_Base implements Iterator
 		$this->className = $className;
 		return $this;
 	}
-	
+
 	/**
 	 * Gets the number of rows got in query
-	 * 
+	 *
 	 * @return int
 	 */
 	public function numRows()
 	{
 		return $this->numRows;
 	}
-	
+
 	/**
 	 * Fetches a row from the database, or from the cache if already fetched
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function fetchRow()
@@ -132,54 +132,55 @@ abstract class A_Db_Recordset_Base implements Iterator
 		}
 		return $row;
 	}
-	
+
 	/**
 	 * Fetches all rows from the database and loads them into memory
-	 * 
+	 *
 	 * @return $this
 	 */
-	public function fetchAll() {
+	public function fetchAll()
+	{
 		$this->_data = array();
 		while ($row = $this->fetchRow()) {
 			$this->_data[] = $row;
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Returns if there was an error or not during query
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isError()
 	{
 		return (bool) $this->_error;
 	}
-	
+
 	/**
 	 * Returns the error message produced by database
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getErrorMsg()
 	{
 		return $this->_errorMsg;
 	}
-	
+
 	/**
 	 * Returns internal data array
-	 * 
+	 *
 	 * @return array
 	 */
 	public function toArray()
 	{
 		return $this->_data;
 	}
-	
+
 	/*
 	 * Iterator Methods
 	 */
-	
+
 	/**
 	 * @see Iterator::current()
 	 */
@@ -187,7 +188,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 	{
 		$this->nextRowNum = 0;
 	}
-	
+
 	/**
 	 * @see Iterator::current()
 	 */
@@ -200,7 +201,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 		// in gather mode get data from internal array, otherwise use row buffer
 		return $this->gatherMode ? $this->_data[$this->nextRowNum-1] : $this->currentRow;
 	}
-	
+
 	/**
 	 * @see Iterator::current()
 	 */
@@ -209,7 +210,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 		// if rows the return pos else null
 		return $this->nextRowNum > 0 ? $this->nextRowNum - 1 : null;
 	}
-	
+
 	/**
 	 * @see Iterator::current()
 	 */
@@ -217,7 +218,7 @@ abstract class A_Db_Recordset_Base implements Iterator
 	{
 		$this->fetchRow();
 	}
-	
+
 	/**
 	 * @see Iterator::current()
 	 */

@@ -10,12 +10,12 @@
  * A_Cart_Item
  *
  * Escapsulate a purchasable item that can be added to the shopping cart
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Item
 {
-	
+
 	protected $id;
 	protected $productid;
 	protected $unitprice = 0;
@@ -25,10 +25,10 @@ class A_Cart_Item
 	protected $isunique;
 	protected $hastax;
 	protected $hasshipping;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param mixed $product
 	 * @param int $quantity
 	 * @param mixed $data
@@ -47,20 +47,20 @@ class A_Cart_Item
 		$this->hastax = $hastax;
 		$this->hasshipping = $hasshipping;
 	}
-	
+
 	/**
 	 * Get item ID
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getID()
 	{
 		return $this->id;
 	}
-	
+
 	/**
 	 * Set item ID
-	 * 
+	 *
 	 * @param mixed $id
 	 * @return $this
 	 */
@@ -69,40 +69,40 @@ class A_Cart_Item
 		$this->id = $id;
 		return $this;
 	}
-	
+
 	/**
 	 * Get product ID
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getProductID()
 	{
 		return $this->productid;
 	}
-	
+
 	/**
 	 * Set product ID
-	 * 
+	 *
 	 * @return int
 	 */
 	public function setProductID($productid)
 	{
 		return $this->productid = productid;
 	}
-	
+
 	/**
 	 * Get price for a single item
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getUnitPrice()
 	{
 		return $this->unitprice;
 	}
-	
+
 	/**
 	 * Set price for a single item
-	 * 
+	 *
 	 * @param int $price
 	 * @return $this
 	 */
@@ -111,17 +111,17 @@ class A_Cart_Item
 		$this->unitprice = $price;
 		return $this;
 	}
-	
+
 	/**
 	 * Calculate sum total
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getPrice()
 	{
 		return $this->unitprice * $this->quantity;
 	}
-	
+
 	/**
 	 * @param mixed $name
 	 * @return mixed
@@ -130,7 +130,7 @@ class A_Cart_Item
 	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-	
+
 	/**
 	 * @param mixed $name
 	 * @param mixed $value
@@ -143,7 +143,7 @@ class A_Cart_Item
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * @param bool $isunique
 	 * @return $this
@@ -153,7 +153,7 @@ class A_Cart_Item
 		$this->isunique = $isunique;
 		return $this;
 	}
-	
+
 	/**
 	 * @return bool
 	 */
@@ -161,17 +161,17 @@ class A_Cart_Item
 	{
 		return $this->isunique;
 	}
-	
+
 	/**
 	 * Get item quantity
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getQuantity()
 	{
 		return $this->quantity;
 	}
-	
+
 	/**
 	 * @param int $quantity
 	 * @return $this
@@ -190,7 +190,7 @@ class A_Cart_Item
 		$this->quantity = intval($quantity);
 		return $this;
 	}
-	
+
 	/**
 	 * @param mixed $quantityfixed
 	 * @return $this
@@ -207,7 +207,7 @@ class A_Cart_Item
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * @param A_Cart_Item $item
 	 * @return bool
@@ -216,7 +216,7 @@ class A_Cart_Item
 	{
 		return ($this->productid  == $item->getProductID()) && ($this->unitprice == $item->getUnitPrice());
 	}
-	
+
 	/**
 	 * @param A_Cart_Item $item
 	 * @return $this
@@ -226,7 +226,7 @@ class A_Cart_Item
 		$this->setQuantity($this->quantity + $item->getQuantity());
 		return $this;
 	}
-	
+
 	/**
 	 * @param mixed $data
 	 * @return int number of datum added

@@ -8,7 +8,7 @@
 
 /**
  * A_Db_Datamapper_Mapping
- * 
+ *
  * @package A_Db
  */
 class A_Db_Datamapper_Mapping
@@ -21,7 +21,7 @@ class A_Db_Datamapper_Mapping
 	public $size = 0;
 	public $is_key = false;
 	public $filters = array();
-	
+
 	public function __construct($property_name, $field_name, $type, $size, $is_key=false, $table_name='', $filters=array())
 	{
 		$this->property_name = $property_name;
@@ -32,7 +32,7 @@ class A_Db_Datamapper_Mapping
 		$this->table_name = $table_name;
 		$this->filters = $filters;
 	}
-	
+
 	public function setObject($object, $row)
 	{
 	     if ($this->property_name && $this->field_name) {
@@ -43,7 +43,7 @@ class A_Db_Datamapper_Mapping
 	     }
 		return $this;
 	}
-	
+
 	public function setRow($row, $object)
 	{
 	     if ($this->property_name && $this->field_name) {
@@ -54,7 +54,7 @@ class A_Db_Datamapper_Mapping
 	     }
 		return $this;
 	}
-	
+
 	public function getTableFieldName()
 	{
 	     if ($this->table_name) {
@@ -63,7 +63,7 @@ class A_Db_Datamapper_Mapping
 	     	return $this->field_name;
 	     }
 	}
-	
+
 	public function isKey()
 	{
 	     return $this->is_key;

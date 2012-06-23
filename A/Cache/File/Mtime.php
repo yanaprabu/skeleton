@@ -8,18 +8,18 @@
 
 /**
  * A_Cache_File_Mtime
- * 
+ *
  * @package A_Cache
  */
 class A_Cache_File_Mtime
 {
-	
+
 	protected $path = '';
 	protected $timeout;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $path
 	 * @param int $timeout
 	 */
@@ -30,7 +30,7 @@ class A_Cache_File_Mtime
 		}
 		$this->timeout = $timeout;
 	}
-	
+
 	/**
 	 * Save name from cache
 	 *
@@ -57,5 +57,5 @@ class A_Cache_File_Mtime
 		}
 		return $hit;
 	}
-	
+
 }

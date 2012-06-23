@@ -21,10 +21,10 @@
  * XPR => Worldwide Express
  * XPD => Worldwide Expedited
  * XDM => Worldwide Express Plus
- 
+
  * @package A_Cart
  */
-class A_Cart_Shipping_UPS
+class A_Cart_Shipping_Ups
 {
 
 	protected $http_post = false;		// true=POST, false=GET
@@ -35,7 +35,7 @@ class A_Cart_Shipping_UPS
 	protected $weight;
 	protected $value = 0;
 	protected $buffer = '';
-	
+
 	public function __construct($shipping_type='',  $postal_from='', $postal_to='',  $country_to='US',  $weight='')
 	{
 		$this->shipping_type = $shipping_type;
@@ -44,7 +44,7 @@ class A_Cart_Shipping_UPS
 		$this->country_to = $country_to;
 		$this->weight = $weight;
 	}
-	
+
 	public function getPrice ()
 	{
 		/*********************
@@ -54,10 +54,10 @@ class A_Cart_Shipping_UPS
 		 $DestZipCode
 		 $PackageWeight
 		 $upsProduct
-		 
+
 		 OUT VARS
 		 $result[0]
-		 
+
 		 UPS PRODUCT CODE (this should be in a drop down menu)
 		 Next Day Air Early AM         1DM
 		 Next Day Air                  1DA
@@ -70,14 +70,14 @@ class A_Cart_Shipping_UPS
 		 Worldwide Express             XPR
 		 Worldwide Express Plus         XDM
 		 Worldwide Expedited             XPD
-		 
+
 		 UPS RATE CHART
 		 Regular+Daily+Pickup
 		 On+Call+Air
 		 One+Time+Pickup
 		 Letter+Center
 		 Customer+Counter
-		 
+
 		 Container Chart
 		 Customers Packaging            00
 		 UPS Letter Envelope            01
@@ -86,15 +86,15 @@ class A_Cart_Shipping_UPS
 		 UPS Express Box                21
 		 UPS Worldwide 25kg Box        22
 		 UPS Worldwide 10 kg Box        23
-		 
+
 		 ResCom UPS Table
 		 Residential                    1
 		 Commercial                    2
-		 
+
 		 ***********************/
-		
+
 		$cost = 'Error';
-		
+
 		$upsAction = "3"; //3 Price a Single Product OR 4 Shop entire UPS product range
 		$upsProduct = $this->shipping_type; //set UPS Product Code See Chart Above
 		$OriginPostalCode = $this->postal_from; //zip code from where the client will ship from
@@ -105,7 +105,7 @@ class A_Cart_Shipping_UPS
 		$RateChart = "Regular+Daily+Pickup"; //set to how customer wants UPS to collect the product
 		$Container = "00"; //Set to Client Shipping package type
 		$ResCom = "2"; //See ResCom Table
-		
+
 		$port = 80;
 		$domain = "www.ups.com";
 		$request = "/using/services/rave/qcostcgi.cgi";
@@ -131,7 +131,7 @@ class A_Cart_Shipping_UPS
 		$request .= "48_container=$Container";
 		$request .= "&";
 		$request .= "49_residential=$ResCom";
-		
+
 		$errcode = '';
 		$url = "http://$domain$request";
 		$buffer = file_get_contents($url);
@@ -153,26 +153,26 @@ class A_Cart_Shipping_UPS
 		 */
 		return $cost;
 	}
-	
+
 	public function getPriceQcostDSS ()
 	{
 		// return single shipping_type
 		$upsAction = '3';
 		// return all shipping_types
 		#$upsAction = '4';
-		
+
 		// UPS rate chart to use in the calculation,
-		
+
 		#$upsRateChart = 'Customer+Counter';
 		$upsRateChart = 'Regular+Daily+Pickup';
-		
+
 		//  shipping destination is commercial=0, residential=1
 		$upsResidentialInd = '0';
 		#$upsResidentialInd = '1';
-		
+
 		// Package Type: 00 - Shipper Supplied Package
 		$upsPackagingType = '00';
-		
+
 		$args  = 'AppVersion=1.2';
 		$args .= '&AcceptUPSLicenseAgreement=yes';
 		$args .= '&ResponseType=application/x-ups-rss';
@@ -189,7 +189,7 @@ class A_Cart_Shipping_UPS
 		$args .= '&SNDestinationInd2=0';
 		$args .= '&ResidentialInd=' . $upsResidentialInd;
 		$args .= '&PackagingType=' . $upsPackagingType;
-		
+
 		if ($this->http_post) {
 			$method = 'POST';
 			$path = '/using/services/rave/qcost_dss.cgi';
@@ -201,20 +201,20 @@ class A_Cart_Shipping_UPS
 			$httpversion = "HTTP/1.0\n\n";
 			$request = "$method $path?$args $httpversion";
 		}
-		
+
 		$socket = fsockopen('www.ups.com', 80);
 		fputs($socket, $request);
 		$buffer = fread ($socket, 4096);
 		fclose($socket);
-		
+
 		echo "UPS Shipping:<br>";
 		echo "$request<br>";
 		echo '<pre>';
 		echo $buffer;
 		echo '</pre>';
-		
+
 		strtok($buffer, "\n\r");
-		
+
 		$i = 0;
 		while ($line = strtok("\n\r")) {
 			if (ereg('^UPSOnLine', $line) ) {
@@ -229,14 +229,14 @@ class A_Cart_Shipping_UPS
 				++$i;
 			}
 		}
-		
+
 		/*
 		 echo '<pre>';
 		 echo $rates;
 		 echo '</pre>';
 		 */
-		
+
 		return($price);
 	}
-	
+
 }

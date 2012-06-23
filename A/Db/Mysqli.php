@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Mysqli
- * 
+ *
  * Database connection class using the mysqli library.  Configuration array can contain the following indices: type, hostspec, username, password, database.
- * 
+ *
  * @package A_Db
  */
 class A_Db_Mysqli extends A_Db_Adapter
@@ -20,7 +20,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 	protected $_sequence_start = 1;
 	protected $_recordset_class = 'A_Db_Recordset_Mysqli';
 	protected $_result_class = 'A_Db_Result';
-	
+
 	protected function _connect()
 	{
 		$this->_connection = new Mysqli($this->_config['host'], $this->_config['username'], $this->_config['password']);
@@ -30,7 +30,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		}
 	}
-	
+
 	protected function _query($sql)
 	{
 		$result = $this->_connection->query($sql);
@@ -45,12 +45,12 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 		return $resultObject;
 	}
-	
+
 	public function limit($sql, $count, $offset='')
 	{
 		return "$sql LIMIT $count" . ($offset > 0 ? " OFFSET $offset" : '');
 	}
-	
+
 	public function nextId($sequence)
 	{
 		if ($this->_connection && $sequence) {
@@ -74,7 +74,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 		return 0;
 	}
-	
+
 	public function createSequence($sequence)
 	{
 		if ($sequence) {
@@ -82,7 +82,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Magic function __get, redirects to instance of Mysqli_Result
 	 */
@@ -90,10 +90,10 @@ class A_Db_Mysqli extends A_Db_Adapter
 	{
 		return $this->_connection->$name;
 	}
-	
+
 	/**
 	 * Magic function __call, redirects to instance of Mysqli
-	 * 
+	 *
 	 * @param string $function Function to call
 	 * @param array $args Arguments to pass to $function
 	 */
@@ -101,17 +101,17 @@ class A_Db_Mysqli extends A_Db_Adapter
 	{
 		return call_user_func_array(array($this->_connection, $function), $args);
 	}
-	
+
 	public function escape($value)
 	{
 		return $this->_connection->escape_string($value);
 	}
-	
+
 	protected function _lastId()
 	{
 		return $this->_connection->insert_id();
 	}
-	
+
 	protected function _selectDb($database)
 	{
 		$result = $this->_connection->select_db($database);
@@ -119,7 +119,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		}
 	}
-	
+
 	protected function _close()
 	{
 		$this->_connection->close();

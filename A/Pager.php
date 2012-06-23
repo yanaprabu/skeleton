@@ -1,19 +1,20 @@
 <?php
 /**
  * Pagination class
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Pager
- * 
+ *
  * @deprecated replaced by A_Pagination package
  * @see A_Pagination
  * @package A
  */
-class A_Pager {
+class A_Pager
+{
 	/**
 	 * @var mixed $datasource Pageable datasource object
 	 */
@@ -86,49 +87,53 @@ class A_Pager {
 	 * @var integer $order_by_current_desc 0=ascending or 1=descending for current field
 	 */
 	public $order_by_current_desc = 0;
-	
+
 	/**
 	 * __construct
 	 *
 	 * @param mixed $datasource ???
 	 */
-	public function __construct($datasource) {
+	public function __construct($datasource)
+	{
 		$this->datasource = $datasource;
 	}
-	
+
 	/**
 	 * setPageSize
 	 *
 	 * @param integer $n Number of results to show on each page
 	 * @return A_Pager This object instance
 	 */
-	public function setPageSize($n) {
+	public function setPageSize($n)
+	{
 		if ($n > 0) {
 			$this->page_size = $n;
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * setRangeSize
 	 *
 	 * @param integer $n ???
 	 * @return A_Pager This object instance
 	 */
-	public function setRangeSize($n) {
+	public function setRangeSize($n)
+	{
 		if ($n > 2) {
 			$this->range_size = $n;
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * setPageParameter
 	 *
 	 * @param mixed $name ???
 	 * @return A_Pager This object instance
 	 */
-	public function setPageParameter($name) {
+	public function setPageParameter($name)
+	{
 		$this->page_param = $name;
 		return $this;
 	}
@@ -139,7 +144,8 @@ class A_Pager {
 	 * @param mixed $name ???
 	 * @return A_Pager This object instance
 	 */
-	public function setPageSizeParameter($name) {
+	public function setPageSizeParameter($name)
+	{
 		$this->page_size_param = $name;
 		return $this;
 	}
@@ -150,7 +156,8 @@ class A_Pager {
 	 * @param mixed $name ???
 	 * @return A_Pager This object instance
 	 */
-	public function setLastRowParameter($name) {
+	public function setLastRowParameter($name)
+	{
 		$this->last_row_param = $name;
 		return $this;
 	}
@@ -162,7 +169,8 @@ class A_Pager {
 	 * @param mixed $direction ???
 	 * @return A_Pager This object instance
 	 */
-	public function setOrderByCurrent($field, $direction) {
+	public function setOrderByCurrent($field, $direction)
+	{
 		$this->order_by_current_field = $field;
 		$pager->order_by_current_desc = $direction;
 		$current = 0;
@@ -184,7 +192,7 @@ class A_Pager {
 				$this->order_by_direction[$key] = $other;
 			}
 		}
-			
+
 		return $this;
 	}
 
@@ -195,7 +203,8 @@ class A_Pager {
 	 * @param mixed $default_field ??? (optional)
 	 * @return A_Pager This object instance
 	 */
-	public function setOrderByFields($fields, $default_field=false) {
+	public function setOrderByFields($fields, $default_field=false)
+	{
 		$this->order_by_fields = $fields;
 		if ($default_field !== false) {
 			$this->order_by_default_field = array_search($default_field, $fields);
@@ -212,7 +221,8 @@ class A_Pager {
 	 * @param mixed $name ???
 	 * @return A_Pager This object instance
 	 */
-	public function setOrderByParameter($name) {
+	public function setOrderByParameter($name)
+	{
 		$this->order_by_param = $name;
 		return $this;
 	}
@@ -223,7 +233,8 @@ class A_Pager {
 	 * @param mixed $field ???
 	 * @return array ???
 	 */
-	public function getOrderByParameter($field) {
+	public function getOrderByParameter($field)
+	{
 		$key = array_search($field, $this->order_by_fields);
 		if ($key !== false) {
 			$params[$this->order_by_param] = $key . '_' . $this->order_by_direction[$key];
@@ -239,7 +250,8 @@ class A_Pager {
 	 * @param mixed $n Page to show
 	 * @return A_Pager This object instance
 	 */
-	public function setCurrentPage($n) {
+	public function setCurrentPage($n)
+	{
 		if ($this->last_row < 1) {			// do not access datasource if last_row has been set
 			$this->last_row = $this->datasource->getNumRows();
 		}
@@ -271,7 +283,8 @@ class A_Pager {
 	 *
 	 * @return mixed The current page size
 	 */
-	public function getPageSize() {
+	public function getPageSize()
+	{
 		return $this->page_size;
 	}
 
@@ -280,7 +293,8 @@ class A_Pager {
 	 *
 	 * @return mixed The current page
 	 */
-	public function getCurrentPage() {
+	public function getCurrentPage()
+	{
 		return $this->current_page;
 	}
 
@@ -290,7 +304,8 @@ class A_Pager {
 	 * @param integer $length ??? (optional)
 	 * @return mixed The index of the previous page
 	 */
-	public function getPrevPage($length=1)	{
+	public function getPrevPage($length=1)
+	{
 		if ($length < 1) {
 			$length = 1;
 		}
@@ -299,16 +314,17 @@ class A_Pager {
 			return $page;
 		} else {
 			return $this->first_page;
-		}		
+		}
 	}
-	
+
 	/**
 	 * getNextPage
 	 *
 	 * @param integer $length ??? (optional)
 	 * @return mixed The index of the next page
 	 */
-	public function getNextPage($length=1)	{
+	public function getNextPage($length=1)
+	{
 		if ($length < 1) {
 			$length = 1;
 		}
@@ -325,7 +341,8 @@ class A_Pager {
 	 *
 	 * @return mixed The index of the last page
 	 */
-	public function getLastPage() {
+	public function getLastPage()
+	{
 		return $this->last_page;
 	}
 
@@ -334,7 +351,8 @@ class A_Pager {
 	 *
 	 * @return mixed The index of the first page
 	 */
-	public function getFirstPage() {
+	public function getFirstPage()
+	{
 		return $this->first_page;
 	}
 
@@ -343,25 +361,28 @@ class A_Pager {
 	 *
 	 * @return mixed ???
 	 */
-	public function getFirstRow() {
+	public function getFirstRow()
+	{
 		return $this->first_row;
 	}
-	
+
 	/**
 	 * getLastRow
 	 *
 	 * @return mixed ???
 	 */
-	public function getLastRow() {
+	public function getLastRow()
+	{
 		return $this->last_row;
 	}
-	
+
 	/**
 	 * getStartRow
 	 *
 	 * @return mixed ???
 	 */
-	public function getStartRow() {
+	public function getStartRow()
+	{
 		return $this->start_row;
 	}
 
@@ -370,7 +391,8 @@ class A_Pager {
 	 *
 	 * @return mixed ???
 	 */
-	public function getEndRow() {
+	public function getEndRow()
+	{
 		return $this->end_row;
 	}
 
@@ -379,7 +401,8 @@ class A_Pager {
 	 *
 	 * @return mixed ???
 	 */
-	public function getValues() {
+	public function getValues()
+	{
 		return array(
 			'page_size' => $this->page_size,
 			'page_size' => $this->last_page,
@@ -397,7 +420,8 @@ class A_Pager {
 	 * @param integer $range_end End of range to get (optional)
 	 * @return array Range of results from $range_start to $range_end
 	 */
-	public function getRange($range_start=0, $range_end=0) {
+	public function getRange($range_start=0, $range_end=0)
+	{
 		if ($range_start == 0) {
 			// get number of links each side of current page
 			$side_size = floor($this->range_size / 2);
@@ -426,7 +450,8 @@ class A_Pager {
 	 * @param integer $end_row ??? (optional)
 	 * @return mixed ???
 	 */
-	public function getRows($start_row=0, $end_row=0) {
+	public function getRows($start_row=0, $end_row=0)
+	{
 		if (($start_row == 0) && ($end_row == 0)) {
 			$start_row = $this->start_row;
 			$end_row = $this->end_row;
@@ -439,9 +464,9 @@ class A_Pager {
 	 *
 	 * @return boolean True if there are more than one pages
 	 */
-	public function hasPages() {
+	public function hasPages()
+	{
 		return $this->last_page > 1;
 	}
 
 }
-
