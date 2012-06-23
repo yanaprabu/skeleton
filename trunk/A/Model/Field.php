@@ -19,8 +19,8 @@ class A_Model_Field
 	public $name = '';
 	public $value = '';
 	public $optional = null;		// null means use rules' settings for optional, true/false means override rules' settings
-	public $filters = null;
-	public $rules = null;
+	public $filters = array();
+	public $rules = array();
 	public $errorMsg = array();
 	public $error = false;
 	public $default = '';
