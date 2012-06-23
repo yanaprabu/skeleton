@@ -34,15 +34,17 @@ abstract class A_Filter_Base implements A_Filter_Filterer
 	public function __construct(/* $field='', $optional=false*/)
 	{
 		$params = func_get_args();
-		if (count($params) == 1) {
-			// first param is array of params
-			$this->config($params[0]);
-		} else {
-			reset($this->params);
-			foreach ($params as $value) {
-				// set the values in params in order
-				$this->params[key($this->params)] = $value;
-				next($this->params);
+		if ($params) {
+			if (is_array($params[0]) && (count($params) == 1)) {
+				// first param is array of params
+				$this->config($params[0]);
+			} else {
+				reset($this->params);
+				foreach ($params as $value) {
+					// set the values in params in order
+					$this->params[key($this->params)] = $value;
+					next($this->params);
+				}
 			}
 		}
 	}
