@@ -1,16 +1,16 @@
 <?php
 /**
  * Group.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Prefilter_Group
- * 
+ *
  * Front Controller pre-filter for group based access control.
- * 
+ *
  * @package A_User
  */
 class A_User_Prefilter_Group
@@ -20,7 +20,7 @@ class A_User_Prefilter_Group
 	protected $forward = array('','login','');
 	protected $method = '_requireGroups';
 	protected $field = '';
-	
+
 	function __construct($session, $forward='', $method='', $field='')
 	{
 		if ($session) {
@@ -38,22 +38,22 @@ class A_User_Prefilter_Group
 			$this->field = $field;
 		}
 	}
-	
+
 	function setForward($forward)
 	{
 		$this->forward = $forward;
 	}
-	
+
 	function setPreMethod($method)
 	{
 		$this->method = $method;
 	}
-	
+
 	function setField($field)
 	{
 		$this->field = $field;
 	}
-	
+
 	function run($controller)
 	{
 		if (method_exists($controller, $this->method)) {

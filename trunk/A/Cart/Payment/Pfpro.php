@@ -14,9 +14,9 @@ define('A_CART_PAYMENT_PFPRO_TRXTYPE_AUTHORIZATION', 'A');
 
 /**
  * A_Cart_Payment_Pfpro
- * 
+ *
  * PayflowPro pfpro (credit card processsing) class library
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Payment_Pfpro
@@ -29,7 +29,7 @@ class A_Cart_Payment_Pfpro
 	protected $transaction;
 	protected $response = null;
 	protected $errorMsg;
-	
+
 	public function __construct($user='', $passwd='', $partner='', $mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE)
 	{
 		putenv('PFPRO_CERT_PATH=' . $this->certpath);
@@ -51,19 +51,19 @@ class A_Cart_Payment_Pfpro
 			'STREET' => '',
 			'ZIP' => '',
 			);
-	
+
 		$this->setServerMode($mode);
-		
+
 		pfpro_init();
-	
+
 	}
-	
+
 	public function setServer($value)
 	{
 		$this->server = $value;
 		return $this;
 	}
-	
+
 	public function setServerMode($mode=A_CART_PAYMENT_PFPRO_SERVER_LIVE)
 	{
 		switch ($mode) {
@@ -80,43 +80,43 @@ class A_Cart_Payment_Pfpro
 		$this->servermode = $mode;
 		return $this;
 	}
-	
+
 	public function setUser($value)
 	{
 		$this->transaction['USER'] = $value;
 		return $this;
 	}
-	
+
 	public function setPassword($value)
 	{
 		$this->transaction['PWD'] = $value;
 		return $this;
 	}
-	
+
 	public function setPartner($value)
 	{
 		$this->transaction['PARTNER'] = $value;
 		return $this;
 	}
-	
+
 	public function setTransactionType($value)
 	{
 		$this->transaction['TRXTYPE'] = $value;
 		return $this;
 	}
-	
+
 	public function setAmount($value)
 	{
 		$this->transaction['AMT'] = $value;
 		return $this;
 	}
-	
+
 	public function setCardNumber($value)
 	{
 		$this->transaction['ACCT'] = $value;
 		return $this;
 	}
-	
+
 	public function setExpDate($month, $year)
 	{
 		if (strlen(strval($year)) > 2) {
@@ -125,25 +125,25 @@ class A_Cart_Payment_Pfpro
 		$this->transaction['EXPDATE'] = sprintf('%02d%02d', $month, $year);
 		return $this;
 	}
-	
+
 	public function setName($value)
 	{
 		$this->transaction['NAME'] = $value;
 		return $this;
 	}
-	
+
 	public function setStreet($value)
 	{
 		$this->transaction['STREET'] = $value;
 		return $this;
 	}
-	
+
 	public function setZip($value)
 	{
 		$this->transaction['ZIP'] = $value;
 		return $this;
 	}
-	
+
 	public function setComments($comment1='', $comment2='')
 	{
 		if ($comment1) {
@@ -154,7 +154,7 @@ class A_Cart_Payment_Pfpro
 		}
 		return $this;
 	}
-	
+
 	public function getReference()
 	{
 		if ($this->response) {
@@ -162,12 +162,12 @@ class A_Cart_Payment_Pfpro
 		}
 		return '';
 	}
-	
+
 	public function getVersion()
 	{
 		return pfpro_version();
 	}
-	
+
 	public function process()
 	{
 		if ($this->servermode == A_CART_PAYMENT_PFPRO_SERVER_NONE) {
@@ -178,7 +178,7 @@ class A_Cart_Payment_Pfpro
 		}
 		return $this->response;
 	}
-	
+
 	public function isError()
 	{
 		if ($this->response && ($this->response['RESULT'] == 0)) {
@@ -186,7 +186,7 @@ class A_Cart_Payment_Pfpro
 		}
 		return true;
 	}
-	
+
 	public function getErrorMsg()
 	{
 		if ($this->response) {
@@ -194,10 +194,10 @@ class A_Cart_Payment_Pfpro
 		}
 		return 'Could not connect to credit card processor. ';
 	}
-	
+
 	/**
 	 * Alias name for getErrorMsg()
-	 * 
+	 *
 	 * @deprecated
 	 * @see getErrorMsg()
 	 */
@@ -205,7 +205,7 @@ class A_Cart_Payment_Pfpro
 	{
 		return $this->getErrorMsg();
 	}
-	
+
 	public function getResult()
 	{
 		if ($this->response) {
@@ -213,7 +213,7 @@ class A_Cart_Payment_Pfpro
 		}
 		return -1;
 	}
-	
+
 	public function close()
 	{
 		pfpro_cleanup();

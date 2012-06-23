@@ -8,9 +8,9 @@
 
 /**
  * A_Cli_Request
- * 
+ *
  * Encapsulate the HTTP request in a class to access information and values
- * 
+ *
  * @package  A_Cli
  */
 class A_Cli_Request
@@ -20,7 +20,7 @@ class A_Cli_Request
 	protected $method = false;
 	protected $script_name = false;
 	protected $filters = array();
-	
+
 	public function __construct()
 	{
 		// check if called from CLI
@@ -44,41 +44,41 @@ class A_Cli_Request
 					$this->data = array_merge($this->data, $data);
 				}
 			}
-		}		
+		}
 	}
-	
+
 	public function setPathInfo($path_info)
 	{
 		$this->data['PATH_INFO'] = trim($path_info, '/');
 		return $this;
 	}
-	
+
 	public function getScriptName()
 	{
 		return $this->script_name;
 	}
-	
+
 	public function getFilters()
 	{
 		return $this->filters;
 	}
-	
+
 	public function setFilters($filters)
 	{
 		$this->filters = is_array($filters) ? $filters : array($filters);
 		return $this;
 	}
-	
+
 	public function getMethod()
 	{
 		return $this->method;
 	}
-	
+
 	public function isCli()
 	{
 		return $this->method == 'CLI';
 	}
-	
+
 	protected function _get(&$data, $name, $filters=null, $default=null)
 	{
 		if (isset($data[$name])) {
@@ -120,12 +120,12 @@ class A_Cli_Request
 			return $default;
 		}
 	}
-	
+
 	public function get($name, $filter=null, $default=null)
 	{
 		return $this->_get($this->data, $name, $filter, $default);
 	}
-	
+
 	public function export($filter=null, $pattern=null)
 	{
 		if ($filter || $pattern) {
@@ -140,7 +140,7 @@ class A_Cli_Request
 			return $this->data;
 		}
 	}
-	
+
 	public function set($name, $value, $default=null)
 	{
 		if ($value !== null) {
@@ -152,7 +152,7 @@ class A_Cli_Request
 		}
 		return $this;
 	}
-	
+
 	public function has($name)
 	{
 		return isset($this->data[$name]);

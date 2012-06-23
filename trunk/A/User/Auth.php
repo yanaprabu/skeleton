@@ -1,16 +1,16 @@
 <?php
 /**
  * Auth.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Auth
- * 
+ *
  * Check credentials.
- * 
+ *
  * @package A_User
  */
 class A_User_Auth extends A_User_Access
@@ -24,13 +24,13 @@ class A_User_Auth extends A_User_Access
 	protected $success_url = '';				// set to redirect on successful login
 	protected $crypt_func = 'md5';
 	protected $no_password = false;				// set to true for userid only login
-	
+
 	public function setDB($db)
 	{
 		$this->db = $db;
 		return $this;
 	}
-	
+
 	public function setDBTable($table)
 	{
 		if ($table) {
@@ -38,7 +38,7 @@ class A_User_Auth extends A_User_Access
 		}
 		return $this;
 	}
-	
+
 	public function setDBFieldUserID($field)
 	{
 		if ($field) {
@@ -46,7 +46,7 @@ class A_User_Auth extends A_User_Access
 		}
 		return $this;
 	}
-	
+
 	public function setDBFieldPassword($field)
 	{
 		if ($field) {
@@ -54,28 +54,28 @@ class A_User_Auth extends A_User_Access
 		}
 		return $this;
 	}
-	
+
 	public function setDBFieldSequence($field)
 	{
 		$this->field_sequence=$field;
 		return $this;
 	}
-	
+
 	public function setSuccessRedirect($url)
 	{
 		$this->success_url = $url;
 		return $this;
 	}
-	
+
 	public function setCryptFunction($func)
 	{
 		$this->crypt_func = $func;
 		return $this;
 	}
-	
+
 	/**
 	 * Alias for login()
-	 * 
+	 *
 	 * @deprecated
 	 * @see login()
 	 */
@@ -83,7 +83,7 @@ class A_User_Auth extends A_User_Access
 	{
 		$this->login($userid, $password);
 	}
-	
+
 	public function login($userid, $password)
 	{
 		$this->error = 0;
@@ -94,10 +94,10 @@ class A_User_Auth extends A_User_Access
 			$password = call_user_func($this->password_func, $password);
 		}
 		if ($userid && ($password || $this->no_password)) {
-			
+
 			if ($this->db) {
 				$sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->field_userid . "='$userid'";
-	
+
 				$result = $this->db->query($sql);
 				if (DB::isError($result)) {
 					$this->error = 3;
@@ -107,35 +107,35 @@ class A_User_Auth extends A_User_Access
 							if ($this->crypt_func) {
 								$password = call_user_func($this->crypt_func, $password);
 							}
-	
+
 							if (($row[$this->field_password] == $password) || $this->no_password) {
 								// password match
 								if ($this->field_accessdate) {
 									$sql = 'UPDATE ' . $this->table . ' SET ' . $this->field_accessdate . '=NULL WHERE ' . $this->field_userid . "='$userid'";
 									$result = $this->db->query($sql);
 								}
-								
+
 								$this->merge($row);
 								$this->redirect($this->success_url);
 								return $row;
-							}else{
+							} else {
 								// password does not match
 								$this->error = 6;
 							}
-						}else{
+						} else {
 							// userid does not match result
 							$this->error = 5;
 						}
-					}else{
+					} else {
 						// fetch failed
 						$this->error = 3;
 					}
 				}
-			}else{
+			} else {
 				// no database connection
 				$this->error = 11;
 			}
-		} elseif ($userid){
+		} elseif ($userid) {
 			// no password
 			$this->error = 2;
 		} else {
@@ -144,7 +144,7 @@ class A_User_Auth extends A_User_Access
 		}
 		return 0;
 	}
-	
+
 	public function create($userid, $password, $userdata=array())
 	{
 		$this->error = 0;
@@ -154,8 +154,8 @@ class A_User_Auth extends A_User_Access
 		if (function_exists($this->password_func)) {
 			$password = call_user_func($this->password_func, $password);
 		}
-		if ($userid && $password){
-			if ($this->db){
+		if ($userid && $password) {
+			if ($this->db) {
 				$sql = "SELECT * FROM {$this->table} WHERE {$this->field_userid}='$userid'";
 				$result = $this->db->query($sql);
 				if (DB::isError($result)) {
@@ -200,12 +200,12 @@ class A_User_Auth extends A_User_Access
 							$this->redirect($this->success_url);
 							return $userdata;
 						}
-					}else{
+					} else {
 						// userid exists
 						$this->error = 4;
 					}
 				}
-			}else{
+			} else {
 				// no database connection
 				$this->error = 11;
 			}
@@ -218,7 +218,7 @@ class A_User_Auth extends A_User_Access
 		}
 		return 0;
 	}
-	
+
 	public function changePassword($userid, $newpassword, $oldpassword='')
 	{
 		$this->error = 0;
@@ -228,23 +228,23 @@ class A_User_Auth extends A_User_Access
 		if (function_exists($this->password_func)) {
 			$newpassword = call_user_func($this->password_func, $newpassword);
 		}
-		if ($userid && $newpassword){
-			if ($this->db){
+		if ($userid && $newpassword) {
+			if ($this->db) {
 				$sql = "SELECT * FROM {$this->table} WHERE {$this->field_userid}='$userid'";
 				$result = $this->db->query($sql);
 				if (DB::isError($result)) {
 					// error with select
 					$this->error = 3;
 				} else {
-					if ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)){
+					if ($row = $result->fetchRow(DB_FETCHMODE_ASSOC)) {
 						$change = 1;
-						if($oldpassword){
+						if ($oldpassword) {
 							$oldpassword=md5($oldpassword);
-							if($oldpassword != $row[$this->field_password]){
+							if ($oldpassword != $row[$this->field_password]) {
 								$change = 0;
 							}
 						}
-						if($change){
+						if ($change) {
 							if ($this->crypt_func) {
 								$newpassword = call_user_func($this->crypt_func, $newpassword);
 							}
@@ -258,20 +258,20 @@ class A_User_Auth extends A_User_Access
 								$this->error = 0;
 								return $row[$this->field_password];
 							}
-						}else{
+						} else {
 							// old password did not match
 							$this->error = 8;
 						}
-					}else{
+					} else {
 						// userid not found
 						$this->error = 7;
 					}
 				}
-			}else{
+			} else {
 				// no database connection
 				$this->error = 11;
 			}
-		} elseif ($userid){
+		} elseif ($userid) {
 			// no password
 			$this->error = 2;
 		} else {
@@ -280,13 +280,13 @@ class A_User_Auth extends A_User_Access
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Generate a password string of a given length from the character set string
 	 * where characters and character ranges are separated by commas, for
 	 * example "1,2,A-Z" would contain 1, 2 and all the upper case letters.
 	 * Defaults to 10 character passwords with a few symbols, but no 1,l,0,O,Q.
-	 * 
+	 *
 	 * @param int $length
 	 * @param string $charset
 	 * @return string
@@ -294,41 +294,41 @@ class A_User_Auth extends A_User_Access
 	public function generatePassword($length=10, $charset='')
 	{
 		$password = '';
-		if(empty($charset)) {
+		if (empty($charset)) {
 			$charset = 'a-k,m-z,A-N,P,R-Z,2-9,-,+,=,$,%,&,*';
 		}
-		if($length > 0) {
+		if ($length > 0) {
 			$n = 0;
 			$array = explode(',', $charset);
 			$nranges = count($array);
-			for($i = 0; $i < $nranges; $i++) {
-				if(strpos($array[$i], '-')) {
+			for ($i = 0; $i < $nranges; $i++) {
+				if (strpos($array[$i], '-')) {
 					$ch1 = substr($array[$i], 0, 1);
 					$ch2 = substr($array[$i], 2, 1);
-					if($ch2 < $ch1){
+					if ($ch2 < $ch1) {
 						$ch2 = $ch1;
 					}
 				} else {
 					$ch1 = substr($array[$i], 0, 1);
 					$ch2 = $ch1;
 				}
-				for($ch = ord($ch1); $ch <= ord($ch2); $ch++) {
+				for ($ch = ord($ch1); $ch <= ord($ch2); $ch++) {
 					$chars[$n++] = chr($ch);
 				}
 			}
 			mt_srand((double) microtime() * 1000000);
-			for($i=0; $i<$length; ++$i) {
+			for ($i=0; $i<$length; ++$i) {
 				$password .= $chars[mt_rand(0, $n-1)];
 			}
 		}
 		return $password;
 	}
-	
+
 	public function isError()
 	{
 		return($this->error);
 	}
-	
+
 	public function getErrorMsg($error=0)
 	{
 		$msg = array(
@@ -345,17 +345,17 @@ class A_User_Auth extends A_User_Access
 			10=> 'error occured while saving the new password',
 			11=> 'no database connection'
 		);
-		
+
 		if ($error == 0) {
 			return ($msg[$this->error]);
 		} else {
 			return ($msg[$error]);
 		}
 	}
-	
+
 	/**
 	 * Alias for getErrorMsg()
-	 * 
+	 *
 	 * @deprecated
 	 * @see getErrorMsg()
 	 */

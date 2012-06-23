@@ -8,15 +8,15 @@
 
 /**
  * A_Cart_Session
- * 
+ *
  * Session-based storage for shopping cart
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Session
 {
 	protected $session_name = 'A_Cart';
-	
+
 	/**
 	 * @param string $name
 	 * @return A_Cart_Manager
@@ -29,7 +29,7 @@ class A_Cart_Session
 			$this->session = new A_Session();
 		}
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return A_Cart_Manager
@@ -46,7 +46,7 @@ class A_Cart_Session
 		}
 		return $cart;
 	}
-	
+
 	/**
 	 * @param string $name
 	 */

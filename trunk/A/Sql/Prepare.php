@@ -1,16 +1,16 @@
 <?php
 /**
  * Prepare.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Prepare
- * 
+ *
  * Generate SQL a prepared statement
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_Prepare
@@ -22,7 +22,7 @@ class A_Sql_Prepare
 	protected $numbered_args = array();	// 1-based indexed array
 	protected $sql;						// prepared sql
 	protected $quote_values = false;
-	
+
 	public function __construct(/*$statement, $args...*/)
 	{
 		$args = func_get_args();
@@ -33,31 +33,31 @@ class A_Sql_Prepare
 			}
 		}
 	}
-	
+
 	public function setDb($db)
 	{
 		$this->db = $db;
-		return $this; 
+		return $this;
 	}
-	
+
 	public function quoteValues($flag=true)
 	{
 		$this->quote_values = $flag;
-		return $this; 
+		return $this;
 	}
-	
+
 	public function quoteEscape($value)
 	{
 		$value = $this->db ? $this->db->escape($value) : addslashes($value);
 		return $this->quote_values ? "'" . $value . "'" : $value;
 	}
-	
+
 	public function statement($statement)
 	{
 		$this->statement = $statement;
-		return $this; 
+		return $this;
 	}
-	
+
 	public function bind(/* args, ... */)
 	{
 		$args = func_get_args();
@@ -89,9 +89,9 @@ class A_Sql_Prepare
 				}
 			}
 		}
-		return $this; 
+		return $this;
 	}
-	
+
 	public function render($db=null)
 	{
 		if ($this->statement) {
@@ -122,7 +122,7 @@ class A_Sql_Prepare
 		}
 		return $this->sql;
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();

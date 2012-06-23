@@ -1,7 +1,7 @@
 <?php
 /**
  * Mapping.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Cory Kaufman, Christopher Thompson
@@ -9,11 +9,11 @@
 
 /**
  * A_Orm_DataMapper_Mapping
- * 
+ *
  * @package A_Orm
  */
-class A_Orm_DataMapper_Mapping	{
-
+class A_Orm_DataMapper_Mapping
+{
 	public $getMethod;
 	public $setMethod;
 	public $property;
@@ -24,14 +24,15 @@ class A_Orm_DataMapper_Mapping	{
 	public $param = false;
 	public $key = false;
 
-	public function __construct ($getMethod='', $setMethod='', $property='', $column='', $table='', $key = false, $callback = array(), $param = false)	{
+	public function __construct ($getMethod='', $setMethod='', $property='', $column='', $table='', $key = false, $callback = array(), $param = false)
+	{
 		$this->getMethod = $getMethod;
 		$this->setMethod = $setMethod;
 		$this->property = $property;
-		if (is_array ($column))	{
+		if (is_array ($column)) {
 			$this->column = current($column);
 			$this->alias = key($column);
-		} else	{
+		} else {
 			$this->column = $column;
 		}
 		$this->table = $table;
@@ -40,83 +41,99 @@ class A_Orm_DataMapper_Mapping	{
 		$this->param = $param ? true : false;
 	}
 
-	public function getSetMethod()	{
+	public function getSetMethod()
+	{
 		return $this->setMethod;
 	}
 
-	public function setSetMethod ($setMethod)	{
+	public function setSetMethod ($setMethod)
+	{
 		$this->setMethod = $setMethod;
 		return $this;
 	}
 
-	public function getGetMethod()	{
+	public function getGetMethod()
+	{
 		return $this->getMethod;
 	}
 
-	public function setGetMethod ($getMethod)	{
+	public function setGetMethod ($getMethod)
+	{
 		$this->getMethod = $getMethod;
 		return $this;
 	}
 
-	public function getProperty()	{
+	public function getProperty()
+	{
 		return $this->property;
 	}
 
-	public function setProperty($property)	{
+	public function setProperty($property)
+	{
 		$this->property = $property;
 		return $this;
 	}
 
-	public function getColumn()	{
+	public function getColumn()
+	{
 		return $this->column;
 	}
 
-	public function setColumn($column)	{
+	public function setColumn($column)
+	{
 		$this->column = $column;
 		return $this;
 	}
 
-	public function setAlias($alias)	{
+	public function setAlias($alias)
+	{
 		$this->alias = $alias;
 	}
-	
-	public function getAlias()	{
+
+	public function getAlias()
+	{
 		return $this->alias;
 	}
 
-	public function getTable()	{
+	public function getTable()
+	{
 		return $this->table;
 	}
 
-	public function setTable($table)	{
+	public function setTable($table)
+	{
 		$this->table = $table;
 	}
-	
-	public function isParam()	{
+
+	public function isParam()
+	{
 		return $this->param ? true : false;
 	}
-	
-	public function setParam()	{
+
+	public function setParam()
+	{
 		$this->param = true;
 	}
-	
-	public function toColumn($column, $table = '', $key = false)	{
-		if (is_array ($column))	{
+
+	public function toColumn($column, $table = '', $key = false)
+	{
+		if (is_array ($column)) {
 			$this->column = current ($column);
 			$this->alias = key ($column);
-		} else	{
+		} else {
 			$this->column = $column;
 		}
-		if (strpos($this->column, '.') && empty($table))	{
+		if (strpos($this->column, '.') && empty($table)) {
 			list($this->table, $this->column) = explode('.',$this->column);
-		} elseif (!empty($table))	{
-			$this->table = $table;	
+		} elseif (!empty($table)) {
+			$this->table = $table;
 		}
 		$this->key = $key;
 		return $this;
 	}
 
-	public function toCallback($object, $method, $params = array())	{
+	public function toCallback($object, $method, $params = array())
+	{
 		$this->callback = array (
 			'object' => $object,
 			'method' => $method,
@@ -125,23 +142,27 @@ class A_Orm_DataMapper_Mapping	{
 		return $this;
 	}
 
-	public function isKey()	{
+	public function isKey()
+	{
 		return $this->key?true:false;
 	}
 
-	public function setKey()	{
+	public function setKey()
+	{
 		$this->key = true;
 		return $this;
 	}
 
-	public function saveMethod($method)	{
+	public function saveMethod($method)
+	{
 		$this->setGetMethod($method);
 		return $this;
 	}
-	
-	public function loadObject($object, $array)	{
-		if (method_exists($object, $this->setMethod))	{
-			if ($this->property)	{
+
+	public function loadObject($object, $array)
+	{
+		if (method_exists($object, $this->setMethod)) {
+			if ($this->property) {
 				$params[] = $this->property;
 			}
 			$params[] = $this->getValue($array);
@@ -151,24 +172,26 @@ class A_Orm_DataMapper_Mapping	{
 		}
 	}
 
-	public function getValue($array)	{
-		if($this->alias)	{
+	public function getValue($array)
+	{
+		if ($this->alias) {
 			return $array[$this->alias];
-		}elseif ($this->column)	{
+		} elseif ($this->column) {
 			return $array[$this->column];
-		}elseif ($this->callback)	{
+		} elseif ($this->callback) {
 			call_user_func_array (array ($this->callback['object'], $this->callback['method']), $this->callback['params']);
 		}
 	}
 
-	public function getValueFromObject($object)	{
-		if (method_exists($object, $this->getMethod))	{
+	public function getValueFromObject($object)
+	{
+		if (method_exists($object, $this->getMethod)) {
 			$params = array();
-			if ($this->property)	{
+			if ($this->property) {
 				$params[] = $this->property;
 			}
 			$value = call_user_func_array(array($object, $this->getMethod), $params);
-		} elseif (property_exists($object, $this->property))	{
+		} elseif (property_exists($object, $this->property)) {
 			$value = $object->{$this->property};
 		}
 		return $value;

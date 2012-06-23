@@ -1,7 +1,7 @@
 <?php
 /**
  * View.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -9,8 +9,8 @@
 /**
  * A_Http_View
  *
- * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content. 
- * 
+ * Base MVC View class for a whole or partial HTTP response. Encapsulates headers, redirects, character encoding, quoting, escaping, and content.
+ *
  * @package A_Http
  */
 class A_Http_View implements A_Renderer
@@ -43,35 +43,35 @@ class A_Http_View implements A_Renderer
 	);
 	protected $use_local_vars = true;
 	protected $errorMsg = array();
-	
+
 	public function __construct($locator=null)
 	{
 		$this->locator = $locator;
 	}
-	
+
 	public function setLocator($locator)
 	{
 		$this->locator = $locator;
 	}
-	
+
 	public function setCharacterSet($character_set)
 	{
 		$this->character_set = $character_set;
 		return $this;
 	}
-	
+
 	public function setQuoteStyle($escape_quote_style)
 	{
 		$this->escape_quote_style = $escape_quote_style;
 		return $this;
 	}
-	
+
 	public function useLocalVars($use_local_vars)
 	{
 		$this->use_local_vars = $use_local_vars;
 		return $this;
 	}
-	
+
 	public function setHeader($field, $param=null)
 	{
 		if (is_string($field)) {
@@ -85,12 +85,12 @@ class A_Http_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function getHeaders()
 	{
 		return $this->headers;
 	}
-	
+
 	/**
 	 * @param Parameters the same as the PHP setcookie() function
 	 */
@@ -102,71 +102,71 @@ class A_Http_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function getCookie($name)
 	{
 		if (isset($this->cookies[$name])) {
 			return $this->cookies[$name];
 		}
 	}
-	
+
 	public function setRedirect($url)
 	{
 		$this->redirect = $url;
 		return $this;
 	}
-	
+
 	public function getRedirect()
 	{
 		return $this->redirect;
 	}
-	
+
 	public function setContent($content)
 	{
 		$this->content = $content;
 		return $this;
 	}
-	
+
 	public function getContent()
 	{
 		return $this->content;
 	}
-	
+
 	public function setTemplate($template, $scope='')
 	{
 		$this->template = $template;
 		if ($scope) $this->template_scope = $scope;
 		return $this;
 	}
-	
+
 	public function setTemplateScope($scope)
 	{
 		$this->template_scope = $scope;
 		return $this;
 	}
-	
+
 	public function setTemplatePath($path)
 	{
 		$this->template_path = $path;
 		return $this;
 	}
-	
+
 	public function getTemplate()
 	{
 		return $this->template;
 	}
-	
+
 	public function setRenderer($renderer)
 	{
 		$this->renderer = $renderer;
 		return $this;
 	}
-	
+
 	public function hasRenderer()
 	{
 		return isset($this->renderer);
 	}
-	
+
 	public function set($name, $value, $default=null)
 	{
 		if ($value !== null) {
@@ -185,23 +185,23 @@ class A_Http_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function get($name)
 	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-	
+
 	public function has($name)
 	{
 		return isset($this->data[$name]);
 	}
-	
+
 	public function import($data)
 	{
 		$this->data = array_merge($this->data, $data);
 		return $this;
 	}
-	
+
 	public function escape($content, $escape_quote_style=null)
 	{
 		if (extension_loaded('mbstring')) {
@@ -210,13 +210,13 @@ class A_Http_View implements A_Renderer
 		}
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
-	
+
 	public function setEscape($name, $value, $default=null)
 	{
 		$this->escape_fields[$name] = false;			// Register this to be escaped later. False because not yet escaped.
 		$this->set($name, $value, $default);
 	}
-	
+
 	/**
 	 * @param $name mixed field name or array of field names to be escaped
 	 */
@@ -231,9 +231,9 @@ class A_Http_View implements A_Renderer
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public function _escape()
 	{
@@ -244,9 +244,9 @@ class A_Http_View implements A_Renderer
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public function _escape_array($data, $escape_fields)
 	{
@@ -255,7 +255,7 @@ class A_Http_View implements A_Renderer
 		}
 		return $data;
 	}
-	
+
 	public function _getPath($template)
 	{
 		if (substr($template, -4, 4) != '.php') {
@@ -274,10 +274,10 @@ class A_Http_View implements A_Renderer
 		}
 		return $this->template_path . '/' . $template;
 	}
-	
+
 	/**
 	 * Include PHP template
-	 * 
+	 *
 	 * @param string $template
 	 * @param mixed $data
 	 * @return string
@@ -288,10 +288,10 @@ class A_Http_View implements A_Renderer
 		$str = $this->_include($template, $data, $escape_fields);
 		return $str;
 	}
-	
+
 	/**
 	 * include PHP template for each value in array
-	 * 
+	 *
 	 * @param string $template
 	 * @param string $name
 	 * @param mixed $data
@@ -313,26 +313,27 @@ class A_Http_View implements A_Renderer
 				$str .= $this->_include($template, $data, $escape_fields);
 			}
 			// restore original values
-			foreach($tmp as $key => $value) {
+			foreach ($tmp as $key => $value) {
 				$this->data[$key] = $value;
 			}
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * Convenience method to more easily set a partial template
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $template
 	 * @param mixed $data
 	 * @return @this
 	 */
-	public function setPartial($name, $template, $data=null) {
+	public function setPartial($name, $template, $data=null)
+	{
 		$this->set($name, $this->partial($template, $data));
 		return $this;
 	}
-	
+
 	/**
 	 * short for $this->set($name, $this->partialLoop($template, $data_name, $data))
 	 */
@@ -341,7 +342,7 @@ class A_Http_View implements A_Renderer
 		$this->set($name, $this->partialLoop($template, $data_name, $data));
 		return $this;
 	}
-	
+
 	public function render($template='', $scope='')
 	{
 		if (!$template && $this->template) {
@@ -368,7 +369,7 @@ class A_Http_View implements A_Renderer
 		}
 		return $this->content;
 	}
-	
+
 	/*
 	 * Include a PHP file, passing internal data to it as variables
 	 * Note: no local variables are used in this function to keep the namespace clean for extracted variables
@@ -395,17 +396,17 @@ class A_Http_View implements A_Renderer
 			return ob_get_clean();
 		}
 	}
-	
+
 	public function __get($name)
 	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-	
+
 	public function __set($name, $value)
 	{
 		return $this->set($name, $value);
 	}
-	
+
 	/**
 	 * Allow calls directly to the renderer object's methods
 	 */
@@ -417,12 +418,12 @@ class A_Http_View implements A_Renderer
 		// TODO elseif $name is a helper then load it
 		// else throw an error or exception
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();
 	}
-	
+
 	protected function _load($scope=null)
 	{
 		if (isset($this->load)) {
@@ -432,7 +433,7 @@ class A_Http_View implements A_Renderer
 		}
 		return $this->load;
 	}
-	
+
 	protected function _flash($name=null, $value=null)
 	{
 		if (!isset($this->flash)) {
@@ -447,7 +448,7 @@ class A_Http_View implements A_Renderer
 		}
 		return $this->flash;
 	}
-	
+
 	public function setHelper($name, $helper)
 	{
 		if ($name) {
@@ -455,7 +456,7 @@ class A_Http_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function setHelperClass($name, $class)
 	{
 		if ($name) {
@@ -463,7 +464,7 @@ class A_Http_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	protected function helper($name)
 	{
 		if (!isset($this->helpers[$name])) {
@@ -478,14 +479,15 @@ class A_Http_View implements A_Renderer
 			return $this->helpers[$name];
 		}
 	}
-	
+
 	/**
 	 * Get error messages
-	 * 
+	 *
 	 * @param string $separator Separator between errors, set to null for an array
 	 * @return string|array
 	 */
-	public function getErrorMsg($separator="\n") {
+	public function getErrorMsg($separator="\n")
+	{
 		$errormsg = $this->errorMsg;
 		if ($this->load) {
 			$errormsg = array_merge($errormsg, $this->_load($scope)->getErrorMsg(''));

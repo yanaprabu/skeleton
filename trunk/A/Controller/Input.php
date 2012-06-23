@@ -8,9 +8,9 @@
 
 /**
  * A_Controller_Input
- * 
+ *
  * Controller class with request filtering and validation
- * 
+ *
  * @package A_Controller
  */
 class A_Controller_Input extends A_Controller_Action
@@ -22,40 +22,40 @@ class A_Controller_Input extends A_Controller_Action
 	protected $filterchain;
 	protected $validator;
 	protected $error = false;
-	
+
 	public function __construct($locator=null)
 	{
 	    parent::__construct($locator);
 	}
-	
+
 	public function addFilter($filter, $names=array())
 	{
 		$n = count($this->filters);
 		$this->filters[$n]['filter'] = $filter;
 		$this->filters[$n]['names'] = $names;
 	}
-	
+
 	public function addRule($rule, $names=array())
 	{
 		$n = count($this->rules);
 		$this->rules[$n]['rule'] = $rule;
 		$this->rules[$n]['names'] = $names;
 	}
-	
+
 	public function addField($object)
 	{
 		if ($object) {
 			$this->params[$object->name] = $object;
 		}
 	}
-	
+
 	public function getField($name)
 	{
 		if (isset($this->params[$name])) {
 			return $this->params[$name];
 		}
 	}
-	
+
 	public function processRequest($request)
 	{
 		$filterchain = new A_Filter_Set();
@@ -105,10 +105,10 @@ class A_Controller_Input extends A_Controller_Action
 				}
 			}
 		}
-		
+
 		return !$this->error;
 	}
-	
+
 	public function set($name, $value, $default=null)
 	{
 		if (isset($this->params[$name])) {
@@ -122,7 +122,7 @@ class A_Controller_Input extends A_Controller_Action
 		}
 		return $this;
 	}
-	
+
 	public function get($name)
 	{
 		if (isset($this->params[$name]->value)) {
@@ -130,7 +130,7 @@ class A_Controller_Input extends A_Controller_Action
 		}
 		return $this;
 	}
-	
+
 	public function getFieldVarArray($var)
 	{
 		if ($var) {
@@ -141,7 +141,7 @@ class A_Controller_Input extends A_Controller_Action
 			return $data;
 		}
 	}
-	
+
 	public function getErrorMsgs($separator=null)
 	{
 		$data = array();
@@ -152,17 +152,17 @@ class A_Controller_Input extends A_Controller_Action
 		}
 		return $separator === null ? $data : implode($separator, $data);
 	}
-	
+
 	public function getValues()
 	{
 		return $this->getFieldVarArray('value');
 	}
-	
+
 	public function isError()
 	{
 		return $this->error;
 	}
-	
+
 	public function isValid()
 	{
 		return !$this->error;

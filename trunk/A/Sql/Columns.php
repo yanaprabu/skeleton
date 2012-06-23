@@ -1,16 +1,16 @@
 <?php
 /**
  * Columns.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Columns
- * 
+ *
  * Generate SQL table columns list
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_Columns
@@ -18,14 +18,14 @@ class A_Sql_Columns
 
 	/**
 	 * Columns array
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $columns = array();
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Casts arguments into columns array
 	 *
 	 * @param mixed $args
@@ -41,26 +41,26 @@ class A_Sql_Columns
 		} else {
 			$this->columns = func_get_args();
 		}
-		
-		foreach ((array)$this->columns as $key => $columns) {
+
+		foreach ((array) $this->columns as $key => $columns) {
 			if (strpos($columns, ',')) { //if user passed string of multiple columns, we need to account those ose
 				unset($this->columns[$key]);
 				$this->columns = array_merge($this->columns, explode(',', $columns));
-			} 
+			}
 		}
-		$this->columns = array_filter(array_map('trim', (array)$this->columns));
+		$this->columns = array_filter(array_map('trim', (array) $this->columns));
 	}
-	
+
 	/**
 	 * Return list of columns
 	 *
 	 * @return array
-	 */	
+	 */
 	public function getColumns()
 	{
 		return $this->columns;
 	}
-	
+
 	/**
 	 * Automagically renders when used in a string context
 	 *
@@ -70,10 +70,10 @@ class A_Sql_Columns
 	{
 		return $this->render();
 	}
-	
+
 	/**
 	 * Return prepared statement
-	 * 
+	 *
 	 * @return string
 	 */
 	public function render()
@@ -81,7 +81,7 @@ class A_Sql_Columns
 		if (!count($this->columns)) {
 			return '';
 		}
-		return implode(', ', $this->columns);		
+		return implode(', ', $this->columns);
 	}
 
 }

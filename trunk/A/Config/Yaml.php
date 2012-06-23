@@ -8,9 +8,9 @@
 
 /**
  * A_Config_Yaml
- * 
+ *
  * Support for reading YAML configuration files -- very minimal support
- * 
+ *
  * @package A_Config
  */
 class A_Config_Yaml extends A_Config_Base
@@ -27,7 +27,7 @@ class A_Config_Yaml extends A_Config_Base
 			$listnstack = array(0 => -1);			// hold the list index for each level of indent
 			$indentlevel = 0;
 			$datastack[$indentlevel] =& $data;
-			
+
 			$nlines = count($lines);
 			$linen = 0;
 			while ($linen < $nlines) {
@@ -41,19 +41,19 @@ class A_Config_Yaml extends A_Config_Base
 					$linen++;
 					continue;
 				}
-				
+
 				// remove indent and trailing
 				$line = trim($lines[$linen]);
-		
+
 				// skip blank lines
 				if ($line == '') {
 					$linen++;
 					continue;
 				}
-		
+
 				// indent is difference between original and trimmed
 				$indentsize = strlen(rtrim($lines[$linen])) - strlen($line);
-		    	
+
 				// check if line is indented
 				if ($indentsize > 0) {
 				    if ($indentsize > $indentstack[$indentlevel]) {
@@ -101,7 +101,7 @@ class A_Config_Yaml extends A_Config_Base
 						// - alone means list items will be indented on following lines
 						$datastack[$indentlevel][++$listnstack[$indentlevel]] = array();
 						$datalastkey[$indentlevel] = $listnstack[$indentlevel];
-						
+
 						// set next level of data to point to empty array added above
 						$datastack[$indentlevel+1] =& $datastack[$indentlevel][$listnstack[$indentlevel]];
 					} else {
@@ -130,7 +130,7 @@ class A_Config_Yaml extends A_Config_Base
 						$key = rtrim($line, " \"\t:");
 						$datastack[$indentlevel][$key] = array();
 						$datalastkey[$indentlevel] = $key;
-						
+
 						// colon at end of line - set next level of data to point to last element added
 						$datastack[$indentlevel+1] =& $datastack[$indentlevel][$datalastkey[$indentlevel]];
 					} else {

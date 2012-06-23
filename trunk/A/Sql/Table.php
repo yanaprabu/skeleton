@@ -1,27 +1,27 @@
 <?php
 /**
  * Table.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Table
- * 
+ *
  * Generate SQL table columns list
- * 
+ *
  * @package A_Sql
  */
-class A_Sql_Columns
+class A_Sql_Table
 {
 
 	protected $table = '';
 	protected $joins = array();
-	
+
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * Casts arguments into columns array
 	 *
 	 * @param mixed $args
@@ -37,21 +37,21 @@ class A_Sql_Columns
 		} else {
 			$this->columns = func_get_args();
 		}
-		
-		foreach ((array)$this->columns as $key => $columns) {
+
+		foreach ((array) $this->columns as $key => $columns) {
 			if (strpos($columns, ',')) { //if user passed string of multiple columns, we need to account those ose
 				unset($this->columns[$key]);
 				$this->columns = array_merge($this->columns, explode(',', $columns));
-			} 
+			}
 		}
-		$this->columns = array_filter(array_map('trim', (array)$this->columns));
+		$this->columns = array_filter(array_map('trim', (array) $this->columns));
 	}
-	
+
 	/**
 	 * Return list of columns
 	 *
 	 * @return array
-	 */	
+	 */
 	public function getTables()
 	{
 		if ($this->joins) {
@@ -60,7 +60,7 @@ class A_Sql_Columns
 			return array($this->table);
 		}
 	}
-	
+
 	public function join()
 	{
 		if (func_num_args()) {
@@ -69,12 +69,12 @@ class A_Sql_Columns
 		}
 		return $this;
 	}
-	
+
 	public function getJoins()
 	{
 		return $this->joins();
 	}
-	
+
 	/**
 	 * Magic string transformation
 	 *
@@ -84,7 +84,7 @@ class A_Sql_Columns
 	{
 		return $this->render();
 	}
-	
+
 	/**
 	 * Return prepared statement
 	 *
@@ -95,7 +95,7 @@ class A_Sql_Columns
 		if (!count($this->columns)) {
 			return '';
 		}
-		return implode(', ', $this->columns);		
+		return implode(', ', $this->columns);
 	}
 
 }

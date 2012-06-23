@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Config_Single
- * 
+ *
  * This is the default connnection configuration class.  This class can be replaceable with a class that provides other connection functionality, like master/slave support.  See A_Db_Config_* for other options.
- * 
+ *
  * @package A_Db
  */
 class A_Db_Config_Single
@@ -21,37 +21,38 @@ class A_Db_Config_Single
 	 * @var array
 	 */
 	protected $_config = array();
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param  array|A_Config $config
 	 * @throws A_Db_Exception
 	 */
 	public function __construct($config=array())
 	{
 		if ($config) {
-			$this->config($config); 
+			$this->config($config);
 		}
 	}
-	
+
 	/**
 	 * Set config array directly. Containers are converted to an array.
-	 * 
+	 *
 	 * @param array $config
 	 */
-	public function config($config) {
+	public function config($config)
+	{
 		if (is_object($config) && method_exists($config, 'toArray')) {
 			$config = $config->toArray();
 		}
 		if (is_array($config)) {
-			$this->_config  = $config; 
-		}			
+			$this->_config  = $config;
+		}
 	}
-	
+
 	/**
 	 * Method called by connect() to get config data
-	 * 
+	 *
 	 * @param string $sql
 	 * @return array
 	 */
@@ -63,10 +64,10 @@ class A_Db_Config_Single
 			return array('name'=>'', 'data'=>array());
 		}
 	}
-	
+
 	/**
 	 * Method called by query(), etc. to get config data
-	 * 
+	 *
 	 * @param string $sql
 	 * @return string
 	 */

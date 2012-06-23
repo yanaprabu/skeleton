@@ -8,9 +8,9 @@
 
 /**
  * A_Controller_App_Wizard
- * 
+ *
  * Handles sequences of controller/actions to be used with A_Controller_App.  Define each step with an action/controller pair (array('controller', 'action')) using setStep().
- * 
+ *
  * @package A_Controller
  */
 class A_Controller_App_Wizard
@@ -25,12 +25,12 @@ class A_Controller_App_Wizard
 			$this->maxStep = $position;
 		}
 	}
-	
+
 	public function addStep($forward)
 	{
 		$this->_steps[++$this->maxStep] = $forward;
 	}
-	
+
 	function isValid()
 	{}
 }

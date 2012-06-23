@@ -1,7 +1,7 @@
 <?php
 /**
  * Locator.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Locator
  *
  * Registry plus Loader
- * 
+ *
  * @package A
  */
 class A_Locator
@@ -21,19 +21,19 @@ class A_Locator
 	const MAPPER = 'Mapper';
 	const REQUEST = 'Request';
 	const RESPONSE = 'Response';
-	
+
 	protected $_obj = array();
 	protected $_reg = array();
 	protected $_dir = array();
 	protected $_dir_regexp = array();
 	protected $_inject = array();
 	protected $_extension = '.php';
-	
+
 	public function __construct($dir=false)
 	{
 		if ($dir) {
 			if (is_array($dir)) {
-				foreach($dir as $ns => $d) {
+				foreach ($dir as $ns => $d) {
 					$this->setDir($d, $ns);
 				}
 			} else {
@@ -45,7 +45,7 @@ class A_Locator
 			$this->_dir['A'] = dirname(dirname(__FILE__)) . '/';
 		}
 	}
-	
+
 	/**
 	 * Set a directory to used for class names that:
 	 *      1. namespace '' the dir from which to load when no match is found
@@ -67,27 +67,27 @@ class A_Locator
 	}
 
 	/**
-	 * Regiser DI information to allow injecting via constructor or setters. 
-	 * Calls to get() will then use this information to inject as specified. 
-	 * 
+	 * Regiser DI information to allow injecting via constructor or setters.
+	 * Calls to get() will then use this information to inject as specified.
+	 *
 	 * Example:
-		$inject = array( 
+		$inject = array(
 			// Do: $foo = new Foo('Boo'); $foo->setBar('Bar'); $foo->setBaz('Baz', 'Jazz');
-			'Foo' => array( 
-				'__construct' => array('Boo'), 
-				'setBar' => array('Bar'), 
+			'Foo' => array(
+				'__construct' => array('Boo'),
+				'setBar' => array('Bar'),
 				'setBaz' => array('Baz', 'Jazz'),
-				), 
+				),
 			// Do: $bar = new Bar($locator->get('Boo')); which in turn will create Foo as specified above
-			'Bar' => array( 
-				'__construct' => array(array('A_Locator'=>'get', 'name'=>'Boo'), 
-				), 
+			'Bar' => array(
+				'__construct' => array(array('A_Locator'=>'get', 'name'=>'Boo'),
+				),
 			// Do: $bar = new Bar($locator->get('', 'Baz')); which in turn will create Foo as specified above
-			'Bar' => array( 
-				'__construct' => array(array('A_Locator'=>'get, 'name'=>'', 'class'=>'Baz'), 
-				), 
-			); 
-	 * 
+			'Bar' => array(
+				'__construct' => array(array('A_Locator'=>'get, 'name'=>'', 'class'=>'Baz'),
+				),
+			);
+	 *
 	 * @param string $dl
 	 * @return $this
 	 */
@@ -103,9 +103,9 @@ class A_Locator
 		}
 		return $this;
 	}
-	
+
 	/**
-	 * Load class using PEAR name to path rules. 
+	 * Load class using PEAR name to path rules.
 	 *
 	 * @param string $class name
 	 * @param string $dir from which to load class
@@ -119,16 +119,16 @@ class A_Locator
 		$file = str_replace(array('_','\\','-'), array('/','/','_'), $class);
 		//allow underscores that are not dir separators using dashes
 		$class = str_replace('-', '_', $class);
-		
+
 		if (class_exists($class, $autoload)) {
 			return true;
 		}
-		
+
 		$pos = strripos($class, '\\');
 		if ($pos !== false) {		// namespace found
 			$class = substr($class, $pos + 1);
 		}
-		
+
 		if ($dir) {
 			$dir = rtrim($dir, '/') . '/';
 		} else {
@@ -162,10 +162,10 @@ class A_Locator
 		}
 		return $result && class_exists($class, $autoload);
 	}
-	
+
 	/**
 	 * Get object from registery by name. If name does not exist and class given then will attempt to load/instatiate
-	 * baseclass is used to lookup DI information, if baseclass is '*' then it will search for info by parent classes/interfaces 
+	 * baseclass is used to lookup DI information, if baseclass is '*' then it will search for info by parent classes/interfaces
 	 *
 	 * @param string $name
 	 * @param string $class
@@ -196,7 +196,7 @@ class A_Locator
 			return $this->newInstance($class, $baseclass, $param);
 		}
 	}
-	
+
 	/**
 	 * load class and create instance
 	 *
@@ -221,7 +221,7 @@ class A_Locator
 			if ($this->loadClass($class)) {
 				if (! $baseclass) {					// no base class then lookup by class
 					$baseclass = $class;
-				} elseif ($baseclass == '*') {		// wildcard the search for class TODO: use regexp here? 
+				} elseif ($baseclass == '*') {		// wildcard the search for class TODO: use regexp here?
 					$baseclass = $class;
 					$classes = array_merge(class_parents($class), class_implements($class));
 					foreach ($classes as $c) {
@@ -237,7 +237,7 @@ class A_Locator
 						foreach ($params as $key => $param) {
 							if (is_array($param) && isset($param['A_Locator'])) {
 								switch ($param['A_Locator']) {
-								// get/create new object by name/class using get() 
+								// get/create new object by name/class using get()
 								case 'get':
 									$inject[$method][$key] = $this->get($param['name'], $param['class']);
 									break;
@@ -274,7 +274,7 @@ class A_Locator
 		}
 		return $obj;
 	}
-	
+
 	public function set($name, $value)
 	{
 		if ($value !== null) {
@@ -284,12 +284,12 @@ class A_Locator
 		}
 		return $this;
 	}
-	
+
 	public function has($name)
 	{
 		return isset($this->_obj[$name]);
 	}
-	
+
 	public function autoload()
 	{
 		return spl_autoload_register(array($this, 'loadClass'));

@@ -1,23 +1,23 @@
 <?php
 /**
  * Session.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_User_Session
- * 
+ *
  * Access to user data from session.
  * normally the $_SESSION contains user data in this format:
  * array(
- * 		'A_User_Session'=>array(			// This is the namespace. This name can be changed with constructor or setNamespace(). 
+ * 		'A_User_Session'=>array(			// This is the namespace. This name can be changed with constructor or setNamespace().
  * 			'auth'=>1,						// Determines in authorized or not. This name can be changed with setAuthField().
  *			'data'=>array('of user data')	// Array of user information (usually from datasource) passed to login()
  *			),
  *		);
- * 
+ *
  * @package A_User
  */
 class A_User_Session
@@ -27,36 +27,37 @@ class A_User_Session
 	protected $_session;
 	protected $_namespace;
 	protected $_authField = 'auth';
-	
+
 	public function __construct($session, $namespace='A_User_Session')
 	{
 		$this->_session = $session;
 		$this->_namespace = $namespace;
 	}
-	
+
 	public function setSession($session)
 	{
 		$this->_session = $session;
 		return $this;
 	}
-	
+
 	public function getSession()
 	{
 		return $this->_session;
 	}
-	
+
 	public function setNamespace($namespace)
 	{
 		$this->_namespace = $namespace;
 		return $this;
 	}
-	
+
 	public function getNamespace()
 	{
 		return $this->_namespace;
 	}
-	
-	public function setAuthField($authField) {
+
+	public function setAuthField($authField)
+	{
 		$this->_authField = $authField;
 		return $this;
 	}
@@ -68,7 +69,7 @@ class A_User_Session
 			$this->_data =& $this->_session->getRef($this->_namespace);
 		}
 	}
-	
+
 	public function isLoggedIn()
 	{
 		$this->start();
@@ -78,14 +79,14 @@ class A_User_Session
 			return false;
 		}
 	}
-	
+
 	public function logout()
 	{
 		if ($this->_session) {
 			$this->_session->set($this->_namespace, null);	// unset all data
 		}
 	}
-	
+
 	public function login($data=array())
 	{
 		if ($this->_namespace) {
@@ -97,10 +98,10 @@ class A_User_Session
 			$this->merge($data);
 		}
 	}
-	
+
 	/**
 	 * Alias for isLoggedIn()
-	 * 
+	 *
 	 * @deprecated
 	 * @see isLoggedIn()
 	 */
@@ -108,10 +109,10 @@ class A_User_Session
 	{
 		return $this->isLoggedIn();
 	}
-	
+
 	/**
 	 * Alias for logout()
-	 * 
+	 *
 	 * @deprecated
 	 * @see logout()
 	 */
@@ -119,10 +120,10 @@ class A_User_Session
 	{
 		$this->logout();
 	}
-	
+
 	/**
 	 * Alias for login()
-	 * 
+	 *
 	 * @deprecated
 	 * @see login()
 	 */
@@ -130,12 +131,11 @@ class A_User_Session
 	{
 		$this->login($data);
 	}
-	
+
 	public function get($key='')
 	{
 		$this->start();
-		if ($this->_namespace && isset($this->_data['data']))
-		{
+		if ($this->_namespace && isset($this->_data['data'])) {
 			if ($key) {
 				if (isset($this->_data['data'][$key])) {
 					return $this->_data['data'][$key];
@@ -145,7 +145,7 @@ class A_User_Session
 			}
 		}
 	}
-	
+
 	public function set($key, $value)
 	{
 		if ($key && $this->_namespace) {
@@ -158,17 +158,17 @@ class A_User_Session
 		}
 		return $this;
 	}
-	
+
 	public function __get($name)
 	{
 		return $this->get($name);
 	}
-	
+
 	public function __set($name, $value)
 	{
 		return $this->set($name, $value);
 	}
-	
+
 	public function __call($name, $args)
 	{
 		$prefix = substr($name, 0, 3);
@@ -184,7 +184,7 @@ class A_User_Session
 				break;
 		}
 	}
-	
+
 	public function merge($data)
 	{
 		if (is_array($data) && $this->_namespace) {
@@ -197,7 +197,7 @@ class A_User_Session
 		}
 		return $this;
 	}
-	
+
 	public function close()
 	{
 		$this->_session->close();

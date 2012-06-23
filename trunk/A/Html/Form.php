@@ -1,16 +1,16 @@
 <?php
 /**
  * Form.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Form
- * 
+ *
  * Generate HTML form with fluent interface for form fields
- * 
+ *
  * @package A_Html
  */
 class A_Html_Form implements A_Renderer
@@ -19,12 +19,12 @@ class A_Html_Form implements A_Renderer
 	protected $_attr = array(
 		'action' => '',
 		'method' => 'post',
-	); 
+	);
 	protected $_elements = array();
 	protected $_helpers = array();
 	protected $_wrapper = null;
 	protected $_wrapperAttr = array();
-	
+
 	/*
 	 * name=string, value=string or renderer
 	 */
@@ -37,7 +37,7 @@ class A_Html_Form implements A_Renderer
 		A_Html_Tag::defaultAttr($attr, array('method'=>'post', 'action'=>'', ));
 		return A_Html_Tag::render('form', $attr, $content);
 	}
-	
+
 	public function partial($attr=array())
 	{
 		$out = '';
@@ -58,23 +58,23 @@ class A_Html_Form implements A_Renderer
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * Get an attrubute of this HTML tag
-	 * 
+	 *
 	 * @param string $key Attribute key
 	 * @return mixed
 	 */
-	public function get($key) {
-		if (isset($this->_attr[$key]))
-		{
+	public function get($key)
+	{
+		if (isset($this->_attr[$key])) {
 			return $this->_attr[$key];
 		}
 	}
-	
+
 	/**
 	 * Set an attribute to this tag
-	 * 
+	 *
 	 * @param string|array $key Either the key, or an associtive array of key/value pairs
 	 * @param mixed $value Value of attribute, not applicable if first argument is array
 	 * @return $this
@@ -90,10 +90,10 @@ class A_Html_Form implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set this form's destination URL
-	 * 
+	 *
 	 * @param string $action
 	 * @return $this
 	 */
@@ -102,10 +102,10 @@ class A_Html_Form implements A_Renderer
 		$this->_attr['action'] = $action;
 		return $this;
 	}
-	
+
 	/**
 	 * Set form method
-	 * 
+	 *
 	 * @param string $method Either POST or GET.  Default POST.
 	 * @return $this
 	 */
@@ -114,10 +114,10 @@ class A_Html_Form implements A_Renderer
 		$this->_attr['method'] = $method;
 		return $this;
 	}
-	
+
 	/**
 	 * set data model that form will get/set values to/from.
-	 * 
+	 *
 	 * @param mixed $model
 	 * @return $this
 	 */
@@ -126,7 +126,7 @@ class A_Html_Form implements A_Renderer
 		$this->model = $model;
 		return $this;
 	}
-	
+
 	public function setWrapper($obj, $attr=array())
 	{
 		if (is_string($obj)) {
@@ -137,18 +137,18 @@ class A_Html_Form implements A_Renderer
 		$this->_wrapperAttr = $attr;
 		return $this;
 	}
-	
+
 	protected function getHelperClass($type)
 	{
 		return isset($this->_helpers[$type]) ? $this->_helpers[$type] : 'A_Html_Form_' . ucfirst($type);
 	}
-	
+
 	protected function setHelperClass($type, $class)
 	{
 		$this->_helpers[$type] = $class;
 		return $this;
 	}
-	
+
 	protected function getHelper($type, $attr=array())
 	{
 		$class = $this->getHelperClass($type);
@@ -157,22 +157,22 @@ class A_Html_Form implements A_Renderer
 			return $element;
 		}
 	}
-	
+
 	public function reset()
 	{
-		$this->_elements = array(); 
+		$this->_elements = array();
 		return $this;
 	}
-	
+
 	public function __call($type, $args)
 	{
 		$params = array();
 		// allow (args), (name), (name, label), (name, args)
-		if(is_array($args[0])) {
+		if (is_array($args[0])) {
 			$params = $args[0];				// all params in array
 		} else {
 			if (isset($args[1])) {
-				if(is_array($args[1])) {
+				if (is_array($args[1])) {
 					$params = $args[1];		// array of params in 2nd arg
 				} else {
 					// fieldset is the exception that does not get a label
@@ -185,7 +185,7 @@ class A_Html_Form implements A_Renderer
 			}
 			$params['name'] = $args[0];
 		}
-		
+
 		if ($type == 'fieldset') {
 			$this->_elements[] = $params['value'];
 		} elseif (isset($params['name']) && $params['name']) {
@@ -209,7 +209,7 @@ class A_Html_Form implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	protected function setValueFromModel($name, $element)
 	{
 		if (isset($this->model)) {
@@ -221,7 +221,7 @@ class A_Html_Form implements A_Renderer
 			}
 		}
 	}
-	
+
 	public function import($data)
 	{
 		if (is_array($data)) {
@@ -229,7 +229,7 @@ class A_Html_Form implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function __toString()
 	{
 		$this->render();

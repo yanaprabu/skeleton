@@ -8,9 +8,9 @@
 
 /**
  * A_Controller_Action
- * 
+ *
  * Basic MVC controller functionality.  Meant to be extended by controller classes to provide them with tools with which to interface with the framework.
- * 
+ *
  * @package A_Controller
  */
 class A_Controller_Action
@@ -20,7 +20,7 @@ class A_Controller_Action
 	const MODULE = 'module';
 	const CONTROLLER = 'controller';
 	const ACTION = 'action';
-	
+
 	protected $locator;
 	protected $request = null;
 	protected $response = null;
@@ -28,10 +28,10 @@ class A_Controller_Action
 	protected $view = null;
 	protected $helpers = array();
 	protected $errorMsg = array();
-	
+
 	/**
 	 * Constructor, called by the front controller.
-	 * 
+	 *
 	 * @param A_Locator $locator
 	 */
 	public function __construct($locator=null)
@@ -42,7 +42,7 @@ class A_Controller_Action
 			$this->response = $locator->get('Response');
 	    }
 	}
-	 
+
 	/**
 	 * Get Response object or gets a parameter
 	 *
@@ -58,24 +58,24 @@ class A_Controller_Action
 		}
 		return $this->request;
 	}
-	
+
 	/**
 	 * Get Response object or set a value
 	 * Creates a new response object if it has not been set
-	 * 
+	 *
 	 * @param string $name
 	 * @param mixed $value
 	 * @return A_Http_Reponse
 	 */
 	public function _response($name=null, $value=null)
 	{
-		if(!$this->response) {
+		if (!$this->response) {
 			$this->response = new A_Http_Response();
 		}
-		if($name) {
+		if ($name) {
 			$this->response->set($name, $value);
 		}
-		
+
 		return $this->response;
 	}
 
@@ -95,7 +95,7 @@ class A_Controller_Action
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Return the result of this function to the Front Controller to forward to another controller
 	 *
@@ -109,10 +109,10 @@ class A_Controller_Action
 	{
 		return array($dir, $class, $method, $args);
 	}
-	
+
 	/**
 	 * Create a A_Controller_Helper_Load obejct and return it for loading functionality
-	 * 
+	 *
 	 * @param string $scope
 	 * @return array
 	 */
@@ -125,7 +125,7 @@ class A_Controller_Action
 		}
 		return $this->load;
 	}
-	
+
 	public function _flash($name=null, $value=null)
 	{
 		if (!isset($this->flash)) {
@@ -140,7 +140,7 @@ class A_Controller_Action
 		}
 		return $this->flash;
 	}
-	
+
 	public function _helper($name, $helper='')
 	{
 		if ($helper) {
@@ -150,7 +150,7 @@ class A_Controller_Action
 			return $this->helpers[$name];
 		}
 	}
-	
+
 	public function _view($name='', $scope='')
 	{
 		if (!$this->view) {
@@ -158,7 +158,7 @@ class A_Controller_Action
 		}
 		return $this->view;
 	}
-	
+
 	public function getErrorMsg($separator="\n")
 	{
 		$errormsg = $this->errorMsg;

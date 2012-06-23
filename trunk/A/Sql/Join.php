@@ -1,16 +1,16 @@
 <?php
 /**
  * Join.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_Join
- * 
+ *
  * Generate SQL joins
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_Join
@@ -21,14 +21,14 @@ class A_Sql_Join
 	protected $table_left = '';
 	protected $on = null;
 	protected $on_expression = null;
-	
+
 	public function __construct($table_right=null, $table_left=null, $type=null)
 	{
 		if ($table_right) {
 			$this->join($table_right, $table_left, $type);
-		} 
+		}
 	}
-	
+
 	public function join($table_right, $table_left, $type=null)
 	{
 		$this->type = ($type !== null) ? strtoupper($type) : 'INNER';
@@ -44,22 +44,22 @@ class A_Sql_Join
 		}
 		return $this;
 	}
-	
+
 	public function on($argument1, $argument2=null, $argument3=null)
 	{
 		if (!$this->table_right) { //no join has been set yet
 			return;
 		}
-		if (!$this->on) {						
+		if (!$this->on) {
 			$this->on = new A_Sql_Logicallist();
 			$this->on->setEscape(false);
-		}		
+		}
 		$this->on_expression = null;
 		if (is_array($argument1)) {
 			if (!count($argument1)) {  //empty array of expressions was passed
 				return;
 			}
-			foreach($argument1 as $column1 => $column2) {
+			foreach ($argument1 as $column1 => $column2) {
 				// check if is a quoted string rather than a column name
 				if (substr($column1, 0, 1) != "'") {
 					$column1 = $this->prependTableAlias($this->table_right, $column1);
@@ -73,7 +73,7 @@ class A_Sql_Join
 		} else {
 			//since we allow different style of parameters we must account for different
 			//amount of parameters
-			if ($argument3 === null && !is_array($argument2)) { 
+			if ($argument3 === null && !is_array($argument2)) {
 				$logic = 'AND';
 			} else {
 				$logic = $argument1;
@@ -90,7 +90,7 @@ class A_Sql_Join
 		}
 		return $this;
 	}
-	
+
 	public function render()
 	{
 		$return = '';
@@ -107,7 +107,7 @@ class A_Sql_Join
 		}
 		return $return;
 	}
-	
+
 	protected function prependTableAlias($alias, $table)
 	{
 		if (!strpos($table, '.')) { //already an alias
@@ -115,7 +115,7 @@ class A_Sql_Join
 		}
 		return $table;
 	}
-	
+
 	public function getTables()
 	{
 		$tables = array();
@@ -127,7 +127,7 @@ class A_Sql_Join
 		}
 		return $tables;
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();

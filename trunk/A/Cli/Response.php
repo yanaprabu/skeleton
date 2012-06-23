@@ -8,9 +8,9 @@
 
 /**
  * A_Cli_Response
- * 
+ *
  * CLI response. Encapsulates character encoding, quoting, escaping, and content.
- * 
+ *
  * @package  A_Cli
  */
 class A_Cli_Response extends A_Cli_View
@@ -20,5 +20,5 @@ class A_Cli_Response extends A_Cli_View
     {
     	echo $this->render();
     }
-    
+
 }

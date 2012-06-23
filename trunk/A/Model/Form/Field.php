@@ -1,7 +1,7 @@
 <?php
 /**
  * Field.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Model_Form_Field
  *
  * An extension of A_Model_Field.  It's purpose is to act as a field object for a A_Model_Form.  This class provides the ability to attach a renderer to it.
- * 
+ *
  * @package A_Model
  */
 class A_Model_Form_Field extends A_Model_Field
@@ -20,20 +20,20 @@ class A_Model_Form_Field extends A_Model_Field
 	// from Form Controller
 	public $type = '';
 	public $addtype = '';
-	
+
 	public function setType($type, $addtype='')
 	{
 		$this->type = $type;
 		$this->addtype = $addtype;
 		return $this;
 	}
-	
+
 	public function setRenderer($renderer)
 	{
 		$this->renderer = $renderer;
 		return $this;
 	}
-	
+
 	public function render()
 	{
 		// if no value and addtype set then use it
@@ -64,15 +64,15 @@ class A_Model_Form_Field extends A_Model_Field
 			$this->renderer->import($this->type);
 			return $this->renderer->render();
 		}
-		
+
 		// restore type
 		if ($savetype) {
 			$this->type = $savetype;
 		}
-		
+
 		return $this->value;
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();

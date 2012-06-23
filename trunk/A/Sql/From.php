@@ -1,16 +1,16 @@
 <?php
 /**
  * From.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Sql_From
- * 
+ *
  * Generate SQL from tables/joins list
- * 
+ *
  * @package A_Sql
  */
 class A_Sql_From
@@ -19,10 +19,10 @@ class A_Sql_From
 	protected $table = '';
 	protected $joins = array();
 	protected $current_join = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Casts arguments into tables array
 	 *
 	 * @param mixed $args
@@ -31,20 +31,20 @@ class A_Sql_From
 	{
 		$this->table($args);
 	}
-	
+
 	/**
 	 * Set main table
-	 * 
+	 *
 	 * @param array $table
 	 * @return array
-	 */	
+	 */
 	public function table($table='')
 	{
 		if ($table) {
 			if (is_array($table)) {
 				$this->table = array_shift($table);
 				if (count($table) > 0) {
-					foreach ($table as $join_table)	{
+					foreach ($table as $join_table) {
 						$this->join($join_table, $this->table, 'INNER');
 					}
 				}
@@ -54,12 +54,12 @@ class A_Sql_From
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Return list of tables
-	 * 
+	 *
 	 * @return array
-	 */	
+	 */
 	public function getTables()
 	{
 		$tables = array();
@@ -75,10 +75,10 @@ class A_Sql_From
 		}
 		return array_keys($tables);
 	}
-	
+
 	/**
 	 * Create a new join object with provided parameters
-	 * 
+	 *
 	 * @param array $table_right
 	 * @param array $table_left
 	 * @param string $type
@@ -106,10 +106,10 @@ class A_Sql_From
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Proxy call to current join object
-	 * 
+	 *
 	 * @param string $argument1
 	 * @param string $argument2
 	 * @param string $argument3
@@ -122,17 +122,17 @@ class A_Sql_From
 		}
 		return $this;
 	}
-	
+
 	public function using()
 	{
 		return $this;
 	}
-	
+
 	public function getJoins()
 	{
 		return $this->joins;
 	}
-	
+
 	/**
 	 * Automagically render when used in a string context
 	 *
@@ -142,7 +142,7 @@ class A_Sql_From
 	{
 		return $this->render();
 	}
-	
+
 	/**
 	 * Return prepared statement
 	 *
@@ -157,7 +157,7 @@ class A_Sql_From
 		foreach ($this->joins as $join) {
 			$this->sql .= $join->render();
 		}
-		return $this->sql;		
+		return $this->sql;
 	}
 
 }

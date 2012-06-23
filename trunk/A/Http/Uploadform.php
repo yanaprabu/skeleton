@@ -1,7 +1,7 @@
 <?php
 /**
  * Uploadform.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Http_Uploadform
  *
  * Support for file upload forms
- * 
+ *
  * @package A_Http
  */
 class A_Http_Uploadform
@@ -18,26 +18,27 @@ class A_Http_Uploadform
 
 	protected $upload;
 	protected $hidden = array();
-	
+
 	public function __construct($upload)
 	{
 		$this->upload = $upload;
 	}
-	
+
 	public function addHidden($name, $value)
 	{
 		$this->hidden[$name] = $value;
 	}
-	
+
 	public function addJavascript($code='')
 	{
 		return "<script lanugage=\"javascript\"><!--
-public function a_http_uploadform_check(obj, regexpstr) {
+public function a_http_uploadform_check(obj, regexpstr)
+{
 	$code
 }
 // --></script>";
 	}
-	
+
 	public function formOpen($action='', $method='', $attr=array())
 	{
 		if ($method == '') {
@@ -55,7 +56,7 @@ public function a_http_uploadform_check(obj, regexpstr) {
 		}
 		return $str;
 	}
-	
+
 	public function formSelectPath()
 	{
 		$str = '';
@@ -67,10 +68,10 @@ public function a_http_uploadform_check(obj, regexpstr) {
 			}
 			$str .= '</select>';
 		}
-		
+
 		return $str;
 	}
-	
+
 	public function formInput($size=0, $max_file_size=null, $filename_regexp='')
 	{
 		if ($size == 0) {
@@ -80,7 +81,7 @@ public function a_http_uploadform_check(obj, regexpstr) {
 			$upload_max_filesize = ini_get('upload_max_filesize');
 			$pot = strtolower(substr($upload_max_filesize, -1, 1));
 			$max_file_size = intval($upload_max_filesize);
-			switch($pot) {
+			switch ($pot) {
 				case 'g':
 					$max_file_size *= 1073741824;
 					break;
@@ -99,7 +100,7 @@ public function a_http_uploadform_check(obj, regexpstr) {
 		}
 		return "<input type=\"file\" name=\"{$this->upload->file_param}[]\" size=\"$size\"$max_file_size$filename_regexp/>";
 	}
-	
+
 	public function formSubmit($value='')
 	{
 		if ($value == '') {
@@ -107,12 +108,12 @@ public function a_http_uploadform_check(obj, regexpstr) {
 		}
 		return "<input type=\"submit\" name=\"{$this->upload->submit_param}\" value=\"$value\"/>";
 	}
-	
+
 	public function formClose()
 	{
 		return "</form>";
 	}
-	
+
 	public function form($action, $value='', $method='', $size=0)
 	{
 		$str = $this->formOpen($action, $method) . "\n";

@@ -8,9 +8,9 @@
 
 /**
  * A_Controller_Front
- * 
+ *
  * This is an implementation of the Front Controller pattern. It is one of the buidling blocks of the MVC structure in Skeleton.t
- * 
+ *
  * @package  A_Controller
  */
 class A_Controller_Front
@@ -20,67 +20,67 @@ class A_Controller_Front
 	const NO_MAPPER = 'Mapper object not available';
 	const NO_CLASS = 'Requested class not loaded';
 	const NO_METHOD = 'Requested method not found';
-	
+
 	/**
 	 * The front controller mapper object
 	 * @var A_Mapper
 	 */
 	protected $mapper = null;
-	
+
 	/**
 	 * array with the dir/class/method/args for when dispatch error occurs
 	 * @var array
 	 */
 	protected $errorRoute;
-	
+
 	/**
 	 * array with the dir/class/method/args for when dispatch no route given
 	 * @var array
 	 */
 	protected $defaultRoute;
-	
+
 	/**
 	 * name of method for Actions with dipatcher
 	 * @var string
 	 */
 	protected $dispatchMethod = '_dispatch';
-	
+
 	/**
 	 * Pre-dispatch filters
 	 * @var array
 	 */
 	protected $preFilters = null;
-	
+
 	/**
 	 * Post-dispatch filters
 	 * @var array
 	 */
 	protected $postFilters = null;
-	
+
 	/**
 	 * The front controller locator object
 	 * @var A_Locator
 	 */
 	protected $locator = null;
-	
+
 	/**
 	 * Stack of dispatched routes
 	 * @var array
 	 */
-	protected $routeHistory = array();	
-	
+	protected $routeHistory = array();
+
 	/**
 	 * Stack of dispatched controller
 	 * @var array
 	 */
-	protected $controllerHistory = array();	
-	
+	protected $controllerHistory = array();
+
 	/**
 	 * Error indicator
 	 * @var int
 	 */
 	protected $errorMsg = array();
-	
+
 	/**
 	 * Class constructor
 	 *
@@ -94,7 +94,7 @@ class A_Controller_Front
 		$this->errorRoute = $error_route;
 		$this->defaultRoute = $default_route;
 	}
-	
+
 	/**
 	 * Generic configuration method
 	 *
@@ -106,10 +106,10 @@ class A_Controller_Front
    		$this->config = $config;
    		return $this;
 	}
-	
+
 	/**
 	 * Get mapper object, create if does not exist
-	 * 
+	 *
 	 * @return A_Controller_Mapper
 	 */
 	public function getMapper()
@@ -120,10 +120,10 @@ class A_Controller_Front
 		}
 		return $this->mapper;
 	}
-	
+
 	/**
 	 * Set mapper object
-	 * 
+	 *
 	 * @param A_Controller_Mapper $mapper
 	 * @return $this
 	 */
@@ -132,7 +132,7 @@ class A_Controller_Front
 		return $this->mapper = $mapper;
 		return $this;
 	}
-	
+
 	/**
 	 * Add a pre-dispatch filter
 	 *
@@ -142,7 +142,7 @@ class A_Controller_Front
 	{
    		$this->preFilters[] = $filter;
 	}
-	
+
 	/**
 	 * Add a post-dispatch filter
 	 *
@@ -152,17 +152,17 @@ class A_Controller_Front
 	{
    		$this->postFilters[] = $filter;
 	}
-	
+
 	/**
 	 * Get stack of dispatched routes
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getRoutes()
 	{
 		return $this->routeHistory;
 	}
-	
+
 	/**
 	 * Start dispatch process
 	 *
@@ -171,7 +171,7 @@ class A_Controller_Front
 	 */
 	public function run($locator = null)
 	{
-		if(! $locator) {
+		if (! $locator) {
 			$locator = new A_Locator();
 		}
 		if (! $locator->has('Request')) {
@@ -181,14 +181,14 @@ class A_Controller_Front
 			// make sure that Response has Locator set so it can use loading and DI
 			$locator->get('Response')->setLocator($locator);
 		}
-		
+
 		$mapper = $this->getMapper();
-		$locator->set('Mapper', $mapper); // set mapper in registry for mvc loader to use 
+		$locator->set('Mapper', $mapper); // set mapper in registry for mvc loader to use
 		$this->locator = $locator;
-		
+
 		$route = $mapper->getRoute($locator->get('Request'));
 		$error_route = $this->errorRoute;
-		
+
 		$n = -1;
 		while ($route) {
 			$error = self::NO_ERROR;
@@ -204,7 +204,7 @@ class A_Controller_Front
 				$class = str_replace('-', '_', $class);
 				$controller = new $class($locator);
 				$this->controllerHistory[] = $controller;	// save history of controller
-				
+
 				if ($this->preFilters) {
 					// run pre filtes and check if forward
 					$change_route = $this->runFilters($controller, $this->preFilters);
@@ -214,7 +214,7 @@ class A_Controller_Front
 						continue;
 					}
 				}
-				
+
 				if (method_exists($controller, $this->dispatchMethod)) {
 					$route = $controller->{$this->dispatchMethod}($locator, $method);
 				} else {
@@ -229,7 +229,7 @@ class A_Controller_Front
 						}
 					}
 				}
-				
+
 				if ($this->postFilters) {
 					$change_route = $this->runFilters($controller, $this->postFilters);
 					if ($change_route !== null) {
@@ -240,17 +240,17 @@ class A_Controller_Front
 			} elseif ($error_route) {
 				$route = $error_route;
 				$error_route = null;
-				$error = self::NO_CLASS . ": $class. Using error route: " . (is_array($route) ? implode('/', $route) : $route) . '.';	// cannot load class and not error route 
+				$error = self::NO_CLASS . ": $class. Using error route: " . (is_array($route) ? implode('/', $route) : $route) . '.';	// cannot load class and not error route
 			} elseif ($n == 0) {
-				$error = self::NO_CLASS . ": $class.";			// cannot load class and not error route 
+				$error = self::NO_CLASS . ": $class.";			// cannot load class and not error route
 			}
 			if ($error) {
 				$this->errorMsg[] = $error;
-			} 
+			}
 		}
 		return $error;
 	}
-	
+
 	/**
 	 * Invoke filters
 	 *
@@ -263,7 +263,7 @@ class A_Controller_Front
 		foreach ($filters as $filter) {
 			$change_route = null;
 			switch (gettype($filter)) {
-				case 'object': 
+				case 'object':
 					if (method_exists($filter, 'run')) {
 						// pass controller to DI object to modify
 						$change_route = $filter->run($controller);
@@ -271,7 +271,7 @@ class A_Controller_Front
 					break;
 				case 'string':
 					if (method_exists($controller, $filter)) {
-						// pre-execute method if it exists 
+						// pre-execute method if it exists
 						$change_route = $controller->{$filter}($this->locator);
 					}
 					break;
@@ -285,7 +285,7 @@ class A_Controller_Front
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if an error has been raised during dispatching
 	 *
@@ -293,12 +293,12 @@ class A_Controller_Front
 	 */
 	public function isError()
 	{
-		return $this->errorMsg != array(); 
+		return $this->errorMsg != array();
 	}
-	
+
 	/**
 	 * get error messages as array or if sepearator provided as concatenated string
-	 * 
+	 *
 	 * @param string $seperator
 	 * @return array|string
 	 */

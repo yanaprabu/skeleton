@@ -7,28 +7,28 @@
  */
 
 /**
- * A_Controller_Form_Fieldt
- * 
+ * A_Controller_Form_Field2
+ *
  * @package A_Controller
  */
-class A_Controller_Form_Field
+class A_Controller_Form_Field2
 {
 
 	protected $func_param = null;
 	protected $db = null;
-	
+
 	public function setDB($db)
 	{
 		$this->db = $db;
 		return $this;
 	}
-	
+
 	public function setFunctionParam($func_param)
 	{
 		$this->func_param = $func_param;
 		return $this;
 	}
-	
+
 	public function toHTML($attr, $value='')
 	{
 		$methods = array(
@@ -59,7 +59,7 @@ class A_Controller_Form_Field
 			return A_Html_Form_Field::toHTML($attr, $value);
 		}
 	}
-	
+
 	/**
 	 * Indexes of $attr:
 	 * 'type' = 'print_query' prints the query values
@@ -70,7 +70,7 @@ class A_Controller_Form_Field
 	 * 'value_field' specifices the column for values
 	 * 'label_fields' specifices the column for labels. Multi column|column|column concatenated
 	 * 'separator' for concatenating column values
-	 * 
+	 *
 	 * @param array $attr
 	 * @return string
 	 */
@@ -120,7 +120,7 @@ class A_Controller_Form_Field
 					}
 				}
 			}
-			
+
 			// if data not found in the cache then query database
 			if (!$val) {
 				$res = $this->db->query($sql);
@@ -148,7 +148,7 @@ class A_Controller_Form_Field
 					$i = 0;
 					// multiple fields can be combined for the text label
 					$textfields = explode('|', $attr['label_fields']);
-					while ($option = $res->fetchRow()){
+					while ($option = $res->fetchRow()) {
 						$val[$i] = $option[$attr['value_field']];
 						$txt[$i] = '';
 						foreach ($textfields as $tf) {
@@ -163,7 +163,7 @@ class A_Controller_Form_Field
 				$query['txt'] = $str;
 				$this->query_cache[] = $query;
 			}
-			
+
 			// assign to form array so it works like the form types below
 			if ($attr['type'] == 'print') {
 				$attr['value'] = $query['val'];
@@ -175,33 +175,33 @@ class A_Controller_Form_Field
 			}
 		}
 	}
-	
+
 	public function toFunction($attr)
 	{
 		$str .= call_user_func($attr['function'], $this->func_param);
 	}
-	
+
 	public function toPrint($attr)
 	{
 		return $attr['value'];
 	}
-	
+
 	public function toPrintHidden($attr)
 	{
 		return $attr['value'] . A_Html_Form_Field::toHidden($attr);
 	}
-	
+
 	public function toSprintf($attr)
 	{
 		return sprintf($attr['format'], $attr['value']);
 	}
-	
+
 	public function toLink($attr)
 	{
 		return $str = "<a href=\"{$attr['url']}?{$attr['param']}={$attr['value']}\">{$attr['label']}</a>";
 		$checksave = true;
 	}
-	
+
 	public function toTranslate($attr)
 	{}
 

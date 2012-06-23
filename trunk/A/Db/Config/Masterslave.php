@@ -1,7 +1,7 @@
 <?php
 /**
  * Masterslave.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Christopher Thompson
@@ -9,7 +9,7 @@
 
 /**
  * A_Db_Config_Masterslave
- * 
+ *
  * @package A_Db
  */
 class A_Db_Config_Masterslave
@@ -20,13 +20,13 @@ class A_Db_Config_Masterslave
 	 * @var array
 	 */
 	protected $_config = array();
-	
+
 	/**
 	 * convert connnect keys based on this table
 	 * @var array
 	 */
 	protected $_sql_to_name = array(
-		''=>'slave', 
+		''=>'slave',
 		'INSERT'=>'master',
 		'UPDATE'=>'master',
 		'DELETE'=>'master',
@@ -35,38 +35,38 @@ class A_Db_Config_Masterslave
 		'COMMIT'=>'master',
 		'ROLLBACK'=>'master',
 	);
-	protected $_choose_config_func;									
-	
+	protected $_choose_config_func;
+
 	/**
 	 * Database connection
 	 * @var object|resource|null
 	 */
 	protected $_connection = array();
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param  array|A_Config $config
 	 * @throws A_Db_Exception
 	 */
 	public function __construct($config=array())
 	{
 		if ($config) {
-			$this->config($config); 
+			$this->config($config);
 		}
 		$this->_choose_config_func = array($this, 'chooseRand');
 	}
-	
+
 	public function config($config)
 	{
 		if (is_object($config) && method_exists($config, 'toArray')) {
 			$config = $config->toArray();
 		}
 		if (is_array($config)) {
-			$this->_config  = $config; 
-		}			
+			$this->_config  = $config;
+		}
 	}
-	
+
 	public function getConfig($name='')
 	{
 		if ($name == '') {
@@ -78,7 +78,7 @@ class A_Db_Config_Masterslave
 			return array('name'=>'', 'data'=>array());
 		}
 	}
-	
+
 	public function getConfigName($sql='')
 	{
 		$name = $this->_sql_to_name[''];							// get default connection name
@@ -96,7 +96,7 @@ class A_Db_Config_Masterslave
 		}
 		return $name;
 	}
-	
+
 	public function chooseConfigData($name='', $number=null)
 	{
 		if ($name) {
@@ -107,12 +107,12 @@ class A_Db_Config_Masterslave
 			}
 		}
 	}
-	
+
 	public function setChooseConfigFunc($func)
 	{
 		$this->_choose_config_func = $func;
 	}
-	
+
 	public function chooseRand($config)
 	{
 		if (is_array($config)) {
@@ -123,7 +123,7 @@ class A_Db_Config_Masterslave
 		}
 		return array();
 	}
-	
+
 	public function chooseNext($config)
 	{
 		if (is_array($config)) {
@@ -131,7 +131,7 @@ class A_Db_Config_Masterslave
 		}
 		return array();
 	}
-	
+
 	public function setSqlMapping($sql, $name)
 	{}
 

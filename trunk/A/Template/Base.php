@@ -1,16 +1,16 @@
 <?php
 /**
  * Base.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Base
- * 
+ *
  * Base Template class with template and get/set/has functionality
- * 
+ *
  * @package A_Template
  */
 abstract class A_Template_Base
@@ -22,7 +22,7 @@ abstract class A_Template_Base
 	protected $escape_quote_style = ENT_QUOTES;
 	protected $escape_output = false;
 	protected $character_set = 'UTF-8';
-	
+
 	public function __construct($filename='', $data=array())
 	{
 		$this->filename = $filename;
@@ -30,50 +30,50 @@ abstract class A_Template_Base
 			$this->import($data);
 		}
 	}
-	
+
 //	abstract public function render();
-	
+
 	public function setTemplate($template)
 	{
 		$this->template = $template;
 		return $this;
 	}
-	
+
 	public function setFilename($filename)
 	{
 		$this->filename = $filename;
 		return $this;
 	}
-	
+
 	public function clear()
 	{
 		$this->data = array();
 		return $this;
 	}
-	
+
 	public function setCharacterSet($character_set)
 	{
 		$this->character_set = $character_set;
 		return $this;
 	}
-	
+
 	public function setQuoteStyle($escape_quote_style)
 	{
 		$this->escape_quote_style = $escape_quote_style;
 		return $this;
 	}
-	
+
 	public function setEscape($escape_output)
 	{
 		$this->escape_output = $escape_output;
 		return $this;
 	}
-	
+
 	public function escape($content, $escape_quote_style=null)
 	{
 		return htmlspecialchars($content, $escape_quote_style == null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
-	
+
 	public function renderArray($array, $block='')
 	{
 	   	$str = '';
@@ -92,12 +92,12 @@ abstract class A_Template_Base
 	   	}
 	   	return $str;
 	}
-	
+
 	public function get($name)
 	{
 		return (isset($this->data[$name]) ? $this->data[$name] : null);
 	}
-	
+
 	public function set($name, $value, $default=null)
 	{
 		if ($value !== null) {
@@ -109,23 +109,23 @@ abstract class A_Template_Base
 		}
 		return $this;
 	}
-	
+
 	public function import($data)
 	{
 		$this->data = array_merge($this->data, $data);
 		return $this;
 	}
-	
+
 	public function has($name)
 	{
 		return isset($this->data[$name]);
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();
 	}
-	
+
 	protected function renderedData()
 	{
 		$data = array();

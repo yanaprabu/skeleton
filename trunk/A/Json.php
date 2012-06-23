@@ -1,7 +1,7 @@
 <?php
 /**
  * Json.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Json
  *
  * Json encoding and decoding
- * 
+ *
  * @package A
  */
 class A_Json
@@ -27,19 +27,19 @@ class A_Json
 			$this->decoded = $mixed;	// var is PHP var
 		}
 	}
-	
+
 	public function encode($mixed)
 	{
 		$this->encoded = json_encode(isset($mixed) ? $mixed : $this->decoded);
 		return $this->encoded;
 	}
-	
+
 	public function decode($mixed=null, $array=false)
 	{
 		$this->decoded = json_decode(isset($mixed) ? $mixed : $this->encoded, $array);
 		return $this->decoded;
 	}
-	
+
 	public function decodeInto($into, $mixed=null, $intersect=true)
 	{
 		$array = json_decode(isset($mixed) ? $mixed : $this->encoded, true);

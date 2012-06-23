@@ -1,7 +1,7 @@
 <?php
 /**
  * Model.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Model
  *
  * Base class for Models with filtering and validation
- * 
+ *
  * @package A
  */
 class A_Model
@@ -25,18 +25,18 @@ class A_Model
 	protected $fieldClass = 'A_Model_Field';
 	protected $errorMsg = array();
 	protected $error = false;
-	
+
 	public function addField($objects)
 	{
-        if(is_array($objects)) {
-            foreach($objects as $object) {
+        if (is_array($objects)) {
+            foreach ($objects as $object) {
                 $this->fields[$object->name] = $object;
             }
         } else {
             $this->fields[$objects->name] = $objects;
-        }   
+        }
     }
-	
+
 	public function addFilter($filter, $fields=array())
 	{
 		if ($fields) {
@@ -63,7 +63,7 @@ class A_Model
 		}
 		return $this;
 	}
-	
+
 	public function addRule($rule, $fields=array())
 	{
 		if ($fields) {
@@ -98,19 +98,19 @@ class A_Model
 		}
 		return $this;
 	}
-	
+
 	public function excludeRules($rules=array())
 	{
 		$this->excludeRules = $rules;
 		return $this;
 	}
-	
+
 	public function includeRules($rules=array())
 	{
 		$this->includeRules = $rules;
 		return $this;
 	}
-	
+
 	public function newField($name)
 	{
 		if (!isset($this->fields[$name])) {
@@ -118,29 +118,29 @@ class A_Model
 		}
 		return $this->fields[$name];
 	}
-	
+
 	public function getField($name, $new=true)
 	{
 		if (isset($this->fields[$name])) {
 			return $this->fields[$name];
 		}
 	}
-	
+
 	function getRules()
 	{
 		return $this->rules;
 	}
-	
+
 	function getFilters()
 	{
 		return $this->filters;
 	}
-	
+
 	function getFields()
 	{
 		return $this->fields;
 	}
-	
+
 	public function set($name, $value, $default=null)
 	{
 		if (isset($this->fields[$name])) {
@@ -152,19 +152,19 @@ class A_Model
 		}
 		return $this;
 	}
-	
+
 	public function get($name)
 	{
 		if (isset($this->fields[$name]->value)) {
 			return $this->fields[$name]->value;
 		}
 	}
-	
+
 	public function has($name)
 	{
 		return isset($this->fields[$name]);
 	}
-	
+
 	public function getFieldNames()
 	{
 		$data = array();
@@ -173,7 +173,7 @@ class A_Model
 		}
 		return $data;
 	}
-	
+
 	public function getSourceNames()
 	{
 		$data = array();
@@ -182,7 +182,7 @@ class A_Model
 		}
 		return $data;
 	}
-	
+
 	public function getFieldVarArray($var)
 	{
 		if ($var) {
@@ -193,12 +193,12 @@ class A_Model
 			return $data;
 		}
 	}
-	
+
 	public function getValues()
 	{
 		return $this->getFieldVarArray('value');
 	}
-	
+
 	public function getSaveValues()
 	{
 		$data = array();
@@ -209,17 +209,17 @@ class A_Model
 		}
 		return $data;
 	}
-	
+
 	public function isValid($datasource=null)
 	{
 		$filterchain = new A_Filter_Set();
 		$validator = new A_Rule_Set();
 		$validator->excludeRules($this->excludeRules);
 		$validator->includeRules($this->includeRules);
-		
+
 		$this->error = false;
 		$this->errorMsg = array();
-		
+
 		if ($this->includeRules) {
 			$rule_names = $this->includeRules;
 		} else {
@@ -228,7 +228,7 @@ class A_Model
 		if ($this->excludeRules) {
 			$rule_names = array_diff($rule_names, $this->excludeRules);
 		}
-		
+
 		$field_names = array_keys($this->fields);
 		if ($field_names) {
 			if (!$datasource) {
@@ -242,54 +242,54 @@ class A_Model
 			}
 			// run global filters on all fields
 			if ($this->filters) {
-				foreach ($this->fields as $field) {   	
+				foreach ($this->fields as $field) {
 					$field->value = $filterchain->doFilter($field->value, $this->filters);
 				}
 			}
 			// run field filters
-			foreach ($this->fields as $field) {   	
+			foreach ($this->fields as $field) {
 				if (isset($field->filters)) {
 					$field->value = $filterchain->doFilter($field->value, $field->filters);
 				}
 			}
-			
+
 			// run rules for each field
 			foreach ($this->fields as $name => $field) {
 				// clear errors
-				$field->setErrorMsg();   	
+				$field->setErrorMsg();
 				// check if there are rules and if included
 				if (isset($field->rules) && in_array($name, $rule_names)) {
-					foreach($field->rules as $rule) {
+					foreach ($field->rules as $rule) {
 						// check if set to override rule's optional setting
 						if ($field->optional !== null) {
 							$rule->setOptional($field->optional);
-						} 	
+						}
 						$validator->addRule($rule);
 					}
 				}
 			}
-			
+
 			// check if there are rules and run those as well
 			if ($this->rules) {
-				foreach ($this->rules as $name => $rule) { 
+				foreach ($this->rules as $name => $rule) {
 					$validator->addRule($rule);
 				}
-			}			
-			
+			}
+
 			// if the validator is not valid get its errors
-			if(!$validator->isValid($datasource)){
-				$this->error = true; 
-				$errors = $validator->getErrorMsg(); 
-				foreach($errors as $fieldname => $errorarray) { 	
+			if (!$validator->isValid($datasource)) {
+				$this->error = true;
+				$errors = $validator->getErrorMsg();
+				foreach ($errors as $fieldname => $errorarray) {
 					$this->setErrorMsg($fieldname, $errorarray);
 				}
 			}
-		
+
 		}
-		
+
 		return !$this->error;
 	}
-	
+
 	public function save()
 	{
 		if (isset($this->datasource) && method_exists($this->datasource, 'save')) {
@@ -297,7 +297,7 @@ class A_Model
 			// error messages and return value?
 		}
 	}
-	
+
 	protected function _load($scope=null)
 	{
 		if (isset($this->load)) {
@@ -307,12 +307,12 @@ class A_Model
 		}
 		return $this->load;
 	}
-	
+
 	public function isError()
 	{
 		return $this->error;
 	}
-	
+
 	public function getErrorMsg($separator=null)
 	{
 		$data = $this->errorMsg;
@@ -329,7 +329,7 @@ class A_Model
 		}
 		return $separator === null ? $data : implode($separator, $data);
 	}
-	
+
 	public function setErrorMsg($name, $errorMsg)
 	{
 		if (isset($this->fields[$name])) {
@@ -338,10 +338,10 @@ class A_Model
 			$this->errorMsg[$name] = $errorMsg;
 		}
 	}
-	
+
 	public function addErrorMsg($name, $errorMsg)
 	{
-		if(isset($this->fields[$name])){
+		if (isset($this->fields[$name])) {
 			$this->fields[$name]->addErrorMsg($errorMsg);
 		} else {
 			// initialize so set for concat below

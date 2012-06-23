@@ -1,16 +1,16 @@
 <?php
 /**
  * Doc.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Html_Doc
- * 
+ *
  * Generate HTML document
- * 
+ *
  * @package A_Html
  */
 class A_Html_Doc
@@ -31,10 +31,10 @@ class A_Html_Doc
 	);
 	protected $_head = null;
 	protected $_body = '';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param array $config
 	 */
 	public function __construct($config=array())
@@ -43,26 +43,26 @@ class A_Html_Doc
 			$this->config($config);
 		}
 	}
-	
+
 	public function config($config)
 	{
 		$this->_config = array_merge($this->_config, $config);
 		return $this;
 	}
-	
+
 	public function setDoctype($doctype=null)
 	{
 		$this->_config['doctype'] = $doctype;
 		return $this;
 	}
-	
+
 	public function renderDoctype($doctype=null)
 	{
 		$doctype = $doctype === null ? $this->_config['doctype'] : $doctype;
 		$renderer = new A_Html_Doctype($doctype);
 		return $renderer->render();
 	}
-	
+
 	public function set($name, $value)
 	{
 		if (isset($this->_config[$name])) {
@@ -76,7 +76,7 @@ class A_Html_Doc
 		}
 		return $this;
 	}
-	
+
 	public function head()
 	{
 		if (!$this->_head) {
@@ -84,7 +84,7 @@ class A_Html_Doc
 		}
 		return $this->_head;
 	}
-	
+
 	public function __call($name, $args)
 	{
 		if (method_exists($this->head(), $name)) {
@@ -92,57 +92,59 @@ class A_Html_Doc
 		}
 		trigger_error("Method $name not found in class A_Html_Head called by A_Html_Doc. ", E_USER_ERROR);
 	}
-	
+
 	public function setBodyAttr($attr, $value)
 	{
 		$this->_config['body_attrs'][$attr] = $value;
 		return $this;
 	}
-	
+
 	/**
 	 * Remove an attribute assigned to the body element with setBodyAttr()
-	 * 
+	 *
 	 * @param mixed $attr The attribute to remove
 	 * @return $this
 	 */
-	public function removeBodyAttr($attr) {
+	public function removeBodyAttr($attr)
+	{
 		if (isset($this->_config['body_attrs'][$attr])) {
 			unset($this->_config['body_attrs'][$attr]);
 		}
 		return $this;
 	}
-	
+
 	public function setBody($body)
 	{
 		return $this->_body = $body;
 	}
-	
+
 	/**
 	 * Compatability with Response/View
 	 */
-	public function setContent($body) {
+	public function setContent($body)
+	{
 		return $this->_body = $body;
 	}
-	
+
 	public function setRenderer($body)
 	{
 		return $this->_body = $body;
 	}
-	
+
 	/*
 	 * Rendering methods
 	 */
-	
+
 	public function renderTitle()
 	{
 		return $this->_config['title'] ? "<title>{$this->_config['title']}</title>\n" : '';
 	}
-	
+
 	public function renderBase()
 	{
 		return $this->_config['base'] ? "<base href=\"{$this->_config['base']}\"/>\n" : '';
 	}
-	
+
 	public function renderBodyAttrs()
 	{
 		$str = '';
@@ -151,7 +153,7 @@ class A_Html_Doc
 		}
 		return $str;
 	}
-	
+
 	public function renderBody()
 	{
 		if (is_object($this->_body) && method_exists($this->_body, 'render')) {
@@ -160,7 +162,7 @@ class A_Html_Doc
 			return $this->_body;
 		}
 	}
-	
+
 	public function render($attr=array(), $content=null)
 	{
 		$html = $this->renderDoctype();
@@ -173,7 +175,7 @@ class A_Html_Doc
 		$html .= "</body>\n</html>\n";
 		return $html;
 	}
-	
+
 	public function __toString()
 	{
 		$this->render();

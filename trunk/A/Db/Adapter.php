@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Adapter
- * 
+ *
  * Abstract class for database wrappers.  Meant to be extended, and abstract methods implemented for database-specific behavior.
- * 
+ *
  * @package A_Db
  */
 abstract class A_Db_Adapter
@@ -18,14 +18,14 @@ abstract class A_Db_Adapter
 
 	protected $_connection = null;
 	protected $_config = array();
-	
+
 	/**
 	 * convert connnect keys based on this table
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_config_alias = array(
-		'dbname' => 'database', 
+		'dbname' => 'database',
 		'hostname' => 'host',
 		'hostspec' => 'host',
 		'user' => 'username'
@@ -39,19 +39,19 @@ abstract class A_Db_Adapter
 	protected $_error = 0;
 	protected $_errorMsg = '';
 	protected $_currentDatabase = null;
-	
+
 	/**
 	 * Constructor.
 	 *
 	 * Must be passed a configuration array (or implementation of ArrayAccess).  The configuration must contain key/value pairs with the information necessary to connect to the database.  These options are common to most adapters:
-	 * 
+	 *
 	 * database	=> (string) The name of the database to user
 	 * username	=> (string) Connect to the database as this username.
 	 * password	=> (string) Password associated with the username.
 	 * host		=> (string) What host to connect to, defaults to localhost
-	 * 
+	 *
 	 * You can also pass a 'connection' key and it will be used as the database connection.
-	 * 
+	 *
 	 * @param  array|ArrayAccess|object|resource $connection
 	 * @throws A_Db_Exception
 	 * @see ArrayAccess
@@ -65,10 +65,10 @@ abstract class A_Db_Adapter
 			$this->config($config);
 		}
 	}
-	
+
 	/**
 	 * Configure the internal settings.  Will merge and overwrite existing settings.  See the constructor for valid configuration keys (sans 'connection').
-	 * 
+	 *
 	 * @param array|ArrayAccess $config
 	 * @return $this
 	 */
@@ -85,11 +85,11 @@ abstract class A_Db_Adapter
 		}
 		$this->_config = array_merge($this->_config, $config);
 		if (isset($config['exception'])) {
-			$this->setException($config['exception']);				
+			$this->setException($config['exception']);
 		}
 		return $this;
 	}
-	
+
 	public function setResultClasses($result_class, $recordset_class)
 	{
 		if ($result_class) {
@@ -100,12 +100,12 @@ abstract class A_Db_Adapter
 		}
 		return $this;
 	}
-	
+
 	public function getConfig($sql='')
 	{
 		return $this->_config;
 	}
-	
+
 	public function setException($class)
 	{
 		if ($class === true) {
@@ -113,13 +113,13 @@ abstract class A_Db_Adapter
 		} else {
 			$this->_exception = $class;
 		}
-	}	
-	
+	}
+
 	public function getSql()
 	{
 		return $this->_sql;
 	}
-	
+
 	public function queryHasResultSet($sql)
 	{
 		if (in_array(strtoupper(substr($sql, 0, 5)), array('SELEC','SHOW ','DESCR','EXPLA'))) {
@@ -128,20 +128,20 @@ abstract class A_Db_Adapter
 			return false;
 		}
 	}
-	
+
 	protected function createResultObject()
 	{
 		return new $this->_result_class($this->_numRows, $this->_error, $this->_errorMsg);
 	}
-	
+
 	protected function createRecordsetObject()
 	{
 		return new $this->_recordset_class($this->_numRows, $this->_error, $this->_errorMsg);
 	}
-	
+
 	/**
 	 * Open connection to database using settings specified in config.
-	 * 
+	 *
 	 * @return $this
 	 */
 	public function connect()
@@ -156,17 +156,17 @@ abstract class A_Db_Adapter
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Supplied by child class - Open connection as specified by $config
-	 * 
+	 *
 	 * @return $this
 	 */
 	abstract protected function _connect();
-	
+
 	/*
 	 * Executes a query against the database.  If no connection exists, an attempt is made to connect.
-	 * 
+	 *
 	 * @param string|A_Sql_* SQL query to execute.  Can be string or a A_Sql object.
 	 * @return A_Db_Recordset_Base
 	 */
@@ -180,7 +180,7 @@ abstract class A_Db_Adapter
 			$prepare->setDb($this);
 			$sql = $prepare->render();
 		}
-		
+
 		$this->connect();
 		if ($this->_connection) {
 			$this->_sql[] = $sql;
@@ -189,12 +189,12 @@ abstract class A_Db_Adapter
 			$this->_errorHandler(3, 'No connection. ');
 		}
 	}
-	
+
 	abstract protected function _query($sql);
-	
+
 	/**
 	 * Closes connection (if close is supported by extension)
-	 * 
+	 *
 	 * @return $this
 	 */
 	public function close()
@@ -205,17 +205,17 @@ abstract class A_Db_Adapter
 		}
 		return $this;
 	}
-	
+
 	abstract protected function _close();
-	
+
 	public function disconnect()
 	{
 		return $this->close();
 	}
-	
+
 	/**
 	 * Gets the ID of the most recently inserted row
-	 * 
+	 *
 	 * @return string|bool Either the row ID, or false if there is no connection or no rows have been inserted.
 	 */
 	public function lastId()
@@ -226,20 +226,21 @@ abstract class A_Db_Adapter
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Adapter-specific method to get the last inserted row ID.
-	 * 
+	 *
 	 * @return mixed
 	 */
 	abstract protected function _lastId();
-	
+
 	/**
 	 * Switch to using a different database/schema.  If the database passed is already selected, no call is made.
-	 * 
+	 *
 	 * @param string $database If omitted, the database in the configuration will be used
 	 */
-	public function selectDb($database=null) {
+	public function selectDb($database=null)
+	{
 		if (empty($database)) {
 			$database = $this->_config['database'];
 		} else {
@@ -254,20 +255,20 @@ abstract class A_Db_Adapter
 
 	/**
 	 * Adapter-specific method to select database if adapter supports it.
-	 * 
+	 *
 	 * @return mixed
 	 */
 	abstract protected function _selectDb($database);
-	
+
 	/**
 	 * Adds limit syntax to SQL statement
-	 * 
+	 *
 	 * @param string $sql
 	 * @param int $count
 	 * @param int $offset
 	 */
 	abstract public function limit($sql, $count, $offset='');
-	
+
 	public function start()
 	{
 		if ($this->_transaction_level < 1) {
@@ -279,14 +280,14 @@ abstract class A_Db_Adapter
 		$this->_transaction_level++;
 		return $result;
 	}
-	
+
 	public function savepoint($savepoint='')
 	{
 		if ($savepoint) {
 			return $this->query('SAVEPOINT ' . $savepoint);
 		}
 	}
-	
+
 	public function commit()
 	{
 		$this->_transaction_level--;
@@ -297,7 +298,7 @@ abstract class A_Db_Adapter
 		}
 		return $result;
 	}
-	
+
 	public function rollback($savepoint='')
 	{
 		$this->_transaction_level--;
@@ -308,47 +309,47 @@ abstract class A_Db_Adapter
 		}
 		return $result;
 	}
-	
+
 	public function getTransactionLevel()
 	{
 		return $this->_transaction_level;
 	}
-	
+
 	public function escape($value)
 	{
 		return addslashes($value);
 	}
-	
+
 	public function isError()
 	{
 		return $this->_error;
 	}
-	
+
 	public function getErrorMsg()
 	{
 		return $this->_errorMsg;
 	}
-	
+
 	/**
 	 * Access the connection resource/object directly.  Returns boolean false if not connected.
-	 * 
+	 *
 	 * @return resource|object|bool
 	 */
 	public function getConnection()
 	{
 		return $this->_connection ? $this->_connection : false;
 	}
-	
+
 	/**
 	 * Get whether or not the adapter is connected to the database server.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isConnected()
 	{
 		return $this->_connection ? true : false;
 	}
-	
+
 	protected function _errorHandler($errno, $errorMsg)
 	{
 		$this->_error = $errno;

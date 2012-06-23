@@ -1,16 +1,16 @@
 <?php
 /**
  * File.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Pagination_Adapter_File
- * 
+ *
  * Datasource access class for paging through lines in a file.
- * 
+ *
  * @package A_Pagination
  */
 class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base
@@ -18,17 +18,17 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base
 
 	protected $filename;
 	protected $session = null;
-	
+
 	public function __construct($filename)
 	{
 		$this->filename = $filename;
 	}
-	
+
 	public function setSession($session)
 	{
 		$this->session = $session;
 	}
-	
+
 	public function getNumItems()
 	{
 		$counter = 0;
@@ -42,7 +42,7 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base
 		}
 		return $counter;
 	}
-	
+
 	public function getItems($start, $length)
 	{
 		$counter = 1;
@@ -62,7 +62,7 @@ class A_Pagination_Adapter_File extends A_Pagination_Adapter_Base
 		}
 		return $rows;
 	}
-	
+
 	public function setOrderBy($field, $descending = 0)
 	{}
 

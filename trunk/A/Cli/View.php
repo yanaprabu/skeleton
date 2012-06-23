@@ -8,9 +8,9 @@
 
 /**
  * A_Cli_View
- * 
+ *
  * Base MVC View class for a whole or partial CLI response character encoding, quoting, escaping, and content.
- * 
+ *
  * @package A_Cli
  */
 class A_Cli_View implements A_Renderer
@@ -38,17 +38,17 @@ class A_Cli_View implements A_Renderer
 		'url'=>'',
 	);
 	protected $use_local_vars = true;
-	
+
 	public function __construct($locator=null)
 	{
 		$this->locator = $locator;
 	}
-	
+
 	public function setLocator($locator)
 	{
 		$this->locator = $locator;
 	}
-	
+
 	public function setCharacterSet($character_set)
 	{
 		$this->character_set = $character_set;
@@ -130,7 +130,7 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function get($name)
 	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
@@ -146,12 +146,12 @@ class A_Cli_View implements A_Renderer
 		$this->data = array_merge($this->data, $data);
 		return $this;
 	}
-	
+
 	public function escape($content, $escape_quote_style=null)
 	{
 		return htmlspecialchars($content, $escape_quote_style==null ? $this->escape_quote_style : $escape_quote_style, $this->character_set);
 	}
-	
+
 	public function _getPath($template)
 	{
 		if (substr($template, -4, 4) != '.php') {
@@ -170,13 +170,13 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this->template_path . '/' . $template;
 	}
-	
+
 	public function partial($template)
 	{
 		$template = $this->_getPath($template);
 		return $this->escape_output ? $this->escape($this->_include($template)) : $this->_include($template);
 	}
-	
+
 	public function partialLoop($template, $name, $data=null)
 	{
 		$template = $this->_getPath($template);
@@ -200,7 +200,7 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this->escape_output ? $this->escape($str) : $str;
 	}
-	
+
 	public function render($template='', $scope='')
 	{
 		if (! $template && $this->template) {
@@ -225,7 +225,7 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this->escape_output ? $this->escape($this->content) : $this->content;
 	}
-	
+
 	protected function _include()
 	{
 		ob_start();
@@ -234,22 +234,22 @@ class A_Cli_View implements A_Renderer
 		include func_get_arg(0);
 		return ob_get_clean();
 	}
-	
+
 	public function __get($name)
 	{
 		return isset($this->data[$name]) ? $this->data[$name] : null;
 	}
-	
+
 	public function __set($name, $value)
 	{
 		return $this->set($name, $value);
 	}
-	
+
 	public function __toString()
 	{
 		return $this->render();
 	}
-	
+
 	protected function _load($scope=null)
 	{
 		if (isset($this->load)) {
@@ -259,7 +259,7 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this->load;
 	}
-	
+
 	protected function _flash($name=null, $value=null)
 	{
 		if (!isset($this->flash)) {
@@ -274,7 +274,7 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this->flash;
 	}
-	
+
 	public function setHelper($name, $helper)
 	{
 		if ($name) {
@@ -282,7 +282,7 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this;
 	}
-	
+
 	public function setHelperClass($name, $class)
 	{
 		if ($name) {
@@ -290,8 +290,8 @@ class A_Cli_View implements A_Renderer
 		}
 		return $this;
 	}
-	
-	protected function helper($name) 
+
+	protected function helper($name)
 	{
 		if (!isset($this->helpers[$name])) {
 			if (isset($this->helperClass[$name])) {

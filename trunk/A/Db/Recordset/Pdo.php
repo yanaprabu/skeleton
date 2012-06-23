@@ -9,9 +9,9 @@
 
 /**
  * A_Db_Recordset_Pdo
- * 
+ *
  * Database result set for Pdo select, show, or desc queries
- * 
+ *
  * @package A_Db
  */
 class A_Db_Recordset_Pdo extends A_Db_Recordset_Base
@@ -19,17 +19,17 @@ class A_Db_Recordset_Pdo extends A_Db_Recordset_Base
 
 	/**
 	 * Fetches a row as an associative array from database
-	 * 
+	 *
 	 * @return array
 	 */
 	protected function _fetch()
 	{
 		return $this->result->fetch();
 	}
-	
+
 	/**
 	 * Returns the number of columns in a row
-	 * 
+	 *
 	 * @return int
 	 */
 	public function numCols()
@@ -40,23 +40,24 @@ class A_Db_Recordset_Pdo extends A_Db_Recordset_Base
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * __call
-	 * 
+	 *
 	 * Magic function __call, redirects to instance of Pdo_Result
-	 * 
+	 *
 	 * @param string $function Property to access
 	 */
-	public function __get($name) {
+	public function __get($name)
+	{
 		return $this->result->$name;
 	}
 
 	/**
 	 * __call
-	 * 
+	 *
 	 * Magic function __call, redirects to instance of Pdo_Result
-	 * 
+	 *
 	 * @param string $function Function to call
 	 * @param array $args Arguments to pass to $function
 	 */

@@ -8,9 +8,9 @@
 
 /**
  * A_Db_Datamapper_Xml
- * 
+ *
  * Maps a database to an XML file.
- * 
+ *
  * @package A_Db
  */
 class A_Db_Datamapper_Xml extends A_Db_Datamapper

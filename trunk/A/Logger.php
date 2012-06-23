@@ -1,7 +1,7 @@
 <?php
 /**
  * Logger.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,7 +10,7 @@
  * A_Logger
  *
  * Log to file or provided writer object
- * 
+ *
  * @package A
  */
 class A_Logger
@@ -24,7 +24,7 @@ class A_Logger
 	protected $autoWrite = true;
 	protected $written = true;	// whether there are messages that have not been written
 	protected $errorMsg = '';
-	
+
 	/**
 	 * @param array $writer Filename (will create A_Logger_File($writer)) or array of writer objects
 	 * @param int $level Level to log messages
@@ -33,7 +33,7 @@ class A_Logger
 	{
 		if ($writers) {
 			if (is_array($writers)) {
-				foreach($writers as $writer) {
+				foreach ($writers as $writer) {
 					$this->addWriter($writer);
 				}
 			} else {
@@ -42,7 +42,7 @@ class A_Logger
 		}
 		$this->level = $level;
 	}
-	
+
 	/**
 	 * @param $writer - filename (will create A_Logger_File($writer)) or array of writer objects
 	 * @return $this
@@ -56,7 +56,7 @@ class A_Logger
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * @param $template - string containing the {datetime} and {message} tags for replacement
 	 * @return $this
@@ -66,7 +66,7 @@ class A_Logger
 		$this->template = $template;
 		return $this;
 	}
-	
+
 	/**
 	 * @param $level  - maximum level at or below which messages will be written to log
 	 * @return $this
@@ -76,7 +76,7 @@ class A_Logger
 		$this->level = $level;
 		return $this;
 	}
-	
+
 	/**
 	 * @param $autoWrite  - set whether unwritten log messages arewritten on destruct
 	 * @return $this
@@ -86,17 +86,17 @@ class A_Logger
 		$this->autoWrite = $autoWrite;
 		return $this;
 	}
-	
+
 	/**
 	 * Returns whether a given level is less than or equal to the current logging level
-	 * 
+	 *
 	 * @param $level  - level to log messages
 	 */
 	public function isLoggable($level)
 	{
 		return $level <= $this->level;
 	}
-	
+
 	/**
 	 * @param string $message String to write to log
 	 * @param int $level Level to log messages
@@ -110,7 +110,7 @@ class A_Logger
 		$this->written = false;
 		return $this;
 	}
-	
+
 	/**
 	 * Remove previous messages from all logs
 	 */
@@ -120,7 +120,7 @@ class A_Logger
 			$writer->clear();
 		}
 	}
-	
+
 	/**
 	 * @param $message - optional message to log
 	 * @return $this
@@ -137,7 +137,7 @@ class A_Logger
 					$buffer .= $msg;
 				}
 			}
-			foreach ($this->writers as $writer) {	
+			foreach ($this->writers as $writer) {
 				$writer->write($buffer);
 				$this->errorMsg .= $writer->getErrorMsg();
 			}
@@ -147,17 +147,17 @@ class A_Logger
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Return current error message
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getErrorMsg()
 	{
 		return $this->errorMsg;
 	}
-	
+
 	/**
 	 * Return current error message
 	 */

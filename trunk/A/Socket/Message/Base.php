@@ -1,7 +1,7 @@
 <?php
 /**
  * Base.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Jonah Dahlquist <jonah@nucleussystems.com>
@@ -11,7 +11,7 @@
  * A_Message_Base
  *
  * Common logic between message objects
- * 
+ *
  * @package A_Socket
  */
 class A_Socket_Message_Base implements A_Socket_Message
@@ -22,19 +22,19 @@ class A_Socket_Message_Base implements A_Socket_Message
 	 * @var mixed
 	 */
 	protected $message;
-	
+
 	/**
 	 * The sender client
 	 * @var object
 	 */
 	protected $client;
-	
+
 	/**
 	 * An array of all clients connected
 	 * @var array
 	 */
 	protected $clients;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -48,7 +48,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		$this->client = $client;
 		$this->clients = $clients;
 	}
-	
+
 	/**
 	 * Send message back to client(s)
 	 *
@@ -60,7 +60,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		$this->_reply($data, $recipient);
 		return $this;
 	}
-	
+
 	/**
 	 * Get route data from message
 	 */
@@ -68,17 +68,17 @@ class A_Socket_Message_Base implements A_Socket_Message
 	{
 		return null;
 	}
-	
+
 	/**
 	 * Get the actual message data
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getMessage()
 	{
 		return $this->message;
 	}
-	
+
 	/**
 	 * Get the session from the sender client
 	 *
@@ -88,7 +88,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 	{
 		return $this->client->getSession();
 	}
-	
+
 	/**
 	 * Set the session of the sender client
 	 *
@@ -100,10 +100,10 @@ class A_Socket_Message_Base implements A_Socket_Message
 		$this->client->setSession($session);
 		return $this;
 	}
-	
+
 	/**
 	 * Get sessions from all connected clients
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getAllSessions()
@@ -114,7 +114,7 @@ class A_Socket_Message_Base implements A_Socket_Message
 		}
 		return $sessions;
 	}
-	
+
 	/**
 	 * Send message back to client(s)
 	 *
@@ -126,19 +126,19 @@ class A_Socket_Message_Base implements A_Socket_Message
 	{
 		if ($recipient == self::SENDER) {
 			$this->client->send($data);
-			
+
 		} elseif ($recipient == self::ALL) {
 			foreach ($this->clients as $client) {
 				$client->send($data);
 			}
-			
+
 		} elseif ($recipient == self::OTHERS) {
 			foreach ($this->clients as $client) {
 				if ($client != $this->client) {
 					$client->send($data);
 				}
 			}
-			
+
 		} elseif (is_callable($recipient)) {
 			foreach ($this->clients as $client) {
 				if (call_user_func($recipient, $client->getSession())) {

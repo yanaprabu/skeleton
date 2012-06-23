@@ -1,16 +1,16 @@
 <?php
 /**
  * Xml.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Template_Xml
- * 
+ *
  * Template class using XML files as templates
- * 
+ *
  * @package A_Template
  */
 class A_Template_Xml extends A_Template_Base implements A_Renderer
@@ -20,7 +20,7 @@ class A_Template_Xml extends A_Template_Base implements A_Renderer
 	protected $depth = -1;
 	protected $filename = '';
 	protected $errorMsg = '';
-	
+
 	public function __construct($filename='')
 	{
 		$this->filename = $filename;
@@ -33,28 +33,28 @@ class A_Template_Xml extends A_Template_Base implements A_Renderer
 			$this->errorMsg = 'Error creating xml_parser';
 		}
 	}
-	
+
 	public function free()
 	{
 		xml_parser_free($this->xml_parser);
 	}
-	
+
 	protected function _startElement($parser,$tagname,$attr)
 	{
 		$this->tags[++$this->depth] = $tagname;
 		$this->data[$tagname] = '';
 	}
-	
+
 	protected function _characterData($parser, $data)
 	{
 		$this->data[$this->tags[$this->depth]] .= trim($data);
 	}
-	
+
 	protected function _endElement($parser,$tagname)
 	{
 		--$this->depth;
 	}
-	
+
 	public function read($filename='')
 	{
 		if ($this->filename) {
@@ -65,8 +65,8 @@ class A_Template_Xml extends A_Template_Base implements A_Renderer
 			if ($fp) {
 				while ($data = fread($fp, 4096)) {
 				   if (! xml_parse($this->xml_parser, $data, feof($fp))) {
-				       $this->errorMsg = sprintf("XML error: %s at line %d", 
-				           xml_error_string(xml_get_error_code($this->xml_parser)), 
+				       $this->errorMsg = sprintf("XML error: %s at line %d",
+				           xml_error_string(xml_get_error_code($this->xml_parser)),
 				           xml_get_current_line_number($this->xml_parser));
 						break;
 				   }
@@ -84,5 +84,5 @@ class A_Template_Xml extends A_Template_Base implements A_Renderer
 	{
 		return $this->data;
 	}
-	
+
 }

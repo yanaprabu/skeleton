@@ -1,24 +1,27 @@
 <?php
 /**
  * Xml.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Orm_Config_Xml
- * 
+ *
  * @package A_Orm
  */
-class A_Orm_Datamapper_Xml extends A_Orm_Datamapper {
+class A_Orm_Config_Xml extends A_Orm_Datamapper
+{
 	protected $data = array();
-	
-	public function __construct($filename) {
+
+	public function __construct($filename)
+	{
 		$this->loadFile($filename);
 	}
 
-	public function loadFile($filename) {
+	public function loadFile($filename)
+	{
 		$this->data = array();
 		$xml = simplexml_load_file($filename);
 		if ($xml) {
@@ -61,6 +64,5 @@ class A_Orm_Datamapper_Xml extends A_Orm_Datamapper {
 			}
 		}
 	}
-	
-}
 
+}

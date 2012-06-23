@@ -8,9 +8,9 @@
 
 /**
  * A_Controller_Mapper
- * 
+ *
  * Provides mapping from module/controller/action request variables to path/class/method
- * 
+ *
  * @package A_Controller
  */
 class A_Controller_Mapper
@@ -34,31 +34,31 @@ class A_Controller_Mapper
 	protected $class_param = 'controller';
 	protected $method_param = 'action';
 	protected $default_method = 'index';
-	
+
 	public function __construct($base_path, $default_action)
 	{
 		$this->setBasePath($base_path);
 		$this->default_action = $default_action;
 	}
-	
+
 	public function setBasePath($path)
 	{
 		$this->base_path = $path ? rtrim($path, '/') . '/' : '';
 		return $this;
 	}
-	
+
 	public function setDefaultDir($dir='default')
 	{
 		$this->default_dir = $dir ? trim($dir, '/') . '/' : '';
 		return $this;
 	}
-	
+
 	public function setClassDir($dir)
 	{
 		$this->class_dir = $dir ? trim($dir, '/') . '/' : '';
 		return $this;
 	}
-	
+
 	public function setDir($dir)
 	{
 		if ($dir) {
@@ -68,54 +68,54 @@ class A_Controller_Mapper
 		}
 		return $this;
 	}
-	
+
 	public function setClass($class)
 	{
 		$this->class = $class;
 		return $this;
 	}
-	
+
 	public function setMethod($method)
 	{
 		$this->method = $method;
 		return $this;
 	}
-	
+
 	public function setDirParam($param)
 	{
 		$this->dir_param = $param;
 		return $this;
 	}
-	
+
 	public function setControllerParam($param)
 	{
 		$this->class_param = $param;
 		return $this;
 	}
-	
+
 	public function setActionParam($param)
 	{
 		$this->method_param = $param;
 		return $this;
 	}
-	
+
 	public function setDefaultMethod($default_method)
 	{
 		$this->default_method = $default_method;
 		return $this;
 	}
-	
+
 	public function getDefaultMethod()
 	{
 		return $this->default_method;
 	}
-	
+
 	public function setDefaultAction($default_action)
 	{
 		$this->default_action = $default_action;
 		return $this;
 	}
-	
+
 	public function setClassNaming($class_prefix='', $class_transform=null, $class_suffix='')
 	{
 		$this->class_prefix = $class_prefix;
@@ -123,7 +123,7 @@ class A_Controller_Mapper
 		$this->class_suffix = $class_suffix;
 		return $this;
 	}
-	
+
 	public function setMethodNaming($method_prefix='', $method_transform=null, $method_suffix='')
 	{
 		$this->method_prefix = $method_prefix;
@@ -131,37 +131,37 @@ class A_Controller_Mapper
 		$this->method_suffix = $method_suffix;
 		return $this;
 	}
-	
+
 	public function getBasePath()
 	{
 		return $this->base_path;
 	}
-	
+
 	public function getDir()
 	{
 		return $this->dir;
 	}
-	
+
 	public function getClassDir()
 	{
 		return $this->class_dir;
 	}
-	
+
 	public function getPath()
 	{
 		return $this->base_path . $this->dir . $this->class_dir;
 	}
-	
+
 	public function getClass()
 	{
 		return $this->class;
 	}
-	
+
 	public function getMethod()
 	{
 		return $this->method;
 	}
-	
+
 	/**
 	 * Return array of paths to MVC type (e.g. controllers, models, views, helpers)
 	 *
@@ -179,7 +179,7 @@ class A_Controller_Mapper
 		$paths['module'] .= $type;
 		return $paths;
 	}
-	
+
 	public function getFormattedClass()
 	{
 		$base = $this->class;
@@ -188,7 +188,7 @@ class A_Controller_Mapper
 		}
 		return $this->class_prefix . $base . $this->class_suffix;
 	}
-	
+
 	public function getFormattedMethod()
 	{
 		$base = $this->method;
@@ -197,10 +197,10 @@ class A_Controller_Mapper
 		}
 		return $this->method_prefix . $base . $this->method_suffix;
 	}
-	
+
 	/**
 	 * Take a route array (or string or object) and set properties
-	 * 
+	 *
 	 * @param array $route
 	 * @return $this
 	 */
@@ -227,7 +227,7 @@ class A_Controller_Mapper
 		$this->method = $route[2];
 		return $this;
 	}
-	
+
 	public function getRoute($request)
 	{
 		$regex = array('/^[^a-zA-Z0-9]*/', '/[^a-zA-Z0-9]*$/D', '/[^a-zA-Z0-9\_\-]/');
@@ -239,7 +239,7 @@ class A_Controller_Mapper
 		}
 		$this->class = preg_replace($regex, array(''), $request->get($this->class_param));
 		$this->method = preg_replace($regex, array(''), $request->get($this->method_param));
-		
+
 		$path = $this->getPath();
 		if (!$this->class) {
 			$this->setRoute($this->default_action);
@@ -248,7 +248,7 @@ class A_Controller_Mapper
 		if ($route[2] == '') {
 			$route[2] = $this->default_method;
 		}
-		
+
 		return $route;
 	}
 

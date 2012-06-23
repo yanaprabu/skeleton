@@ -8,9 +8,9 @@
 
 /**
  * A_Cart_Order
- * 
+ *
  * Encapsulate an ecommerce order
- * 
+ *
  * @package  A_Cart
  */
 class A_Cart_Order
@@ -32,4 +32,3 @@ class A_Cart_Order
 	}
 
 }
-

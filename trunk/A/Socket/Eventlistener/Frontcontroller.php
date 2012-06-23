@@ -1,7 +1,7 @@
 <?php
 /**
  * Frontcontroller.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  * @author	Jonah Dahlquist <jonah@nucleussystems.com>
@@ -11,7 +11,7 @@
  * A_Socket_Eventlistener_Frontcontroller
  *
  * Handles events fired by the Server, and delegates to the Skeleton Front Controller.
- * 
+ *
  * @package A_Socket
  */
 class A_Socket_Eventlistener_Frontcontroller
@@ -22,17 +22,17 @@ class A_Socket_Eventlistener_Frontcontroller
 	 * @var A_Locator
 	 */
 	protected $locator;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param A_Locator $locator Locator object passed from bootstrap
 	 */
 	public function  __construct($locator)
 	{
 		$this->locator = $locator;
 	}
-	
+
 	/**
 	 * Sets the events handled by this object
 	 *
@@ -42,11 +42,11 @@ class A_Socket_Eventlistener_Frontcontroller
 	{
 		return array(A_Socket_Server::EVENT_CONNECT, A_Socket_Server::EVENT_MESSAGE, A_Socket_Server::EVENT_DISCONNECT);
 	}
-	
+
 	/**
 	 * Called when a client connects, sends a message, or disconnects.  Creates
 	 * a new Front Controller and dispatches to the controller.
-	 * 
+	 *
 	 * @param string $event
 	 * @param A_Socket_Message $data
 	 */
@@ -56,9 +56,9 @@ class A_Socket_Eventlistener_Frontcontroller
 		$Locator = $this->locator;
 
 		$Config = $Locator->get('Config');
-		
+
 		$Locator->set('Request', $Request);
-		
+
 		$front = new A_Controller_Front($Config->get('APP'), $Config->get('DEFAULT_ACTION'), $Config->get('ERROR_ACTION'));
 		$front->run($Locator);
 	}

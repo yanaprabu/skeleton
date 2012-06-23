@@ -10,7 +10,7 @@
  * A_Email_Multipart
  *
  * Generate mime part for inclusion in multipart emails.
- * 
+ *
  * @package A_Email
  */
 class A_Email_Multipart
@@ -21,7 +21,7 @@ class A_Email_Multipart
 	protected $boundary;
 	protected $type;
 	protected $non_mime_message;
-	
+
 	public function __construct($type='', $non_mime_message='')
 	{
 		$this->type = $type ? $type : 'multipart/mixed';
@@ -31,7 +31,7 @@ class A_Email_Multipart
 		$this->headers =  '';
 		$this->boundary =  "A_" . strtoupper(md5(uniqid(time())));
 	}
-	
+
 	/*
 	 * encodings:
 	 *     text/plain; charset="ISO-8859-1"
@@ -56,12 +56,12 @@ class A_Email_Multipart
 			'id' => $id,
 		);
 	}
-	
+
 	public function encodeBase64($content)
 	{
 		return chunk_split(base64_encode($content));
 	}
-	
+
 	/**
 	 * @author bendi@interia.pl, steffen.weber@computerbase.de; from php.net
 	 */
@@ -71,7 +71,7 @@ class A_Email_Multipart
 		preg_match_all( '/.{1,73}([^=]{0,3})?/', $content, $match);
 		return implode("=\r\n", $match[0]);
 	}
-	
+
 	public function buildPart($part)
 	{
 		switch ($part['encoding']) {
@@ -90,10 +90,10 @@ class A_Email_Multipart
 				$part['encoding'] = '7bit';
 		}
 		$id = $part['id'] == '' ? '' : "Content-ID: {$part['id']}\r\n";
-		
+
 		return "Content-type: {$part["type"]}\r\nContent-transfer-encoding: {$part['encoding']}\r\n$id\r\n$content\r\n";
 	}
-	
+
 	/*
 	 * types:
 	 * 	  multipart/mixed
@@ -110,10 +110,10 @@ class A_Email_Multipart
 			$type = $this->type;
 		}
 		$headers = "Mime-Version: 1.0\r\nContent-type: $type;\r\n\tboundary=\"{$this->boundary}\"\r\n\r\n{$this->non_mime_message}\r\n\r\n";
-		
+
 		return $headers;
 	}
-	
+
 	public function getMessage()
 	{
 		$multipart = '';

@@ -10,18 +10,18 @@
  * A_Cart_Pricing
  *
  * Shopping Cart Pricing Class library
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Pricing
 {
-	
+
 	protected $currency_symbol = '$';
 	protected $currency_format = '%01.2f'; // sprintf format
-	
+
 	/**
 	 *  create pricing array in the format: array[min_quantity]=price
-	 *  
+	 *
 	 *  @param array $pricing
 	 *  @param int $price
 	 *  @return array
@@ -46,7 +46,7 @@ class A_Cart_Pricing
 	 * splits pricing string in the format: min_quantity=price|min_quantity=price ...
 	 * example: 5=10.00|10=19.00| 15=28.00
 	 * if not given, 1=$price is added
-	 * 
+	 *
 	 * @param int $price
 	 * @param array $pricing
 	 * @param string $separator

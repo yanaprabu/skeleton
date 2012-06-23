@@ -1,16 +1,16 @@
 <?php
 /**
  * Smartquotes.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
 
 /**
  * A_Filter_Smartquotes
- * 
+ *
  * Convert smart quotes to standard quotes
- * 
+ *
  * @package A_Filter
  */
 class A_Filter_Smartquotes extends A_Filter_Base
@@ -25,7 +25,7 @@ class A_Filter_Smartquotes extends A_Filter_Base
 			chr(148) => '"',
 			chr(151) => '-'
 		);
-	    return str_replace(array_keys($search), array_values($search), $this->getValue()); 
+	    return str_replace(array_keys($search), array_values($search), $this->getValue());
 	}
 
 }

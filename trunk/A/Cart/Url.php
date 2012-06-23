@@ -10,33 +10,33 @@
  * A_Cart_Url
  *
  * Generate URLs to add items to the shopping cart.  Links created with this class can be placed in a page, and when clicked, will lead to a page to add that item to the cart.
- * 
+ *
  * @package A_Cart
  */
 class A_Cart_Url
 {
-	
+
 	protected $cart;
-	
+
 	protected $base_url;
-	
+
 	protected $cmd_separator = ';';
 	protected $cmd_data_separator = ',';
 	protected $cmd_data_equals = ':';
-	
+
 	protected $cmdcart = 'cart';
 	protected $cmd_del = 'del';
-	
+
 	protected $cmd_sku_add = 'skuadd';
 	protected $cmd_sku_data_set = 'skudataset';
-	
+
 	protected $cmd_pos_del = 'posdel';
 	protected $cmd_pos_data_set = 'posdataset';
 	protected $cmd_pos_data_del = 'posdatadel';
-	
+
 	protected $cmd_quantity = 'quantity';
-	
-	
+
+
 	/**
 	 * @param A_Cart_Manager $cart Manager is only needed for Cart URL methods that take $id parameter
 	 * @return $this
@@ -46,7 +46,7 @@ class A_Cart_Url
 		$this->cart = $cart;
 		return $this;
 	}
-	
+
 	/**
 	 * @param string $base_url
 	 * @return $this
@@ -63,9 +63,9 @@ class A_Cart_Url
 		$this->base_url = $base_url;
 		return $this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * PAGE URL GENERATION
 	 * command formats
 	 * del:				op=1
@@ -74,7 +74,7 @@ class A_Cart_Url
 	 * item_del:		op_pos=1
 	 * item_data_set:	op_pos_data=value
 	 * item_data_del:	op_pos_data=1
-	 * 
+	 *
 	 * @param unknown_type $cart
 	 * @return string
 	 */
@@ -82,7 +82,7 @@ class A_Cart_Url
 	{
 		return "{$this->base_url}{$this->cmd_del}{$this->cmd_separator}{$this->cmdcart}{$this->cmd_separator}$cart=1&submit=1&";
 	}
-	
+
 	/**
 	 * @param string $value
 	 * @param string $cart
@@ -92,7 +92,7 @@ class A_Cart_Url
 	{
 		return "<input type=\"submit\" name=\"submit{$this->cmd_separator}{$this->cmdcart}{$this->cmd_separator}$cart\" value=\"$value\">\n";
 	}
-	
+
 	/**
 	 * @param string $image
 	 * @param string $value
@@ -106,22 +106,22 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 *  URL and Form Generation Function for use on Product Pages. All pass sku/quantity.
-	 *  
+	 *
 	 *  @param mixed $id
 	 *  @param int $quantity
 	 *  @return string
 	 */
 	public function pageAddItemURL($id, $quantity=1)
 	{
-		if($id && $quantity) {
+		if ($id && $quantity) {
 			return "{$this->base_url}{$this->cmd_sku_add}{$this->cmd_separator}{$id}{$this->cmd_separator}=$quantity&submit=1&";
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * @param mixed $id
 	 * @param int $quantity
@@ -134,7 +134,7 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string|int $id
 	 * @param int $quantity
@@ -155,7 +155,7 @@ class A_Cart_Url
 	/**
 	 *  base select generator used by pageFormSelect()
 	 * also used by child class CART by cartFormSelect()
-	 * 
+	 *
 	 * @param string $cmd used to build the formprotected name
 	 * @param string $id used to build the formprotected name
 	 * @param string $field used to build the formprotected name
@@ -182,7 +182,7 @@ class A_Cart_Url
 			} else {
 				$options =& $values;
 			}
-			
+
 			if ($options) {
 				if (! $text) {
 					$text =& $options;
@@ -225,7 +225,7 @@ class A_Cart_Url
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param string $field
@@ -243,27 +243,27 @@ class A_Cart_Url
 
 	/**
 	 * CART URL GENERATION
-	 * 
+	 *
 	 * command formats
 	 * del:				op=1
 	 * addItem:			op_sku=quantity
 	 * deleteItem:		op_pos=1
 	 * item_data_set:	op_pos_data=value
 	 * item_data_del:	op_pos_data=1
-	 * 
+	 *
 	 *  URL and Form Generation Function for use on the Cart Page. All are position based.
-	 *  
+	 *
 	 *  @param string $id
 	 *  @return string
 	 */
 	public function cartDeleteItemURL($id)
 	{
-		if($id > 0) {
+		if ($id > 0) {
 			return "{$this->base_url}{$this->cmd_pos_del}{$this->cmd_separator}{$id}{$this->cmd_separator}=1&submit=1&";
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param string $data
@@ -272,24 +272,24 @@ class A_Cart_Url
 	 */
 	public function cartSetItemDataURL($id, $data, $value)
 	{
-		if( ($id > 0) && $data && $value) {
+		if ( ($id > 0) && $data && $value) {
 			return "{$this->base_url}{$this->cmd_pos_data_set}{$this->cmd_separator}{$id}{$this->cmd_separator}$data=$value&submit=1&";
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param string $data
 	 */
 	public function cartClearItemDataURL($id, $data)
 	{
-		if(($id > 0) && $data) {
+		if (($id > 0) && $data) {
 			return "{$this->base_url}{$this->cmd_pos_data_del}{$this->cmd_separator}{$id}{$this->cmd_separator}$data=1&submit=1&";
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param int|string $quantity
@@ -297,12 +297,12 @@ class A_Cart_Url
 	 */
 	public function cartSetItemQuantityURL($id, $quantity)
 	{
-		if(($id > 0) && $quantity) {
+		if (($id > 0) && $quantity) {
 			return $this->cartSetItemDataURL($id, $this->cmd_quantity, $quantity);
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param string $data
@@ -316,7 +316,7 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param string $data
@@ -334,7 +334,7 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param int $quantity
@@ -350,7 +350,7 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param int $quantity
@@ -371,7 +371,7 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @param string $field
@@ -394,7 +394,7 @@ class A_Cart_Url
 		}
 		return '';
 	}
-	
+
 	/**
 	 * @param string $id
 	 * @return string

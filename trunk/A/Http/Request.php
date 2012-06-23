@@ -1,7 +1,7 @@
 <?php
 /**
  * Request.php
- * 
+ *
  * @license	http://www.opensource.org/licenses/bsd-license.php BSD
  * @link	http://skeletonframework.com/
  */
@@ -10,18 +10,18 @@
  * A_Http_Request
  *
  * Encapsulate the HTTP request in a class to access information and values
- * 
+ *
  * @package A_Http
  */
 class A_Http_Request
 {
 
 	public $data = array();
-	
+
 	protected $method = false;
 	protected $filters = array();
 	protected $getOverPost = false;
-	
+
 	public function __construct()
 	{
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
@@ -34,12 +34,12 @@ class A_Http_Request
 		}
 		if (isset($_SERVER['PATH_INFO'])) {
 			$this->data['PATH_INFO'] = trim($_SERVER['PATH_INFO'], '/');
-		}		
+		}
 	}
-	
+
 	/**
-	 * Turn GET over POST mode on/off.  GET over POST mode allows you to receive both POST and GET params on a POST request.  Does not apply to GET requests.  If true then on POST requests, if $_POST[$name] is not set it will return $_GET[$name] 
-	 * 
+	 * Turn GET over POST mode on/off.  GET over POST mode allows you to receive both POST and GET params on a POST request.  Does not apply to GET requests.  If true then on POST requests, if $_POST[$name] is not set it will return $_GET[$name]
+	 *
 	 * @param bool $allow
 	 * @return $this
 	 */
@@ -48,7 +48,7 @@ class A_Http_Request
 		$this->getOverPost = $allow;
 		return $this;
 	}
-	
+
 	public function removeSlashes()
 	{
 		if (get_magic_quotes_gpc()) {
@@ -66,24 +66,24 @@ class A_Http_Request
 		}
 		return $this;
 	}
-	
+
 	public function setPathInfo($path_info)
 	{
 		$this->data['PATH_INFO'] = trim($path_info, '/');
 		return $this;
 	}
-	
+
 	public function getFilters()
 	{
 		return $this->filters;
 	}
-	
+
 	public function setFilters($filters)
 	{
 		$this->filters = is_array($filters) ? $filters : array($filters);
 		return $this;
 	}
-	
+
 	/**
 	 * Get the protocol this request was made on (either HTTP or HTTPS).
 	 *
@@ -97,22 +97,22 @@ class A_Http_Request
 			return 'http';
 		}
 	}
-	
+
 	public function getMethod()
 	{
 		return $this->method;
 	}
-	
+
 	public function isPost()
 	{
 		return $this->method == 'POST';
 	}
-	
+
 	public function isAjax()
 	{
 		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 	}
-	
+
 	protected function _get(&$data, $name, $filters=null, $default=null)
 	{
 		if (isset($data[$name])) {
@@ -154,32 +154,32 @@ class A_Http_Request
 			return $default;
 		}
 	}
-	
+
 	public function get($name, $filter=null, $default=null)
 	{
-		// GET over POST mode only checks for $_GET[$name] if method is POST and no $_POST[$name]   
+		// GET over POST mode only checks for $_GET[$name] if method is POST and no $_POST[$name]
 		if ($this->getOverPost && !isset($this->data[$name]) && $this->method == 'POST') {
 			return $this->_get($_GET, $name, $filter, $default);
 		} else {
 			return $this->_get($this->data, $name, $filter, $default);
 		}
 	}
-	
+
 	public function getPost($name, $filter=null, $default=null)
 	{
 		return $this->_get($_POST, $name, $filter, $default);
 	}
-	
+
 	public function getQuery($name, $filter=null, $default=null)
 	{
 		return $this->_get($_GET, $name, $filter, $default);
 	}
-	
+
 	public function getCookie($name, $filter=null, $default=null)
 	{
 		return $this->_get($_COOKIE, $name, $filter, $default);
 	}
-	
+
 	public function getHeader($name, $filter=null, $default=null)
 	{
         if (isset($_SERVER[$name])) {
@@ -191,7 +191,7 @@ class A_Http_Request
             }
         }
 	}
-	
+
 	public function export($filter=null, $pattern=null)
 	{
 		if ($filter || $pattern) {
@@ -206,7 +206,7 @@ class A_Http_Request
 			return $this->data;
 		}
 	}
-	
+
 	public function set($name, $value, $default=null)
 	{
 		if ($value !== null) {
@@ -218,7 +218,7 @@ class A_Http_Request
 		}
 		return $this;
 	}
-	
+
 	public function has($name)
 	{
 		return isset($this->data[$name]);

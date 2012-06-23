@@ -8,9 +8,9 @@
 
 /**
  * A_Config_Ini
- * 
+ *
  * Support for reading INI configuration files
- * 
+ *
  * @package A_Config
  */
 class A_Config_Ini extends A_Config_Base
