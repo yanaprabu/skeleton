@@ -2,7 +2,7 @@
 
 <h2>Introduction</h2>
 
-<p>Action controllers are "controller" part of <a href="http://en.wikipedia.org/wiki/Model-view-controller">Model-View-Controller</a> [wikipedia.org].  They are loaded by the <a href="?p=FrontController">Front Controller</a> when a request to the bootstrap is made.  Every action controller must have at least one action.  An action is simply a method in the action controller class.  Here is an example action controller:</p>
+<p>Action controllers are "controller" part of <a href="http://en.wikipedia.org/wiki/Model-view-controller">Model-View-Controller</a> [wikipedia.org].  They are loaded by the <a href="?p=Front_Controller">Front Controller</a> when a request to the bootstrap is made.  Every action controller must have at least one action.  An action is simply a method in the action controller class.  Here is an example action controller:</p>
 
 <pre class="prettyprint lang-php">class foobar extends A_Controller_Action {
 
@@ -25,7 +25,7 @@
 
 <p class="devnote">Provide link to skeleton's philosophy</p>
 
-<p>Each action is given the <a href="?p=Locator">Locator</a> object that was passed to the <a href="?p=FrontController">Front Controller</a>.  This provides access to anything inside of the <a href="?p=Locator">Locator</a>, including the <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> objects, and anything else that was placed inside of it (e.g. Database connection, etc.).</p>
+<p>Each action is given the <a href="?p=Locator">Locator</a> object that was passed to the <a href="?p=Front_Controller">Front Controller</a>.  This provides access to anything inside of the <a href="?p=Locator">Locator</a>, including the <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> objects, and anything else that was placed inside of it (e.g. Database connection, etc.).</p>
 
 <p>If you create a method called index(), that will be used as the default action if no action is defined in the request.  Tip: you can easily redirect the default action to another action by calling that method, passing the $locator argument.</p>
 

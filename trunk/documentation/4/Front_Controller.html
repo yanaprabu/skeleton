@@ -1,0 +1,20 @@
+<h1>Front Controller</h1>
+
+<h2>Introduction</h2>
+<p>The Front Controller in an implementation of the <a href="http://en.wikipedia.org/wiki/Front_Controller_pattern">design pattern</a> [wikipedia.org]. An application with a Front Controller implementation has a single entry point for all requests. In the case of PHP, that entry point is index.php. This pattern is implemented in we applications because it solves several problems specific to the web. </p>
+<p>First is the problem of code duplication across many scripts. Typical PHP applications have many scripts in the public directory for a website. Each of these scripts must include common code use across the website. Some changes may need to be made to every script in the site. A Front Controller consolidates all this common code into the index.php script. This reduces code duplication and puts all common code in a single place. </p>
+<p>Second is the of issue of URLs. Using many scripts makes URLs all contain individual script names. With a Front Controller and URL rewriting, clean URLs can me create. And these URLs can be independent of the constraints of the webserver. Without rewriting, URL look like "mysite.com/index.php/module/controller/action/" or with rewriting simply "mysite.com/module/controller/action/". The "/module/controller/action/" part of the URL is called the route. For the route "/foo/bar/baz/" the file "app/foo/controllers/bar.php" will be included, the class "bar" will be instantiated and the method "baz($locator)" will be called. </p>
+<p>The Front Controller has two main parts: the Router and the Dispatcher. The Router converts the information is the URL into a directory file/class name, and a method in the class, plus parameters. The Dispatcher included the specified file, instantiates the class inside (of the same name) and calls the specified action method. </p>
+
+<h2>Router</h2>
+<p>The Skeleton Router maps three specified parts of the URL onto values called the module, controller and action. </p>
+<p>The module parameter determines when MVC directory (containing controllers/, models/, and views/ directories) is being referenced. By default the module is omitted so the topmost directory in the application directory contains the main MVC directories. If modules are specified then each module directory in the application directory contains is own set of MVC directories. Modules are useful in making sub-applications self-contained.</p> 
+<p>The controller parameter determine both the file and class name to be loaded. By convention the file name is in the controllers/ directory and has the value in the controller parameter plus a '.php' extension. The class name is value in the controller parameter. </p>
+<p>The action parameter specifies the method in the Controller class to call. If the action parameter is omitted then the method named 'index' is called by default. Action parameter may not begin with an underscore so private methods, that cannot be dispatched, can be declared in the Action Controller class.</p>
+
+<h2>Dispatcher</h2>
+<p>The Dispatcher is implemented as a loop. If a Action Controller method returns an array in the form array('module','controller','action') then that specified Action Controller will be included, instantiated and run. This is called a forward. The loop will continue until no forward is specified. </p>
+<p>There are two main error conditions in the Front Controller. First, no Action Controller is specified in the URL. For this case, a default Action Controller can be specified. The second main error is if an Action Controller is specified in the URL, but no file or class is found matching the request. An error Action Controller can be specified for this condition.</p>
+
+<h2>Pre and Post Filters</h2>
+<p>Finally, pre and post filters can be added to the Dispatch loop. This allow global code to run in the bootstrap that has access to the instantiated Action Controller object before and after it is run. </p>
