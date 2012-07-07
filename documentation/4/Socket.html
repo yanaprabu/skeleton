@@ -127,7 +127,7 @@ $Server->run($ConfigArray['SOCKET']);
 events.  You can handle the events listed above in any way you like, as is
 allowed by A_Event_Manager.  In this example, we use the PHP 5.3
 <a href="http://php.net/functions.anonymous">closure</a> syntax.  A_Socket comes
-preloaded with A_Socket_Eventlistener-FrontController.  This is a very cool
+preloaded with A_Socket_Eventlistener_Frontcontroller.  This is a very cool
 handler that delegates to the Skeleton front Controller.</p>
 
 <p>Finally, the server is created, and the listener/parser passed to it.  Lastly
@@ -184,7 +184,7 @@ $message->reply(
 
 <h2>Delegating Events to Skeleton Front Controller</h2>
 
-<p class="devnote">Explain using A_Socket_EventHandler_FrontController to
+<p class="devnote">Explain using A_Socket_EventHandler_Frontcontroller to
 delegate events to the front controller.</p>
 
 <h2>Example WebSocket Server</h2>
