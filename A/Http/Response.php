@@ -29,17 +29,19 @@ class A_Http_Response extends A_Http_View
 			}
 		}
 		if ($this->redirect) {
-			$base = $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
-			if (! preg_match('/^https?\:\/\//i', $this->redirect) && (strpos($this->redirect, $base) === false)) {
-				if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == 'on')) {
+			$host = $_SERVER['SERVER_NAME'];
+			$script = $host . dirname($_SERVER['SCRIPT_NAME']);
+			if (!preg_match('/^https?\:\/\//i', $this->redirect) && (strpos($this->redirect, $script) === false)) {
+				$protocol = 'http://';
+				if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
 					$protocol = 'https://';
+				}
+				if ($this->redirect[0] == '/') {
+					$base = rtrim($host, '/') . '/';
 				} else {
-					$protocol = 'http://';
+					$base = rtrim($script, '/') . '/';
 				}
-				if (substr($base, -1, 1) != '/') {
-					$base .= '/';
-				}
-				$this->redirect = $protocol . $base . preg_replace('/^[\/\.]*/', '', $this->redirect);
+				$this->redirect = $protocol . $base . $this->redirect;
 			}
 # astions Google Chrome caching redirects fix
 # header("Cache-Control: max-age=0, no-cache, no-store, must-revalidate"); // HTTP/1.1
