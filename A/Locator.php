@@ -157,13 +157,9 @@ class A_Locator
 			}
 		}
 		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
-		if ($this->_has_srip) {		// remove if when we drop support for PHP version <5.3.2
+		if ($this->_has_srip) {
 			$path = stream_resolve_include_path($path);
-			if ($path !== false) {
-				$result = (include($path)) !== false;
-			} else {
-				$result = false;
-			}
+			$result = $path !== false && (include($path)) !== false;
 		} else {
 			$result = (@include($path)) !== false;
 		}
