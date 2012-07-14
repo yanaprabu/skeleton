@@ -28,6 +28,7 @@ class A_Locator
 	protected $_dir_regexp = array();
 	protected $_inject = array();
 	protected $_extension = '.php';
+	protected $_has_srip = true;
 
 	public function __construct($dir=false)
 	{
@@ -44,6 +45,8 @@ class A_Locator
 		if (!isset($this->_dir['A'])) {
 			$this->_dir['A'] = dirname(dirname(__FILE__)) . '/';
 		}
+		// >PHP 5.3.2 has better file_exists()
+		$this->_has_srip = function_exists('steam_resolve_include_path');
 	}
 
 	/**
@@ -154,11 +157,15 @@ class A_Locator
 			}
 		}
 		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
-		if (($dir == '') || file_exists($path)) {		// either in search path or absolute path exists
-			$result = include($path);
-			$result = $result !== false;
+		if ($this->_has_srip) {		// remove if when we drop support for PHP version <5.3.2
+			$path = stream_resolve_include_path($path);
+			if ($path !== false) {
+				$result = (include($path)) !== false;
+			} else {
+				$result = false;
+			}
 		} else {
-			$result = false;
+			$result = (@include($path)) !== false;
 		}
 		return $result && class_exists($class, $autoload);
 	}
