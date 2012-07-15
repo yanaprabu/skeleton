@@ -45,7 +45,7 @@ class A_Locator
 		if (!isset($this->_dir['A'])) {
 			$this->_dir['A'] = dirname(dirname(__FILE__)) . '/';
 		}
-		// >PHP 5.3.2 has better file_exists()
+		// @todo remove after support for <5.3.2 dropped
 		$this->_has_srip = function_exists('steam_resolve_include_path');
 	}
 
@@ -157,6 +157,7 @@ class A_Locator
 			}
 		}
 		$path = $dir . $file . (isset($this->_extension) ? $this->_extension : '.php');
+		// @todo remove if after support for <5.3.2 dropped
 		if ($this->_has_srip) {
 			$path = stream_resolve_include_path($path);
 			$result = $path !== false && (include($path)) !== false;
