@@ -23,19 +23,6 @@ $(document).ready(function(){
 	 
 });
 </script>-->
-<script type="text/javascript">
-function show_menu_items(dir, items)
-{
-	var n = items.length;
-	for (var i = 0; i < n; i++) {
-		var num = i + 1;
-		if (num < 10) {
-			num = "0" + num.toString();
-		}
-		document.write("			<li><span>"+dir+"."+num+"</span><a class=\"ajaxlink\" href=\"./?p="+dir+"/"+items[i]+"\">"+items[i].replace("_"," ")+"</a></li>\n");
-	}
-}
-</script>
 </head>
 
 <body onload="prettyPrint()">
@@ -56,43 +43,34 @@ function show_menu_items(dir, items)
 	
 	<h3>Installation</h3>
 	<ol>
-		<li><span>2.01</span><a class="ajaxlink" href="./?p=2/Download">Download and svn</a></li>
+		<li><span>2.01</span><a class="ajaxlink" href="./?p=Download">Download and svn</a></li>
 		<li><span>2.02</span><a class="ajaxlink" href="./?p=Directory_Structure">Directory Structure</a></li>
 	</ol>
 	
 	<h3>Quickstart</h3>
 	<ol>
-		<script type="text/javascript">
-			var pages = [
-				'Quickstart',
-				];
-			show_menu_items("3", pages);
-		</script>
+		<li><span>3.01</span><a class="ajaxlink" href="./?p=Quickstart">How to use the basic app</a></li>
 	</ol>
 	
 	<h3>Topics</h3>
 	<ol>
-		<script type="text/javascript">
-			var pages = [
-				'Bootstrap',
-				'Configuration',
-				'Urls',
-				'Controllers',
-				'Views',
-				'Template_Classes',
-				'Models',
-				'Databases',
-				'Pagination',
-				'Validation',
-				'Filtering',
-				'Access_Control',
-				'Forms',
-				'Error_Handling',
-				'Event',
-				'Socket'
-				];
-			show_menu_items('4', pages);
-		</script>
+		<li><a class="ajaxlink" href="./?p=Bootstrap">Bootstrap</a></li>
+		<li><a class="ajaxlink" href="./?p=Configuration">Configuration</a></li>
+		<li><a class="ajaxlink" href="./?p=Urls">Urls</a></li>
+		<li><a class="ajaxlink" href="./?p=Controllers">Controllers</a></li>
+		<li><a class="ajaxlink" href="./?p=Views">Views</a></li>
+		<li><a class="ajaxlink" href="./?p=Template_Classes">Template Classes</a></li>
+		<li><a class="ajaxlink" href="./?p=Models">Models</a></li>
+		<li><a class="ajaxlink" href="./?p=Databases">Database</a></li>
+		<li><a class="ajaxlink" href="./?p=Pagination">Pagination</a></li>
+		<li><a class="ajaxlink" href="./?p=Validation">Validation</a></li>
+		<li><a class="ajaxlink" href="./?p=Filtering">Filtering</a></li>
+		<li><a class="ajaxlink" href="./?p=Access_Control">Access Control</a></li>
+		<li><a class="ajaxlink" href="./?p=Forms">Forms</a></li>
+		<li><a class="ajaxlink" href="./?p=Error_Handling">Error Handling</a></li>
+		<li><a class="ajaxlink" href="./?p=Event">Event Handling</a></li>
+		<li><a class="ajaxlink" href="./?p=Socket">Socket Server</a></li>
+		
 	</ol>
 	
 	<!--<h3>Components</h3>
@@ -192,19 +170,18 @@ function show_menu_items(dir, items)
 </div>
 
 <div id="main_content"><?php
-$page = isset($_GET['p']) ? trim(preg_replace('/[^A-Za-z0-9\_\/]/', '', $_GET['p']), '/') : 'Introduction';
-$page = !empty($page) ? $page : 'Introduction';
+$page = isset($_GET['p']) ? $_GET['p'] : '1/Introduction';
+if (empty($page)) {
+	$page = '1/Introduction';
+}
 $page .= '.html';
-//echo "page=$page<br/>";
-
-$exit = false;
 if (file_exists($page)) {
-//	echo "DIRECT URL<br/";
 	echo file_get_contents($page);
 } else {
 	$i = 1;
+	$exit = false;
 	while (!file_exists($i . '/' . $page)) {
-		if ($i > 10) {
+		if ($i > 200) {
 			echo '<h1>404: Not Found</h1>';
 			$exit = true;
 			break;
