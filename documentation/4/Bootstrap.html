@@ -2,7 +2,7 @@
 
 <h2>Introduction</h2>
 
-<p>The boostrap is what configures the application and starts it.  A typical boostrap will create a <a href="?p=Locator">Locator</a>, populate it with <a href="?p=Request">Request</a> and <a href="?p=Response">Response</a> object, configure the <a href="?p=Front_Controller">Front Controller</a>, and run it.</p>
+<p>The boostrap is what configures the application and starts it.  A typical boostrap will create a <a href="?p=4/Locator">Locator</a>, populate it with <a href="?p=4/Request">Request</a> and <a href="?p=4/Views">Response</a> object, configure the <a href="?p=4/Front_Controller">Front Controller</a>, and run it.</p>
 
 <p>Here is an example bootstrap:</p>
 
@@ -30,14 +30,14 @@ $Controller->run($Locator);
 echo $Response->render();
 </pre>
 
-<p>Normally, your application should only have to include one file: the <a href="?p=Locator">Locator</a>.  After autoloading has been initialized, all files are loaded manually.</p>
+<p>Normally, your application should only have to include one file: the <a href="?p=4/Locator">Locator</a>.  After autoloading has been initialized, all files are loaded manually.</p>
 
-<p>The <a href="?p=Locator">Locator</a> is a central and integral object for the Skeleton MVC classes. The Locator combines a Registry, class loader and Dependency Injection container in one object. It is passed throughout the application, and contains important objects that need to be shared among the MVC objects.  You application can use it as a simple Registry, an application context object, or not at all. More info on <a href="?p=Locator">it's documentation page</a>.</p>
+<p>The <a href="?p=4/Locator">Locator</a> is a central and integral object for the Skeleton MVC classes. The Locator combines a Registry, class loader and Dependency Injection container in one object. It is passed throughout the application, and contains important objects that need to be shared among the MVC objects.  You application can use it as a simple Registry, an application context object, or not at all. More info on <a href="?p=4/Locator">it's documentation page</a>.</p>
 
-<p>The <a href="?p=Request">Request</a> object represents the HTTP request made to run this application.  It contains things such as GET and POST data, the protocol used, access to cookies, et cetera.  <a href="?p=Request">Request</a> is need by the <a href="?p=Front_Controller">Front Controller</a>, and used by application controllers.</p>
+<p>The <a href="?p=4/Request">Request</a> object represents the HTTP request made to run this application.  It contains things such as GET and POST data, the protocol used, access to cookies, et cetera.  <a href="?p=4/Request">Request</a> is need by the <a href="?p=4/Front_Controller">Front Controller</a>, and used by application controllers.</p>
 
 <p>The <b>Mapper</b> is an object the Front and Action controllers use to map module/controller/action routes to file paths in the application directory. It is not necessary to create a Mapper object -- if you don't the Front Controller will create on for you internally. You can create a Mapper object and pass it Front Controller if you want to configure it specifically for your application You can also use ($Front->getMapper() for this). You can also replace the default Mapper with a custom or mock one. </p>
 
-<p><a href="?p=Front_Controller">Front Controller</a> is responsible for routing the HTTP request to the appropriate action controller.  It uses data in the <a href="?p=Request">Request</a> object (inside the <a href="?p=Locator">Locator</a>) to find out what action to run.  The default is to use the module, controller, and action GET parameters, but this is settable.  <a href="?p=Urls">Pathinfo</a> allows a more versitile routing system.</p>
+<p><a href="?p=4/Front_Controller">Front Controller</a> is responsible for routing the HTTP request to the appropriate action controller.  It uses data in the <a href="?p=4/Request">Request</a> object (inside the <a href="?p=4/Locator">Locator</a>) to find out what action to run.  The default is to use the module, controller, and action GET parameters, but this is settable.  <a href="?p=4/Urls">Pathinfo</a> allows a more versitile routing system.</p>
 
-<p>The last step in most applications is to output the <a href="?p=Response">Response</a>.  The Response gathers all the output in a single place. It is the top most View object in the View tree. It can be used as the only View or other View object can be attached to it as children. It also holds HTTP headers and redirects which are sent before any other output. Outputting to the browser is done simply by echoing the returned value of render(). Note that if your Controllers output the Views directly then you do not need to use a Response object. </p>
+<p>The last step in most applications is to output the <a href="?p=4/Views">Response</a>.  The Response gathers all the output in a single place. It is the top most View object in the View tree. It can be used as the only View or other View object can be attached to it as children. It also holds HTTP headers and redirects which are sent before any other output. Outputting to the browser is done simply by echoing the returned value of render(). Note that if your Controllers output the Views directly then you do not need to use a Response object. </p>

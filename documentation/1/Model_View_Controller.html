@@ -3,7 +3,7 @@
 <p>The Model-View-Controller pattern (MVC) specifies that the application code is divided in to three separate parts -- in two layers. The Model is in a lower Domain layer that should be independent from the other parts. The View and Controller are both in the Presentation layer. The Controllers stay focused just on request processing and program flow. The View is focused on only building the response that is sent back to browser. All the "business" or "domain" logic/code is separated out into a separate, lower Model layer with the goal of keeping it independent from the request/response and program flow code. This scheme has proven to make larger, more complex application easier for multiple programmers to maintain.  Here is how Skeleton implements the MVC pattern.</p>
 
 <ul>
-	<li><p><strong>Model:</strong> A_Model is corresponds to the Model in the MVC pattern.  It provides methods to manage data, interact with <a href="?p=Forms">forms</a> (which are treated as models), and other things.</p></li>
+	<li><p><strong>Model:</strong> A_Model is corresponds to the Model in the MVC pattern.  It provides methods to manage data, interact with <a href="?p=4/Forms">forms</a> (which are treated as models), and other things.</p></li>
 	<li><p><strong>View:</strong> The View is handled a large array of many classes which you can either choose from, or combine as is needed.  These include <code>A_Html</code> classes, several classes in <code>A_Http</code>, <code>A_Pagination_View</code>, and <code>A_Template</code> classes.  Each has a different purpose, and is responsible for a different kind of output.  <code>A_Http_Response</code> and <code>A_Http_View</code> are generic renderers, responsible for either a string output, or a hierarchy of sub-renderers.  <code>A_Http_Response</code> is the most commonly used.  <code>A_Html</code> classes are for dynamically generated HTML.  <code>A_Pagination</code> is a specialized renderer who's purpose is to split large data sets over several pages, for example search results.  Lastly, <code>A_Template</code> classes provide the ability to place key/value sets into text templates of different formats.</p></li>
 	<li><p><strong>Controller:</strong> <code>A_Controller_Action</code> and it's sub-classes correspond to the Controller in the MVC pattern.  They provide methods to interact with models, the Request object, and the subsequuent View.<p></li>
 </ul>
@@ -45,7 +45,7 @@ echo $greeting . ', ' . $person . '!';
 Hello, world!
 </pre>
 
-<p>This separation between different renderers is to keep responsibilities of output in separate objects.  There are many other renderer classes for other types of output.  See the <a href="?p=Views">Views</a> page for more information.</p>
+<p>This separation between different renderers is to keep responsibilities of output in separate objects.  There are many other renderer classes for other types of output.  See the <a href="?p=4/Views">Views</a> page for more information.</p>
 
 <h2>Controller</h2>
 <p>The Front Controller pattern and Action Controllers are commonly used in the implementation of the Controller part of the MVC pattern. A Controller is a specific piece of code that deals with request processing and program flow, and providing support code to deal with those things (e.g., forwards). There are three main kinds of Controllers related to this discussion.</p>
@@ -56,9 +56,9 @@ Hello, world!
 	<li>Action Controllers usually follow the Command pattern. The goal is to have them fairly minimal and just focus on the code related to a specific request. Common code is provided to them and therefore can be refactored in a structured way.</li>
 </ul>
 
-<p>Skeleton implements the Front Controller pattern and Action Controllers.  The Front Controller is implemented by <code>A_Controller_Front</code>. It is instantiated in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, the default set in the Configuration.  See the <a href="?p=Front_Controller">Front Controller</a> page for more details.</p>
+<p>Skeleton implements the Front Controller pattern and Action Controllers.  The Front Controller is implemented by <code>A_Controller_Front</code>. It is instantiated in the boostrap script and dispatches an Action Controler based on values in the Request or, absent that, the default set in the Configuration.  See the <a href="?p=4/Front_Controller">Front Controller</a> page for more details.</p>
 
-<p>Action Controllers can be plain PHP classes or they can extend the <code>A_Controller_Action</code> class to provide additional commmon functionality. Alternatively, you can use you own base Controller class, since no base class is required.  There are also several speciality classes to extend.  See the <a href="?p=Controllers">Action Controllers</a> page for more details.</p>
+<p>Action Controllers can be plain PHP classes or they can extend the <code>A_Controller_Action</code> class to provide additional commmon functionality. Alternatively, you can use you own base Controller class, since no base class is required.  There are also several speciality classes to extend.  See the <a href="?p=4/Controllers">Action Controllers</a> page for more details.</p>
 
 <h2>References</h2>
 
