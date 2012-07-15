@@ -7,7 +7,7 @@
  */
 
 /*
-// todo - add the ability to see max sizes and timeouts
+ * @todo - add the ability to see max sizes and timeouts
  * ini_set('max_input_time', 120);
 ini_set('max_execution_time', 120);
 
