@@ -231,7 +231,17 @@ class A_Controller_Helper_Load
 				}
 			} elseif ($this->locator) {
 				if ($this->locator->loadClass($class, $path)) { // load class if necessary
-					$obj = new $class(isset($args[1]) ? $args[1] : $this->locator);
+					switch (count($args)) {
+					case 1:
+						$obj = new $class($this->locator);		// no args pass Locator
+						break;
+					case 2:
+						$obj = new $class($args[1]);			// one arg
+						break;
+					default:
+						$refObj = new ReflectionClass($class);	// array as param list
+						$obj = $refObj->newInstanceArgs(array_slice($args, 1));
+					}
 				} else {
 					$this->errorMsg[] = "\$this->_load('{$this->scope}')->$type(" . (isset($args[0]) ? "'{$args[0]}'" : '') . ") call to Locator->loadClass('$class', '$path') failed. Check scope, path and class name. ";
 				}
