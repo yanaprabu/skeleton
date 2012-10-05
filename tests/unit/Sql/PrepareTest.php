@@ -29,6 +29,10 @@ class Sql_PrepareTest extends UnitTestCase {
 		$Sql_Prepare = new A_Sql_Prepare();
 		$this->assertEqual($Sql_Prepare->statement(':foo :bar :baz')->bind(array(':foo'=>1, ':bar'=>2, ':baz'=>3))->render(), "1 2 3");
 
+		// test auto-prefixing param
+		$Sql_Prepare = new A_Sql_Prepare();
+		$this->assertEqual($Sql_Prepare->statement(':foo :bar :baz')->bind(array('foo'=>1, 'bar'=>2, 'baz'=>3))->render(), "1 2 3");
+
 	}
 	
 	function testSql_PrepareMixedArgs() {

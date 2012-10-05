@@ -22,6 +22,8 @@ class A_Sql_Prepare
 	protected $numbered_args = array();	// 1-based indexed array
 	protected $sql;						// prepared sql
 	protected $quote_values = false;
+	protected $param_prefix = ':';
+	protected $param_suffix = '';
 
 	public function __construct(/*$statement, $args...*/)
 	{
@@ -37,6 +39,18 @@ class A_Sql_Prepare
 	public function setDb($db)
 	{
 		$this->db = $db;
+		return $this;
+	}
+
+	public function setParamPrefix($prefix)
+	{
+		$this->param_prefix = $prefix;
+		return $this;
+	}
+
+	public function setParamSuffix($suffix)
+	{
+		$this->param_suffix = $suffix;
 		return $this;
 	}
 
@@ -76,7 +90,7 @@ class A_Sql_Prepare
 						if (is_numeric($key2)) {
 							$this->numbered_args[$n++] = $value;
 						} else {
-							$this->named_args[$key2] = $value;
+							$this->named_args[$this->_fixParam($key2)] = $value;
 						}
 					}
 				} else {
@@ -84,7 +98,7 @@ class A_Sql_Prepare
 					if (is_numeric($key1)) {
 						$this->numbered_args[$n++] = $arg1;
 					} else {
-						$this->named_args[$key1] = $arg1;
+						$this->named_args[$this->_fixParam($key1)] = $arg1;
 					}
 				}
 			}
@@ -121,6 +135,17 @@ class A_Sql_Prepare
 			}
 		}
 		return $this->sql;
+	}
+
+	public function _fixParam($param)
+	{
+		if (substr($param, 0, 1) != $this->param_prefix) {
+			$param = $this->param_prefix . $param;
+		}
+		if ($this->param_suffix && (substr($param, -1, 1) != $this->param_suffix)) {
+			$param .= $this->param_suffix;
+		}
+		return $param;
 	}
 
 	public function __toString()
