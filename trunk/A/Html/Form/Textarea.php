@@ -24,10 +24,10 @@ class A_Html_Form_Textarea extends A_Html_Tag implements A_Renderer
 		parent::mergeAttr($attr);
 		if (!$str && isset($attr['value'])) {
 			$str = $attr['value'];
-			parent::removeAttr($attr, 'value');
+			unset($attr['value']);
 		}
-		parent::removeAttr($attr, 'type');
-		return A_Html_Tag::render('textarea', $attr, $str);
+		unset($attr['type']);
+		return parent::render('textarea', $attr, $str);
 	}
 
 }

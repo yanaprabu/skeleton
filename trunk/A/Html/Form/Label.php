@@ -24,15 +24,15 @@ class A_Html_Form_Label extends A_Html_Tag implements A_Renderer
 		parent::mergeAttr($attr);
 		if (!$str && isset($attr['value'])) {
 			$str = $attr['value'];
-			parent::removeAttr($attr, 'value');
+			unset($attr['value']);
 		}
-		parent::removeAttr($attr, 'type');
+		unset($attr['type']);
 		// label uses for instead of name because it refers to another field
 		if (! isset($attr['for']) && isset($attr['name'])) {
 			$attr['for'] = $attr['name'];
-			parent::removeAttr($attr, 'name');
+			unset($attr['name']);
 		}
-		return A_Html_Tag::render('label', $attr, $str);
+		return parent::render('label', $attr, $str);
 	}
 
 }

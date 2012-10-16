@@ -18,7 +18,7 @@ class Html_Form_RadioTest extends UnitTestCase {
 		$obj = new A_Html_Form_Radio(array('name'=>'foo'));
 		$this->assertEqual($obj->render(), '<input name="foo" type="radio" value=""/>');
 		$obj = new A_Html_Form_Radio(array('name'=>'foo', 'value'=>'bar'));
-		$this->assertEqual($obj->render(), '<input name="foo" value="bar" type="radio"/>bar');
+		$this->assertEqual($obj->render(), '<input name="foo" type="radio" value="bar"/>bar');
 	}
 	
 	function testHtml_Form_RadioStaticParams() {

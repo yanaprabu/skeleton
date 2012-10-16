@@ -15,12 +15,11 @@
  */
 class A_Html_Tag
 {
-
 	protected $_attr = array();
 
-	public function __construct($attr=array(), $value=null)
+	public function __construct($attr=null, $value=null)
 	{
-		if (is_array($attr)) {
+		if ($attr !== null) {
 			$this->_attr = $attr;
 		}
 		if ($value !== null) {
@@ -98,8 +97,10 @@ class A_Html_Tag
 
 	public function render($tag, $attr=array(), $content=null)
 	{
-		self::mergeAttr($attr);
-
+		// parents responsible for merging. If no parent then merge so behaves like other classes.
+		if (isset($this) && get_parent_class($this) === false) {
+			self::mergeAttr($attr);
+		}
 		if (isset($attr['before'])) {
 			$before = is_object($attr['before']) ? $attr['before']->render() : $attr['before'];
 			unset($attr['before']);

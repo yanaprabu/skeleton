@@ -13,7 +13,7 @@
  *
  * @package A_Html
  */
-class A_Html_Form implements A_Renderer
+class A_Html_Form extends A_Html_Tag implements A_Renderer
 {
 
 	protected $_attr = array(
@@ -33,9 +33,8 @@ class A_Html_Form implements A_Renderer
 		if (isset($this)) {
 			$content .= $this->partial($attr);
 		}
-		$attr = array_merge($this->_attr, $attr);
-		A_Html_Tag::defaultAttr($attr, array('method'=>'post', 'action'=>'', ));
-		return A_Html_Tag::render('form', $attr, $content);
+		parent::mergeAttr($attr);
+		return parent::render('form', $attr, $content);
 	}
 
 	public function partial($attr=array())
