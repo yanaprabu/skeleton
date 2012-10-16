@@ -24,9 +24,9 @@ class A_Html_A extends A_Html_Tag implements A_Renderer
 		parent::mergeAttr($attr);
 		if (!$str && isset($attr['value'])) {
 			$str = $attr['value'];
-			parent::removeAttr($attr, 'value');
+			unset($attr['value']);
 		}
-		parent::removeAttr($attr, 'type');
+		unset($attr['type']);
 		return A_Html_Tag::render('a', $attr, $str);
 	}
 

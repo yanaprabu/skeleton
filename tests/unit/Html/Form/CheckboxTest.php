@@ -18,7 +18,7 @@ class Html_Form_CheckboxTest extends UnitTestCase {
 		$obj = new A_Html_Form_Checkbox(array('name'=>'foo'));
 		$this->assertEqual($obj->render(), '<input name="foo[]" type="checkbox" value=""/>');
 		$obj = new A_Html_Form_Checkbox(array('name'=>'foo', 'value'=>'bar'));
-		$this->assertEqual($obj->render(), '<input name="foo[]" value="bar" type="checkbox"/>bar');
+		$this->assertEqual($obj->render(), '<input name="foo[]" type="checkbox" value="bar"/>bar');
 	}
 	
 	function testHtml_Form_CheckboxStaticParams() {

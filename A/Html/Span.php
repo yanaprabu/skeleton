@@ -21,10 +21,10 @@ class A_Html_Span extends A_Html_Tag implements A_Renderer
 		parent::mergeAttr($attr);
 		if (!$str && isset($attr['value'])) {
 			$str = $attr['value'];
-			parent::removeAttr($attr, 'value');
+			unset($attr['value']);
 		}
-		parent::removeAttr($attr, 'type');
-		return A_Html_Tag::render('span', $attr, $str);
+		unset($attr['type']);
+		return parent::render('span', $attr, $str);
 	}
 
 }
