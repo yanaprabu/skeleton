@@ -56,11 +56,9 @@ class A_Model_Form extends A_Model
 	 */
 	public function isValid($request=null)
 	{
-		  if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
-			$this->is_submitted = true;
+		if ($this->isSubmitted($request)) {
 			parent::isValid($request);
 		} else {
-			$this->is_submitted = false;
 			$this->error = true;
 		}
 
@@ -83,8 +81,16 @@ class A_Model_Form extends A_Model
 	/**
 	 * @return bool True if form has been validated
 	 */
-	public function isSubmitted()
+	public function isSubmitted($request=null)
 	{
+		if ($request !== null) {
+			if ((($this->method == '') || ($request->getMethod() == $this->method)) && (($this->submit_param == '') || $request->has($this->submit_param))) {
+				$this->is_submitted = true;
+			} else {
+				$this->is_submitted = false;
+			}
+		}
+
 		return $this->is_submitted;
 	}
 
