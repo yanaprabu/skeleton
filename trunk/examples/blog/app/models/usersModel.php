@@ -1,4 +1,5 @@
 <?php
+require_once('password.php');
 
 class usersModel extends A_Model {
 	
@@ -19,7 +20,6 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('access'));
 
 		$this->addRule(new A_Rule_Numeric('id', 'invalid ID'), 'id');
-		//$this->addRule(new A_Rule_Regexp('[^0-9a-zA-Z\-\ \\\']', 'firstname', 'The first name is not valid'), 'firstname'); 
 		$this->addRule(new A_Rule_Regexp('/^[A-Za-z ]+$/', 'firstname', 'The first name is not valid'), 'firstname'); 
 		$this->addRule(new A_Rule_Regexp('/^[0-9a-zA-Z\-\ \\\']+$/', 'lastname', 'The last name is not valid'), 'lastname'); 
 		$this->addRule(new A_Rule_Length(3, 15, 'username', 'The username must be between 3 to 25 characters'), 'username'); 
@@ -70,7 +70,7 @@ class usersModel extends A_Model {
 	}
 	
 	public function delete($id){}	
-
+		
 	public function login($username, $password, $sitesalt) {
 		$this->errorMsg = array();
 
@@ -78,7 +78,17 @@ class usersModel extends A_Model {
 		if($result->numRows() > 0) {
 			$row = $result->current();
 			if ($row['username'] == $username) { 
-				if ($row['password'] == hash('sha512', $row['usersalt'] . $password . $sitesalt)) {
+				if (password_verify($password, $row['password'])) { 
+					// hardcoded now, should be placed in system config
+					$algorithm = PASSWORD_BCRYPT;
+					$options = array('cost' => 7);
+					// check if hash needs rehash
+					if (password_needs_rehash($row['password'], $algorithm, $options)) { 
+						$hash = password_hash($password, $algorithm, $options);
+						$this->updateUser( array('password' => $hash) , $row['id']);
+					}
+				
+				//if ($row['password'] == hash('sha512', $row['usersalt'] . $password . $sitesalt)) {
 					return $row;
 				} else {
 					$this->errorMsg[] = 'Password does not match. ';
@@ -132,11 +142,11 @@ class usersModel extends A_Model {
 		}
 	}
 	
-	public function isPasswordCorrect($username, $password, $sitesalt){
+	public function isPasswordCorrect($username, $password){
 		$result = $this->datasource->find(array('username'=>$username, 'active'=>1));
 		if($result->numRows() > 0) {
 			$row = $result->current();
-			if ($row['password'] == hash('sha512', $row['usersalt'] . $password . $sitesalt)) {
+			if (password_verify($password, $row['password'])) {
 				return true;
 			} else {
 				return false;
@@ -150,13 +160,12 @@ class usersModel extends A_Model {
 		return md5(uniqid(rand(), true));
 	}
 
-	public function insertUser($username, $password, $email, $activationkey, $usersalt, $sitesalt){
-		$user_hash = hash('sha512', $usersalt . $password . $sitesalt);
+	public function insertUser($username, $password, $email, $activationkey){
+		$user_hash = password_hash($password, PASSWORD_BCRYPT);
 		$this->datasource->insert(array(
 								'username'		=>$username,
 								'email'			=>$email,
 								'password'		=>$user_hash, 
-								'usersalt' 		=> $usersalt, 
 								'activationkey'	=>$activationkey
 								));
 	}
