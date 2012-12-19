@@ -39,7 +39,7 @@ class A_Sql_Expression extends A_Sql_Statement
 
 	public function quoteEscape($value)
 	{
-		if (is_numeric($value)) {
+		if (is_numeric($value) && !is_string($value)) {
 			return $value;
 		}
 		$value = $this->db ? $this->db->escape($value) : addslashes($value);
