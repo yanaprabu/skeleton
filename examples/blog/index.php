@@ -2,6 +2,9 @@
 ini_set('error_reporting', E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 ini_set('log_errors', 'On');
+
+require_once('app/models/password.php');
+
 // Just for debugging 
 function dump($var=null, $name='', $now=false) {
 	static $output = '';
@@ -33,7 +36,7 @@ $ConfigArray = array(
     'PATH' => $file_path . '/',
     'APP' => $file_path . '/app',
     'LIB' => $file_path . '/../../',     // will be $file_path . '/library'
-	'SITESALT' => 'SoMe_HaRdCoDeD_StRiNg',
+	'SITESALT' => 'SoMe_HaRdCoDeD_StRiNg'
     );
 
 // Init autoload using Locator

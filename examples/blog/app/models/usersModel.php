@@ -1,11 +1,15 @@
 <?php
-require_once('password.php');
+
 
 class usersModel extends A_Model {
 	
 	protected $errorMsg = array();
 		
 	protected $dbh = null;
+	
+	protected $hashalgo = null;
+	
+	protected $hashoptions = null;
 	
 	public function __construct($locator){
 		
@@ -35,6 +39,10 @@ class usersModel extends A_Model {
 		$this->datasource = new A_Db_Tabledatagateway($db, 'users', 'id');
 		// set the field names for the Gateway to fetch
 		$this->datasource->columns($this->getFieldNames());
+		
+		// set up hash options
+		$this->hashalgo = PASSWORD_BCRYPT;
+		$this->hashoptions = array('cost' => 7);
 	}
 	
 	public function getStatus(){
@@ -77,18 +85,17 @@ class usersModel extends A_Model {
 		$result = $this->datasource->find(array('username'=>$username, 'active'=>1));
 		if($result->numRows() > 0) {
 			$row = $result->current();
+			// check username match
 			if ($row['username'] == $username) { 
+				// check password match
 				if (password_verify($password, $row['password'])) { 
-					// hardcoded now, should be placed in system config
-					$algorithm = PASSWORD_BCRYPT;
-					$options = array('cost' => 7);
 					// check if hash needs rehash
-					if (password_needs_rehash($row['password'], $algorithm, $options)) { 
-						$hash = password_hash($password, $algorithm, $options);
+					if (password_needs_rehash($row['password'], $this->hashalgo, $this->hashoptions)) { 
+						// if so create the hash
+						$hash = password_hash($password, $this->hashalgo, $this->hashoptions);
+						// and update hash in user data
 						$this->updateUser( array('password' => $hash) , $row['id']);
 					}
-				
-				//if ($row['password'] == hash('sha512', $row['usersalt'] . $password . $sitesalt)) {
 					return $row;
 				} else {
 					$this->errorMsg[] = 'Password does not match. ';
@@ -161,7 +168,7 @@ class usersModel extends A_Model {
 	}
 
 	public function insertUser($username, $password, $email, $activationkey){
-		$user_hash = password_hash($password, PASSWORD_BCRYPT);
+		$user_hash = password_hash($password, $this->hashalgo, $this->hashoptions);
 		$this->datasource->insert(array(
 								'username'		=>$username,
 								'email'			=>$email,

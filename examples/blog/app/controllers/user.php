@@ -152,40 +152,6 @@ class user extends A_Controller_Action {
 		
 	}
 	
-	public function test($locator) {
-		$errmsg = '';
-		$model = $this->_load('app')->model('users');
-		echo '<pre>';$t = null;var_dump($t);$s = (bool)$t;var_dump($s);
-	//	$findAll 				= $model->findAll();
-	//		echo '<br>findAll:<br> ';var_dump($findAll);
-	//	$findAlltoArray				= $model->findAll()->toArray();
-	//		echo '<hr><br>findAll->toArray:<br> ';var_dump($findAlltoArray);
-	//	$find 					= $model->find(1);
-	//		echo '<hr><br>find:<br> ';var_dump($find);
-	//	$isUsernameAvailable 	= $model->isUsernameAvailable('test'); 
-	//		echo '<hr><br>isUsernameAvailable: doesnotexist<br> ';var_dump($isUsernameAvailable);
-	//	$isUsernameAvailable 	= $model->isUsernameAvailable('matthijs'); 
-	//		echo '<hr><br>isUsernameAvailable: matthijs<br> ';var_dump($isUsernameAvailable);
-		$isEmailAvailable 		= $model->isEmailAvailable('doesnotexist@gmail.com');
-			echo '<hr><br>isEmailAvailable: doesnotexist@gmail.com<br> ';var_dump($isEmailAvailable);
-			$model->updateUser(array('username'=>'ma\'tthijs'), 29);
-	//	$isEmailAvailable 		= $model->isEmailAvailable('matt@mail.com');
-	//		echo '<hr><br>isEmailAvailable: matt@mail.com<br> ';var_dump($isEmailAvailable);
-	//	$isAccountActivated 	= $model->isAccountActivated('matt', 'matthijsenator@gmail.com');
-	//		echo '<hr><br>isAccountActivated:<br> matt, matthijsenator@gmail.com';var_dump($isAccountActivated);
-	//	$isAccountActivated 	= $model->isAccountActivated('henk', 'matthijsabeelen@gmail.com');
-	//		echo '<hr><br>isAccountActivated:<br> henk, matthijsabeelen@gmail.com ';var_dump($isAccountActivated);	
-	//	$isPasswordCorrect 		= $model->isPasswordCorrect('henk','secret', $locator->get('Config')->get('SITESALT'));
-	//		echo '<hr><br>isPasswordCorrect:<br> henk, secret ';var_dump($isPasswordCorrect);
-	//		$isPasswordCorrect 		= $model->isPasswordCorrect('matt','test', $locator->get('Config')->get('SITESALT'));
-	//			echo '<hr><br>isPasswordCorrect:<br> matt, test ';var_dump($isPasswordCorrect);
-				
-			echo '<hr>';
-		echo '</pre>';	
-		$this->response->setPartial('maincontent', 'user/activate', array('errmsg' => $model->getErrorMsg(' ')));
-	}
-	
-
 	private function mailActivationMessage($email, $activationlink){
 		$subject = 'Registration at this app';
 		$message = 'Thanks for registering, ' . "\n\r";
