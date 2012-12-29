@@ -118,7 +118,9 @@ class A_Html_Tag
 		if ($tag) {
 			$str = '<' . $tag;
 			foreach ($attr as $name=>$value) {
-				$str .= " $name=\"$value\"";
+				if (is_scalar($name) && is_scalar($value)) {
+					$str .= " $name=\"$value\"";
+				}
 			}
 			if ($content === null) {
 				$str .= '/>';
