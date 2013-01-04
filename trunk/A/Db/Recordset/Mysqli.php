@@ -35,7 +35,7 @@ class A_Db_Recordset_Mysqli extends A_Db_Recordset_Base
 	public function numRows()
 	{
 		if ($this->result) {
-			return $this->result->num_rows();
+			return $this->result->num_rows;
 		} else {
 			return 0;
 		}
@@ -49,16 +49,16 @@ class A_Db_Recordset_Mysqli extends A_Db_Recordset_Base
 	public function numCols()
 	{
 		if ($this->result) {
-			return $this->result->field_count();
+			return $this->result->field_count;
 		} else {
 			return 0;
 		}
 	}
 
 	/**
-	 * __call
+	 * __get
 	 *
-	 * Magic function __call, redirects to instance of Mysqli_Result
+	 * Magic function __get, redirects to instance of Mysqli_Result
 	 *
 	 * @param string $function Property to access
 	 */
