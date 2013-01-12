@@ -39,6 +39,7 @@ abstract class A_Db_Adapter
 	protected $_error = 0;
 	protected $_errorMsg = '';
 	protected $_currentDatabase = null;
+	protected $_characterSet = '';
 
 	/**
 	 * Constructor.
@@ -109,7 +110,7 @@ abstract class A_Db_Adapter
 	public function setException($class)
 	{
 		if ($class === true) {
-			$this->_exception = 'A_Db_Exception';
+			$this->_exception = 'Exception';
 		} else {
 			$this->_exception = $class;
 		}
@@ -158,6 +159,20 @@ abstract class A_Db_Adapter
 	}
 
 	/**
+	 * Prepared statement.
+	 *
+	 * @param string|A_Sql_* SQL query to execute.  Can be string or a A_Sql object.
+	 * @bind array of key/value pairs
+	 * @return $prepare
+	 */
+	public function prepare($sql, $bind=array())
+	{
+		$prepare = new A_Sql_Prepare($sql, $bind);
+		$prepare->setDb($this);
+		return $prepare;
+	}
+
+	/**
 	 * Supplied by child class - Open connection as specified by $config
 	 *
 	 * @return $this
@@ -168,6 +183,7 @@ abstract class A_Db_Adapter
 	 * Executes a query against the database.  If no connection exists, an attempt is made to connect.
 	 *
 	 * @param string|A_Sql_* SQL query to execute.  Can be string or a A_Sql object.
+	 * @bind array of key/value pairs
 	 * @return A_Db_Recordset_Base
 	 */
 	public function query($sql, $bind=array())
@@ -175,15 +191,13 @@ abstract class A_Db_Adapter
 		if (is_object($sql)) {
 			$sql = $sql->render($this);
 		}
-		if ($bind) {
-			$prepare = new A_Sql_Prepare($sql, $bind);
-			$prepare->setDb($this);
-			$sql = $prepare->render();
-		}
-
 		$this->connect();
 		if ($this->_connection) {
+echo "Adding $sql<br/>";
 			$this->_sql[] = $sql;
+			if ($bind) {
+				$this->prepare($sql, $bind);
+			}
 			return $this->_query($sql);
 		} else {
 			$this->_errorHandler(3, 'No connection. ');

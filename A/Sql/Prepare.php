@@ -137,6 +137,20 @@ class A_Sql_Prepare
 		return $this->sql;
 	}
 
+	/**
+	 * Compatability function to match PDO, mysqli, etc.
+	 */
+	public function execute($db=null)
+	{
+		if ($db === null) {
+			$db = $this->db;
+		}
+		if ($db) {
+			$sql = $this->render($db);
+			return $db->query($sql);
+		}
+	}
+
 	public function _fixParam($param)
 	{
 		if (substr($param, 0, 1) != $this->param_prefix) {
