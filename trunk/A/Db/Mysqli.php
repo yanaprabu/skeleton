@@ -24,16 +24,49 @@ class A_Db_Mysqli extends A_Db_Adapter
 	protected function _connect()
 	{
 		$this->_connection = new Mysqli($this->_config['host'], $this->_config['username'], $this->_config['password']);
-		$this->_errorHandler($this->_connection->errno, $this->_connection->error);
-		if (isset($this->_config['database'])) {
-			$result = $this->_connection->select_db($this->_config['database']);
+		if (! $this->_connection->connect_errno) {
+			if (isset($this->_config['database'])) {
+				$result = $this->_connection->select_db($this->_config['database']);
+				$this->_errorHandler($this->_connection->errno, $this->_connection->error);
+			}
+			$this->_characterSet = $this->_connection->character_set_name();
+			$this->_connection->set_charset($this->_characterSet);
+		} else {
 			$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		}
 	}
 
+	/**
+	 * Prepared statement.
+	 *
+	 * @param string|A_Sql_* SQL query to execute.  Can be string or a A_Sql object.
+	 * @bind array of key/value pairs
+	 * @return $prepare
+	 */
+	public function prepare($sql, $bind=array())
+	{
+		$this->_stmt = $this->_connection->prepare($sql);
+		if ($bind) {
+			$types = '';
+			$params =array();
+			foreach (array_keys($bind) as $key) {
+				$params[$key] = &$bind[$key];
+				$types .= is_numeric($bind[$key]) && !is_string($bind[$key]) ? 'd' : 's';
+			}
+			array_unshift($params, $types);
+			call_user_func_array(array($this->_stmt, 'bind_param'), $params); 
+		}
+		return $this->_stmt;
+	}
+
 	protected function _query($sql)
 	{
-		$result = $this->_connection->query($sql);
+		if (isset($this->_stmt)) {
+			$this->_stmt->execute();
+			$result = $this->_stmt->get_result();
+		} else {
+			$result = $this->_connection->query($sql);
+		}
 		$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		if ($result && $this->queryHasResultSet($sql)) {
 			$this->_numRows = $result->num_rows;
@@ -104,7 +137,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 
 	public function escape($value)
 	{
-		return $this->_connection->escape_string($value);
+		return $this->_connection->real_escape_string($value);
 	}
 
 	protected function _lastId()
