@@ -16,7 +16,7 @@
 class A_Exception
 {
 
-	public static function getInstance($class_or_obj, $message)
+	public static function getInstance($class_or_obj, $message, $code=0)
 	{
 		$obj = null;
 		if (is_string($class_or_obj)) {
@@ -25,7 +25,7 @@ class A_Exception
 				include $file_name;
 			}
 			if (class_exists($class_or_obj)) {
-				$obj = new $class_or_obj($message);
+				$obj = new $class_or_obj($message, $code);
 			}
 		} elseif ($class_or_obj instanceof Exception) {
 			return $class_or_obj;
