@@ -29,8 +29,11 @@ class A_Locator
 	protected $_inject = array();
 	protected $_extension = '.php';
 	protected $_has_srip = true;
+	protected $_error = 0;
+	protected $_errorMsg = '';
+	protected $_exception = false;
 
-	public function __construct($dir=false)
+	public function __construct($dir=false, $exception=false)
 	{
 		if ($dir) {
 			if (is_array($dir)) {
@@ -47,6 +50,9 @@ class A_Locator
 		}
 		// @todo remove after support for <5.3.2 dropped
 		$this->_has_srip = function_exists('steam_resolve_include_path');
+		if ($exception) {
+			$this->exception = $exception === true ? 'Exception' : $exception;
+		}
 	}
 
 	/**
@@ -164,7 +170,12 @@ class A_Locator
 		} else {
 			$result = (@include($path)) !== false;
 		}
-		return $result && class_exists($class, $autoload);
+		if ($result && (class_exists($class, $autoload) || interface_exists($class, $autoload))) {
+			return true;
+		}  else {
+			$this->_errorHandler(1, "A_Locator loadClass error: include('$path') failed. class=$class, dir=$dir, file=$file.");
+			return false;
+		}
 	}
 
 	/**
@@ -297,6 +308,29 @@ class A_Locator
 	public function autoload()
 	{
 		return spl_autoload_register(array($this, 'loadClass'));
+	}
+
+	public function isError()
+	{
+		return $this->_error;
+	}
+
+	public function getErrorMsg($separator=null)
+	{
+		if ($separator === null) {
+			return $this->_errorMsg;
+		} else {
+			return implode($separator, $this->_errorMsg);
+		}
+	}
+
+	protected function _errorHandler($errno, $errorMsg)
+	{
+		$this->_error = $errno;
+		$this->_errorMsg[$errno] = $errorMsg;
+		if ($errno && $this->_exception) {
+			throw A_Exception::getInstance($this->_exception, $errorMsg);
+		}
 	}
 
 }
