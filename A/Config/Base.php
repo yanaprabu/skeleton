@@ -19,12 +19,25 @@ abstract class A_Config_Base extends A_Collection
 	protected $_filename;
 	protected $_section;
 	protected $_exception;
+	protected $_config_method = 'config';
 	protected $_error = 0;
 	protected $_errorMsg = '';
 
 	public function __construct($filename='', $section='', $exception=null)
 	{
-		$this->_filename = $filename;
+		if (is_array($filename)) {
+			if (isset($filename['filename'])) {
+				$this->_filename = $filename['filename'];
+			}
+			if (isset($filename['section'])) {
+				$this->_section = $filename['section'];
+			}
+			if (isset($filename['exception'])) {
+				$this->_exception = $filename['exception'];
+			}
+		} else {
+			$this->_filename = $filename;
+		}
 		$this->_section = $section;
 		$this->_exception = $exception;
 	}
@@ -88,7 +101,7 @@ abstract class A_Config_Base extends A_Collection
 	protected function configure($obj)
 	{
 		$class = get_class($obj);
-		if (($class !== false) && $this->has($class) && method_exists($obj, 'config')) {
+		if (($class !== false) && $this->has($class) && method_exists($obj, $this->_config_method)) {
 			$obj->config($this->get($class));
 		}
 	}
