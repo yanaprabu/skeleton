@@ -19,7 +19,7 @@ function show_test_in_dir($base_dir, $dir) {
 			$classname = $baseclassname . substr($filename, 0, strlen($filename)-$length_ext);
 			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$classname</a></li>\n";
 			$contains_tests = true;
-		} elseif (is_dir($testfile) && ! in_array($filename, array('.', '..'))) {			// show only dirs but not ./..
+		} elseif (is_dir($testfile) && ! in_array($filename, array('.', '..', 'includes', 'models', 'templates', 'includes'))) {			// show only dirs but not ./..
 			echo "<li><a href=\"all_tests.php?test=$dir$filename\">$filename</a>\n";
 			if (show_test_in_dir($base_dir, "$dir$filename/")) {
 				$contains_tests = true;
