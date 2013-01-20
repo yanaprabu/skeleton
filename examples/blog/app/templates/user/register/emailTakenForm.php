@@ -38,4 +38,3 @@
 		Already got an account? <a href="user/login/">Please Sign In!</a>
 	</div>
 </form>
-

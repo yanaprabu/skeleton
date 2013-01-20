@@ -24,6 +24,7 @@ CREATE TABLE `users` (
 	`active` char(1) NOT NULL DEFAULT '0',
 	`access` varchar(255),
 	`activationkey` varchar(32) NOT NULL,
+	`resetkey` varchar(32) NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -31,9 +32,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 -- 
 
-INSERT INTO `users` VALUES (1, 'matt', '', 'matt', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'matt@mail.com', '1', 'post|admin', '');
-INSERT INTO `users` VALUES (2, 'chris', '', 'chris', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'chris@mail.com', '1', 'post|admin', '');
-INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'jonah@mail.com', '1', 'post|admin', '');
+INSERT INTO `users` VALUES (1, 'matt', '', 'matt', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'matt@mail.com', '1', 'post|admin', '', '');
+INSERT INTO `users` VALUES (2, 'chris', '', 'chris', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'chris@mail.com', '1', 'post|admin', '', '');
+INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'jonah@mail.com', '1', 'post|admin', '', '');
 
 -- --------------------------------------------------------
 
