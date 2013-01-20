@@ -77,12 +77,22 @@ class usersModel extends A_Model {
 		}
 	}
 	
+	public function findByEmail($email) {
+		$result = $this->datasource->find(array('email'=>$email));
+		if($result->numRows() > 0) {
+			return $result->current();
+		} else {
+			return array();
+		}
+	}
+	
 	public function delete($id){}	
 		
-	public function login($username, $password, $sitesalt) {
+	public function login($username, $password) {
 		$this->errorMsg = array();
 
 		$result = $this->datasource->find(array('username'=>$username, 'active'=>1));
+		
 		if($result->numRows() > 0) {
 			$row = $result->current();
 			// check username match
@@ -98,10 +108,10 @@ class usersModel extends A_Model {
 					}
 					return $row;
 				} else {
-					$this->errorMsg[] = 'Password does not match. ';
+					$this->errorMsg[] = 'Username and/or password are not correct.';
 				}
 			} else {
-				$this->errorMsg[] = 'Username not found.';
+				$this->errorMsg[] = 'Username and/or password are not correct.';
 			}
 		} else {
 			$this->errorMsg[] = $this->datasource->getErrorMsg();
@@ -216,12 +226,38 @@ class usersModel extends A_Model {
 		return false;
 	}
 	
-	public function newPassword($username){
-		// Is this username registered?
-		// If not: user made a typo or user has no account. Show New Password form + message about the error + link to register form
-		
-		// If yes: reset/regenerate password + send email + show signin screen with prefilled username + message
-		
+	public function insertResetkey($resetkey, $id) {
+		$data = array('resetkey'=>$resetkey);
+		$result = $this->datasource->update($data, array('id'=>$id));
+		if($result->numRows() > 0) {
+			$this->errorMsg[] = 'User resetkey inserted';
+			return true;
+		} else {
+			$this->errorMsg[] = 'User resetkey could not be inserted';
+			return false;
+		}
+	}
+	
+	public function findResetkey($resetkey){
+		$result = $this->datasource->find(array('resetkey'=>$resetkey));
+		if($result->numRows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function resetPassword($password, $resetkey){
+		$result = $this->datasource->find(array('resetkey'=>$resetkey));
+		if($result->numRows() > 0) {
+			$user_hash = password_hash($password, $this->hashalgo, $this->hashoptions);
+			// insert new password and delete resetkey
+			$result = $this->datasource->update(array('password'=>$user_hash, 'resetkey'=>''), array('resetkey'=>$resetkey));
+			return true;
+		} else {
+			$this->errorMsg[] = 'Password could not be reset';
+			return false;
+		}
 	}
 	
 }
