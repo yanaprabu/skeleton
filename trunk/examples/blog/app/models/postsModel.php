@@ -33,10 +33,10 @@ class postsModel extends A_Model {
 					COUNT(c.`id`) as 'nocomms',
 					u.`username`
 				FROM 
-					`posts` p
+					`blog_posts` p
 
-				LEFT JOIN `users` u ON u.`id` = p.`users_id`
-				LEFT JOIN `comments` c ON c.`posts_id` = p.`id` 
+				LEFT JOIN `blog_users` u ON u.`id` = p.`users_id`
+				LEFT JOIN `blog_comments` c ON c.`posts_id` = p.`id` 
 				WHERE
 				 	p.`active` = 1
 				AND
@@ -61,9 +61,9 @@ class postsModel extends A_Model {
 					COUNT(c.`id`) as 'nocomms',
 					u.`username`
 				FROM 
-					`posts` p
-				LEFT JOIN `users` u ON u.`id` = p.`users_id`
-				LEFT JOIN `comments` c ON c.`posts_id` = p.`id` 
+					`blog_posts` p
+				LEFT JOIN `blog_users` u ON u.`id` = p.`users_id`
+				LEFT JOIN `blog_comments` c ON c.`posts_id` = p.`id` 
 				WHERE
 				 	p.`active` = 1
 				GROUP BY p.`id`
