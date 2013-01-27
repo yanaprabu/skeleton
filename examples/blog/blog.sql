@@ -1,11 +1,11 @@
 
-DROP TABLE IF EXISTS `tags2posts`;
-DROP TABLE IF EXISTS `tags`;
-DROP TABLE IF EXISTS `categories2posts`;
-DROP TABLE IF EXISTS `categories`;
-DROP TABLE IF EXISTS `comments`;
-DROP TABLE IF EXISTS `posts`;
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `blog_tags2posts`;
+DROP TABLE IF EXISTS `blog_tags`;
+DROP TABLE IF EXISTS `blog_categories2posts`;
+DROP TABLE IF EXISTS `blog_categories`;
+DROP TABLE IF EXISTS `blog_comments`;
+DROP TABLE IF EXISTS `blog_posts`;
+DROP TABLE IF EXISTS `blog_users`;
 
 -- --------------------------------------------------------
 
@@ -13,13 +13,12 @@ DROP TABLE IF EXISTS `users`;
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `blog_users` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`firstname` varchar(255) NOT NULL,
 	`lastname` varchar(255) NOT NULL,
 	`username` varchar(255) NOT NULL,
 	`password` varchar(255) NOT NULL,
-	`usersalt` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
 	`access` varchar(255),
@@ -32,9 +31,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 -- 
 
-INSERT INTO `users` VALUES (1, 'matt', '', 'matt', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'matt@mail.com', '1', 'post|admin', '', '');
-INSERT INTO `users` VALUES (2, 'chris', '', 'chris', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'chris@mail.com', '1', 'post|admin', '', '');
-INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', '5135fc59c054205ebb0b9b478058c0e8cc3d5c14747caa7862a32e69b8002a48492dc51abd92d512508c03e9691e056f6c77ff65e6431fe19cbcb847f08a79d5', '41120729312994246094d73a561ab95a6.75419925', 'jonah@mail.com', '1', 'post|admin', '', '');
+INSERT INTO `blog_users` VALUES (1, 'matt', '', 'matt', '$2y$07$4FFaGBXJa01VYHalkDSF2.Fu4BJVsMnGSRRDfmmZ.3v9ez1e5KDb6', 'matt@mail.com', '1', 'post|admin', '', '');
+INSERT INTO `blog_users` VALUES (2, 'chris', '', 'chris', '$2y$07$PRrR/RVRvN7f7w8XC4tCr.NkeArt.a2ZzpsmBupeXPyKf9I/rMi1S', 'chris@mail.com', '1', 'post|admin', '', '');
+INSERT INTO `blog_users` VALUES (3, 'jonah', '', 'jonah', '$2y$07$PRrR/RVRvN7f7w8XC4tCr.NkeArt.a2ZzpsmBupeXPyKf9I/rMi1S', 'jonah@mail.com', '1', 'post|admin', '', '');
 
 -- --------------------------------------------------------
 
@@ -42,7 +41,7 @@ INSERT INTO `users` VALUES (3, 'jonah', '', 'jonah', '5135fc59c054205ebb0b9b4780
 -- Table structure for table `posts`
 --
 
-CREATE TABLE `posts` (
+CREATE TABLE `blog_posts` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`post_date` datetime NOT NULL default '0000-00-00 00:00:00',
 	`permalink` varchar(255) NOT NULL,
@@ -61,8 +60,8 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 -- 
 
-INSERT INTO `posts` VALUES (1, '2010-01-24 00:00:00', 'my-first-post', 'My first post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 0, 'post', 1, '1');
-INSERT INTO `posts` VALUES (2, '2010-01-21 00:00:00', 'the-second-post', 'The second post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 1, 'post', 2, '1');
+INSERT INTO `blog_posts` VALUES (1, '2010-01-24 00:00:00', 'my-first-post', 'My first post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 0, 'post', 1, '1');
+INSERT INTO `blog_posts` VALUES (2, '2010-01-21 00:00:00', 'the-second-post', 'The second post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in. Aliquam nulla nisi, aliquam sed lacinia nec, iaculis eu est. Quisque tristique pellentesque iaculis. Sed ut nulla et elit pharetra aliquam ultricies posuere nulla. Praesent sed tristique mauris. Phasellus venenatis sollicitudin accumsan. Aenean quis ante libero. Nulla nec consequat erat. In tincidunt mattis lectus, consequat pretium enim volutpat sed. Nulla pellentesque dapibus lectus sed scelerisque. ', 1, 'post', 2, '1');
 
 
 
@@ -72,7 +71,7 @@ INSERT INTO `posts` VALUES (2, '2010-01-21 00:00:00', 'the-second-post', 'The se
 -- Table structure for table `comments`
 --
 
-CREATE TABLE `comments` (
+CREATE TABLE `blog_comments` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`author` VARCHAR(255) NOT NULL,
 	`author_email` VARCHAR(255) NOT NULL,
@@ -90,7 +89,7 @@ CREATE TABLE `comments` (
 -- Dumping data for table `comments`
 --
 
-INSERT INTO `comments` 
+INSERT INTO `blog_comments` 
 (`id`,`author`,`author_email`,`author_url`,`users_id`,`comment_date`,`comment`,`approved` ,`posts_id`)
 VALUES 
 (NULL , 'Matt', 'matt@mail.com', 'mysite.com', 0, '2010-02-02 00:00:00', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo convallis lectus, quis condimentum neque pretium in.', '1', '1'),
@@ -102,7 +101,7 @@ VALUES
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
+CREATE TABLE `blog_categories` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	`parent` INT UNSIGNED NOT NULL DEFAULT '0',
@@ -113,8 +112,8 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 -- 
 
-INSERT INTO `categories` VALUES (1, 'php', 0);
-INSERT INTO `categories` VALUES (2, 'mysql', 0);
+INSERT INTO `blog_categories` VALUES (1, 'php', 0);
+INSERT INTO `blog_categories` VALUES (2, 'mysql', 0);
 
 -- --------------------------------------------------------
 
@@ -122,7 +121,7 @@ INSERT INTO `categories` VALUES (2, 'mysql', 0);
 -- Table structure for table `categories2posts`
 --
 
-CREATE TABLE `categories2posts` (
+CREATE TABLE `blog_categories2posts` (
 	`categories_id` INT(10) UNSIGNED NOT NULL,
 	`posts_id` INT(10) UNSIGNED NOT NULL,   
 	PRIMARY KEY (`categories_id`, `posts_id`),  
@@ -141,7 +140,7 @@ CREATE TABLE `categories2posts` (
 -- Table structure for table `tags`
 --
 
-CREATE TABLE `tags` (
+CREATE TABLE `blog_tags` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL,
 	PRIMARY KEY  (`id`)
@@ -151,8 +150,8 @@ CREATE TABLE `tags` (
 -- Dumping data for table `tags`
 -- 
 
-INSERT INTO `tags` VALUES (1, 'php');
-INSERT INTO `tags` VALUES (2, 'sql');
+INSERT INTO `blog_tags` VALUES (1, 'php');
+INSERT INTO `blog_tags` VALUES (2, 'sql');
 
 -- --------------------------------------------------------
 
@@ -160,7 +159,7 @@ INSERT INTO `tags` VALUES (2, 'sql');
 -- Table structure for table `tags2posts`
 --
 
-CREATE TABLE `tags2posts` (
+CREATE TABLE `blog_tags2posts` (
 	`tags_id` INT(10) UNSIGNED NOT NULL,
 	`posts_id` INT(10) UNSIGNED NOT NULL,   
 	PRIMARY KEY (`tags_id`, `posts_id`),  

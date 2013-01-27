@@ -18,7 +18,6 @@ class usersModel extends A_Model {
 		$this->addField(new A_Model_Field('lastname'));
 		$this->addField(new A_Model_Field('username'));
 		$this->addField(new A_Model_Field('password'));
-		$this->addField(new A_Model_Field('usersalt'));
 		$this->addField(new A_Model_Field('email'));
 		$this->addField(new A_Model_Field('active'));
 		$this->addField(new A_Model_Field('access'));
@@ -36,7 +35,7 @@ class usersModel extends A_Model {
 		// create a Gateway style datasource for the Model
 		$db = $locator->get('Db');
 		$db->connect();
-		$this->datasource = new A_Db_Tabledatagateway($db, 'users', 'id');
+		$this->datasource = new A_Db_Tabledatagateway($db, 'blog_users', 'id');
 		// set the field names for the Gateway to fetch
 		$this->datasource->columns($this->getFieldNames());
 		
@@ -95,15 +94,10 @@ class usersModel extends A_Model {
 		
 		if($result->numRows() > 0) {
 			$row = $result->current();
-			// check username match
 			if ($row['username'] == $username) { 
-				// check password match
 				if (password_verify($password, $row['password'])) { 
-					// check if hash needs rehash
 					if (password_needs_rehash($row['password'], $this->hashalgo, $this->hashoptions)) { 
-						// if so create the hash
 						$hash = password_hash($password, $this->hashalgo, $this->hashoptions);
-						// and update hash in user data
 						$this->updateUser( array('password' => $hash) , $row['id']);
 					}
 					return $row;
