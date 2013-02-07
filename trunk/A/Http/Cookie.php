@@ -14,7 +14,7 @@
  *
  * @package A_Http
  */
-class A_Http_Cookie implements A_Renderer
+class A_Http_Cookie
 {
 	protected $expire = 0;
 	protected $path = '';

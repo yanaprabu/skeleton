@@ -13,7 +13,7 @@
  *
  * @package A_Template
  */
-class A_Template_Smarty extends Smarty implements A_Renderer
+class A_Template_Smarty extends Smarty
 {
 
 	protected $filename;

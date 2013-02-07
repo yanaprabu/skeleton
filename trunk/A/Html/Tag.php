@@ -53,9 +53,6 @@ class A_Html_Tag
 	{
 		if ($key) {
 			unset($attr[$key]);
-			if (isset($this->_attr[$key])) {
-				unset($this->_attr[$key]);
-			}
 		}
 	}
 

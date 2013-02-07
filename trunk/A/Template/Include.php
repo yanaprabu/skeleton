@@ -13,7 +13,7 @@
  *
  * @package A_Template
  */
-class A_Template_Include extends A_Template_Base implements A_Renderer
+class A_Template_Include extends A_Template_Base
 {
 
 	public function partial($template, $data=null)

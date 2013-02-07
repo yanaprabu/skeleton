@@ -13,7 +13,7 @@
  *
  * @package A_Http
  */
-class A_Http_View implements A_Renderer
+class A_Http_View
 {
 
 	protected $data = array();
