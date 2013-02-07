@@ -193,7 +193,6 @@ abstract class A_Db_Adapter
 		}
 		$this->connect();
 		if ($this->_connection) {
-//echo "Adding $sql<br/>";
 			$this->_sql[] = $sql;
 			if ($bind) {
 				$this->prepare($sql, $bind);
