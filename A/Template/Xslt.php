@@ -13,7 +13,7 @@
  *
  * @package A_Template
  */
-class A_Template_Xslt extends A_Template_Base implements A_Renderer
+class A_Template_Xslt extends A_Template_Base
 {
 
 	protected $filenamexml = '';

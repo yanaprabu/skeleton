@@ -13,7 +13,7 @@
  *
  * @package A_Cli
  */
-class A_Cli_View implements A_Renderer
+class A_Cli_View
 {
 
 	protected $data = array();

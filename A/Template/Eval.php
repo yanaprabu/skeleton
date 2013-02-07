@@ -13,7 +13,7 @@
  *
  * @package A_Template
  */
-class A_Template_Eval extends A_Template_File implements A_Renderer
+class A_Template_Eval extends A_Template_File
 {
 
 	protected $str = '';

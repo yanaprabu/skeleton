@@ -13,7 +13,7 @@
  *
  * @package A_Html
  */
-class A_Html_Form_Fieldset extends A_Html_Tag implements A_Renderer
+class A_Html_Form_Fieldset extends A_Html_Tag
 {
 
 	public function render($attr=array(), $str='')	// $str not null to force end tag

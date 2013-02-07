@@ -13,7 +13,7 @@
  *
  * @package A_Html
  */
-class A_Html_Form_Submit extends A_Html_Tag implements A_Renderer
+class A_Html_Form_Submit extends A_Html_Tag
 {
 
 	/*
