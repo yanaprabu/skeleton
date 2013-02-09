@@ -64,6 +64,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 		if (isset($this->_stmt)) {
 			$this->_stmt->execute();
 			$result = $this->_stmt->get_result();
+			unset($this->_stmt);
 		} else {
 			$result = $this->_connection->query($sql);
 		}

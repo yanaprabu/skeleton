@@ -44,6 +44,10 @@ class A_Db_Mysql extends A_Db_Adapter
 
 	protected function _query($sql)
 	{
+		if (isset($this->_stmt)) {
+			$sql = $this->_stmt->render();
+			unset($this->_stmt);
+		}
 		$result = mysql_query($sql, $this->_connection);
 		$this->_errorHandler(mysql_errno($this->_connection), mysql_error($this->_connection));
 		if ($result && $this->queryHasResultSet($sql)) {

@@ -33,6 +33,7 @@ abstract class A_Db_Adapter
 	protected $_recordset_class;
 	protected $_result_class;
 	protected $_sql = array();
+	protected $_stmt = null;
 	protected $_transaction_level = 0;
 	protected $_numRows = 0;
 	protected $_exception = '';
@@ -167,9 +168,9 @@ abstract class A_Db_Adapter
 	 */
 	public function prepare($sql, $bind=array())
 	{
-		$prepare = new A_Sql_Prepare($sql, $bind);
-		$prepare->setDb($this);
-		return $prepare;
+		$this->_stmt = new A_Sql_Prepare($sql, $bind);
+		$this->_stmt->setDb($this);
+		return $this->_stmt;
 	}
 
 	/**

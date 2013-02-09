@@ -78,9 +78,37 @@ class A_Db_Pdo extends A_Db_Adapter
 		$this->_connection = new PDO($configString, $this->_config['username'], $this->_config['password'], $this->_config['attr']);
 	}
 
+	/**
+	 * Prepared statement.
+	 *
+	 * @param string|A_Sql_* SQL query to execute.  Can be string or a A_Sql object.
+	 * @bind array of key/value pairs
+	 * @return $prepare
+	 */
+	public function prepare($sql, $bind=array())
+	{
+		$this->_stmt = $this->_connection->prepare($sql);
+		if ($bind) {
+			// auto add : to string keys that do not have it
+			foreach ($bind as $key =>$value) {
+				if (is_string($key) && (substr($param, 0, 1) != ':')) {
+					$param = ':' . $param;
+				}
+			}
+		}
+		$this->_bind = $bind;
+		return $this->_stmt;
+	}
+
 	protected function _query($sql)
 	{
-		$result = $this->_connection->query($sql);
+		if (isset($this->_stmt)) {
+			$result = $this->_stmt;
+			$result->execute($this->_bind);
+#			$this->_stmt = null;
+		} else {
+			$result = $this->_connection->query($sql);
+		}
 		$this->_setError();
 		if ($result !== false) {
 			$this->_numRows = $result->rowCount();
@@ -168,7 +196,7 @@ class A_Db_Pdo extends A_Db_Adapter
 
 	protected function _close()
 	{
-		$this->_connection->close();
+#		$this->_connection->close();
 	}
 
 	protected function _selectDb($database)
