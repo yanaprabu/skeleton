@@ -82,7 +82,7 @@ class A_Datetime_Range
 	 */
 	public function toArray($duration)
 	{
-		$date = $this->start->newModify();
+		$date = $this->start->newModify('');
 		$string = $duration instanceof A_Datetime_Duration ? $duration->toString() : $duration;
 		$ranges = array();
 		while ($date->getTimestamp() <= $this->end->getTimestamp()) {
