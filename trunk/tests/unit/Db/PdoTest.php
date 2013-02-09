@@ -1,8 +1,8 @@
 <?php
 #include_once dirname(__FILE__) . '/DbTestCommon.php';
 
-#class Db_MySQLTest extends DbTestCommon {
-class Db_MySQLTest extends UnitTestCase
+#class Db_PdoTest extends DbTestCommon {
+class Db_PdoTest extends UnitTestCase
 {
 	public $db;
 	public $config = array(
@@ -73,7 +73,7 @@ class Db_MySQLTest extends UnitTestCase
 	
 	public function setUp()
 	{
-  		$this->db = new A_Db_MySQL($this->config['SINGLE']);
+  		$this->db = new A_Db_Pdo($this->config['SINGLE']);
 /*
 CREATE TABLE `skeletontest1`.`test1` (
 `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -92,7 +92,7 @@ CREATE TABLE `skeletontest2`.`test1` (
 	
 /*
 	function testDb_Single() {
-  		$db = new A_Db_MySQL($this->config['SINGLE']);
+  		$db = new A_Db_Pdo($this->config['SINGLE']);
 		$db->connect();
 
 		$sql = "DELETE FROM test1";
@@ -111,9 +111,9 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 		$this->assertTrue($db->getErrorMsg() == '');
 
 		$rows = $result->fetchAll();
-dump($rows, 'ROWS: ');
+#dump($rows, 'ROWS: ');
 		$diff = array_diff_assoc($rows->toArray(), array(0=>array('id'=>1,'name'=>'One'),1=>array('id'=>2,'name'=>'Two')));
-dump($diff, 'DIFF: ');
+#dump($diff, 'DIFF: ');
 		$this->assertTrue($diff == array());
 		
 		$this->assertTrue($db->getErrorMsg() == '');
@@ -121,7 +121,7 @@ dump($diff, 'DIFF: ');
 	}
 	
 	function testDb_MasterSlave() {
-  		$db = new A_Db_MySQL($this->config['MASTER_SLAVE']);
+  		$db = new A_Db_Pdo($this->config['MASTER_SLAVE']);
 		$db->connect();
 
 		// should go to master
@@ -143,9 +143,9 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 		$this->assertTrue($db->getErrorMsg() == '');
 
 		$rows = $result->fetchAll();
-dump($rows, 'ROWS: ');
+#dump($rows, 'ROWS: ');
 		$diff = array_diff_assoc($rows->toArray(), array(0=>array('id'=>1,'name'=>'One'),1=>array('id'=>2,'name'=>'Two')));
-dump($diff, 'DIFF: ');
+#dump($diff, 'DIFF: ');
 		$this->assertTrue($diff == array());
 		
 		$this->assertTrue($db->getErrorMsg() == '');
@@ -183,6 +183,7 @@ dump($diff, 'DIFF: ');
 			);
 		$i = 0;
 		while ($row = $result->fetchRow()) {
+#dump($row, 'ROW', 1);
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
 			$this->assertTrue($diff == array());
 			++$i;
@@ -297,36 +298,57 @@ dump($diff, 'DIFF: ');
 			3 => array('id'=>4,'name'=>'Four'),
 			);
 		$i = 0;
-dump($result, 'RESULT BEFORE 1ST FOREACH: ', 1);
+#dump($result, 'RESULT BEFORE 1ST FOREACH: ', 1);
 		$result->enableGather();
 		foreach ($result as $key => $row) {
-dump($row, "ROW $i: $key => ", 1);
+#dump($row, "ROW $i: $key => ", 1);
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
 			$this->assertTrue($diff == array());
 			++$i;
 		}
 
 		$i = 0;
-dump($result, 'RESULT AFTER 1ST FOREACH: ', 1);
+#dump($result, 'RESULT AFTER 1ST FOREACH: ', 1);
 		foreach ($result as $key => $row) {
-dump($row, "ROW $i: $key => ", 1);
+#dump($row, "ROW $i: $key => ", 1);
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
 			$this->assertTrue($diff == array());
 			++$i;
 		}
-dump($result, 'RESULT AFTER 2ND FOREACH: ', 1);
+#dump($result, 'RESULT AFTER 2ND FOREACH: ', 1);
 		
 		$this->assertTrue($this->db->getErrorMsg() == '');
 	}
 
-	public function testDb_PrepareArray() {
+	public function testDb_PrepareNamedArray() {
 		$this->db->connect();
 
-		$sql = "SELECT id,name FROM test1 WHERE id>:id AND name LIKE ':name'";
+		$sql = "SELECT id,name FROM test1 WHERE id>:id AND name LIKE :name";
 
 		// with and without : before tags
-		$result = $this->db->query($sql, array('id'=>1, ':name'=>'T%'));
-echo "ERRORMSG=" . $this->db->getErrorMsg() . "<br/>";
+		$result = $this->db->query($sql, array(':id'=>1, 'name'=>'T%'));
+#dump($result, 'RESULT FOR testDb_PrepareArray: ', 1);
+		$this->assertTrue($this->db->getErrorMsg() == '');
+		$expect_rows = array(
+			0 => array('id'=>2,'name'=>'Two'),
+			1 => array('id'=>3,'name'=>'Three'),
+			);
+		$i = 0;
+		foreach ($result as $key => $row) {
+			$diff = array_diff_assoc($row, $expect_rows[$i]);
+			$this->assertTrue($diff == array());
+			++$i;
+		}
+
+	}
+
+	public function testDb_PrepareQmarkArray() {
+		$this->db->connect();
+
+		$sql = "SELECT id,name FROM test1 WHERE id>? AND name LIKE ?";
+
+		$result = $this->db->query($sql, array(1, 'T%'));
+#dump($result, 'RESULT FOR testDb_PrepareArray: ', 1);
 		$this->assertTrue($this->db->getErrorMsg() == '');
 		$expect_rows = array(
 			0 => array('id'=>2,'name'=>'Two'),
