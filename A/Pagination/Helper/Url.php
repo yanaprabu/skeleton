@@ -27,7 +27,7 @@ class A_Pagination_Helper_Url
 	 */
 	public function __construct($base='', $protocol='http')
 	{
-		$this->base = $base ? $base : $_SERVER['SERVER_NAME'];
+		$this->base = $base ? $base : $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'];
 		$this->protocol = $protocol;
 	}
 
@@ -72,7 +72,7 @@ class A_Pagination_Helper_Url
 	 */
 	public function setBase($base)
 	{
-		$this->base = $base;
+		$this->base = rtrim(preg_replace('/^http.?:\/\//', '', $base), '/');
 		return $this;
 	}
 
@@ -92,19 +92,20 @@ class A_Pagination_Helper_Url
 	 * @param array $ignore Param names to remove
 	 * @return string Full URL
 	 */
-	public function render($page=false, $params=array(), $ignore=array())
+	public function render($base='', $params=array(), $ignore=array())
 	{
 		$params = array_merge($this->state, $params);
 		foreach ($ignore as $key)
 			unset($params[$key]);
-		$base = $this->base ? $this->protocol . '://' . $this->base . '/' : '';
-		$page = $page ? $page : $_SERVER['PHP_SELF'];
+		if ($base == '') {
+			$base = $this->base ? $this->protocol . '://' . $this->base : '';
+		}
 		$query = '';
 		if (count($params) > 0) {
-			$query = (strpos($page, '?') === false) ? '?' : '&';
+			$query = (strpos($base, '?') === false) ? '?' : '&';
 			$query .= http_build_query($params);
 		}
-		return $base . $page . $query;
+		return $base . $query;
 	}
 
 	/**
