@@ -52,14 +52,23 @@ class A_Pagination_Request extends A_Pagination_Core
 	public function get($param, $default='')
 	{
 		$name = $this->getParamName($param);
-		// Is get() the standard interface for a request object?
+		// first check if request object or array set, otherwise use superglobal
 		if (isset($this->request)) {
-			if ($this->request->has($name)) return $this->request->get($name);
+			if (is_object($this->request)) {
+				if ($this->request->has($name)) {
+					return $this->request->get($name);
+				}
+			} elseif (is_array($this->request) && isset($this->request[$name])) {
+				return $this->request[$name];
+			}
+		} elseif (isset($_REQUEST[$name])) {
+			return $_REQUEST[$name];
 		}
+		// second use variable from session
 		if (isset($this->session)) {
 			if ($this->session->has($name)) return $this->session->get($name);
 		}
-		return isset($_GET[$name]) ? $_GET[$name] : $default;
+		return $default;
 	}
 
 }

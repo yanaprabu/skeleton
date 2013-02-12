@@ -16,9 +16,12 @@ for ($i=0; $i<=750; ++$i) {
 // create a data object that has the interface needed by the Pager object
 $datasource = new Datasource($myarray);
 
+// use a request object
+$request = new A_Http_Request();
+
 // create a request processor to set pager from GET parameters
 $pager = new A_Pagination_Request($datasource);
-$pager->setRangeSize(3)->process();
+$pager->setRangeSize(3)->process($request);
 
 $url = new A_Pagination_Helper_Url();
 $url->set('page', $pager->getCurrentPage());
