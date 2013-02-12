@@ -119,7 +119,7 @@ abstract class A_Rule_Base
 	 */
 	public function getValue($name = null)
 	{
-		if (is_null($name)) {
+		if (is_null($name) && isset($this->params['field'])) {
 			$name = $this->params['field'];
 		}
 		if (is_array($this->container)) {
