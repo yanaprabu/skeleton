@@ -65,10 +65,10 @@ class A_Pagination_View_Standard
 	/**
 	 * Assign a renderer to the Link helper
 	 *
-	 * @param A_Renderer $renderer
+	 * @param $renderer
 	 * @return $this
 	 */
-	public function setRenderer(A_Renderer $renderer)
+	public function setRenderer($renderer)
 	{
 		$this->link()->setRenderer($renderer);
 		return $this;

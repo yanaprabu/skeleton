@@ -51,10 +51,10 @@ class A_Pagination_Helper_Link
 	/**
 	 * Set a renderer to render the individual links.
 	 *
-	 * @param A_Renderer $renderer
+	 * @param $renderer
 	 * @return $this
 	 */
-	public function setRenderer(A_Renderer $renderer)
+	public function setRenderer($renderer)
 	{
 		$this->renderer = $renderer;
 		return $this;

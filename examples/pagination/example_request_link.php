@@ -20,7 +20,8 @@ $datasource = new Datasource($myarray);
 $pager = new A_Pagination_Request($datasource);
 
 // set range (number of links on either side of current page) and process core based on request
-$pager->setRangeSize(3)->process();
+// pass superglobal directly
+$pager->setRangeSize(3)->process($_GET);
 
 // create a new link helper
 $link = new A_Pagination_Helper_Link($pager);
