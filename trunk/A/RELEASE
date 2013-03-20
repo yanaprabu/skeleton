@@ -1,3 +1,48 @@
+
+Version 0.9.2 (commits 1370-1422)
+- 	r1421 	A_Controller_Mapper - deal with route object that implment ArrayAccess
+- 	r1420 	A_Controller_Front - check and collect errors from A_Locator::loadClass()
+- 	r1419 	A_Controller_Helper_Load - allow _load() to use full and route style paths
+- 	r1418 	A_Config - misc updated
+- 	r1417 	A_Cart_Payment_Payflow - add isset checks
+- 	r1416 	A_Sql_Insert - remove unused var
+- 	r1415 	A_Model_Helper_Load - change to extend A_Controller_Helper_Load
+- 	r1414 	A_Locator - make errorMsg an array
+- 	r1380 	A_Http	 modified response to be able to send redirect relative to root or current location						
+- 	r1381 	A_Locator - use stream_resolve_include_path() instead of file_exists() to improve autoload()							
+- 	r1382 	A_Locator - optimized class file loading						
+- 	r1383 	A_Locator - added @todo comments							
+- 	r1384 	documentation - Changed all URLs to have the sub-directory	 Added a index	html that allows standalone usage	 Still need to decide on the URL format and whether to use Ajax or not				
+- 	r1385 	documentation - fixed Introduction and Installation links							
+- 	r1386 	A_Rule	 Added rule for reCAPTCHA CAPTCHA service						
+- 	r1387 	A_Controller_Helper_Load - Added ability of _load() helper to pass multiple parameters to constructor of the class loaded	 So $this->_load()->model('User', $foo, $bar, $baz); can be used for class UserModel { public function __construct($foo, $bar, $baz) }	 No param still passed the $Locator object					
+- 	r1388 	A_Sql_Prepare - added auto-prefixing of '	' on param keys so you can pass a row array and the 	's will be automatically added	 So array('foo'->1, 'bar'=>2) will work correctly with "WHERE foo='	foo' AND bar='	bar'"	 Update unit test PrepareTest	php
+- 	r1389 	A_Html_* - refactored code so base A_Html_Tag class does not merge constructor and parameter args by default	 This simplifies unsetting temp attributes not to be rendered	 Updated tests					
+- 	r1390 	A_Model_Form - moved code from isValid() that checked if submitted into isSubmitted()	 Now isValid() calls isSubmitted()	 isSubmitted() can now take a request object and be called before isValid()	 Updated tests				
+- 	r1391 	Change name							
+- 	r1392 	Update to hash function Blog example							
+- 	r1393 	A_Sql_Expression - change quoting check from just (is_numeric()) to (is_numeric() && !is_string())							
+- 	r1394 	Some cleanup on blog example user classes							
+- 	r1395 	A_Html_Tag - check that tag option name and value are is_scalar()							
+- 	r1396 	A_Db_Recordset_Mysqli - changed num_rows() and field_count() to properties num_rows and field_count							
+- 	r1397 	A_Db_Mysqli - Added support for native mysqlistmt prepared statements	 A better implementation will probably fall out after doing the same for PDO						
+- 	r1398 	A_Exception - add 2nd code parameter to exception class							
+- 	r1399 	A_Locator - add support for exceptions on errors and add get error methods							
+- 	r1400 	A_Config_Base - add support for config array to constructor							
+- 	r1401 	A_User_Prefilter_Loggedin - new prefilter that checks only if logged-in							
+- 	r1402 	tests - change menu	php to index	php so you can browse to directory					
+- 	r1403 	Updates to blog example password reset functionality							
+- 	r1404 	Added database table prefix blog_ to blog example							
+- 	r1405 	Removed implements A_Renderer because the parameter list for render() was different causing E_STRICT errors							
+- 	r1406 	A_Log - first commit of PSR-3 and A_Logger compatible logging classes							
+- 	r1407 	A_Log - unit tests							
+- 	r1408 	A_Db_Adapter - remove comment							
+- 	r1409 	A_Datetime_Range - fixed toArray()							
+- 	r1410 	A_Db_Pdo - added support for PDO prepared statements	 Updated tests						
+- 	r1411 	A_Pagination_Helper_Url - simplified default, setBase() and parameter base URLs	Updated test						
+- 	r1412 	A_Pagination - Allow process() to use request object, array, or default to internally use $_REQUEST	 Remove A_Renderer because params don't match	 Update examples					
+- 	r1413 	A_Rule_Base - added isset() check							
+
 Version 0.9.1 (commits 1342-1369)
 - A_Controller_Helper_Load - made setDir() public
 - A_Db_Pdo - fixed escape() to strip quotes from PDO::quote()
