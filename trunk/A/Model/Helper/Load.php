@@ -18,6 +18,17 @@
  *
  * @package A_Model
  */
+class A_Model_Helper_Load extends A_Controller_Helper_Load
+{
+	protected $dirs = array(
+		'event'=>'events/',
+		'helper'=>'helpers/',
+		'model'=>'models/',
+		'class'=>'',
+	);
+
+}
+/*
 class A_Model_Helper_Load
 {
 
@@ -34,8 +45,8 @@ class A_Model_Helper_Load
 	);
 
 	protected $locator;
-	protected $scope;
-	protected $appPath;
+	protected $scope = 'app';
+	protected $appPath = './';
 
 	public function __construct($locator, $scope=null, $appPath=null)
 	{
@@ -43,7 +54,12 @@ class A_Model_Helper_Load
 			throw new InvalidArgumentException('Locator cannot be null');
 		}
 		$this->locator = $locator;
-		$this->setScope($scope);
+		if ($scope !== null) {
+			$this->setScope($scope);
+		}
+		if ($appPath !== null) {
+			$this->setAppPath($appPath);
+		}
 	}
 
 	public function setScope($scope=null)
@@ -58,7 +74,7 @@ class A_Model_Helper_Load
 
 	public function setAppPath($path)
 	{
-		$this->appPath = $path;
+		$this->appPath = rtrim($path, '/') . '/';
 	}
 
 	public function setTypeSuffix($type, $suffix)
@@ -66,24 +82,24 @@ class A_Model_Helper_Load
 		$this->typeSuffixes[$type] = $suffix;
 	}
 
-	public function __call($type, $arguments)
+	public function __call($type, $args)
 	{
 		if (!isset($this->typeDirs[$type])) {
 			throw new InvalidArgumentException('Invalid load type');
 		}
 
 		$path = $this->appPath . $this->typeDirs[$type];
-		$className = $arguments[0] . (isset($this->typeSuffixes[$type]) ? $this->typeSuffixes[$type] : '');
+		$class = $args[0] . (isset($this->typeSuffixes[$type]) ? $this->typeSuffixes[$type] : '');
 
-		echo $path;
-		echo '<br>';
-		echo $className;
+echo "path=$path, class=$class<br/>dir=" . __DIR__;
 		$object = null;
 
-		//$classIsLoaded = $this->locator->loadClass($class, $path);
-		//if ($classIsLoaded) {
-		//	$object = new $class(isset($args[1]) ? $args[1] : $this->locator);
-		//}
+		$classIsLoaded = $this->locator->loadClass($class, $path);
+		if ($classIsLoaded) {
+			$object = new $class(isset($args[1]) ? $args[1] : $this->locator);
+		} else {
+echo "class NOT loaded<br/>";
+		}
 
 		if ($object) {
 			if (method_exists($object, 'setLocator')) {
@@ -97,3 +113,4 @@ class A_Model_Helper_Load
 	}
 
 }
+*/
