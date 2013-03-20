@@ -30,7 +30,7 @@ class A_Locator
 	protected $_extension = '.php';
 	protected $_has_srip = true;
 	protected $_error = 0;
-	protected $_errorMsg = '';
+	protected $_errorMsg = array();
 	protected $_exception = false;
 
 	public function __construct($dir=false, $exception=false)
