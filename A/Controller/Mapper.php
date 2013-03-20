@@ -209,6 +209,16 @@ class A_Controller_Mapper
 		if (!is_array($route)) {
 			if (is_string($route)) {
 				$route = explode('/', $route);
+			// deal with route object that implment ArrayAccess
+			} elseif (is_object($route) && is_a($route, 'ArrayAccess')) {
+				$tmp = array();
+				if (isset($route[0])) $tmp[0] = $route[0];
+				if (isset($route[1])) $tmp[1] = $route[1];
+				if (isset($route[2])) $tmp[2] = $route[2];
+				$route = $tmp;
+			// error
+			} else {
+				$route = array('', '', '');
 			}
 		}
 		switch (count($route)) {
