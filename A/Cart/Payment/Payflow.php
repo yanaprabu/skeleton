@@ -243,7 +243,7 @@ class A_Cart_Payment_Payflow
 
 	public function getReference()
 	{
-		if ($this->response) {
+		if ($this->response && isset($this->response['PNREF'])) {
 			return $this->response['PNREF'];
 		}
 		return '';
@@ -251,7 +251,7 @@ class A_Cart_Payment_Payflow
 
 	public function getResponseMessage()
 	{
-		if ($this->response) {
+		if ($this->response && isset($this->response['RESPMSG'])) {
 			return $this->response['RESPMSG'];
 		}
 		return 'Could not connect to credit card processor. ';
