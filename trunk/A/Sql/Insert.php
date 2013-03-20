@@ -83,7 +83,6 @@ class A_Sql_Insert extends A_Sql_Statement
 
 	public function render($db=null)
 	{
-		$columns = array();
 		if ($this->table) {
 			$table = $this->table->render();
 			if ($this->values) {
