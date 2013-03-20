@@ -200,6 +200,9 @@ class A_Controller_Front
 			$this->routeHistory[] = $route;	// save history of routes
 			$route = null;
 			$result = $locator->loadClass($class, $dir);
+			if ($locator->isError()) {
+				$this->errorMsg = array_merge($this->errorMsg, $locator->getErrorMsg());
+			}
 			if ($result) {
 				$class = str_replace('-', '_', $class);
 				$controller = new $class($locator);
@@ -302,7 +305,7 @@ class A_Controller_Front
 	 * @param string $seperator
 	 * @return array|string
 	 */
-	public function getErrorMsg($separator="\n")
+	public function getErrorMsg($separator=null)
 	{
 		$errormsg = $this->errorMsg;
 		foreach ($this->controllerHistory as $controller) {
@@ -310,7 +313,7 @@ class A_Controller_Front
 				$errormsg = array_merge($errormsg, $controller->getErrorMsg(''));	// get load errors as an array
 			}
 		}
-		if ($separator) {
+		if ($separator !== null) {
 			$errormsg = implode($separator, $errormsg);
 		}
 		return $errormsg;
