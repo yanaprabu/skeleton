@@ -66,7 +66,7 @@ abstract class A_Config_Base extends A_Collection
 		$data = $this->_loadFile();
 		restore_error_handler();
 
-			//if there was a problem loading the file
+		//if there was a problem loading the file
 		if (($this->_error || !count($data))
 			//if the requested section does not exist
 			|| ($this->_section && !isset($data[$this->_section]))) {

@@ -9,17 +9,17 @@
 /**
  * A_Config_Php
  *
- * Support storing configuration data in a PHP.  File must contain a variable named $config containing config data
+ * Support storing configuration data in a PHP file.  File must contain a variable named $ConfigArray containing config data
  *
  * @package A_Config
  */
 class A_Config_Php extends A_Config_Base
 {
 
-	protected function _loadFile()
+	protected function _loadFile($config_array_name='ConfigArray')
 	{
 		include $this->_filename;
-		return $config;
+		return isset($$config_array_name) ? $$config_array_name : array();
 	}
 
 }
