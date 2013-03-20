@@ -173,9 +173,11 @@ class A_Controller_Helper_Load
 			if ($length) {
 				// get extension to use below
 				$ext = substr($class, $length + 1);
+				$extPassed = true;
 				$class = substr($class, 0, $length);
 			} else {										// no extension
 				$ext = $type == 'template' ? $this->renderExtension : '.php';
+				$extPassed = false;
 				if (isset($this->suffix[$type])) {
 					$length = strlen($this->suffix[$type]);
 					// if a suffix is defined and the end of the action name does not contain it -- append it
@@ -206,7 +208,7 @@ class A_Controller_Helper_Load
 					$path .= trim($path_parts['dirname'], '/') . '/';
 				}
 			}
-			// templates are a template filename, not a class name -- need to load/create template class
+			// generic class
 			if ($type == 'class') {
 				// lookup the renderer by extension, if given
 				$path_parts = pathinfo($class);
@@ -219,8 +221,10 @@ class A_Controller_Helper_Load
 			if ($type == 'template') {
 		        // fix by thinsoldier for NT servers that do not return filename
 				$class = isset($path_parts['filename']) ? $path_parts['filename'] : $path_parts['basename'];
-				// add in path separators
-				$class = str_replace(array('_','-'), array('/','_'), $class);
+				if (!$extPassed) {
+					// add in path separators if passed with route style rather than filename with ext
+					$class = str_replace(array('_','-'), array('/','_'), $class);
+				}
 
 				$obj = new $this->renderClasses[$ext]("$path$class.$ext");
 				// if 2nd param is array then use it to set template values
