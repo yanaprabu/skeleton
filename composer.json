@@ -1,5 +1,5 @@
 {
-   "name": "skeletonframework/A",
+   "name": "skeletonframework/framework",
    "type": "library",
    "description": "MVC framework for PHP 5.2 with independent components for cache, e-commerce shopping cart and payment processing, configuration, mvc front controller and action controller, database abstraction, csv, email, event system, html generation, http request and http response, validation rules, filters, mvc model, pagination, session, sql generation, templates, user access control, and more",
    "keywords": ["framework"],
