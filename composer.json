@@ -8,7 +8,7 @@
    "authors": [
        {
            "name": "Developers",
-           "homepage": "http://code.google.com/p/skeleton/people/list",
+           "homepage": "http://code.google.com/p/skeleton/people/list"
        }
    ],
    "require": {
