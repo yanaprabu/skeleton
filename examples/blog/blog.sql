@@ -53,7 +53,7 @@ CREATE TABLE `blog_posts` (
 	`users_id` INT(10) UNSIGNED NOT NULL,
 	`active` char(1) NOT NULL DEFAULT '0',
 	PRIMARY KEY  (`id`),
-	FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
+	FOREIGN KEY (`users_id`) REFERENCES `blog_users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 
@@ -82,7 +82,7 @@ CREATE TABLE `blog_comments` (
 	`approved` CHAR(1) NOT NULL default '1',
 	`posts_id` INT UNSIGNED NOT NULL,
 	PRIMARY KEY  (`id`),
-	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
+	FOREIGN KEY (`posts_id`) REFERENCES `blog_posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 
@@ -125,8 +125,8 @@ CREATE TABLE `blog_categories2posts` (
 	`categories_id` INT(10) UNSIGNED NOT NULL,
 	`posts_id` INT(10) UNSIGNED NOT NULL,   
 	PRIMARY KEY (`categories_id`, `posts_id`),  
-	FOREIGN KEY (`categories_id`) REFERENCES `categories` (`id`), 
-	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
+	FOREIGN KEY (`categories_id`) REFERENCES `blog_categories` (`id`), 
+	FOREIGN KEY (`posts_id`) REFERENCES `blog_posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 
@@ -163,8 +163,8 @@ CREATE TABLE `blog_tags2posts` (
 	`tags_id` INT(10) UNSIGNED NOT NULL,
 	`posts_id` INT(10) UNSIGNED NOT NULL,   
 	PRIMARY KEY (`tags_id`, `posts_id`),  
-	FOREIGN KEY (`tags_id`) REFERENCES `tags` (`id`), 
-	FOREIGN KEY (`posts_id`) REFERENCES `posts` (`id`)
+	FOREIGN KEY (`tags_id`) REFERENCES `blog_tags` (`id`), 
+	FOREIGN KEY (`posts_id`) REFERENCES `blog_posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 
