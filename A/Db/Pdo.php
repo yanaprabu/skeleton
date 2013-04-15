@@ -91,8 +91,8 @@ class A_Db_Pdo extends A_Db_Adapter
 		if ($bind) {
 			// auto add : to string keys that do not have it
 			foreach ($bind as $key =>$value) {
-				if (is_string($key) && (substr($param, 0, 1) != ':')) {
-					$param = ':' . $param;
+				if (is_string($key) && (substr($value, 0, 1) != ':')) {
+					$value = ':' . $value;
 				}
 			}
 		}
