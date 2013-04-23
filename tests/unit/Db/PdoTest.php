@@ -12,6 +12,7 @@ class Db_PdoTest extends UnitTestCase
 			    'database' => 'skeletontest1',
 			    'username' => 'skeleton',
 			    'password' => 'skeleton',
+				'attr' => array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC),
 				),
 			'MASTER_SLAVE' => array(
 			    'config_class' => 'A_Db_Config_Masterslave',
@@ -182,7 +183,8 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 			3 => array('id'=>4,'name'=>'Four'),
 			);
 		$i = 0;
-		while ($row = $result->fetchRow()) {
+	
+		while ($row = $result->fetchRow()) { 
 #dump($row, 'ROW', 1);
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
 			$this->assertTrue($diff == array());
@@ -221,6 +223,7 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 			3 => array('id'=>4,'name'=>'Four'),
 			);
 		$i = 0;
+
 		$result->fetchAll();
 		foreach ($result->toArray() as $row) {
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
@@ -260,6 +263,7 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 			3 => array('id'=>4,'name'=>'Four'),
 			);
 		$i = 0;
+	
 		foreach ($result as $key => $row) {
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
 			$this->assertTrue($diff == array());
@@ -334,6 +338,7 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 			1 => array('id'=>3,'name'=>'Three'),
 			);
 		$i = 0;
+		
 		foreach ($result as $key => $row) {
 			$diff = array_diff_assoc($row, $expect_rows[$i]);
 			$this->assertTrue($diff == array());
@@ -348,6 +353,7 @@ echo "SQL=$sql, ERROR=".$db->getErrorMsg()."<br/>\n";
 		$sql = "SELECT id,name FROM test1 WHERE id>? AND name LIKE ?";
 
 		$result = $this->db->query($sql, array(1, 'T%'));
+		
 #dump($result, 'RESULT FOR testDb_PrepareArray: ', 1);
 		$this->assertTrue($this->db->getErrorMsg() == '');
 		$expect_rows = array(
