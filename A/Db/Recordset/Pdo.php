@@ -16,6 +16,32 @@
  */
 class A_Db_Recordset_Pdo extends A_Db_Recordset_Base
 {
+	protected $fetch_style = PDO::FETCH_ASSOC;
+	protected $cursor_orientation = PDO::FETCH_ORI_NEXT;
+	protected $cursor_offset = 0;
+
+	/**
+	 * set fetch style for _fetch()
+	 *
+	 * @return $this
+	 */
+	protected function setFetchStyle($fetch_style)
+	{
+		$this->fetch_style = $fetch_style;
+		return $this;
+	}
+
+	/**
+	 * set fetch style for _fetch()
+	 *
+	 * @return $this
+	 */
+	protected function setCursor($cursor_orientation, $cursor_offset=0)
+	{
+		$this->cursor_orientation = $cursor_orientation; 
+		$this->cursor_offset = $cursor_offset;
+		return $this;
+	}
 
 	/**
 	 * Fetches a row as an associative array from database
@@ -24,7 +50,7 @@ class A_Db_Recordset_Pdo extends A_Db_Recordset_Base
 	 */
 	protected function _fetch()
 	{
-		return $this->result->fetch();
+		return $this->result->fetch($this->fetch_style, $this->cursor_orientation, $this->cursor_offset);
 	}
 
 	/**
