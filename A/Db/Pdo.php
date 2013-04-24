@@ -70,6 +70,9 @@ class A_Db_Pdo extends A_Db_Adapter
 		if (!isset($this->_config['attr'])) {
 			$this->_config['attr'] = array();
 		}
+		if (isset($this->_exception)) {
+			$this->_config['attr'][PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+		}
 		if (isset($this->_config['persistent'])) {
 			$this->_config['attr'][PDO::ATTR_PERSISTENT] = $this->_config['persistent'];
 		}
