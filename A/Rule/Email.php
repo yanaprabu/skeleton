@@ -39,7 +39,7 @@ class A_Rule_Email extends A_Rule_Base
 		 address format and the domain exists.
 		 */
 		$isValid = true;
-		$atIndex = strrpos($email, "@");
+		/*$atIndex = strrpos($email, "@");
 		if (is_bool($atIndex) && !$atIndex) {
 			$isValid = false;
 		} else {
@@ -77,6 +77,14 @@ class A_Rule_Email extends A_Rule_Base
 				// domain not found in DNS
 				$isValid = false;
 			}
+		}*/
+		
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+			$isValid = false;
+		}
+		if ($isValid && $this->check_dns && function_exists('checkdnsrr') && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A"))) {
+			// domain not found in DNS
+			$isValid = false;
 		}
 		return $isValid;
 	}

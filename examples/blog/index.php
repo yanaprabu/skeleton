@@ -35,8 +35,7 @@ $ConfigArray = array(
     'BASE' => 'http://' . $_SERVER['SERVER_NAME'] . $url_path . '/',
     'PATH' => $file_path . '/',
     'APP' => $file_path . '/app',
-    'LIB' => $file_path . '/../../',     // will be $file_path . '/library'
-	'SITESALT' => 'SoMe_HaRdCoDeD_StRiNg'
+    'LIB' => $file_path . '/../../'     // will be $file_path . '/library'
     );
 
 // Init autoload using Locator
@@ -68,7 +67,15 @@ $dbconfig = array(
 		'database' => $Config->get('database'),
 		'hostspec' => $Config->get('hostspec'),
 		'username' => $Config->get('username'),
-		'password' => $Config->get('password')
+		'password' => $Config->get('password'),
+		//'attr'		=> array('PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC');
+		'attr' => array(
+		                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+		                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+		                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+		                 // Possibility to work with Array or Typed Objet FETCH_OBJ
+	                   ),
+		//'attr'=> array('PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION'),
 		);
 $Db = new A_Db_Pdo($dbconfig);
 $Db->connect();

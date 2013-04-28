@@ -21,13 +21,16 @@ class posts extends A_Controller_Action {
 			
 			/* When comment form is posted */
 			if ($this->request->isPost()) {
-				if ($commentsmodel->isValid($this->request)) {
-					$result = $commentsmodel->save($this->request);
+				if ($commentsmodel->isValid($this->request)) { 
+					$commentsmodel->set('approved', '0');
+					$commentsmodel->set('comment_date', date('Y-m-d H-i-s'));
+					$result = $commentsmodel->save($commentsmodel->getSaveValues());
 					// return succesfull post message
-					
+					$template->set('commentsuccess', true); 
 				} else {
 					// return error message
-					
+					$template->set('commenterror', $commentsmodel->getErrorMsg()); 
+					$template->set('comment', $commentsmodel->getSaveValues());
 				}
 			}
 			
