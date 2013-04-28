@@ -107,6 +107,9 @@ form { margin:0 0 18px;padding:15px;background:#efefef;
 	-webkit-border-radius: 6px;
 	border-radius: 6px;
 	}
+form div {
+	margin:0 0 5px;
+	}
 form p { margin:0 0 5px; }
 label { display:block; }
 label.checkbox, label.radio, label.button { display:inline; }
@@ -114,6 +117,20 @@ input {}
 input[type=text] { width:150px; }
 
 ul.error {  }
+/* Success, info, notice and error/alert boxes
+-------------------------------------------------------------- */
+
+.error,
+.alert, 
+.notice,
+.success, 
+.info 			{ padding: 0.8em; margin-bottom: 1em; border: 2px solid #ddd; }
+
+.error, .alert { background: #fbe3e4; color: #8a1f11; border-color: #fbc2c4; }
+.notice     { background: #fff6bf; color: #514721; border-color: #ffd324; }
+.success    { background: #e6efc2; color: #264409; border-color: #c6d880; }
+.info 			{ background: #d5edf8; color: #205791; border-color: #92cae4; }
+
 
 /* Footer */
 #footer { clear:both;padding:10px 0; }

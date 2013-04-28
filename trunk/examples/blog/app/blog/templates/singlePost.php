@@ -13,26 +13,44 @@
 	?>
 
 	<h3>Leave a reply</h3>
-	<form id="comment_form" action="blog/" method="post">
-		<p>
+	
+	<?php if(isset($commentsuccess) && $commentsuccess === true) {
+		echo '<p class="success">Thanks for commenting.</p>';
+	}?>
+	
+	<form id="comment_form" action="blog/posts/<?php echo (int) $content[0]['id']; ?>" method="post">
+		<input type="hidden" name="posts_id" value="<?php echo (int) $content[0]['id']; ?>" />
+		<div>
 			<label>Name</label>
-			<input type="text" name="author" value="" >
-		</p>
-		<p>
+			<input type="text" name="author" value="<?php echo isset($comment['author']) ? htmlentities($comment['author'],ENT_QUOTES,"UTF-8") : ''; ?>" >
+			<?php
+			echo isset($commenterror['author']) ? '<p class="error">' . htmlentities($commenterror['author'],ENT_QUOTES,"UTF-8") . '</p>' : '';
+			?>
+		</div>
+		<div>
 			<label>Email</label>
-			<input type="text" name="author_email" value="" >
-		</p>
-		<p>
+			<input type="text" name="author_email" value="<?php echo isset($comment['author_email']) ? htmlentities($comment['author_email'],ENT_QUOTES,"UTF-8") : ''; ?>" >
+			<?php
+			echo isset($commenterror['author_email']) ? '<p class="error">' . htmlentities($commenterror['author_email'][0],ENT_QUOTES,"UTF-8") . '</p>' : '';
+			?>
+		</div>
+		<div>
 			<label>Url</label>
-			<input type="text" name="author_url" value="" >
-		</p>
-		<p>
+			<input type="text" name="author_url" value="<?php echo isset($comment['author_url']) ? htmlentities($comment['author_url'],ENT_QUOTES,"UTF-8") : ''; ?>" >
+			<?php
+			echo isset($commenterror['author_url']) ? '<p class="error">' . htmlentities($commenterror['author_url'][0],ENT_QUOTES,"UTF-8") . '</p>' : '';
+			?>
+		</div>
+		<div>
 			<label>Name</label>
-			<textarea name="comment" rows="5" cols="20"></textarea>
-		</p>
-		<p>
+			<textarea name="comment" rows="5" cols="20"><?php echo isset($comment['comment']) ? htmlentities($comment['comment'],ENT_QUOTES,"UTF-8") : ''; ?></textarea>
+			<?php
+			echo isset($commenterror['comment']) ? '<p class="error">' . htmlentities($commenterror['comment'][0],ENT_QUOTES,"UTF-8") . '</p>' : '';
+			?>
+		</div>
+		<div>
 			<input type="submit" name="submit" value="Send" >
-		</p>	
+		</div>	
 		
 	</form>
 	

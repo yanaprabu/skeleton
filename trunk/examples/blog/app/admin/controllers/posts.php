@@ -23,7 +23,7 @@ class posts extends A_Controller_Action {
 		$template = $this->_load('controller')->template('listing');
 		
 		// create a data object that has the interface needed by the Pager object
-		$datasource = new A_Pagination_Adapter_Db($db, "SELECT * FROM posts WHERE post_type='post'");
+		$datasource = new A_Pagination_Adapter_Db($db, "SELECT * FROM `blog_posts` WHERE post_type='post'");
 		 
 		// create a request processor to set pager from GET parameters
 		$pager = new A_Pagination_Request($datasource);
@@ -49,24 +49,25 @@ class posts extends A_Controller_Action {
 		
 		$form = new A_Model_Form();
 		// Hand the Form the fields and rules from the model
-		//	$form->addRule($usersmodel->getRules()); 
+		$form->addRule($posts->getRules()); 
 		$form->addField($posts->getFields()); 	
-	
-		// Now add an additional field, the second password field. Which must match the first password field. 
-		// The $form get the Rules for the first password field from $usersmodel 
-		$form->addField($passwordfield = new A_Model_Form_Field('password2'));
-		// now we add an additional rule, specific for the form we are dealing with.
-		$form->addRule(new A_Rule_Match('password', 'password2', 'Password 2 must match Password 1'));
-				
-		//$form->run($locator);
-			//dump($form);	
-		// ask the form if it is valid. The form checks internally if the model fields are valid?
-		if($form->isValid($this->request)){
+		
+		// Get list of users to create authorlist in form
+		$users = $this->_load('app')->model('users', $locator->get('Db'));
+		$authorlist = $users->findAuthorlist()->toArray();		
+		$form->newField('authorlist');
+		$form->set('authorlist',$authorlist);
+		
+		// ask the form if it is valid. The form checks internally if the model fields are valid
+		if($form->isValid($this->request)){ 
 			// save
-			$usersmodel->save($form->getSaveValues());	
-			// redirect to user detail page or whatever
+			$result = $posts->save($form->getSaveValues());	
+			if($result->isError()){
+				$form->setErrorMsg('databaseerror', 'Could not save to the database');
+			}
+
 		} elseif (! $this->_request()->has('save') && $this->_request()->has('id')) {
-			$id = $this->_request()->has('id');
+			$id = $this->_request()->get('id');
 			// load data
 			$rows = $posts->find($id);
 			if (isset($rows[0])) {

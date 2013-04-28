@@ -11,7 +11,9 @@ class usersModel extends A_Model {
 	
 	protected $hashoptions = null;
 	
-	public function __construct($locator){
+	public function __construct($dbh){
+		
+		$this->dbh = $dbh;
 		
 		$this->addField(new A_Model_Field('id'));
 		$this->addField(new A_Model_Field('firstname'));
@@ -33,9 +35,9 @@ class usersModel extends A_Model {
 		$this->addRule(new A_Rule_Regexp('/[~0-9a-zA-Z\-\_\|]/', 'access', 'User access'), 'access'); 
 		
 		// create a Gateway style datasource for the Model
-		$db = $locator->get('Db');
-		$db->connect();
-		$this->datasource = new A_Db_Tabledatagateway($db, 'blog_users', 'id');
+		//$db = $locator->get('Db');
+		//$db->connect();
+		$this->datasource = new A_Db_Tabledatagateway($this->dbh, 'blog_users', 'id');
 		// set the field names for the Gateway to fetch
 		$this->datasource->columns($this->getFieldNames());
 		
@@ -60,6 +62,16 @@ class usersModel extends A_Model {
 	public function findAll(){
 		$this->errorMsg = array();;
 		$result = $this->datasource->find(array('active'=>1));
+		if($result->numRows() > 0) {
+			return $result->fetchAll();
+		} else {
+			return array();
+		}
+	}
+	
+	public function findAuthorlist(){
+		$this->errorMsg = array();;
+		$result = $this->datasource->columns('id,username')->find(array('active'=>1 ));
 		if($result->numRows() > 0) {
 			return $result->fetchAll();
 		} else {
