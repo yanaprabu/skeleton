@@ -35,8 +35,6 @@ class usersModel extends A_Model {
 		$this->addRule(new A_Rule_Regexp('/[~0-9a-zA-Z\-\_\|]/', 'access', 'User access'), 'access'); 
 		
 		// create a Gateway style datasource for the Model
-		//$db = $locator->get('Db');
-		//$db->connect();
 		$this->datasource = new A_Db_Tabledatagateway($this->dbh, 'blog_users', 'id');
 		// set the field names for the Gateway to fetch
 		$this->datasource->columns($this->getFieldNames());

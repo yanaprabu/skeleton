@@ -24,7 +24,7 @@ class user extends A_Controller_Action {
 		// If username and password valid and isPost
 		if($form->isValid($this->request)){ 
 			
-			$model = $this->_load('app')->model('users');
+			$model = $this->_load('app')->model('users', $locator->get('Db'));
 			$userdata = $model->login($form->get('username'), $form->get('password') );
 
 			if ($userdata) {	// user record matching userid and password found
