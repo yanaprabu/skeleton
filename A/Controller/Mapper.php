@@ -168,13 +168,18 @@ class A_Controller_Mapper
 	 * @param string $type
 	 * @return array
 	 */
-	public function getPaths($type)
+	public function getPaths($type, $overrides=array())
 	{
+		// allow overrides
+		$dir = isset($overrides['dir']) ? trim($overrides['dir'], '/') . '/' : $this->dir;
+		$class = isset($overrides['class']) ? $overrides['class'] : $this->class;
+		$method = isset($overrides['method']) ? $overrides['method'] : $this->method;
+		
 		$type = rtrim($type, '/') . '/';		// paths have training space
 		$paths['app'] = $this->base_path;
-		$paths['module'] = $paths['app'] . $this->dir;
-		$paths['controller'] = $paths['module'] . $type . $this->class . '/';
-		$paths['action'] = $paths['controller'] . ($this->method ? "$this->method/" : '');
+		$paths['module'] = $paths['app'] . $dir;
+		$paths['controller'] = $paths['module'] . $type . $class . '/';
+		$paths['action'] = $paths['controller'] . ($method ? "$method/" : '');
 		$paths['app'] .= $type;
 		$paths['module'] .= $type;
 		return $paths;

@@ -17,6 +17,7 @@ class A_Controller_Helper_Load
 {
 
 	protected $locator;
+	protected $mapper;
 	protected $parent;
 	protected $paths = array(
 		'app'=>'',
@@ -89,9 +90,9 @@ class A_Controller_Helper_Load
 	public function setMapper($mapper)
 	{
 		if ($mapper) {
+			$this->mapper = $mapper;
 			$this->action = $mapper->getClass();
 			$this->method = $mapper->getMethod();
-			$this->paths = $mapper->getPaths('%s');	// get paths array with sprintf placeholder
 		}
 		return $this;
 	}
@@ -152,11 +153,18 @@ class A_Controller_Helper_Load
 		if (is_array($scope)) {
 			$scope = $scope[0];
 		}
+		$overrides = array();
 		if (! isset($this->paths[$scope])) {
+			if ($scope && (substr($scope, 0, 7) == 'module=')) {
+				$overrides['dir'] = substr($scope, 7);
+			}
 			$scope = 'module';	 // the default setting e.g., "/app/module/models"
 		}
 		$this->scope = $scope;
-		$this->scopePath = $this->paths[$scope];
+		if (isset($this->mapper)) {
+			$paths = $this->mapper->getPaths('%s', $overrides);	// get paths array with sprintf placeholder
+			$this->scopePath = $paths[$scope];
+		}
 		$this->responseSet = false;		// reset response mode to off for each call
 		return $this;
 	}
