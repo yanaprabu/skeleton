@@ -22,11 +22,9 @@ class commentsModel extends A_Model {
 		$this->addRule(new A_Rule_Length(2, 500, 'comment', 'The comment must be between 2 to 500 characters'), 'comment'); 
 	}
 
-	public function save($data){
+	public function save($data){ 
 		// if doesn't exist yet create
 		if(!$this->get('id')){
-			// insert new 
-			// insert new 
 			$sql = "INSERT INTO
 					`blog_comments`
 					(
@@ -86,10 +84,40 @@ class commentsModel extends A_Model {
 				':id' => $data['id']
 			));
 			return $result;
+		} 
+	}
+	
+	public function find($id){
+		$sql = "SELECT 
+					`id`, 
+					`author`, 
+					`author_email`, 
+					`author_url`, 
+					`users_id`, 
+					`comment_date`,
+					`comment`,
+					`approved`,
+					`posts_id`
+				FROM 
+					`blog_comments`
+				WHERE
+		
+					`id` = $id
+	
+				";
+
+		$comments = $this->dbh->query($sql);
+		if(!$comments->isError()){
+			$rows = array();
+			while($row = $comments->fetchRow()){
+				$rows[] = $row;
+			}
+			return $rows;
+		} else {
+			$this->setErrorMsg(1, $comments->getErrorMsg());
 		}
 	}
 	
-	public function find($id){}
 	public function findBy($someArgs){}
 	public function delete($id){}
 	
