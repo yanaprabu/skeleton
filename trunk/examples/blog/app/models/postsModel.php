@@ -124,8 +124,8 @@ class postsModel extends A_Model {
 		} else {
 			$this->setErrorMsg(1, $posts->getErrorMsg());
 		}
-
 	}
+	
 	public function findBy($someArgs){}
 	public function delete($id){}
 
