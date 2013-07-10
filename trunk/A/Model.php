@@ -315,7 +315,7 @@ class A_Model
 
 	public function getErrorMsg($separator=null)
 	{
-		$data = $this->errorMsg;
+		$data = array();
 		foreach ($this->rules as $rule) {
 			$errmsg = $rule->getErrorMsg($separator);
 			if ($errmsg) {
@@ -335,7 +335,7 @@ class A_Model
 		if (isset($this->fields[$name])) {
 			$this->fields[$name]->setErrorMsg($errorMsg);
 		} else {
-			$this->errorMsg[$name] = $errorMsg;
+			$this->errorMsg[$name] = is_array($errorMsg) ? implode(', ', $errorMsg) : $errorMsg;
 		}
 	}
 
@@ -349,7 +349,7 @@ class A_Model
 				$this->errorMsg[$name] = '';
 			}
 			// fields implode arrays so do the same for the global error messages
-			$this->errorMsg[$name] .= is_array($errorMsg) ? implode('', $errorMsg) : $errorMsg;
+			$this->errorMsg[$name] .= is_array($errorMsg) ? implode(', ', $errorMsg) : $errorMsg;
 		}
 	}
 
