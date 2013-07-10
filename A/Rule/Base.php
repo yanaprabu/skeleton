@@ -86,7 +86,7 @@ abstract class A_Rule_Base
 	 */
 	public function getName()
 	{
-		return $this->params['field'];
+		return isset($this->params['field']) ? $this->params['field'] : null;
 	}
 
 	/**
