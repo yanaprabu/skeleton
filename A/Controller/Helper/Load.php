@@ -204,7 +204,13 @@ class A_Controller_Helper_Load
 
 			// helpers take a parent instance as the parameter
 			if ($type == 'helper') {
-				$args[1] = $this->parent;
+				if (count($args) > 1) {
+					// add parent as arg[1]
+					$name = array_shift($args);
+					array_unshift($args, $name, $this->parent);
+				} else {
+					$args[1] = $this->parent;
+				}
 			}
 
 			// templates are a template filename, not a class name -- need to load/create template class
