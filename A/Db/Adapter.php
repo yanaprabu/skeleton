@@ -260,7 +260,7 @@ abstract class A_Db_Adapter
 		} else {
 			$this->_config['database'] = $database;
 		}
-		if ($database && $this->_currentDatabase != $database && $this->_connection) {
+		if ($database && $this->_connection) {
 			$this->_selectDb($database);
 			$this->_currentDatabase = $database;
 		}
