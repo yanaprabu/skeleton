@@ -18,7 +18,22 @@ class A_Rule_Email extends A_Rule_Base
 
 	const ERROR = 'A_Rule_Email';
 
-	protected $check_dns = false;
+	protected $params = array(
+		'field' => '',
+		'errorMsg' => '',
+		'optional' => false,
+		'require_domain_dot' => true,
+		'check_dns' => false,
+	);
+
+	/*
+	 * @param string $field This rule applies to
+	 * @param string $error Message to be returned if validation fails
+	 * @param boolean Whether this rule returns true for null value
+	 * @param boolean Whether standard domain requires a '.' in it
+	 * @param boolean Whether to use checkdnsrr() to check email DNS 
+	public function __construct($field='', $errorMsg='', $optional=false, $require_domain_dot=true, $check_dns=false)
+	 */
 
 	protected function validate()
 	{
@@ -39,7 +54,7 @@ class A_Rule_Email extends A_Rule_Base
 		 address format and the domain exists.
 		 */
 		$isValid = true;
-		/*$atIndex = strrpos($email, "@");
+		$atIndex = strrpos($email, "@");
 		if (is_bool($atIndex) && !$atIndex) {
 			$isValid = false;
 		} else {
@@ -65,26 +80,20 @@ class A_Rule_Email extends A_Rule_Base
 			} elseif (preg_match('/\\.\\./', $domain)) {
 				// domain part has two consecutive dots
 				$isValid = false;
-			} elseif (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
-			str_replace("\\\\","",$local))) {
+			} elseif (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local))) {
 				// character not valid in local part unless
 				// local part is quoted
 				if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local))) {
 					$isValid = false;
 				}
+			} elseif ($this->params['require_domain_dot'] && !preg_match('/[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]+/', $domain)) {
+				// domain part has two consecutive dots
+				$isValid = false;
 			}
-			if ($isValid && $this->check_dns && function_exists('checkdnsrr') && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A"))) {
+			if ($isValid && $this->params['check_dns'] && function_exists('checkdnsrr') && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A"))) {
 				// domain not found in DNS
 				$isValid = false;
 			}
-		}*/
-		
-		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-			$isValid = false;
-		}
-		if ($isValid && $this->check_dns && function_exists('checkdnsrr') && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A"))) {
-			// domain not found in DNS
-			$isValid = false;
 		}
 		return $isValid;
 	}
