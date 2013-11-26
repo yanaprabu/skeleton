@@ -45,6 +45,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 	 */
 	public function prepare($sql, $bind=array())
 	{
+		$sql = preg_replace('/:([A-Za-z0-9\_]*)?/', '?', $sql);		// convert :tag to ? for compatability
 		$this->_stmt = $this->_connection->prepare($sql);
 		if ($bind) {
 			$types = '';
@@ -70,7 +71,9 @@ class A_Db_Mysqli extends A_Db_Adapter
 		}
 		$this->_errorHandler($this->_connection->errno, $this->_connection->error);
 		if ($result && $this->queryHasResultSet($sql)) {
-			$this->_numRows = $result->num_rows;
+			if (isset($result->num_rows)) {
+				$this->_numRows = $result->num_rows;
+			}
 			$resultObject = $this->createRecordsetObject();
 			$resultObject->setResult($result);
 		} else {
@@ -138,6 +141,9 @@ class A_Db_Mysqli extends A_Db_Adapter
 
 	public function escape($value)
 	{
+		if (!isset($this->_connection)) {
+			$this->connect();
+		}
 		return $this->_connection->real_escape_string($value);
 	}
 
