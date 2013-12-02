@@ -272,7 +272,7 @@ class A_Http_Upload
 
 	public function isAllowedType($n=0, $param='')
 	{
-		if ($this->mimeIsAllowed($this->getFileOption('type', $n, $param))) {
+		if ($this->mimeAllowed($this->getFileOption('type', $n, $param))) {
 			return true;
 		} else {
 			$this->setFileOption(self::ERR_FILE_TYPE, 'error', $n, $param);
