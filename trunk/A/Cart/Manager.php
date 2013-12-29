@@ -22,6 +22,7 @@ class A_Cart_Manager
 	protected $maxitems = 99;
 	protected $othercosts = null;
 	protected $currency = '$';
+	protected $data = array();
 
 	/**
 	 * Constructor
@@ -195,6 +196,28 @@ class A_Cart_Manager
 	public function moneyFormat($value)
 	{
 		return $this->currency . number_format($value, 2);
+	}
+
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	function setData($name, $value)
+	{
+		if ($name) {
+			$this->data[$name] = $value;
+		}
+		return $this;
+	}
+
+	/**
+	 * @param string $name
+	 * @return mixed
+	 */
+	function getData($name)
+	{
+		return isset($this->data[$name]) ? $this->data[$name] : '';
 	}
 
 }
