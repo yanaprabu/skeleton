@@ -70,7 +70,7 @@ class A_Db_Mysqli extends A_Db_Adapter
 			$result = $this->_connection->query($sql);
 		}
 		$this->_errorHandler($this->_connection->errno, $this->_connection->error);
-		if ($result && $this->queryHasResultSet($sql)) {
+		if (is_object($result)) {
 			if (isset($result->num_rows)) {
 				$this->_numRows = $result->num_rows;
 			}
