@@ -33,7 +33,7 @@ class A_Email_Multipart
 	}
 
 	/*
-	 * encodings:
+	 * type:
 	 *     text/plain; charset="ISO-8859-1"
 	 *     text/html; charset="ISO-8859-1"
 	 *     image/jpeg; name="myname.jpg"					(encode base64)
@@ -46,13 +46,16 @@ class A_Email_Multipart
 	 *     8bit
 	 * id:
 	 *     set to the name of the part to reference from another part e.g <img src="cid:myid"/>
+	 * disposition:
+	 *     attachment; filename="myname.zip"
 	 */
-	public function addPart($content, $type='text/plain', $encoding='quoted-printable', $id='')
+	public function addPart($content, $type='text/plain', $encoding='quoted-printable', $id='', $disposition='')
 	{
 		$this->parts[] = array (
 			'content' => $content,
 			'type' => $type,
 			'encoding' => $encoding,
+			'disposition' => $disposition,
 			'id' => $id,
 		);
 	}
@@ -72,6 +75,16 @@ class A_Email_Multipart
 		return implode("=\r\n", $match[0]);
 	}
 
+	public function buildType($type, $name='')
+	{
+		return $type . ($name ? "; name=\"$name\"" : '');
+	}
+
+	public function buildDisposition($disposition, $filename='')
+	{
+		return $disposition . ($filename ? "; filename=\"$filename\"" : '');
+	}
+
 	public function buildPart($part)
 	{
 		switch ($part['encoding']) {
@@ -89,9 +102,10 @@ class A_Email_Multipart
 				$content = "Unsupported content transfer encoding {$part['encoding']}";
 				$part['encoding'] = '7bit';
 		}
-		$id = $part['id'] == '' ? '' : "Content-ID: {$part['id']}\r\n";
-
-		return "Content-type: {$part["type"]}\r\nContent-transfer-encoding: {$part['encoding']}\r\n$id\r\n$content\r\n";
+		$disposition = ($part['disposition'] == '') ? '' : "Content-Disposition: {$part['disposition']}\r\n";
+		$id = ($part['id'] == '') ? '' : "Content-ID: {$part['id']}\r\n";
+				
+		return "Content-Type: {$part["type"]}\r\nContent-Transfer-Encoding: {$part['encoding']}\r\n$id$disposition\r\n$content\r\n";
 	}
 
 	/*
