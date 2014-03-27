@@ -190,7 +190,6 @@ class A_Log
 			if ($context) {
 				foreach ($context as $key => $value) {
 					$message = str_replace('{' . $key . '}', $value, $message);
-echo "key=$key, value=$value, message=$message<br>";
 				}
 			}
 		} else {
