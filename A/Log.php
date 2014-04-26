@@ -174,7 +174,7 @@ class A_Log
 		$data =& self::_getData();
 
 		// deal with ($message) or ($message, $context) parameters
-		if (is_string($level)) {
+		if (! is_int($level) && ($context===array())) {
 			if (is_array($message)) {
 				$context = $message;
 			}
